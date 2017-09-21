@@ -13,6 +13,7 @@ import com.crashlytics.android.Crashlytics;
 
 import org.json.JSONArray;
 import org.smartregister.Context;
+import org.smartregister.CoreLibrary;
 import org.smartregister.commonregistry.CommonFtsObject;
 import org.smartregister.growthmonitoring.GrowthMonitoringLibrary;
 import org.smartregister.growthmonitoring.repository.WeightRepository;
@@ -65,8 +66,6 @@ public class VaccinatorApplication extends DrishtiApplication
         implements TimeChangedBroadcastReceiver.OnTimeChangedListener {
 
     private static final String TAG = "VaccinatorApplication";
-    private Locale locale = null;
-    private Context context;
     private static CommonFtsObject commonFtsObject;
     private UniqueIdRepository uniqueIdRepository;
     private DailyTalliesRepository dailyTalliesRepository;
@@ -81,15 +80,16 @@ public class VaccinatorApplication extends DrishtiApplication
         super.onCreate();
 
         mInstance = this;
+
         context = Context.getInstance();
+        context.updateApplicationContext(getApplicationContext());
+        context.updateCommonFtsObject(createCommonFtsObject());
+
         if (!BuildConfig.DEBUG) {
             Fabric.with(this, new Crashlytics());
         }
         DrishtiSyncScheduler.setReceiverClass(PathSyncBroadcastReceiver.class);
 
-        context = Context.getInstance();
-        context.updateApplicationContext(getApplicationContext());
-        context.updateCommonFtsObject(createCommonFtsObject());
         Hia2ServiceBroadcastReceiver.init(this);
         SyncStatusBroadcastReceiver.init(this);
         TimeChangedBroadcastReceiver.init(this);
@@ -102,6 +102,7 @@ public class VaccinatorApplication extends DrishtiApplication
         PathUpdateActionsTask.setAlarms(this);
 
         //Initialize Modules
+        CoreLibrary.init(context());
         GrowthMonitoringLibrary.init(context(), getRepository());
         ImmunizationLibrary.init(context(), getRepository(), createCommonFtsObject());
 
