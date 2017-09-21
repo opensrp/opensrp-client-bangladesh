@@ -1,0 +1,216 @@
+{
+  "count": "1",
+  "encounter_type": "Household Registration",
+  "entity_id": "",
+  "relational_id": "",
+  "metadata": {
+    "start": {
+      "openmrs_entity_parent": "",
+      "openmrs_entity": "concept",
+      "openmrs_data_type": "start",
+      "openmrs_entity_id": "163137AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
+    },
+    "end": {
+      "openmrs_entity_parent": "",
+      "openmrs_entity": "concept",
+      "openmrs_data_type": "end",
+      "openmrs_entity_id": "163138AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
+    },
+    "today": {
+      "openmrs_entity_parent": "",
+      "openmrs_entity": "encounter",
+      "openmrs_entity_id": "encounter_date"
+    },
+    "deviceid": {
+      "openmrs_entity_parent": "",
+      "openmrs_entity": "concept",
+      "openmrs_data_type": "deviceid",
+      "openmrs_entity_id": "163149AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
+    },
+    "subscriberid": {
+      "openmrs_entity_parent": "",
+      "openmrs_entity": "concept",
+      "openmrs_data_type": "subscriberid",
+      "openmrs_entity_id": "163150AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
+    },
+    "simserial": {
+      "openmrs_entity_parent": "",
+      "openmrs_entity": "concept",
+      "openmrs_data_type": "simserial",
+      "openmrs_entity_id": "163151AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
+    },
+    "phonenumber": {
+      "openmrs_entity_parent": "",
+      "openmrs_entity": "concept",
+      "openmrs_data_type": "phonenumber",
+      "openmrs_entity_id": "163152AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
+    },
+    "encounter_location": "",
+    "look_up": {
+      "entity_id":"",
+      "value":""
+    }
+  },
+  "step1": {
+    "title": "Household Registration",
+    "fields": [
+      {
+        "key": "household_photo",
+        "openmrs_entity_parent": "",
+        "openmrs_entity": "",
+        "openmrs_entity_id": "",
+        "type": "choose_image",
+        "uploadButtonText": "পরিবারের প্রধানের ছবি তুলুন "
+      },
+      {
+        "key": "HIE_FACILITIES",
+        "openmrs_entity_parent": "usual_residence",
+        "openmrs_entity": "person_address",
+        "openmrs_entity_id": "address6",
+        "openmrs_data_type": "text",
+        "type": "tree",
+        "hint": "পরিবারের প্রধানের স্বাস্থ্য কেন্দ্র *",
+        "tree": [],
+        "v_required": {
+          "value": true,
+          "err": "Please enter the Household head's home facility"
+        }
+      },
+      {
+        "key": "WARD",
+        "openmrs_entity_parent": "usual_residence",
+        "openmrs_entity": "person_address",
+        "openmrs_entity_id": "address2",
+        "openmrs_data_type": "text",
+        "type": "spinner",
+        "hint": "ওয়ার্ড নং- *",
+        "values": [
+          "Ward 1",
+          "Ward 2",
+          "Ward 3"
+        ],
+        "openmrs_choice_ids": {
+          "Ward 1": "",
+          "Ward 2": "",
+          "Ward 3": ""
+        },
+        "v_required": {
+          "value": true,
+          "err": "Please enter the ward"
+        }
+      },
+      {
+        "key": "BLOCK",
+        "openmrs_entity_parent": "",
+        "openmrs_entity": "",
+        "openmrs_entity_id": "",
+        "openmrs_data_type": "usual_residence",
+        "type": "spinner",
+        "hint": "ব্লক নং/ কেন্দ্রের নাম *",
+        "values": [
+          "Ka-1",
+          "Ka-2",
+          "Kha-1",
+          "Kha-2",
+          "Ga-1",
+          "Ga-2",
+          "Gha-1",
+          "Gha-2"
+        ],
+        "openmrs_choice_ids": {
+          "Ka-1": "",
+          "Ka-2": "",
+          "Kha-1": "",
+          "Kha-2": "",
+          "Ga-1": "",
+          "Ga-2": "",
+          "Gha-1": "",
+          "Gha-2": ""
+        },
+        "v_required": {
+          "value": true,
+          "err": "Please enter the Block"
+        }
+      },
+      {
+        "key": "ADDRESS_LINE",
+        "openmrs_entity_parent": "usual_residence",
+        "openmrs_entity": "person_address",
+        "openmrs_entity_id": "address1",
+        "openmrs_data_type": "text",
+        "type": "edit_text",
+        "hint": "বাড়ীর ঠিকানা-"
+      },
+      {
+        "key": "First_Name",
+        "openmrs_entity_parent": "",
+        "openmrs_entity": "person",
+        "openmrs_entity_id": "first_name",
+        "type": "edit_text",
+        "hint": "পরিবারের প্রধানের নামের প্রথম অংশ",
+        "edit_type": "name",
+        "v_regex": {
+          "value": "[A-Za-z\\s\.\-]*",
+          "err": "Please enter a valid name"
+        }
+      },
+      {
+        "key": "Last_Name",
+        "openmrs_entity_parent": "",
+        "openmrs_entity": "person",
+        "openmrs_entity_id": "last_name",
+        "type": "edit_text",
+        "hint": "পরিবারের প্রধানের নামের শেষের  অংশ",
+        "edit_type": "name",
+        "v_required": {
+          "value": "true",
+          "err": "Please enter the last name"
+        },
+        "v_regex": {
+          "value": "[A-Za-z\\s\.\-]*",
+          "err": "Please enter a valid name"
+        }
+      },
+      {
+        "key": "Date_Birth",
+        "openmrs_entity_parent": "",
+        "openmrs_entity": "person",
+        "openmrs_entity_id": "birthdate",
+        "type": "date_picker",
+        "hint": "পরিবারের প্রধানের জন্ম তারিখ *",
+        "expanded": false,
+        "duration": {
+          "label": "Age"
+        },
+        "max_date": "today-20y",
+        "v_required": {
+          "value": "true",
+          "err": "Please enter the date of birth"
+        }
+      },
+      {
+        "key": "Date_Of_Reg",
+        "openmrs_entity_parent": "",
+        "openmrs_entity": "",
+        "openmrs_entity_id": "",
+        "type": "date_picker",
+        "hint": "রেজিস্ট্রেশন তারিখ",
+        "expanded": false,
+        "min_date": "today-5y",
+        "max_date": "today",
+        "v_required": {
+          "value": "true",
+          "err": "Please enter the date of Registration"
+        }
+      },
+      {
+        "key": "HHID",
+        "openmrs_entity_parent": "",
+        "openmrs_entity": "person_attribute",
+        "openmrs_entity_id": "householdCode",
+        "type": "edit_text",
+        "hint": "Household ID"
+      }
+    ]
+  }
+}

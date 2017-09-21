@@ -1098,8 +1098,47 @@ public class JsonFormUtils extends org.smartregister.util.JsonFormUtils {
             //Log.e(TAG, Log.getStackTraceString(e));
         }
     }
+    public static void addHouseholdRegLocHierarchyQuestions(JSONObject form,
+                                                            org.smartregister.Context context) {
+        try {
+            JSONArray questions = form.getJSONObject("step1").getJSONArray("fields");
+            ArrayList<String> allLevels = new ArrayList<>();
+            allLevels.add("Country");
+            allLevels.add("Province");
+            allLevels.add("District");
+            allLevels.add("Health Facility");
+            allLevels.add("Zone");
+            allLevels.add("Residential Area");
 
-    private static void addAddAvailableVaccines(Context context, JSONObject form) {
+            ArrayList<String> healthFacilities = new ArrayList<>();
+            healthFacilities.add("Country");
+            healthFacilities.add("Province");
+            healthFacilities.add("District");
+            healthFacilities.add("Health Facility");
+
+            ArrayList<String> defaultFacilities = new ArrayList<>();
+            healthFacilities.add("Country");
+
+            JSONArray defaultLocation = generateDefaultLocationHierarchy(context, allLevels);
+            JSONArray defaultFacility = generateDefaultLocationHierarchy(context, healthFacilities);
+            JSONArray upToFacilities = generateLocationHierarchyTree(context, false, healthFacilities);
+            JSONArray upToFacilitiesWithOther = generateLocationHierarchyTree(context, true, healthFacilities);
+            JSONArray entireTree = generateLocationHierarchyTree(context, true, allLevels);
+
+            for (int i = 0; i < questions.length(); i++) {
+                if (questions.getJSONObject(i).getString("key").equals("HIE_FACILITIES")) {
+                    questions.getJSONObject(i).put("tree", new JSONArray(upToFacilities.toString()));
+                    if (defaultFacility != null) {
+                        questions.getJSONObject(i).put("default", defaultFacility.toString());
+                    }
+                }
+            }
+        } catch (JSONException e) {
+            //Log.e(TAG, Log.getStackTraceString(e));
+        }
+    }
+
+    public static void addAddAvailableVaccines(Context context, JSONObject form) {
         String supportedVaccinesString = VaccinatorUtils.getSupportedVaccines(context);
         if (StringUtils.isNotEmpty(supportedVaccinesString) && form != null) {
             // For each of the vaccine groups, create a checkbox question

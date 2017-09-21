@@ -18,7 +18,7 @@
         {
           "reference": "prerequisite",
           "prerequisite": "BCG",
-          "offset": "+84d"
+          "offset": "+0d"
         }
       ],
       "expiry": [

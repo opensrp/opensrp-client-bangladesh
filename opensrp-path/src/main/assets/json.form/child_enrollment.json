@@ -63,7 +63,7 @@
         "openmrs_entity": "",
         "openmrs_entity_id": "",
         "type": "choose_image",
-        "uploadButtonText": "Take a photo of the child"
+        "uploadButtonText": "শিশুর ছবি তুলুন "
       },
       {
         "key": "Home_Facility",
@@ -72,7 +72,7 @@
         "openmrs_entity_id": "",
         "openmrs_data_type": "text",
         "type": "tree",
-        "hint": "Child's home health facility *",
+        "hint": "শিশুর স্বাস্থ্য কেন্দ্র *",
         "tree": [],
         "v_required": {
           "value": true,
@@ -80,39 +80,12 @@
         }
       },
       {
-        "key": "ZEIR_ID",
-        "openmrs_entity_parent": "",
-        "openmrs_entity": "person_identifier",
-        "openmrs_entity_id": "ZEIR_ID",
-        "type": "barcode",
-        "barcode_type": "qrcode",
-        "hint": "Child's ZEIR ID *",
-        "scanButtonText": "Scan QR Code",
-        "value": "0",
-        "v_numeric": {
-          "value": "true",
-          "err": "Please enter a valid ID"
-        },
-        "v_required": {
-          "value": "true",
-          "err": "Please enter the Child's ZEIR ID"
-        }
-      },
-      {
-        "key": "Child_Register_Card_Number",
-        "openmrs_entity_parent": "",
-        "openmrs_entity": "person_attribute",
-        "openmrs_entity_id": "Child_Register_Card_Number",
-        "type": "edit_text",
-        "hint": "Child's register card number"
-      },
-      {
         "key": "Child_Birth_Certificate",
         "openmrs_entity_parent": "",
         "openmrs_entity": "person_attribute",
         "openmrs_entity_id": "Child_Birth_Certificate",
         "type": "edit_text",
-        "hint": "Child's birth certificate number"
+        "hint": "শিশুর জন্মনিবন্ধন নাম্বার"
       },
       {
         "key": "First_Name",
@@ -120,7 +93,7 @@
         "openmrs_entity": "person",
         "openmrs_entity_id": "first_name",
         "type": "edit_text",
-        "hint": "First name",
+        "hint": "শিশুর নামের প্রথম অংশ",
         "edit_type": "name",
         "v_regex": {
           "value": "[A-Za-z\\s\.\-]*",
@@ -133,7 +106,7 @@
         "openmrs_entity": "person",
         "openmrs_entity_id": "last_name",
         "type": "edit_text",
-        "hint": "Last name *",
+        "hint": "শিশুর নামের শেষের অংশ *",
         "edit_type": "name",
         "v_required": {
           "value": "true",
@@ -150,7 +123,7 @@
         "openmrs_entity": "person",
         "openmrs_entity_id": "gender",
         "type": "spinner",
-        "hint": "Sex *",
+        "hint": "শিশুর লিঙ্গ *",
         "values": [
           "Male",
           "Female"
@@ -166,7 +139,7 @@
         "openmrs_entity": "person",
         "openmrs_entity_id": "birthdate",
         "type": "date_picker",
-        "hint": "Child's DOB *",
+        "hint": "শিশুর জন্ম তারিখ *",
         "expanded": false,
         "duration": {
           "label": "Age"
@@ -179,36 +152,13 @@
         }
       },
       {
-        "key": "First_Health_Facility_Contact",
-        "openmrs_entity_parent": "",
-        "openmrs_entity": "concept",
-        "openmrs_entity_id": "163260AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
-        "openmrs_data_type": "date",
-        "type": "date_picker",
-        "hint": "Date first seen *",
-        "expanded": false,
-        "min_date": "today-5y",
-        "max_date": "today",
-        "v_required": {
-          "value": "true",
-          "err": "Enter the date that the child was first seen at a health facility for immunization services"
-        },
-        "constraints": [
-          {
-            "type": "date",
-            "ex": "greaterThanEqualTo(., step1:Date_Birth)",
-            "err": "Date first seen can't occur before date of birth"
-          }
-        ]
-      },
-      {
         "key": "Birth_Weight",
         "openmrs_entity_parent": "",
         "openmrs_entity": "concept",
         "openmrs_entity_id": "5916AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
         "openmrs_data_type": "text",
         "type": "edit_text",
-        "hint": "Birth weight (kg) *",
+        "hint": "জন্মের সময় ওজন (kg) *",
         "v_min": {
           "value": "0.1",
           "err": "Weight must be greater than 0"
@@ -229,7 +179,7 @@
         "openmrs_entity_id": "first_name",
         "entity_id": "mother",
         "type": "edit_text",
-        "hint": "Mother/guardian first name *",
+        "hint": "মা/অবিভাবকের নামের প্রথম অংশ *",
         "edit_type": "name",
         "look_up": "true",
         "v_required": {
@@ -248,7 +198,7 @@
         "openmrs_entity_id": "last_name",
         "entity_id": "mother",
         "type": "edit_text",
-        "hint": "Mother/guardian last name *",
+        "hint": "মা/অবিভাবকের নামের শেষের অংশ *",
         "edit_type": "name",
         "look_up": "true",
         "v_required": {
@@ -267,7 +217,7 @@
         "openmrs_entity_id": "birthdate",
         "entity_id": "mother",
         "type": "date_picker",
-        "hint": "Mother/guardian DOB",
+        "hint": "মা/অবিভাবকের জন্ম তারিখ",
         "look_up": "true",
         "expanded": false,
         "duration": {
@@ -277,25 +227,12 @@
         "max_date": "today-10y"
       },
       {
-        "key": "Mother_Guardian_NRC",
-        "openmrs_entity_parent": "",
-        "openmrs_entity": "person_attribute",
-        "openmrs_entity_id": "NRC_Number",
-        "entity_id": "mother",
-        "type": "edit_text",
-        "hint": "Mother/guardian NRC number",
-        "v_regex": {
-          "value": "([0-9]{6}/[0-9]{2}/[0-9])|\s*",
-          "err": "Number must take the format of ######/##/#"
-        }
-      },
-      {
         "key": "Mother_Guardian_Number",
         "openmrs_entity_parent": "",
         "openmrs_entity": "concept",
         "openmrs_entity_id": "159635AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
         "type": "edit_text",
-        "hint": "Mother/guardian phone number",
+        "hint": "মা/অবিভাবকের মোবাইল নম্বর",
         "v_numeric": {
           "value": "true",
           "err": "Number must begin with 095, 096, or 097 and must be a total of 10 digits in length"
@@ -312,23 +249,11 @@
         "openmrs_entity_id": "1594AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
         "openmrs_data_type": "text",
         "type": "edit_text",
-        "hint": "Father/guardian full name",
+        "hint": "পিতা / অবিভাবকের নাম",
         "edit_type": "name",
         "v_regex": {
           "value": "[A-Za-z\\s\.\-]*",
           "err": "Please enter a valid name"
-        }
-      },
-      {
-        "key": "Father_Guardian_NRC",
-        "openmrs_entity_parent": "",
-        "openmrs_entity": "person_attribute",
-        "openmrs_entity_id": "Father_NRC_Number",
-        "type": "edit_text",
-        "hint": "Father/guardian NRC number",
-        "v_regex": {
-          "value": "([0-9]{6}/[0-9]{2}/[0-9])|\s*",
-          "err": "Number must take the format of ######/##/#"
         }
       },
       {
@@ -338,7 +263,7 @@
         "openmrs_entity_id": "1572AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
         "openmrs_data_type": "select one",
         "type": "spinner",
-        "hint": "Place of birth *",
+        "hint": "জন্মস্থান ধরণ *",
         "values": [
           "Health facility",
           "Home"
@@ -359,7 +284,7 @@
         "openmrs_entity_id": "163531AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
         "openmrs_data_type": "text",
         "type": "tree",
-        "hint": "Which health facility was the child born in? *",
+        "hint": "শিশুটি জন্মগ্রহণ করার সময় কোন স্বাস্থ্য কেন্দ্রের সুবিধা পেয়েছিল? *",
         "tree": [],
         "v_required": {
           "value": true,
@@ -398,7 +323,7 @@
         "openmrs_entity_id": "address3",
         "openmrs_data_type": "text",
         "type": "tree",
-        "hint": "Child's residential area *",
+        "hint": "শিশুর আবাসিক এলাকা *",
         "tree": [],
         "v_required": {
           "value": true,
@@ -425,73 +350,13 @@
         }
       },
       {
-        "key": "Residential_Address",
-        "openmrs_entity_parent": "usual_residence",
-        "openmrs_entity": "person_address",
-        "openmrs_entity_id": "address2",
-        "type": "edit_text",
-        "hint": "Home address *",
-        "edit_type": "name",
-        "v_required": {
-          "value": true,
-          "err": "Please enter the home address"
-        }
-      },
-      {
         "key": "Physical_Landmark",
         "openmrs_entity_parent": "usual_residence",
         "openmrs_entity": "person_address",
         "openmrs_entity_id": "address1",
         "type": "edit_text",
-        "hint": "Landmark",
+        "hint": "শিশুর বাড়ীর কাছে কোন দর্শনীয় স্থান",
         "edit_type": "name"
-      },
-      {
-        "key": "CHW_Name",
-        "openmrs_entity_parent": "",
-        "openmrs_entity": "person_attribute",
-        "openmrs_entity_id": "CHW_Name",
-        "type": "edit_text",
-        "hint": "CHW name",
-        "edit_type": "name",
-        "v_regex": {
-          "value": "[A-Za-z\\s\.\-]*",
-          "err": "Please enter a valid name"
-        }
-      },
-      {
-        "key": "CHW_Phone_Number",
-        "openmrs_entity_parent": "",
-        "openmrs_entity": "person_attribute",
-        "openmrs_entity_id": "CHW_Phone_Number",
-        "type": "edit_text",
-        "hint": "CHW phone number",
-        "v_numeric": {
-          "value": "true",
-          "err": "Number must begin with 095, 096, or 097 and must be a total of 10 digits in length"
-        },
-        "v_regex": {
-          "value": "(09[5-7][0-9]{7})|\s*",
-          "err": "Number must begin with 095, 096, or 097 and must be a total of 10 digits in length"
-        }
-      },
-      {
-        "key": "PMTCT_Status",
-        "openmrs_entity_parent": "",
-        "openmrs_entity": "concept",
-        "openmrs_entity_id": "1396AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
-        "type": "spinner",
-        "hint": "HIV exposure",
-        "values": [
-          "CE",
-          "MSU",
-          "CNE"
-        ],
-        "openmrs_choice_ids": {
-          "CE": "703AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
-          "MSU": "1067AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
-          "CNE": "664AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
-        }
       }
     ]
   }

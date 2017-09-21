@@ -40,7 +40,7 @@
                 android:layout_marginTop="5dp"
                 android:layout_marginBottom="5dp"
                 android:layout_marginRight="5dp" />
-            <org.ei.opensrp.view.customControls.CustomFontTextView
+            <org.smartregister.view.customcontrols.CustomFontTextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 style="@style/CustomFontTextViewStyle.ClientList.Light.twoline"
@@ -68,7 +68,7 @@
                 android:layout_marginTop="5dp"
                 android:layout_marginBottom="5dp"
                 android:layout_marginRight="5dp" />
-            <org.ei.opensrp.view.customControls.CustomFontTextView
+            <org.smartregister.view.customcontrols.CustomFontTextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 style="@style/CustomFontTextViewStyle.ClientList.Light.twoline"
@@ -96,7 +96,7 @@
                 android:layout_marginTop="5dp"
                 android:layout_marginBottom="5dp"
                 android:layout_marginRight="5dp" />
-            <org.ei.opensrp.view.customControls.CustomFontTextView
+            <org.smartregister.view.customcontrols.CustomFontTextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 style="@style/CustomFontTextViewStyle.ClientList.Light.twoline"
@@ -133,7 +133,7 @@
                         android:paddingBottom="10dp"
                         android:paddingRight="10dp"
                         android:layout_margin="5dp" />
-                    <org.ei.opensrp.view.customControls.CustomFontTextView
+                    <org.smartregister.view.customcontrols.CustomFontTextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         style="@style/CustomFontTextViewStyle.ClientList.Light.twoline"
@@ -160,7 +160,7 @@
                         android:paddingBottom="10dp"
                         android:paddingRight="10dp"
                         android:layout_margin="5dp" />
-                    <org.ei.opensrp.view.customControls.CustomFontTextView
+                    <org.smartregister.view.customcontrols.CustomFontTextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         style="@style/CustomFontTextViewStyle.ClientList.Light.twoline"
@@ -188,7 +188,7 @@
                         android:paddingBottom="10dp"
                         android:paddingRight="10dp"
                         android:layout_margin="5dp" />
-                    <org.ei.opensrp.view.customControls.CustomFontTextView
+                    <org.smartregister.view.customcontrols.CustomFontTextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         style="@style/CustomFontTextViewStyle.ClientList.Light.twoline"
@@ -217,7 +217,7 @@
                         android:paddingBottom="10dp"
                         android:paddingRight="10dp"
                         android:layout_margin="5dp" />
-                    <org.ei.opensrp.view.customControls.CustomFontTextView
+                    <org.smartregister.view.customcontrols.CustomFontTextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         style="@style/CustomFontTextViewStyle.ClientList.Light.twoline"
@@ -248,7 +248,7 @@
                         android:layout_marginRight="5dp"
                         android:layout_marginBottom="5dp"
                         android:layout_marginLeft="7dp" />
-                    <org.ei.opensrp.view.customControls.CustomFontTextView
+                    <org.smartregister.view.customcontrols.CustomFontTextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         style="@style/CustomFontTextViewStyle.ClientList.Light.twoline"
