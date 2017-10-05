@@ -1510,12 +1510,24 @@ public class JsonFormUtils extends org.smartregister.util.JsonFormUtils {
 
             ArrayList<String> healthFacilities = new ArrayList<>();
             healthFacilities.add("Country");
-            healthFacilities.add("Province");
+            healthFacilities.add("Division");
             healthFacilities.add("District");
-            healthFacilities.add("Health Facility");
+            healthFacilities.add("Upazilla");
+            healthFacilities.add("Union");
+            healthFacilities.add("Ward");
+            healthFacilities.add("Subunit");
+            healthFacilities.add("EPI center");
+
 
             ArrayList<String> defaultFacilities = new ArrayList<>();
             healthFacilities.add("Country");
+            healthFacilities.add("Division");
+            healthFacilities.add("District");
+            healthFacilities.add("Upazilla");
+            healthFacilities.add("Union");
+            healthFacilities.add("Ward");
+            healthFacilities.add("Subunit");
+            healthFacilities.add("EPI center");
 
             JSONArray defaultLocation = generateDefaultLocationHierarchy(context, allLevels);
             JSONArray defaultFacility = generateDefaultLocationHierarchy(context, healthFacilities);
@@ -1535,6 +1547,7 @@ public class JsonFormUtils extends org.smartregister.util.JsonFormUtils {
             //Log.e(TAG, Log.getStackTraceString(e));
         }
     }
+
 
     public static void addAddAvailableVaccines(Context context, JSONObject form) {
         String supportedVaccinesString = VaccinatorUtils.getSupportedVaccines(context);
@@ -1966,7 +1979,7 @@ public class JsonFormUtils extends org.smartregister.util.JsonFormUtils {
         if (form != null) {
             form.getJSONObject("metadata").put("encounter_location", currentLocationId);
 
-            if ("child_enrollment".equals(formName)) {
+            if (formName.equals("child_enrollment")) {
                 if (StringUtils.isBlank(entityId)) {
                     UniqueIdRepository uniqueIdRepo = VaccinatorApplication.getInstance().uniqueIdRepository();
                     entityId = uniqueIdRepo.getNextUniqueId() != null ? uniqueIdRepo.getNextUniqueId().getOpenmrsId() : "";
@@ -1988,12 +2001,13 @@ public class JsonFormUtils extends org.smartregister.util.JsonFormUtils {
                 for (int i = 0; i < jsonArray.length(); i++) {
                     JSONObject jsonObject = jsonArray.getJSONObject(i);
                     if (jsonObject.getString(JsonFormUtils.KEY)
-                            .equalsIgnoreCase(JsonFormUtils.ZEIR_ID)) {
+                            .equalsIgnoreCase(JsonFormUtils.OpenMRS_ID)) {
                         jsonObject.remove(JsonFormUtils.VALUE);
                         jsonObject.put(JsonFormUtils.VALUE, entityId);
+                        continue;
                     }
                 }
-            } else if ("out_of_catchment_service".equals(formName)) {
+            } else if (formName.equals("out_of_catchment_service")) {
                 if (StringUtils.isNotBlank(entityId)) {
                     entityId = entityId.replace("-", "");
                 } else {
@@ -2014,10 +2028,34 @@ public class JsonFormUtils extends org.smartregister.util.JsonFormUtils {
                             .equalsIgnoreCase(JsonFormUtils.ZEIR_ID)) {
                         jsonObject.remove(JsonFormUtils.VALUE);
                         jsonObject.put(JsonFormUtils.VALUE, entityId);
+                        continue;
+                    }
+                }
+                JsonFormUtils.addAddAvailableVaccines(context, form);
+
+            }else  if (formName.equals("household_registration")) {
+                if (StringUtils.isBlank(entityId)) {
+                    UniqueIdRepository uniqueIdRepo = VaccinatorApplication.getInstance().uniqueIdRepository();
+                    entityId = uniqueIdRepo.getNextUniqueId() != null ? uniqueIdRepo.getNextUniqueId().getOpenmrsId() : "";
+                    if (entityId.isEmpty()) {
+                        Toast.makeText(context, context.getString(R.string.no_openmrs_id), Toast.LENGTH_SHORT).show();
+                        return;
+                    }
+                }
+                JSONObject stepOne = form.getJSONObject(JsonFormUtils.STEP1);
+                JSONArray jsonArray = stepOne.getJSONArray(JsonFormUtils.FIELDS);
+                for (int i = 0; i < jsonArray.length(); i++) {
+                    JSONObject jsonObject = jsonArray.getJSONObject(i);
+                    if (jsonObject.getString(JsonFormUtils.KEY)
+                            .equalsIgnoreCase(JsonFormUtils.OpenMRS_ID)) {
+                        jsonObject.remove(JsonFormUtils.VALUE);
+                        jsonObject.put(JsonFormUtils.VALUE, entityId);
+                        continue;
                     }
                 }
 
-                JsonFormUtils.addAddAvailableVaccines(context, form);
+                JsonFormUtils.addHouseholdRegLocHierarchyQuestions(form, openSrpContext);
+
             } else {
                 Log.w(TAG, "Unsupported form requested for launch " + formName);
             }

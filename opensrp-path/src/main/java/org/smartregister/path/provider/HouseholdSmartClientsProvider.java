@@ -11,14 +11,13 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-
-import org.json.JSONException;
 import org.smartregister.commonregistry.CommonPersonObjectClient;
 import org.smartregister.cursoradapter.SmartRegisterCLientsProviderForCursorAdapter;
 import org.smartregister.growthmonitoring.repository.WeightRepository;
 import org.smartregister.immunization.repository.VaccineRepository;
 import org.smartregister.path.R;
 import org.smartregister.path.activity.HouseholdSmartRegisterActivity;
+import org.smartregister.path.fragment.HouseholdMemberAddFragment;
 import org.smartregister.path.fragment.HouseholdSmartRegisterFragment;
 import org.smartregister.path.view.LocationPickerView;
 import org.smartregister.repository.DetailsRepository;
@@ -30,6 +29,7 @@ import org.smartregister.view.contract.SmartRegisterClients;
 import org.smartregister.view.dialog.FilterOption;
 import org.smartregister.view.dialog.ServiceModeOption;
 import org.smartregister.view.dialog.SortOption;
+import org.json.JSONException;
 import org.smartregister.view.viewholder.OnClickFormLauncher;
 
 import java.util.Map;
@@ -58,7 +58,7 @@ public class HouseholdSmartClientsProvider implements SmartRegisterCLientsProvid
     private static final int REQUEST_CODE_GET_JSON = 3432;
 
     public HouseholdSmartClientsProvider(Context context, View.OnClickListener onClickListener,
-                                         AlertService alertService, VaccineRepository vaccineRepository, WeightRepository weightRepository, HouseholdSmartRegisterFragment mBaseFragment) {
+                                         AlertService alertService, VaccineRepository vaccineRepository, WeightRepository weightRepository,HouseholdSmartRegisterFragment mBaseFragment) {
         this.onClickListener = onClickListener;
         this.context = context;
         this.alertService = alertService;
@@ -71,10 +71,11 @@ public class HouseholdSmartClientsProvider implements SmartRegisterCLientsProvid
     }
 
     @Override
-    public void getView(Cursor cursor,SmartRegisterClient client, final View convertView) {
+    public void getView(Cursor cursor, SmartRegisterClient client, final View convertView) {
         convertView.setLayoutParams(clientViewLayoutParams);
         final CommonPersonObjectClient pc = (CommonPersonObjectClient) client;
-//
+        fillValue((TextView) convertView.findViewById(R.id.householdheadname), getValue(pc.getColumnmaps(), "first_name", false));
+
         fillValue((TextView) convertView.findViewById(R.id.id), getValue(pc.getColumnmaps(), "HHID", false));
         fillValue((TextView) convertView.findViewById(R.id.registrationdate), getValue(pc.getColumnmaps(), "Date_Of_Reg", false));
 //        fillValue((TextView) convertView.findViewById(R.id.address), getValue(pc.getColumnmaps(), "address1", false));
@@ -84,7 +85,7 @@ public class HouseholdSmartClientsProvider implements SmartRegisterCLientsProvid
         DetailsRepository detailsRepository;
         detailsRepository = org.smartregister.Context.getInstance().detailsRepository();
         Map<String, String> details = detailsRepository.getAllDetailsForClient(pc.entityId());
-        fillValue((TextView) convertView.findViewById(R.id.householdprimarytext), getValue(details, "BLOCK", false));
+        fillValue((TextView) convertView.findViewById(R.id.householdprimarytext), getValue(details, "address3", false));
         fillValue((TextView) convertView.findViewById(R.id.housholdsecondarytext), getValue(details, "address2", false));
         fillValue((TextView) convertView.findViewById(R.id.address), getValue(details, "address1", false));
 
@@ -92,7 +93,7 @@ public class HouseholdSmartClientsProvider implements SmartRegisterCLientsProvid
         LocationPickerView locationPickerView = ((HouseholdSmartRegisterFragment) mBaseFragment).getLocationPickerView();
 
         try {
-            locationId = JsonFormUtils.getOpenMrsLocationId(context(), locationPickerView.getSelectedItem());
+            locationId = JsonFormUtils.getOpenMrsLocationId(context(),getValue(details, "address4", false) );
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -111,15 +112,15 @@ public class HouseholdSmartClientsProvider implements SmartRegisterCLientsProvid
         addmember.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//                FragmentTransaction ft = ((HouseholdSmartRegisterActivity)context).getFragmentManager().beginTransaction();
-//                android.app.Fragment prev = ((HouseholdSmartRegisterActivity)context).getFragmentManager().findFragmentByTag(HouseholdMemberAddFragment.DIALOG_TAG);
-//                if (prev != null) {
-//                    ft.remove(prev);
-//                }
-//                ft.addToBackStack(null);
-//
-////                HouseholdMemberAddFragment addmemberFragment = HouseholdMemberAddFragment.newInstance(context,locationId,pc.entityId(),context());
-////                    addmemberFragment.show(ft, HouseholdMemberAddFragment.DIALOG_TAG);
+                FragmentTransaction ft = ((HouseholdSmartRegisterActivity)context).getFragmentManager().beginTransaction();
+                android.app.Fragment prev = ((HouseholdSmartRegisterActivity)context).getFragmentManager().findFragmentByTag(HouseholdMemberAddFragment.DIALOG_TAG);
+                if (prev != null) {
+                    ft.remove(prev);
+                }
+                ft.addToBackStack(null);
+
+                HouseholdMemberAddFragment addmemberFragment = HouseholdMemberAddFragment.newInstance(context,locationId,pc.entityId(),context());
+                    addmemberFragment.show(ft, HouseholdMemberAddFragment.DIALOG_TAG);
 //
 
             }

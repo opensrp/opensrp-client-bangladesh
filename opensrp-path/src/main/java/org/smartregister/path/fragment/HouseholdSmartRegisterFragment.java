@@ -29,6 +29,7 @@ import org.smartregister.cursoradapter.SmartRegisterQueryBuilder;
 import org.smartregister.immunization.db.VaccineRepo;
 import org.smartregister.immunization.util.VaccinateActionUtils;
 import org.smartregister.path.R;
+import org.smartregister.path.activity.HouseholdDetailActivity;
 import org.smartregister.path.activity.HouseholdSmartRegisterActivity;
 import org.smartregister.path.activity.LoginActivity;
 import org.smartregister.path.application.VaccinatorApplication;
@@ -49,6 +50,7 @@ import org.smartregister.view.dialog.SortOption;
 
 import java.util.ArrayList;
 import java.util.List;
+
 
 
 import static android.view.View.INVISIBLE;
@@ -72,7 +74,7 @@ public class HouseholdSmartRegisterFragment extends BaseSmartRegisterFragment {
             // FIXME path_conflict
             //@Override
             public FilterOption searchFilterOption() {
-                return new BasicSearchOption("");
+                return new BasicSearchOption(getDefaultOptionsProvider().nameInShortFormForTitle());
             }
 
             @Override
@@ -322,11 +324,11 @@ public class HouseholdSmartRegisterFragment extends BaseSmartRegisterFragment {
             switch (view.getId()) {
                 case R.id.child_profile_info_layout:
                     Log.e("-------------------","Openning HouseholdDetails");
-//                    Intent intent = new Intent(getActivity(), HouseholdDetailActivity.class);
-//                    Bundle bundle = new Bundle();
-//                    bundle.putSerializable(EXTRA_HOUSEHOLD_DETAILS, client);
-//                    intent.putExtras(bundle);
-//                    startActivity(intent);
+                    Intent intent = new Intent(getActivity(), HouseholdDetailActivity.class);
+                    Bundle bundle = new Bundle();
+                    bundle.putSerializable(EXTRA_HOUSEHOLD_DETAILS, client);
+                    intent.putExtras(bundle);
+                    startActivity(intent);
                     break;
             }
         }
@@ -507,7 +509,7 @@ public class HouseholdSmartRegisterFragment extends BaseSmartRegisterFragment {
     private void switchViews(boolean filterSelected) {
         if (filterSelected) {
             if (titleLabelView != null) {
-//                titleLabelView.setText(String.format(getString(R.string.overdue_due), dueOverdueCount));
+                titleLabelView.setText(String.format(getString(R.string.overdue_due), dueOverdueCount));
             }
             nameInitials.setVisibility(View.GONE);
             backButton.setVisibility(View.VISIBLE);

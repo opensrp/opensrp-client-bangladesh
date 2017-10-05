@@ -17,17 +17,17 @@ import android.widget.FrameLayout;
 import android.widget.Toast;
 
 import org.apache.commons.lang3.StringUtils;
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
 import org.smartregister.clientandeventmodel.Event;
 import org.smartregister.clientandeventmodel.Obs;
+import org.smartregister.growthmonitoring.listener.WeightActionListener;
 import org.smartregister.path.R;
-import org.smartregister.path.activity.HouseholdSmartRegisterActivity;
 import org.smartregister.path.activity.PathJsonFormActivity;
 import org.smartregister.path.application.VaccinatorApplication;
 import org.smartregister.path.repository.UniqueIdRepository;
 import org.smartregister.util.FormUtils;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -40,6 +40,7 @@ import util.JsonFormUtils;
 @SuppressLint("ValidFragment")
 public class HouseholdMemberAddFragment extends DialogFragment {
     private final Context context;
+    private WeightActionListener listener;
     private static final int REQUEST_CODE_GET_JSON = 3432;
     private static final String TAG = "AddFragment";
     public static final String DIALOG_TAG = "HouseholdMemberAddFragment";
@@ -83,7 +84,19 @@ public class HouseholdMemberAddFragment extends DialogFragment {
             @Override
             public void onClick(View view) {
                 Log.d("------------","addChild");
-                ((HouseholdSmartRegisterActivity) getActivity()).startFormActivity("child_enrollment", null, null);
+                try {
+                    JSONObject form = FormUtils.getInstance(getActivity().getApplicationContext()).getFormJson("child_enrollment");
+
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+
+                try {
+                    startForm((Activity) context,opensrpcontext,REQUEST_CODE_GET_JSON,"child_enrollment", null, null,locationId,HouseholdEnitityID);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+//                ((HouseholdSmartRegisterActivity) getActivity()).startFormActivity("child_enrollment", null, null);
             }
         });
 
@@ -163,23 +176,32 @@ public class HouseholdMemberAddFragment extends DialogFragment {
                         return;
                     }
                 }
-
-                if (StringUtils.isNotBlank(entityId)) {
-                    entityId = entityId.replace("-", "");
-                }
-
-                JsonFormUtils.addChildRegLocHierarchyQuestions(form, openSrpContext);
-
-                // Inject zeir id into the form
                 JSONObject stepOne = form.getJSONObject(JsonFormUtils.STEP1);
                 JSONArray jsonArray = stepOne.getJSONArray(JsonFormUtils.FIELDS);
+                for (int i = 0; i < jsonArray.length(); i++) {
+                    JSONObject jsonObject = jsonArray.getJSONObject(i);
+                    if (jsonObject.getString(JsonFormUtils.KEY)
+                            .equalsIgnoreCase(JsonFormUtils.OpenMRS_ID)) {
+                        jsonObject.remove(JsonFormUtils.VALUE);
+                        jsonObject.put(JsonFormUtils.VALUE, entityId);
+                        continue;
+                    }
+                }
+
+                JsonFormUtils.addHouseholdRegLocHierarchyQuestions(form, openSrpContext);
+
+                String birthFacilityHierarchy = JsonFormUtils.getOpenMrsLocationHierarchy(
+                        openSrpContext,currentLocationId ).toString();
+
                 for (int i = 0; i < jsonArray.length(); i++) {
                     JSONObject jsonObject = jsonArray.getJSONObject(i);
                     if (jsonObject.getString(JsonFormUtils.KEY)
                             .equalsIgnoreCase(JsonFormUtils.ZEIR_ID)) {
                         jsonObject.remove(JsonFormUtils.VALUE);
                         jsonObject.put(JsonFormUtils.VALUE, entityId);
-                        continue;
+                    }else if(jsonObject.getString(JsonFormUtils.KEY)
+                            .equalsIgnoreCase("HIE_FACILITIES")){
+                        jsonObject.put(JsonFormUtils.VALUE, birthFacilityHierarchy);
                     }
                 }
             } else if (formName.equals("out_of_catchment_service")) {
@@ -217,6 +239,26 @@ public class HouseholdMemberAddFragment extends DialogFragment {
                 lookup.put("entity_id", "household");
                 lookup.put("value", HouseholdEnitityID);
                 JsonFormUtils.addHouseholdRegLocHierarchyQuestions(form, openSrpContext);
+
+                if (StringUtils.isBlank(entityId)) {
+                    UniqueIdRepository uniqueIdRepo = VaccinatorApplication.getInstance().uniqueIdRepository();
+                    entityId = uniqueIdRepo.getNextUniqueId() != null ? uniqueIdRepo.getNextUniqueId().getOpenmrsId() : "";
+                    if (entityId.isEmpty()) {
+                        Toast.makeText(context, context.getString(R.string.no_openmrs_id), Toast.LENGTH_SHORT).show();
+                        return;
+                    }
+                }
+                JSONObject stepOne = form.getJSONObject(JsonFormUtils.STEP1);
+                JSONArray jsonArray = stepOne.getJSONArray(JsonFormUtils.FIELDS);
+                for (int i = 0; i < jsonArray.length(); i++) {
+                    JSONObject jsonObject = jsonArray.getJSONObject(i);
+                    if (jsonObject.getString(JsonFormUtils.KEY)
+                            .equalsIgnoreCase(JsonFormUtils.OpenMRS_ID)) {
+                        jsonObject.remove(JsonFormUtils.VALUE);
+                        jsonObject.put(JsonFormUtils.VALUE, entityId);
+                        continue;
+                    }
+                }
 
             } else {
                 Log.w(TAG, "Unsupported form requested for launch " + formName);

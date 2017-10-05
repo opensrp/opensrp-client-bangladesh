@@ -18,9 +18,6 @@ import android.util.Log;
 import android.view.inputmethod.InputMethodManager;
 
 import org.apache.commons.lang3.StringUtils;
-
-import org.json.JSONException;
-import org.json.JSONObject;
 import org.smartregister.Context;
 import org.smartregister.adapter.SmartRegisterPaginatedAdapter;
 import org.smartregister.domain.FetchStatus;
@@ -39,11 +36,16 @@ import org.smartregister.path.repository.PathRepository;
 import org.smartregister.path.view.LocationPickerView;
 import org.smartregister.provider.SmartRegisterClientsProvider;
 import org.smartregister.repository.AllSharedPreferences;
+import org.smartregister.repository.DetailsRepository;
 import org.smartregister.service.FormSubmissionService;
 import org.smartregister.service.ZiggyService;
 import org.smartregister.util.FormUtils;
 import org.smartregister.view.dialog.DialogOptionModel;
 import org.smartregister.view.viewpager.OpenSRPViewPager;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.Map;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -53,6 +55,7 @@ import util.barcode.BarcodeIntentIntegrator;
 import util.barcode.BarcodeIntentResult;
 
 import static android.view.inputmethod.InputMethodManager.HIDE_NOT_ALWAYS;
+import static org.smartregister.util.Utils.getValue;
 
 /**
  * Created by Ahmed on 13-Oct-15.
@@ -70,6 +73,8 @@ public class HouseholdSmartRegisterActivity extends BaseRegisterActivity {
 
     private Fragment mBaseFragment = null;
     private AdvancedSearchFragment advancedSearchFragment;
+
+
 
 
     @Override
@@ -228,10 +233,21 @@ public class HouseholdSmartRegisterActivity extends BaseRegisterActivity {
                         }else{
                             c.close();
                         }
+                        String locationid = "";
+                        DetailsRepository detailsRepository;
+                        detailsRepository = org.smartregister.Context.getInstance().detailsRepository();
+                        Map<String, String> details = detailsRepository.getAllDetailsForClient(householdid);
+                        locationid = JsonFormUtils.getOpenMrsLocationId(context(),getValue(details, "address4", false) );
+
+
 
 
                         LocationPickerView locationPickerView = ((HouseholdSmartRegisterFragment) mBaseFragment).getLocationPickerView();
+
                         String locationId = JsonFormUtils.getOpenMrsLocationId(context(), locationPickerView.getSelectedItem());
+                        if(!StringUtils.isBlank(locationid) || locationid.equalsIgnoreCase("")){
+                            locationId = locationid;
+                        }
                         HouseholdMemberAddFragment addmemberFragment = HouseholdMemberAddFragment.newInstance(this,locationId,householdid,context());
                         addmemberFragment.show(ft, HouseholdMemberAddFragment.DIALOG_TAG);
 //                       startFormActivity("woman_member_registration", null, null);
