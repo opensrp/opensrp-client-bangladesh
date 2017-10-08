@@ -1,0 +1,191 @@
+[
+  {
+    "name": "LMP",
+    "name": "After LMP",
+    "id": "lmp",
+    "days_after_birth_due": 0,
+    "vaccines": [
+      {
+        "name": "TT 1",
+        "type": "TT",
+        "openmrs_date": {
+          "parent_entity": "104528AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+          "entity": "concept",
+          "entity_id": "1410AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
+        },
+        "openmrs_calculate": {
+          "parent_entity": "104528AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+          "entity": "concept",
+          "entity_id": "1418AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+          "calculation": 1
+        },
+        "schedule": {
+          "due": [
+            {
+              "reference": "lmp",
+              "offset": "+0d"
+            }
+          ],
+          "expiry": [
+            {
+              "reference": "lmp",
+              "offset": "+10000d"
+            }
+          ]
+        }
+      }
+      ]
+        },
+  {
+    "name": "4 Weeks after TT 1",
+    "id": "Four_Wks",
+    "days_after_birth_due": 28,
+    "vaccines": [
+      {
+        "name": "TT 2",
+        "type": "TT",
+        "openmrs_date": {
+          "parent_entity": "104528AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+          "entity": "concept",
+          "entity_id": "1410AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
+        },
+        "openmrs_calculate": {
+          "parent_entity": "104528AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+          "entity": "concept",
+          "entity_id": "1418AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+          "calculation": 2
+        },
+        "schedule": {
+          "due": [
+            {
+              "reference": "prerequisite",
+              "prerequisite": "TT 1",
+              "offset": "+28d"
+            }
+          ],
+          "expiry": [
+            {
+              "reference": "prerequisite",
+              "prerequisite": "TT 1",
+              "offset": "+2y"
+            }
+          ]
+        }
+      }
+    ]
+  },
+  {
+    "name": "26 Weeks after TT 2",
+    "id": "Ten_Wks",
+    "days_after_birth_due": 180,
+    "vaccines": [
+      {
+        "name": "TT 3",
+        "type": "TT",
+        "openmrs_date": {
+          "parent_entity": "104528AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+          "entity": "concept",
+          "entity_id": "1410AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
+        },
+        "openmrs_calculate": {
+          "parent_entity": "104528AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+          "entity": "concept",
+          "entity_id": "1418AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+          "calculation": 3
+        },
+        "schedule": {
+          "due": [
+            {
+              "reference": "prerequisite",
+              "prerequisite": "TT 2",
+              "offset": "+6m"
+            }
+          ],
+          "expiry": [
+            {
+              "reference": "prerequisite",
+              "prerequisite": "TT 2",
+              "offset": "+1y,6m"
+            }
+          ]
+        }
+      }
+    ]
+  },
+  {
+    "name": "1 year after TT 3",
+    "id": "Fourteen_Weeks",
+    "days_after_birth_due": 98,
+    "vaccines": [
+      {
+        "name": "TT 4",
+        "type": "TT",
+        "openmrs_date": {
+          "parent_entity": "104528AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+          "entity": "concept",
+          "entity_id": "1410AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
+        },
+        "openmrs_calculate": {
+          "parent_entity": "104528AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+          "entity": "concept",
+          "entity_id": "1418AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+          "calculation": 4
+        },
+        "schedule": {
+          "due": [
+            {
+              "reference": "prerequisite",
+              "prerequisite": "TT 3",
+              "offset": "+1y"
+            }
+          ],
+          "expiry": [
+            {
+              "reference": "prerequisite",
+              "prerequisite": "TT 3",
+              "offset": "+2y"
+            }
+          ]
+        }
+      }
+    ]
+  },
+  {
+    "name": "1 year after TT 4",
+    "id": "Nine_Months",
+    "days_after_birth_due": 274,
+    "vaccines": [
+         {
+        "name": "TT 5",
+        "type": "TT",
+        "openmrs_date": {
+          "parent_entity": "104528AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+          "entity": "concept",
+          "entity_id": "1410AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
+        },
+        "openmrs_calculate": {
+          "parent_entity": "104528AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+          "entity": "concept",
+          "entity_id": "1418AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+          "calculation": 5
+        },
+        "schedule": {
+          "due": [
+            {
+              "reference": "prerequisite",
+              "prerequisite": "TT 4",
+              "offset": "+1y"
+            }
+          ],
+          "expiry": [
+            {
+              "reference": "prerequisite",
+              "prerequisite": "TT 4",
+              "offset": "+2y"
+            }
+          ]
+        }
+      }
+    ]
+  }
+]

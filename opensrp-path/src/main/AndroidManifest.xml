@@ -35,6 +35,24 @@
             android:screenOrientation="portrait"
             android:theme="@style/AppThemeNoActionBarAndTitle" />
         <activity
+            android:name=".activity.HouseholdSmartRegisterActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize"
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppThemeNoActionBarAndTitle" />
+        <activity
+            android:name=".activity.HouseholdDetailActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize"
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppThemeNoActionBarAndTitle" />
+        <activity
+            android:name=".activity.WomanSmartRegisterActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize"
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppThemeNoActionBarAndTitle" />
+        <activity
             android:name=".activity.ChildDetailTabbedActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppThemeNoActionBarAndTitleWithEditButton" />

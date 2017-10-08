@@ -18,6 +18,7 @@ import android.widget.TextView;
 
 import com.github.ybq.android.spinkit.style.Circle;
 
+import org.smartregister.Context;
 import org.smartregister.commonregistry.CommonPersonObjectClient;
 import org.smartregister.commonregistry.CommonRepository;
 import org.smartregister.cursoradapter.CursorCommonObjectFilterOption;
@@ -76,7 +77,7 @@ public class ChildSmartRegisterFragment extends BaseSmartRegisterFragment implem
             // FIXME path_conflict
             //@Override
             public FilterOption searchFilterOption() {
-                return new BasicSearchOption("");
+                return new BasicSearchOption(getDefaultOptionsProvider().nameInShortFormForTitle());
             }
 
             @Override
@@ -99,7 +100,7 @@ public class ChildSmartRegisterFragment extends BaseSmartRegisterFragment implem
 
             @Override
             public String nameInShortFormForTitle() {
-                return context().getStringResource(R.string.zeir);
+                return Context.getInstance().getStringResource(R.string.child_profile);
             }
         };
     }
@@ -131,7 +132,7 @@ public class ChildSmartRegisterFragment extends BaseSmartRegisterFragment implem
 
             @Override
             public String searchHint() {
-                return context().getStringResource(R.string.str_search_hint);
+                return Context.getInstance().getStringResource(R.string.str_search_hint);
             }
         };
     }
@@ -149,6 +150,10 @@ public class ChildSmartRegisterFragment extends BaseSmartRegisterFragment implem
     @Override
     protected void startRegistration() {
         ((ChildSmartRegisterActivity) getActivity()).startFormActivity("child_enrollment", null, null);
+//        ((ChildSmartRegisterActivity) getActivity()).startFormActivity("household_registration", null, null);
+//        ((ChildSmartRegisterActivity) getActivity()).startFormActivity("woman_member_registration", null, null);
+
+
     }
 
     @Override
@@ -166,7 +171,7 @@ public class ChildSmartRegisterFragment extends BaseSmartRegisterFragment implem
         try {
             LoginActivity.setLanguage();
         } catch (Exception e) {
-            Log.e(getClass().getCanonicalName(), e.getMessage());
+
         }
 
         updateLocationText();
@@ -235,7 +240,7 @@ public class ChildSmartRegisterFragment extends BaseSmartRegisterFragment implem
         Circle circle = new Circle();
         syncProgressBar.setIndeterminateDrawable(circle);
 
-        AllSharedPreferences allSharedPreferences = context().allSharedPreferences();
+        AllSharedPreferences allSharedPreferences = Context.getInstance().allSharedPreferences();
         String preferredName = allSharedPreferences.getANMPreferredName(allSharedPreferences.fetchRegisteredANM());
         if (!preferredName.isEmpty()) {
             String[] preferredNameArray = preferredName.split(" ");
@@ -277,13 +282,13 @@ public class ChildSmartRegisterFragment extends BaseSmartRegisterFragment implem
         return getClinicSelection();
     }
 
-    private void initializeQueries() {
+    public void initializeQueries() {
         String tableName = PathConstants.CHILD_TABLE_NAME;
         String parentTableName = PathConstants.MOTHER_TABLE_NAME;
 
         ChildSmartClientsProvider hhscp = new ChildSmartClientsProvider(getActivity(),
-                clientActionHandler, context().alertService(), VaccinatorApplication.getInstance().vaccineRepository(), VaccinatorApplication.getInstance().weightRepository());
-        clientAdapter = new SmartRegisterPaginatedCursorAdapter(getActivity(), null, hhscp, context().commonrepository(tableName));
+                clientActionHandler, context().alertService(), VaccinatorApplication.getInstance().vaccineRepository(), VaccinatorApplication.getInstance().weightRepository(),commonRepository());
+        clientAdapter = new SmartRegisterPaginatedCursorAdapter(getActivity(), null, hhscp, Context.getInstance().commonrepository(tableName));
         clientsView.setAdapter(clientAdapter);
 
         setTablename(tableName);
@@ -299,7 +304,7 @@ public class ChildSmartRegisterFragment extends BaseSmartRegisterFragment implem
         queryBUilder.SelectInitiateMainTable(tableName, new String[]{
                 tableName + ".relationalid",
                 tableName + ".details",
-                tableName + ".zeir_id",
+                tableName + ".openmrs_id",
                 tableName + ".relational_id",
                 tableName + ".first_name",
                 tableName + ".last_name",
@@ -355,8 +360,46 @@ public class ChildSmartRegisterFragment extends BaseSmartRegisterFragment implem
         refreshSyncStatusViews();
     }
 
+    private class ClientActionHandler implements View.OnClickListener {
+        @Override
+        public void onClick(View view) {
+            CommonPersonObjectClient client = null;
+            if (view.getTag() != null && view.getTag() instanceof CommonPersonObjectClient) {
+                client = (CommonPersonObjectClient) view.getTag();
+            }
+            RegisterClickables registerClickables = new RegisterClickables();
 
-    private void updateSearchView() {
+            switch (view.getId()) {
+                case R.id.child_profile_info_layout:
+
+                    ChildImmunizationActivity.launchActivity(getActivity(), client, null);
+                    break;
+                case R.id.record_weight:
+                    registerClickables.setRecordWeight(true);
+                    ChildImmunizationActivity.launchActivity(getActivity(), client, registerClickables);
+                    break;
+
+                case R.id.record_vaccination:
+                    registerClickables.setRecordAll(true);
+                    ChildImmunizationActivity.launchActivity(getActivity(), client, registerClickables);
+                    break;
+                case R.id.filter_selection:
+                    toggleFilterSelection();
+                    break;
+
+                case R.id.global_search:
+                    ((ChildSmartRegisterActivity) getActivity()).startAdvancedSearch();
+                    break;
+
+                case R.id.scan_qr_code:
+                    ((ChildSmartRegisterActivity) getActivity()).startQrCodeScanner();
+                    break;
+
+            }
+        }
+    }
+
+    public void updateSearchView() {
         getSearchView().removeTextChangedListener(textWatcher);
         getSearchView().addTextChangedListener(textWatcher);
     }
@@ -382,7 +425,7 @@ public class ChildSmartRegisterFragment extends BaseSmartRegisterFragment implem
         super.onLoadFinished(loader, cursor);
         // Check if query was issued
         if (searchView != null && searchView.getText().toString().length() > 0) {
-            if (cursor.getCount() == 0) { // No search result found
+            if (cursor.getCount() == 0) {// No search result found
                 if (showNoResultDialogHandler != null) {
                     showNoResultDialogHandler.removeCallbacksAndMessages(null);
                     showNoResultDialogHandler = null;
@@ -447,7 +490,7 @@ public class ChildSmartRegisterFragment extends BaseSmartRegisterFragment implem
     }
 
 
-    private void countOverDue() {
+    public void countOverDue() {
         String mainCondition = filterSelectionCondition(true);
         int count = count(mainCondition);
 
@@ -465,9 +508,10 @@ public class ChildSmartRegisterFragment extends BaseSmartRegisterFragment implem
         ((ChildSmartRegisterActivity) getActivity()).updateAdvancedSearchFilterCount(count);
     }
 
-    private void countDueOverDue() {
+    public void countDueOverDue() {
         String mainCondition = filterSelectionCondition(false);
-        dueOverdueCount = count(mainCondition);
+        int count = count(mainCondition);
+        dueOverdueCount = count;
     }
 
     private int count(String mainConditionString) {
@@ -543,51 +587,5 @@ public class ChildSmartRegisterFragment extends BaseSmartRegisterFragment implem
     private boolean filterMode() {
         return filterSection != null && filterSection.getTag() != null;
     }
-
-
-    ////////////////////////////////////////////////////////////////
-    // Inner classes
-    ////////////////////////////////////////////////////////////////
-
-    private class ClientActionHandler implements View.OnClickListener {
-        @Override
-        public void onClick(View view) {
-            CommonPersonObjectClient client = null;
-            if (view.getTag() != null && view.getTag() instanceof CommonPersonObjectClient) {
-                client = (CommonPersonObjectClient) view.getTag();
-            }
-            RegisterClickables registerClickables = new RegisterClickables();
-
-            switch (view.getId()) {
-                case R.id.child_profile_info_layout:
-
-                    ChildImmunizationActivity.launchActivity(getActivity(), client, null);
-                    break;
-                case R.id.record_weight:
-                    registerClickables.setRecordWeight(true);
-                    ChildImmunizationActivity.launchActivity(getActivity(), client, registerClickables);
-                    break;
-
-                case R.id.record_vaccination:
-                    registerClickables.setRecordAll(true);
-                    ChildImmunizationActivity.launchActivity(getActivity(), client, registerClickables);
-                    break;
-                case R.id.filter_selection:
-                    toggleFilterSelection();
-                    break;
-
-                case R.id.global_search:
-                    ((ChildSmartRegisterActivity) getActivity()).startAdvancedSearch();
-                    break;
-
-                case R.id.scan_qr_code:
-                    ((ChildSmartRegisterActivity) getActivity()).startQrCodeScanner();
-                    break;
-                default:
-                    break;
-            }
-        }
-    }
-
 
 }

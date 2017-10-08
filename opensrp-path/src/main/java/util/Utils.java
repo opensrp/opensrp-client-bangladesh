@@ -29,13 +29,15 @@ import android.widget.TextView;
 import org.apache.commons.lang3.StringUtils;
 import org.smartregister.path.domain.EditWrapper;
 
+import java.util.Collection;
+import java.util.Map;
+
 
 /**
  * @author Maimoona
  *         Class containing some static utility methods.
  */
 public class Utils {
-    private static final String TAG = "Utils";
 
     private Utils() {
     }
@@ -155,6 +157,14 @@ public class Utils {
         row.addView(v);
 
         return row;
+    }
+
+    public static void putAll(Map<String, String> map, Map<String, String> extend) {
+        Collection<String> values = extend.values();
+        while (true) {
+            if (!(values.remove(null))) break;
+        }
+        map.putAll(extend);
     }
 
 }

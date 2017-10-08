@@ -299,7 +299,7 @@ public abstract class BaseRegisterActivity extends SecuredNativeSmartRegisterAct
         }
     }
 
-    private void initializeCustomNavbarLIsteners() {
+    public void initializeCustomNavbarLIsteners(){
         final DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         LinearLayout syncMenuItem = (LinearLayout) drawer.findViewById(R.id.nav_sync);
         syncMenuItem.setOnClickListener(new View.OnClickListener() {
@@ -355,6 +355,34 @@ public abstract class BaseRegisterActivity extends SecuredNativeSmartRegisterAct
                 Intent intent = new Intent(getApplicationContext(), ChildSmartRegisterActivity.class);
                 intent.putExtra(BaseRegisterActivity.IS_REMOTE_LOGIN, false);
                 startActivity(intent);
+                drawer.closeDrawer(GravityCompat.START);
+
+//                finish();
+            }
+        });
+        LinearLayout householdregister = (LinearLayout) drawer.findViewById(R.id.household_register);
+        householdregister.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                VaccinatorApplication.setCrashlyticsUser(VaccinatorApplication.getInstance().context());
+                Intent intent = new Intent(getApplicationContext(), HouseholdSmartRegisterActivity.class);
+                intent.putExtra(BaseRegisterActivity.IS_REMOTE_LOGIN, false);
+                startActivity(intent);
+                finish();
+                drawer.closeDrawer(GravityCompat.START);
+
+//                finish();
+            }
+        });
+        LinearLayout womanregister = (LinearLayout) drawer.findViewById(R.id.woman_register);
+        womanregister.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                VaccinatorApplication.setCrashlyticsUser(VaccinatorApplication.getInstance().context());
+                Intent intent = new Intent(getApplicationContext(), WomanSmartRegisterActivity.class);
+                intent.putExtra(BaseRegisterActivity.IS_REMOTE_LOGIN, false);
+                startActivity(intent);
+                finish();
                 drawer.closeDrawer(GravityCompat.START);
 
 //                finish();

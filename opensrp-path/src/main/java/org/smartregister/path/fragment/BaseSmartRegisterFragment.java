@@ -7,6 +7,7 @@ import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
 
+
 import org.json.JSONException;
 import org.smartregister.Context;
 import org.smartregister.commonregistry.CommonPersonObject;
@@ -16,7 +17,6 @@ import org.smartregister.cursoradapter.SmartRegisterQueryBuilder;
 import org.smartregister.path.R;
 import org.smartregister.path.activity.BaseRegisterActivity;
 import org.smartregister.path.activity.ChildImmunizationActivity;
-import org.smartregister.path.application.VaccinatorApplication;
 import org.smartregister.path.view.LocationPickerView;
 import org.smartregister.provider.SmartRegisterClientsProvider;
 import org.smartregister.view.activity.SecuredNativeSmartRegisterActivity;
@@ -60,7 +60,7 @@ public class BaseSmartRegisterFragment extends SecuredNativeSmartRegisterCursorA
     protected void onCreation() {
     }
 
-    protected final TextWatcher textWatcher = new TextWatcher() {
+    protected TextWatcher textWatcher = new TextWatcher() {
         @Override
         public void beforeTextChanged(CharSequence charSequence, int i, int i2, int i3) {
         }
@@ -105,7 +105,7 @@ public class BaseSmartRegisterFragment extends SecuredNativeSmartRegisterCursorA
     @Override
     public void showProgressView() {
         if (clientsProgressView.getVisibility() == INVISIBLE) {
-            clientsProgressView.setVisibility(VISIBLE);
+            clientsProgressView.setVisibility(View.VISIBLE);
         }
     }
 
@@ -116,42 +116,10 @@ public class BaseSmartRegisterFragment extends SecuredNativeSmartRegisterCursorA
         }
     }
 
-
-    protected void updateLocationText() {
-        if (clinicSelection != null) {
-            clinicSelection.setText(JsonFormUtils.getOpenMrsReadableName(
-                    clinicSelection.getSelectedItem()));
-            try {
-
-                String locationId = JsonFormUtils.getOpenMrsLocationId(context(), clinicSelection.getSelectedItem());
-                context().allSharedPreferences().savePreference(PathConstants.CURRENT_LOCATION_ID, locationId);
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
-        }
-    }
-
-    public LocationPickerView getClinicSelection() {
-        return clinicSelection;
-    }
-
-    public boolean onBackPressed() {
-        return false;
-    }
-
-    @Override
-    protected Context context() {
-        return VaccinatorApplication.getInstance().context();
-    }
-
-    ////////////////////////////////////////////////////////////////
-    // Inner classes
-    ////////////////////////////////////////////////////////////////
-
     private class FilterForClientTask extends AsyncTask<String, Integer, CommonPersonObjectClient> {
         private String searchQuery;
 
-        private FilterForClientTask() {
+        public FilterForClientTask() {
             this.searchQuery = null;
         }
 
@@ -203,5 +171,27 @@ public class BaseSmartRegisterFragment extends SecuredNativeSmartRegisterCursorA
                         DIALOG_TAG, searchQuery);
             }
         }
+    }
+
+    protected void updateLocationText() {
+        if(clinicSelection != null) {
+            clinicSelection.setText(JsonFormUtils.getOpenMrsReadableName(
+                    clinicSelection.getSelectedItem()));
+            try {
+
+                String locationId = JsonFormUtils.getOpenMrsLocationId(context(), clinicSelection.getSelectedItem());
+                Context.getInstance().allSharedPreferences().savePreference(PathConstants.CURRENT_LOCATION_ID,locationId);
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    public LocationPickerView getClinicSelection() {
+        return clinicSelection;
+    }
+
+    public boolean onBackPressed(){
+        return false;
     }
 }

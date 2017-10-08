@@ -16,6 +16,8 @@ import android.widget.Toast;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
+import net.sqlcipher.database.SQLiteDatabase;
+
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.math.NumberUtils;
 import org.joda.time.DateTime;
@@ -37,6 +39,7 @@ import org.smartregister.immunization.util.VaccinatorUtils;
 import org.smartregister.path.R;
 import org.smartregister.path.activity.PathJsonFormActivity;
 import org.smartregister.path.application.VaccinatorApplication;
+import org.smartregister.path.repository.PathRepository;
 import org.smartregister.path.repository.UniqueIdRepository;
 import org.smartregister.path.sync.ECSyncUpdater;
 import org.smartregister.path.sync.PathClientProcessor;
@@ -84,6 +87,7 @@ public class JsonFormUtils extends org.smartregister.util.JsonFormUtils {
     public static final String READ_ONLY = "read_only";
     private static final String METADATA = "metadata";
     public static final String ZEIR_ID = "ZEIR_ID";
+    public static final String  OpenMRS_ID = "OpenMRS_ID";
     private static final String M_ZEIR_ID = "M_ZEIR_ID";
     public static final String encounterType = "Update Birth Registration";
     private static final SimpleDateFormat DATE_TIME_FORMAT = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
@@ -106,11 +110,17 @@ public class JsonFormUtils extends org.smartregister.util.JsonFormUtils {
                 saveOutOfAreaService(context, openSrpContext, jsonString);
             } else if (form.getString("encounter_type").equals("Birth Registration")) {
                 saveBirthRegistration(context, openSrpContext, jsonString, providerId, "Child_Photo", "child", "mother");
+            }else if (form.getString("encounter_type").equals("Household Registration")) {
+                saveHouseholdRegistration(context, openSrpContext, jsonString, providerId, "household_photo", "household");
+            }else if (form.getString("encounter_type").equals("New Woman Member Registration")) {
+                saveWomanRegistration(context, openSrpContext, jsonString, providerId, "woman_photo", "mother","household");
             }
         } catch (JSONException e) {
             Log.e(TAG, Log.getStackTraceString(e));
         }
     }
+
+
 
     public static void saveAdverseEvent(String jsonString, String locationId, String baseEntityId,
                                         String providerId) {
@@ -118,7 +128,151 @@ public class JsonFormUtils extends org.smartregister.util.JsonFormUtils {
                 new SaveAdverseEventTask(jsonString, locationId, baseEntityId, providerId), null);
     }
 
-    private static void saveBirthRegistration(Context context, org.smartregister.Context openSrpContext,
+    private static void saveHouseholdRegistration(Context context, org.smartregister.Context openSrpContext,
+                                                  String jsonString, String providerId, String imageKey, String bindType) {
+        if (context == null || openSrpContext == null || StringUtils.isBlank(providerId)
+                || StringUtils.isBlank(jsonString)) {
+            return;
+        }
+
+        try {
+            ECSyncUpdater ecUpdater = ECSyncUpdater.getInstance(context);
+            SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
+            AllSharedPreferences allSharedPreferences = new AllSharedPreferences(preferences);
+
+            JSONObject jsonForm = new JSONObject(jsonString);
+
+            String entityId = getString(jsonForm, ENTITY_ID);
+            if (StringUtils.isBlank(entityId)) {
+                entityId = generateRandomUUIDString();
+            }
+
+            JSONArray fields = fields(jsonForm);
+            if (fields == null) {
+                return;
+            }
+            ArrayList<Address> adresses = new ArrayList<Address>();
+            Address address1 = new Address();
+            String encounterType = getString(jsonForm, ENCOUNTER_TYPE);
+
+            JSONObject metadata = getJSONObject(jsonForm, METADATA);
+
+            // Replace values for location questions with their corresponding location IDs
+            for (int i = 0; i < fields.length(); i++) {
+                String key = fields.getJSONObject(i).getString("key");
+                if (key.equals("Home_Facility")
+                        || key.equals("Birth_Facility_Name")
+                        || key.equals("Residential_Area")) {
+                    try {
+                        String rawValue = fields.getJSONObject(i).getString("value");
+                        JSONArray valueArray = new JSONArray(rawValue);
+                        if (valueArray.length() > 0) {
+                            String lastLocationName = valueArray.getString(valueArray.length() - 1);
+                            String lastLocationId = getOpenMrsLocationId(openSrpContext, lastLocationName);
+                            fields.getJSONObject(i).put("value", lastLocationId);
+                        }
+                    } catch (Exception e) {
+                        Log.e(TAG, Log.getStackTraceString(e));
+                    }
+                } else if (key.equals("Date_Birth")) {
+                    if(TextUtils.isEmpty(fields.getJSONObject(i).getString("value"))) {
+                        for (int j = 0; j < fields.length(); j++) {
+                            String keyJ = fields.getJSONObject(j).getString("key");
+                            if(keyJ.equals("age")) {
+                                String ageValue = fields.getJSONObject(j).getString("value");
+                                int age = 0;
+                                try {
+                                    age = Integer.parseInt(ageValue);
+                                }catch (Exception e ){
+                                    age = 0;
+                                }
+                                int dobYear = age;
+                                int dobMonth = 0;
+                                int dobDay = 0;
+
+                                DateTime now = DateTime.now();
+                                DateTime dob = now.minusYears(dobYear)
+                                        .minusMonths(dobMonth)
+                                        .minusDays(dobDay);
+                                fields.getJSONObject(i).put("value", dd_MM_yyyy.format(dob.toDate()));
+                            }
+                        }
+                    }
+                }else if (key.equals("HIE_FACILITIES")) {
+                    if(!TextUtils.isEmpty(fields.getJSONObject(i).getString("value"))){
+                        String address = fields.getJSONObject(i).getString("value");
+                        try {
+                            address = address.replace("[", "").replace("]", "");
+                            String[] addressStringArray = address.split(",");
+                            if(addressStringArray.length>0) {
+                                address1.setAddressType("usual_residence");
+                                address1.addAddressField("country", addressStringArray[0].replaceAll("^\"|\"$", ""));
+                                address1.addAddressField("stateProvince", addressStringArray[1].replaceAll("^\"|\"$", ""));
+                                address1.addAddressField("countyDistrict", addressStringArray[2].replaceAll("^\"|\"$", ""));
+                                address1.addAddressField("cityVillage", addressStringArray[3].replaceAll("^\"|\"$", ""));
+                                address1.addAddressField("address1", addressStringArray[4].replaceAll("^\"|\"$", ""));
+                                address1.addAddressField("address2", addressStringArray[5].replaceAll("^\"|\"$", ""));
+                                address1.addAddressField("address3", addressStringArray[6].replaceAll("^\"|\"$", ""));
+                                address1.addAddressField("address4", addressStringArray[7].replaceAll("^\"|\"$", ""));
+                            }
+                            Log.v("address", address);
+                        }catch (Exception e){
+
+                        }
+                    }
+                }else if (key.equals("HHID")) {
+                    if(!TextUtils.isEmpty(fields.getJSONObject(i).getString("value"))) {
+                        String hhid = fields.getJSONObject(i).getString("value");
+                        address1.addAddressField("address5",hhid);
+                    }
+                }else if (key.equals("ADDRESS_LINE")) {
+                    if(!TextUtils.isEmpty(fields.getJSONObject(i).getString("value"))) {
+                        String addressLine = fields.getJSONObject(i).getString("value");
+                        address1.addAddressField("address6",addressLine);
+                    }
+                }
+            }
+
+            Client c = JsonFormUtils.createBaseClient(fields, entityId);
+            adresses.add(address1);
+            c.withAddresses(adresses);
+            Event e = JsonFormUtils.createEvent(openSrpContext, fields, metadata, entityId, encounterType, providerId, bindType);
+
+
+
+
+            if (c != null) {
+                JSONObject clientJson = new JSONObject(gson.toJson(c));
+                ecUpdater.addClient(c.getBaseEntityId(), clientJson);
+            }
+
+            if (e != null) {
+                JSONObject eventJson = new JSONObject(gson.toJson(e));
+                ecUpdater.addEvent(e.getBaseEntityId(), eventJson);
+            }
+            String zeirId = c.getIdentifier(OpenMRS_ID);
+            //mark zeir id as used
+            VaccinatorApplication.getInstance().uniqueIdRepository().close(zeirId);
+
+
+//            String zeirId = c.getIdentifier(ZEIR_ID);
+//            //mark zeir id as used
+//            VaccinatorApplication.getInstance().uniqueIdRepository().close(zeirId);
+
+            String imageLocation = getFieldValue(fields, imageKey);
+            saveImage(context, providerId, entityId, imageLocation);
+
+            long lastSyncTimeStamp = allSharedPreferences.fetchLastUpdatedAtDate(0);
+            Date lastSyncDate = new Date(lastSyncTimeStamp);
+            PathClientProcessor.getInstance(context).processClient(ecUpdater.getEvents(lastSyncDate, BaseRepository.TYPE_Unsynced));
+            allSharedPreferences.saveLastUpdatedAtDate(lastSyncDate.getTime());
+
+        } catch (Exception e) {
+            Log.e(TAG, "", e);
+        }
+    }
+
+    private static void saveWomanRegistration(Context context, org.smartregister.Context openSrpContext,
                                               String jsonString, String providerId, String imageKey, String bindType,
                                               String subBindType) {
         if (context == null || openSrpContext == null || StringUtils.isBlank(providerId)
@@ -150,6 +304,226 @@ public class JsonFormUtils extends org.smartregister.util.JsonFormUtils {
             // Replace values for location questions with their corresponding location IDs
             for (int i = 0; i < fields.length(); i++) {
                 String key = fields.getJSONObject(i).getString("key");
+                if (key.equals("Home_Facility")
+                        || key.equals("Birth_Facility_Name")
+                        || key.equals("Residential_Area")) {
+                    try {
+                        String rawValue = fields.getJSONObject(i).getString("value");
+                        JSONArray valueArray = new JSONArray(rawValue);
+                        if (valueArray.length() > 0) {
+                            String lastLocationName = valueArray.getString(valueArray.length() - 1);
+                            String lastLocationId = getOpenMrsLocationId(openSrpContext, lastLocationName);
+                            fields.getJSONObject(i).put("value", lastLocationId);
+                        }
+                    } catch (Exception e) {
+                        Log.e(TAG, Log.getStackTraceString(e));
+                    }
+                } else if (key.equals("Mother_Guardian_Date_Birth")) {
+                    if (TextUtils.isEmpty(fields.getJSONObject(i).optString("value"))) {
+                        fields.getJSONObject(i).put("value", MOTHER_DEFAULT_DOB);
+                    }
+                }else if (key.equals("member_birth_date")) {
+                    if(TextUtils.isEmpty(fields.getJSONObject(i).getString("value"))) {
+                        for (int j = 0; j < fields.length(); j++) {
+                            String keyJ = fields.getJSONObject(j).getString("key");
+                            if(keyJ.equals("age")) {
+                                String ageValue = fields.getJSONObject(j).getString("value");
+                                int age = 0;
+                                try {
+                                    age = Integer.parseInt(ageValue);
+                                }catch (Exception e ){
+                                    age = 0;
+                                }
+                                int dobYear = age;
+                                int dobMonth = 0;
+                                int dobDay = 0;
+
+                                DateTime now = DateTime.now();
+                                DateTime dob = now.minusYears(dobYear)
+                                        .minusMonths(dobMonth)
+                                        .minusDays(dobDay);
+                                fields.getJSONObject(i).put("value", dd_MM_yyyy.format(dob.toDate()));
+                            }
+                        }
+                    }
+                }else if (key.equals("lmp")) {
+                    if(TextUtils.isEmpty(fields.getJSONObject(i).getString("value"))) {
+                        boolean USGNeeded = false;
+                        for (int j = 0; j < fields.length(); j++) {
+                            String keyJ = fields.getJSONObject(j).getString("key");
+                            if(keyJ.equals("edd")) {
+                                if(!TextUtils.isEmpty(fields.getJSONObject(j).getString("value"))) {
+                                    String eddValue = fields.getJSONObject(j).getString("value");
+                                    DateTime now = new DateTime(dd_MM_yyyy.parse(eddValue));
+                                    DateTime dob = now.minusDays(280);
+                                    fields.getJSONObject(i).put("value", dd_MM_yyyy.format(dob.toDate()));
+                                }else{
+                                    USGNeeded = true;
+                                }
+                            }
+                        }
+                        if(USGNeeded){
+                            String ultrasound_dateValue = "";
+                            String ultrasound_weeksValue = "";
+
+
+                            for (int j = 0; j < fields.length(); j++) {
+                                String keyJ = fields.getJSONObject(j).getString("key");
+                                if(keyJ.equals("ultrasound_date")) {
+                                    if(!TextUtils.isEmpty(fields.getJSONObject(j).getString("value"))) {
+                                        ultrasound_dateValue = fields.getJSONObject(j).getString("value");
+                                    }
+                                }
+                                if(keyJ.equals("ultrasound_weeks")) {
+                                    if(!TextUtils.isEmpty(fields.getJSONObject(j).getString("value"))) {
+                                        ultrasound_weeksValue = fields.getJSONObject(j).getString("value");
+                                    }
+                                }
+                            }
+                            DateTime ultrasoundDate = new DateTime(dd_MM_yyyy.parse(ultrasound_dateValue));
+                            int ultraSoundWeeks = Integer.parseInt(ultrasound_weeksValue);
+                            for (int j = 0; j < fields.length(); j++) {
+                                String keyJ = fields.getJSONObject(j).getString("key");
+                                if(keyJ.equals("edd")) {
+                                    if(TextUtils.isEmpty(fields.getJSONObject(j).getString("value"))) {
+                                        DateTime edddate = ultrasoundDate.plusDays(280-(7*ultraSoundWeeks));
+                                        fields.getJSONObject(j).put("value", dd_MM_yyyy.format(edddate.toDate()));
+                                        fields.getJSONObject(i).put("value", dd_MM_yyyy.format(edddate.minusDays(280).toDate()));
+                                    }
+                                }
+                            }
+                        }
+                    }else{
+                        String lmpValue = fields.getJSONObject(i).getString("value");
+                        for (int j = 0; j < fields.length(); j++) {
+                            String keyJ = fields.getJSONObject(j).getString("key");
+                            if(keyJ.equals("edd")) {
+                                if(TextUtils.isEmpty(fields.getJSONObject(j).getString("value"))) {
+
+                                    DateTime now = new DateTime(dd_MM_yyyy.parse(lmpValue));
+                                    DateTime dob = now.plusDays(280);
+                                    fields.getJSONObject(j).put("value", dd_MM_yyyy.format(dob.toDate()));
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+
+            JSONObject lookUpJSONObject = getJSONObject(metadata, "look_up");
+            String lookUpEntityId = "";
+            String lookUpBaseEntityId = "";
+            if (lookUpJSONObject != null) {
+                lookUpEntityId = getString(lookUpJSONObject, "entity_id");
+                lookUpBaseEntityId = getString(lookUpJSONObject, "value");
+            }
+
+            Client c = JsonFormUtils.createBaseClient(fields, entityId);
+            Event e = JsonFormUtils.createEvent(openSrpContext, fields, metadata, entityId, encounterType, providerId, bindType);
+
+            Client s = null;
+            Event se = null;
+            if (lookUpEntityId.equals("household") && StringUtils.isNotBlank(lookUpBaseEntityId)) {
+                Client ss = new Client(lookUpBaseEntityId);
+                addRelationship(context, ss, c);
+                SQLiteDatabase db = VaccinatorApplication.getInstance().getRepository().getReadableDatabase();
+                PathRepository pathRepository = new PathRepository(context,VaccinatorApplication.getInstance().context());
+                EventClientRepository eventClientRepository = new EventClientRepository(pathRepository);
+                JSONObject clientjson = eventClientRepository.getClient(db, lookUpBaseEntityId);
+                c.setAddresses(getAddressFromClientJson(clientjson));
+            }
+
+
+            if (c != null) {
+                JSONObject clientJson = new JSONObject(gson.toJson(c));
+
+                ecUpdater.addClient(c.getBaseEntityId(), clientJson);
+
+            }
+
+            if (e != null) {
+                JSONObject eventJson = new JSONObject(gson.toJson(e));
+                ecUpdater.addEvent(e.getBaseEntityId(), eventJson);
+            }
+
+            String zeirId = c.getIdentifier(OpenMRS_ID);
+            //mark zeir id as used
+            VaccinatorApplication.getInstance().uniqueIdRepository().close(zeirId);
+
+
+
+            String imageLocation = getFieldValue(fields, imageKey);
+            saveImage(context, providerId, entityId, imageLocation);
+
+            long lastSyncTimeStamp = allSharedPreferences.fetchLastUpdatedAtDate(0);
+            Date lastSyncDate = new Date(lastSyncTimeStamp);
+            PathClientProcessor.getInstance(context).processClient(ecUpdater.getEvents(lastSyncDate, BaseRepository.TYPE_Unsynced));
+            allSharedPreferences.saveLastUpdatedAtDate(lastSyncDate.getTime());
+
+        } catch (Exception e) {
+            Log.e(TAG, "", e);
+        }
+    }
+
+    private static ArrayList<Address> getAddressFromClientJson(JSONObject clientjson) {
+        ArrayList<Address> addresses = new ArrayList<Address>();
+        try {
+            JSONArray addressArray = clientjson.getJSONArray("addresses");
+            for(int i = 0 ;i<addressArray.length();i++){
+                Address address = new Address();
+                address.setAddressType(addressArray.getJSONObject(i).getString("addressType"));
+                JSONObject addressfields = addressArray.getJSONObject(i).getJSONObject("addressFields");
+
+                Iterator<?> keys = addressfields.keys();
+
+                while( keys.hasNext() ) {
+                    String key = (String)keys.next();
+                    if ( addressfields.get(key) instanceof String ) {
+                        address.addAddressField(key,addressfields.getString(key));
+                    }
+                }
+                addresses.add(address);
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return addresses;
+    }
+
+    private static void saveBirthRegistration(Context context, org.smartregister.Context openSrpContext,
+                                              String jsonString, String providerId, String imageKey, String bindType,
+                                              String subBindType) {
+        if (context == null || openSrpContext == null || StringUtils.isBlank(providerId)
+                || StringUtils.isBlank(jsonString)) {
+            return;
+        }
+
+        try {
+            ECSyncUpdater ecUpdater = ECSyncUpdater.getInstance(context);
+            SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
+            AllSharedPreferences allSharedPreferences = new AllSharedPreferences(preferences);
+
+            JSONObject jsonForm = new JSONObject(jsonString);
+
+            String entityId = getString(jsonForm, ENTITY_ID);
+            if (StringUtils.isBlank(entityId)) {
+                entityId = generateRandomUUIDString();
+            }
+
+            JSONArray fields = fields(jsonForm);
+            if (fields == null) {
+                return;
+            }
+
+            String encounterType = getString(jsonForm, ENCOUNTER_TYPE);
+
+            JSONObject metadata = getJSONObject(jsonForm, METADATA);
+
+            ArrayList<Address> adresses = new ArrayList<Address>();
+            Address address1 = new Address();
+            // Replace values for location questions with their corresponding location IDs
+            for (int i = 0; i < fields.length(); i++) {
+                String key = fields.getJSONObject(i).getString("key");
                 if ("Home_Facility".equals(key)
                         || "Birth_Facility_Name".equals(key)
                         || "Residential_Area".equals(key)) {
@@ -168,6 +542,28 @@ public class JsonFormUtils extends org.smartregister.util.JsonFormUtils {
                     if (TextUtils.isEmpty(fields.getJSONObject(i).optString("value"))) {
                         fields.getJSONObject(i).put("value", MOTHER_DEFAULT_DOB);
                     }
+                }else if (key.equals("HIE_FACILITIES")) {
+                    if(!TextUtils.isEmpty(fields.getJSONObject(i).getString("value"))){
+                        String address = fields.getJSONObject(i).getString("value");
+                        try {
+                            address = address.replace("[", "").replace("]", "");
+                            String[] addressStringArray = address.split(",");
+                            if(addressStringArray.length>0) {
+                                address1.setAddressType("usual_residence");
+                                address1.addAddressField("country", addressStringArray[0].replaceAll("^\"|\"$", ""));
+                                address1.addAddressField("stateProvince", addressStringArray[1].replaceAll("^\"|\"$", ""));
+                                address1.addAddressField("countyDistrict", addressStringArray[2].replaceAll("^\"|\"$", ""));
+                                address1.addAddressField("cityVillage", addressStringArray[3].replaceAll("^\"|\"$", ""));
+                                address1.addAddressField("address1", addressStringArray[4].replaceAll("^\"|\"$", ""));
+                                address1.addAddressField("address2", addressStringArray[5].replaceAll("^\"|\"$", ""));
+                                address1.addAddressField("address3", addressStringArray[6].replaceAll("^\"|\"$", ""));
+                                address1.addAddressField("address4", addressStringArray[7].replaceAll("^\"|\"$", ""));
+                            }
+                            Log.v("address", address);
+                        }catch (Exception e){
+
+                        }
+                    }
                 }
             }
 
@@ -180,6 +576,8 @@ public class JsonFormUtils extends org.smartregister.util.JsonFormUtils {
             }
 
             Client c = JsonFormUtils.createBaseClient(fields, entityId);
+            adresses.add(address1);
+            c.setAddresses(adresses);
             Event e = JsonFormUtils.createEvent(openSrpContext, fields, metadata, entityId, encounterType, providerId, bindType);
 
             Client s = null;
@@ -230,7 +628,7 @@ public class JsonFormUtils extends org.smartregister.util.JsonFormUtils {
                 ecUpdater.addEvent(se.getBaseEntityId(), eventJson);
             }
 
-            String zeirId = c.getIdentifier(ZEIR_ID);
+            String zeirId = c.getIdentifier(OpenMRS_ID);
             //mark zeir id as used
             VaccinatorApplication.getInstance().uniqueIdRepository().close(zeirId);
 
@@ -1098,8 +1496,60 @@ public class JsonFormUtils extends org.smartregister.util.JsonFormUtils {
             //Log.e(TAG, Log.getStackTraceString(e));
         }
     }
+    public static void addHouseholdRegLocHierarchyQuestions(JSONObject form,
+                                                            org.smartregister.Context context) {
+        try {
+            JSONArray questions = form.getJSONObject("step1").getJSONArray("fields");
+            ArrayList<String> allLevels = new ArrayList<>();
+            allLevels.add("Country");
+            allLevels.add("Province");
+            allLevels.add("District");
+            allLevels.add("Health Facility");
+            allLevels.add("Zone");
+            allLevels.add("Residential Area");
 
-    private static void addAddAvailableVaccines(Context context, JSONObject form) {
+            ArrayList<String> healthFacilities = new ArrayList<>();
+            healthFacilities.add("Country");
+            healthFacilities.add("Division");
+            healthFacilities.add("District");
+            healthFacilities.add("Upazilla");
+            healthFacilities.add("Union");
+            healthFacilities.add("Ward");
+            healthFacilities.add("Subunit");
+            healthFacilities.add("EPI center");
+
+
+            ArrayList<String> defaultFacilities = new ArrayList<>();
+            healthFacilities.add("Country");
+            healthFacilities.add("Division");
+            healthFacilities.add("District");
+            healthFacilities.add("Upazilla");
+            healthFacilities.add("Union");
+            healthFacilities.add("Ward");
+            healthFacilities.add("Subunit");
+            healthFacilities.add("EPI center");
+
+            JSONArray defaultLocation = generateDefaultLocationHierarchy(context, allLevels);
+            JSONArray defaultFacility = generateDefaultLocationHierarchy(context, healthFacilities);
+            JSONArray upToFacilities = generateLocationHierarchyTree(context, false, healthFacilities);
+            JSONArray upToFacilitiesWithOther = generateLocationHierarchyTree(context, true, healthFacilities);
+            JSONArray entireTree = generateLocationHierarchyTree(context, true, allLevels);
+
+            for (int i = 0; i < questions.length(); i++) {
+                if (questions.getJSONObject(i).getString("key").equals("HIE_FACILITIES")) {
+                    questions.getJSONObject(i).put("tree", new JSONArray(upToFacilities.toString()));
+                    if (defaultFacility != null) {
+                        questions.getJSONObject(i).put("default", defaultFacility.toString());
+                    }
+                }
+            }
+        } catch (JSONException e) {
+            //Log.e(TAG, Log.getStackTraceString(e));
+        }
+    }
+
+
+    public static void addAddAvailableVaccines(Context context, JSONObject form) {
         String supportedVaccinesString = VaccinatorUtils.getSupportedVaccines(context);
         if (StringUtils.isNotEmpty(supportedVaccinesString) && form != null) {
             // For each of the vaccine groups, create a checkbox question
@@ -1529,7 +1979,7 @@ public class JsonFormUtils extends org.smartregister.util.JsonFormUtils {
         if (form != null) {
             form.getJSONObject("metadata").put("encounter_location", currentLocationId);
 
-            if ("child_enrollment".equals(formName)) {
+            if (formName.equals("child_enrollment")) {
                 if (StringUtils.isBlank(entityId)) {
                     UniqueIdRepository uniqueIdRepo = VaccinatorApplication.getInstance().uniqueIdRepository();
                     entityId = uniqueIdRepo.getNextUniqueId() != null ? uniqueIdRepo.getNextUniqueId().getOpenmrsId() : "";
@@ -1551,12 +2001,13 @@ public class JsonFormUtils extends org.smartregister.util.JsonFormUtils {
                 for (int i = 0; i < jsonArray.length(); i++) {
                     JSONObject jsonObject = jsonArray.getJSONObject(i);
                     if (jsonObject.getString(JsonFormUtils.KEY)
-                            .equalsIgnoreCase(JsonFormUtils.ZEIR_ID)) {
+                            .equalsIgnoreCase(JsonFormUtils.OpenMRS_ID)) {
                         jsonObject.remove(JsonFormUtils.VALUE);
                         jsonObject.put(JsonFormUtils.VALUE, entityId);
+                        continue;
                     }
                 }
-            } else if ("out_of_catchment_service".equals(formName)) {
+            } else if (formName.equals("out_of_catchment_service")) {
                 if (StringUtils.isNotBlank(entityId)) {
                     entityId = entityId.replace("-", "");
                 } else {
@@ -1577,10 +2028,34 @@ public class JsonFormUtils extends org.smartregister.util.JsonFormUtils {
                             .equalsIgnoreCase(JsonFormUtils.ZEIR_ID)) {
                         jsonObject.remove(JsonFormUtils.VALUE);
                         jsonObject.put(JsonFormUtils.VALUE, entityId);
+                        continue;
+                    }
+                }
+                JsonFormUtils.addAddAvailableVaccines(context, form);
+
+            }else  if (formName.equals("household_registration")) {
+                if (StringUtils.isBlank(entityId)) {
+                    UniqueIdRepository uniqueIdRepo = VaccinatorApplication.getInstance().uniqueIdRepository();
+                    entityId = uniqueIdRepo.getNextUniqueId() != null ? uniqueIdRepo.getNextUniqueId().getOpenmrsId() : "";
+                    if (entityId.isEmpty()) {
+                        Toast.makeText(context, context.getString(R.string.no_openmrs_id), Toast.LENGTH_SHORT).show();
+                        return;
+                    }
+                }
+                JSONObject stepOne = form.getJSONObject(JsonFormUtils.STEP1);
+                JSONArray jsonArray = stepOne.getJSONArray(JsonFormUtils.FIELDS);
+                for (int i = 0; i < jsonArray.length(); i++) {
+                    JSONObject jsonObject = jsonArray.getJSONObject(i);
+                    if (jsonObject.getString(JsonFormUtils.KEY)
+                            .equalsIgnoreCase(JsonFormUtils.OpenMRS_ID)) {
+                        jsonObject.remove(JsonFormUtils.VALUE);
+                        jsonObject.put(JsonFormUtils.VALUE, entityId);
+                        continue;
                     }
                 }
 
-                JsonFormUtils.addAddAvailableVaccines(context, form);
+                JsonFormUtils.addHouseholdRegLocHierarchyQuestions(form, openSrpContext);
+
             } else {
                 Log.w(TAG, "Unsupported form requested for launch " + formName);
             }

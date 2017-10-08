@@ -1,6 +1,84 @@
 {
   "bindobjects": [
     {
+      "name": "ec_household",
+
+      "columns": [
+        {
+          "column_name": "base_entity_id",
+          "type": "Client",
+          "json_mapping": {
+            "field": "baseEntityId"
+          }
+        },
+        {
+          "column_name": "first_name",
+          "type": "Client",
+          "json_mapping": {
+            "field": "firstName"
+          }
+        },
+        {
+          "column_name": "last_name",
+          "type": "Client",
+          "json_mapping": {
+            "field": "lastName"
+          }
+        },
+        {
+          "column_name": "dob",
+          "type": "Client",
+          "json_mapping": {
+            "field": "birthdate"
+          }
+        },
+        {
+          "column_name": "hie_facilities",
+          "type": "Event",
+          "json_mapping": {
+            "field": "obs.fieldCode",
+            "formSubmissionField": "HIE_FACILITIES"
+          }
+        },
+        {
+          "column_name": "HHID",
+          "type": "Client",
+          "json_mapping": {
+            "field": "attributes.householdCode"
+          }
+        },
+        {
+          "column_name": "Date_Of_Reg",
+          "type": "Event",
+          "json_mapping": {
+            "field": "obs.fieldCode",
+            "formSubmissionField": "Date_Of_Reg"
+          }
+        },
+        {
+          "column_name": "address1",
+          "type": "Client",
+          "json_mapping": {
+            "field": "addresses.addressFields.address1"
+          }
+        },
+        {
+          "column_name": "address2",
+          "type": "Client",
+          "json_mapping": {
+            "field": "addresses.addressFields.address2"
+          }
+        },
+        {
+          "column_name": "last_interacted_with",
+          "type": "Event",
+          "json_mapping": {
+            "field": "version"
+          }
+        }
+      ]
+    },
+    {
       "name": "ec_mother",
       "columns": [
         {
@@ -11,10 +89,17 @@
           }
         },
         {
-          "column_name": "zeir_id",
+          "column_name": "openmrs_id",
           "type": "Client",
           "json_mapping": {
-            "field": "identifiers.M_ZEIR_ID"
+            "field": "identifiers.OpenMRS_ID"
+          }
+        },
+        {
+          "column_name": "relational_id",
+          "type": "Client",
+          "json_mapping": {
+            "field": "relationships.household"
           }
         },
         {
@@ -180,10 +265,10 @@
           }
         },
         {
-          "column_name": "zeir_id",
+          "column_name": "openmrs_id",
           "type": "Client",
           "json_mapping": {
-            "field": "identifiers.ZEIR_ID"
+            "field": "identifiers.OpenMRS_ID"
           }
         },
         {
