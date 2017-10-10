@@ -85,6 +85,10 @@
             android:screenOrientation="portrait"
             android:theme="@style/AppThemeNoTitle.NoActionBar" />
         <activity
+            android:name=".activity.WomanImmunizationActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppThemeNoTitle.NoActionBar" />
+        <activity
             android:name=".activity.HIA2ReportsActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppThemeNoTitle.NoActionBar" />

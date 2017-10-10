@@ -234,5 +234,6 @@
     <string name="record_bcg_2">Record BCG 2 (if no scar)</string>
     <string name="lost_to_follow_up_with_nl">Lost to\nFollow-Up</string>
     <string name="status">status</string>
+    <string name="label_openmrsid">OpenMRS ID</string>
 
 </resources>

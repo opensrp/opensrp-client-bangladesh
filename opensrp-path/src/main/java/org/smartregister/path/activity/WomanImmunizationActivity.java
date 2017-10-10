@@ -451,7 +451,7 @@ public class WomanImmunizationActivity extends BaseActivity
     private void addVaccineGroup(int canvasId, JSONObject vaccineGroupData, List<Vaccine> vaccineList, List<Alert> alerts) {
         LinearLayout vaccineGroupCanvasLL = (LinearLayout) findViewById(R.id.vaccine_group_canvas_ll);
         VaccineGroup curGroup = new VaccineGroup(this);
-        curGroup.setData(vaccineGroupData, childDetails, vaccineList, alerts,"mother");
+        curGroup.setData(vaccineGroupData, childDetails, vaccineList, alerts,"woman");
         curGroup.setOnRecordAllClickListener(new VaccineGroup.OnRecordAllClickListener() {
             @Override
             public void onClick(VaccineGroup vaccineGroup, ArrayList<VaccineWrapper> dueVaccines) {
@@ -899,7 +899,7 @@ public class WomanImmunizationActivity extends BaseActivity
         if (Looper.myLooper() == Looper.getMainLooper()) {
             if (undo) {
                 vaccineGroup.setVaccineList(vaccineList);
-                vaccineGroup.updateWrapperStatus(wrappers,"mother");
+                vaccineGroup.updateWrapperStatus(wrappers,"woman");
             }
             vaccineGroup.updateViews(wrappers);
 
@@ -910,7 +910,7 @@ public class WomanImmunizationActivity extends BaseActivity
                 public void run() {
                     if (undo) {
                         vaccineGroup.setVaccineList(vaccineList);
-                        vaccineGroup.updateWrapperStatus(wrappers,"mother");
+                        vaccineGroup.updateWrapperStatus(wrappers,"woman");
                     }
                     vaccineGroup.updateViews(wrappers);
                 }
@@ -1029,7 +1029,7 @@ public class WomanImmunizationActivity extends BaseActivity
                 Date dateTime = null;
                 try {
                     dateTime = lmp_DATE_FORMAT.parse(dobString);
-                    affectedVaccines = VaccineSchedule.updateOfflineAlerts(childDetails.entityId(), new DateTime(dateTime.getTime()), "mother");
+                    affectedVaccines = VaccineSchedule.updateOfflineAlerts(childDetails.entityId(), new DateTime(dateTime.getTime()), "woman");
                 } catch (ParseException e) {
                     e.printStackTrace();
                 }
@@ -1188,7 +1188,7 @@ public class WomanImmunizationActivity extends BaseActivity
                 Date dateTime = null;
                 try {
                     dateTime = lmp_DATE_FORMAT.parse(dobString);
-                    VaccineSchedule.updateOfflineAlerts(childDetails.entityId(), new DateTime(dateTime.getTime()), "mother");
+                    VaccineSchedule.updateOfflineAlerts(childDetails.entityId(), new DateTime(dateTime.getTime()), "woman");
                 } catch (ParseException e) {
                     e.printStackTrace();
                 }
@@ -1281,13 +1281,13 @@ public class WomanImmunizationActivity extends BaseActivity
                             Date dateTime = null;
                             try {
                                 dateTime = lmp_DATE_FORMAT.parse(dobString);
-                                VaccineSchedule.updateOfflineAlerts(childDetails.entityId(), new DateTime(dateTime.getTime()), "mother");
+                                VaccineSchedule.updateOfflineAlerts(childDetails.entityId(), new DateTime(dateTime.getTime()), "woman");
                             } catch (ParseException e) {
                                 e.printStackTrace();
                             }
                         vaccineList = vaccineRepository.findByEntityId(childDetails.entityId());
                         alertList = alertService.findByEntityIdAndAlertNames(childDetails.entityId(),
-                                VaccinateActionUtils.allAlertNames("mother"));
+                                VaccinateActionUtils.allAlertNames("woman"));
                     }
                 }
             }

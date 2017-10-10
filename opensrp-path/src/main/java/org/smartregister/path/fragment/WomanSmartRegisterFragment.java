@@ -33,8 +33,10 @@ import org.smartregister.path.R;
 import org.smartregister.path.activity.ChildImmunizationActivity;
 import org.smartregister.path.activity.ChildSmartRegisterActivity;
 import org.smartregister.path.activity.LoginActivity;
+import org.smartregister.path.activity.WomanImmunizationActivity;
 import org.smartregister.path.activity.WomanSmartRegisterActivity;
 import org.smartregister.path.application.VaccinatorApplication;
+
 import org.smartregister.path.domain.RegisterClickables;
 import org.smartregister.path.option.BasicSearchOption;
 import org.smartregister.path.option.DateSort;
@@ -79,7 +81,7 @@ public class WomanSmartRegisterFragment extends BaseSmartRegisterFragment implem
             // FIXME path_conflict
             //@Override
             public FilterOption searchFilterOption() {
-                return new BasicSearchOption(BasicSearchOption.Type.WOMAN.name());
+                return new BasicSearchOption(getDefaultOptionsProvider().nameInShortFormForTitle());
             }
 
             @Override
@@ -307,7 +309,7 @@ public class WomanSmartRegisterFragment extends BaseSmartRegisterFragment implem
         queryBUilder.SelectInitiateMainTable(tableName, new String[]{
                 tableName + ".relationalid",
                 tableName + ".details",
-                tableName + ".zeir_id",
+                tableName + ".openmrs_id",
                 tableName + ".relational_id",
                 tableName + ".first_name",
                 tableName + ".last_name",
@@ -362,7 +364,7 @@ public class WomanSmartRegisterFragment extends BaseSmartRegisterFragment implem
 
             switch (view.getId()) {
                 case R.id.profile_info_layout:
-//                    WomanImmunizationActivity.launchActivity(getActivity(), client, null);
+                    WomanImmunizationActivity.launchActivity(getActivity(), client, null);
                     break;
                 case R.id.record_weight:
                     registerClickables.setRecordWeight(true);
@@ -370,8 +372,8 @@ public class WomanSmartRegisterFragment extends BaseSmartRegisterFragment implem
                     break;
 
                 case R.id.record_vaccination:
-//                    registerClickables.setRecordAll(true);
-//                    WomanImmunizationActivity.launchActivity(getActivity(), client, registerClickables);
+                    registerClickables.setRecordAll(true);
+                    WomanImmunizationActivity.launchActivity(getActivity(), client, registerClickables);
                     break;
                 case R.id.filter_selection:
                     toggleFilterSelection();
@@ -544,7 +546,7 @@ public class WomanSmartRegisterFragment extends BaseSmartRegisterFragment implem
     private void switchViews(boolean filterSelected) {
         if (filterSelected) {
             if (titleLabelView != null) {
-//                titleLabelView.setText(String.format(getString(R.string.overdue_due), dueOverdueCount));
+                titleLabelView.setText(String.format(getString(R.string.overdue_due), dueOverdueCount));
             }
             nameInitials.setVisibility(View.GONE);
             backButton.setVisibility(View.VISIBLE);

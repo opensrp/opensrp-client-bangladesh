@@ -232,7 +232,7 @@ public class WomanSmartClientsProvider implements SmartRegisterCLientsProviderFo
             dateTimetoSend = new DateTime(dateTime.getTime());
         }
 
-        List<Map<String, Object>> sch = generateScheduleList("mother", dateTimetoSend, recievedVaccines, alertList);
+        List<Map<String, Object>> sch = generateScheduleList("woman", dateTimetoSend, recievedVaccines, alertList);
 
         State state = State.FULLY_IMMUNIZED;
         String stateKey = null;
@@ -362,7 +362,7 @@ public class WomanSmartClientsProvider implements SmartRegisterCLientsProviderFo
         } else if (state.equals(State.NO_ALERT)) {
             if (StringUtils.isNotBlank(stateKey) && (StringUtils.containsIgnoreCase(stateKey, "week") || StringUtils.containsIgnoreCase(stateKey, "month")) && !vaccines.isEmpty()) {
                 Vaccine vaccine = vaccines.isEmpty() ? null : vaccines.get(vaccines.size() - 1);
-                String previousStateKey = VaccinateActionUtils.previousStateKey("mother", vaccine);
+                String previousStateKey = VaccinateActionUtils.previousStateKey("woman", vaccine);
                 if (previousStateKey != null) {
                     recordVaccinationText.setText(previousStateKey);
                 } else {
@@ -418,7 +418,7 @@ public class WomanSmartClientsProvider implements SmartRegisterCLientsProviderFo
         @Override
         protected Void doInBackground(Void... params) {
             vaccines = vaccineRepository.findByEntityId(entityId);
-            alerts = alertService.findByEntityIdAndAlertNames(entityId, VaccinateActionUtils.allAlertNames("mother"));
+            alerts = alertService.findByEntityIdAndAlertNames(entityId, VaccinateActionUtils.allAlertNames("woman"));
             return null;
         }
 
