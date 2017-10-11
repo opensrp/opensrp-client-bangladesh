@@ -93,6 +93,7 @@ PathConstants extends AllConstants {
         public static final String ENTITY_ID = "entity_id";
         public static final String VALUE = "value";
         public static final String STEPNAME = "stepName";
+        public static final String WOMAN = "woman"; ;
     }
 
 }

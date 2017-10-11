@@ -358,7 +358,9 @@ public class VaccinatorApplication extends DrishtiApplication
         try {
             JSONArray childVaccines = new JSONArray(VaccinatorUtils.getSupportedVaccines(this));
             JSONArray specialVaccines = new JSONArray(VaccinatorUtils.getSpecialVaccines(this));
+            JSONArray womanVaccines = new JSONArray(VaccinatorUtils.getSupportedWomanVaccines(this));
             VaccineSchedule.init(childVaccines, specialVaccines, "child");
+            VaccineSchedule.init(womanVaccines, null, "woman");
         } catch (Exception e) {
             Log.e(TAG, Log.getStackTraceString(e));
         }
