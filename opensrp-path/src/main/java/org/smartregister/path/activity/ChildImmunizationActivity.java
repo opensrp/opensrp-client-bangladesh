@@ -247,8 +247,8 @@ public class ChildImmunizationActivity extends BaseActivity
         UpdateViewTask updateViewTask = new UpdateViewTask();
         updateViewTask.setWeightRepository(weightRepository);
         updateViewTask.setVaccineRepository(vaccineRepository);
-        updateViewTask.setRecurringServiceTypeRepository(recurringServiceTypeRepository);
-        updateViewTask.setRecurringServiceRecordRepository(recurringServiceRecordRepository);
+//        updateViewTask.setRecurringServiceTypeRepository(recurringServiceTypeRepository);
+//        updateViewTask.setRecurringServiceRecordRepository(recurringServiceRecordRepository);
         updateViewTask.setAlertService(alertService);
         Utils.startAsyncTask(updateViewTask, null);
     }
@@ -267,17 +267,18 @@ public class ChildImmunizationActivity extends BaseActivity
     }
 
     private void updateChildIdViews() {
+
         String name = "";
         String childId = "";
         if (isDataOk()) {
             name = constructChildName();
-            childId = Utils.getValue(childDetails.getColumnmaps(), PathConstants.KEY.ZEIR_ID, false);
+            childId = Utils.getValue(childDetails.getColumnmaps(), "openmrs_id", false);
         }
 
         TextView nameTV = (TextView) findViewById(R.id.name_tv);
         nameTV.setText(name);
         TextView childIdTV = (TextView) findViewById(R.id.child_id_tv);
-        childIdTV.setText(String.format("%s: %s", getString(R.string.label_zeir), childId));
+        childIdTV.setText(String.format("%s: %s", getString(R.string.label_openmrsid), childId));
 
         Utils.startAsyncTask(new GetSiblingsTask(), null);
     }
