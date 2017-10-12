@@ -23,6 +23,8 @@ PathConstants extends AllConstants {
     public static final String DEFAULT_DATE_STRING = "1970-1-1";
 
     public static final String ID = "id";
+    public static final String  openmrsUrl= BuildConfig.OPENMRS_URL;
+    public static final String OPENMRS_IDGEN_URL =  BuildConfig.OPENMRS_IDGEN_URL;
 
     public static final class ServiceType {
 

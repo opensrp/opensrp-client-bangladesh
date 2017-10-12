@@ -86,6 +86,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Random;
 import java.util.concurrent.TimeUnit;
+import java.util.regex.Pattern;
 
 import util.ImageUtils;
 import util.JsonFormUtils;
@@ -980,7 +981,7 @@ public class ChildImmunizationActivity extends BaseActivity
 
     private String constructChildName() {
         String firstName = Utils.getValue(childDetails.getColumnmaps(), PathConstants.KEY.FIRST_NAME, true);
-        String lastName = Utils.getValue(childDetails.getColumnmaps(), PathConstants.KEY.LAST_NAME, true);
+        String lastName = Utils.getValue(childDetails.getColumnmaps(), PathConstants.KEY.LAST_NAME, true).replaceAll(Pattern.quote("."),"");
         return Utils.getName(firstName, lastName).trim();
     }
 

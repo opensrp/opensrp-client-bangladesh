@@ -336,6 +336,12 @@ public abstract class BaseActivity extends AppCompatActivity
 
             }
         });
+        /////disabling buttons
+        outofcatchment.setVisibility(View.GONE);
+        stockregister.setVisibility(View.GONE);
+        hia2.setVisibility(View.GONE);
+        addchild.setVisibility(View.GONE);
+        ///////////////////////////////////////
 
     }
     private String getLastSyncTime() {

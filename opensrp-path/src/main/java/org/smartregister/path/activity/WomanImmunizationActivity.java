@@ -85,6 +85,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Random;
 import java.util.concurrent.TimeUnit;
+import java.util.regex.Pattern;
 
 import util.ImageUtils;
 import util.JsonFormUtils;
@@ -1036,7 +1037,7 @@ public class WomanImmunizationActivity extends BaseActivity
             }
             vaccineList = vaccineRepository.findByEntityId(childDetails.entityId());
             alertList = alertService.findByEntityIdAndAlertNames(childDetails.entityId(),
-                    VaccinateActionUtils.allAlertNames("child"));
+                    VaccinateActionUtils.allAlertNames("woman"));
 
             return pair;
         }
@@ -1044,7 +1045,7 @@ public class WomanImmunizationActivity extends BaseActivity
 
     private String constructChildName() {
         String firstName = getValue(childDetails.getColumnmaps(), "first_name", true);
-        String lastName = getValue(childDetails.getColumnmaps(), "last_name", true).replace(".","");
+        String lastName = getValue(childDetails.getColumnmaps(), "last_name", true).replaceAll(Pattern.quote("."),"");
         return getName(firstName, lastName).trim();
     }
 

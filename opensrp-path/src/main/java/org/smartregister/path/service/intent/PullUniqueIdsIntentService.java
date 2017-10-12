@@ -6,6 +6,7 @@ import android.util.Log;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
+import org.smartregister.Context;
 import org.smartregister.domain.Response;
 import org.smartregister.path.application.VaccinatorApplication;
 import org.smartregister.path.repository.UniqueIdRepository;
@@ -17,6 +18,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -73,10 +75,23 @@ public class PullUniqueIdsIntentService extends IntentService {
             throw new Exception(ID_URL + " http agent is null");
         }
 
+
         Response resp = httpAgent.fetch(url);
         if (resp.isFailure()) {
-            throw new Exception(ID_URL + " not returned data");
+
+            String userName = Context.getInstance().allSharedPreferences().fetchRegisteredANM();
+            String password = Context.getInstance().allSettings().fetchANMPassword();
+
+            String localUrlString = PathConstants.openmrsUrl +  PathConstants.OPENMRS_IDGEN_URL + "?source="+PathConstants.OPENMRS_UNIQUE_ID_SOURCE+"&numberToGenerate=" + numberToGenerate + "&username=" + userName + "&password=" + password;
+//           // Convert the incoming data string to a URL.
+            resp = httpAgent.fetch(localUrlString);
+//            localURL = new URL(localUrlString);
+            if (resp.isFailure()) {
+                throw new Exception(ID_URL + " not returned data");
+            }
         }
+
+
 
         return new JSONObject((String) resp.payload());
     }

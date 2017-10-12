@@ -374,7 +374,7 @@ public class LoginActivity extends AppCompatActivity {
     private void goToHome(boolean remote) {
         if (!remote) startZScoreIntentService();
         VaccinatorApplication.setCrashlyticsUser(getOpenSRPContext());
-        Intent intent = new Intent(this, ChildSmartRegisterActivity.class);
+        Intent intent = new Intent(this, HouseholdSmartRegisterActivity.class);
         intent.putExtra(BaseRegisterActivity.IS_REMOTE_LOGIN, remote);
         startActivity(intent);
         IMDatabaseUtils.accessAssetsAndFillDataBaseForVaccineTypes(this, null);

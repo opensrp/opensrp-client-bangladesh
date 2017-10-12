@@ -140,16 +140,16 @@ public class MotherLookUpUtils {
 
         SmartRegisterQueryBuilder queryBUilder = new SmartRegisterQueryBuilder();
         queryBUilder.SelectInitiateMainTable(tableName, new String[]{
-                        "relationalid",
-                        "details",
-                        "zeir_id",
-                        "first_name",
-                        "last_name",
-                        "gender",
-                        "dob",
-                        "nrc_number",
-                        "contact_phone_number",
-                        "base_entity_id"}
+                "relationalid",
+                "details",
+                "openmrs_id",
+                "first_name",
+                "last_name",
+                "gender",
+                "dob",
+                "nrc_number",
+                "contact_phone_number",
+                "base_entity_id"}
 
         );
         String query = queryBUilder.mainCondition(getMainConditionString(entityMap));

@@ -13,6 +13,7 @@ import android.view.ViewGroup;
 import android.widget.AbsListView;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import org.apache.commons.lang3.StringUtils;
 import org.smartregister.commonregistry.CommonPersonObjectClient;
@@ -24,11 +25,10 @@ import org.smartregister.immunization.domain.Vaccine;
 import org.smartregister.immunization.domain.VaccineSchedule;
 import org.smartregister.immunization.repository.VaccineRepository;
 import org.smartregister.immunization.util.VaccinateActionUtils;
-import org.smartregister.immunization.util.VaccinatorUtils;
 import org.smartregister.path.R;
 import org.smartregister.path.activity.PathJsonFormActivity;
 import org.smartregister.path.application.VaccinatorApplication;
-import org.smartregister.path.fragment.AdvancedSearchFragment;
+import org.smartregister.path.repository.UniqueIdRepository;
 import org.smartregister.path.view.LocationPickerView;
 import org.smartregister.path.wrapper.VaccineViewRecordUpdateWrapper;
 import org.smartregister.repository.DetailsRepository;
@@ -55,6 +55,8 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
+import java.util.regex.Pattern;
+
 import org.smartregister.util.Log.*;
 import org.smartregister.view.viewholder.OnClickFormLauncher;
 
@@ -106,7 +108,7 @@ public class WomanSmartClientsProvider implements SmartRegisterCLientsProviderFo
 //        Logger.largeLog("-----------",pc.getDetails().toString());
 //        Logger.largeLog("-----------",pc.getColumnmaps().toString());
 
-        String name = pc.getDetails().get("first_name") + " " + pc.getDetails().get("last_name");
+        String name = pc.getDetails().get("first_name") + " " + pc.getDetails().get("last_name").replaceAll(Pattern.quote("."),"");
         ((TextView) convertView.findViewById(R.id.name)).setText(name);
 
         ImageView profileImageIV = (ImageView) convertView.findViewById(R.id.profilepic);
@@ -682,7 +684,7 @@ public class WomanSmartClientsProvider implements SmartRegisterCLientsProviderFo
             JSONObject form = FormUtils.getInstance(this.context).getFormJson("child_enrollment");
             LocationPickerView lpv = new LocationPickerView(this.context);
             lpv.init(context);
-            JsonFormUtils.addChildRegLocHierarchyQuestions(form, context);
+            JsonFormUtils.addHouseholdRegLocHierarchyQuestions(form, context);
             Log.d("add child form", "Form is " + form.toString());
             if (form != null) {
                 JSONObject metaDataJson = form.getJSONObject("metadata");
@@ -690,11 +692,44 @@ public class WomanSmartClientsProvider implements SmartRegisterCLientsProviderFo
                 lookup.put("entity_id", "mother");
                 lookup.put("value", pc.entityId());
 
+                UniqueIdRepository uniqueIdRepo = VaccinatorApplication.getInstance().uniqueIdRepository();
+                String entityId = uniqueIdRepo.getNextUniqueId() != null ? uniqueIdRepo.getNextUniqueId().getOpenmrsId() : "";
+                if (entityId.isEmpty()) {
+                    Toast.makeText(context.applicationContext(), context.getInstance().applicationContext().getString(R.string.no_openmrs_id), Toast.LENGTH_SHORT).show();
+                }
+//
+//                JSONObject stepOne = form.getJSONObject(JsonFormUtils.STEP1);
+//                JSONArray jsonArray = stepOne.getJSONArray(JsonFormUtils.FIELDS);
+//                for (int i = 0; i < jsonArray.length(); i++) {
+//                    JSONObject jsonObject = jsonArray.getJSONObject(i);
+//                    if (jsonObject.getString(JsonFormUtils.KEY)
+//                            .equalsIgnoreCase(JsonFormUtils.OpenMRS_ID)) {
+//                        jsonObject.remove(JsonFormUtils.VALUE);
+//                        jsonObject.put(JsonFormUtils.VALUE, entityId);
+//                        continue;
+//                    }
+//                }
+                String locationid = "";
+                DetailsRepository detailsRepository;
+                detailsRepository = org.smartregister.Context.getInstance().detailsRepository();
+                Map<String, String> details = detailsRepository.getAllDetailsForClient(pc.entityId());
+                locationid = JsonFormUtils.getOpenMrsLocationId(context,getValue(details, "address4", false) );
+
+                String birthFacilityHierarchy = JsonFormUtils.getOpenMrsLocationHierarchy(
+                        context,locationid ).toString();
                 //inject zeir id into the form
                 JSONObject stepOne = form.getJSONObject(JsonFormUtils.STEP1);
                 JSONArray jsonArray = stepOne.getJSONArray(JsonFormUtils.FIELDS);
                 for (int i = 0; i < jsonArray.length(); i++) {
                     JSONObject jsonObject = jsonArray.getJSONObject(i);
+                    if (jsonObject.getString(JsonFormUtils.KEY).equalsIgnoreCase(JsonFormUtils.OpenMRS_ID)) {
+                        jsonObject.remove(JsonFormUtils.VALUE);
+                        jsonObject.put(JsonFormUtils.VALUE, entityId);
+                    }
+                    if (jsonObject.getString(JsonFormUtils.KEY).equalsIgnoreCase("HIE_FACILITIES")) {
+                        jsonObject.put(JsonFormUtils.VALUE, birthFacilityHierarchy);
+
+                    }
                     if (jsonObject.getString(JsonFormUtils.KEY).equalsIgnoreCase("Mother_Guardian_First_Name")) {
                         jsonObject.put(JsonFormUtils.READ_ONLY, true);
                         jsonObject.put(JsonFormUtils.VALUE, (getValue(pc.getDetails(), "first_name", true).isEmpty() ? getValue(pc.getDetails(), "first_name", true) : getValue(pc.getDetails(), "first_name", true)));

@@ -16,7 +16,11 @@ import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import com.github.ybq.android.spinkit.style.ChasingDots;
 import com.github.ybq.android.spinkit.style.Circle;
+import com.github.ybq.android.spinkit.style.DoubleBounce;
+import com.github.ybq.android.spinkit.style.RotatingCircle;
+import com.github.ybq.android.spinkit.style.WanderingCubes;
 
 import org.smartregister.Context;
 import org.smartregister.commonregistry.CommonPersonObjectClient;
@@ -36,7 +40,6 @@ import org.smartregister.path.activity.LoginActivity;
 import org.smartregister.path.activity.WomanImmunizationActivity;
 import org.smartregister.path.activity.WomanSmartRegisterActivity;
 import org.smartregister.path.application.VaccinatorApplication;
-
 import org.smartregister.path.domain.RegisterClickables;
 import org.smartregister.path.option.BasicSearchOption;
 import org.smartregister.path.option.DateSort;
