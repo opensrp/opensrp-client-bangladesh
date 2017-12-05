@@ -41,7 +41,12 @@ public class ImageUtils {
 
     public static Photo profilePhotoByClient(CommonPersonObjectClient client) {
         Photo photo = new Photo();
-        ProfileImage profileImage = VaccinatorApplication.getInstance().context().imageRepository().findByEntityId(client.entityId());
+        ProfileImage profileImage = null;
+        try {
+            profileImage = VaccinatorApplication.getInstance().context().imageRepository().findByEntityId(client.entityId());
+        }catch(Exception e){
+
+        }
         if (profileImage != null) {
             photo.setFilePath(profileImage.getFilepath());
         } else {

@@ -498,7 +498,7 @@ public class ChildImmunizationActivity extends BaseActivity
             parent = (LinearLayout) findViewById(groupParentId);
             parent.removeAllViews();
         }
-        parent.addView(curGroup);
+//llall jl        parent.addView(curGroup);
         curGroup.setTag(R.id.vaccine_group_vaccine_data, vaccineGroupData.toString());
         curGroup.setTag(R.id.vaccine_group_parent_id, String.valueOf(groupParentId));
         vaccineGroups.add(curGroup);

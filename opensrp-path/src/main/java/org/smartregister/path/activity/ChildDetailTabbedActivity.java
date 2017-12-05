@@ -454,8 +454,8 @@ public class ChildDetailTabbedActivity extends BaseActivity implements Vaccinati
         Context context = getOpenSRPContext();
         try {
             JSONObject form = FormUtils.getInstance(getApplicationContext()).getFormJson("child_enrollment");
-            LocationPickerView lpv = new LocationPickerView(getApplicationContext());
-            lpv.init(context);
+//            LocationPickerView lpv = new LocationPickerView(getApplicationContext());
+//            lpv.init(context);
             JsonFormUtils.addChildRegLocHierarchyQuestions(form, context);
             Log.d(TAG, "Form is " + form.toString());
             if (form != null) {
@@ -632,6 +632,7 @@ public class ChildDetailTabbedActivity extends BaseActivity implements Vaccinati
             }
         } catch (Exception e) {
             Log.e(TAG, e.getMessage());
+            e.printStackTrace();
         }
 
         return "";
