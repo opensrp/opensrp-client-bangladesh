@@ -13,6 +13,8 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
+import org.powermock.api.mockito.PowerMockito;
+import org.powermock.api.support.membermodification.MemberModifier;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.robolectric.Robolectric;
 import org.robolectric.RuntimeEnvironment;
@@ -21,7 +23,9 @@ import org.robolectric.annotation.Config;
 import org.smartregister.Context;
 import org.smartregister.CoreLibrary;
 import org.smartregister.commonregistry.CommonPersonObjectClient;
+import org.smartregister.domain.ProfileImage;
 import org.smartregister.path.activity.mocks.ChildImmunizationActivityMock;
+import org.smartregister.path.activity.mocks.DrishtiApplicationMock;
 import org.smartregister.path.application.VaccinatorApplication;
 import org.smartregister.path.customshadow.LocationPickerViewShadow;
 import org.smartregister.path.customshadow.LocationSwitcherToolbarShadow;
@@ -29,7 +33,10 @@ import org.smartregister.path.toolbar.BaseToolbar;
 import org.smartregister.path.toolbar.LocationSwitcherToolbar;
 import org.smartregister.repository.AllSharedPreferences;
 import org.smartregister.repository.DetailsRepository;
+import org.smartregister.repository.ImageRepository;
+import org.smartregister.view.activity.DrishtiApplication;
 
+import java.lang.reflect.Field;
 import java.util.HashMap;
 
 import shared.BaseUnitTest;
@@ -59,7 +66,12 @@ public class ChildImmunizationActivityTest extends BaseUnitTest {
     BaseToolbar baseToolbar;
     @Mock
     AllSharedPreferences allSharedPreferences;
-
+    @Mock
+    DrishtiApplication mInstance;
+    @Mock
+    ImageRepository imageRepository;
+    @Mock
+    ProfileImage profileImage;
     String mockString = "mockId";
     private static final String LOCATION_HIERARCHY = "locationsHierarchy";
     private static final String MAP = "map";
@@ -78,20 +90,22 @@ public class ChildImmunizationActivityTest extends BaseUnitTest {
         org.mockito.MockitoAnnotations.initMocks(this);
         CoreLibrary.init(context_);
 
-        Mockito.doReturn(context_).when(activity).getOpenSRPContext();
-        Mockito.doReturn(detailsRepository).when(context_).detailsRepository();
-        Mockito.doReturn(toolbar).when(activity).getToolbar();
-        Mockito.doNothing().when(toolbar).prepareMenu();
+//        Field field = MemberModifier.field(DrishtiApplication.class,"mInstance");
+//        field.setAccessible(true);
+//        field.set(DrishtiApplication.class, mInstance);
+        PowerMockito.doReturn(context_).when(activity).getOpenSRPContext();
+        PowerMockito.doReturn(detailsRepository).when(context_).detailsRepository();
+        PowerMockito.doReturn(toolbar).when(activity).getToolbar();
 
-        Mockito.when(childDetails.entityId()).thenReturn("baseEntityId");
-//        Mockito.doReturn(true).when((BaseActivity)activity).onCreateOptionsMenu(Mockito.any(Menu.class));
-//        Mockito.doReturn(0).when((BaseActivity)activity).getToolbarId();
-//        Mockito.doReturn((BaseToolbar)toolbar).when((BaseActivity)activity).findViewById(0);
-//        Mockito.doNothing().when((BaseToolbar)toolbar).prepareMenu();
-//        Mockito.when(context_.allSharedPreferences()).thenReturn(allSharedPreferences);
-//        Mockito.when(allSharedPreferences.fetchRegisteredANM()).thenReturn(mockString);
-//        Mockito.when(allSharedPreferences.fetchDefaultLocalityId(Mockito.anyString())).thenReturn(mockString);
-//        Mockito.when(allSharedPreferences.fetchCurrentLocality()).thenReturn(mockString);
+//        DrishtiApplicationMock.setInstance(mInstance);
+//        PowerMockito.when(childDetails.entityId()).thenReturn("baseEntityId");
+//        PowerMockito.doReturn(context_).when((VaccinatorApplication)mInstance).context();
+//        PowerMockito.doReturn(imageRepository).when(context_).imageRepository();
+//        PowerMockito.doReturn(profileImage).when(imageRepository).findByEntityId(Mockito.anyString());
+
+
+//        Mockito.doNothing().when(toolbar).prepareMenu();
+//        System.out.println(VaccinatorApplication.getInstance());
         controller.setup();
 
     }
