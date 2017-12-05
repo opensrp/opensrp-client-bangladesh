@@ -40,6 +40,7 @@ import java.lang.reflect.Field;
 import java.util.HashMap;
 
 import shared.BaseUnitTest;
+import shared.customshadows.ImageUtilsShadow;
 import shared.customshadows.ImmunizationRowAdapterShadow;
 import shared.customshadows.ImmunizationRowCardShadow;
 import util.ImageUtils;
@@ -48,7 +49,7 @@ import util.ImageUtils;
  * Created by kaderchowdhury on 04/12/17.
  */
 @PrepareForTest({VaccinatorApplication.class, ImageUtils.class})
-@Config(shadows = {ImmunizationRowAdapterShadow.class, ImmunizationRowCardShadow.class})
+@Config(shadows = {ImmunizationRowAdapterShadow.class, ImmunizationRowCardShadow.class, ImageUtilsShadow.class})
 public class ChildImmunizationActivityTest extends BaseUnitTest {
     @InjectMocks
     private ChildImmunizationActivityMock activity;
