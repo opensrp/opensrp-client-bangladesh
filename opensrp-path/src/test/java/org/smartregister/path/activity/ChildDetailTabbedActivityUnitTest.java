@@ -547,7 +547,7 @@ public class ChildDetailTabbedActivityUnitTest extends BaseUnitTest {
 
 
     }
-    
+    @Ignore
     @Test
     public void shouldDisplayOnOptionsMenuCaseReportDeceased() {
         MenuItemTestVersion menuItem = new MenuItemTestVersion();

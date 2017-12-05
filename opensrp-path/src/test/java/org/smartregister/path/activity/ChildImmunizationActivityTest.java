@@ -77,11 +77,13 @@ public class ChildImmunizationActivityTest extends BaseUnitTest {
         activity = Mockito.spy(controller.get());
         org.mockito.MockitoAnnotations.initMocks(this);
         CoreLibrary.init(context_);
-        Mockito.when(childDetails.entityId()).thenReturn("baseEntityId");
+
         Mockito.doReturn(context_).when(activity).getOpenSRPContext();
         Mockito.doReturn(detailsRepository).when(context_).detailsRepository();
         Mockito.doReturn(toolbar).when(activity).getToolbar();
         Mockito.doNothing().when(toolbar).prepareMenu();
+
+        Mockito.when(childDetails.entityId()).thenReturn("baseEntityId");
 //        Mockito.doReturn(true).when((BaseActivity)activity).onCreateOptionsMenu(Mockito.any(Menu.class));
 //        Mockito.doReturn(0).when((BaseActivity)activity).getToolbarId();
 //        Mockito.doReturn((BaseToolbar)toolbar).when((BaseActivity)activity).findViewById(0);
