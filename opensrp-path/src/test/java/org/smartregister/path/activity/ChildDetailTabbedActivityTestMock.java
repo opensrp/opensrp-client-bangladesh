@@ -1,4 +1,4 @@
-package org.smartregister.path.activity.mocks;
+package org.smartregister.path.activity;
 
 import android.content.Intent;
 import android.content.pm.ApplicationInfo;
@@ -34,6 +34,8 @@ import org.smartregister.commonregistry.CommonPersonObjectClient;
 import org.smartregister.path.R;
 import org.smartregister.path.activity.BaseActivity;
 import org.smartregister.path.activity.ChildDetailTabbedActivityUnitTest;
+import org.smartregister.path.activity.mocks.ChildDetailTabbedActivityTestVersion;
+import org.smartregister.path.activity.mocks.MenuItemTestVersion;
 import org.smartregister.path.application.VaccinatorApplication;
 
 import org.smartregister.path.customshadow.LocationPickerViewShadow;
@@ -59,7 +61,7 @@ import util.JsonFormUtils;
 /**
  * Created by kaderchowdhury on 03/12/17.
  */
-@Ignore
+
 @PrepareForTest({FormUtils.class, JsonFormUtils.class})
 @Config(shadows = {ImmunizationRowAdapterShadow.class, ImmunizationRowCardShadow.class, LocationPickerViewShadow.class, FontTextViewShadow.class})
 public class ChildDetailTabbedActivityTestMock extends BaseUnitTest {

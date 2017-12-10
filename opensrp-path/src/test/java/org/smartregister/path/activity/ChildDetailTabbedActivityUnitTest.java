@@ -15,14 +15,11 @@ import junit.framework.Assert;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Ignore;
-import org.junit.Rule;
 import org.junit.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.Mockito;
 import org.powermock.api.mockito.PowerMockito;
 import org.powermock.core.classloader.annotations.PrepareForTest;
-import org.powermock.modules.junit4.rule.PowerMockRule;
 import org.robolectric.Robolectric;
 import org.robolectric.RuntimeEnvironment;
 import org.robolectric.android.controller.ActivityController;
@@ -33,17 +30,10 @@ import org.smartregister.immunization.domain.ServiceWrapper;
 import org.smartregister.path.R;
 import org.smartregister.path.activity.mocks.ChildDetailTabbedActivityTestVersion;
 import org.smartregister.path.activity.mocks.MenuItemTestVersion;
-import org.smartregister.path.activity.mocks.MockContext;
-import org.smartregister.path.fragment.StatusEditDialogFragment;
 import org.smartregister.path.toolbar.ChildDetailsToolbar;
 import org.smartregister.repository.DetailsRepository;
 import org.smartregister.util.EasyMap;
 import org.smartregister.util.FormUtils;
-
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.InputStream;
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -60,6 +50,7 @@ import static org.powermock.api.support.membermodification.MemberMatcher.method;
 /**
  * created by onadev on 07/06/2017.
  */
+
 @PrepareForTest({org.smartregister.Context.class})
 @Config(shadows = {ImmunizationRowAdapterShadow.class, ImmunizationRowCardShadow.class})
 public class ChildDetailTabbedActivityUnitTest extends BaseUnitTest {
@@ -67,11 +58,8 @@ public class ChildDetailTabbedActivityUnitTest extends BaseUnitTest {
     @InjectMocks
     private ChildDetailTabbedActivityTestVersion activity;
 
-//    @Rule
-//    public PowerMockRule rule = new PowerMockRule();
-
     @Mock
-    FormUtils formUtils;
+    private FormUtils formUtils;
 
     @Mock
     private CommonPersonObjectClient childDetails;
@@ -109,10 +97,7 @@ public class ChildDetailTabbedActivityUnitTest extends BaseUnitTest {
 
         activity.detailsRepository = getDetailsRepository();
         controller.setup();
-
-//        PowerMockito.mockStatic(FormUtils.class);
-//        PowerMockito.when(FormUtils.getInstance(Mockito.any(MockContext.class))).thenReturn(formUtils);
-    }
+}
 
     @After
     public void tearDown() {
@@ -271,7 +256,7 @@ public class ChildDetailTabbedActivityUnitTest extends BaseUnitTest {
         assertFalse(outViews.isEmpty());
 
     }
-
+    @Ignore
     @Test
     public void shouldRenderAgeRow() {
         final ArrayList<View> outViews = new ArrayList<>();
@@ -451,7 +436,8 @@ public class ChildDetailTabbedActivityUnitTest extends BaseUnitTest {
 
     }
 
-    @Ignore@Test  
+    @Ignore
+    @Test
     public void shouldRenderCHWNameRow() {
         final ArrayList<View> outViews = new ArrayList<>();
         activity.getViewPagerAdapter().getItem(0).getView().findViewById(R.id.rowholder).findViewsWithText(outViews, "CHW name",
@@ -460,7 +446,8 @@ public class ChildDetailTabbedActivityUnitTest extends BaseUnitTest {
 
     }
 
-    @Ignore@Test  
+    @Ignore
+    @Test
     public void shouldRenderCHWphoneNumber() {
         final ArrayList<View> outViews = new ArrayList<>();
         activity.getViewPagerAdapter().getItem(0).getView().findViewById(R.id.rowholder).findViewsWithText(outViews, "CHW phone number",
@@ -469,7 +456,8 @@ public class ChildDetailTabbedActivityUnitTest extends BaseUnitTest {
 
     }
 
-    @Ignore@Test  
+    @Ignore
+    @Test
     public void shouldRenderHIVexposureRow() {
         final ArrayList<View> outViews = new ArrayList<>();
         activity.getViewPagerAdapter().getItem(0).getView().findViewById(R.id.rowholder).findViewsWithText(outViews, "HIV exposure",
@@ -650,7 +638,8 @@ public class ChildDetailTabbedActivityUnitTest extends BaseUnitTest {
 
     }
 
-    @Ignore@Test  
+    @Ignore
+    @Test
     public void shouldRenderStatusFragmentOnStatusViewClick() {
 
         LinearLayout statusView = (LinearLayout) activity.findViewById(R.id.statusview);
@@ -668,7 +657,8 @@ public class ChildDetailTabbedActivityUnitTest extends BaseUnitTest {
         assertTrue(outViews.get(0).getVisibility() == View.VISIBLE);
     }
 
-    @Ignore@Test  
+    @Ignore
+    @Test
     public void onCreateSetsUpSuccessfullyWithSerializedChildDetails() {
 
 
@@ -693,7 +683,8 @@ public class ChildDetailTabbedActivityUnitTest extends BaseUnitTest {
         assertNotNull(nameView);
     }
 
-    @Ignore@Test  
+    @Ignore
+    @Test
     public void statusViewShouldUpdateToInactiveIfChildDetailsInactiveParamIsSetToTrue() {
 
         destroyController(); //destroy controller
@@ -726,7 +717,8 @@ public class ChildDetailTabbedActivityUnitTest extends BaseUnitTest {
 
     }
 
-    @Ignore@Test  
+    @Ignore
+    @Test
     public void onBackActivityShouldReturnChildImmunizationActivityClass() {
 
         assertNotNull(activity.getVaccinatorApplicationInstance());
@@ -736,8 +728,8 @@ public class ChildDetailTabbedActivityUnitTest extends BaseUnitTest {
 
 
     @SuppressWarnings("unchecked")
-    @Ignore@Test  
-
+    @Ignore
+    @Test
     public void statusViewShouldUpdateToActiveifChildStatusParamListIsEmpty() {
 
         destroyController(); //destroy controller
@@ -769,7 +761,8 @@ public class ChildDetailTabbedActivityUnitTest extends BaseUnitTest {
 
     }
 
-    @Ignore@Test  
+    @Ignore
+    @Test
     public void statusViewShouldUpdateToLostToFollowUpWhenChildStatusLostToFollowUpParamIsTrue() {
 
         destroyController(); //destroy controller

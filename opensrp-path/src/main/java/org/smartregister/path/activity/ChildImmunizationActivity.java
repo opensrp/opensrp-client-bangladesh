@@ -130,12 +130,12 @@ public class ChildImmunizationActivity extends BaseActivity
     }
 
     // Views
-    private LocationSwitcherToolbar toolbar;
+    public LocationSwitcherToolbar toolbar;
 
     // Data
-    private CommonPersonObjectClient childDetails;
+    public CommonPersonObjectClient childDetails;
     private RegisterClickables registerClickables;
-    private DetailsRepository detailsRepository;
+    public DetailsRepository detailsRepository;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -216,7 +216,7 @@ public class ChildImmunizationActivity extends BaseActivity
         return childDetails != null && childDetails.getDetails() != null;
     }
 
-    private void updateViews() {
+    public void updateViews() {
         findViewById(R.id.profile_name_layout).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -266,7 +266,7 @@ public class ChildImmunizationActivity extends BaseActivity
         }
     }
 
-    private void updateChildIdViews() {
+    public void updateChildIdViews() {
 
         String name = "";
         String childId = "";
@@ -283,7 +283,7 @@ public class ChildImmunizationActivity extends BaseActivity
         Utils.startAsyncTask(new GetSiblingsTask(), null);
     }
 
-    private void updateAgeViews() {
+    public void updateAgeViews() {
         String dobString = "";
         String formattedAge = "";
         String formattedDob = "";
@@ -306,7 +306,7 @@ public class ChildImmunizationActivity extends BaseActivity
         ageTV.setText(String.format("%s: %s", getString(R.string.age), formattedAge));
     }
 
-    private void updateGenderViews() {
+    public void updateGenderViews() {
         Gender gender = Gender.UNKNOWN;
         if (isDataOk()) {
             String genderString = Utils.getValue(childDetails, PathConstants.KEY.GENDER, false);
@@ -461,7 +461,7 @@ public class ChildImmunizationActivity extends BaseActivity
         }
     }
 
-    private void addVaccineGroup(int canvasId, JSONObject vaccineGroupData, List<Vaccine> vaccineList, List<Alert> alerts) {
+    public void addVaccineGroup(int canvasId, JSONObject vaccineGroupData, List<Vaccine> vaccineList, List<Alert> alerts) {
         LinearLayout vaccineGroupCanvasLL = (LinearLayout) findViewById(R.id.vaccine_group_canvas_ll);
         VaccineGroup curGroup = new VaccineGroup(this);
         curGroup.setData(vaccineGroupData, childDetails, vaccineList, alerts, "child");
@@ -498,7 +498,7 @@ public class ChildImmunizationActivity extends BaseActivity
             parent = (LinearLayout) findViewById(groupParentId);
             parent.removeAllViews();
         }
-//llall jl        parent.addView(curGroup);
+        parent.addView(curGroup);
         curGroup.setTag(R.id.vaccine_group_vaccine_data, vaccineGroupData.toString());
         curGroup.setTag(R.id.vaccine_group_parent_id, String.valueOf(groupParentId));
         vaccineGroups.add(curGroup);
@@ -660,7 +660,7 @@ public class ChildImmunizationActivity extends BaseActivity
         fromContext.startActivity(intent);
     }
 
-    private void launchDetailActivity(Context fromContext, CommonPersonObjectClient childDetails, RegisterClickables registerClickables) {
+    public void launchDetailActivity(Context fromContext, CommonPersonObjectClient childDetails, RegisterClickables registerClickables) {
         Intent intent = new Intent(fromContext, ChildDetailTabbedActivity.class);
         Bundle bundle = new Bundle();
         try {
@@ -675,7 +675,7 @@ public class ChildImmunizationActivity extends BaseActivity
         fromContext.startActivity(intent);
     }
 
-    private String updateActivityTitle() {
+    public String updateActivityTitle() {
         String name = "";
         if (isDataOk()) {
             name = constructChildName();

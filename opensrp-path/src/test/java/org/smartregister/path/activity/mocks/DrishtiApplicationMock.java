@@ -15,6 +15,7 @@ public class DrishtiApplicationMock extends DrishtiApplication {
     public DrishtiApplicationMock() {
 
     }
+
     public static void setInstance(DrishtiApplication newInstance){
         mInstance = newInstance;
     }

@@ -14,7 +14,19 @@ import org.smartregister.view.customcontrols.FontVariant;
 @Implements(CustomFontTextView.class)
 public class FontTextViewShadow extends ShadowTextView {
 
-    public void customFontTextView(Context context, AttributeSet attrs, int defStyle) {
+    public void __constructor__(Context context, AttributeSet attrs, int defStyle) {
+
+    }
+
+    public void setFontVariant(int variant) {
+
+    }
+
+    public void __constructor__(Context context) {
+
+    }
+
+    public void __constructor__(Context context, AttributeSet attrs) {
 
     }
 
