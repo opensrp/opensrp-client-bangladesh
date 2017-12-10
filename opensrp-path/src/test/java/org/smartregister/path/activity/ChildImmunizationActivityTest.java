@@ -167,7 +167,7 @@ public class ChildImmunizationActivityTest extends BaseUnitTest {
         controller.pause().stop().destroy();
     }
 
-    @Ignore
+
     @Test
     public void testPrivateMethod(){
         Intent intent = new Intent(RuntimeEnvironment.application, ChildImmunizationActivity.class);
