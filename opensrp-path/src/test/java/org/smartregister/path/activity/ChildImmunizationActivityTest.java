@@ -26,6 +26,8 @@ import org.smartregister.growthmonitoring.domain.Weight;
 import org.smartregister.growthmonitoring.domain.WeightWrapper;
 import org.smartregister.growthmonitoring.repository.WeightRepository;
 import org.smartregister.immunization.domain.Vaccine;
+import org.smartregister.immunization.domain.VaccineWrapper;
+import org.smartregister.immunization.view.VaccineGroup;
 import org.smartregister.path.activity.mockactivity.ChildImmunizationActivityMock;
 import org.smartregister.path.activity.mocks.ImageRepositoryMock;
 import org.smartregister.path.activity.mocks.VaccineData;
@@ -41,6 +43,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 import shared.BaseUnitTest;
 import shared.VaccinatorApplicationTestVersion;
@@ -51,7 +54,7 @@ import shared.customshadows.ImmunizationRowCardShadow;
  * Created by kaderchowdhury on 04/12/17.
  */
 
-@PrepareForTest({DrishtiApplication.class,VaccinatorApplication.class,MyShadowAsyncTask.class})
+@PrepareForTest({MyShadowAsyncTask.class})
 @Config(shadows = {ImmunizationRowAdapterShadow.class, ImmunizationRowCardShadow.class})
 public class ChildImmunizationActivityTest extends BaseUnitTest {
     @InjectMocks
@@ -148,13 +151,26 @@ public class ChildImmunizationActivityTest extends BaseUnitTest {
 
 
     @Test
-    public void testPrivateMethod(){
+    public void testupdateWeightViews(){
         Intent intent = new Intent(RuntimeEnvironment.application, ChildImmunizationActivity.class);
         ActivityController<ChildImmunizationActivity>controller = Robolectric.buildActivity(ChildImmunizationActivity.class, intent);
         ChildImmunizationActivity activity = controller.get();
         Weight weight = new Weight();
         activity.childDetails = childDetails;
         genericInvokMethod(activity,"updateWeightViews",1,weight);
+    }
+
+    @Test
+    public void testupdateVaccineGroupViews(){
+        Intent intent = new Intent(RuntimeEnvironment.application, ChildImmunizationActivity.class);
+        ActivityController<ChildImmunizationActivity>controller = Robolectric.buildActivity(ChildImmunizationActivity.class, intent);
+        ChildImmunizationActivity activity = controller.get();
+        Weight weight = new Weight();
+        activity.childDetails = childDetails;
+        VaccineGroup vaccineGroup = new VaccineGroup(RuntimeEnvironment.application);
+//        genericInvokMethod(activity,"updateVaccineGroupViews",3,vaccineGroup,new ArrayList<VaccineWrapper>(), new ArrayList<Vaccine>());
+        VaccineWrapper tag = new VaccineWrapper();
+    activity.onUndoVaccination(tag,vaccineGroup);
     }
 
 
@@ -184,6 +200,7 @@ public class ChildImmunizationActivityTest extends BaseUnitTest {
 
         return requiredObj;
     }
+
     @After
     public void tearDown() {
         destroyController();

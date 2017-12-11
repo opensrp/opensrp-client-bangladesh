@@ -37,16 +37,19 @@ public class StockControlActivityTest extends BaseUnitTest {
 //        controller.setup();
         controller.create();
     }
+
     @Test
     public void mockRunnable() {
 
     }
+
     @After
     public void tearDown() {
         destroyController();
         activity = null;
         controller = null;
     }
+
     private void destroyController() {
         try {
             activity.finish();
