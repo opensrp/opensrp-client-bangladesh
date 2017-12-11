@@ -52,7 +52,7 @@ import util.JsonFormUtils;
 /**
  * Created by kaderchowdhury on 03/12/17.
  */
-@Ignore
+
 @PrepareForTest({FormUtils.class, JsonFormUtils.class})
 @Config(shadows = {ImmunizationRowAdapterShadow.class, ImmunizationRowCardShadow.class, LocationPickerViewShadow.class, FontTextViewShadow.class})
 public class ChildDetailTabbedActivityTestMock extends BaseUnitTest {

@@ -20,7 +20,7 @@ import shared.BaseUnitTest;
 /**
  * Created by kaderchowdhury on 06/12/17.
  */
-@Ignore
+
 public class SettingsActivityTest extends BaseUnitTest {
 
     SettingsActivity activity;

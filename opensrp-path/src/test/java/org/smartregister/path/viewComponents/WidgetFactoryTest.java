@@ -4,6 +4,7 @@ import android.view.LayoutInflater;
 import android.view.ViewGroup;
 
 import org.junit.Before;
+import org.junit.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
@@ -27,6 +28,11 @@ public class WidgetFactoryTest extends BaseUnitTest {
     public void setUp(){
         MockitoAnnotations.initMocks(this);
         widgetFactory = new WidgetFactory();
+    }
+
+    @Test
+    public void mockRunnable() {
+
     }
 
 }
