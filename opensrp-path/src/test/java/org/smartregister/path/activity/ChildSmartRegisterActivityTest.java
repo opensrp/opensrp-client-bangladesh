@@ -28,7 +28,7 @@ public class ChildSmartRegisterActivityTest extends BaseUnitTest {
         Intent intent = new Intent(RuntimeEnvironment.application,ChildSmartRegisterActivity.class);
         controller = Robolectric.buildActivity(ChildSmartRegisterActivity.class,intent);
         activity = controller.get();
-//        controller.setup();
+        controller.setup();
 
     }
     @Test

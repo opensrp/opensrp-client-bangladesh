@@ -2,36 +2,22 @@ package org.smartregister.path.activity;
 
 import android.content.Intent;
 import android.util.Log;
-import android.view.Menu;
-
-import junit.framework.Assert;
-
-import net.sqlcipher.MatrixCursor;
-import net.sqlcipher.database.SQLiteDatabase;
 
 import org.joda.time.DateTime;
 import org.json.JSONObject;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Ignore;
-import org.junit.Rule;
 import org.junit.Test;
-import org.mockito.ArgumentMatchers;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
-import org.mockito.invocation.InvocationOnMock;
-import org.mockito.stubbing.Answer;
-import org.powermock.api.mockito.PowerMockito;
-import org.powermock.api.support.membermodification.MemberModifier;
 import org.powermock.core.classloader.annotations.PrepareForTest;
-import org.powermock.modules.junit4.rule.PowerMockRule;
 import org.robolectric.Robolectric;
 import org.robolectric.RuntimeEnvironment;
 import org.robolectric.android.controller.ActivityController;
 import org.robolectric.annotation.Config;
-import org.smartregister.Context;
 import org.smartregister.CoreLibrary;
 import org.smartregister.commonregistry.CommonPersonObjectClient;
 import org.smartregister.domain.Alert;
@@ -40,10 +26,8 @@ import org.smartregister.growthmonitoring.domain.Weight;
 import org.smartregister.growthmonitoring.domain.WeightWrapper;
 import org.smartregister.growthmonitoring.repository.WeightRepository;
 import org.smartregister.immunization.domain.Vaccine;
-import org.smartregister.path.activity.mocks.ChildImmunizationActivityMock;
-import org.smartregister.path.activity.mocks.DrishtiApplicationMock;
+import org.smartregister.path.activity.mocks.mockactivity.ChildImmunizationActivityMock;
 import org.smartregister.path.activity.mocks.ImageRepositoryMock;
-import org.smartregister.path.activity.mocks.SQLiteDatabaseMock;
 import org.smartregister.path.activity.mocks.VaccineData;
 import org.smartregister.path.application.VaccinatorApplication;
 import org.smartregister.path.customshadow.MyShadowAsyncTask;
@@ -51,23 +35,17 @@ import org.smartregister.path.toolbar.BaseToolbar;
 import org.smartregister.path.toolbar.LocationSwitcherToolbar;
 import org.smartregister.repository.AllSharedPreferences;
 import org.smartregister.repository.DetailsRepository;
-import org.smartregister.repository.Repository;
 import org.smartregister.view.activity.DrishtiApplication;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashMap;
-import java.util.List;
 
 import shared.BaseUnitTest;
 import shared.VaccinatorApplicationTestVersion;
 import shared.customshadows.ImmunizationRowAdapterShadow;
 import shared.customshadows.ImmunizationRowCardShadow;
-import util.PathConstants;
-
-import static org.powermock.configuration.ConfigurationType.PowerMock;
 
 /**
  * Created by kaderchowdhury on 04/12/17.
@@ -87,6 +65,7 @@ public class ChildImmunizationActivityTest extends BaseUnitTest {
     private DetailsRepository detailsRepository;
     private static final String EXTRA_CHILD_DETAILS = "child_details";
     private static final String EXTRA_REGISTER_CLICKABLES = "register_clickables";
+
     @Mock
     LocationSwitcherToolbar toolbar;
     @Mock

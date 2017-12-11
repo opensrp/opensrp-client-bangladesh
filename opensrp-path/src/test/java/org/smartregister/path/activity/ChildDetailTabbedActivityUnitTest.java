@@ -28,7 +28,7 @@ import org.smartregister.CoreLibrary;
 import org.smartregister.commonregistry.CommonPersonObjectClient;
 import org.smartregister.immunization.domain.ServiceWrapper;
 import org.smartregister.path.R;
-import org.smartregister.path.activity.mocks.ChildDetailTabbedActivityTestVersion;
+import org.smartregister.path.activity.mocks.mockactivity.ChildDetailTabbedActivityTestVersion;
 import org.smartregister.path.activity.mocks.MenuItemTestVersion;
 import org.smartregister.path.toolbar.ChildDetailsToolbar;
 import org.smartregister.repository.DetailsRepository;

@@ -1,22 +1,15 @@
 package org.smartregister.path.activity;
 
-import android.content.Intent;
 import android.content.pm.ApplicationInfo;
 import android.content.res.AssetManager;
 import android.content.res.Configuration;
 import android.content.res.Resources;
-import android.support.v7.app.AppCompatActivity;
 import android.util.DisplayMetrics;
-import android.view.MenuItem;
-
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
 
 import junit.framework.Assert;
 
 import org.json.JSONObject;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Rule;
 import org.junit.Test;
 import org.mockito.Mock;
@@ -26,15 +19,12 @@ import org.powermock.api.mockito.PowerMockito;
 import org.powermock.api.support.membermodification.MemberModifier;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.rule.PowerMockRule;
-import org.robolectric.RuntimeEnvironment;
 import org.robolectric.annotation.Config;
 import org.smartregister.Context;
 import org.smartregister.CoreLibrary;
 import org.smartregister.commonregistry.CommonPersonObjectClient;
 import org.smartregister.path.R;
-import org.smartregister.path.activity.BaseActivity;
-import org.smartregister.path.activity.ChildDetailTabbedActivityUnitTest;
-import org.smartregister.path.activity.mocks.ChildDetailTabbedActivityTestVersion;
+import org.smartregister.path.activity.mocks.mockactivity.ChildDetailTabbedActivityTestVersion;
 import org.smartregister.path.activity.mocks.MenuItemTestVersion;
 import org.smartregister.path.application.VaccinatorApplication;
 

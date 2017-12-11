@@ -1,4 +1,4 @@
-package org.smartregister.path.activity.mocks;
+package org.smartregister.path.activity.mocks.mockactivity;
 
 import android.os.Bundle;
 import android.view.Menu;
@@ -32,14 +32,6 @@ public class ChildImmunizationActivityMock extends ChildImmunizationActivity {
     public void onCreate(Bundle bundle) {
         setTheme(R.style.AppTheme); //we need this here
         super.onCreate(bundle);
-//        Bundle extras = this.getIntent().getExtras();
-//        if (extras != null) {
-//            Serializable serializable = extras.getSerializable(EXTRA_CHILD_DETAILS);
-//            if (serializable != null && serializable instanceof CommonPersonObjectClient) {
-//                childDetails = (CommonPersonObjectClient) serializable;
-//            }
-//        }
-
     }
 
 
