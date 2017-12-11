@@ -26,7 +26,7 @@ import org.smartregister.growthmonitoring.domain.Weight;
 import org.smartregister.growthmonitoring.domain.WeightWrapper;
 import org.smartregister.growthmonitoring.repository.WeightRepository;
 import org.smartregister.immunization.domain.Vaccine;
-import org.smartregister.path.activity.mocks.mockactivity.ChildImmunizationActivityMock;
+import org.smartregister.path.activity.mockactivity.ChildImmunizationActivityMock;
 import org.smartregister.path.activity.mocks.ImageRepositoryMock;
 import org.smartregister.path.activity.mocks.VaccineData;
 import org.smartregister.path.application.VaccinatorApplication;

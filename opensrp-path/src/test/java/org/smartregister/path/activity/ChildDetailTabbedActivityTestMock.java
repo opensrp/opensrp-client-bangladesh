@@ -10,6 +10,7 @@ import junit.framework.Assert;
 
 import org.json.JSONObject;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Rule;
 import org.junit.Test;
 import org.mockito.Mock;
@@ -24,7 +25,7 @@ import org.smartregister.Context;
 import org.smartregister.CoreLibrary;
 import org.smartregister.commonregistry.CommonPersonObjectClient;
 import org.smartregister.path.R;
-import org.smartregister.path.activity.mocks.mockactivity.ChildDetailTabbedActivityTestVersion;
+import org.smartregister.path.activity.mockactivity.ChildDetailTabbedActivityTestVersion;
 import org.smartregister.path.activity.mocks.MenuItemTestVersion;
 import org.smartregister.path.application.VaccinatorApplication;
 

@@ -1,25 +1,18 @@
-package org.smartregister.path.activity.mocks.mockactivity;
+package org.smartregister.path.activity.mockactivity;
 
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.View;
 
-import org.json.JSONObject;
-import org.smartregister.commonregistry.CommonPersonObjectClient;
-import org.smartregister.domain.Alert;
 import org.smartregister.growthmonitoring.repository.WeightRepository;
-import org.smartregister.immunization.domain.Vaccine;
 import org.smartregister.immunization.repository.RecurringServiceRecordRepository;
 import org.smartregister.immunization.repository.RecurringServiceTypeRepository;
 import org.smartregister.immunization.repository.VaccineRepository;
 import org.smartregister.path.R;
 import org.smartregister.path.activity.ChildImmunizationActivity;
 import org.smartregister.path.application.VaccinatorApplication;
-import org.smartregister.path.domain.RegisterClickables;
 import org.smartregister.service.AlertService;
 
-import java.io.Serializable;
-import java.util.List;
 import java.util.Map;
 
 /**

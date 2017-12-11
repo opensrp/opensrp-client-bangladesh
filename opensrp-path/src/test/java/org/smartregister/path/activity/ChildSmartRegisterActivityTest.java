@@ -23,14 +23,15 @@ public class ChildSmartRegisterActivityTest extends BaseUnitTest {
     ActivityController<ChildSmartRegisterActivity>controller;
 
     @Before
-    public void setUp(){
+    public void setUp() {
         MockitoAnnotations.initMocks(this);
         Intent intent = new Intent(RuntimeEnvironment.application,ChildSmartRegisterActivity.class);
         controller = Robolectric.buildActivity(ChildSmartRegisterActivity.class,intent);
         activity = controller.get();
-        controller.setup();
-
+//        controller.setup();
+//controller.create();
     }
+
     @Test
     public void mockRunnable() {
 
@@ -42,6 +43,7 @@ public class ChildSmartRegisterActivityTest extends BaseUnitTest {
         activity = null;
         controller = null;
     }
+
     private void destroyController() {
         try {
             activity.finish();

@@ -1,4 +1,4 @@
-package org.smartregister.path.activity.mocks.mockactivity;
+package org.smartregister.path.activity.mockactivity;
 
 import android.os.Bundle;
 

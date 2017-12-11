@@ -29,6 +29,7 @@ public class StockActivityTest extends BaseUnitTest {
         controller = Robolectric.buildActivity(StockActivity.class,intent);
         activity = controller.get();
 //        controller.setup();
+        controller.create();
     }
 
     @Test

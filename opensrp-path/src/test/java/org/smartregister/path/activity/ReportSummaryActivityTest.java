@@ -27,6 +27,7 @@ public class ReportSummaryActivityTest extends BaseUnitTest {
         Intent intent = new Intent(RuntimeEnvironment.application,ReportSummaryActivity.class);
         controller = Robolectric.buildActivity(ReportSummaryActivity.class,intent);
         activity = controller.get();
+        controller.create();
 //        controller.setup();
     }
     @Test

@@ -28,6 +28,7 @@ public class ProviderProfileActivityTest extends BaseUnitTest {
         Intent intent = new Intent(RuntimeEnvironment.application,ProviderProfileActivity.class);
         controller = Robolectric.buildActivity(ProviderProfileActivity.class,intent);
         activity = controller.get();
+//        controller.create();
 //        controller.setup();
     }
 
