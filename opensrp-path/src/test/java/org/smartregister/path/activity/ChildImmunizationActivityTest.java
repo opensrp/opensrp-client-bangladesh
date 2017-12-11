@@ -21,27 +21,33 @@ import org.robolectric.annotation.Config;
 import org.smartregister.CoreLibrary;
 import org.smartregister.commonregistry.CommonPersonObjectClient;
 import org.smartregister.domain.Alert;
+import org.smartregister.domain.AlertStatus;
 import org.smartregister.domain.ProfileImage;
+import org.smartregister.domain.SyncStatus;
 import org.smartregister.growthmonitoring.domain.Weight;
 import org.smartregister.growthmonitoring.domain.WeightWrapper;
 import org.smartregister.growthmonitoring.repository.WeightRepository;
 import org.smartregister.immunization.domain.Vaccine;
 import org.smartregister.immunization.domain.VaccineWrapper;
+import org.smartregister.immunization.repository.VaccineRepository;
 import org.smartregister.immunization.view.VaccineGroup;
 import org.smartregister.path.activity.mockactivity.ChildImmunizationActivityMock;
 import org.smartregister.path.activity.mocks.ImageRepositoryMock;
 import org.smartregister.path.activity.mocks.VaccineData;
 import org.smartregister.path.application.VaccinatorApplication;
 import org.smartregister.path.customshadow.MyShadowAsyncTask;
+import org.smartregister.path.service.HIA2Service;
 import org.smartregister.path.toolbar.BaseToolbar;
 import org.smartregister.path.toolbar.LocationSwitcherToolbar;
 import org.smartregister.repository.AllSharedPreferences;
 import org.smartregister.repository.DetailsRepository;
+import org.smartregister.service.AlertService;
 import org.smartregister.view.activity.DrishtiApplication;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 
@@ -164,16 +170,29 @@ public class ChildImmunizationActivityTest extends BaseUnitTest {
     public void testupdateVaccineGroupViews(){
         Intent intent = new Intent(RuntimeEnvironment.application, ChildImmunizationActivity.class);
         ActivityController<ChildImmunizationActivity>controller = Robolectric.buildActivity(ChildImmunizationActivity.class, intent);
-        ChildImmunizationActivity activity = controller.get();
+        ChildImmunizationActivity activity = Mockito.spy(controller.get());
         Weight weight = new Weight();
         activity.childDetails = childDetails;
         VaccineGroup vaccineGroup = new VaccineGroup(RuntimeEnvironment.application);
 //        genericInvokMethod(activity,"updateVaccineGroupViews",3,vaccineGroup,new ArrayList<VaccineWrapper>(), new ArrayList<Vaccine>());
         VaccineWrapper tag = new VaccineWrapper();
-    activity.onUndoVaccination(tag,vaccineGroup);
+        tag.setDbKey(0l);
+        Mockito.doReturn(vaccineRepository).when(mInstance).vaccineRepository();
+        Mockito.doNothing().when(vaccineRepository).deleteVaccine(Mockito.any(Long.class));
+        Mockito.doReturn(context_).when(activity).getOpenSRPContext();
+        Mockito.when(context_.alertService()).thenReturn(alertService);
+        List<Vaccine>vaccineList = new ArrayList<>();
+        vaccineList.add(new Vaccine());
+        List<Alert>alertList = new ArrayList<>();
+        alertList.add(new Alert("1","2","3", AlertStatus.normal,"10-10-1010","10-10-1011"));
+        Mockito.when(vaccineRepository.findByEntityId(Mockito.anyString())).thenReturn(vaccineList);
+        Mockito.when(alertService.findByEntityIdAndAlertNames(Mockito.anyString(),Mockito.any(String[].class))).thenReturn(alertList);
+        activity.onUndoVaccination(tag,vaccineGroup);
     }
-
-
+    @Mock
+    VaccineRepository vaccineRepository;
+    @Mock
+    AlertService alertService;
     public static Object genericInvokMethod(Object obj, String methodName,
                                             int paramCount, Object... params) {
         Method method;
