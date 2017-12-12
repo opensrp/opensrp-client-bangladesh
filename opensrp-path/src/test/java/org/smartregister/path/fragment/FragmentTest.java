@@ -14,7 +14,10 @@ import org.robolectric.RuntimeEnvironment;
 import org.robolectric.android.controller.ActivityController;
 import org.robolectric.annotation.Config;
 import org.smartregister.CoreLibrary;
+import org.smartregister.path.customshadow.MyShadowAsyncTask;
 import org.smartregister.path.fragment.mocks.FragmentMockActivity;
+import org.smartregister.path.fragment.mocks.ShadowBaseRegisterActivity;
+import org.smartregister.path.fragment.mocks.ShadowOpensrpSSLHelper;
 import org.smartregister.ssl.OpensrpSSLHelper;
 
 import shared.BaseUnitTest;
@@ -25,8 +28,8 @@ import shared.customshadows.FontTextViewShadow;
  */
 @PowerMockIgnore({"javax.xml.*", "org.xml.sax.*", "org.w3c.dom.*", "org.springframework.context.*", "org.apache.log4j.*"})
 @PrepareForTest({CoreLibrary.class, OpensrpSSLHelper.class,AdvancedSearchFragment.class})
-@Config(shadows = {FontTextViewShadow.class})
-public class AdvancedSearchFragmentTest extends BaseUnitTest {
+@Config(shadows = {FontTextViewShadow.class, ShadowOpensrpSSLHelper.class, MyShadowAsyncTask.class})
+public class FragmentTest extends BaseUnitTest {
     @Mock
     private CoreLibrary coreLibrary;
     @Mock
@@ -42,7 +45,7 @@ public class AdvancedSearchFragmentTest extends BaseUnitTest {
         activity = controller.get();
 
         CoreLibrary.init(context_);
-//        controller.setup();
+        controller.setup();
 
     }
 
@@ -67,7 +70,18 @@ public class AdvancedSearchFragmentTest extends BaseUnitTest {
     }
 
     @Test
-    public void assertThatCallToNewInstanceCreatesAFragment() {
+    public void AdvancedSearchFragmentTest() {
+//        activity.startAdvancedSearchFragment();
+    }
 
+
+    @Test
+    public void BaseSmartRegisterFragmentTest() {
+//        activity.startBaseSmartRegisterFragment();
+    }//BaseSmartRegisterFragment
+
+    @Test
+    public void DraftMonthlyFragmentTest() {
+//        activity.startDraftMonthlyFragment();
     }
 }

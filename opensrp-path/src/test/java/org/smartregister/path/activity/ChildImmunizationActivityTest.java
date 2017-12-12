@@ -176,17 +176,17 @@ public class ChildImmunizationActivityTest extends BaseUnitTest {
         VaccineGroup vaccineGroup = new VaccineGroup(RuntimeEnvironment.application);
 //        genericInvokMethod(activity,"updateVaccineGroupViews",3,vaccineGroup,new ArrayList<VaccineWrapper>(), new ArrayList<Vaccine>());
         VaccineWrapper tag = new VaccineWrapper();
-        tag.setDbKey(0l);
-        Mockito.doReturn(vaccineRepository).when(mInstance).vaccineRepository();
-        Mockito.doNothing().when(vaccineRepository).deleteVaccine(Mockito.any(Long.class));
-        Mockito.doReturn(context_).when(activity).getOpenSRPContext();
-        Mockito.when(context_.alertService()).thenReturn(alertService);
-        List<Vaccine>vaccineList = new ArrayList<>();
-        vaccineList.add(new Vaccine());
-        List<Alert>alertList = new ArrayList<>();
-        alertList.add(new Alert("1","2","3", AlertStatus.normal,"10-10-1010","10-10-1011"));
-        Mockito.when(vaccineRepository.findByEntityId(Mockito.anyString())).thenReturn(vaccineList);
-        Mockito.when(alertService.findByEntityIdAndAlertNames(Mockito.anyString(),Mockito.any(String[].class))).thenReturn(alertList);
+//        tag.setDbKey(0l);
+//        Mockito.doReturn(vaccineRepository).when(mInstance).vaccineRepository();
+//        Mockito.doNothing().when(vaccineRepository).deleteVaccine(Mockito.any(Long.class));
+//        Mockito.doReturn(context_).when(activity).getOpenSRPContext();
+//        Mockito.when(context_.alertService()).thenReturn(alertService);
+//        List<Vaccine>vaccineList = new ArrayList<>();
+//        vaccineList.add(new Vaccine());
+//        List<Alert>alertList = new ArrayList<>();
+//        alertList.add(new Alert("1","2","3", AlertStatus.normal,"10-10-1010","10-10-1011"));
+//        Mockito.when(vaccineRepository.findByEntityId(Mockito.anyString())).thenReturn(vaccineList);
+//        Mockito.when(alertService.findByEntityIdAndAlertNames(Mockito.anyString(),Mockito.any(String[].class))).thenReturn(alertList);
         activity.onUndoVaccination(tag,vaccineGroup);
     }
     @Mock
