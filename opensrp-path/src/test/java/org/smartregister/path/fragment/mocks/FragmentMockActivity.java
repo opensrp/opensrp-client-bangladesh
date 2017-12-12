@@ -26,7 +26,7 @@ import shared.VaccinatorApplicationTestVersion;
  * Created by kaderchowdhury on 06/12/17.
  */
 
-public class FragmentMockActivity extends HIA2ReportsActivity {
+public class FragmentMockActivity extends ActionBarActivity {
     @Override
     public void onCreate(Bundle bundle) {
         setTheme(R.style.AppTheme); //we need this here
