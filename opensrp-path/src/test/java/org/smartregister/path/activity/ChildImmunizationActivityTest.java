@@ -36,6 +36,7 @@ import org.smartregister.path.activity.mocks.ImageRepositoryMock;
 import org.smartregister.path.activity.mocks.VaccineData;
 import org.smartregister.path.application.VaccinatorApplication;
 import org.smartregister.path.customshadow.MyShadowAsyncTask;
+import org.smartregister.path.customshadow.ViewGroupShadow;
 import org.smartregister.path.service.HIA2Service;
 import org.smartregister.path.toolbar.BaseToolbar;
 import org.smartregister.path.toolbar.LocationSwitcherToolbar;
@@ -61,7 +62,7 @@ import shared.customshadows.ImmunizationRowCardShadow;
  */
 
 @PrepareForTest({MyShadowAsyncTask.class})
-@Config(shadows = {ImmunizationRowAdapterShadow.class, ImmunizationRowCardShadow.class})
+@Config(shadows = {ImmunizationRowAdapterShadow.class, ImmunizationRowCardShadow.class ,ViewGroupShadow.class})
 public class ChildImmunizationActivityTest extends BaseUnitTest {
     @InjectMocks
     private ChildImmunizationActivityMock activity;
@@ -136,7 +137,7 @@ public class ChildImmunizationActivityTest extends BaseUnitTest {
         activity.onWeightTaken(tag);
     }
 
-    @Ignore
+//    @Ignore
     @Test
     public void addVaccineGroupTest() throws Exception {
 
@@ -147,9 +148,10 @@ public class ChildImmunizationActivityTest extends BaseUnitTest {
         childDetails.setColumnmaps(columnMaps);
         childDetails.setDetails(new HashMap<String, String>());
         intent.putExtra(EXTRA_CHILD_DETAILS,childDetails);
-        ActivityController<ChildImmunizationActivityMock>controller = Robolectric.buildActivity(ChildImmunizationActivityMock.class, intent);
+//        ActivityController<ChildImmunizationActivityMock>controller = Robolectric.buildActivity(ChildImmunizationActivityMock.class, intent);
         ChildImmunizationActivityMock activity = controller.get();
-        controller.setup();
+//        controller.setup();
+
         activity.addVaccineGroup(-1,new JSONObject(VaccineData.vaccineGroupData),new ArrayList<Vaccine>(),new ArrayList<Alert>());
         activity.finish();
         controller.pause().stop().destroy();
