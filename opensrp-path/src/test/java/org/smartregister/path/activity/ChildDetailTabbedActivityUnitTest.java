@@ -18,6 +18,7 @@ import org.junit.Ignore;
 import org.junit.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.Mockito;
 import org.powermock.api.mockito.PowerMockito;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.robolectric.Robolectric;
@@ -30,6 +31,9 @@ import org.smartregister.immunization.domain.ServiceWrapper;
 import org.smartregister.path.R;
 import org.smartregister.path.activity.mockactivity.ChildDetailTabbedActivityTestVersion;
 import org.smartregister.path.activity.mocks.MenuItemTestVersion;
+import org.smartregister.path.activity.shadow.FormUtilsShadow;
+import org.smartregister.path.activity.shadow.JsonFormUtilsShadow;
+import org.smartregister.path.customshadow.MyShadowAsyncTask;
 import org.smartregister.path.toolbar.ChildDetailsToolbar;
 import org.smartregister.repository.DetailsRepository;
 import org.smartregister.util.EasyMap;
@@ -50,8 +54,9 @@ import static org.powermock.api.support.membermodification.MemberMatcher.method;
 /**
  * created by onadev on 07/06/2017.
  */
+
 @PrepareForTest({org.smartregister.Context.class})
-@Config(shadows = {ImmunizationRowAdapterShadow.class, ImmunizationRowCardShadow.class})
+@Config(shadows = {ImmunizationRowAdapterShadow.class, ImmunizationRowCardShadow.class, MyShadowAsyncTask.class, JsonFormUtilsShadow.class, FormUtilsShadow.class})
 public class ChildDetailTabbedActivityUnitTest extends BaseUnitTest {
 
     @InjectMocks
@@ -60,7 +65,7 @@ public class ChildDetailTabbedActivityUnitTest extends BaseUnitTest {
     @Mock
     private FormUtils formUtils;
 
-    @Mock
+
     private CommonPersonObjectClient childDetails;
 
     @Mock
@@ -83,10 +88,11 @@ public class ChildDetailTabbedActivityUnitTest extends BaseUnitTest {
         details = new HashMap<>();
         Intent intent = new Intent(RuntimeEnvironment.application, ChildDetailTabbedActivityTestVersion.class);
         intent.putExtra("location_name", "Nairobi");
-//        HashMap<String,String>details = new HashMap<>();
-//        CommonPersonObjectClient commonPersonObjectClient = new CommonPersonObjectClient("caseId",details,"name");
-//        commonPersonObjectClient.setColumnmaps(details);
-//        intent.putExtra(EXTRA_CHILD_DETAILS,commonPersonObjectClient);
+        HashMap<String,String>details = new HashMap<>();
+        details.put("dob","1985-07-24T00:00:00.000Z");
+        CommonPersonObjectClient commonPersonObjectClient = new CommonPersonObjectClient("caseId",details,"name");
+        commonPersonObjectClient.setColumnmaps(details);
+        intent.putExtra(EXTRA_CHILD_DETAILS,commonPersonObjectClient);
         controller = Robolectric.buildActivity(ChildDetailTabbedActivityTestVersion.class, intent);
         activity = controller.get();
 
@@ -426,7 +432,8 @@ public class ChildDetailTabbedActivityUnitTest extends BaseUnitTest {
 
     }
 
-    @Ignore@Test  
+    @Ignore
+    @Test
     public void shouldRenderLandmarkRow() {
         final ArrayList<View> outViews = new ArrayList<>();
         activity.getViewPagerAdapter().getItem(0).getView().findViewById(R.id.rowholder).findViewsWithText(outViews, "Landmark",
@@ -464,7 +471,7 @@ public class ChildDetailTabbedActivityUnitTest extends BaseUnitTest {
         assertFalse(outViews.isEmpty());
 
     }
-    @Ignore
+
     @Test
     public void shouldDisplayOnOptionsMenuCaseRegistrationData() {
         MenuItemTestVersion menuItem = new MenuItemTestVersion();

@@ -2,12 +2,16 @@ package org.smartregister.path.customshadow;
 
 import android.os.AsyncTask;
 
+import org.robolectric.annotation.Config;
 import org.robolectric.annotation.Implementation;
 import org.robolectric.annotation.Implements;
 import org.robolectric.annotation.RealObject;
 import org.robolectric.shadows.ShadowAsyncTask;
 
 import java.util.concurrent.Executor;
+
+import shared.customshadows.ImmunizationRowAdapterShadow;
+import shared.customshadows.ImmunizationRowCardShadow;
 
 /**
  * Created by kaderchowdhury on 06/12/17.

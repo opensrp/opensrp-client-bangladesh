@@ -28,8 +28,8 @@ public class ChildImmunizationActivityMock extends ChildImmunizationActivity {
     }
 
 
-    @Override
-    public void updateViews() {
+//    @Override
+    public void updateViewsLocal() {
 //        super.updateViews();
         findViewById(R.id.profile_name_layout).setOnClickListener(new View.OnClickListener() {
             @Override
