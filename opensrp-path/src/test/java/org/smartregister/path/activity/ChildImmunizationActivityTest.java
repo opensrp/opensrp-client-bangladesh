@@ -34,6 +34,7 @@ import org.smartregister.immunization.repository.RecurringServiceRecordRepositor
 import org.smartregister.immunization.repository.RecurringServiceTypeRepository;
 import org.smartregister.immunization.repository.VaccineRepository;
 import org.smartregister.immunization.view.VaccineGroup;
+import org.smartregister.path.R;
 import org.smartregister.path.activity.mockactivity.ChildImmunizationActivityMock;
 import org.smartregister.path.activity.mocks.ImageRepositoryMock;
 import org.smartregister.path.activity.shadow.CoreLibraryShadow;
@@ -122,6 +123,7 @@ public class ChildImmunizationActivityTest extends BaseUnitTest {
         HashMap<String, String> columnMaps = new HashMap<String, String>();
         columnMaps.put("dob","1985-07-24T00:00:00.000Z");
         columnMaps.put("gender", Gender.FEMALE.name());
+        columnMaps.put(PathConstants.KEY.BIRTH_WEIGHT,"100.0");
         childDetails.setColumnmaps(columnMaps);
         childDetails.setDetails(details);
         intent.putExtra(EXTRA_CHILD_DETAILS,childDetails);
@@ -171,6 +173,7 @@ public class ChildImmunizationActivityTest extends BaseUnitTest {
         activity.childDetails = childDetails;
         activity.toolbar = toolbar;
         activity.onWeightTaken(tag);
+        activity.findViewById(R.id.growth_chart_button).performClick();
     }
 
 
@@ -179,8 +182,12 @@ public class ChildImmunizationActivityTest extends BaseUnitTest {
     public void testupdateVaccineGroupViews(){
         VaccineGroup vaccineGroup = new VaccineGroup(RuntimeEnvironment.application);
         VaccineWrapper tag = new VaccineWrapper();
+        tag.setDbKey(0l);
+        Mockito.doNothing().when(vaccineRepository).deleteVaccine(0l);
+
         activity.childDetails = childDetails;
         activity.onUndoVaccination(tag,vaccineGroup);
+        controller.resume();
     }
 
     @Test
@@ -192,6 +199,7 @@ public class ChildImmunizationActivityTest extends BaseUnitTest {
         activity.onUndoService(tag,v);
         activity.onGiveEarlier(tag,v);
         activity.onGiveToday(tag,v);
+        controller.resume();
     }
 
 
