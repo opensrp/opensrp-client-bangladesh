@@ -37,11 +37,7 @@ public class SettingsActivityTest extends BaseUnitTest {
 
     @Test
     public void mockRunnable() {
-//        controller.setup();
-//        Preference baseUrlPreference = activity.findPreference("DRISHTI_BASE_URL");
-//        EditTextPreference baseUrlEditTextPreference = (EditTextPreference) baseUrlPreference;
-//        Preference.OnPreferenceChangeListener listener = baseUrlPreference.getOnPreferenceChangeListener();
-//        listener.onPreferenceChange(baseUrlPreference,"http://www.youtube.com/");
+        controller.setup();
     }
 
     @After
