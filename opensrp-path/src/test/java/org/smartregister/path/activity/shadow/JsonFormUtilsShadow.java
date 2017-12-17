@@ -18,6 +18,10 @@ public class JsonFormUtilsShadow extends Shadow {
                                               String locationName) throws JSONException {
         return "0";
     }
+    @Implementation
+    public static String getOpenMrsReadableName(String name) {
+        return "shadow-text";
+    }
 
     @Implementation
     public static void addChildRegLocHierarchyQuestions(JSONObject form,

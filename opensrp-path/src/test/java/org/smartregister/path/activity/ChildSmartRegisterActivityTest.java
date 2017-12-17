@@ -10,13 +10,19 @@ import org.mockito.MockitoAnnotations;
 import org.robolectric.Robolectric;
 import org.robolectric.RuntimeEnvironment;
 import org.robolectric.android.controller.ActivityController;
+import org.robolectric.annotation.Config;
+import org.smartregister.path.activity.shadow.CommonRepositoryShadow;
+import org.smartregister.path.activity.shadow.ContextShadow;
+import org.smartregister.path.activity.shadow.JsonFormUtilsShadow;
+import org.smartregister.path.activity.shadow.SecuredActivityShadow;
+import org.smartregister.path.customshadow.MyShadowAsyncTask;
 
 import shared.BaseUnitTest;
 
 /**
  * Created by kaderchowdhury on 06/12/17.
  */
-
+@Config(shadows = {SecuredActivityShadow.class,ContextShadow.class, JsonFormUtilsShadow.class, MyShadowAsyncTask.class, CommonRepositoryShadow.class})
 public class ChildSmartRegisterActivityTest extends BaseUnitTest {
 
     ChildSmartRegisterActivity activity;
@@ -28,7 +34,7 @@ public class ChildSmartRegisterActivityTest extends BaseUnitTest {
         Intent intent = new Intent(RuntimeEnvironment.application,ChildSmartRegisterActivity.class);
         controller = Robolectric.buildActivity(ChildSmartRegisterActivity.class,intent);
         activity = controller.get();
-//        controller.setup();
+        controller.setup();
 //controller.create();
     }
 
