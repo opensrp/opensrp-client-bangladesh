@@ -49,10 +49,11 @@ public class ViewGroupShadow extends ShadowLinearLayout {
     @Override
     public void addView(final View child, final int index, final ViewGroup.LayoutParams params) {
         if(child instanceof VaccineGroup){
-
+            ((VaccineGroup) child).setModalOpen(true);
         }else{
             super.addView(child,index,params);
         }
     }
+
 
 }

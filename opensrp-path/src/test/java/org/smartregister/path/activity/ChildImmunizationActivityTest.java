@@ -41,6 +41,7 @@ import org.smartregister.path.activity.shadow.CoreLibraryShadow;
 import org.smartregister.path.activity.shadow.ImageRepositoryShadow;
 import org.smartregister.path.activity.shadow.JsonFormUtilsShadow;
 import org.smartregister.path.activity.shadow.VaccinateActionUtilsShadow;
+import org.smartregister.path.activity.shadow.VaccineGroupShadow;
 import org.smartregister.path.application.VaccinatorApplication;
 import org.smartregister.path.customshadow.MyShadowAsyncTask;
 import org.smartregister.path.customshadow.ViewGroupShadow;
@@ -67,7 +68,7 @@ import util.PathConstants;
 /**
  * Created by kaderchowdhury on 04/12/17.
  */
-@Config(shadows = {ImmunizationRowAdapterShadow.class, ImmunizationRowCardShadow.class ,ViewGroupShadow.class,MyShadowAsyncTask.class, ImageUtilsShadow.class, ImageRepositoryShadow.class, JsonFormUtilsShadow.class, VaccinateActionUtilsShadow.class})
+@Config(shadows = {ImmunizationRowAdapterShadow.class, ImmunizationRowCardShadow.class ,ViewGroupShadow.class,MyShadowAsyncTask.class, ImageUtilsShadow.class, ImageRepositoryShadow.class, JsonFormUtilsShadow.class, VaccinateActionUtilsShadow.class,VaccineGroupShadow.class})
 public class ChildImmunizationActivityTest extends BaseUnitTest {
     @InjectMocks
     private ChildImmunizationActivityMock activity;
@@ -181,13 +182,37 @@ public class ChildImmunizationActivityTest extends BaseUnitTest {
     @Test
     public void testupdateVaccineGroupViews(){
         VaccineGroup vaccineGroup = new VaccineGroup(RuntimeEnvironment.application);
+        vaccineGroup.setModalOpen(true);
         VaccineWrapper tag = new VaccineWrapper();
         tag.setDbKey(0l);
+        tag.setUpdatedVaccineDate(new DateTime(0l),true);
         Mockito.doNothing().when(vaccineRepository).deleteVaccine(0l);
 
         activity.childDetails = childDetails;
         activity.onUndoVaccination(tag,vaccineGroup);
-        controller.resume();
+        controller.resume();//updates vaccinegroup
+    }
+
+    @Test
+    public void testupdateOnVaccinateToday(){
+        VaccineGroup vaccineGroup = new VaccineGroup(RuntimeEnvironment.application);
+        vaccineGroup.setModalOpen(true);
+        VaccineWrapper tag = new VaccineWrapper();
+        tag.setDbKey(0l);
+        tag.setName("OPV0");
+        tag.setUpdatedVaccineDate(new DateTime(0l),true);
+        Mockito.doNothing().when(vaccineRepository).deleteVaccine(0l);
+        Vaccine vaccine = new Vaccine();
+        vaccine.setName("OPV0");
+        activity.childDetails = childDetails;
+        Mockito.doReturn(vaccine).when(vaccineRepository).find(Mockito.anyLong());
+        ArrayList<VaccineWrapper>list = new ArrayList<>();
+        list.add(tag);
+        View v = new View(RuntimeEnvironment.application);
+        activity.onVaccinateToday(list,v);
+        activity.onVaccinateEarlier(list,v);
+
+
     }
 
     @Test
@@ -199,8 +224,10 @@ public class ChildImmunizationActivityTest extends BaseUnitTest {
         activity.onUndoService(tag,v);
         activity.onGiveEarlier(tag,v);
         activity.onGiveToday(tag,v);
+
         controller.resume();
     }
+
 
 
     @After
