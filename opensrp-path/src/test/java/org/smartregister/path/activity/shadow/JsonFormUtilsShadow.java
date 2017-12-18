@@ -1,10 +1,13 @@
 package org.smartregister.path.activity.shadow;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.robolectric.annotation.Implementation;
 import org.robolectric.annotation.Implements;
 import org.robolectric.shadow.api.Shadow;
+
+import java.util.ArrayList;
 
 import util.JsonFormUtils;
 
@@ -27,5 +30,10 @@ public class JsonFormUtilsShadow extends Shadow {
     public static void addChildRegLocHierarchyQuestions(JSONObject form,
                                                         org.smartregister.Context context) {
 
+    }
+
+    @Implementation
+    public static JSONArray generateDefaultLocationHierarchy(org.smartregister.Context context, ArrayList<String> allowedLevels) {
+        return new JSONArray();
     }
 }
