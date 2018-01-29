@@ -226,10 +226,7 @@ public class PathRepository extends Repository {
             db.execSQL(VaccineRepository.UPDATE_TABLE_ADD_OUT_OF_AREA_COL_INDEX);
             db.execSQL(WeightRepository.UPDATE_TABLE_ADD_OUT_OF_AREA_COL);
             db.execSQL(WeightRepository.UPDATE_TABLE_ADD_OUT_OF_AREA_COL_INDEX);
-            DailyTalliesRepository.createTable(db);
-            MonthlyTalliesRepository.createTable(db);
             EventClientRepository.createTable(db, EventClientRepository.Table.path_reports, EventClientRepository.report_column.values());
-            HIA2IndicatorsRepository.createTable(db);
             db.execSQL(VaccineRepository.UPDATE_TABLE_ADD_HIA2_STATUS_COL);
 
             dumpHIA2IndicatorsCSV(db);
@@ -240,7 +237,7 @@ public class PathRepository extends Repository {
 
     private void upgradeToVersion8RecurringServiceUpdate(SQLiteDatabase db) {
         try {
-            db.execSQL(MonthlyTalliesRepository.INDEX_UNIQUE);
+
             dumpHIA2IndicatorsCSV(db);
 
             // Recurring service json changed. update
@@ -345,13 +342,7 @@ public class PathRepository extends Repository {
     }
 
     private void dumpHIA2IndicatorsCSV(SQLiteDatabase db) {
-        List<Map<String, String>> csvData = Utils.populateTableFromCSV(
-                context,
-                HIA2IndicatorsRepository.INDICATORS_CSV_FILE,
-                HIA2IndicatorsRepository.CSV_COLUMN_MAPPING);
-        HIA2IndicatorsRepository hIA2IndicatorsRepository = VaccinatorApplication.getInstance()
-                .hIA2IndicatorsRepository();
-        hIA2IndicatorsRepository.save(db, csvData);
-    }
+
+           }
 
 }

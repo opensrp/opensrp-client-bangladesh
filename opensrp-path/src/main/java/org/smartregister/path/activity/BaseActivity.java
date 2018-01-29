@@ -330,8 +330,8 @@ public abstract class BaseActivity extends AppCompatActivity
         hia2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(getApplicationContext(), HIA2ReportsActivity.class);
-                startActivity(intent);
+//                Intent intent = new Intent(getApplicationContext(), HIA2ReportsActivity.class);
+//                startActivity(intent);
                 drawer.closeDrawer(GravityCompat.START);
 
             }

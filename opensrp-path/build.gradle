@@ -45,7 +45,7 @@ android {
 
     dexOptions {
         incremental true
-        javaMaxHeapSize "4g"
+        javaMaxHeapSize "3g"
     }
 
     lintOptions {

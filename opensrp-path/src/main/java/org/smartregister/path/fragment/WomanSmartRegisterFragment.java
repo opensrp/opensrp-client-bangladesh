@@ -387,7 +387,7 @@ public class WomanSmartRegisterFragment extends BaseSmartRegisterFragment implem
                     break;
 
                 case R.id.scan_qr_code:
-                    ((ChildSmartRegisterActivity) getActivity()).startQrCodeScanner();
+//                    ((ChildSmartRegisterActivity) getActivity()).startQrCodeScanner();
                     break;
 
             }
