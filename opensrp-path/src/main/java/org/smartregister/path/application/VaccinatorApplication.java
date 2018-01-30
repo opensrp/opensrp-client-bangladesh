@@ -34,7 +34,6 @@ import org.smartregister.path.activity.LoginActivity;
 import org.smartregister.path.receiver.PathSyncBroadcastReceiver;
 import org.smartregister.path.receiver.SyncStatusBroadcastReceiver;
 import org.smartregister.path.repository.PathRepository;
-import org.smartregister.path.repository.StockRepository;
 import org.smartregister.path.repository.UniqueIdRepository;
 import org.smartregister.path.sync.PathUpdateActionsTask;
 import org.smartregister.repository.EventClientRepository;
@@ -65,7 +64,6 @@ public class VaccinatorApplication extends DrishtiApplication
     private static CommonFtsObject commonFtsObject;
     private UniqueIdRepository uniqueIdRepository;
     private EventClientRepository eventClientRepository;
-    private StockRepository stockRepository;
     private boolean lastModified;
 
     @Override
@@ -236,7 +234,7 @@ public class VaccinatorApplication extends DrishtiApplication
                 repository = new PathRepository(getInstance().getApplicationContext(), context());
                 uniqueIdRepository();
                 eventClientRepository();
-                stockRepository();
+
             }
         } catch (UnsatisfiedLinkError e) {
             logError("Error on getRepository: " + e);
@@ -284,12 +282,7 @@ public class VaccinatorApplication extends DrishtiApplication
         return eventClientRepository;
     }
 
-    public StockRepository stockRepository() {
-        if (stockRepository == null) {
-            stockRepository = new StockRepository((PathRepository) getRepository());
-        }
-        return stockRepository;
-    }
+
 
     public VaccineTypeRepository vaccineTypeRepository() {
         return ImmunizationLibrary.getInstance().vaccineTypeRepository();

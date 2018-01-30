@@ -97,7 +97,6 @@ public class PathRepository extends Repository {
     private void upgradeToVersion7Stock(SQLiteDatabase db) {
         try {
 //            db.execSQL("DROP TABLE IF EXISTS  ");
-            StockRepository.createTable(db);
             VaccineNameRepository.createTable(db);
             VaccineTypeRepository.createTable(db);
         } catch (Exception e) {

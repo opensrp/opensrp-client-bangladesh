@@ -278,8 +278,8 @@ public abstract class BaseActivity extends AppCompatActivity
         stockregister.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(getApplicationContext(), StockActivity.class);
-                startActivity(intent);
+//                Intent intent = new Intent(getApplicationContext(), StockActivity.class);
+//                startActivity(intent);
                 drawer.closeDrawer(GravityCompat.START);
 
             }

@@ -5,11 +5,10 @@ import android.view.Menu;
 import android.view.View;
 
 import org.smartregister.growthmonitoring.repository.WeightRepository;
-import org.smartregister.immunization.repository.RecurringServiceRecordRepository;
-import org.smartregister.immunization.repository.RecurringServiceTypeRepository;
 import org.smartregister.immunization.repository.VaccineRepository;
 import org.smartregister.path.R;
 import org.smartregister.path.activity.ChildImmunizationActivity;
+import org.smartregister.path.activity.WomanImmunizationActivity;
 import org.smartregister.path.application.VaccinatorApplication;
 import org.smartregister.service.AlertService;
 
@@ -19,7 +18,7 @@ import java.util.Map;
  * Created by kaderchowdhury on 04/12/17.
  */
 
-public class ChildImmunizationActivityMock extends ChildImmunizationActivity {
+public class WomanImmunizationActivityMock extends WomanImmunizationActivity {
     private static final String EXTRA_CHILD_DETAILS = "child_details";
     @Override
     public void onCreate(Bundle bundle) {

@@ -189,8 +189,8 @@ public abstract class BaseRegisterActivity extends SecuredNativeSmartRegisterAct
         } else if (id == R.id.nav_record_vaccination_out_catchment) {
             startFormActivity("out_of_catchment_service", null, null);
         } else if (id == R.id.stock) {
-            Intent intent = new Intent(this, StockActivity.class);
-            startActivity(intent);
+//            Intent intent = new Intent(this, StockActivity.class);
+//            startActivity(intent);
         } else if (id == R.id.nav_sync) {
             startSync();
         } else if (id == R.id.nav_hia2) {
@@ -331,8 +331,8 @@ public abstract class BaseRegisterActivity extends SecuredNativeSmartRegisterAct
         stockregister.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(getApplicationContext(), StockActivity.class);
-                startActivity(intent);
+//                Intent intent = new Intent(getApplicationContext(), StockActivity.class);
+//                startActivity(intent);
                 drawer.closeDrawer(GravityCompat.START);
 
             }

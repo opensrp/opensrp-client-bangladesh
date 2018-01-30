@@ -221,9 +221,6 @@ public class ChildImmunizationActivityTest extends BaseUnitTest {
         ServiceWrapper tag = new ServiceWrapper();
         tag.setDbKey(0l);
         activity.childDetails = childDetails;
-        activity.onUndoService(tag,v);
-        activity.onGiveEarlier(tag,v);
-        activity.onGiveToday(tag,v);
 
         controller.resume();
     }

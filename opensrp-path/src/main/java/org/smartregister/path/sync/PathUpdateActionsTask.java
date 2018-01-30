@@ -15,10 +15,8 @@ import org.smartregister.domain.FetchStatus;
 import org.smartregister.domain.Response;
 import org.smartregister.growthmonitoring.service.intent.ZScoreRefreshIntentService;
 import org.smartregister.path.application.VaccinatorApplication;
-import org.smartregister.path.domain.Stock;
 import org.smartregister.path.receiver.SyncStatusBroadcastReceiver;
 import org.smartregister.path.receiver.VaccinatorAlarmReceiver;
-import org.smartregister.path.repository.StockRepository;
 import org.smartregister.path.service.intent.PullUniqueIdsIntentService;
 import org.smartregister.repository.AllSharedPreferences;
 import org.smartregister.repository.BaseRepository;
@@ -162,7 +160,6 @@ public class PathUpdateActionsTask {
                 Log.i(getClass().getName(), "!!!!! Sync count:  " + eCount);
                 pathAfterFetchListener.partialFetch(fetched);
             }
-            pullStockFromServer();
 
             if (totalCount == 0) {
                 return nothingFetched;
@@ -181,7 +178,6 @@ public class PathUpdateActionsTask {
     private void pushToServer() {
         pushECToServer();
         pushReportsToServer();
-        pushStockToServer();
     }
 
     private void pushECToServer() {
@@ -234,55 +230,7 @@ public class PathUpdateActionsTask {
 
     }
 
-    private void pullStockFromServer() {
-        final String LAST_STOCK_SYNC = "last_stock_sync";
-        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
-        AllSharedPreferences allSharedPreferences = new AllSharedPreferences(preferences);
-        String anmId = allSharedPreferences.fetchRegisteredANM();
-        String baseUrl = VaccinatorApplication.getInstance().context().configuration().dristhiBaseURL();
-        if (baseUrl.endsWith("/")) {
-            baseUrl = baseUrl.substring(0, baseUrl.lastIndexOf("/"));
-        }
 
-        while (true) {
-            long timestamp = preferences.getLong(LAST_STOCK_SYNC, 0);
-            String timeStampString = String.valueOf(timestamp);
-            String uri = format("{0}/{1}?providerid={2}&serverVersion={3}",
-                    baseUrl,
-                    STOCK_SYNC_PATH,
-                    anmId,
-                    timeStampString
-            );
-            Response<String> response = httpAgent.fetch(uri);
-            if (response.isFailure()) {
-                logError(format("Stock pull failed."));
-                return;
-            }
-            String jsonPayload = response.payload();
-            ArrayList<Stock> Stock_arrayList = getStockFromPayload(jsonPayload);
-            Long highestTimestamp = getHighestTimestampFromStockPayLoad(jsonPayload);
-            SharedPreferences.Editor editor = preferences.edit();
-            editor.putLong(LAST_STOCK_SYNC, highestTimestamp);
-            editor.commit();
-            if (Stock_arrayList.isEmpty()) {
-                return;
-            } else {
-                StockRepository stockRepository = VaccinatorApplication.getInstance().stockRepository();
-                for (int j = 0; j < Stock_arrayList.size(); j++) {
-                    Stock fromServer = Stock_arrayList.get(j);
-                    List<Stock> existingStock = stockRepository.findUniqueStock(fromServer.getVaccineTypeId(), fromServer.getTransactionType(), fromServer.getProviderid(),
-                            String.valueOf(fromServer.getValue()), String.valueOf(fromServer.getDateCreated()), fromServer.getToFrom());
-                    if (!existingStock.isEmpty()) {
-                        for (Stock stock : existingStock) {
-                            fromServer.setId(stock.getId());
-                        }
-                    }
-                    stockRepository.add(fromServer);
-                }
-
-            }
-        }
-    }
 
     private Long getHighestTimestampFromStockPayLoad(String jsonPayload) {
         Long toreturn = 0l;
@@ -305,92 +253,8 @@ public class PathUpdateActionsTask {
         return toreturn;
     }
 
-    private ArrayList<Stock> getStockFromPayload(String jsonPayload) {
-        ArrayList<Stock> Stock_arrayList = new ArrayList<>();
-        try {
-            JSONObject stockcontainer = new JSONObject(jsonPayload);
-            if (stockcontainer.has("stocks")) {
-                JSONArray stockArray = stockcontainer.getJSONArray("stocks");
-                for (int i = 0; i < stockArray.length(); i++) {
-                    JSONObject stockObject = stockArray.getJSONObject(i);
-                    Stock stock = new Stock(null,
-                            stockObject.getString("transaction_type"),
-                            stockObject.getString("providerid"),
-                            stockObject.getInt("value"),
-                            stockObject.getLong("date_created"),
-                            stockObject.getString("to_from"),
-                            BaseRepository.TYPE_Synced,
-                            stockObject.getLong("date_updated"),
-                            stockObject.getString("vaccine_type_id"));
-                    Stock_arrayList.add(stock);
-                }
-            }
-        } catch (Exception e) {
-            Log.e(getClass().getCanonicalName(), e.getMessage());
-        }
-        return Stock_arrayList;
-    }
 
-    private void pushStockToServer() {
-        boolean keepSyncing = true;
-        int limit = 50;
 
-        try {
-
-            while (keepSyncing) {
-                StockRepository stockRepository = VaccinatorApplication.getInstance().stockRepository();
-                ArrayList<Stock> stocks = (ArrayList<Stock>) stockRepository.findUnSyncedWithLimit(limit);
-                JSONArray stocksarray = createJsonArrayFromStockArray(stocks);
-                if (stocks.isEmpty()) {
-                    return;
-                }
-
-                String baseUrl = VaccinatorApplication.getInstance().context().configuration().dristhiBaseURL();
-                if (baseUrl.endsWith("/")) {
-                    baseUrl = baseUrl.substring(0, baseUrl.lastIndexOf("/"));
-                }
-                // create request body
-                JSONObject request = new JSONObject();
-                request.put("stocks", stocksarray);
-
-                String jsonPayload = request.toString();
-                Response<String> response = httpAgent.post(
-                        format("{0}/{1}",
-                                baseUrl,
-                                STOCK_Add_PATH),
-                        jsonPayload);
-                if (response.isFailure()) {
-                    Log.e(getClass().getName(), "Stocks sync failed.");
-                    return;
-                }
-                stockRepository.markEventsAsSynced(stocks);
-                Log.i(getClass().getName(), "Stocks synced successfully.");
-            }
-        } catch (JSONException e) {
-            Log.e(getClass().getName(), e.getMessage());
-        }
-    }
-
-    private JSONArray createJsonArrayFromStockArray(ArrayList<Stock> stocks) {
-        JSONArray array = new JSONArray();
-        for (int i = 0; i < stocks.size(); i++) {
-            JSONObject stock = new JSONObject();
-            try {
-                stock.put("identifier", stocks.get(i).getId());
-                stock.put("vaccine_type_id", stocks.get(i).getVaccineTypeId());
-                stock.put("transaction_type", stocks.get(i).getTransactionType());
-                stock.put("providerid", stocks.get(i).getProviderid());
-                stock.put("date_created", stocks.get(i).getDateCreated());
-                stock.put("value", stocks.get(i).getValue());
-                stock.put("to_from", stocks.get(i).getToFrom());
-                stock.put("date_updated", stocks.get(i).getUpdatedAt());
-                array.put(stock);
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
-        }
-        return array;
-    }
 
     private void pushReportsToServer() {
         EventClientRepository db = VaccinatorApplication.getInstance().eventClientRepository();
