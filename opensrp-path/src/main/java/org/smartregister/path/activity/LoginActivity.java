@@ -198,7 +198,7 @@ public class LoginActivity extends AppCompatActivity {
         progressDialog.setMessage(getString(org.smartregister.R.string.loggin_in_dialog_message));
     }
 
-    private void localLogin(View view, String userName, String password) {
+    public void localLogin(View view, String userName, String password) {
         view.setClickable(true);
         if (getOpenSRPContext().userService().isUserInValidGroup(userName, password)
                 && (!PathConstants.TIME_CHECK || TimeStatus.OK.equals(getOpenSRPContext().userService().validateStoredServerTimeZone()))) {
@@ -321,7 +321,7 @@ public class LoginActivity extends AppCompatActivity {
         });
     }
 
-    private void tryRemoteLogin(final String userName, final String password, final Listener<LoginResponse> afterLoginCheck) {
+    public void tryRemoteLogin(final String userName, final String password, final Listener<LoginResponse> afterLoginCheck) {
         if (remoteLoginTask != null && !remoteLoginTask.isCancelled()) {
             remoteLoginTask.cancel(true);
         }
