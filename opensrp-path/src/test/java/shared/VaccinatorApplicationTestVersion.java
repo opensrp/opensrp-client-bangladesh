@@ -60,7 +60,7 @@ public class VaccinatorApplicationTestVersion extends VaccinatorApplication impl
         when(alertService.findByEntityIdAndAlertNames(Mockito.anyString(), Mockito.any(String[].class))).thenReturn(new ArrayList<Alert>());
 
 
-        mInstance = this;
+        mInstance = Mockito.spy(this);
 
     }
 

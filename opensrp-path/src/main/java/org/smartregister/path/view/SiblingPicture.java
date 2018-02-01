@@ -28,6 +28,8 @@ import java.util.Map;
 import util.ImageUtils;
 import util.PathConstants;
 
+import static org.smartregister.util.Utils.getValue;
+
 /**
  * Created by Jason Rogena - jrogena@ona.io on 09/05/2017.
  */
@@ -59,7 +61,7 @@ public class SiblingPicture extends RecyclerView.ViewHolder {
         Gender gender = Gender.UNKNOWN;
         int genderColor = R.color.gender_neutral_green;
         int genderLightColor = R.color.gender_neutral_light_green;
-        String genderString = Utils.getValue(childDetails.getColumnmaps(), "gender", false);
+        String genderString = getValue(childDetails.getColumnmaps(), "gender", false);
 
         if (genderString != null && genderString.toLowerCase().equals(PathConstants.GENDER.FEMALE)) {
             gender = Gender.FEMALE;
@@ -71,7 +73,7 @@ public class SiblingPicture extends RecyclerView.ViewHolder {
             genderLightColor = R.color.male_light_blue;
         }
 
-        if (Utils.getValue(childDetails.getColumnmaps(), "has_profile_image", false).equals("true")) {
+        if (getValue(childDetails.getColumnmaps(), "has_profile_image", false).equals("true")) {
             profilePhoto.setVisibility(View.VISIBLE);
             initials.setBackgroundColor(context.getResources().getColor(android.R.color.transparent));
             initials.setTextColor(context.getResources().getColor(android.R.color.black));
@@ -86,18 +88,27 @@ public class SiblingPicture extends RecyclerView.ViewHolder {
             initials.setTextColor(context.getResources().getColor(genderColor));
         }
 
-        final String firstName = Utils.getValue(childDetails.getColumnmaps(), "first_name", true);
-        final String lastName = Utils.getValue(childDetails.getColumnmaps(), "last_name", true);
+        final String firstName = getValue(childDetails.getColumnmaps(), "first_name", true);
+        final String lastName = getValue(childDetails.getColumnmaps(), "last_name", true);
 
-        if (Utils.getValue(childDetails.getColumnmaps(), "has_profile_image", false).equals("false")) {
+        if (getValue(childDetails.getColumnmaps(), "has_profile_image", false).equals("false")) {
             initials.setVisibility(View.VISIBLE);
             String initialsString = "";
             if (!TextUtils.isEmpty(firstName)) {
                 initialsString = firstName.substring(0, 1);
             }
 
-            if (!TextUtils.isEmpty(lastName)) {
+            if (!TextUtils.isEmpty(lastName) && !lastName.equalsIgnoreCase(".")) {
                 initialsString = initialsString + lastName.substring(0, 1);
+            }else{
+                if(firstName.contains(" ")){
+                    String [] firstnamearray = firstName.split(" ");
+                    if(firstnamearray.length>1){
+                        initialsString = initialsString+firstnamearray[1].substring(0,1);
+                    }
+                }else if(firstName.length()>2) {
+                    initialsString = initialsString + firstName.substring(1, 2);
+                }
             }
 
             initials.setText(initialsString.toUpperCase());
@@ -156,7 +167,7 @@ public class SiblingPicture extends RecyclerView.ViewHolder {
                 }
 
                 // Get mother details
-                String motherBaseEntityId = Utils.getValue(childDetails.getColumnmaps(),
+                String motherBaseEntityId = getValue(childDetails.getColumnmaps(),
                         "relational_id", false);
 
                 Map<String, String> motherDetails = new HashMap<>();
@@ -169,13 +180,13 @@ public class SiblingPicture extends RecyclerView.ViewHolder {
                             .commonrepository(PathConstants.MOTHER_TABLE_NAME).findByBaseEntityId(motherBaseEntityId);
                     if (rawMotherDetails != null) {
                         motherDetails.put("mother_first_name",
-                                Utils.getValue(rawMotherDetails.getColumnmaps(), "first_name", false));
+                                getValue(rawMotherDetails.getColumnmaps(), "first_name", false));
                         motherDetails.put("mother_last_name",
-                                Utils.getValue(rawMotherDetails.getColumnmaps(), "last_name", false));
+                                getValue(rawMotherDetails.getColumnmaps(), "last_name", false));
                         motherDetails.put("mother_dob",
-                                Utils.getValue(rawMotherDetails.getColumnmaps(), "dob", false));
+                                getValue(rawMotherDetails.getColumnmaps(), "dob", false));
                         motherDetails.put("mother_nrc_number",
-                                Utils.getValue(rawMotherDetails.getColumnmaps(), "nrc_number", false));
+                                getValue(rawMotherDetails.getColumnmaps(), "nrc_number", false));
                     }
                 }
                 util.Utils.putAll(childDetails.getColumnmaps(), motherDetails);

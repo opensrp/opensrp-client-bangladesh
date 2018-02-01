@@ -85,6 +85,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Random;
 import java.util.concurrent.TimeUnit;
+import java.util.regex.Pattern;
 
 import util.ImageUtils;
 import util.JsonFormUtils;
@@ -133,12 +134,12 @@ public class WomanImmunizationActivity extends BaseActivity
     }
 
     // Views
-    private LocationSwitcherToolbar toolbar;
+    public LocationSwitcherToolbar toolbar;
 
     // Data
-    private CommonPersonObjectClient childDetails;
+    public CommonPersonObjectClient childDetails;
     private RegisterClickables registerClickables;
-    private DetailsRepository detailsRepository;
+    public DetailsRepository detailsRepository;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -266,7 +267,7 @@ public class WomanImmunizationActivity extends BaseActivity
         }
     }
 
-    private void updateChildIdViews() {
+    public void updateChildIdViews() {
         String name = "";
         String childId = "";
         if (isDataOk()) {
@@ -282,7 +283,7 @@ public class WomanImmunizationActivity extends BaseActivity
         startAsyncTask(new GetSiblingsTask(), null);
     }
 
-    private void updateAgeViews() {
+    public void updateAgeViews() {
         String dobString = "";
         String formattedAge = "";
         String formattedDob = "";
@@ -305,7 +306,7 @@ public class WomanImmunizationActivity extends BaseActivity
         ageTV.setText(String.format("%s: %s", getString(R.string.age), formattedAge));
     }
 
-    private void updateGenderViews() {
+    public void updateGenderViews() {
         Gender gender = Gender.MALE;
         if (isDataOk()) {
             String genderString = getValue(childDetails, "gender", false);
@@ -419,39 +420,14 @@ public class WomanImmunizationActivity extends BaseActivity
             }
         }
 
-        showVaccineNotifications(vaccineList, alerts);
     }
 
-    private void showVaccineNotifications(List<Vaccine> vaccineList, List<Alert> alerts) {
-        if (!VaccinateActionUtils.hasVaccine(vaccineList, VaccineRepo.Vaccine.bcg2)) {
-            Vaccine bcg = VaccinateActionUtils.getVaccine(vaccineList, VaccineRepo.Vaccine.bcg);
 
-            boolean bcgOfferedInPast = true;
-            if (bcg != null) {
-                Calendar bcgDate = Calendar.getInstance();
-                bcgDate.setTime(bcg.getDate());
-
-                Calendar today = Calendar.getInstance();
-                if (bcgDate.get(Calendar.YEAR) == today.get(Calendar.YEAR)
-                        && bcgDate.get(Calendar.MONTH) == today.get(Calendar.MONTH)
-                        && bcgDate.get(Calendar.DATE) == today.get(Calendar.DATE)) {
-                    bcgOfferedInPast = false;
-                }
-            }
-
-            if (VaccinateActionUtils.hasAlert(alerts, VaccineRepo.Vaccine.bcg2) && bcgOfferedInPast) {
-                Alert alert = VaccinateActionUtils.getAlert(alerts, VaccineRepo.Vaccine.bcg2);
-                if (!alert.isComplete()) {
-                    showCheckBcgScarNotification(alert);
-                }
-            }
-        }
-    }
 
     private void addVaccineGroup(int canvasId, JSONObject vaccineGroupData, List<Vaccine> vaccineList, List<Alert> alerts) {
         LinearLayout vaccineGroupCanvasLL = (LinearLayout) findViewById(R.id.vaccine_group_canvas_ll);
         VaccineGroup curGroup = new VaccineGroup(this);
-        curGroup.setData(vaccineGroupData, childDetails, vaccineList, alerts,"mother");
+        curGroup.setData(vaccineGroupData, childDetails, vaccineList, alerts,"woman");
         curGroup.setOnRecordAllClickListener(new VaccineGroup.OnRecordAllClickListener() {
             @Override
             public void onClick(VaccineGroup vaccineGroup, ArrayList<VaccineWrapper> dueVaccines) {
@@ -652,7 +628,7 @@ public class WomanImmunizationActivity extends BaseActivity
         fromContext.startActivity(intent);
     }
 
-    private String updateActivityTitle() {
+    public String updateActivityTitle() {
         String name = "";
         if (isDataOk()) {
             name = constructChildName();
@@ -899,7 +875,7 @@ public class WomanImmunizationActivity extends BaseActivity
         if (Looper.myLooper() == Looper.getMainLooper()) {
             if (undo) {
                 vaccineGroup.setVaccineList(vaccineList);
-                vaccineGroup.updateWrapperStatus(wrappers,"mother");
+                vaccineGroup.updateWrapperStatus(wrappers,"woman");
             }
             vaccineGroup.updateViews(wrappers);
 
@@ -910,7 +886,7 @@ public class WomanImmunizationActivity extends BaseActivity
                 public void run() {
                     if (undo) {
                         vaccineGroup.setVaccineList(vaccineList);
-                        vaccineGroup.updateWrapperStatus(wrappers,"mother");
+                        vaccineGroup.updateWrapperStatus(wrappers,"woman");
                     }
                     vaccineGroup.updateViews(wrappers);
                 }
@@ -1008,7 +984,6 @@ public class WomanImmunizationActivity extends BaseActivity
             }
 
             updateVaccineGroupsUsingAlerts(affectedVaccines, vaccineList, alertList);
-            showVaccineNotifications(vaccineList, alertList);
         }
 
         @Override
@@ -1029,14 +1004,14 @@ public class WomanImmunizationActivity extends BaseActivity
                 Date dateTime = null;
                 try {
                     dateTime = lmp_DATE_FORMAT.parse(dobString);
-                    affectedVaccines = VaccineSchedule.updateOfflineAlerts(childDetails.entityId(), new DateTime(dateTime.getTime()), "mother");
+                    affectedVaccines = VaccineSchedule.updateOfflineAlerts(childDetails.entityId(), new DateTime(dateTime.getTime()), "woman");
                 } catch (ParseException e) {
                     e.printStackTrace();
                 }
             }
             vaccineList = vaccineRepository.findByEntityId(childDetails.entityId());
             alertList = alertService.findByEntityIdAndAlertNames(childDetails.entityId(),
-                    VaccinateActionUtils.allAlertNames("child"));
+                    VaccinateActionUtils.allAlertNames("woman"));
 
             return pair;
         }
@@ -1044,7 +1019,7 @@ public class WomanImmunizationActivity extends BaseActivity
 
     private String constructChildName() {
         String firstName = getValue(childDetails.getColumnmaps(), "first_name", true);
-        String lastName = getValue(childDetails.getColumnmaps(), "last_name", true).replace(".","");
+        String lastName = getValue(childDetails.getColumnmaps(), "last_name", true).replaceAll(Pattern.quote("."),"");
         return getName(firstName, lastName).trim();
     }
 
@@ -1188,7 +1163,7 @@ public class WomanImmunizationActivity extends BaseActivity
                 Date dateTime = null;
                 try {
                     dateTime = lmp_DATE_FORMAT.parse(dobString);
-                    VaccineSchedule.updateOfflineAlerts(childDetails.entityId(), new DateTime(dateTime.getTime()), "mother");
+                    VaccineSchedule.updateOfflineAlerts(childDetails.entityId(), new DateTime(dateTime.getTime()), "woman");
                 } catch (ParseException e) {
                     e.printStackTrace();
                 }
@@ -1281,13 +1256,13 @@ public class WomanImmunizationActivity extends BaseActivity
                             Date dateTime = null;
                             try {
                                 dateTime = lmp_DATE_FORMAT.parse(dobString);
-                                VaccineSchedule.updateOfflineAlerts(childDetails.entityId(), new DateTime(dateTime.getTime()), "mother");
+                                VaccineSchedule.updateOfflineAlerts(childDetails.entityId(), new DateTime(dateTime.getTime()), "woman");
                             } catch (ParseException e) {
                                 e.printStackTrace();
                             }
                         vaccineList = vaccineRepository.findByEntityId(childDetails.entityId());
                         alertList = alertService.findByEntityIdAndAlertNames(childDetails.entityId(),
-                                VaccinateActionUtils.allAlertNames("mother"));
+                                VaccinateActionUtils.allAlertNames("woman"));
                     }
                 }
             }
@@ -1308,7 +1283,6 @@ public class WomanImmunizationActivity extends BaseActivity
             wrappers.add(tag);
             updateVaccineGroupViews(view, wrappers, vaccineList, true);
             updateVaccineGroupsUsingAlerts(affectedVaccines, vaccineList, alertList);
-            showVaccineNotifications(vaccineList, alertList);
         }
     }
 

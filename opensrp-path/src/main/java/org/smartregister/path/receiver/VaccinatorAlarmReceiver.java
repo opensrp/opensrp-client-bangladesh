@@ -10,7 +10,6 @@ import org.smartregister.growthmonitoring.service.intent.WeightIntentService;
 import org.smartregister.immunization.service.intent.RecurringIntentService;
 import org.smartregister.immunization.service.intent.VaccineIntentService;
 import org.smartregister.path.application.VaccinatorApplication;
-import org.smartregister.path.service.intent.HIA2IntentService;
 import org.smartregister.util.Log;
 
 import java.text.SimpleDateFormat;
@@ -36,10 +35,6 @@ public class VaccinatorAlarmReceiver extends BroadcastReceiver {
                 case PathConstants.ServiceType.DATA_SYNCHRONIZATION:
                     //handled by pathupdateactionstask
                     android.util.Log.i(TAG, "Started data synchronization service at: " + dateFormatter.format(new Date()));
-                    break;
-                case PathConstants.ServiceType.DAILY_TALLIES_GENERATION:
-                    android.util.Log.i(TAG, "Started DAILY_TALLIES_GENERATION service at: " + dateFormatter.format(new Date()));
-                    serviceIntent = new Intent(context, HIA2IntentService.class);
                     break;
                 case PathConstants.ServiceType.MONTHLY_TALLIES_GENERATION:
                     android.util.Log.i(TAG, "Started MONTHLY_TALLIES_GENERATION service at: " + dateFormatter.format(new Date()));

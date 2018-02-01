@@ -278,8 +278,8 @@ public abstract class BaseActivity extends AppCompatActivity
         stockregister.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(getApplicationContext(), StockActivity.class);
-                startActivity(intent);
+//                Intent intent = new Intent(getApplicationContext(), StockActivity.class);
+//                startActivity(intent);
                 drawer.closeDrawer(GravityCompat.START);
 
             }
@@ -330,12 +330,18 @@ public abstract class BaseActivity extends AppCompatActivity
         hia2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(getApplicationContext(), HIA2ReportsActivity.class);
-                startActivity(intent);
+//                Intent intent = new Intent(getApplicationContext(), HIA2ReportsActivity.class);
+//                startActivity(intent);
                 drawer.closeDrawer(GravityCompat.START);
 
             }
         });
+        /////disabling buttons
+        outofcatchment.setVisibility(View.GONE);
+        stockregister.setVisibility(View.GONE);
+        hia2.setVisibility(View.GONE);
+        addchild.setVisibility(View.GONE);
+        ///////////////////////////////////////
 
     }
     private String getLastSyncTime() {

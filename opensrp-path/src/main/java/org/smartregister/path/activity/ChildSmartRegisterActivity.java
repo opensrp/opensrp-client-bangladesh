@@ -41,9 +41,6 @@ import org.smartregister.view.viewpager.OpenSRPViewPager;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import util.JsonFormUtils;
-import util.barcode.Barcode;
-import util.barcode.BarcodeIntentIntegrator;
-import util.barcode.BarcodeIntentResult;
 
 import static android.view.inputmethod.InputMethodManager.HIDE_NOT_ALWAYS;
 
@@ -189,11 +186,6 @@ public class ChildSmartRegisterActivity extends BaseRegisterActivity {
 
                 JsonFormUtils.saveForm(this, context(), jsonString, allSharedPreferences.fetchRegisteredANM());
             }
-        } else if (requestCode == BarcodeIntentIntegrator.REQUEST_CODE && resultCode == RESULT_OK) {
-            BarcodeIntentResult res = BarcodeIntentIntegrator.parseActivityResult(requestCode, resultCode, data);
-            if (StringUtils.isNotBlank(res.getContents())) {
-                onQRCodeSucessfullyScanned(res.getContents());
-            } else Log.i("", "NO RESULT FOR QR CODE");
         }
     }
 
@@ -275,11 +267,7 @@ public class ChildSmartRegisterActivity extends BaseRegisterActivity {
         super.onPause();
     }
 
-    public void startQrCodeScanner() {
-        BarcodeIntentIntegrator integ = new BarcodeIntentIntegrator(this);
-        integ.addExtra(Barcode.SCAN_MODE, Barcode.QR_MODE);
-        integ.initiateScan();
-    }
+
 
     public void filterSelection() {
         if (currentPage != 0) {

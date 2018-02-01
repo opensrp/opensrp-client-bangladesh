@@ -189,13 +189,13 @@ public abstract class BaseRegisterActivity extends SecuredNativeSmartRegisterAct
         } else if (id == R.id.nav_record_vaccination_out_catchment) {
             startFormActivity("out_of_catchment_service", null, null);
         } else if (id == R.id.stock) {
-            Intent intent = new Intent(this, StockActivity.class);
-            startActivity(intent);
+//            Intent intent = new Intent(this, StockActivity.class);
+//            startActivity(intent);
         } else if (id == R.id.nav_sync) {
             startSync();
         } else if (id == R.id.nav_hia2) {
-            Intent intent = new Intent(this, HIA2ReportsActivity.class);
-            startActivity(intent);
+//            Intent intent = new Intent(this, HIA2ReportsActivity.class);
+//            startActivity(intent);
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -331,8 +331,8 @@ public abstract class BaseRegisterActivity extends SecuredNativeSmartRegisterAct
         stockregister.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(getApplicationContext(), StockActivity.class);
-                startActivity(intent);
+//                Intent intent = new Intent(getApplicationContext(), StockActivity.class);
+//                startActivity(intent);
                 drawer.closeDrawer(GravityCompat.START);
 
             }
@@ -341,8 +341,8 @@ public abstract class BaseRegisterActivity extends SecuredNativeSmartRegisterAct
         hia2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(getApplicationContext(), HIA2ReportsActivity.class);
-                startActivity(intent);
+//                Intent intent = new Intent(getApplicationContext(), HIA2ReportsActivity.class);
+//                startActivity(intent);
                 drawer.closeDrawer(GravityCompat.START);
 
             }
@@ -388,6 +388,12 @@ public abstract class BaseRegisterActivity extends SecuredNativeSmartRegisterAct
 //                finish();
             }
         });
+        /////disabling buttons
+        outofcatchment.setVisibility(View.GONE);
+        stockregister.setVisibility(View.GONE);
+        hia2.setVisibility(View.GONE);
+        addchild.setVisibility(View.GONE);
+        ///////////////////////////////////////
 
     }
 

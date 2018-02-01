@@ -31,14 +31,9 @@ import org.smartregister.immunization.util.VaccinatorUtils;
 import org.smartregister.path.BuildConfig;
 import org.smartregister.path.R;
 import org.smartregister.path.activity.LoginActivity;
-import org.smartregister.path.receiver.Hia2ServiceBroadcastReceiver;
 import org.smartregister.path.receiver.PathSyncBroadcastReceiver;
 import org.smartregister.path.receiver.SyncStatusBroadcastReceiver;
-import org.smartregister.path.repository.DailyTalliesRepository;
-import org.smartregister.path.repository.HIA2IndicatorsRepository;
-import org.smartregister.path.repository.MonthlyTalliesRepository;
 import org.smartregister.path.repository.PathRepository;
-import org.smartregister.path.repository.StockRepository;
 import org.smartregister.path.repository.UniqueIdRepository;
 import org.smartregister.path.sync.PathUpdateActionsTask;
 import org.smartregister.repository.EventClientRepository;
@@ -68,11 +63,7 @@ public class VaccinatorApplication extends DrishtiApplication
     private static final String TAG = "VaccinatorApplication";
     private static CommonFtsObject commonFtsObject;
     private UniqueIdRepository uniqueIdRepository;
-    private DailyTalliesRepository dailyTalliesRepository;
-    private MonthlyTalliesRepository monthlyTalliesRepository;
-    private HIA2IndicatorsRepository hIA2IndicatorsRepository;
     private EventClientRepository eventClientRepository;
-    private StockRepository stockRepository;
     private boolean lastModified;
 
     @Override
@@ -90,7 +81,6 @@ public class VaccinatorApplication extends DrishtiApplication
         }
         DrishtiSyncScheduler.setReceiverClass(PathSyncBroadcastReceiver.class);
 
-        Hia2ServiceBroadcastReceiver.init(this);
         SyncStatusBroadcastReceiver.init(this);
         TimeChangedBroadcastReceiver.init(this);
         TimeChangedBroadcastReceiver.getInstance().addOnTimeChangedListener(this);
@@ -243,11 +233,8 @@ public class VaccinatorApplication extends DrishtiApplication
             if (repository == null) {
                 repository = new PathRepository(getInstance().getApplicationContext(), context());
                 uniqueIdRepository();
-                dailyTalliesRepository();
-                monthlyTalliesRepository();
-                hIA2IndicatorsRepository();
                 eventClientRepository();
-                stockRepository();
+
             }
         } catch (UnsatisfiedLinkError e) {
             logError("Error on getRepository: " + e);
@@ -280,28 +267,6 @@ public class VaccinatorApplication extends DrishtiApplication
         return uniqueIdRepository;
     }
 
-    public DailyTalliesRepository dailyTalliesRepository() {
-        if (dailyTalliesRepository == null) {
-            dailyTalliesRepository = new DailyTalliesRepository((PathRepository) getRepository());
-        }
-        return dailyTalliesRepository;
-    }
-
-    public MonthlyTalliesRepository monthlyTalliesRepository() {
-        if (monthlyTalliesRepository == null) {
-            monthlyTalliesRepository = new MonthlyTalliesRepository((PathRepository) getRepository());
-        }
-
-        return monthlyTalliesRepository;
-    }
-
-    public HIA2IndicatorsRepository hIA2IndicatorsRepository() {
-        if (hIA2IndicatorsRepository == null) {
-            hIA2IndicatorsRepository = new HIA2IndicatorsRepository((PathRepository) getRepository());
-        }
-        return hIA2IndicatorsRepository;
-    }
-
     public RecurringServiceTypeRepository recurringServiceTypeRepository() {
         return ImmunizationLibrary.getInstance().recurringServiceTypeRepository();
     }
@@ -317,12 +282,7 @@ public class VaccinatorApplication extends DrishtiApplication
         return eventClientRepository;
     }
 
-    public StockRepository stockRepository() {
-        if (stockRepository == null) {
-            stockRepository = new StockRepository((PathRepository) getRepository());
-        }
-        return stockRepository;
-    }
+
 
     public VaccineTypeRepository vaccineTypeRepository() {
         return ImmunizationLibrary.getInstance().vaccineTypeRepository();
@@ -358,7 +318,9 @@ public class VaccinatorApplication extends DrishtiApplication
         try {
             JSONArray childVaccines = new JSONArray(VaccinatorUtils.getSupportedVaccines(this));
             JSONArray specialVaccines = new JSONArray(VaccinatorUtils.getSpecialVaccines(this));
+            JSONArray womanVaccines = new JSONArray(VaccinatorUtils.getSupportedWomanVaccines(this));
             VaccineSchedule.init(childVaccines, specialVaccines, "child");
+            VaccineSchedule.init(womanVaccines, null, "woman");
         } catch (Exception e) {
             Log.e(TAG, Log.getStackTraceString(e));
         }

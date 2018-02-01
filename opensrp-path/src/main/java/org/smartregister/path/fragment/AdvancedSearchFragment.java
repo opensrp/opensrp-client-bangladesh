@@ -29,10 +29,6 @@ import com.vijay.jsonwizard.customviews.RadioButton;
 import com.vijay.jsonwizard.utils.DatePickerUtils;
 
 import org.apache.commons.lang3.StringUtils;
-import org.joda.time.DateTime;
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
 import org.smartregister.clientandeventmodel.DateUtil;
 import org.smartregister.commonregistry.CommonPersonObjectClient;
 import org.smartregister.cursoradapter.SmartRegisterQueryBuilder;
@@ -45,7 +41,10 @@ import org.smartregister.path.adapter.AdvancedSearchPaginatedCursorAdapter;
 import org.smartregister.path.application.VaccinatorApplication;
 import org.smartregister.path.domain.RegisterClickables;
 import org.smartregister.path.provider.AdvancedSearchClientsProvider;
-import org.smartregister.util.Utils;
+import org.joda.time.DateTime;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -60,9 +59,14 @@ import util.GlobalSearchUtils;
 import util.JsonFormUtils;
 import util.MoveToMyCatchmentUtils;
 import util.PathConstants;
+import util.Utils;
+
+import static org.smartregister.util.Utils.isConnectedToNetwork;
 
 public class AdvancedSearchFragment extends BaseSmartRegisterFragment {
+    private View mView;
     private final ClientActionHandler clientActionHandler = new ClientActionHandler();
+    private Button search;
     private RadioButton outsideInside;
     private RadioButton myCatchment;
     private CheckBox active;
@@ -87,7 +91,7 @@ public class AdvancedSearchFragment extends BaseSmartRegisterFragment {
     private ProgressDialog progressDialog;
 
     //private List<Integer> editedList = new ArrayList<>();
-    private final Map<String, String> editMap = new HashMap<>();
+    private Map<String, String> editMap = new HashMap<>();
     private boolean listMode = false;
     private int overdueCount = 0;
     private boolean outOfArea = false;
@@ -113,7 +117,7 @@ public class AdvancedSearchFragment extends BaseSmartRegisterFragment {
     private static final String START_DATE = "start_date";
     private static final String END_DATE = "end_date";
 
-    private AdvancedSearchPaginatedCursorAdapter clientAdapter;
+    AdvancedSearchPaginatedCursorAdapter clientAdapter;
 
     @Override
 
@@ -122,9 +126,18 @@ public class AdvancedSearchFragment extends BaseSmartRegisterFragment {
         getActivity().setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 
         View view = inflater.inflate(R.layout.smart_register_activity_advanced_search, container, false);
+        mView = view;
         setupViews(view);
         onResumption();
         return view;
+    }
+
+    @Override
+    protected void onCreation() {
+    }
+
+    @Override
+    protected void onResumption() {
     }
 
     @Override
@@ -190,10 +203,62 @@ public class AdvancedSearchFragment extends BaseSmartRegisterFragment {
         ((ChildSmartRegisterActivity) getActivity()).startFormActivity("child_enrollment", null, null);
     }
 
+    private class ClientActionHandler implements View.OnClickListener {
+        @Override
+        public void onClick(View view) {
+            CommonPersonObjectClient client = null;
+            if (view.getTag() != null && view.getTag() instanceof CommonPersonObjectClient) {
+                client = (CommonPersonObjectClient) view.getTag();
+            }
+            RegisterClickables registerClickables = new RegisterClickables();
+            switch (view.getId()) {
+                case R.id.global_search:
+                    goBack();
+                    break;
+                case R.id.filter_selection:
+                    ((ChildSmartRegisterActivity) getActivity()).filterSelection();
+                    break;
+                case R.id.search_layout:
+                case R.id.search:
+                    search(view);
+                    break;
+                case R.id.child_profile_info_layout:
+                    ChildImmunizationActivity.launchActivity(getActivity(), client, null);
+                    break;
+                case R.id.record_weight:
+                    if (client == null) {
+                        if (view.getTag() != null && view.getTag() instanceof String) {
+                            String zeirId = view.getTag().toString();
+                            ((ChildSmartRegisterActivity) getActivity()).startFormActivity("out_of_catchment_service", zeirId, null);
+                        }
+                    } else {
+                        registerClickables.setRecordWeight(true);
+                        ChildImmunizationActivity.launchActivity(getActivity(), client, registerClickables);
+                    }
+                    break;
+
+                case R.id.record_vaccination:
+                    if (client != null) {
+                        registerClickables.setRecordAll(true);
+                        ChildImmunizationActivity.launchActivity(getActivity(), client, registerClickables);
+                    }
+                    break;
+                case R.id.move_to_catchment:
+                    if (client == null) {
+                        if (view.getTag() != null && view.getTag() instanceof List) {
+                            List<String> ids = (List<String>) view.getTag();
+                            moveToMyCatchmentArea(ids);
+                        }
+                    }
+                    break;
+            }
+        }
+    }
+
     private void populateFormViews(View view) {
         searchCriteria = (TextView) view.findViewById(R.id.search_criteria);
         matchingResults = (TextView) view.findViewById(R.id.matching_results);
-        Button search = (Button) view.findViewById(R.id.search);
+        search = (Button) view.findViewById(R.id.search);
 
         outsideInside = (RadioButton) view.findViewById(R.id.out_and_inside);
         myCatchment = (RadioButton) view.findViewById(R.id.my_catchment);
@@ -258,9 +323,7 @@ public class AdvancedSearchFragment extends BaseSmartRegisterFragment {
 
         zeirId = (MaterialEditText) view.findViewById(R.id.zeir_id);
         firstName = (MaterialEditText) view.findViewById(R.id.first_name);
-        lastName = (MaterialEditText) view.findViewById(R.id.last_name);
         motherGuardianName = (MaterialEditText) view.findViewById(R.id.mother_guardian_name);
-        motherGuardianNrc = (MaterialEditText) view.findViewById(R.id.mother_guardian_nrc);
         motherGuardianPhoneNumber = (MaterialEditText) view.findViewById(R.id.mother_guardian_phone_number);
 
         startDate = (EditText) view.findViewById(R.id.start_date);
@@ -281,11 +344,11 @@ public class AdvancedSearchFragment extends BaseSmartRegisterFragment {
         inactive.setChecked(false);
         lostToFollowUp.setChecked(false);
 
-        zeirId.setText("");
+
         firstName.setText("");
-        lastName.setText("");
+
         motherGuardianName.setText("");
-        motherGuardianNrc.setText("");
+
         motherGuardianPhoneNumber.setText("");
 
         startDate.setText("");
@@ -298,7 +361,7 @@ public class AdvancedSearchFragment extends BaseSmartRegisterFragment {
     }
 
     private void updateSeachLimits() {
-        if (Utils.isConnectedToNetwork(getActivity())) {
+        if (isConnectedToNetwork(getActivity())) {
             outsideInside.setChecked(true);
             myCatchment.setChecked(false);
         } else {
@@ -308,7 +371,7 @@ public class AdvancedSearchFragment extends BaseSmartRegisterFragment {
 
     }
 
-    private void search(final View view) {
+    public void search(final View view) {
         android.util.Log.i(getClass().getName(), "Hiding Keyboard " + DateTime.now().toString());
         ((ChildSmartRegisterActivity) getActivity()).hideKeyboard();
         view.setClickable(false);
@@ -414,17 +477,17 @@ public class AdvancedSearchFragment extends BaseSmartRegisterFragment {
 
         }
 
-        String zeirIdString = zeirId.getText().toString();
-        if (StringUtils.isNotBlank(zeirIdString))
+//        String zeirIdString = zeirId.getText().toString();
+//        if (StringUtils.isNotBlank(zeirIdString))
 
-        {
-            searchCriteriaString += " ZEIR ID: \"" + bold(zeirIdString) + "\",";
-            String key = ZEIR_ID;
-            if (!outOfArea) {
-                key = tableName + "." + ZEIR_ID;
-            }
-            editMap.put(key, zeirIdString.trim());
-        }
+//        {
+//            searchCriteriaString += " ZEIR ID: \"" + bold(zeirIdString) + "\",";
+//            String key = ZEIR_ID;
+//            if (!outOfArea) {
+//                key = tableName + "." + ZEIR_ID;
+//            }
+//            editMap.put(key, zeirIdString.trim());
+//        }
 
         String firstNameString = firstName.getText().toString();
         if (StringUtils.isNotBlank(firstNameString))
@@ -438,17 +501,17 @@ public class AdvancedSearchFragment extends BaseSmartRegisterFragment {
             editMap.put(key, firstNameString.trim());
         }
 
-        String lastNameString = lastName.getText().toString();
-        if (StringUtils.isNotBlank(lastNameString))
-
-        {
-            searchCriteriaString += " Last name: \"" + bold(lastNameString) + "\",";
-            String key = LAST_NAME;
-            if (!outOfArea) {
-                key = tableName + "." + LAST_NAME;
-            }
-            editMap.put(key, lastNameString.trim());
-        }
+//        String lastNameString = lastName.getText().toString();
+//        if (StringUtils.isNotBlank(lastNameString))
+//
+//        {
+//            searchCriteriaString += " Last name: \"" + bold(lastNameString) + "\",";
+//            String key = LAST_NAME;
+//            if (!outOfArea) {
+//                key = tableName + "." + LAST_NAME;
+//            }
+//            editMap.put(key, lastNameString.trim());
+//        }
 
         String motherGuardianNameString = motherGuardianName.getText().toString();
         if (StringUtils.isNotBlank(motherGuardianNameString))
@@ -461,24 +524,24 @@ public class AdvancedSearchFragment extends BaseSmartRegisterFragment {
             }
             editMap.put(key, motherGuardianNameString.trim());
 
-            key = MOTHER_GUARDIAN_LAST_NAME;
-            if (!outOfArea) {
-                key = parentTableName + "." + LAST_NAME;
-            }
-            editMap.put(key, motherGuardianNameString.trim());
+//            key = MOTHER_GUARDIAN_LAST_NAME;
+//            if (!outOfArea) {
+//                key = parentTableName + "." + LAST_NAME;
+//            }
+//            editMap.put(key, motherGuardianNameString.trim());
         }
 
-        String motherGuardianNrcString = motherGuardianNrc.getText().toString();
-        if (StringUtils.isNotBlank(motherGuardianNrcString))
-
-        {
-            searchCriteriaString += " Mother/Guardian nrc: \"" + bold(motherGuardianNrcString) + "\",";
-            String key = MOTHER_GUARDIAN_NRC_NUMBER;
-            if (!outOfArea) {
-                key = parentTableName + "." + NRC_NUMBER;
-            }
-            editMap.put(key, motherGuardianNrcString.trim());
-        }
+//        String motherGuardianNrcString = motherGuardianNrc.getText().toString();
+//        if (StringUtils.isNotBlank(motherGuardianNrcString))
+//
+//        {
+//            searchCriteriaString += " Mother/Guardian nrc: \"" + bold(motherGuardianNrcString) + "\",";
+//            String key = MOTHER_GUARDIAN_NRC_NUMBER;
+//            if (!outOfArea) {
+//                key = parentTableName + "." + NRC_NUMBER;
+//            }
+//            editMap.put(key, motherGuardianNrcString.trim());
+//        }
 
         String motherGuardianPhoneNumberString = motherGuardianPhoneNumber.getText().toString();
         if (StringUtils.isNotBlank(motherGuardianPhoneNumberString))
@@ -610,15 +673,16 @@ public class AdvancedSearchFragment extends BaseSmartRegisterFragment {
         }
     }
 
-    private String filterandSortQuery() {
+    public String filterandSortQuery() {
         String tableName = getTablename();
         String parentTableName = "ec_mother";
 
         SmartRegisterQueryBuilder queryBUilder = new SmartRegisterQueryBuilder();
-        queryBUilder.SelectInitiateMainTable(tableName, new String[]{
+        queryBUilder.SelectInitiateMainTable(tableName, new String[]
+
+                {
                         tableName + ".relationalid",
                         tableName + ".details",
-                        tableName + ".zeir_id",
                         tableName + ".relational_id",
                         tableName + ".first_name",
                         tableName + ".last_name",
@@ -637,7 +701,8 @@ public class AdvancedSearchFragment extends BaseSmartRegisterFragment {
                         tableName + ".client_reg_date",
                         tableName + ".last_interacted_with",
                         tableName + ".inactive",
-                        tableName + ".lost_to_follow_up"}
+                        tableName + ".lost_to_follow_up"
+                }
 
         );
         queryBUilder.customJoin("LEFT JOIN " + parentTableName + " ON  " + tableName + ".relational_id =  " + parentTableName + ".id");
@@ -766,17 +831,41 @@ public class AdvancedSearchFragment extends BaseSmartRegisterFragment {
 
 
     private void setDatePicker(final EditText editText) {
-        editText.setOnClickListener(new DatePickerListener(editText));
+        editText.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                //To show current date in the datepicker
+                Calendar mcurrentDate = Calendar.getInstance();
+                int mYear = mcurrentDate.get(Calendar.YEAR);
+                int mMonth = mcurrentDate.get(Calendar.MONTH);
+                int mDay = mcurrentDate.get(Calendar.DAY_OF_MONTH);
+
+                DatePickerDialog mDatePicker = new DatePickerDialog(getActivity(), android.app.AlertDialog.THEME_HOLO_LIGHT, new DatePickerDialog.OnDateSetListener() {
+                    public void onDateSet(DatePicker datepicker, int selectedyear, int selectedmonth, int selectedday) {
+                        Calendar calendar = Calendar.getInstance();
+                        calendar.set(Calendar.YEAR, selectedyear);
+                        calendar.set(Calendar.MONTH, selectedmonth);
+                        calendar.set(Calendar.DAY_OF_MONTH, selectedday);
+
+                        String dateString = DateUtil.yyyyMMdd.format(calendar.getTime());
+                        editText.setText(dateString);
+
+                    }
+                }, mYear, mMonth, mDay);
+                mDatePicker.getDatePicker().setCalendarViewShown(false);
+                mDatePicker.show();
+
+                DatePickerUtils.themeDatePicker(mDatePicker, new char[]{'d', 'm', 'y'});
+            }
+        });
+
     }
 
     private String removeLastComma(String str) {
-        String s;
         if (str != null && str.length() > 0 && str.charAt(str.length() - 1) == ',') {
-            s = str.substring(0, str.length() - 1);
-        } else {
-            s = str;
+            str = str.substring(0, str.length() - 1);
         }
-        return s;
+        return str;
     }
 
     @Override
@@ -795,6 +884,8 @@ public class AdvancedSearchFragment extends BaseSmartRegisterFragment {
                                 public void run() {
                                     hideProgressView();
                                 }
+
+                                ;
                             });
 
                             return cursor;
@@ -902,6 +993,22 @@ public class AdvancedSearchFragment extends BaseSmartRegisterFragment {
 
     }
 
+    public class AdvancedMatrixCursor extends net.sqlcipher.MatrixCursor {
+        public AdvancedMatrixCursor(String[] columnNames) {
+            super(columnNames);
+        }
+
+        @Override
+        public long getLong(int column) {
+            try {
+                return super.getLong(column);
+            } catch (NumberFormatException e) {
+                return (new Date()).getTime();
+            }
+        }
+
+    }
+
     public EditText getZeirId() {
         return this.zeirId;
     }
@@ -921,7 +1028,12 @@ public class AdvancedSearchFragment extends BaseSmartRegisterFragment {
                 .setMessage(R.string.move_to_catchment_confirm_dialog_message)
                 .setTitle(R.string.move_to_catchment_confirm_dialog_title)
                 .setCancelable(false)
-                .setPositiveButton(org.smartregister.path.R.string.no_button_label, null)
+                .setPositiveButton(org.smartregister.path.R.string.no_button_label,
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int whichButton) {
+
+                            }
+                        })
                 .setNegativeButton(org.smartregister.path.R.string.yes_button_label,
                         new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int whichButton) {
@@ -938,7 +1050,7 @@ public class AdvancedSearchFragment extends BaseSmartRegisterFragment {
         return "<b>" + textToBold + "</b>";
     }
 
-    private final Listener<JSONArray> listener = new Listener<JSONArray>() {
+    final Listener<JSONArray> listener = new Listener<JSONArray>() {
         public void onEvent(final JSONArray jsonArray) {
 
 
@@ -947,7 +1059,7 @@ public class AdvancedSearchFragment extends BaseSmartRegisterFragment {
 
             if (jsonArray != null) {
 
-                List<JSONObject> jsonValues = new ArrayList<>();
+                List<JSONObject> jsonValues = new ArrayList<JSONObject>();
                 for (int i = 0; i < jsonArray.length(); i++) {
                     jsonValues.add(getJsonObject(jsonArray, i));
                 }
@@ -1069,7 +1181,7 @@ public class AdvancedSearchFragment extends BaseSmartRegisterFragment {
     };
 
 
-    private final Listener<JSONObject> moveToMyCatchmentListener = new Listener<JSONObject>() {
+    final Listener<JSONObject> moveToMyCatchmentListener = new Listener<JSONObject>() {
         public void onEvent(final JSONObject jsonObject) {
             if (jsonObject != null) {
                 if (MoveToMyCatchmentUtils.processMoveToCatchment(getActivity(), context().allSharedPreferences(), jsonObject)) {
@@ -1100,108 +1212,4 @@ public class AdvancedSearchFragment extends BaseSmartRegisterFragment {
     public void hideProgressView() {
         progressDialog.hide();
     }
-
-
-    ////////////////////////////////////////////////////////////////
-    // Inner classes
-    ////////////////////////////////////////////////////////////////
-    private class ClientActionHandler implements View.OnClickListener {
-        @Override
-        public void onClick(View view) {
-            CommonPersonObjectClient client = null;
-            if (view.getTag() != null && view.getTag() instanceof CommonPersonObjectClient) {
-                client = (CommonPersonObjectClient) view.getTag();
-            }
-            RegisterClickables registerClickables = new RegisterClickables();
-            switch (view.getId()) {
-                case R.id.global_search:
-                    goBack();
-                    break;
-                case R.id.filter_selection:
-                    ((ChildSmartRegisterActivity) getActivity()).filterSelection();
-                    break;
-                case R.id.search_layout:
-                case R.id.search:
-                    search(view);
-                    break;
-                case R.id.child_profile_info_layout:
-                    ChildImmunizationActivity.launchActivity(getActivity(), client, null);
-                    break;
-                case R.id.record_weight:
-                    if (client == null && view.getTag() != null && view.getTag() instanceof String) {
-                        String zeirId = view.getTag().toString();
-                        ((ChildSmartRegisterActivity) getActivity()).startFormActivity("out_of_catchment_service", zeirId, null);
-                    } else {
-                        registerClickables.setRecordWeight(true);
-                        ChildImmunizationActivity.launchActivity(getActivity(), client, registerClickables);
-                    }
-                    break;
-
-                case R.id.record_vaccination:
-                    if (client != null) {
-                        registerClickables.setRecordAll(true);
-                        ChildImmunizationActivity.launchActivity(getActivity(), client, registerClickables);
-                    }
-                    break;
-                case R.id.move_to_catchment:
-                    if (client == null && view.getTag() != null && view.getTag() instanceof List) {
-                        @SuppressWarnings("unchecked") List<String> ids = (List<String>) view.getTag();
-                        moveToMyCatchmentArea(ids);
-                    }
-                    break;
-            }
-        }
-    }
-
-    public class AdvancedMatrixCursor extends net.sqlcipher.MatrixCursor {
-        public AdvancedMatrixCursor(String[] columnNames) {
-            super(columnNames);
-        }
-
-        @Override
-        public long getLong(int column) {
-            try {
-                return super.getLong(column);
-            } catch (NumberFormatException e) {
-                return (new Date()).getTime();
-            }
-        }
-
-    }
-
-    private class DatePickerListener implements View.OnClickListener {
-        private final EditText editText;
-
-        private DatePickerListener(EditText editText) {
-            this.editText = editText;
-        }
-
-        @Override
-        public void onClick(View view) {
-            //To show current date in the datepicker
-            Calendar mcurrentDate = Calendar.getInstance();
-            int mYear = mcurrentDate.get(Calendar.YEAR);
-            int mMonth = mcurrentDate.get(Calendar.MONTH);
-            int mDay = mcurrentDate.get(Calendar.DAY_OF_MONTH);
-
-            DatePickerDialog mDatePicker = new DatePickerDialog(getActivity(), android.app.AlertDialog.THEME_HOLO_LIGHT, new DatePickerDialog.OnDateSetListener() {
-                public void onDateSet(DatePicker datepicker, int selectedyear, int selectedmonth, int selectedday) {
-                    Calendar calendar = Calendar.getInstance();
-                    calendar.set(Calendar.YEAR, selectedyear);
-                    calendar.set(Calendar.MONTH, selectedmonth);
-                    calendar.set(Calendar.DAY_OF_MONTH, selectedday);
-
-                    String dateString = DateUtil.yyyyMMdd.format(calendar.getTime());
-                    editText.setText(dateString);
-
-                }
-            }, mYear, mMonth, mDay);
-            mDatePicker.getDatePicker().setCalendarViewShown(false);
-            mDatePicker.show();
-
-            DatePickerUtils.themeDatePicker(mDatePicker, new char[]{'d', 'm', 'y'});
-        }
-
-    }
-
 }

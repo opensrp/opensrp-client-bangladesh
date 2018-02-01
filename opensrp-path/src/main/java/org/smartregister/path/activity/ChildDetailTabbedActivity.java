@@ -34,13 +34,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import org.apache.commons.lang3.StringUtils;
-import org.apache.commons.lang3.time.DateUtils;
 import org.apache.commons.lang3.tuple.Triple;
-import org.joda.time.DateTime;
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-import org.opensrp.api.constants.Gender;
 import org.smartregister.Context;
 import org.smartregister.clientandeventmodel.Event;
 import org.smartregister.commonregistry.CommonPersonObjectClient;
@@ -51,7 +45,6 @@ import org.smartregister.growthmonitoring.domain.WeightWrapper;
 import org.smartregister.growthmonitoring.fragment.EditWeightDialogFragment;
 import org.smartregister.growthmonitoring.listener.WeightActionListener;
 import org.smartregister.growthmonitoring.repository.WeightRepository;
-import org.smartregister.immunization.db.VaccineRepo;
 import org.smartregister.immunization.domain.ServiceRecord;
 import org.smartregister.immunization.domain.ServiceSchedule;
 import org.smartregister.immunization.domain.ServiceType;
@@ -59,7 +52,6 @@ import org.smartregister.immunization.domain.ServiceWrapper;
 import org.smartregister.immunization.domain.Vaccine;
 import org.smartregister.immunization.domain.VaccineSchedule;
 import org.smartregister.immunization.domain.VaccineWrapper;
-import org.smartregister.immunization.fragment.VaccinationDialogFragment;
 import org.smartregister.immunization.listener.ServiceActionListener;
 import org.smartregister.immunization.listener.VaccinationActionListener;
 import org.smartregister.immunization.repository.RecurringServiceRecordRepository;
@@ -73,6 +65,7 @@ import org.smartregister.path.R;
 import org.smartregister.path.application.VaccinatorApplication;
 import org.smartregister.path.fragment.StatusEditDialogFragment;
 import org.smartregister.path.listener.StatusChangeListener;
+import org.smartregister.path.repository.PathRepository;
 import org.smartregister.path.sync.ECSyncUpdater;
 import org.smartregister.path.sync.PathClientProcessor;
 import org.smartregister.path.tabfragments.ChildRegistrationDataFragment;
@@ -84,16 +77,20 @@ import org.smartregister.repository.BaseRepository;
 import org.smartregister.repository.DetailsRepository;
 import org.smartregister.repository.EventClientRepository;
 import org.smartregister.service.AlertService;
-import org.smartregister.util.DateUtil;
 import org.smartregister.util.FormUtils;
 import org.smartregister.util.OpenSRPImageLoader;
-import org.smartregister.util.Utils;
 import org.smartregister.view.activity.DrishtiApplication;
+import org.joda.time.DateTime;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+import org.opensrp.api.constants.Gender;
 
 import java.io.File;
 import java.io.IOException;
 import java.io.Serializable;
 import java.lang.reflect.Field;
+import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -106,9 +103,14 @@ import java.util.Map;
 import util.ImageUtils;
 import util.JsonFormUtils;
 import util.PathConstants;
+import util.Utils;
 
+import static org.smartregister.util.DateUtil.getDuration;
+import static org.smartregister.util.Utils.dobToDateTime;
 import static org.smartregister.util.Utils.getName;
 import static org.smartregister.util.Utils.getValue;
+import static org.smartregister.util.Utils.startAsyncTask;
+
 
 /**
  * Created by raihan on 1/03/2017.
@@ -116,16 +118,17 @@ import static org.smartregister.util.Utils.getValue;
 
 public class ChildDetailTabbedActivity extends BaseActivity implements VaccinationActionListener, WeightActionListener, StatusChangeListener, ServiceActionListener {
 
-    private Menu overflow;
+    public Menu overflow;
     private ChildDetailsToolbar detailtoolbar;
     private TabLayout tabLayout;
     private ViewPager viewPager;
     private TextView saveButton;
     private static final int REQUEST_CODE_GET_JSON = 3432;
-    private static final int REQUEST_TAKE_PHOTO = 1;
-    private static Gender gender;
+    static final int REQUEST_TAKE_PHOTO = 1;
+    public static Gender gender;
     //////////////////////////////////////////////////
     private static final String TAG = "ChildDetails";
+    private static final String VACCINES_FILE = "vaccines.json";
     public static final String EXTRA_CHILD_DETAILS = "child_details";
     public static final String EXTRA_REGISTER_CLICKABLES = "register_clickables";
     public static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("dd-MM-yyyy");
@@ -134,22 +137,34 @@ public class ChildDetailTabbedActivity extends BaseActivity implements Vaccinati
     public static final String DIALOG_TAG = "ChildDetailActivity_DIALOG_TAG";
 
     private File currentfile;
-    private String location_name = "";
+    public String location_name = "";
+    private LinearLayout statusview;
+
+    public CommonPersonObjectClient getChildDetails() {
+        return childDetails;
+    }
 
     private ViewPagerAdapter adapter;
+
+    public ViewPagerAdapter getViewPagerAdapter() {
+        return adapter;
+    }
 
     // Data
     private CommonPersonObjectClient childDetails;
     private Map<String, String> detailmaps;
-    private AllSharedPreferences allSharedPreferences;
+    AllSharedPreferences allSharedPreferences;
     ////////////////////////////////////////////////
     public DetailsRepository detailsRepository;
 
-    private Map<String, String> details;
+    public DetailsRepository getDetailsRepository() {
+        return detailsRepository;
+    }
+
+    Map<String, String> details;
     public static final String inactive = "inactive";
     public static final String lostToFollowUp = "lost_to_follow_up";
 
-    private static final String CHILD = "child";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -166,7 +181,7 @@ public class ChildDetailTabbedActivity extends BaseActivity implements Vaccinati
         location_name = extras.getString("location_name");
         detailsRepository = detailsRepository == null ? this.getOpenSRPContext().detailsRepository() : detailsRepository;
         details = detailsRepository.getAllDetailsForClient(childDetails.entityId());
-        util.Utils.putAll(details, childDetails.getColumnmaps());
+        details.putAll(childDetails.getColumnmaps());
 
         setContentView(R.layout.child_detail_activity_simple_tabs);
 
@@ -187,7 +202,9 @@ public class ChildDetailTabbedActivity extends BaseActivity implements Vaccinati
             @Override
             public void onClick(View v) {
                 detailtoolbar.showOverflowMenu();
-                invalidateOptionsMenu();
+                for (int i = 0; i < overflow.size(); i++) {
+                    overflow.getItem(i).setVisible(true);
+                }
                 childUnderFiveFragment.loadView(false, false, false);
 
                 saveButton.setVisibility(View.INVISIBLE);
@@ -213,7 +230,9 @@ public class ChildDetailTabbedActivity extends BaseActivity implements Vaccinati
             public void onPageSelected(int position) {
                 if (position == 0) {
                     saveButton.setVisibility(View.INVISIBLE);
-                    invalidateOptionsMenu();
+                    for (int i = 0; i < overflow.size(); i++) {
+                        overflow.getItem(i).setVisible(true);
+                    }
                     childUnderFiveFragment.loadView(false, false, false);
                 }
             }
@@ -233,7 +252,7 @@ public class ChildDetailTabbedActivity extends BaseActivity implements Vaccinati
         });
         detailtoolbar.setTitle(updateActivityTitle());
 
-        LinearLayout statusview = (LinearLayout) findViewById(R.id.statusview);
+        statusview = (LinearLayout) findViewById(R.id.statusview);
         statusview.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -262,6 +281,8 @@ public class ChildDetailTabbedActivity extends BaseActivity implements Vaccinati
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
+        // super.onCreateOptionsMenu(menu);
+
         getMenuInflater().inflate(R.menu.menu_child_detail_settings, menu);
         overflow = menu;
         VaccineRepository vaccineRepository = getVaccinatorApplicationInstance().vaccineRepository();
@@ -269,17 +290,18 @@ public class ChildDetailTabbedActivity extends BaseActivity implements Vaccinati
 
         ECSyncUpdater ecUpdater = ECSyncUpdater.getInstance(ChildDetailTabbedActivity.this);
 
-        boolean showVaccineList = false;
+        boolean show_vaccine_list = false;
         for (int i = 0; i < vaccineList.size(); i++) {
             Vaccine vaccine = vaccineList.get(i);
             boolean check = showVaccineListCheck(vaccine.getEventId(), vaccine.getFormSubmissionId());
             if (check) {
-                showVaccineList = true;
+                show_vaccine_list = true;
                 break;
             }
         }
 
-        if (!showVaccineList) {
+        if (!show_vaccine_list) {
+
             overflow.findItem(R.id.immunization_data).setEnabled(false);
         }
 
@@ -302,41 +324,53 @@ public class ChildDetailTabbedActivity extends BaseActivity implements Vaccinati
 
         WeightRepository wp = getVaccinatorApplicationInstance().weightRepository();
         List<Weight> weightlist = wp.findLast5(childDetails.entityId());
-        boolean showWeightEdit = false;
+        boolean show_weight_edit = false;
         for (int i = 0; i < weightlist.size(); i++) {
             Weight weight = weightlist.get(i);
-            org.smartregister.domain.db.Event event = null;
-            EventClientRepository db = VaccinatorApplication.getInstance().eventClientRepository();
+            Event event = null;
+            EventClientRepository db = (EventClientRepository) VaccinatorApplication.getInstance().eventClientRepository();
             if (weight.getEventId() != null) {
-                event = ecUpdater.convert(db.getEventsByEventId(weight.getEventId()), org.smartregister.domain.db.Event.class);
+                event = ecUpdater.convert(db.getEventsByEventId(weight.getEventId()), Event.class);
             } else if (weight.getFormSubmissionId() != null) {
-                event = ecUpdater.convert(db.getEventsByFormSubmissionId(weight.getFormSubmissionId()), org.smartregister.domain.db.Event.class);
+                event = ecUpdater.convert(db.getEventsByFormSubmissionId(weight.getFormSubmissionId()), Event.class);
             }
             if (event != null) {
-                Date weight_create_date = event.getDateCreated().toDate();
-                if (!DateUtil.checkIfDateThreeMonthsOlder(weight_create_date)) {
-                    showWeightEdit = true;
+                Date weight_create_date = event.getDateCreated();
+                if (!check_if_date_three_months_older(weight_create_date)) {
+                    show_weight_edit = true;
                 }
             } else {
-                showWeightEdit = true;
+                show_weight_edit = true;
             }
         }
 
-        if (!showWeightEdit) {
+        if (!show_weight_edit) {
             overflow.findItem(R.id.weight_data).setEnabled(false);
         }
+        return true;
+    }
 
-        AlertService alertService = getOpenSRPContext().alertService();
-        List<Alert> alertList = alertService.findByEntityIdAndAlertNames(childDetails.entityId(),
-                VaccinateActionUtils.allAlertNames(CHILD));
+    @Override
+    public boolean onPrepareOptionsMenu(Menu menu) {
+        //super.onPrepareOptionsMenu(menu);
+        //getMenuInflater().inflate(R.menu.menu_child_detail_settings, menu);
 
-        boolean showRecordBcg2 = showRecordBcg2(vaccineList, alertList);
-        if (!showRecordBcg2) {
-            overflow.findItem(R.id.record_bcg_2).setVisible(false);
-        }
+//        if (details.containsKey(lostToFollowUp) && details.get(lostToFollowUp).equalsIgnoreCase(Boolean.TRUE.toString())) {
+//            menu.findItem(R.id.mark_as_lost_to_followup).setTitle(getResources().getString(R.string.mark_as_not_lost_to_followup));
+//        }else{
+//            menu.findItem(R.id.mark_as_lost_to_followup).setTitle(getResources().getString(R.string.mark_as_lost_to_followup));
+//
+//        }
+//
+//        if (details.containsKey(inactive) && details.get(inactive).equalsIgnoreCase(Boolean.TRUE.toString())) {
+//            menu.findItem(R.id.mark_inactive).setTitle(getResources().getString(R.string.mark_active));
+//        }else{
+//            menu.findItem(R.id.mark_inactive).setTitle(getResources().getString(R.string.mark_inactive));
+//        }
 
         return true;
     }
+
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -382,12 +416,26 @@ public class ChildDetailTabbedActivity extends BaseActivity implements Vaccinati
                 android.app.Fragment prev = this.getFragmentManager().findFragmentByTag(DIALOG_TAG);
 
                 StatusEditDialogFragment.newInstance(this, details).show(ft, DIALOG_TAG);
+//                if (details.containsKey(inactive) && details.get(inactive).equalsIgnoreCase(Boolean.TRUE.toString())) {
+//                    updateClientAttribute(inactive, false);
+//
+//                } else {
+//                    updateClientAttribute(inactive, true);
+//
+//                }
+//                updateStatus();
                 return true;
+//            case R.id.mark_as_lost_to_followup:
+//                if (details.containsKey(lostToFollowUp) && details.get(lostToFollowUp).equalsIgnoreCase(Boolean.TRUE.toString())) {
+//                    updateClientAttribute(lostToFollowUp, false);
+//                } else {
+//                    updateClientAttribute(lostToFollowUp, true);
+//
+//                }
+//                updateStatus();
+//                return true;
             case R.id.report_adverse_event:
                 return launchAdverseEventForm();
-            case R.id.record_bcg_2:
-                showBcg2DialogFragment();
-                return true;
             default:
                 // If we got here, the user's action was not recognized.
                 // Invoke the superclass to handle it.
@@ -406,8 +454,8 @@ public class ChildDetailTabbedActivity extends BaseActivity implements Vaccinati
         Context context = getOpenSRPContext();
         try {
             JSONObject form = FormUtils.getInstance(getApplicationContext()).getFormJson("child_enrollment");
-            LocationPickerView lpv = new LocationPickerView(getApplicationContext());
-            lpv.init(context);
+//            LocationPickerView lpv = new LocationPickerView(getApplicationContext());
+//            lpv.init(context);
             JsonFormUtils.addChildRegLocHierarchyQuestions(form, context);
             Log.d(TAG, "Form is " + form.toString());
             if (form != null) {
@@ -444,11 +492,11 @@ public class ChildDetailTabbedActivity extends BaseActivity implements Vaccinati
                         jsonObject.put(JsonFormUtils.VALUE, getValue(detailmaps, "Child_Birth_Certificate", true));
                     }
                     if (jsonObject.getString(JsonFormUtils.KEY).equalsIgnoreCase("Mother_Guardian_First_Name")) {
-                        jsonObject.put(JsonFormUtils.VALUE, getValue(childDetails.getColumnmaps(), "mother_first_name", true).isEmpty() ? getValue(childDetails.getDetails(), "mother_first_name", true) : getValue(childDetails.getColumnmaps(), "mother_first_name", true));
+                        jsonObject.put(JsonFormUtils.VALUE, (getValue(childDetails.getColumnmaps(), "mother_first_name", true).isEmpty() ? getValue(childDetails.getDetails(), "mother_first_name", true) : getValue(childDetails.getColumnmaps(), "mother_first_name", true)));
 
                     }
                     if (jsonObject.getString(JsonFormUtils.KEY).equalsIgnoreCase("Mother_Guardian_Last_Name")) {
-                        jsonObject.put(JsonFormUtils.VALUE, getValue(childDetails.getColumnmaps(), "mother_last_name", true).isEmpty() ? getValue(childDetails.getDetails(), "mother_last_name", true) : getValue(childDetails.getColumnmaps(), "mother_last_name", true));
+                        jsonObject.put(JsonFormUtils.VALUE, (getValue(childDetails.getColumnmaps(), "mother_last_name", true).isEmpty() ? getValue(childDetails.getDetails(), "mother_last_name", true) : getValue(childDetails.getColumnmaps(), "mother_last_name", true)));
                     }
                     if (jsonObject.getString(JsonFormUtils.KEY).equalsIgnoreCase("Mother_Guardian_Date_Birth")) {
 
@@ -458,11 +506,10 @@ public class ChildDetailTabbedActivity extends BaseActivity implements Vaccinati
                                 Date dob = dateTime.toDate();
                                 Date defaultDate = DATE_FORMAT.parse(JsonFormUtils.MOTHER_DEFAULT_DOB);
                                 long timeDiff = Math.abs(dob.getTime() - defaultDate.getTime());
-                                if (timeDiff > 86400000) { // Mother's date of birth occurs more than a day from the default date
+                                if (timeDiff > 86400000) {// Mother's date of birth occurs more than a day from the default date
                                     jsonObject.put(JsonFormUtils.VALUE, DATE_FORMAT.format(dob));
                                 }
                             } catch (Exception e) {
-                                Log.e(TAG, Log.getStackTraceString(e));
                             }
                         }
                     }
@@ -584,13 +631,14 @@ public class ChildDetailTabbedActivity extends BaseActivity implements Vaccinati
                 return form.toString();
             }
         } catch (Exception e) {
-            Log.e(TAG, Log.getStackTraceString(e));
+            Log.e(TAG, e.getMessage());
+            e.printStackTrace();
         }
 
         return "";
     }
 
-    private void startFormActivity(String formName, String entityId, String metaData) {
+    public void startFormActivity(String formName, String entityId, String metaData) {
 
         Intent intent = new Intent(getApplicationContext(), PathJsonFormActivity.class);
 
@@ -607,36 +655,39 @@ public class ChildDetailTabbedActivity extends BaseActivity implements Vaccinati
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (requestCode == REQUEST_CODE_GET_JSON && resultCode == RESULT_OK) {
-            try {
-                String jsonString = data.getStringExtra("json");
-                Log.d("JSONResult", jsonString);
+        if (requestCode == REQUEST_CODE_GET_JSON) {
+            if (resultCode == RESULT_OK) {
+                try {
+                    String jsonString = data.getStringExtra("json");
+                    Log.d("JSONResult", jsonString);
 
+                    SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
+                    AllSharedPreferences allSharedPreferences = new AllSharedPreferences(preferences);
+
+                    JSONObject form = new JSONObject(jsonString);
+                    if (form.getString("encounter_type").equals("Death")) {
+                        confirmReportDeceased(jsonString, allSharedPreferences);
+                    } else if (form.getString("encounter_type").equals("Birth Registration")) {
+                        JsonFormUtils.editsave(this, getOpenSRPContext(), jsonString, allSharedPreferences.fetchRegisteredANM(), "Child_Photo", "child", "mother");
+                    } else if (form.getString("encounter_type").equals("AEFI")) {
+                        JsonFormUtils.saveAdverseEvent(jsonString, location_name,
+                                childDetails.entityId(), allSharedPreferences.fetchRegisteredANM());
+                    }
+                    childDataFragment.childDetails = childDetails;
+                    childDataFragment.loadData();
+                } catch (Exception e) {
+                    Log.e(TAG, e.getMessage());
+                }
+            }
+        } else if (requestCode == REQUEST_TAKE_PHOTO) {
+            if (resultCode == RESULT_OK) {
+                String imageLocation = currentfile.getAbsolutePath();
                 SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
                 AllSharedPreferences allSharedPreferences = new AllSharedPreferences(preferences);
 
-                JSONObject form = new JSONObject(jsonString);
-                if (form.getString("encounter_type").equals("Death")) {
-                    confirmReportDeceased(jsonString, allSharedPreferences);
-                } else if (form.getString("encounter_type").equals("Birth Registration")) {
-                    JsonFormUtils.editsave(this, getOpenSRPContext(), jsonString, allSharedPreferences.fetchRegisteredANM(), "Child_Photo", CHILD, "mother");
-                } else if (form.getString("encounter_type").equals("AEFI")) {
-                    JsonFormUtils.saveAdverseEvent(jsonString, location_name,
-                            childDetails.entityId(), allSharedPreferences.fetchRegisteredANM());
-                }
-                childDataFragment.childDetails = childDetails;
-                childDataFragment.loadData();
-            } catch (Exception e) {
-                Log.e(TAG, Log.getStackTraceString(e));
+                JsonFormUtils.saveImage(this, allSharedPreferences.fetchRegisteredANM(), childDetails.entityId(), imageLocation);
+                updateProfilePicture(gender);
             }
-
-        } else if (requestCode == REQUEST_TAKE_PHOTO && resultCode == RESULT_OK) {
-            String imageLocation = currentfile.getAbsolutePath();
-            SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
-            AllSharedPreferences allSharedPreferences = new AllSharedPreferences(preferences);
-
-            JsonFormUtils.saveImage(this, allSharedPreferences.fetchRegisteredANM(), childDetails.entityId(), imageLocation);
-            updateProfilePicture(gender);
         }
     }
 
@@ -666,12 +717,12 @@ public class ChildDetailTabbedActivity extends BaseActivity implements Vaccinati
         TextView notificationMessage = (TextView) notificationsLayout.findViewById(R.id.noti_message);
         notificationMessage.setText(childDetails.getColumnmaps().get("first_name") + " " + childDetails.getColumnmaps().get("last_name") + " marked as deceased");
         notificationMessage.setTextColor(getResources().getColor(R.color.black));
-        notificationMessage.setTextSize(TypedValue.COMPLEX_UNIT_SP, 25);
+        notificationMessage.setTextSize(TypedValue.COMPLEX_UNIT_SP,25);
 
         Button positiveButton = (Button) notificationsLayout.findViewById(R.id.noti_positive_button);
         positiveButton.setVisibility(View.VISIBLE);
         positiveButton.setText(getResources().getString(R.string.undo));
-        positiveButton.setTextSize(TypedValue.COMPLEX_UNIT_SP, 22);
+        positiveButton.setTextSize(TypedValue.COMPLEX_UNIT_SP,22);
         positiveButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -732,10 +783,11 @@ public class ChildDetailTabbedActivity extends BaseActivity implements Vaccinati
         String childId = "";
         String dobString = "";
         String formattedAge = "";
+        String formattedDob = "";
         if (isDataOk()) {
             name = getValue(childDetails.getColumnmaps(), "first_name", true)
-                    + " " + getValue(childDetails.getColumnmaps(), "last_name", true);
-            childId = getValue(childDetails.getColumnmaps(), "zeir_id", false);
+                    + " " + getValue(childDetails.getColumnmaps(), "last_name", true).replace(".","");
+            childId = getValue(childDetails.getColumnmaps(), "openmrs_id", false);
             if (StringUtils.isNotBlank(childId)) {
                 childId = childId.replace("-", "");
             }
@@ -743,24 +795,26 @@ public class ChildDetailTabbedActivity extends BaseActivity implements Vaccinati
             if (!TextUtils.isEmpty(dobString)) {
                 DateTime dateTime = new DateTime(dobString);
                 Date dob = dateTime.toDate();
+                formattedDob = DATE_FORMAT.format(dob);
                 long timeDiff = Calendar.getInstance().getTimeInMillis() - dob.getTime();
 
                 if (timeDiff >= 0) {
-                    formattedAge = DateUtil.getDuration(timeDiff);
+                    formattedAge = getDuration(timeDiff);
                 }
             }
         }
 
+
         profileage.setText(String.format("%s: %s", getString(R.string.age), formattedAge));
-        profileZeirID.setText(String.format("%s: %s", getString(R.string.label_zeir), childId));
+        profileZeirID.setText(String.format("%s: %s", getString(R.string.label_openmrsid), childId));
         profilename.setText(name);
         updateGenderViews();
         Gender gender = Gender.UNKNOWN;
         if (isDataOk()) {
             String genderString = getValue(childDetails, "gender", false);
-            if (genderString != null && genderString.equalsIgnoreCase(PathConstants.GENDER.FEMALE)) {
+            if (genderString != null && genderString.toLowerCase().equals("female")) {
                 gender = Gender.FEMALE;
-            } else if (genderString != null && genderString.equalsIgnoreCase(PathConstants.GENDER.MALE)) {
+            } else if (genderString != null && genderString.toLowerCase().equals("male")) {
                 gender = Gender.MALE;
             }
         }
@@ -777,24 +831,25 @@ public class ChildDetailTabbedActivity extends BaseActivity implements Vaccinati
             statusImage.clearColorFilter();
             statusImage.setColorFilter(Color.TRANSPARENT);
             statusImage.setImageResource(R.drawable.ic_icon_status_inactive);
-            status_name.setText(R.string.inactive);
+            status_name.setText("Inactive");
             status_name.setTextColor(getResources().getColor(R.color.dark_grey));
             status_name.setVisibility(View.VISIBLE);
-            status.setText(R.string.status);
+            status.setText("status");
         } else if (details.containsKey(lostToFollowUp) && details.get(lostToFollowUp).equalsIgnoreCase(Boolean.TRUE.toString())) {
             statusImage.clearColorFilter();
             statusImage.setImageResource(R.drawable.ic_icon_status_losttofollowup);
             statusImage.setColorFilter(Color.TRANSPARENT);
+//            status_name.setText("Lost to");
             status_name.setVisibility(View.GONE);
-            status.setText(R.string.lost_to_follow_up_with_nl);
+            status.setText("Lost to\nFollow-Up");
         }
         if (!((details.containsKey(lostToFollowUp) && details.get(lostToFollowUp).equalsIgnoreCase(Boolean.TRUE.toString())) || (details.containsKey(inactive) && details.get(inactive).equalsIgnoreCase(Boolean.TRUE.toString())))) {
             statusImage.setImageResource(R.drawable.ic_icon_status_active);
             statusImage.setColorFilter(getResources().getColor(R.color.alert_completed));
-            status_name.setText(R.string.active);
+            status_name.setText("Active");
             status_name.setTextColor(getResources().getColor(R.color.alert_completed));
             status_name.setVisibility(View.VISIBLE);
-            status.setText(R.string.status);
+            status.setText("status");
         }
     }
 
@@ -808,14 +863,14 @@ public class ChildDetailTabbedActivity extends BaseActivity implements Vaccinati
     }
 
     private void updateProfilePicture(Gender gender) {
-        ChildDetailTabbedActivity.gender = gender;
+        this.gender = gender;
         if (isDataOk()) {
             ImageView profileImageIV = (ImageView) findViewById(R.id.profile_image_iv);
 
-            if (childDetails.entityId() != null) { //image already in local storage most likey ):
+            if (childDetails.entityId() != null) {//image already in local storage most likey ):
                 //set profile image by passing the client id.If the image doesn't exist in the image repository then download and save locally
                 profileImageIV.setTag(org.smartregister.R.id.entity_id, childDetails.entityId());
-                DrishtiApplication.getCachedImageLoaderInstance().getImageByClientId(childDetails.entityId(), OpenSRPImageLoader.getStaticImageListener(profileImageIV, ImageUtils.profileImageResourceByGender(gender), ImageUtils.profileImageResourceByGender(gender)));
+                DrishtiApplication.getCachedImageLoaderInstance().getImageByClientId(childDetails.entityId(), OpenSRPImageLoader.getStaticImageListener((ImageView) profileImageIV, ImageUtils.profileImageResourceByGender(gender), ImageUtils.profileImageResourceByGender(gender)));
 
             }
             profileImageIV.setOnClickListener(new View.OnClickListener() {
@@ -845,7 +900,7 @@ public class ChildDetailTabbedActivity extends BaseActivity implements Vaccinati
                 photoFile = createImageFile();
             } catch (IOException ex) {
                 // Error occurred while creating the File
-                Log.e(TAG, Log.getStackTraceString(ex));
+
             }
             // Continue only if the File was successfully created
             if (photoFile != null) {
@@ -863,7 +918,7 @@ public class ChildDetailTabbedActivity extends BaseActivity implements Vaccinati
         String imageFileName = "JPEG_" + timeStamp + "_";
         File storageDir = Environment.getExternalStoragePublicDirectory(
                 Environment.DIRECTORY_PICTURES);
-        return File.createTempFile(
+        File image = File.createTempFile(
                 imageFileName,  /* prefix */
                 ".jpg",         /* suffix */
                 storageDir      /* directory */
@@ -871,15 +926,16 @@ public class ChildDetailTabbedActivity extends BaseActivity implements Vaccinati
 
         // Save a file: path for use with ACTION_VIEW intents
 //        mCurrentPhotoPath = "file:" + image.getAbsolutePath();
+        return image;
     }
 
     private void updateGenderViews() {
         Gender gender = Gender.UNKNOWN;
         if (isDataOk()) {
             String genderString = getValue(childDetails, "gender", false);
-            if (genderString != null && genderString.toLowerCase().equals(PathConstants.GENDER.FEMALE)) {
+            if (genderString != null && genderString.toLowerCase().equals("female")) {
                 gender = Gender.FEMALE;
-            } else if (genderString != null && genderString.toLowerCase().equals(PathConstants.GENDER.MALE)) {
+            } else if (genderString != null && genderString.toLowerCase().equals("male")) {
                 gender = Gender.MALE;
             }
         }
@@ -897,10 +953,20 @@ public class ChildDetailTabbedActivity extends BaseActivity implements Vaccinati
             Class<?> c = Class.forName("android.support.design.widget.TabLayout$SlidingTabStrip");
             Method method = c.getDeclaredMethod("setSelectedIndicatorColor", int.class);
             method.setAccessible(true);
-            method.invoke(ob, getResources().getColor(normalShade)); //now its ok
-        } catch (Exception e) {
-            Log.e(TAG, Log.getStackTraceString(e));
+            method.invoke(ob, getResources().getColor(normalShade));//now its ok
+        } catch (NoSuchFieldException e) {
+            e.printStackTrace();
+        } catch (NoSuchMethodException e) {
+            e.printStackTrace();
+        } catch (InvocationTargetException e) {
+            e.printStackTrace();
+        } catch (IllegalAccessException e) {
+            e.printStackTrace();
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
         }
+
+
     }
 
     private boolean isDataOk() {
@@ -911,7 +977,7 @@ public class ChildDetailTabbedActivity extends BaseActivity implements Vaccinati
     public void onVaccinateToday(ArrayList<VaccineWrapper> tags, View view) {
         if (tags != null && !tags.isEmpty()) {
             saveVaccine(tags, view);
-            Utils.startAsyncTask(new UpdateOfflineAlertsTask(), null);
+            startAsyncTask(new UpdateOfflineAlertsTask(), null);
         }
     }
 
@@ -919,28 +985,31 @@ public class ChildDetailTabbedActivity extends BaseActivity implements Vaccinati
     public void onVaccinateEarlier(ArrayList<VaccineWrapper> tags, View view) {
         if (tags != null && !tags.isEmpty()) {
             saveVaccine(tags, view);
-            Utils.startAsyncTask(new UpdateOfflineAlertsTask(), null);
+            startAsyncTask(new UpdateOfflineAlertsTask(), null);
         }
     }
 
     @Override
     public void onUndoVaccination(VaccineWrapper tag, View view) {
-        if (tag != null && tag.getDbKey() != null) {
-            final VaccineRepository vaccineRepository = VaccinatorApplication.getInstance().vaccineRepository();
-            Long dbKey = tag.getDbKey();
-            vaccineRepository.deleteVaccine(dbKey);
+        if (tag != null) {
 
-            tag.setUpdatedVaccineDate(null, false);
-            tag.setDbKey(null);
+            if (tag.getDbKey() != null) {
+                final VaccineRepository vaccineRepository = VaccinatorApplication.getInstance().vaccineRepository();
+                Long dbKey = tag.getDbKey();
+                vaccineRepository.deleteVaccine(dbKey);
+
+                tag.setUpdatedVaccineDate(null, false);
+                tag.setDbKey(null);
 
 
-            List<Vaccine> vaccineList = vaccineRepository.findByEntityId(childDetails.entityId());
+                List<Vaccine> vaccineList = vaccineRepository.findByEntityId(childDetails.entityId());
 
-            ArrayList<VaccineWrapper> wrappers = new ArrayList<>();
-            wrappers.add(tag);
-            updateVaccineGroupViews(view, wrappers, vaccineList, true);
+                ArrayList<VaccineWrapper> wrappers = new ArrayList<>();
+                wrappers.add(tag);
+                updateVaccineGroupViews(view, wrappers, vaccineList, true);
 
-            Utils.startAsyncTask(new UpdateOfflineAlertsTask(), null);
+                startAsyncTask(new UpdateOfflineAlertsTask(), null);
+            }
         }
     }
 
@@ -962,9 +1031,9 @@ public class ChildDetailTabbedActivity extends BaseActivity implements Vaccinati
 
             Gender gender = Gender.UNKNOWN;
             String genderString = getValue(childDetails, "gender", false);
-            if (genderString != null && genderString.toLowerCase().equals(PathConstants.GENDER.FEMALE)) {
+            if (genderString != null && genderString.toLowerCase().equals("female")) {
                 gender = Gender.FEMALE;
-            } else if (genderString != null && genderString.toLowerCase().equals(PathConstants.GENDER.MALE)) {
+            } else if (genderString != null && genderString.toLowerCase().equals("male")) {
                 gender = Gender.MALE;
             }
 
@@ -1010,7 +1079,7 @@ public class ChildDetailTabbedActivity extends BaseActivity implements Vaccinati
         String dobString = getValue(childDetails.getColumnmaps(), "dob", false);
         if (StringUtils.isNotBlank(dobString)) {
             DateTime dateTime = new DateTime(getValue(childDetails.getColumnmaps(), "dob", false));
-            duration = DateUtil.getDuration(dateTime);
+            duration = getDuration(dateTime);
         }
 
         Photo photo = getProfilePhotoByClient();
@@ -1031,7 +1100,6 @@ public class ChildDetailTabbedActivity extends BaseActivity implements Vaccinati
         weightWrapper.setPatientAge(duration);
         weightWrapper.setPhoto(photo);
         weightWrapper.setPmtctStatus(getValue(childDetails.getColumnmaps(), "pmtct_status", false));
-        weightWrapper.setDateOfBirth(dobString);
 
         EditWeightDialogFragment editWeightDialogFragment = EditWeightDialogFragment.newInstance(this, weightWrapper);
         editWeightDialogFragment.show(ft, DIALOG_TAG);
@@ -1049,18 +1117,115 @@ public class ChildDetailTabbedActivity extends BaseActivity implements Vaccinati
         return getName(firstName, lastName).trim();
     }
 
+    class ViewPagerAdapter extends FragmentPagerAdapter {
+        private final List<Fragment> mFragmentList = new ArrayList<>();
+        private final List<String> mFragmentTitleList = new ArrayList<>();
+
+        public ViewPagerAdapter(FragmentManager manager) {
+            super(manager);
+        }
+
+        @Override
+        public Fragment getItem(int position) {
+            return mFragmentList.get(position);
+        }
+
+        @Override
+        public int getCount() {
+            return mFragmentList.size();
+        }
+
+        public void addFragment(Fragment fragment, String title) {
+            mFragmentList.add(fragment);
+            mFragmentTitleList.add(title);
+        }
+
+
+        @Override
+        public CharSequence getPageTitle(int position) {
+            return mFragmentTitleList.get(position);
+        }
+    }
+
     private void saveVaccine(List<VaccineWrapper> tags, final View view) {
-        if (tags != null && !tags.isEmpty()) {
-            if (tags.size() == 1) {
-                saveVaccine(tags.get(0));
-                updateVaccineGroupViews(view);
+        if (tags.isEmpty()) {
+            return;
+        } else if (tags.size() == 1) {
+            saveVaccine(tags.get(0));
+            updateVaccineGroupViews(view);
+        } else {
+            VaccineWrapper[] arrayTags = tags.toArray(new VaccineWrapper[tags.size()]);
+            SaveVaccinesTask backgroundTask = new SaveVaccinesTask();
+            backgroundTask.setView(view);
+            backgroundTask.execute(arrayTags);
+        }
+    }
+
+    private class LaunchAdverseEventFormTask extends AsyncTask<Void, Void, String> {
+
+        @Override
+        protected String doInBackground(Void... params) {
+            try {
+                JSONObject form = FormUtils.getInstance(getApplicationContext())
+                        .getFormJson("adverse_event");
+                if (form != null) {
+                    JSONArray fields = form.getJSONObject("step1").getJSONArray("fields");
+                    for (int i = 0; i < fields.length(); i++) {
+                        if (fields.getJSONObject(i).getString("key").equals("Reaction_Vaccine")) {
+                            boolean result = insertVaccinesGivenAsOptions(fields.getJSONObject(i));
+                            if (!result) {
+                                return null;
+                            }
+                        }
+                    }
+                    return form.toString();
+                }
+
+            } catch (Exception e) {
+                Log.e(TAG, Log.getStackTraceString(e));
+            }
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(String metaData) {
+            super.onPostExecute(metaData);
+            if (metaData != null) {
+                startFormActivity("adverse_event", childDetails.entityId(), metaData);
             } else {
-                VaccineWrapper[] arrayTags = tags.toArray(new VaccineWrapper[tags.size()]);
-                SaveVaccinesTask backgroundTask = new SaveVaccinesTask();
-                backgroundTask.setView(view);
-                backgroundTask.execute(arrayTags);
+                Toast.makeText(ChildDetailTabbedActivity.this, R.string.no_vaccine_record_found,
+                        Toast.LENGTH_LONG).show();
             }
         }
+    }
+
+    private class SaveVaccinesTask extends AsyncTask<VaccineWrapper, Void, Void> {
+
+        private View view;
+
+        public void setView(View view) {
+            this.view = view;
+        }
+
+        @Override
+        protected void onPreExecute() {
+            showProgressDialog();
+        }
+
+        @Override
+        protected void onPostExecute(Void aVoid) {
+            hideProgressDialog();
+            updateVaccineGroupViews(view);
+        }
+
+        @Override
+        protected Void doInBackground(VaccineWrapper... vaccineWrappers) {
+            for (VaccineWrapper tag : vaccineWrappers) {
+                saveVaccine(tag);
+            }
+            return null;
+        }
+
     }
 
     private void updateVaccineGroupViews(View view) {
@@ -1135,11 +1300,6 @@ public class ChildDetailTabbedActivity extends BaseActivity implements Vaccinati
         }
         vaccineRepository.add(vaccine);
         tag.setDbKey(vaccine.getId());
-
-        if (tag.getName().equalsIgnoreCase(VaccineRepo.Vaccine.bcg2.display())) {
-            invalidateOptionsMenu();
-            childUnderFiveFragment.loadView(false, false, false);
-        }
     }
 
     private String getReportDeceasedMetadata() {
@@ -1163,7 +1323,7 @@ public class ChildDetailTabbedActivity extends BaseActivity implements Vaccinati
             return form == null ? null : form.toString();
 
         } catch (Exception e) {
-            Log.e(TAG, Log.getStackTraceString(e));
+            Log.e(TAG, e.getMessage());
         }
         return "";
     }
@@ -1205,7 +1365,7 @@ public class ChildDetailTabbedActivity extends BaseActivity implements Vaccinati
     public void updateClientAttribute(String attributeName, Object attributeValue) {
         try {
             Date date = new Date();
-            EventClientRepository db = getVaccinatorApplicationInstance().eventClientRepository();
+            EventClientRepository db = (EventClientRepository) getVaccinatorApplicationInstance().eventClientRepository();
             ECSyncUpdater ecUpdater = ECSyncUpdater.getInstance(this);
 
             JSONObject client = db.getClientByBaseEntityId(childDetails.entityId());
@@ -1220,7 +1380,7 @@ public class ChildDetailTabbedActivity extends BaseActivity implements Vaccinati
             ContentValues contentValues = new ContentValues();
             //Add the base_entity_id
             contentValues.put(attributeName.toLowerCase(), attributeValue.toString());
-            db.getWritableDatabase().update(PathConstants.CHILD_TABLE_NAME, contentValues, "base_entity_id" + "=?", new String[]{childDetails.entityId()});
+            int id = db.getWritableDatabase().update(PathConstants.CHILD_TABLE_NAME, contentValues, "base_entity_id" + "=?", new String[]{childDetails.entityId()});
 
 
             Event event = (Event) new Event()
@@ -1246,11 +1406,11 @@ public class ChildDetailTabbedActivity extends BaseActivity implements Vaccinati
             if (childDetails.getColumnmaps().containsKey(attributeName)) {
                 childDetails.getColumnmaps().put(attributeName, attributeValue.toString());
             }
-            util.Utils.putAll(detailmaps, childDetails.getColumnmaps());
+            details.putAll(childDetails.getColumnmaps());
 
 
         } catch (Exception e) {
-            Log.e(TAG, Log.getStackTraceString(e));
+            Log.e(TAG, e.getMessage());
         }
     }
 
@@ -1258,9 +1418,19 @@ public class ChildDetailTabbedActivity extends BaseActivity implements Vaccinati
     protected void onResume() {
         super.onResume();
         details = detailsRepository.getAllDetailsForClient(childDetails.entityId());
-        util.Utils.putAll(childDetails.getColumnmaps(), detailmaps);
+        //details.putAll(childDetails.getColumnmaps());
+        //):( prrrr
+        childDetails.getColumnmaps().putAll(details);
         updateActivityTitle();
         initiallization();
+    }
+
+    public static boolean check_if_date_three_months_older(Date date) {
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(cal.getTime());
+        cal.add(Calendar.DATE, -90);
+        Date dateBefore90Days = cal.getTime();
+        return date.before(dateBefore90Days);
     }
 
     //Recurring Service
@@ -1280,10 +1450,10 @@ public class ChildDetailTabbedActivity extends BaseActivity implements Vaccinati
 
     @Override
     public void onUndoService(ServiceWrapper tag, View view) {
-        Utils.startAsyncTask(new UndoServiceTask(tag, view), null);
+        startAsyncTask(new UndoServiceTask(tag, view), null);
     }
 
-    private void saveService(ServiceWrapper tag, final View view) {
+    public void saveService(ServiceWrapper tag, final View view) {
         if (tag == null) {
             return;
         }
@@ -1292,126 +1462,10 @@ public class ChildDetailTabbedActivity extends BaseActivity implements Vaccinati
         SaveServiceTask backgroundTask = new SaveServiceTask();
 
         backgroundTask.setView(view);
-        Utils.startAsyncTask(backgroundTask, arrayTags);
-    }
-
-    private boolean showVaccineListCheck(String eventId, String formSubmissionId) {
-        ECSyncUpdater ecUpdater = ECSyncUpdater.getInstance(ChildDetailTabbedActivity.this);
-
-        EventClientRepository db = VaccinatorApplication.getInstance().eventClientRepository();
-        org.smartregister.domain.db.Event event = null;
-        if (eventId != null) {
-            event = ecUpdater.convert(db.getEventsByEventId(eventId), org.smartregister.domain.db.Event.class);
-        } else if (formSubmissionId != null) {
-            event = ecUpdater.convert(db.getEventsByFormSubmissionId(formSubmissionId), org.smartregister.domain.db.Event.class);
-        }
-        if (event != null) {
-            Date vaccine_create_date = event.getDateCreated().toDate();
-            if (!DateUtil.checkIfDateThreeMonthsOlder(vaccine_create_date)) {
-                return true;
-            }
-        } else {
-            return true;
-        }
-
-        return false;
+        startAsyncTask(backgroundTask, arrayTags);
     }
 
 
-    public VaccinatorApplication getVaccinatorApplicationInstance() {
-        return VaccinatorApplication.getInstance();
-    }
-
-    public CommonPersonObjectClient getChildDetails() {
-        return childDetails;
-    }
-
-    public ViewPagerAdapter getViewPagerAdapter() {
-        return adapter;
-    }
-
-    public DetailsRepository getDetailsRepository() {
-        return detailsRepository;
-    }
-
-
-    private boolean showRecordBcg2(List<Vaccine> vaccineList, List<Alert> alerts) {
-
-        if (VaccinateActionUtils.hasVaccine(vaccineList, VaccineRepo.Vaccine.bcg2)) {
-            return false;
-        }
-
-        Vaccine bcg = VaccinateActionUtils.getVaccine(vaccineList, VaccineRepo.Vaccine.bcg);
-        if (bcg == null) {
-            return false;
-        }
-
-        Alert alert = VaccinateActionUtils.getAlert(alerts, VaccineRepo.Vaccine.bcg2);
-        if (alert == null || alert.isComplete()) {
-            return false;
-        }
-
-        int bcgOffsetInWeeks = 12;
-        Calendar twelveWeeksLaterDate = Calendar.getInstance();
-        twelveWeeksLaterDate.setTime(bcg.getDate());
-        twelveWeeksLaterDate.add(Calendar.WEEK_OF_YEAR, bcgOffsetInWeeks);
-
-        Calendar today = Calendar.getInstance();
-
-        return today.getTime().after(twelveWeeksLaterDate.getTime()) || DateUtils.isSameDay(twelveWeeksLaterDate, today);
-    }
-
-    private void showBcg2DialogFragment() {
-
-        VaccineWrapper vaccineWrapper = new VaccineWrapper();
-        vaccineWrapper.setId(childDetails.entityId());
-        vaccineWrapper.setGender(childDetails.getDetails().get("gender"));
-        vaccineWrapper.setName(VaccineRepo.Vaccine.bcg2.display());
-        vaccineWrapper.setDefaultName(VaccineRepo.Vaccine.bcg2.display());
-
-        String dobString = getValue(childDetails.getColumnmaps(), "dob", false);
-        Date dob = Calendar.getInstance().getTime();
-        if (!TextUtils.isEmpty(dobString)) {
-            DateTime dateTime = new DateTime(dobString);
-            dob = dateTime.toDate();
-        }
-
-        Photo photo = org.smartregister.immunization.util.ImageUtils.profilePhotoByClient(childDetails);
-        vaccineWrapper.setPhoto(photo);
-
-        String zeirId = getValue(childDetails.getColumnmaps(), "zeir_id", false);
-        vaccineWrapper.setPatientNumber(zeirId);
-
-        String firstName = getValue(childDetails.getColumnmaps(), "first_name", true);
-        String lastName = getValue(childDetails.getColumnmaps(), "last_name", true);
-        String childName = getName(firstName, lastName);
-        vaccineWrapper.setPatientName(childName.trim());
-
-        ArrayList<VaccineWrapper> vaccineWrappers = new ArrayList<>();
-        vaccineWrappers.add(vaccineWrapper);
-
-        List<Vaccine> vaccineList = VaccinatorApplication.getInstance().vaccineRepository()
-                .findByEntityId(childDetails.entityId());
-        if (vaccineList == null) {
-            vaccineList = new ArrayList<>();
-        }
-
-        FragmentTransaction ft = this.getFragmentManager().beginTransaction();
-        android.app.Fragment prev = this.getFragmentManager().findFragmentByTag(DIALOG_TAG);
-        if (prev != null) {
-            ft.remove(prev);
-        }
-
-        ft.addToBackStack(null);
-
-        VaccinationDialogFragment vaccinationDialogFragment = VaccinationDialogFragment.newInstance(dob, vaccineList, vaccineWrappers);
-        vaccinationDialogFragment.show(ft, DIALOG_TAG);
-    }
-
-
-    ////////////////////////////////////////////////////////////////
-    // Inner classes
-    ////////////////////////////////////////////////////////////////
     public class SaveServiceTask extends AsyncTask<ServiceWrapper, Void, Triple<ArrayList<ServiceWrapper>, List<ServiceRecord>, List<Alert>>> {
 
         private View view;
@@ -1440,7 +1494,7 @@ public class ChildDetailTabbedActivity extends BaseActivity implements Vaccinati
                 RecurringServiceUtils.saveService(tag, childDetails.entityId(), null, null);
                 list.add(tag);
 
-                ServiceSchedule.updateOfflineAlerts(tag.getType(), childDetails.entityId(), Utils.dobToDateTime(childDetails));
+                ServiceSchedule.updateOfflineAlerts(tag.getType(), childDetails.entityId(), dobToDateTime(childDetails));
             }
 
             RecurringServiceRecordRepository recurringServiceRecordRepository = VaccinatorApplication.getInstance().recurringServiceRecordRepository();
@@ -1458,56 +1512,15 @@ public class ChildDetailTabbedActivity extends BaseActivity implements Vaccinati
         }
     }
 
-    private class SaveVaccinesTask extends AsyncTask<VaccineWrapper, Void, Void> {
-
-        private View view;
-
-        public void setView(View view) {
-            this.view = view;
-        }
-
-        @Override
-        protected void onPreExecute() {
-            showProgressDialog();
-        }
-
-        @Override
-        protected void onPostExecute(Void aVoid) {
-            hideProgressDialog();
-            updateVaccineGroupViews(view);
-        }
-
-        @Override
-        protected Void doInBackground(VaccineWrapper... vaccineWrappers) {
-            for (VaccineWrapper tag : vaccineWrappers) {
-                saveVaccine(tag);
-            }
-            return null;
-        }
-
-    }
-
-    private class UpdateOfflineAlertsTask extends AsyncTask<Void, Void, Void> {
-        @Override
-        protected Void doInBackground(Void... params) {
-            DateTime birthDateTime = Utils.dobToDateTime(childDetails);
-            if (birthDateTime != null) {
-                VaccineSchedule.updateOfflineAlerts(childDetails.entityId(), birthDateTime, CHILD);
-            }
-            return null;
-        }
-
-    }
-
     private class UndoServiceTask extends AsyncTask<Void, Void, Void> {
 
-        private final View view;
-        private final ServiceWrapper tag;
+        private View view;
+        private ServiceWrapper tag;
         private List<ServiceRecord> serviceRecordList;
         private ArrayList<ServiceWrapper> wrappers;
         private List<Alert> alertList;
 
-        private UndoServiceTask(ServiceWrapper tag, View view) {
+        public UndoServiceTask(ServiceWrapper tag, View view) {
             this.tag = tag;
             this.view = view;
         }
@@ -1531,7 +1544,7 @@ public class ChildDetailTabbedActivity extends BaseActivity implements Vaccinati
                     wrappers = new ArrayList<>();
                     wrappers.add(tag);
 
-                    ServiceSchedule.updateOfflineAlerts(tag.getType(), childDetails.entityId(), Utils.dobToDateTime(childDetails));
+                    ServiceSchedule.updateOfflineAlerts(tag.getType(), childDetails.entityId(), dobToDateTime(childDetails));
 
                     RecurringServiceTypeRepository recurringServiceTypeRepository = VaccinatorApplication.getInstance().recurringServiceTypeRepository();
                     List<ServiceType> serviceTypes = recurringServiceTypeRepository.fetchAll();
@@ -1555,71 +1568,42 @@ public class ChildDetailTabbedActivity extends BaseActivity implements Vaccinati
         }
     }
 
-    private class LaunchAdverseEventFormTask extends AsyncTask<Void, Void, String> {
-
+    private class UpdateOfflineAlertsTask extends AsyncTask<Void, Void, Void> {
         @Override
-        protected String doInBackground(Void... params) {
-            try {
-                JSONObject form = FormUtils.getInstance(getApplicationContext())
-                        .getFormJson("adverse_event");
-                if (form != null) {
-                    JSONArray fields = form.getJSONObject("step1").getJSONArray("fields");
-                    for (int i = 0; i < fields.length(); i++) {
-                        if (fields.getJSONObject(i).getString("key").equals("Reaction_Vaccine")) {
-                            boolean result = insertVaccinesGivenAsOptions(fields.getJSONObject(i));
-                            if (!result) {
-                                return null;
-                            }
-                        }
-                    }
-                    return form.toString();
-                }
-
-            } catch (Exception e) {
-                Log.e(TAG, Log.getStackTraceString(e));
+        protected Void doInBackground(Void... params) {
+            DateTime birthDateTime = dobToDateTime(childDetails);
+            if (birthDateTime != null) {
+                VaccineSchedule.updateOfflineAlerts(childDetails.entityId(), birthDateTime, "child");
             }
             return null;
         }
+    }
 
-        @Override
-        protected void onPostExecute(String metaData) {
-            super.onPostExecute(metaData);
-            if (metaData != null) {
-                startFormActivity("adverse_event", childDetails.entityId(), metaData);
-            } else {
-                Toast.makeText(ChildDetailTabbedActivity.this, R.string.no_vaccine_record_found,
-                        Toast.LENGTH_LONG).show();
+    private boolean showVaccineListCheck(String eventId, String formSubmissionId) {
+        ECSyncUpdater ecUpdater = ECSyncUpdater.getInstance(ChildDetailTabbedActivity.this);
+
+        EventClientRepository db = (EventClientRepository) VaccinatorApplication.getInstance().eventClientRepository();
+        Event event = null;
+        if (eventId != null) {
+            event = ecUpdater.convert(db.getEventsByEventId(eventId), Event.class);
+        } else if (formSubmissionId != null) {
+            event = ecUpdater.convert(db.getEventsByFormSubmissionId(formSubmissionId), Event.class);
+        }
+        if (event != null) {
+            Date vaccine_create_date = event.getDateCreated();
+            if (!check_if_date_three_months_older(vaccine_create_date)) {
+                return true;
             }
+        } else {
+            return true;
         }
+
+        return false;
     }
 
-    public class ViewPagerAdapter extends FragmentPagerAdapter {
-        private final List<Fragment> mFragmentList = new ArrayList<>();
-        private final List<String> mFragmentTitleList = new ArrayList<>();
 
-        public ViewPagerAdapter(FragmentManager manager) {
-            super(manager);
-        }
-
-        @Override
-        public Fragment getItem(int position) {
-            return mFragmentList.get(position);
-        }
-
-        @Override
-        public int getCount() {
-            return mFragmentList.size();
-        }
-
-        public void addFragment(Fragment fragment, String title) {
-            mFragmentList.add(fragment);
-            mFragmentTitleList.add(title);
-        }
-
-
-        @Override
-        public CharSequence getPageTitle(int position) {
-            return mFragmentTitleList.get(position);
-        }
+    public VaccinatorApplication getVaccinatorApplicationInstance() {
+        return (VaccinatorApplication) this.getApplication();
     }
+
 }

@@ -47,6 +47,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
+import java.util.regex.Pattern;
 
 import util.ImageUtils;
 import util.PathConstants;
@@ -92,7 +93,7 @@ public class ChildSmartClientsProvider implements SmartRegisterCLientsProviderFo
         fillValue((TextView) convertView.findViewById(R.id.child_zeir_id), getValue(pc.getColumnmaps(), PathConstants.KEY.ZEIR_ID, false));
 
         String firstName = getValue(pc.getColumnmaps(), PathConstants.KEY.FIRST_NAME, true);
-        String lastName = getValue(pc.getColumnmaps(), PathConstants.KEY.LAST_NAME, true);
+        String lastName = getValue(pc.getColumnmaps(), PathConstants.KEY.LAST_NAME, true).replaceAll(Pattern.quote("."),"");
         String childName = getName(firstName, lastName);
 
         String motherFirstName = getValue(pc.getColumnmaps(), PathConstants.KEY.MOTHER_FIRST_NAME, true);

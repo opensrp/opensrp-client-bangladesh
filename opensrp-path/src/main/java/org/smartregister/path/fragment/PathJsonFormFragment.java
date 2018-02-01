@@ -408,39 +408,7 @@ public class PathJsonFormFragment extends JsonFormFragment {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        boolean balancecheck = true;
-
-        if (item.getItemId() == com.vijay.jsonwizard.R.id.action_save) {
-            JSONObject object = getStep("step1");
-            try {
-                if (object.getString("title").contains("Stock Issued") || object.getString("title").contains("Stock Received") || object.getString("title").contains("Stock Loss/Adjustment")) {
-                    balancecheck = ((PathJsonFormActivity) getActivity()).checkIfBalanceNegative();
-                }
-            } catch (Exception e) {
-                Log.e(getClass().getName(), e.toString(), e);
-            }
-        }
-        if (balancecheck) {
-            return super.onOptionsItemSelected(item);
-        } else {
-            final Snackbar snackbar = Snackbar
-                    .make(getMainView(), "Please make sure the balance is not less than zero.", Snackbar.LENGTH_LONG);
-            snackbar.setAction("Close", new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    snackbar.dismiss();
-                }
-            });
-
-// Changing message text color
-            snackbar.setActionTextColor(Color.WHITE);
-            View sbView = snackbar.getView();
-            TextView textView = (TextView) sbView.findViewById(android.support.design.R.id.snackbar_text);
-            textView.setTextColor(Color.WHITE);
-
-            snackbar.show();
-            return true;
-        }
+      return super.onOptionsItemSelected(item);
     }
 
 
