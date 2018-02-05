@@ -91,7 +91,6 @@ The OpenSRP Path App enables providers to:
 
 	**Note:** _If the genymotion emulator **crashes on pressing the Login button**, use the **Enter Key** on your keyboard - (Reason for Crash) Genymotion emulator seems to have a bug_
 
-	![Login Page](https://user-images.githubusercontent.com/31766075/30325639-36d671be-97ce-11e7-8999-c4b2ddf57005.png)
 
 3. An activity with a list of patients (Child/Woman) is displayed with the following information.
 ![List of patients Screenshot](https://user-images.githubusercontent.com/31766075/30325648-37044472-97ce-11e7-91fc-1f4236443ee3.png)
