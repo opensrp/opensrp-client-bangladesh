@@ -65,6 +65,8 @@ import shared.customshadows.ImmunizationRowAdapterShadow;
 import shared.customshadows.ImmunizationRowCardShadow;
 import util.PathConstants;
 
+import static junit.framework.Assert.assertNotNull;
+
 /**
  * Created by kaderchowdhury on 04/12/17.
  */
@@ -175,6 +177,15 @@ public class ChildImmunizationActivityTest extends BaseUnitTest {
         activity.toolbar = toolbar;
         activity.onWeightTaken(tag);
         activity.findViewById(R.id.growth_chart_button).performClick();
+
+    }
+
+    @Test
+    public void showWeightDialogShouldRender() {
+
+        activity.findViewById(R.id.record_weight).performClick();
+        assertNotNull(activity.getFragmentManager().findFragmentByTag(ChildImmunizationActivity.DIALOG_TAG));
+
     }
 
 
