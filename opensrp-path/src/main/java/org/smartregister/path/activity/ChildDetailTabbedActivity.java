@@ -116,7 +116,7 @@ import static org.smartregister.util.Utils.startAsyncTask;
  * Created by raihan on 1/03/2017.
  */
 
-public class ChildDetailTabbedActivity extends BaseActivity implements VaccinationActionListener, WeightActionListener, StatusChangeListener, ServiceActionListener {
+public class ChildDetailTabbedActivity extends BaseActivity implements VaccinationActionListener, WeightActionListener, StatusChangeListener {
 
     public Menu overflow;
     private ChildDetailsToolbar detailtoolbar;
@@ -406,11 +406,6 @@ public class ChildDetailTabbedActivity extends BaseActivity implements Vaccinati
                     overflow.getItem(i).setVisible(false);
                 }
                 return true;
-
-            case R.id.report_deceased:
-                String reportDeceasedMetadata = getReportDeceasedMetadata();
-                startFormActivity("report_deceased", childDetails.entityId(), reportDeceasedMetadata);
-                return true;
             case R.id.change_status:
                 FragmentTransaction ft = this.getFragmentManager().beginTransaction();
                 android.app.Fragment prev = this.getFragmentManager().findFragmentByTag(DIALOG_TAG);
@@ -434,8 +429,6 @@ public class ChildDetailTabbedActivity extends BaseActivity implements Vaccinati
 //                }
 //                updateStatus();
 //                return true;
-            case R.id.report_adverse_event:
-                return launchAdverseEventForm();
             default:
                 // If we got here, the user's action was not recognized.
                 // Invoke the superclass to handle it.
@@ -444,11 +437,7 @@ public class ChildDetailTabbedActivity extends BaseActivity implements Vaccinati
         }
     }
 
-    private boolean launchAdverseEventForm() {
-        LaunchAdverseEventFormTask task = new LaunchAdverseEventFormTask();
-        task.execute();
-        return true;
-    }
+
 
     private String getmetaDataForEditForm() {
         Context context = getOpenSRPContext();
@@ -665,9 +654,7 @@ public class ChildDetailTabbedActivity extends BaseActivity implements Vaccinati
                     AllSharedPreferences allSharedPreferences = new AllSharedPreferences(preferences);
 
                     JSONObject form = new JSONObject(jsonString);
-                    if (form.getString("encounter_type").equals("Death")) {
-                        confirmReportDeceased(jsonString, allSharedPreferences);
-                    } else if (form.getString("encounter_type").equals("Birth Registration")) {
+                    if (form.getString("encounter_type").equals("Birth Registration")) {
                         JsonFormUtils.editsave(this, getOpenSRPContext(), jsonString, allSharedPreferences.fetchRegisteredANM(), "Child_Photo", "child", "mother");
                     } else if (form.getString("encounter_type").equals("AEFI")) {
                         JsonFormUtils.saveAdverseEvent(jsonString, location_name,
@@ -689,70 +676,6 @@ public class ChildDetailTabbedActivity extends BaseActivity implements Vaccinati
                 updateProfilePicture(gender);
             }
         }
-    }
-
-    private void saveReportDeceasedJson(String jsonString, AllSharedPreferences allSharedPreferences) {
-
-        JsonFormUtils.saveReportDeceased(this, getOpenSRPContext(), jsonString, allSharedPreferences.fetchRegisteredANM(), location_name, childDetails.entityId());
-
-    }
-
-    private void confirmReportDeceased(final String json, final AllSharedPreferences allSharedPreferences) {
-
-        final AlertDialog builder = new AlertDialog.Builder(this).setCancelable(false).create();
-
-        LayoutInflater inflater = getLayoutInflater();
-        View notificationsLayout = inflater.inflate(R.layout.notification_base, null);
-        notificationsLayout.setVisibility(View.VISIBLE);
-
-        ImageView notificationIcon = (ImageView) notificationsLayout.findViewById(R.id.noti_icon);
-        notificationIcon.setTag("confirm_deceased_icon");
-        notificationIcon.setImageResource(R.drawable.ic_deceased);
-        notificationIcon.getLayoutParams().height = 165;
-
-        LinearLayout.LayoutParams params = (LinearLayout.LayoutParams) notificationIcon.getLayoutParams();
-        params.setMargins(55, params.topMargin, params.rightMargin, params.bottomMargin);
-        notificationIcon.setLayoutParams(params);
-
-        TextView notificationMessage = (TextView) notificationsLayout.findViewById(R.id.noti_message);
-        notificationMessage.setText(childDetails.getColumnmaps().get("first_name") + " " + childDetails.getColumnmaps().get("last_name") + " marked as deceased");
-        notificationMessage.setTextColor(getResources().getColor(R.color.black));
-        notificationMessage.setTextSize(TypedValue.COMPLEX_UNIT_SP,25);
-
-        Button positiveButton = (Button) notificationsLayout.findViewById(R.id.noti_positive_button);
-        positiveButton.setVisibility(View.VISIBLE);
-        positiveButton.setText(getResources().getString(R.string.undo));
-        positiveButton.setTextSize(TypedValue.COMPLEX_UNIT_SP,22);
-        positiveButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-                builder.dismiss();
-
-            }
-        });
-
-        Button negativeButton = (Button) notificationsLayout.findViewById(R.id.noti_negative_button);
-        negativeButton.setVisibility(View.VISIBLE);
-        negativeButton.setText(getResources().getString(R.string.confirm_button_label));
-        negativeButton.setTextSize(TypedValue.COMPLEX_UNIT_SP, 22);
-        negativeButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-                saveReportDeceasedJson(json, allSharedPreferences);
-                builder.dismiss();
-
-                Intent intent = new Intent(getApplicationContext(), ChildSmartRegisterActivity.class);
-                intent.putExtra(BaseRegisterActivity.IS_REMOTE_LOGIN, false);
-                startActivity(intent);
-                finish();
-
-            }
-        });
-
-        builder.setView(notificationsLayout);
-        builder.show();
     }
 
     @Override
@@ -1161,43 +1084,7 @@ public class ChildDetailTabbedActivity extends BaseActivity implements Vaccinati
         }
     }
 
-    private class LaunchAdverseEventFormTask extends AsyncTask<Void, Void, String> {
 
-        @Override
-        protected String doInBackground(Void... params) {
-            try {
-                JSONObject form = FormUtils.getInstance(getApplicationContext())
-                        .getFormJson("adverse_event");
-                if (form != null) {
-                    JSONArray fields = form.getJSONObject("step1").getJSONArray("fields");
-                    for (int i = 0; i < fields.length(); i++) {
-                        if (fields.getJSONObject(i).getString("key").equals("Reaction_Vaccine")) {
-                            boolean result = insertVaccinesGivenAsOptions(fields.getJSONObject(i));
-                            if (!result) {
-                                return null;
-                            }
-                        }
-                    }
-                    return form.toString();
-                }
-
-            } catch (Exception e) {
-                Log.e(TAG, Log.getStackTraceString(e));
-            }
-            return null;
-        }
-
-        @Override
-        protected void onPostExecute(String metaData) {
-            super.onPostExecute(metaData);
-            if (metaData != null) {
-                startFormActivity("adverse_event", childDetails.entityId(), metaData);
-            } else {
-                Toast.makeText(ChildDetailTabbedActivity.this, R.string.no_vaccine_record_found,
-                        Toast.LENGTH_LONG).show();
-            }
-        }
-    }
 
     private class SaveVaccinesTask extends AsyncTask<VaccineWrapper, Void, Void> {
 
@@ -1302,31 +1189,7 @@ public class ChildDetailTabbedActivity extends BaseActivity implements Vaccinati
         tag.setDbKey(vaccine.getId());
     }
 
-    private String getReportDeceasedMetadata() {
-        try {
-            JSONObject form = FormUtils.getInstance(getApplicationContext()).getFormJson("report_deceased");
-            if (form != null) {
-                //inject zeir id into the form
-                JSONObject stepOne = form.getJSONObject(JsonFormUtils.STEP1);
-                JSONArray jsonArray = stepOne.getJSONArray(JsonFormUtils.FIELDS);
-                for (int i = 0; i < jsonArray.length(); i++) {
-                    JSONObject jsonObject = jsonArray.getJSONObject(i);
-                    if (jsonObject.getString(JsonFormUtils.KEY).equalsIgnoreCase("Date_Birth")) {
-                        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd-MM-yyyy");
-                        DateTime dateTime = new DateTime(getValue(childDetails.getColumnmaps(), "dob", true));
-                        Date dob = dateTime.toDate();
-                        jsonObject.put(JsonFormUtils.VALUE, simpleDateFormat.format(dob));
-                        break;
-                    }
-                }
-            }
-            return form == null ? null : form.toString();
 
-        } catch (Exception e) {
-            Log.e(TAG, e.getMessage());
-        }
-        return "";
-    }
 
     private boolean insertVaccinesGivenAsOptions(JSONObject question) throws JSONException {
         VaccineRepository vaccineRepository = VaccinatorApplication.getInstance().vaccineRepository();
@@ -1431,141 +1294,6 @@ public class ChildDetailTabbedActivity extends BaseActivity implements Vaccinati
         cal.add(Calendar.DATE, -90);
         Date dateBefore90Days = cal.getTime();
         return date.before(dateBefore90Days);
-    }
-
-    //Recurring Service
-    @Override
-    public void onGiveToday(ServiceWrapper tag, View view) {
-        if (tag != null) {
-            saveService(tag, view);
-        }
-    }
-
-    @Override
-    public void onGiveEarlier(ServiceWrapper tag, View view) {
-        if (tag != null) {
-            saveService(tag, view);
-        }
-    }
-
-    @Override
-    public void onUndoService(ServiceWrapper tag, View view) {
-        startAsyncTask(new UndoServiceTask(tag, view), null);
-    }
-
-    public void saveService(ServiceWrapper tag, final View view) {
-        if (tag == null) {
-            return;
-        }
-
-        ServiceWrapper[] arrayTags = {tag};
-        SaveServiceTask backgroundTask = new SaveServiceTask();
-
-        backgroundTask.setView(view);
-        startAsyncTask(backgroundTask, arrayTags);
-    }
-
-
-    public class SaveServiceTask extends AsyncTask<ServiceWrapper, Void, Triple<ArrayList<ServiceWrapper>, List<ServiceRecord>, List<Alert>>> {
-
-        private View view;
-
-        public void setView(View view) {
-            this.view = view;
-        }
-
-        @Override
-        protected void onPreExecute() {
-            showProgressDialog();
-        }
-
-        @Override
-        protected void onPostExecute(Triple<ArrayList<ServiceWrapper>, List<ServiceRecord>, List<Alert>> triple) {
-            hideProgressDialog();
-            RecurringServiceUtils.updateServiceGroupViews(view, triple.getLeft(), triple.getMiddle(), triple.getRight());
-        }
-
-        @Override
-        protected Triple<ArrayList<ServiceWrapper>, List<ServiceRecord>, List<Alert>> doInBackground(ServiceWrapper... params) {
-
-            ArrayList<ServiceWrapper> list = new ArrayList<>();
-
-            for (ServiceWrapper tag : params) {
-                RecurringServiceUtils.saveService(tag, childDetails.entityId(), null, null);
-                list.add(tag);
-
-                ServiceSchedule.updateOfflineAlerts(tag.getType(), childDetails.entityId(), dobToDateTime(childDetails));
-            }
-
-            RecurringServiceRecordRepository recurringServiceRecordRepository = VaccinatorApplication.getInstance().recurringServiceRecordRepository();
-            List<ServiceRecord> serviceRecordList = recurringServiceRecordRepository.findByEntityId(childDetails.entityId());
-
-            RecurringServiceTypeRepository recurringServiceTypeRepository = VaccinatorApplication.getInstance().recurringServiceTypeRepository();
-            List<ServiceType> serviceTypes = recurringServiceTypeRepository.fetchAll();
-            String[] alertArray = VaccinateActionUtils.allAlertNames(serviceTypes);
-
-            AlertService alertService = getOpenSRPContext().alertService();
-            List<Alert> alertList = alertService.findByEntityIdAndAlertNames(childDetails.entityId(), alertArray);
-
-            return Triple.of(list, serviceRecordList, alertList);
-
-        }
-    }
-
-    private class UndoServiceTask extends AsyncTask<Void, Void, Void> {
-
-        private View view;
-        private ServiceWrapper tag;
-        private List<ServiceRecord> serviceRecordList;
-        private ArrayList<ServiceWrapper> wrappers;
-        private List<Alert> alertList;
-
-        public UndoServiceTask(ServiceWrapper tag, View view) {
-            this.tag = tag;
-            this.view = view;
-        }
-
-        @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
-        }
-
-        @Override
-        protected Void doInBackground(Void... params) {
-            if (tag != null) {
-
-                if (tag.getDbKey() != null) {
-                    RecurringServiceRecordRepository recurringServiceRecordRepository = VaccinatorApplication.getInstance().recurringServiceRecordRepository();
-                    Long dbKey = tag.getDbKey();
-                    recurringServiceRecordRepository.deleteServiceRecord(dbKey);
-
-                    serviceRecordList = recurringServiceRecordRepository.findByEntityId(childDetails.entityId());
-
-                    wrappers = new ArrayList<>();
-                    wrappers.add(tag);
-
-                    ServiceSchedule.updateOfflineAlerts(tag.getType(), childDetails.entityId(), dobToDateTime(childDetails));
-
-                    RecurringServiceTypeRepository recurringServiceTypeRepository = VaccinatorApplication.getInstance().recurringServiceTypeRepository();
-                    List<ServiceType> serviceTypes = recurringServiceTypeRepository.fetchAll();
-                    String[] alertArray = VaccinateActionUtils.allAlertNames(serviceTypes);
-
-                    AlertService alertService = getOpenSRPContext().alertService();
-                    alertList = alertService.findByEntityIdAndAlertNames(childDetails.entityId(), alertArray);
-                }
-            }
-            return null;
-        }
-
-        @Override
-        protected void onPostExecute(Void params) {
-            super.onPostExecute(params);
-
-            tag.setUpdatedVaccineDate(null, false);
-            tag.setDbKey(null);
-
-            RecurringServiceUtils.updateServiceGroupViews(view, wrappers, serviceRecordList, alertList, true);
-        }
     }
 
     private class UpdateOfflineAlertsTask extends AsyncTask<Void, Void, Void> {
