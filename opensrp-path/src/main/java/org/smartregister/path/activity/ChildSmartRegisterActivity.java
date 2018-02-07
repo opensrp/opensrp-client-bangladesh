@@ -57,7 +57,7 @@ public class ChildSmartRegisterActivity extends BaseRegisterActivity {
     private int currentPage;
     public static final int ADVANCED_SEARCH_POSITION = 1;
 
-    private android.support.v4.app.Fragment mBaseFragment = null;
+    public android.support.v4.app.Fragment mBaseFragment = null;
 
 
     @Override

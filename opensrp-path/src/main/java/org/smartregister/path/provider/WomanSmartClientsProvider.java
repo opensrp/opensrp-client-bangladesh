@@ -108,7 +108,7 @@ public class WomanSmartClientsProvider implements SmartRegisterCLientsProviderFo
 //        Logger.largeLog("-----------",pc.getDetails().toString());
 //        Logger.largeLog("-----------",pc.getColumnmaps().toString());
 
-        String name = pc.getDetails().get("first_name") + " " + pc.getDetails().get("last_name").replaceAll(Pattern.quote("."),"");
+        String name = getValue(pc.getColumnmaps(), "first_name", false)+ " " + getValue(pc.getColumnmaps(), "last_name", false).replaceAll(Pattern.quote("."),"");
         ((TextView) convertView.findViewById(R.id.name)).setText(name);
 
         ImageView profileImageIV = (ImageView) convertView.findViewById(R.id.profilepic);

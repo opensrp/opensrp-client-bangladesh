@@ -68,7 +68,7 @@ public class HouseholdSmartRegisterActivity extends BaseRegisterActivity {
     private int currentPage;
     public static final int ADVANCED_SEARCH_POSITION = 1;
 
-    private Fragment mBaseFragment = null;
+    public Fragment mBaseFragment = null;
     private AdvancedSearchFragment advancedSearchFragment;
 
 
