@@ -2,9 +2,13 @@ package org.smartregister.path.activity;
 
 import android.content.Context;
 import android.content.Intent;
+import android.provider.ContactsContract;
 import android.util.Log;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
+import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -18,6 +22,7 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
+import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 import org.robolectric.Robolectric;
 import org.robolectric.RuntimeEnvironment;
@@ -50,6 +55,7 @@ import java.util.Map;
 
 import shared.BaseUnitTest;
 
+import static junit.framework.Assert.assertTrue;
 import static org.junit.Assert.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
@@ -66,6 +72,9 @@ public class ChildSmartRegisterActivityTest extends BaseUnitTest {
     ChildSmartRegisterActivityMock activity;
     private Map<String, String> details;
     ActivityController<ChildSmartRegisterActivityMock> controller;
+
+    @Mock
+    private InputMethodManager inputManager;
 
     @Mock
     private ZiggyService ziggyService;
@@ -98,6 +107,7 @@ public class ChildSmartRegisterActivityTest extends BaseUnitTest {
         MockitoAnnotations.initMocks(this);
         details = new HashMap<>();
         context_ = ShadowContextForRegistryActivity.getInstance();
+        ChildSmartRegisterActivityMock.inputManager = inputManager;
         SecuredFragmentShadow.mContext = context_;
         ShadowContextForRegistryActivity.commonRepository = commonRepository;
         String[] columns = new String[]{"_id", "relationalid", "first_name", "dob", "details", "HHID", "Date_Of_Reg", "address1"};
@@ -165,6 +175,45 @@ public class ChildSmartRegisterActivityTest extends BaseUnitTest {
         }
         return adapter;
     }
+
+    @Test
+    public void pressingSearchCancelButtonShouldClearSearchTextAndLoadAllClients() {
+        final ListView list = (ListView) activity.findViewById(R.id.list);
+        EditText searchText = (EditText) activity.findViewById(R.id.edt_search);
+        searchText.setText("first_name3");
+        assertTrue("first_name3".equalsIgnoreCase(searchText.getText().toString()));
+        Assert.assertEquals(tryGetAdapter(list).getCount(),2);
+        activity
+                .findViewById(R.id.btn_search_cancel)
+                .performClick();
+        assertEquals("", searchText.getText().toString());
+//        assertEquals(2, tryGetAdapter(list).getCount());
+    }
+
+    @Test
+    public void clickOnGlobalSearchLaunchesAdvancedSearchFragment() {
+        ImageButton globalsearch = (ImageButton) activity.findViewById(R.id.global_search);
+        globalsearch.performClick();
+        Assert.assertEquals(activity.mPager.getCurrentItem(),1);
+//        Mockito.verify(activity,Mockito.atLeastOnce()).startAdvancedSearch();
+
+//        assertEquals(2, tryGetAdapter(list).getCount());
+    }
+
+    @Test
+    public void globalSearchAdvancedSearchFragmentShowsList() {
+        ImageButton globalsearch = (ImageButton) activity.findViewById(R.id.global_search);
+        globalsearch.performClick();
+        EditText firstname = (EditText)activity.findViewById(R.id.first_name);
+        firstname.setText("first_name");
+        Button search = (Button)activity.findViewById(R.id.search);
+//        search.performClick();
+
+//        Mockito.verify(activity,Mockito.atLeastOnce()).startAdvancedSearch();
+
+//        assertEquals(2, tryGetAdapter(list).getCount());
+    }
+
 
 
     @After
