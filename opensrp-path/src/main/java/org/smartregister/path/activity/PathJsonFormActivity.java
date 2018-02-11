@@ -30,14 +30,17 @@ public class PathJsonFormActivity extends JsonFormActivity {
     private int generatedId = -1;
     private MaterialEditText balancetextview;
     private PathJsonFormFragment pathJsonFormFragment;
+    public static boolean isLaunched = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        isLaunched = true;
     }
 
     @Override
     public void initializeFormFragment() {
+        isLaunched = true;
         pathJsonFormFragment = PathJsonFormFragment.getFormFragment(JsonFormConstants.FIRST_STEP_NAME);
         getSupportFragmentManager().beginTransaction()
                 .add(com.vijay.jsonwizard.R.id.container, pathJsonFormFragment).commit();
@@ -52,6 +55,7 @@ public class PathJsonFormActivity extends JsonFormActivity {
 
     @Override
     public void onFormFinish() {
+        isLaunched = false;
         super.onFormFinish();
     }
 
