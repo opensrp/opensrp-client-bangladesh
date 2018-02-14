@@ -405,10 +405,10 @@ public class MockContext extends Context {
                 return null;
             }
 
-    @Override
-    public String getSystemServiceName(Class<?> serviceClass) {
-        return null;
-    }
+//    @Override
+//    public String getSystemServiceName(Class<?> serviceClass) {
+//        return null;
+//    }
 
     @Override
             public int checkPermission(@NonNull String s, int i, int i1) {
@@ -425,10 +425,10 @@ public class MockContext extends Context {
                 return PackageManager.PERMISSION_GRANTED;
             }
 
-    @Override
-    public int checkSelfPermission(String permission) {
-        return PackageManager.PERMISSION_GRANTED;
-    }
+//    @Override
+//    public int checkSelfPermission(String permission) {
+//        return PackageManager.PERMISSION_GRANTED;
+//    }
 
     @Override
             public void enforcePermission(@NonNull String s, int i, int i1, @Nullable String s1) {
