@@ -196,14 +196,14 @@ public class ChildSmartRegisterActivityTest extends BaseUnitTest {
     public void pressingSearchCancelButtonShouldClearSearchTextAndLoadAllClients() {
         final ListView list = (ListView) activity.findViewById(R.id.list);
         EditText searchText = (EditText) activity.findViewById(R.id.edt_search);
+        int count = tryGetAdapter(list).getCount();
         searchText.setText("first_name3");
         assertTrue("first_name3".equalsIgnoreCase(searchText.getText().toString()));
-        Assert.assertEquals(tryGetAdapter(list).getCount(),2);
         activity
                 .findViewById(R.id.btn_search_cancel)
                 .performClick();
         assertEquals("", searchText.getText().toString());
-//        assertEquals(2, tryGetAdapter(list).getCount());
+//        assertEquals(count, tryGetAdapter(list).getCount());
     }
 
     @Test

@@ -38,8 +38,8 @@ public class LocationPickerViewShadow extends FontTextViewShadow {
 
     }
 
-    public void getSelectedItem() {
-
+    public String getSelectedItem() {
+        return "location";
     }
 
 
