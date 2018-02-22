@@ -204,35 +204,6 @@ public class HouseholdMemberAddFragment extends DialogFragment {
                         jsonObject.put(JsonFormUtils.VALUE, birthFacilityHierarchy);
                     }
                 }
-            } else if (formName.equals("out_of_catchment_service")) {
-                if (StringUtils.isNotBlank(entityId)) {
-                    entityId = entityId.replace("-", "");
-                } else {
-                    JSONArray fields = form.getJSONObject("step1").getJSONArray("fields");
-                    for (int i = 0; i < fields.length(); i++) {
-                        if (fields.getJSONObject(i).getString("key").equals("ZEIR_ID")) {
-                            fields.getJSONObject(i).put(JsonFormUtils.READ_ONLY, false);
-                            break;
-                        }
-                    }
-                }
-
-                JSONObject stepOne = form.getJSONObject(JsonFormUtils.STEP1);
-                JSONArray jsonArray = stepOne.getJSONArray(JsonFormUtils.FIELDS);
-                for (int i = 0; i < jsonArray.length(); i++) {
-                    JSONObject jsonObject = jsonArray.getJSONObject(i);
-                    if (jsonObject.getString(JsonFormUtils.KEY)
-                            .equalsIgnoreCase(JsonFormUtils.ZEIR_ID)) {
-                        jsonObject.remove(JsonFormUtils.VALUE);
-                        jsonObject.put(JsonFormUtils.VALUE, entityId);
-                        continue;
-                    }
-                }
-
-                JsonFormUtils.addAddAvailableVaccines(context, form);
-            } else if (formName.equals("household_registration")) {
-                JsonFormUtils.addHouseholdRegLocHierarchyQuestions(form, openSrpContext);
-
             } else if (formName.equals("woman_member_registration")) {
                 JSONObject metaDataJson = form.getJSONObject("metadata");
                 JSONObject lookup = metaDataJson.getJSONObject("look_up");
@@ -266,41 +237,9 @@ public class HouseholdMemberAddFragment extends DialogFragment {
 
             intent.putExtra("json", form.toString());
             Log.d(TAG, "form is " + form.toString());
+            PathJsonFormActivity.isLaunched = true;
             context.startActivityForResult(intent, jsonFormActivityRequestCode);
         }
 
-    }
-
-    public static Event addMetaData(Context context, Event event, Date start) throws JSONException {
-        Map<String, String> metaFields = new HashMap<String, String>();
-        metaFields.put("deviceid", "163149AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
-        metaFields.put("end", "163138AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
-        metaFields.put("start", "163137AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
-        Calendar calendar = Calendar.getInstance();
-
-        String end = DATE_TIME_FORMAT.format(calendar.getTime());
-
-        Obs obs = new Obs();
-        obs.setFieldCode("163137AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
-        obs.setValue(DATE_TIME_FORMAT.format(start));
-        obs.setFieldType("concept");
-        obs.setFieldDataType("start");
-        event.addObs(obs);
-
-
-        obs.setFieldCode("163137AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
-        obs.setValue(end);
-        obs.setFieldDataType("end");
-        event.addObs(obs);
-
-        TelephonyManager mTelephonyManager = (TelephonyManager) context.getSystemService(Context.TELEPHONY_SERVICE);
-
-        String deviceId = mTelephonyManager.getSimSerialNumber();
-
-        obs.setFieldCode("163137AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
-        obs.setValue(deviceId);
-        obs.setFieldDataType("deviceid");
-        event.addObs(obs);
-        return event;
     }
 }

@@ -33,8 +33,12 @@ import org.smartregister.CoreLibrary;
 import org.smartregister.DristhiConfiguration;
 import org.smartregister.commonregistry.CommonPersonObject;
 import org.smartregister.commonregistry.CommonRepository;
+import org.smartregister.domain.Alert;
+import org.smartregister.domain.AlertStatus;
 import org.smartregister.domain.Response;
 import org.smartregister.domain.ResponseStatus;
+import org.smartregister.immunization.domain.Vaccine;
+import org.smartregister.immunization.repository.VaccineRepository;
 import org.smartregister.path.R;
 import org.smartregister.path.activity.mockactivity.ChildSmartRegisterActivityMock;
 import org.smartregister.path.activity.mockactivity.HouseholdSmartRegisterActivityMock;
@@ -50,13 +54,17 @@ import org.smartregister.path.customshadow.MyShadowAsyncTask;
 import org.smartregister.path.fragment.ChildSmartRegisterFragment;
 import org.smartregister.path.fragment.HouseholdSmartRegisterFragment;
 import org.smartregister.repository.DetailsRepository;
+import org.smartregister.service.AlertService;
 import org.smartregister.service.ZiggyService;
 import org.smartregister.view.controller.ANMLocationController;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import shared.BaseUnitTest;
+import util.PathConstants;
 
 import static junit.framework.Assert.assertTrue;
 import static org.junit.Assert.assertEquals;
@@ -76,12 +84,18 @@ public class ChildSmartRegisterActivityTest extends BaseUnitTest {
     ChildSmartRegisterActivityMock activity;
     private Map<String, String> details;
     ActivityController<ChildSmartRegisterActivityMock> controller;
+    List<Alert> alertList = new ArrayList<>();
+    @Mock
+    VaccineRepository vaccineRepository;
 
     @Mock
     public org.smartregister.service.HTTPAgent httpAgent;
 
     @Mock
     public DristhiConfiguration configuration;
+
+    @Mock
+    AlertService alertService;
 
     @Mock
     private InputMethodManager inputManager;
@@ -115,6 +129,7 @@ public class ChildSmartRegisterActivityTest extends BaseUnitTest {
     @Before
     public void setUp() {
         MockitoAnnotations.initMocks(this);
+        setDataForTest();
         details = new HashMap<>();
         context_ = ShadowContextForRegistryActivity.getInstance();
         ChildSmartRegisterActivityMock.inputManager = inputManager;
@@ -129,6 +144,7 @@ public class ChildSmartRegisterActivityTest extends BaseUnitTest {
         }
         CommonPersonObject personObject = new CommonPersonObject("caseID","relationalID",new HashMap<String, String>(),"type");
         personObject.setColumnmaps(details);
+        details.put(PathConstants.KEY.DOB,"2018-01-01");
         Response<String> response = new Response<String>(ResponseStatus.success,advanceSearchResponsePayload);
 
         ChildSmartRegisterActivityMock.setmContext(context_);
@@ -149,6 +165,11 @@ public class ChildSmartRegisterActivityTest extends BaseUnitTest {
         when(commonRepository.rawCustomQueryForAdapter(anyString())).thenReturn(matrixCursor);
         when(context_.ziggyService()).thenReturn(ziggyService);
         when(commonRepository.readAllcommonforCursorAdapter(any(Cursor.class))).thenReturn(personObject);
+        Mockito.doReturn(alertService).when(context_).alertService();
+        Mockito.doReturn(alertList).when(alertService).findByEntityIdAndAlertNames(Mockito.anyString(),Mockito.any(String[].class));
+
+
+
         CoreLibrary.init(context_);
 
 
@@ -264,5 +285,11 @@ public class ChildSmartRegisterActivityTest extends BaseUnitTest {
         public Map<String, String> getAllDetailsForClient(String baseEntityId) {
             return details;
         }
+    }
+    public void setDataForTest() {
+//        activity.set
+        Alert alert = new Alert("caseID","BCG","BCG", AlertStatus.normal,"1990-01-01","2200-01-01");
+        alertList.add(alert);
+
     }
 }

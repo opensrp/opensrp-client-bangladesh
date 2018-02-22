@@ -18,6 +18,7 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
+import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 import org.robolectric.Robolectric;
 import org.robolectric.RuntimeEnvironment;
@@ -27,6 +28,8 @@ import org.robolectric.shadows.ShadowLooper;
 import org.smartregister.CoreLibrary;
 import org.smartregister.commonregistry.CommonPersonObject;
 import org.smartregister.commonregistry.CommonRepository;
+import org.smartregister.domain.Alert;
+import org.smartregister.immunization.repository.VaccineRepository;
 import org.smartregister.path.R;
 import org.smartregister.path.activity.mockactivity.ChildSmartRegisterActivityMock;
 import org.smartregister.path.activity.mockactivity.HouseholdSmartRegisterActivityMock;
@@ -45,10 +48,13 @@ import org.smartregister.path.fragment.ChildSmartRegisterFragment;
 import org.smartregister.path.fragment.HouseholdSmartRegisterFragment;
 import org.smartregister.path.fragment.WomanSmartRegisterFragment;
 import org.smartregister.repository.DetailsRepository;
+import org.smartregister.service.AlertService;
 import org.smartregister.service.ZiggyService;
 import org.smartregister.view.controller.ANMLocationController;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import shared.BaseUnitTest;
@@ -69,6 +75,13 @@ public class WomanSmartRegisterActivityTest extends BaseUnitTest {
     WomanSmartRegisterActivityMock activity;
     private Map<String, String> details;
     ActivityController<WomanSmartRegisterActivityMock> controller;
+    List<Alert> alertList = new ArrayList<>();
+
+    @Mock
+    AlertService alertService;
+
+    @Mock
+    VaccineRepository vaccineRepository;
 
     @Mock
     private ZiggyService ziggyService;
@@ -112,6 +125,7 @@ public class WomanSmartRegisterActivityTest extends BaseUnitTest {
         }
         CommonPersonObject personObject = new CommonPersonObject("caseID","relationalID",new HashMap<String, String>(),"type");
         personObject.setColumnmaps(details);
+        details.put("lmp","2018-01-01");
         WomanSmartRegisterActivityMock.setmContext(context_);
         when(context_.updateApplicationContext(isNull(Context.class))).thenReturn(context_);
         when(context_.updateApplicationContext(any(Context.class))).thenReturn(context_);
@@ -126,6 +140,8 @@ public class WomanSmartRegisterActivityTest extends BaseUnitTest {
         when(commonRepository.rawCustomQueryForAdapter(anyString())).thenReturn(matrixCursor);
         when(context_.ziggyService()).thenReturn(ziggyService);
         when(commonRepository.readAllcommonforCursorAdapter(any(Cursor.class))).thenReturn(personObject);
+        Mockito.doReturn(alertService).when(context_).alertService();
+        Mockito.doReturn(alertList).when(alertService).findByEntityIdAndAlertNames(Mockito.anyString(),Mockito.any(String[].class));
         CoreLibrary.init(context_);
 
 

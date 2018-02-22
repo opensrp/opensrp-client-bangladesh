@@ -1940,8 +1940,8 @@ public class JsonFormUtils extends org.smartregister.util.JsonFormUtils {
 
             intent.putExtra("json", form.toString());
             Log.d(TAG, "form is " + form.toString());
-            context.startActivityForResult(intent, jsonFormActivityRequestCode);
             PathJsonFormActivity.isLaunched = true;
+            context.startActivityForResult(intent, jsonFormActivityRequestCode);
         }
     }
 

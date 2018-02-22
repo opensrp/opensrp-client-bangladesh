@@ -47,6 +47,7 @@ import org.smartregister.path.activity.shadow.UniqueIDRepositoryShadow;
 import org.smartregister.path.application.VaccinatorApplication;
 import org.smartregister.path.customshadow.LocationPickerViewShadow;
 import org.smartregister.path.customshadow.MyShadowAsyncTask;
+import org.smartregister.path.fragment.HouseholdMemberAddFragment;
 import org.smartregister.path.fragment.HouseholdSmartRegisterFragment;
 import org.smartregister.repository.DetailsRepository;
 import org.smartregister.view.controller.ANMLocationController;
@@ -116,6 +117,7 @@ public class HouseholdSmartRegisterActivityTest extends BaseUnitTest {
             matrixCursor.addRow(new Object[]{"" + i, "relationalid" + i, "first_name" + i, "dob" + i, "details+i", "HHID" + i, "Date_Of_Reg" + i, "address"+i});
         }
         CommonPersonObject personObject = new CommonPersonObject("caseID","relationalID",new HashMap<String, String>(),"type");
+        details.put("address4","1-Kha");
         personObject.setColumnmaps(details);
         HouseholdSmartRegisterActivityMock.setmContext(context_);
         when(context_.updateApplicationContext(isNull(Context.class))).thenReturn(context_);
@@ -157,6 +159,29 @@ public class HouseholdSmartRegisterActivityTest extends BaseUnitTest {
     public void assertActivityNotNull() {
         ((HouseholdSmartRegisterFragment)activity.mBaseFragment).refresh();
         Assert.assertNotNull(activity);
+    }
+
+    @Test
+    public void startWomanRegistrationShouldLaunchJsonForm() {
+        final ListView list = (ListView) activity.findViewById(R.id.list);
+        ListAdapter  adapter = tryGetAdapter(list);
+        list.getChildAt(4).findViewById(R.id.add_member).performClick();
+        HouseholdMemberAddFragment householdMemberAddFragment = (HouseholdMemberAddFragment) activity.getFragmentManager().findFragmentByTag(HouseholdMemberAddFragment.DIALOG_TAG);
+        householdMemberAddFragment.getView().findViewById(R.id.add_woman).performClick();
+        assertTrue(PathJsonFormActivity.isLaunched);
+//        assertTrue(PathJsonFormActivity.isLaunched);
+//        assertTrue( instanceof PathJsonFormActivity);
+    }
+    @Test
+    public void startChildRegistrationShouldLaunchJsonForm() {
+        final ListView list = (ListView) activity.findViewById(R.id.list);
+        ListAdapter  adapter = tryGetAdapter(list);
+        list.getChildAt(4).findViewById(R.id.add_member).performClick();
+        HouseholdMemberAddFragment householdMemberAddFragment = (HouseholdMemberAddFragment) activity.getFragmentManager().findFragmentByTag(HouseholdMemberAddFragment.DIALOG_TAG);
+        householdMemberAddFragment.getView().findViewById(R.id.add_child).performClick();
+        assertTrue(PathJsonFormActivity.isLaunched);
+//        assertTrue(PathJsonFormActivity.isLaunched);
+//        assertTrue( instanceof PathJsonFormActivity);
     }
 
     @Test
