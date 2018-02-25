@@ -70,6 +70,7 @@ public class ChildSmartRegisterFragment extends BaseSmartRegisterFragment implem
     private LinearLayout btnBackToHome;
     private ProgressBar syncProgressBar;
     private int dueOverdueCount = 0;
+    public static boolean calledrecordWeight = true;
 
     @Override
     protected SecuredNativeSmartRegisterActivity.DefaultOptionsProvider getDefaultOptionsProvider() {
@@ -377,6 +378,7 @@ public class ChildSmartRegisterFragment extends BaseSmartRegisterFragment implem
                 case R.id.record_weight:
                     registerClickables.setRecordWeight(true);
                     ChildImmunizationActivity.launchActivity(getActivity(), client, registerClickables);
+                    calledrecordWeight = true;
                     break;
 
                 case R.id.record_vaccination:

@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.provider.ContactsContract;
 import android.util.Log;
+import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
@@ -201,6 +202,16 @@ public class ChildSmartRegisterActivityTest extends BaseUnitTest {
         nextButton.performClick();
         assertEquals("Page 1 of 1", info.getText());
         previousButton.performClick();
+    }
+
+    @Test
+    public void childproviderClickOnRecordWeightLaunchesImmunizationActivity() throws InterruptedException {
+        ((ChildSmartRegisterFragment) activity.mBaseFragment).refresh();
+        final ListView list = (ListView) activity.findViewById(R.id.list);
+        View ChildView = (ViewGroup) tryGetAdapter(list).getView(4, null, null);
+        ChildView.findViewById(R.id.record_weight).performClick();
+        assertTrue(ChildSmartRegisterFragment.calledrecordWeight);
+
     }
 
 

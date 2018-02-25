@@ -49,6 +49,7 @@ import static org.smartregister.util.Utils.getValue;
  * Created by habib on 25/07/17.
  */
 public class HouseholdDetailActivity extends BaseActivity {
+    public static boolean isLaunched = false;
     ListView householdList;
     private LocationSwitcherToolbar toolbar;
     public org.smartregister.Context context;
@@ -64,7 +65,7 @@ public class HouseholdDetailActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(getContentView());
 
-
+        isLaunched = true;
         toolbar = (LocationSwitcherToolbar) getToolbar();
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
@@ -159,6 +160,12 @@ public class HouseholdDetailActivity extends BaseActivity {
         //get Household members repository
     }
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        isLaunched = false;
+    }
+
     private void initQueries(){
 
     }
@@ -251,7 +258,8 @@ public class HouseholdDetailActivity extends BaseActivity {
             pClient.setColumnmaps(personinlist.getColumnmaps());
             TextView member_name = (TextView) view.findViewById(R.id.name_tv);
             TextView member_age = (TextView) view.findViewById(R.id.age_tv);
-            member_name.setText("Name : " + cursor.getString(cursor.getColumnIndex("first_name")));
+            int nameColumnIndex = cursor.getColumnIndex("first_name");
+            member_name.setText("Name : " + cursor.getString(nameColumnIndex));
             String dobString = cursor.getString(cursor.getColumnIndex("dob"));
             String durationString = "";
             if (StringUtils.isNotBlank(dobString)) {

@@ -186,19 +186,7 @@ public class HouseholdSmartClientsProvider implements SmartRegisterCLientsProvid
         return inflater;
     }
 
-    public enum State {
-        DUE,
-        OVERDUE,
-        UPCOMING_NEXT_7_DAYS,
-        UPCOMING,
-        INACTIVE,
-        LOST_TO_FOLLOW_UP,
-        EXPIRED,
-        WAITING,
-        NO_ALERT,
-        FULLY_IMMUNIZED
-    }
-    protected org.smartregister.Context context() {
+      protected org.smartregister.Context context() {
         return org.smartregister.Context.getInstance().updateApplicationContext(context);
     }
 }

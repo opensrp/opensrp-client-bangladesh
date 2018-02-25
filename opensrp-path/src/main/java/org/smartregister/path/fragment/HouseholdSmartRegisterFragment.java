@@ -329,6 +329,7 @@ public class HouseholdSmartRegisterFragment extends BaseSmartRegisterFragment {
                     bundle.putSerializable(EXTRA_HOUSEHOLD_DETAILS, client);
                     intent.putExtras(bundle);
                     startActivity(intent);
+                    HouseholdDetailActivity.isLaunched = true;
                     break;
             }
         }

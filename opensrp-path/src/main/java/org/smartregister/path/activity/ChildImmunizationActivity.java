@@ -92,6 +92,8 @@ import util.ImageUtils;
 import util.JsonFormUtils;
 import util.PathConstants;
 
+import static org.smartregister.path.fragment.ChildSmartRegisterFragment.calledrecordWeight;
+
 
 /**
  * Created by Jason Rogena - jrogena@ona.io on 16/02/2017.
@@ -576,7 +578,6 @@ public class ChildImmunizationActivity extends BaseActivity
         bundle.putSerializable(EXTRA_CHILD_DETAILS, childDetails);
         bundle.putSerializable(EXTRA_REGISTER_CLICKABLES, registerClickables);
         intent.putExtras(bundle);
-
         fromContext.startActivity(intent);
     }
 
