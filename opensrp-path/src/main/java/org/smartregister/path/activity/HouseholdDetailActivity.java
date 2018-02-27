@@ -3,6 +3,7 @@ package org.smartregister.path.activity;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
+import android.database.MatrixCursor;
 import android.os.Bundle;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.CursorAdapter;
@@ -257,10 +258,14 @@ public class HouseholdDetailActivity extends BaseActivity {
             final CommonPersonObjectClient pClient = new CommonPersonObjectClient(personinlist.getCaseId(), personinlist.getDetails(), personinlist.getDetails().get("FWHOHFNAME"));
             pClient.setColumnmaps(personinlist.getColumnmaps());
             TextView member_name = (TextView) view.findViewById(R.id.name_tv);
-            TextView member_age = (TextView) view.findViewById(R.id.age_tv);
-            int nameColumnIndex = cursor.getColumnIndex("first_name");
-            member_name.setText("Name : " + cursor.getString(nameColumnIndex));
-            String dobString = cursor.getString(cursor.getColumnIndex("dob"));
+            TextView member_age = (TextView) view.findViewById(R.id.age_tv);       ;
+//            int nameColumnIndex = cursor.getColumnIndex("first_name");
+//            member_name.setText("Name : " + cursor.getString(nameColumnIndex));
+            member_name.setText("Name : " + getValue(personinlist.getColumnmaps(),"first_name",true));
+
+//            String dobString = cursor.getString(cursor.getColumnIndex("dob"));
+            String dobString = getValue(personinlist.getColumnmaps(),"dob",true);
+
             String durationString = "";
             if (StringUtils.isNotBlank(dobString)) {
                 try {

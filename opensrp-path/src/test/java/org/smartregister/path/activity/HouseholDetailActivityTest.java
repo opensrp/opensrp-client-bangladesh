@@ -19,6 +19,7 @@ import net.sqlcipher.database.SQLiteDatabase;
 
 import org.junit.After;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
@@ -140,7 +141,6 @@ public class HouseholDetailActivityTest extends BaseUnitTest {
         CoreLibrary.init(context_);
         when(pathRepository.getReadableDatabase()).thenReturn(database);
         when(pathRepository.getWritableDatabase()).thenReturn(database);
-        matrixCursor.moveToFirst();
         when(database.rawQuery(anyString(),any(String[].class))).thenReturn(matrixCursor);
         Intent intent = new Intent(RuntimeEnvironment.application,HouseholdDetailActivityMock.class);
         Bundle bundle = new Bundle();
@@ -160,6 +160,17 @@ public class HouseholDetailActivityTest extends BaseUnitTest {
     @Test
     public void assertActivityNotNull() {
         Assert.assertNotNull(activity);
+        tearDown();
+    }
+
+    @Test
+    public void householdDetailsShowList() {
+        final ListView list = (ListView) activity.findViewById(R.id.household_list);
+        ListAdapter  adapter = tryGetAdapter(list);
+        assertTrue(adapter.getCount()>0);
+        tearDown();
+//        assertTrue(PathJsonFormActivity.isLaunched);
+//        assertTrue( instanceof PathJsonFormActivity);
     }
 
 

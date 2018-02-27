@@ -152,6 +152,7 @@ public class HouseholdSmartRegisterActivityTest extends BaseUnitTest {
         ImageButton registerHousehold = (ImageButton)activity.findViewById(R.id.register_client);
         registerHousehold.performClick();
         assertTrue(PathJsonFormActivity.isLaunched);
+        tearDown();
 //        assertTrue( instanceof PathJsonFormActivity);
     }
 
@@ -159,6 +160,7 @@ public class HouseholdSmartRegisterActivityTest extends BaseUnitTest {
     public void assertActivityNotNull() {
         ((HouseholdSmartRegisterFragment)activity.mBaseFragment).refresh();
         Assert.assertNotNull(activity);
+        tearDown();
     }
 
     @Test
@@ -169,6 +171,7 @@ public class HouseholdSmartRegisterActivityTest extends BaseUnitTest {
         HouseholdMemberAddFragment householdMemberAddFragment = (HouseholdMemberAddFragment) activity.getFragmentManager().findFragmentByTag(HouseholdMemberAddFragment.DIALOG_TAG);
         householdMemberAddFragment.getView().findViewById(R.id.add_woman).performClick();
         assertTrue(PathJsonFormActivity.isLaunched);
+        tearDown();
 //        assertTrue(PathJsonFormActivity.isLaunched);
 //        assertTrue( instanceof PathJsonFormActivity);
     }
@@ -180,6 +183,7 @@ public class HouseholdSmartRegisterActivityTest extends BaseUnitTest {
         list.getChildAt(4).findViewById(R.id.child_profile_info_layout).performClick();
 
         assertTrue(HouseholdDetailActivity.isLaunched);
+        tearDown();
 //        assertTrue(PathJsonFormActivity.isLaunched);
 //        assertTrue( instanceof PathJsonFormActivity);
     }
@@ -191,6 +195,7 @@ public class HouseholdSmartRegisterActivityTest extends BaseUnitTest {
         HouseholdMemberAddFragment householdMemberAddFragment = (HouseholdMemberAddFragment) activity.getFragmentManager().findFragmentByTag(HouseholdMemberAddFragment.DIALOG_TAG);
         householdMemberAddFragment.getView().findViewById(R.id.add_child).performClick();
         assertTrue(PathJsonFormActivity.isLaunched);
+        tearDown();
 //        assertTrue(PathJsonFormActivity.isLaunched);
 //        assertTrue( instanceof PathJsonFormActivity);
     }
@@ -207,6 +212,7 @@ public class HouseholdSmartRegisterActivityTest extends BaseUnitTest {
         nextButton.performClick();
         assertEquals("Page 1 of 1", info.getText());
         previousButton.performClick();
+        tearDown();
     }
 
 

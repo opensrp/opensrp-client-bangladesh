@@ -45,7 +45,7 @@ android {
 
     dexOptions {
         incremental true
-        javaMaxHeapSize "3g"
+        javaMaxHeapSize "4g"
     }
 
     lintOptions {
@@ -168,6 +168,10 @@ dependencies {
 
 coveralls {
     jacocoReportPath = "${buildDir}/reports/jacoco/jacocoRootReport/merged.xml"
+}
+tasks.withType(Test) {
+    maxParallelForks = Runtime.runtime.availableProcessors()
+    maxHeapSize = "3g"
 }
 
 task jacocoTestReport(type: JacocoReport, dependsOn: ['testDebug']) {

@@ -54,7 +54,6 @@ import static org.powermock.api.support.membermodification.MemberMatcher.method;
 /**
  * created by Raihan on 07/06/2017.
  */
-@Ignore
 @PrepareForTest({org.smartregister.Context.class})
 @Config(shadows = {ImmunizationRowAdapterShadow.class, ImmunizationRowCardShadow.class, MyShadowAsyncTask.class, JsonFormUtilsShadow.class, FormUtilsShadow.class})
 public class ChildDetailTabbedActivityUnitTest extends BaseUnitTest {
