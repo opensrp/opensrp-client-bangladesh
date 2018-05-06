@@ -175,7 +175,7 @@ tasks.withType(Test) {
     maxHeapSize = "3g"
 }
 
-task jacocoTestReport(type: JacocoReport, dependsOn: ['testDebugUnitTest', 'createDebugCoverageReport']) {
+task jacocoTestReport(type: JacocoReport, dependsOn: ['testDebug', 'createDebugCoverageReport']) {
 
     reports {
         xml.enabled = true
