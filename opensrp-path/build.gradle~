@@ -41,7 +41,6 @@ android {
         versionCode 8
         versionName "1.2.2"
         multiDexEnabled true
-        testInstrumentationRunner 'android.support.test.runner.AndroidJUnitRunner'
     }
 
     dexOptions {
@@ -98,6 +97,9 @@ android {
 
     testOptions {
         unitTests.returnDefaultValues = true
+	beforeTest{ descr ->
+		logger.warn("Starting Test ${descr.className} : ${descr.name}")
+	}
     }
 
 }
@@ -165,6 +167,7 @@ dependencies {
     testCompile 'org.apache.maven:maven-ant-tasks:2.1.3'
 }
 
+
 //Testing and coveralls
 
 coveralls {
@@ -175,7 +178,7 @@ tasks.withType(Test) {
     maxHeapSize = "3g"
 }
 
-task jacocoTestReport(type: JacocoReport, dependsOn: ['testDebugUnitTest', 'createDebugCoverageReport']) {
+task jacocoTestReport(type: JacocoReport, dependsOn: ['testDebug']) {
 
     reports {
         xml.enabled = true

@@ -243,9 +243,7 @@ public class ChildSmartRegisterActivityTest extends BaseUnitTest {
         ImageButton globalsearch = (ImageButton) activity.findViewById(R.id.global_search);
         globalsearch.performClick();
         Assert.assertEquals(activity.mPager.getCurrentItem(),1);
-//        Mockito.verify(activity,Mockito.atLeastOnce()).startAdvancedSearch();
 
-//        assertEquals(2, tryGetAdapter(list).getCount());
     }
 
     @Test
