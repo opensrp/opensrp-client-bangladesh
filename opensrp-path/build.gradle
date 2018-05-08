@@ -172,7 +172,7 @@ coveralls {
 }
 tasks.withType(Test) {
     maxParallelForks = Runtime.runtime.availableProcessors()
-    maxHeapSize = "3g"
+    maxHeapSize = "4g"
 }
 
 task jacocoTestReport(type: JacocoReport, dependsOn: ['testDebug', 'createDebugCoverageReport']) {

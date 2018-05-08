@@ -1,6 +1,7 @@
 package org.smartregister.path.wrapper;
 
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.mockito.MockitoAnnotations;
 import org.smartregister.domain.Alert;
@@ -14,7 +15,7 @@ import shared.BaseUnitTest;
 /**
  * Created by kaderchowdhury on 10/12/17.
  */
-
+@Ignore
 public class VaccineViewRecordUpdateWrapperTest extends BaseUnitTest {
 
     VaccineViewRecordUpdateWrapper vaccineViewRecordUpdateWrapper;
