@@ -20,8 +20,6 @@ env:
 
 android:
  components:
- - tools
- - platform-tools
  - build-tools-$ANDROID_BUILD_TOOLS
  - android-$ANDROID_API
  - android-$EMULATOR_API_LEVEL
