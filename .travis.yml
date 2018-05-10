@@ -1,57 +1,47 @@
 language: android
+# sudo set to required because of an issue with how TravisCI handles builds in Docker containers https://github.com/travis-ci/travis-ci/issues/3695.
+# Setting sudo to required prevents Travis from testing the project in a Docker container.
 sudo: required
 jdk: oraclejdk8
 
-before_cache:
- - rm -f $HOME/.gradle/caches/modules-2/modules-2.lock
- - rm -fr $HOME/.gradle/caches/*/plugin-resolution/
-
-cache:
- directories:
- - $HOME/.gradle/caches/
- - $HOME/.gradle/wrapper/
-
 env:
- global:
- - ANDROID_API=25
- - EMULATOR_API=24
- - ANDROID_BUILD_TOOLS=25.0.2
- - ADB_INSTALL_TIMEOUT=5 # minutes
+  matrix:
+    - ANDROID_TARGET=android-22 ANDROID_ABI=armeabi-v7a
+  global:
+    # wait up to 10 minutes for adb to connect to emulator
+    - ADB_INSTALL_TIMEOUT=10
+    - MALLOC_ARENA_MAX=2
 
 android:
- components:
- - build-tools-$ANDROID_BUILD_TOOLS
- - android-$ANDROID_API
- - android-$EMULATOR_API_LEVEL
- - extra-google-m2repository
- - extra-android-m2repository # for design library
- - addon-google_apis-google-25 # google play services
- - sys-img-armeabi-v7a-addon-google_apis-google-$ANDROID_API_LEVEL
- - sys-img-armeabi-v7a-android-$EMULATOR_API_LEVEL # the fix!
+  components:
+    # tools required
+    - tools
+    # The BuildTools version used by your project
+    - build-tools-26.0.1
+    # The SDK version used to compile your projects
+    - android-22
+    # Additional components
+    - extra-google-google_play_services
+    - extra-google-m2repository
+    - extra-android-m2repository
+    - addon-google_apis-google-19
+    # Specify at least one system image,
+    # if you need to run emulator(s) during your tests
+    - sys-img-armeabi-v7a-android-22
 
- licenses:
- - android-sdk-preview-license-.+
- - android-sdk-license-.+
- - google-gdk-license-.+
 
-before_install:
-- mkdir "$ANDROID_HOME/licenses" || true
-- echo -e "\n8933bad161af4178b1185d1a37fbf41ea5269c55" > "$ANDROID_HOME/licenses/android-sdk-license"
-- echo -e "\n84831b9409646a918e30573bab4c9c91346d8abd" > "$ANDROID_HOME/licenses/android-sdk-preview-license"
-- chmod +x gradlew
-- echo y | android update sdk --no-ui --all --filter "tool,extra-android-m2repository,extra-android-support,extra-google-google_play_services,extra-google-m2repository"
-- echo y | $ANDROID_HOME/tools/bin/sdkmanager "extras;m2repository;com;android;support;constraint;constraint-layout-solver;1.0.2"
-- ./gradlew dependencies || true # DON'T ADD unless you are getting "Install missing components using SDK manager"
-#Source: https://medium.com/@oldergod/constraint-layout-and-circleci-travis-d50342696d2
+addons:
+  apt_packages:
+  - pandoc
 
 before_script:
-- echo "y" | android update sdk -a --no-ui --filter android-24
-- echo "y" | android update sdk -a --no-ui --filter sys-img-armeabi-v7a-android-24
-- android list targets | grep -E '^id:' | awk -F '"' '{$1=""; print $2}' # list all targets
-- echo no | android create avd --force -n test -t android-24 --abi armeabi-v7a
-- emulator -avd test -no-skin -no-window &
-- android-wait-for-emulator
-- adb shell input keyevent 82 &
+  # Emulator Management: Create, Start and Wait
+  - echo no | android create avd --force -n test -t $ANDROID_TARGET --abi $ANDROID_ABI
+  - emulator -avd test -no-skin -no-audio -no-window &
+  - android-wait-for-emulator
+#  - adb wait-for-device
+  - sleep 300
+  - adb shell input keyevent 82 &
 
 script: 
   - echo "Travis branch is $TRAVIS_BRANCH"
