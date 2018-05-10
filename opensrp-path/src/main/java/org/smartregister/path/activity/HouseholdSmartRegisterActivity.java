@@ -179,14 +179,6 @@ public class HouseholdSmartRegisterActivity extends BaseRegisterActivity {
 
     }
 
-    public void startAdvancedSearch() {
-        try {
-            mPager.setCurrentItem(ADVANCED_SEARCH_POSITION, false);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-    }
 
     public void updateAdvancedSearchFilterCount(int count) {
         AdvancedSearchFragment advancedSearchFragment = (AdvancedSearchFragment) findFragmentByPosition(ADVANCED_SEARCH_POSITION);
@@ -347,12 +339,12 @@ public class HouseholdSmartRegisterActivity extends BaseRegisterActivity {
         }
     }
 
-    private void onQRCodeSucessfullyScanned(String qrCode) {
-        Log.i(getClass().getName(), "QR code: " + qrCode);
-        if (StringUtils.isNotBlank(qrCode)) {
-            filterList(qrCode);
-        }
-    }
+//    private void onQRCodeSucessfullyScanned(String qrCode) {
+//        Log.i(getClass().getName(), "QR code: " + qrCode);
+//        if (StringUtils.isNotBlank(qrCode)) {
+//            filterList(qrCode);
+//        }
+//    }
 
     private Listener<FetchStatus> onDataFetchedListener = new Listener<FetchStatus>() {
         @Override

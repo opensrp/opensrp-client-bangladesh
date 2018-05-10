@@ -332,13 +332,6 @@ public class WomanSmartRegisterActivity extends BaseRegisterActivity {
         }
     }
 
-    private void onQRCodeSucessfullyScanned(String qrCode) {
-        Log.i(getClass().getName(), "QR code: " + qrCode);
-        if (StringUtils.isNotBlank(qrCode)) {
-            filterList(qrCode);
-        }
-    }
-
     private Listener<FetchStatus> onDataFetchedListener = new Listener<FetchStatus>() {
         @Override
         public void onEvent(FetchStatus fetchStatus) {
