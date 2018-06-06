@@ -169,10 +169,14 @@ public class ChildSmartClientsProvider implements SmartRegisterCLientsProviderFo
         } catch (Exception e) {
             Log.e(getClass().getName(), e.getMessage(), e);
         }
+        if(weightRepository.findLast5(pc.entityId()).size()=>1) {
+            boolean adequate = checkForWeightGainCalc(birthDateTime.toDate(), Gender.valueOf(gender.toUpperCase()), weightRepository.findLast5(pc.entityId()).get(0), pc, getOpenSRPContext().detailsRepository());
+            if (!   adequate) {
+                convertView.setBackgroundColor(getOpenSRPContext().getColorResource(R.color.alert_urgent_red));
+            }else{
+                convertView.setBackgroundColor(getOpenSRPContext().getColorResource(R.color.alert_complete_green));
 
-        boolean check = checkForWeightGainCalc(birthDateTime.toDate(),Gender.valueOf(gender),weightRepository.findLast5(pc.entityId()).get(0),pc,getOpenSRPContext().detailsRepository());
-        if(check){
-            convertView.setBackgroundColor(R.color.alert_urgent_red);
+            }
         }
     }
 

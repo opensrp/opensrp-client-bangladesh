@@ -711,7 +711,7 @@ public class WomanSmartClientsProvider implements SmartRegisterCLientsProviderFo
                 DetailsRepository detailsRepository;
                 detailsRepository = org.smartregister.Context.getInstance().detailsRepository();
                 Map<String, String> details = detailsRepository.getAllDetailsForClient(pc.entityId());
-                locationid = JsonFormUtils.getOpenMrsLocationId(context,getValue(details, "address4", false) );
+                locationid = JsonFormUtils.getOpenMrsLocationId(context,getValue(details, "address3", false) );
 
                 String birthFacilityHierarchy = JsonFormUtils.getOpenMrsLocationHierarchy(
                         context,locationid ).toString();
