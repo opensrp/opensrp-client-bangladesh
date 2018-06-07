@@ -12,6 +12,7 @@ import com.vijay.jsonwizard.constants.JsonFormConstants;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.smartregister.growplus.fragment.MediaDialogFragment;
 import org.smartregister.growplus.fragment.PathJsonFormFragment;
 
 /**
@@ -82,34 +83,35 @@ public class PathJsonFormActivity extends JsonFormActivity {
                 String mediatype = media.getString("media_type");
                 String medialink = media.getString("media_link");
 
-                dummydialog(value);
+                dummydialog(value,mediatype,medialink);
             }
         }catch (Exception e){
 
         }
     }
 
-    private void dummydialog(String value) {
-        AlertDialog.Builder builder;
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            builder = new AlertDialog.Builder(this, android.R.style.Theme_Material_Dialog_Alert);
-        } else {
-            builder = new AlertDialog.Builder(this);
-        }
-        builder.setTitle(value)
-                .setMessage("Are you sure this is"+ value+ " ?")
-                .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int which) {
-                        // continue with delete
-                    }
-                })
-                .setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int which) {
-                        // do nothing
-                    }
-                })
-                .setIcon(android.R.drawable.ic_dialog_alert)
-                .show();
+    private void dummydialog(String value, String mediatype, String medialink) {
+        MediaDialogFragment.launchDialog(this,"mediaDialog",mediatype,medialink);
+//        AlertDialog.Builder builder;
+//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+//            builder = new AlertDialog.Builder(this, android.R.style.Theme_Material_Dialog_Alert);
+//        } else {
+//            builder = new AlertDialog.Builder(this);
+//        }
+//        builder.setTitle(value)
+//                .setMessage("Are you sure this is"+ value+ " ?")
+//                .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+//                    public void onClick(DialogInterface dialog, int which) {
+//                        // continue with delete
+//                    }
+//                })
+//                .setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
+//                    public void onClick(DialogInterface dialog, int which) {
+//                        // do nothing
+//                    }
+//                })
+//                .setIcon(android.R.drawable.ic_dialog_alert)
+//                .show();
     }
 
 

@@ -130,13 +130,13 @@
           {
           "media_type":"image",
           "media_trigger_value":"Male",
-          "media_link":"male",
+          "media_link":"male.png",
           "media_text":""
           },
           {
-            "media_type":"image",
+            "media_type":"video",
             "media_trigger_value":"Female",
-            "media_link":"male",
+            "media_link":"male.mp4",
             "media_text":""
           }
         ],
