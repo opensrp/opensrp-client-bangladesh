@@ -104,6 +104,58 @@
             "ex": "equalTo(., \"Yes\")"
           }
         }
+      },
+      {
+        "key": "nutrition_to_discuss",
+        "openmrs_entity_parent": "",
+        "openmrs_entity": "",
+        "openmrs_entity_id": "",
+        "type": "check_box",
+        "label": "Do you have concerns you would like to discuss during this visit related to nutrition? ",
+        "options":[
+          {
+            "key":"womans_diet",
+            "text":"Woman’s diet",
+            "value":"false"
+          },
+          {
+            "key":"reducing_workload",
+            "text":"Reducing workload",
+            "value":"false"
+          },
+          {
+            "key":"prevention_of_malaria",
+            "text":"Prevention of malaria",
+            "value":"false"
+          },
+          {
+            "key":"breastfeeding",
+            "text":"Breastfeeding",
+            "value":"false"
+          }
+        ]
+      },
+      {
+        "key": "has_diet_changed",
+        "openmrs_entity_parent": "",
+        "openmrs_entity": "",
+        "openmrs_entity_id": "",
+        "type": "spinner",
+        "hint": "Has your diet changed since you have become pregnant?",
+        "values": [
+          "Yes",
+          "No"
+        ],
+        "v_required": {
+          "value": "true",
+          "err": "Please answer the question"
+        },
+        "relevance": {
+        "step1:nutrition_to_discuss": {
+          "type": "string",
+          "ex": "regex(., \"\\bwomans_diet\\b\")"
+        }
+        }
       }
     ]
   }

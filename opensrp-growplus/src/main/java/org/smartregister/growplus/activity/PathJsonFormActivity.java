@@ -42,7 +42,7 @@ public class PathJsonFormActivity extends JsonFormActivity {
     @Override
     public void writeValue(String stepName, String key, String value, String openMrsEntityParent, String openMrsEntity, String openMrsEntityId) throws JSONException {
         super.writeValue(stepName, key, value, openMrsEntityParent, openMrsEntity, openMrsEntityId);
-        refreshCalculateLogic(key, value);
+        refreshCalculateLogic(stepName,key, value);
 
     }
 
@@ -52,7 +52,7 @@ public class PathJsonFormActivity extends JsonFormActivity {
         super.onFormFinish();
     }
 
-    private void refreshCalculateLogic(String key, String value) {
+    private void refreshCalculateLogic(String stepName,String key, String value) {
         try {
             JSONObject object = getStep("step1");
             JSONArray fields = object.getJSONArray("fields");
@@ -69,6 +69,16 @@ public class PathJsonFormActivity extends JsonFormActivity {
                         }
                     }
 
+                }
+                if(questionGroup.has("type") && questionGroup.getString("type").equalsIgnoreCase("check_box")){
+                    JSONArray checkBoxArray = questionGroup.getJSONArray("options");
+                    for(int j = 0;j<checkBoxArray.length();j++){
+                        if(checkBoxArray.getJSONObject(j).getString("value").equalsIgnoreCase("true")){
+                            String valueOFCheckbox = checkBoxArray.getJSONObject(j).getString("key");
+                            questionGroup.put("value",valueOFCheckbox);
+//                            super.writeValue(stepName, key, valueOFCheckbox, "", "", "");
+                        }
+                    }
                 }
             }
         }catch(Exception e){
