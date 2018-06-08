@@ -153,7 +153,7 @@
         "relevance": {
         "step1:nutrition_to_discuss": {
           "type": "string",
-          "ex": "regex(., \"\\bwomans_diet\\b\")"
+          "ex": "regex(., \"(?i).*?\\bwomans_diet\\b.*?\")"
         }
         }
       }
