@@ -1,0 +1,110 @@
+{
+  "count": "1",
+  "encounter_type": "Pregnant Woman Counselling",
+  "entity_id": "",
+  "relational_id": "",
+  "metadata": {
+    "start": {
+      "openmrs_entity_parent": "",
+      "openmrs_entity": "concept",
+      "openmrs_data_type": "start",
+      "openmrs_entity_id": "163137AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
+    },
+    "end": {
+      "openmrs_entity_parent": "",
+      "openmrs_entity": "concept",
+      "openmrs_data_type": "end",
+      "openmrs_entity_id": "163138AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
+    },
+    "today": {
+      "openmrs_entity_parent": "",
+      "openmrs_entity": "encounter",
+      "openmrs_entity_id": "encounter_date"
+    },
+    "deviceid": {
+      "openmrs_entity_parent": "",
+      "openmrs_entity": "concept",
+      "openmrs_data_type": "deviceid",
+      "openmrs_entity_id": "163149AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
+    },
+    "subscriberid": {
+      "openmrs_entity_parent": "",
+      "openmrs_entity": "concept",
+      "openmrs_data_type": "subscriberid",
+      "openmrs_entity_id": "163150AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
+    },
+    "simserial": {
+      "openmrs_entity_parent": "",
+      "openmrs_entity": "concept",
+      "openmrs_data_type": "simserial",
+      "openmrs_entity_id": "163151AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
+    },
+    "phonenumber": {
+      "openmrs_entity_parent": "",
+      "openmrs_entity": "concept",
+      "openmrs_data_type": "phonenumber",
+      "openmrs_entity_id": "163152AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
+    },
+    "encounter_location": "",
+    "look_up": {
+        "entity_id":"",
+        "value":""
+    }
+  },
+  "step1": {
+    "title": "IYCF Councelling Form Pregnant woman",
+    "fields": [
+      {
+        "key": "any_member_present",
+        "openmrs_entity_parent": "",
+        "openmrs_entity": "",
+        "openmrs_entity_id": "",
+        "type": "spinner",
+        "hint": "Are there any family members present at the consultation?",
+        "values": [
+          "Yes",
+          "No"
+        ],
+        "v_required": {
+          "value": "true",
+          "err": "Please answer the question"
+        }
+      },
+      {
+        "key": "which_member_present",
+        "openmrs_entity_parent": "",
+        "openmrs_entity": "",
+        "openmrs_entity_id": "",
+        "type": "check_box",
+        "label": "If yes, which ones",
+        "v_required": {
+          "value": true,
+          "err": "Please enter the members present"
+        },
+        "options":[
+          {
+            "key":"Husband",
+            "text":"Husband",
+            "value":"Husband"
+          },
+          {
+            "key":"Grandmother/mother in law",
+            "text":"Grandmother/mother in law",
+            "value":"Grandmother/mother in law"
+          },
+          {
+            "key":"Daughter / son",
+            "text":"Daughter / son",
+            "value":"Daughter / son"
+          }
+        ],
+        "relevance": {
+          "step1:any_member_present": {
+            "type": "string",
+            "ex": "equalTo(., \"Yes\")"
+          }
+        }
+      }
+    ]
+  }
+}
