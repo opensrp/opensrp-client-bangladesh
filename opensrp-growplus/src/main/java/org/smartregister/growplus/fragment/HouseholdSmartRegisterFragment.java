@@ -148,7 +148,7 @@ public class HouseholdSmartRegisterFragment extends BaseSmartRegisterFragment {
     protected void startRegistration() {
 //        ((ChildSmartRegisterActivity) getActivity()).startFormActivity("child_enrollment", null, null);
         ((HouseholdSmartRegisterActivity) getActivity()).startFormActivity("household_registration", null, null);
-//        ((HouseholdSmartRegisterActivity) getActivity()).startFormActivity("iycf_counselling_form_pregnant_woman", null, null);
+//        ((HouseholdSmartRegisterActivity) getActivity()).startFormActivity("iycf_counselling_form_lactating_woman", null, null);
 
 //        ((ChildSmartRegisterActivity) getActivity()).startFormActivity("woman_member_registration", null, null);
 

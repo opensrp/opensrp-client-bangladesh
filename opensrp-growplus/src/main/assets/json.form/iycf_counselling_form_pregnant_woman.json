@@ -156,6 +156,174 @@
           "ex": "regex(., \"(?i).*?\\bwomans_diet\\b.*?\")"
         }
         }
+      },
+      {
+        "key": "trouble_eating",
+        "openmrs_entity_parent": "",
+        "openmrs_entity": "",
+        "openmrs_entity_id": "",
+        "type": "spinner",
+        "hint": "Are you having any trouble eating?",
+        "values": [
+          "Yes",
+          "No"
+        ],
+        "relevance": {
+          "step1:nutrition_to_discuss": {
+            "type": "string",
+            "ex": "regex(., \"(?i).*?\\bwomans_diet\\b.*?\")"
+          }
+        },
+        "v_required": {
+          "value": "true",
+          "err": "Please answer the question"
+        }
+      },
+      {
+        "key": "ifa_tablets_per_week",
+        "openmrs_entity_parent": "",
+        "openmrs_entity": "",
+        "openmrs_entity_id": "",
+        "type": "spinner",
+        "hint": "How many IFA tablets do you take per week?",
+        "values": [
+          "7 Tablet or more",
+          "6 tablet or less"
+        ],
+        "relevance": {
+          "step1:nutrition_to_discuss": {
+            "type": "string",
+            "ex": "regex(., \"(?i).*?\\bwomans_diet\\b.*?\")"
+          }
+        },
+        "v_required": {
+          "value": "true",
+          "err": "Please answer the question"
+        }
+      },
+      {
+        "key": "taking_other_supplements",
+        "openmrs_entity_parent": "",
+        "openmrs_entity": "",
+        "openmrs_entity_id": "",
+        "type": "spinner",
+        "hint": "Are you taking other supplements?",
+        "values": [
+          "Yes",
+          "No"
+        ],
+        "relevance": {
+          "step1:nutrition_to_discuss": {
+            "type": "string",
+            "ex": "regex(., \"(?i).*?\\bwomans_diet\\b.*?\")"
+          }
+        },
+        "v_required": {
+          "value": "true",
+          "err": "Please answer the question"
+        }
+      },
+      {
+        "key": "sufficient_rest",
+        "openmrs_entity_parent": "",
+        "openmrs_entity": "",
+        "openmrs_entity_id": "",
+        "type": "spinner",
+        "hint": "Are you able to take time to sufficiently rest?",
+        "values": [
+          "Yes",
+          "No"
+        ],
+        "relevance": {
+          "step1:nutrition_to_discuss": {
+            "type": "string",
+            "ex": "regex(., \"(?i).*?\\breducing_workload\\b.*?\")"
+          }
+        },
+        "v_required": {
+          "value": "true",
+          "err": "Please answer the question"
+        }
+      },
+      {
+        "key": "insecticide_net",
+        "openmrs_entity_parent": "",
+        "openmrs_entity": "",
+        "openmrs_entity_id": "",
+        "type": "spinner",
+        "hint": "Are you sleeping under an insecticide-treated mosquito net?",
+        "values": [
+          "Yes",
+          "No"
+        ],
+        "relevance": {
+          "step1:nutrition_to_discuss": {
+            "type": "string",
+            "ex": "regex(., \"(?i).*?\\bprevention_of_malaria\\b.*?\")"
+          }
+        },
+        "v_required": {
+          "value": "true",
+          "err": "Please answer the question"
+        }
+      },
+      {
+        "key": "ipt_malaria",
+        "openmrs_entity_parent": "",
+        "openmrs_entity": "",
+        "openmrs_entity_id": "",
+        "type": "spinner",
+        "hint": "Are you currently taking intermittent preventative treatment (IPT) of malaria?",
+        "values": [
+          "Yes",
+          "No"
+        ],
+        "relevance": {
+          "step1:nutrition_to_discuss": {
+            "type": "string",
+            "ex": "regex(., \"(?i).*?\\bprevention_of_malaria\\b.*?\")"
+          }
+        },
+        "v_required": {
+          "value": "true",
+          "err": "Please answer the question"
+        }
+      },
+      {
+        "key": "plan_breastfeed",
+        "openmrs_entity_parent": "",
+        "openmrs_entity": "",
+        "openmrs_entity_id": "",
+        "type": "spinner",
+        "hint": "What are your thoughts on breastfeeding after delivery?",
+        "values": [
+          "I plan to breastfeed",
+          "I do not want to breastfeed"
+        ],
+        "relevance": {
+          "step1:nutrition_to_discuss": {
+            "type": "string",
+            "ex": "regex(., \"(?i).*?\\bbreastfeeding\\b.*?\")"
+          }
+        },
+        "v_required": {
+          "value": "true",
+          "err": "Please answer the question"
+        }
+      },
+      {
+        "key": "Date_Of_next_appointment",
+        "openmrs_entity_parent": "",
+        "openmrs_entity": "",
+        "openmrs_entity_id": "",
+        "type": "date_picker",
+        "hint": "Let’s schedule our next appointment",
+        "expanded": false,
+        "min_date": "today",
+        "v_required": {
+          "value": "true",
+          "err": "Please enter the date of next appointment"
+        }
       }
     ]
   }
