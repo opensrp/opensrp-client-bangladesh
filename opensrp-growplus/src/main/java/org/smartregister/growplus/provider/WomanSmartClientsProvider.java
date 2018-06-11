@@ -171,6 +171,21 @@ public class WomanSmartClientsProvider implements SmartRegisterCLientsProviderFo
 
             }
         });
+
+        add_child.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+
+                String metadata = getmetaDataForPregnantCounsellingForm(pc);
+                Intent intent = new Intent(context, PathJsonFormActivity.class);
+
+                intent.putExtra("json", metadata);
+
+                ((Activity)context).startActivityForResult(intent, REQUEST_CODE_GET_JSON);
+
+            }
+        });
 //        Intent intent = new Intent(context, PathJsonFormActivity.class);
 //
 //        intent.putExtra("json", metadata);
@@ -764,6 +779,38 @@ public class WomanSmartClientsProvider implements SmartRegisterCLientsProviderFo
             }
         } catch (Exception e) {
             Log.e("exception in addchild", e.getMessage());
+        }
+
+        return "";
+    }
+
+    private String getmetaDataForPregnantCounsellingForm(CommonPersonObjectClient pc) {
+        org.smartregister.Context context = VaccinatorApplication.getInstance().context();
+        try {
+            JSONObject form = FormUtils.getInstance(this.context).getFormJson("iycf_counselling_form_pregnant_woman");
+
+            if (form != null) {
+                JSONObject stepOne = form.getJSONObject(JsonFormUtils.STEP1);
+                JSONArray jsonArray = stepOne.getJSONArray(JsonFormUtils.FIELDS);
+                for (int i = 0; i < jsonArray.length(); i++) {
+                    JSONObject jsonObject = jsonArray.getJSONObject(i);
+                    if (jsonObject.getString(JsonFormUtils.KEY).equalsIgnoreCase(JsonFormUtils.ENTITY_ID)) {
+                        jsonObject.remove(JsonFormUtils.VALUE);
+                        jsonObject.put(JsonFormUtils.VALUE, pc.entityId());
+                    }
+
+
+
+
+
+
+                }
+//            intent.putExtra("json", form.toString());
+//            startActivityForResult(intent, REQUEST_CODE_GET_JSON);
+                return form.toString();
+            }
+        } catch (Exception e) {
+            Log.e("exception counselling", e.getMessage());
         }
 
         return "";

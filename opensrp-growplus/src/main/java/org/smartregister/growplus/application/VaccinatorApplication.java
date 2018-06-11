@@ -15,6 +15,7 @@ import org.json.JSONArray;
 import org.smartregister.Context;
 import org.smartregister.CoreLibrary;
 import org.smartregister.commonregistry.CommonFtsObject;
+import org.smartregister.growplus.repository.CounsellingRepository;
 import org.smartregister.growthmonitoring.GrowthMonitoringLibrary;
 import org.smartregister.growthmonitoring.repository.WeightRepository;
 import org.smartregister.growthmonitoring.repository.ZScoreRepository;
@@ -65,6 +66,7 @@ public class VaccinatorApplication extends DrishtiApplication
     private UniqueIdRepository uniqueIdRepository;
     private EventClientRepository eventClientRepository;
     private boolean lastModified;
+    private CounsellingRepository counsellingRepository;
 
     @Override
     public void onCreate() {
@@ -258,6 +260,13 @@ public class VaccinatorApplication extends DrishtiApplication
 
     public ZScoreRepository zScoreRepository() {
         return GrowthMonitoringLibrary.getInstance().zScoreRepository();
+    }
+
+    public CounsellingRepository counsellingRepository() {
+        if (counsellingRepository == null) {
+            counsellingRepository = new CounsellingRepository((PathRepository) getRepository(),this.commonFtsObject,context().alertService());
+        }
+        return counsellingRepository;
     }
 
     public UniqueIdRepository uniqueIdRepository() {

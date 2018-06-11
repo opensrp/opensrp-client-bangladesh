@@ -18,6 +18,7 @@ import android.util.Log;
 import android.view.inputmethod.InputMethodManager;
 
 import org.apache.commons.lang3.StringUtils;
+import org.json.JSONArray;
 import org.smartregister.Context;
 import org.smartregister.adapter.SmartRegisterPaginatedAdapter;
 import org.smartregister.domain.FetchStatus;
@@ -238,7 +239,13 @@ public class WomanSmartRegisterActivity extends BaseRegisterActivity {
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
+                try {
 
+                    int size = VaccinatorApplication.getInstance().counsellingRepository().findByEntityId((new JSONObject(jsonString)).getString("entity_id")).size();
+                    Log.v("size for counselling","++++"+size);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
             }
         }
     }

@@ -29,6 +29,8 @@ import org.smartregister.clientandeventmodel.Event;
 import org.smartregister.clientandeventmodel.FormEntityConstants;
 import org.smartregister.clientandeventmodel.Obs;
 import org.smartregister.domain.ProfileImage;
+import org.smartregister.growplus.domain.Counselling;
+import org.smartregister.growplus.repository.CounsellingRepository;
 import org.smartregister.growthmonitoring.domain.Weight;
 import org.smartregister.growthmonitoring.repository.WeightRepository;
 import org.smartregister.immunization.domain.Vaccine;
@@ -111,6 +113,8 @@ public class JsonFormUtils extends org.smartregister.util.JsonFormUtils {
                 saveHouseholdRegistration(context, openSrpContext, jsonString, providerId, "household_photo", "household");
             }else if (form.getString("encounter_type").equals("New Woman Member Registration")) {
                 saveWomanRegistration(context, openSrpContext, jsonString, providerId, "woman_photo", "mother","household");
+            }else if (form.getString("encounter_type").equals("Pregnant Woman Counselling")) {
+                save_iycf_counselling_form_pregnants_woman(context, openSrpContext, jsonString, providerId, "woman_photo", "mother");
             }
         } catch (JSONException e) {
             Log.e(TAG, Log.getStackTraceString(e));
@@ -460,6 +464,73 @@ public class JsonFormUtils extends org.smartregister.util.JsonFormUtils {
         } catch (Exception e) {
             Log.e(TAG, "", e);
         }
+    }
+
+    private static void save_iycf_counselling_form_pregnants_woman(Context context, org.smartregister.Context openSrpContext,
+                                                  String jsonString, String providerId, String imageKey, String bindType) {
+        if (context == null || openSrpContext == null || StringUtils.isBlank(providerId)
+                || StringUtils.isBlank(jsonString)) {
+            return;
+        }
+
+        try {
+            ECSyncUpdater ecUpdater = ECSyncUpdater.getInstance(context);
+            SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
+            AllSharedPreferences allSharedPreferences = new AllSharedPreferences(preferences);
+
+            JSONObject jsonForm = new JSONObject(jsonString);
+
+            String entityId = getString(jsonForm, ENTITY_ID);
+            if (StringUtils.isBlank(entityId)) {
+                entityId = generateRandomUUIDString();
+            }
+
+            JSONArray fields = fields(jsonForm);
+            if (fields == null) {
+                return;
+            }
+            ArrayList<Address> adresses = new ArrayList<Address>();
+            Address address1 = new Address();
+            String encounterType = getString(jsonForm, ENCOUNTER_TYPE);
+
+            JSONObject metadata = getJSONObject(jsonForm, METADATA);
+
+            // Replace values for location questions with their corresponding location IDs
+
+            Event e = JsonFormUtils.createEvent(openSrpContext, fields, metadata, entityId, encounterType, providerId, bindType);
+
+            if (e != null) {
+                JSONObject eventJson = new JSONObject(gson.toJson(e));
+                ecUpdater.addEvent(e.getBaseEntityId(), eventJson);
+            }
+
+            long lastSyncTimeStamp = allSharedPreferences.fetchLastUpdatedAtDate(0);
+            Date lastSyncDate = new Date(lastSyncTimeStamp);
+            PathClientProcessor.getInstance(context).processClient(ecUpdater.getEvents(lastSyncDate, BaseRepository.TYPE_Unsynced));
+            allSharedPreferences.saveLastUpdatedAtDate(lastSyncDate.getTime());
+
+            Counselling counselling = new Counselling(null,entityId,encounterType,lastSyncDate,providerId,null,BaseRepository.TYPE_Synced,lastSyncTimeStamp,e.getEventId(),e.getFormSubmissionId(),lastSyncDate);
+            counselling.setFormfields(fieldsToHashmap(fields));
+            VaccinatorApplication.getInstance().counsellingRepository().add(counselling);
+        } catch (Exception e) {
+            Log.e(TAG, "", e);
+        }
+    }
+
+    private static Map<String, String> fieldsToHashmap(JSONArray fields) {
+        HashMap<String,String> fieldsToHashmap = new HashMap<String, String>();
+            try {
+                for(int i = 0;i<fields.length();i++) {
+                    JSONObject field = fields.getJSONObject(i);
+                    if(field.has("key")&&field.has("value")){
+                        fieldsToHashmap.put(field.getString("key"),field.getString("value"));
+                    }
+                }
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+
+        return fieldsToHashmap;
     }
 
     private static ArrayList<Address> getAddressFromClientJson(JSONObject clientjson) {

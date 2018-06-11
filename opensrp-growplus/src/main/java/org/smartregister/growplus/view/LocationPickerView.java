@@ -46,7 +46,7 @@ public class LocationPickerView extends CustomFontTextView implements View.OnCli
         ALLOWED_LEVELS = new ArrayList<>();
         ALLOWED_LEVELS.add("Country");
         ALLOWED_LEVELS.add("Union");
-        ALLOWED_LEVELS.add("Vaccination Center");
+//        ALLOWED_LEVELS.add("Vaccination Center");
     }
 
     public LocationPickerView(Context context) {
