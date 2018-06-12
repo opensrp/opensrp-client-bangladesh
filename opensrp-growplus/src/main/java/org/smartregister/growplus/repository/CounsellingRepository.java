@@ -35,7 +35,7 @@ public class CounsellingRepository extends BaseRepository {
     public static DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
     private static final String TAG = CounsellingRepository.class.getCanonicalName();
-    private static final String VACCINE_SQL = "CREATE TABLE counselling (_id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,base_entity_id VARCHAR NOT NULL,name VARCHAR NOT NULL,date DATETIME NOT NULL,anmid VARCHAR NULL,location_id VARCHAR NULL,event_id VARCHAR NULL,formSubmissionId VARCHAR,sync_status VARCHAR,updated_at INTEGER NULL,formfields VARCHAR, UNIQUE(base_entity_id, name) ON CONFLICT IGNORE)";
+    private static final String VACCINE_SQL = "CREATE TABLE counselling (_id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,base_entity_id VARCHAR NOT NULL,name VARCHAR NOT NULL,date DATETIME NOT NULL,anmid VARCHAR NULL,location_id VARCHAR NULL,event_id VARCHAR NULL,formSubmissionId VARCHAR,sync_status VARCHAR,updated_at INTEGER NULL,formfields VARCHAR,created_at DATETIME NOT NULL, UNIQUE(base_entity_id, name) ON CONFLICT IGNORE)";
     public static final String COUNSELLING_TABLE_NAME = "counselling";
     public static final String ID_COLUMN = "_id";
     public static final String BASE_ENTITY_ID = "base_entity_id";
@@ -47,7 +47,7 @@ public class CounsellingRepository extends BaseRepository {
     public static final String LOCATIONID = "location_id";
     public static final String SYNC_STATUS = "sync_status";
     public static final String UPDATED_AT_COLUMN = "updated_at";
-    public static final String FORMFIELDS = "formfields ";
+    public static final String FORMFIELDS = "formfields";
     public static final String CREATED_AT = "created_at";
 
     public static final String[] COUNSELLING_TABLE_COLUMNS = {ID_COLUMN, BASE_ENTITY_ID, NAME, DATE, ANMID, LOCATIONID, SYNC_STATUS, UPDATED_AT_COLUMN, EVENT_ID, FORMSUBMISSION_ID, CREATED_AT,FORMFIELDS};
@@ -275,6 +275,7 @@ public class CounsellingRepository extends BaseRepository {
                             cursor.getString(cursor.getColumnIndex(FORMSUBMISSION_ID)),
                             createdAt
                     );
+                    int columnindex = cursor.getColumnIndex(FORMFIELDS);
                     counselling.setFormfields(new Gson().<Map<String, String>>fromJson(cursor.getString(cursor.getColumnIndex(FORMFIELDS)),
                             new TypeToken<Map<String, String>>() {
                             }.getType()));
@@ -284,7 +285,7 @@ public class CounsellingRepository extends BaseRepository {
                 }
             }
         } catch (Exception e) {
-
+            e.printStackTrace();
         } finally {
             cursor.close();
         }

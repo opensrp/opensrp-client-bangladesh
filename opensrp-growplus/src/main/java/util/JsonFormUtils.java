@@ -481,9 +481,9 @@ public class JsonFormUtils extends org.smartregister.util.JsonFormUtils {
             JSONObject jsonForm = new JSONObject(jsonString);
 
             String entityId = getString(jsonForm, ENTITY_ID);
-            if (StringUtils.isBlank(entityId)) {
-                entityId = generateRandomUUIDString();
-            }
+//            if (StringUtils.isBlank(entityId)) {
+//                entityId = generateRandomUUIDString();
+//            }
 
             JSONArray fields = fields(jsonForm);
             if (fields == null) {

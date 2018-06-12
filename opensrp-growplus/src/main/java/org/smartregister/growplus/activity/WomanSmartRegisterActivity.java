@@ -28,6 +28,7 @@ import org.smartregister.event.Listener;
 import org.smartregister.growplus.R;
 import org.smartregister.growplus.adapter.PathRegisterActivityPagerAdapter;
 import org.smartregister.growplus.application.VaccinatorApplication;
+import org.smartregister.growplus.domain.Counselling;
 import org.smartregister.growplus.fragment.AdvancedSearchFragment;
 import org.smartregister.growplus.fragment.BaseSmartRegisterFragment;
 import org.smartregister.growplus.fragment.ChildSmartRegisterFragment;
@@ -45,6 +46,9 @@ import org.smartregister.view.dialog.DialogOptionModel;
 import org.smartregister.view.viewpager.OpenSRPViewPager;
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -241,8 +245,8 @@ public class WomanSmartRegisterActivity extends BaseRegisterActivity {
                 }
                 try {
 
-                    int size = VaccinatorApplication.getInstance().counsellingRepository().findByEntityId((new JSONObject(jsonString)).getString("entity_id")).size();
-                    Log.v("size for counselling","++++"+size);
+                    List <Counselling> list = VaccinatorApplication.getInstance().counsellingRepository().findByEntityId((new JSONObject(jsonString)).getString("entity_id"));
+                    Log.v("size for counselling","++++"+ list.size());
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }

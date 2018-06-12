@@ -790,21 +790,14 @@ public class WomanSmartClientsProvider implements SmartRegisterCLientsProviderFo
             JSONObject form = FormUtils.getInstance(this.context).getFormJson("iycf_counselling_form_pregnant_woman");
 
             if (form != null) {
-                JSONObject stepOne = form.getJSONObject(JsonFormUtils.STEP1);
-                JSONArray jsonArray = stepOne.getJSONArray(JsonFormUtils.FIELDS);
-                for (int i = 0; i < jsonArray.length(); i++) {
-                    JSONObject jsonObject = jsonArray.getJSONObject(i);
-                    if (jsonObject.getString(JsonFormUtils.KEY).equalsIgnoreCase(JsonFormUtils.ENTITY_ID)) {
-                        jsonObject.remove(JsonFormUtils.VALUE);
-                        jsonObject.put(JsonFormUtils.VALUE, pc.entityId());
+
+
+                    JSONObject jsonObject = form;
+                    if (jsonObject.getString(JsonFormUtils.ENTITY_ID) != null) {
+                        jsonObject.remove(JsonFormUtils.ENTITY_ID);
+                        jsonObject.put(JsonFormUtils.ENTITY_ID, pc.entityId());
                     }
 
-
-
-
-
-
-                }
 //            intent.putExtra("json", form.toString());
 //            startActivityForResult(intent, REQUEST_CODE_GET_JSON);
                 return form.toString();
