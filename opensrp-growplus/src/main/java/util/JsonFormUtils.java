@@ -486,6 +486,7 @@ public class JsonFormUtils extends org.smartregister.util.JsonFormUtils {
 //            }
 
             JSONArray fields = fields(jsonForm);
+            fields = processCheckbox(fields);
             if (fields == null) {
                 return;
             }
@@ -515,6 +516,35 @@ public class JsonFormUtils extends org.smartregister.util.JsonFormUtils {
         } catch (Exception e) {
             Log.e(TAG, "", e);
         }
+    }
+
+    private static JSONArray processCheckbox(JSONArray fields) {
+        for(int i = 0;i<fields.length();i++){
+            try {
+
+                JSONObject questiongroup = fields.getJSONObject(i);
+                if(questiongroup.has("type")){
+                    if(questiongroup.getString("type").equalsIgnoreCase("check_box")){
+                        JSONArray options = questiongroup.getJSONArray("options");
+                        String value = "";
+                        for(int j = 0;j<options.length();j++){
+                            if(options.getJSONObject(j).getString("value").equalsIgnoreCase("true")){
+                                if(value.equalsIgnoreCase("")) {
+                                    value = value + options.getJSONObject(j).getString("key");
+                                }else {
+                                    value = value+","+options.getJSONObject(j).getString("key");
+                                }
+                            }
+                        }
+                        questiongroup.remove("value");
+                        questiongroup.put("value",value);
+                    }
+                }
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
+        return fields;
     }
 
     private static Map<String, String> fieldsToHashmap(JSONArray fields) {

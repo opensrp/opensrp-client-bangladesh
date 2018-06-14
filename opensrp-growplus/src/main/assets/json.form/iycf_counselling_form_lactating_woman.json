@@ -306,10 +306,6 @@
         "openmrs_entity_id": "",
         "type": "edit_text",
         "hint": "How many times do you breastfeed day and night?",
-        "values": [
-          "Yes",
-          "No"
-        ],
         "v_numeric": {
           "value": "true",
           "err": "Enter a valid number"
@@ -442,6 +438,308 @@
             "ex": "equalTo(., \"Yes\")"
           }
         },
+        "v_required": {
+          "value": "true",
+          "err": "Please answer the question"
+        }
+      },
+      {
+        "key": "complimentary_frequency",
+        "openmrs_entity_parent": "",
+        "openmrs_entity": "",
+        "openmrs_entity_id": "",
+        "type": "edit_text",
+        "hint": "How many times did you feed your child semi-solid or solid foods yesterday?",
+        "relevance": {
+          "step1:nutrition_to_discuss": {
+            "type": "string",
+            "ex": "regex(., \"(?i).*?\\bcomplementary_feeding\\b.*?\")"
+          }
+        },
+        "v_numeric": {
+          "value": "true",
+          "err": "Enter a valid number"
+        },
+        "v_required": {
+          "value": "true",
+          "err": "Please answer the question"
+        }
+      },
+      {
+        "key": "complimentary_amount",
+        "openmrs_entity_parent": "",
+        "openmrs_entity": "",
+        "openmrs_entity_id": "",
+        "type": "edit_text",
+        "hint": "What amount of semi-solid or solid foods did you give your child yesterday (amount)?",
+        "v_numeric": {
+          "value": "true",
+          "err": "Enter a valid number"
+        },
+        "relevance": {
+          "step1:nutrition_to_discuss": {
+            "type": "string",
+            "ex": "regex(., \"(?i).*?\\bcomplementary_feeding\\b.*?\")"
+          }
+        },
+        "v_required": {
+          "value": "true",
+          "err": "Please answer the question"
+        }
+      },
+      {
+        "key": "does_feed_porridge",
+        "openmrs_entity_parent": "",
+        "openmrs_entity": "",
+        "openmrs_entity_id": "",
+        "type": "spinner",
+        "hint": "Is your child fed porridge?",
+        "values": [
+          "Porridge is thick and enriched",
+          "Thick porridge not enriched",
+          "Watery porridge"
+        ],
+        "relevance": {
+          "step1:nutrition_to_discuss": {
+            "type": "string",
+            "ex": "regex(., \"(?i).*?\\bcomplementary_feeding\\b.*?\")"
+          }
+        },
+        "v_required": {
+          "value": "true",
+          "err": "Please answer the question"
+        }
+      },
+      {
+        "key": "does_solid_food",
+        "openmrs_entity_parent": "",
+        "openmrs_entity": "",
+        "openmrs_entity_id": "",
+        "type": "spinner",
+        "hint": "Is your child fed solid food?",
+        "values": [
+          "Yes",
+          "No"
+        ],
+        "relevance": {
+          "step1:nutrition_to_discuss": {
+            "type": "string",
+            "ex": "regex(., \"(?i).*?\\bcomplementary_feeding\\b.*?\")"
+          }
+        },
+        "v_required": {
+          "value": "true",
+          "err": "Please answer the question"
+        }
+      },
+      {
+        "key": "fish_meat_beans",
+        "openmrs_entity_parent": "",
+        "openmrs_entity": "",
+        "openmrs_entity_id": "",
+        "type": "spinner",
+        "hint": "Is your child fed meat, fish, beans, or egg (or another animal sourced food) with their meal?",
+        "values": [
+          "Yes",
+          "Little",
+          "no animal sourced foods are given to child"
+        ],
+        "relevance": {
+          "step1:nutrition_to_discuss": {
+            "type": "string",
+            "ex": "regex(., \"(?i).*?\\bcomplementary_feeding\\b.*?\")"
+          }
+        },
+        "v_required": {
+          "value": "true",
+          "err": "Please answer the question"
+        }
+      },
+      {
+        "key": "food_given_yesterday",
+        "openmrs_entity_parent": "",
+        "openmrs_entity": "",
+        "openmrs_entity_id": "",
+        "type": "edit_text",
+        "hint": "What types of food did you give your child yesterday (variety)?",
+        "relevance": {
+          "step1:nutrition_to_discuss": {
+            "type": "string",
+            "ex": "regex(., \"(?i).*?\\bcomplementary_feeding\\b.*?\")"
+          }
+        },
+        "v_required": {
+          "value": "true",
+          "err": "Please answer the question"
+        }
+      },
+      {
+        "key": "food_six_months",
+        "openmrs_entity_parent": "",
+        "openmrs_entity": "",
+        "openmrs_entity_id": "",
+        "type": "spinner",
+        "hint": "For children 6-23 months",
+        "values": [
+          "I actively practiced being patient and encouraging my child to eat",
+          "I did not do anything or the baby still refused to eat"
+        ],
+        "relevance": {
+          "step1:nutrition_to_discuss": {
+            "type": "string",
+            "ex": "regex(., \"(?i).*?\\bcomplementary_feeding\\b.*?\")"
+          }
+        },
+        "v_required": {
+          "value": "true",
+          "err": "Please answer the question"
+        }
+      },
+      {
+        "key": "food_six_months_ensure_clean",
+        "openmrs_entity_parent": "",
+        "openmrs_entity": "",
+        "openmrs_entity_id": "",
+        "type": "spinner",
+        "hint": "If children 6-23 months What measures do you take to make sure food is clean before serving your child?",
+        "values": [
+          "greater than five ways to ensure food is clean before serving food",
+          "less than five ways to ensure a hygienic environment before serving food"
+        ],
+        "relevance": {
+          "step1:nutrition_to_discuss": {
+            "type": "string",
+            "ex": "regex(., \"(?i).*?\\bwash\\b.*?\")"
+          }
+        },
+        "v_required": {
+          "value": "true",
+          "err": "Please answer the question"
+        }
+      },
+      {
+        "key": "soap_for_handwash",
+        "openmrs_entity_parent": "",
+        "openmrs_entity": "",
+        "openmrs_entity_id": "",
+        "type": "spinner",
+        "hint": "Do you have soap/ash and water for handwashing?",
+        "values": [
+          "Yes",
+          "No"
+        ],
+        "relevance": {
+          "step1:nutrition_to_discuss": {
+            "type": "string",
+            "ex": "regex(., \"(?i).*?\\bwash\\b.*?\")"
+          }
+        },
+        "v_required": {
+          "value": "true",
+          "err": "Please answer the question"
+        }
+      },
+      {
+        "key": "when_wash_hands",
+        "openmrs_entity_parent": "",
+        "openmrs_entity": "",
+        "openmrs_entity_id": "",
+        "type": "spinner",
+        "hint": "When do you wash hands?",
+        "values": [
+          "All five critical times",
+          "Less than the five critical times"
+        ],
+        "relevance": {
+          "step1:nutrition_to_discuss": {
+            "type": "string",
+            "ex": "regex(., \"(?i).*?\\bwash\\b.*?\")"
+          }
+        },
+        "v_required": {
+          "value": "true",
+          "err": "Please answer the question"
+        }
+      },
+      {
+        "key": "animals_inside_house",
+        "openmrs_entity_parent": "",
+        "openmrs_entity": "",
+        "openmrs_entity_id": "",
+        "type": "spinner",
+        "hint": "Do animals sleep inside the house during the night?",
+        "values": [
+          "No",
+          "Yes"
+        ],
+        "relevance": {
+          "step1:nutrition_to_discuss": {
+            "type": "string",
+            "ex": "regex(., \"(?i).*?\\bwash\\b.*?\")"
+          }
+        },
+        "v_required": {
+          "value": "true",
+          "err": "Please answer the question"
+        }
+      },
+      {
+        "key": "support_for_best_foods",
+        "openmrs_entity_parent": "",
+        "openmrs_entity": "",
+        "openmrs_entity_id": "",
+        "type": "spinner",
+        "hint": "Do you have support from other members of your household to feed your child the best foods?",
+        "values": [
+          "Yes",
+          "No"
+        ],
+        "relevance": {
+          "step1:nutrition_to_discuss": {
+            "type": "string",
+            "ex": "regex(., \"(?i).*?\\bsupport_from_family\\b.*?\")"
+          }
+        },
+        "v_required": {
+          "value": "true",
+          "err": "Please answer the question"
+        }
+      },
+      {
+        "key": "difficulty_feeding",
+        "openmrs_entity_parent": "",
+        "openmrs_entity": "",
+        "openmrs_entity_id": "",
+        "type": "edit_text",
+        "hint": "Do you have any other difficulties that you would like to share on barriers to feeding your child?",
+        "v_required": {
+          "value": "true",
+          "err": "Please answer the question"
+        }
+      },
+      {
+        "key": "concern_feeding",
+        "openmrs_entity_parent": "",
+        "openmrs_entity": "",
+        "openmrs_entity_id": "",
+        "type": "edit_text",
+        "hint": "Do you have any other concerns you would like to share with me or discuss?",
+        "v_required": {
+          "value": "true",
+          "err": "Please answer the question"
+        }
+      },
+      {
+        "key": "identify_actions",
+        "openmrs_entity_parent": "",
+        "openmrs_entity": "",
+        "openmrs_entity_id": "",
+        "type": "spinner",
+        "hint": "Let’s identify one or two small actions we can work to improve child feeding or your diet. Of the topics we discussed, what would you like to work on before our next meeting?",
+        "values": [
+          "If child is growth faltering for 2 or more months or severely underweight",
+          "All children"
+        ],
         "v_required": {
           "value": "true",
           "err": "Please answer the question"

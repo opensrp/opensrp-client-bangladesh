@@ -35,7 +35,7 @@ public class CounsellingRepository extends BaseRepository {
     public static DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
     private static final String TAG = CounsellingRepository.class.getCanonicalName();
-    private static final String VACCINE_SQL = "CREATE TABLE counselling (_id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,base_entity_id VARCHAR NOT NULL,name VARCHAR NOT NULL,date DATETIME NOT NULL,anmid VARCHAR NULL,location_id VARCHAR NULL,event_id VARCHAR NULL,formSubmissionId VARCHAR,sync_status VARCHAR,updated_at INTEGER NULL,formfields VARCHAR,created_at DATETIME NOT NULL, UNIQUE(base_entity_id, name) ON CONFLICT IGNORE)";
+    private static final String VACCINE_SQL = "CREATE TABLE counselling (_id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,base_entity_id VARCHAR NOT NULL,name VARCHAR NOT NULL,date DATETIME NOT NULL,anmid VARCHAR NULL,location_id VARCHAR NULL,event_id VARCHAR NULL,formSubmissionId VARCHAR,sync_status VARCHAR,updated_at INTEGER NULL,formfields VARCHAR,created_at DATETIME NOT NULL)";
     public static final String COUNSELLING_TABLE_NAME = "counselling";
     public static final String ID_COLUMN = "_id";
     public static final String BASE_ENTITY_ID = "base_entity_id";
@@ -54,13 +54,13 @@ public class CounsellingRepository extends BaseRepository {
 
     private static final String BASE_ENTITY_ID_INDEX = "CREATE INDEX " + COUNSELLING_TABLE_NAME + "_" + BASE_ENTITY_ID + "_index ON " + COUNSELLING_TABLE_NAME + "(" + BASE_ENTITY_ID + " COLLATE NOCASE);";
     private static final String UPDATED_AT_INDEX = "CREATE INDEX " + COUNSELLING_TABLE_NAME + "_" + UPDATED_AT_COLUMN + "_index ON " + COUNSELLING_TABLE_NAME + "(" + UPDATED_AT_COLUMN + ");";
-
-    public static final String UPDATE_TABLE_ADD_EVENT_ID_COL = "ALTER TABLE " + COUNSELLING_TABLE_NAME + " ADD COLUMN " + EVENT_ID + " VARCHAR;";
-    public static final String EVENT_ID_INDEX = "CREATE INDEX " + COUNSELLING_TABLE_NAME + "_" + EVENT_ID + "_index ON " + COUNSELLING_TABLE_NAME + "(" + EVENT_ID + " COLLATE NOCASE);";
-
-    public static final String UPDATE_TABLE_ADD_FORMSUBMISSION_ID_COL = "ALTER TABLE " + COUNSELLING_TABLE_NAME + " ADD COLUMN " + FORMSUBMISSION_ID + " VARCHAR;";
-    public static final String FORMSUBMISSION_INDEX = "CREATE INDEX " + COUNSELLING_TABLE_NAME + "_" + FORMSUBMISSION_ID + "_index ON " + COUNSELLING_TABLE_NAME + "(" + FORMSUBMISSION_ID + " COLLATE NOCASE);";
-
+//
+//    public static final String UPDATE_TABLE_ADD_EVENT_ID_COL = "ALTER TABLE " + COUNSELLING_TABLE_NAME + " ADD COLUMN " + EVENT_ID + " VARCHAR;";
+//    public static final String EVENT_ID_INDEX = "CREATE INDEX " + COUNSELLING_TABLE_NAME + "_" + EVENT_ID + "_index ON " + COUNSELLING_TABLE_NAME + "(" + EVENT_ID + " COLLATE NOCASE);";
+//
+//    public static final String UPDATE_TABLE_ADD_FORMSUBMISSION_ID_COL = "ALTER TABLE " + COUNSELLING_TABLE_NAME + " ADD COLUMN " + FORMSUBMISSION_ID + " VARCHAR;";
+//    public static final String FORMSUBMISSION_INDEX = "CREATE INDEX " + COUNSELLING_TABLE_NAME + "_" + FORMSUBMISSION_ID + "_index ON " + COUNSELLING_TABLE_NAME + "(" + FORMSUBMISSION_ID + " COLLATE NOCASE);";
+//
 
 
     private CommonFtsObject commonFtsObject;
@@ -108,7 +108,8 @@ public class CounsellingRepository extends BaseRepository {
                     if(counselling.getCreatedAt() == null){
                         counselling.setCreatedAt(new Date());
                     }
-                    counselling.setId(database.insert(COUNSELLING_TABLE_NAME, null, createValuesFor(counselling)));
+                    Long id = database.insert(COUNSELLING_TABLE_NAME, null, createValuesFor(counselling));
+                    counselling.setId(id);
                 }
             } else {
                 //mark the vaccine as unsynced for processing as an updated event

@@ -13,10 +13,13 @@ import android.os.Looper;
 import android.text.TextUtils;
 import android.util.Log;
 import android.util.Pair;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import org.apache.commons.lang3.StringUtils;
@@ -25,6 +28,8 @@ import org.smartregister.commonregistry.CommonPersonObject;
 import org.smartregister.commonregistry.CommonPersonObjectClient;
 import org.smartregister.domain.Alert;
 import org.smartregister.domain.Photo;
+import org.smartregister.growplus.domain.Counselling;
+import org.smartregister.growplus.repository.CounsellingRepository;
 import org.smartregister.growthmonitoring.domain.Weight;
 import org.smartregister.growthmonitoring.domain.WeightWrapper;
 import org.smartregister.growthmonitoring.fragment.GrowthDialogFragment;
@@ -238,12 +243,14 @@ public class WomanImmunizationActivity extends BaseActivity
         if(!StringUtils.isBlank(getValue(childDetails.getColumnmaps(), "lmp", false))) {
             UpdateViewTask updateViewTask = new UpdateViewTask();
             updateViewTask.setWeightRepository(weightRepository);
-            updateViewTask.setVaccineRepository(vaccineRepository);
+//            updateViewTask.setVaccineRepository(vaccineRepository);
 //        updateViewTask.setRecurringServiceTypeRepository(recurringServiceTypeRepository);
 //        updateViewTask.setRecurringServiceRecordRepository(recurringServiceRecordRepository);
             updateViewTask.setAlertService(alertService);
             startAsyncTask(updateViewTask, null);
         }
+        CounsellingRepository counsellingRepository= VaccinatorApplication.getInstance().counsellingRepository();
+        updateCounsellingViews(counsellingRepository.findByEntityId(childDetails.entityId()),(LinearLayout)findViewById(R.id.counselling_group_canvas_ll));
     }
 
     private void updateProfilePicture(Gender gender) {
@@ -410,6 +417,21 @@ public class WomanImmunizationActivity extends BaseActivity
             } catch (JSONException e) {
                 Log.e(TAG, Log.getStackTraceString(e));
             }
+        }
+
+    }
+
+    private void updateCounsellingViews(List<Counselling> counsellingList, LinearLayout counsellingCanvas) {
+        LayoutInflater layoutInflater = (LayoutInflater)getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        LinearLayout counselling_group = (LinearLayout) layoutInflater.inflate(R.layout.view_counselling_group,null, true);
+        ViewGroup.LayoutParams layoutParams = new ViewGroup.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,
+                ViewGroup.LayoutParams.WRAP_CONTENT);
+        counselling_group.setLayoutParams(layoutParams);
+        counsellingCanvas.addView(counselling_group);
+        for(int i = 0;i<counsellingList.size();i++){
+
+            RelativeLayout counsellingcard = (RelativeLayout) layoutInflater.inflate(R.layout.view_counselling_card, null, true);
+            counselling_group.addView(counsellingcard);
         }
 
     }
