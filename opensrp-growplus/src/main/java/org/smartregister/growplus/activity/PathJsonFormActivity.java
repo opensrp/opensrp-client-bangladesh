@@ -1,18 +1,19 @@
 package org.smartregister.growplus.activity;
 
-import android.content.DialogInterface;
-import android.os.Build;
+import android.graphics.Color;
 import android.os.Bundle;
-import android.support.v7.app.AlertDialog;
 
 import com.rengwuxian.materialedittext.MaterialEditText;
+import com.shashank.sony.fancydialoglib.Animation;
+import com.shashank.sony.fancydialoglib.FancyAlertDialog;
+import com.shashank.sony.fancydialoglib.FancyAlertDialogListener;
+import com.shashank.sony.fancydialoglib.Icon;
 import com.vijay.jsonwizard.activities.JsonFormActivity;
 import com.vijay.jsonwizard.constants.JsonFormConstants;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-import org.smartregister.growplus.fragment.MediaDialogFragment;
 import org.smartregister.growplus.fragment.PathJsonFormFragment;
 
 /**
@@ -92,16 +93,37 @@ public class PathJsonFormActivity extends JsonFormActivity {
             if (media.getString("media_trigger_value").equalsIgnoreCase(value)) {
                 String mediatype = media.getString("media_type");
                 String medialink = media.getString("media_link");
+                String mediatext = media.getString("media_text");
 
-                dummydialog(value,mediatype,medialink);
+                infodialog(value,mediatype,medialink,mediatext);
             }
         }catch (Exception e){
 
         }
     }
 
-    private void dummydialog(String value, String mediatype, String medialink) {
-        MediaDialogFragment.launchDialog(this,"mediaDialog",mediatype,medialink);
+    private void infodialog(String value, String mediatype, String medialink, String mediatext) {
+//        MediaDialogFragment.launchDialog(this,"mediaDialog",mediatype,medialink);
+        FancyAlertDialog.Builder builder = new FancyAlertDialog.Builder(this);
+        builder.setTitle("Info");
+        builder.setBackgroundColor(Color.parseColor("#208CC5")).setPositiveBtnBackground(Color.parseColor("#208CC5"))  //Don't pass R.color.colorvalue
+                .setPositiveBtnText("OK").setAnimation(Animation.SLIDE)
+                .isCancellable(true)
+                .setIcon(com.shashank.sony.fancydialoglib.R.drawable.ic_person_black_24dp, Icon.Visible)
+                .OnPositiveClicked(new FancyAlertDialogListener() {
+                    @Override
+                    public void OnClick() {
+                    }
+                });
+        builder.setMessage(mediatext);
+        if(mediatype.equalsIgnoreCase("image")){
+            builder.setImagetoshow(medialink);
+        }else if (mediatype.equalsIgnoreCase("video")){
+            builder.setVideopath(medialink);
+        } else if(mediatype.equalsIgnoreCase("text")){
+
+        }
+        builder.build();
 //        AlertDialog.Builder builder;
 //        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
 //            builder = new AlertDialog.Builder(this, android.R.style.Theme_Material_Dialog_Alert);

@@ -28,6 +28,7 @@ import org.smartregister.commonregistry.CommonPersonObject;
 import org.smartregister.commonregistry.CommonPersonObjectClient;
 import org.smartregister.domain.Alert;
 import org.smartregister.domain.Photo;
+import org.smartregister.growplus.adapter.CounsellingCardAdapter;
 import org.smartregister.growplus.domain.Counselling;
 import org.smartregister.growplus.repository.CounsellingRepository;
 import org.smartregister.growthmonitoring.domain.Weight;
@@ -52,6 +53,7 @@ import org.smartregister.immunization.repository.RecurringServiceTypeRepository;
 import org.smartregister.immunization.repository.VaccineRepository;
 import org.smartregister.immunization.util.VaccinateActionUtils;
 import org.smartregister.immunization.util.VaccinatorUtils;
+import org.smartregister.immunization.view.ExpandableHeightGridView;
 import org.smartregister.immunization.view.ServiceGroup;
 import org.smartregister.immunization.view.VaccineGroup;
 import org.smartregister.growplus.R;
@@ -403,19 +405,20 @@ public class WomanImmunizationActivity extends BaseActivity
     }
 
     private void updateVaccinationViews(List<Vaccine> vaccineList, List<Alert> alerts) {
+        if(false) {
+            if (vaccineGroups == null) {
+                vaccineGroups = new ArrayList<>();
+                String supportedVaccinesString = VaccinatorUtils.getSupportedWomanVaccines(this);
 
-        if (vaccineGroups == null) {
-            vaccineGroups = new ArrayList<>();
-            String supportedVaccinesString = VaccinatorUtils.getSupportedWomanVaccines(this);
+                try {
+                    JSONArray supportedVaccines = new JSONArray(supportedVaccinesString);
 
-            try {
-                JSONArray supportedVaccines = new JSONArray(supportedVaccinesString);
-
-                for (int i = 0; i < supportedVaccines.length(); i++) {
-                    addVaccineGroup(-1, supportedVaccines.getJSONObject(i), vaccineList, alerts);
+                    for (int i = 0; i < supportedVaccines.length(); i++) {
+                        addVaccineGroup(-1, supportedVaccines.getJSONObject(i), vaccineList, alerts);
+                    }
+                } catch (JSONException e) {
+                    Log.e(TAG, Log.getStackTraceString(e));
                 }
-            } catch (JSONException e) {
-                Log.e(TAG, Log.getStackTraceString(e));
             }
         }
 
@@ -428,12 +431,10 @@ public class WomanImmunizationActivity extends BaseActivity
                 ViewGroup.LayoutParams.WRAP_CONTENT);
         counselling_group.setLayoutParams(layoutParams);
         counsellingCanvas.addView(counselling_group);
-        for(int i = 0;i<counsellingList.size();i++){
-
-            RelativeLayout counsellingcard = (RelativeLayout) layoutInflater.inflate(R.layout.view_counselling_card, null, true);
-            counselling_group.addView(counsellingcard);
-        }
-
+        CounsellingCardAdapter counsellingCardAdapter = new CounsellingCardAdapter(this,counsellingList);
+        ExpandableHeightGridView expandableHeightGridView = (ExpandableHeightGridView)counselling_group.findViewById(R.id.counselling_gv);
+        expandableHeightGridView.setAdapter(counsellingCardAdapter);
+        counsellingCardAdapter.notifyDataSetChanged();
     }
 
 

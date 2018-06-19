@@ -51,12 +51,12 @@
             </RelativeLayout>
 
             <org.smartregister.immunization.view.ExpandableHeightGridView
-                android:id="@+id/vaccines_gv"
+                android:id="@+id/counselling_gv"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="10dp"
                 android:layout_marginRight="10dp"
-                android:columnWidth="@dimen/vaccine_card_width"
+                android:columnWidth="500dp"
                 android:gravity="center"
                 android:horizontalSpacing="@dimen/vaccine_horizontal_spacing"
                 android:isScrollContainer="false"

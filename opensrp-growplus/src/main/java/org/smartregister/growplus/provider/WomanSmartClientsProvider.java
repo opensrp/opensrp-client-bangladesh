@@ -172,20 +172,44 @@ public class WomanSmartClientsProvider implements SmartRegisterCLientsProviderFo
             }
         });
 
-        add_child.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+        boolean pregnant = false;
+        if(detailmaps.get("pregnant")!=null){
+            if(detailmaps.get("pregnant").equalsIgnoreCase("Yes")){
+                pregnant = true;
+                add_child.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
 
 
-                String metadata = getmetaDataForPregnantCounsellingForm(pc);
-                Intent intent = new Intent(context, PathJsonFormActivity.class);
+                        String metadata = getmetaDataForPregnantCounsellingForm(pc);
+                        Intent intent = new Intent(context, PathJsonFormActivity.class);
 
-                intent.putExtra("json", metadata);
+                        intent.putExtra("json", metadata);
 
-                ((Activity)context).startActivityForResult(intent, REQUEST_CODE_GET_JSON);
+                        ((Activity)context).startActivityForResult(intent, REQUEST_CODE_GET_JSON);
 
+                    }
+                });
             }
-        });
+        }
+        if(!pregnant){
+            add_child.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+
+
+                    String metadata = getmetaDataForFollowUpForm(pc);
+                    Intent intent = new Intent(context, PathJsonFormActivity.class);
+
+                    intent.putExtra("json", metadata);
+
+                    ((Activity)context).startActivityForResult(intent, REQUEST_CODE_GET_JSON);
+
+                }
+            });
+        }
+
+
 //        Intent intent = new Intent(context, PathJsonFormActivity.class);
 //
 //        intent.putExtra("json", metadata);
@@ -804,6 +828,30 @@ public class WomanSmartClientsProvider implements SmartRegisterCLientsProviderFo
             }
         } catch (Exception e) {
             Log.e("exception counselling", e.getMessage());
+        }
+
+        return "";
+    }
+    private String getmetaDataForFollowUpForm(CommonPersonObjectClient pc) {
+        org.smartregister.Context context = VaccinatorApplication.getInstance().context();
+        try {
+            JSONObject form = FormUtils.getInstance(this.context).getFormJson("woman_followup");
+
+            if (form != null) {
+
+
+                JSONObject jsonObject = form;
+                if (jsonObject.getString(JsonFormUtils.ENTITY_ID) != null) {
+                    jsonObject.remove(JsonFormUtils.ENTITY_ID);
+                    jsonObject.put(JsonFormUtils.ENTITY_ID, pc.entityId());
+                }
+
+//            intent.putExtra("json", form.toString());
+//            startActivityForResult(intent, REQUEST_CODE_GET_JSON);
+                return form.toString();
+            }
+        } catch (Exception e) {
+            Log.e("exception followup", e.getMessage());
         }
 
         return "";

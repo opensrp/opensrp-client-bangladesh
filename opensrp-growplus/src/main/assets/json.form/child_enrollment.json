@@ -125,21 +125,6 @@
         "openmrs_entity_id": "gender",
         "type": "spinner",
         "hint": "শিশুর লিঙ্গ *",
-        "has_media_content": true,
-        "media": [
-          {
-          "media_type":"image",
-          "media_trigger_value":"Male",
-          "media_link":"male.png",
-          "media_text":""
-          },
-          {
-            "media_type":"video",
-            "media_trigger_value":"Female",
-            "media_link":"male.mp4",
-            "media_text":""
-          }
-        ],
         "values": [
           "Male",
           "Female"

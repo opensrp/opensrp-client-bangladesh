@@ -115,6 +115,10 @@ public class JsonFormUtils extends org.smartregister.util.JsonFormUtils {
                 saveWomanRegistration(context, openSrpContext, jsonString, providerId, "woman_photo", "mother","household");
             }else if (form.getString("encounter_type").equals("Pregnant Woman Counselling")) {
                 save_iycf_counselling_form_pregnants_woman(context, openSrpContext, jsonString, providerId, "woman_photo", "mother");
+            }else if (form.getString("encounter_type").equals("Lactating Woman Counselling")) {
+                save_iycf_counselling_form_lactating_woman(context, openSrpContext, jsonString, providerId, "woman_photo", "mother");
+            }else if (form.getString("encounter_type").equals("Woman Member Follow Up")) {
+                saveWomanFollowUp(context, openSrpContext, jsonString, providerId, "woman_photo", "mother","household");
             }
         } catch (JSONException e) {
             Log.e(TAG, Log.getStackTraceString(e));
@@ -381,17 +385,21 @@ public class JsonFormUtils extends org.smartregister.util.JsonFormUtils {
                                     }
                                 }
                             }
-                            DateTime ultrasoundDate = new DateTime(dd_MM_yyyy.parse(ultrasound_dateValue));
-                            int ultraSoundWeeks = Integer.parseInt(ultrasound_weeksValue);
-                            for (int j = 0; j < fields.length(); j++) {
-                                String keyJ = fields.getJSONObject(j).getString("key");
-                                if(keyJ.equals("edd")) {
-                                    if(TextUtils.isEmpty(fields.getJSONObject(j).getString("value"))) {
-                                        DateTime edddate = ultrasoundDate.plusDays(280-(7*ultraSoundWeeks));
-                                        fields.getJSONObject(j).put("value", dd_MM_yyyy.format(edddate.toDate()));
-                                        fields.getJSONObject(i).put("value", dd_MM_yyyy.format(edddate.minusDays(280).toDate()));
+                            try {
+                                DateTime ultrasoundDate = new DateTime(dd_MM_yyyy.parse(ultrasound_dateValue));
+                                int ultraSoundWeeks = Integer.parseInt(ultrasound_weeksValue);
+                                for (int j = 0; j < fields.length(); j++) {
+                                    String keyJ = fields.getJSONObject(j).getString("key");
+                                    if (keyJ.equals("edd")) {
+                                        if (TextUtils.isEmpty(fields.getJSONObject(j).getString("value"))) {
+                                            DateTime edddate = ultrasoundDate.plusDays(280 - (7 * ultraSoundWeeks));
+                                            fields.getJSONObject(j).put("value", dd_MM_yyyy.format(edddate.toDate()));
+                                            fields.getJSONObject(i).put("value", dd_MM_yyyy.format(edddate.minusDays(280).toDate()));
+                                        }
                                     }
                                 }
+                            }catch (Exception e){
+
                             }
                         }
                     }else{
@@ -465,9 +473,169 @@ public class JsonFormUtils extends org.smartregister.util.JsonFormUtils {
             Log.e(TAG, "", e);
         }
     }
+    private static void saveWomanFollowUp(Context context, org.smartregister.Context openSrpContext,
+                                              String jsonString, String providerId, String imageKey, String bindType,
+                                              String subBindType) {
+        if (context == null || openSrpContext == null || StringUtils.isBlank(providerId)
+                || StringUtils.isBlank(jsonString)) {
+            return;
+        }
+
+        try {
+            ECSyncUpdater ecUpdater = ECSyncUpdater.getInstance(context);
+            SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
+            AllSharedPreferences allSharedPreferences = new AllSharedPreferences(preferences);
+
+            JSONObject jsonForm = new JSONObject(jsonString);
+
+            String entityId = getString(jsonForm, ENTITY_ID);
+            JSONArray fields = fields(jsonForm);
+            fields = processCheckbox(fields);
+            if (fields == null) {
+                return;
+            }
+
+            String encounterType = getString(jsonForm, ENCOUNTER_TYPE);
+
+            JSONObject metadata = getJSONObject(jsonForm, METADATA);
+
+            // Replace values for location questions with their corresponding location IDs
+            for (int i = 0; i < fields.length(); i++) {
+                String key = fields.getJSONObject(i).getString("key");
+                if (key.equals("lmp")) {
+                    if(TextUtils.isEmpty(fields.getJSONObject(i).getString("value"))) {
+                        boolean USGNeeded = false;
+                        for (int j = 0; j < fields.length(); j++) {
+                            String keyJ = fields.getJSONObject(j).getString("key");
+                            if(keyJ.equals("edd")) {
+                                if(!TextUtils.isEmpty(fields.getJSONObject(j).getString("value"))) {
+                                    String eddValue = fields.getJSONObject(j).getString("value");
+                                    DateTime now = new DateTime(dd_MM_yyyy.parse(eddValue));
+                                    DateTime dob = now.minusDays(280);
+                                    fields.getJSONObject(i).put("value", dd_MM_yyyy.format(dob.toDate()));
+                                }else{
+                                    USGNeeded = true;
+                                }
+                            }
+                        }
+                        if(USGNeeded){
+                            String ultrasound_dateValue = "";
+                            String ultrasound_weeksValue = "";
+
+
+                            for (int j = 0; j < fields.length(); j++) {
+                                String keyJ = fields.getJSONObject(j).getString("key");
+                                if(keyJ.equals("ultrasound_date")) {
+                                    if(!TextUtils.isEmpty(fields.getJSONObject(j).getString("value"))) {
+                                        ultrasound_dateValue = fields.getJSONObject(j).getString("value");
+                                    }
+                                }
+                                if(keyJ.equals("ultrasound_weeks")) {
+                                    if(!TextUtils.isEmpty(fields.getJSONObject(j).getString("value"))) {
+                                        ultrasound_weeksValue = fields.getJSONObject(j).getString("value");
+                                    }
+                                }
+                            }
+                            DateTime ultrasoundDate = new DateTime(dd_MM_yyyy.parse(ultrasound_dateValue));
+                            int ultraSoundWeeks = Integer.parseInt(ultrasound_weeksValue);
+                            for (int j = 0; j < fields.length(); j++) {
+                                String keyJ = fields.getJSONObject(j).getString("key");
+                                if(keyJ.equals("edd")) {
+                                    if(TextUtils.isEmpty(fields.getJSONObject(j).getString("value"))) {
+                                        DateTime edddate = ultrasoundDate.plusDays(280-(7*ultraSoundWeeks));
+                                        fields.getJSONObject(j).put("value", dd_MM_yyyy.format(edddate.toDate()));
+                                        fields.getJSONObject(i).put("value", dd_MM_yyyy.format(edddate.minusDays(280).toDate()));
+                                    }
+                                }
+                            }
+                        }
+                    }else{
+                        String lmpValue = fields.getJSONObject(i).getString("value");
+                        for (int j = 0; j < fields.length(); j++) {
+                            String keyJ = fields.getJSONObject(j).getString("key");
+                            if(keyJ.equals("edd")) {
+                                if(TextUtils.isEmpty(fields.getJSONObject(j).getString("value"))) {
+
+                                    DateTime now = new DateTime(dd_MM_yyyy.parse(lmpValue));
+                                    DateTime dob = now.plusDays(280);
+                                    fields.getJSONObject(j).put("value", dd_MM_yyyy.format(dob.toDate()));
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+
+            Event e = JsonFormUtils.createEvent(openSrpContext, fields, metadata, entityId, encounterType, providerId, bindType);
+
+            if (e != null) {
+                JSONObject eventJson = new JSONObject(gson.toJson(e));
+                ecUpdater.addEvent(e.getBaseEntityId(), eventJson);
+            }
+
+            long lastSyncTimeStamp = allSharedPreferences.fetchLastUpdatedAtDate(0);
+            Date lastSyncDate = new Date(lastSyncTimeStamp);
+            PathClientProcessor.getInstance(context).processClient(ecUpdater.getEvents(lastSyncDate, BaseRepository.TYPE_Unsynced));
+            allSharedPreferences.saveLastUpdatedAtDate(lastSyncDate.getTime());
+
+        } catch (Exception e) {
+            Log.e(TAG, "", e);
+        }
+    }
 
     private static void save_iycf_counselling_form_pregnants_woman(Context context, org.smartregister.Context openSrpContext,
                                                   String jsonString, String providerId, String imageKey, String bindType) {
+        if (context == null || openSrpContext == null || StringUtils.isBlank(providerId)
+                || StringUtils.isBlank(jsonString)) {
+            return;
+        }
+
+        try {
+            ECSyncUpdater ecUpdater = ECSyncUpdater.getInstance(context);
+            SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
+            AllSharedPreferences allSharedPreferences = new AllSharedPreferences(preferences);
+
+            JSONObject jsonForm = new JSONObject(jsonString);
+
+            String entityId = getString(jsonForm, ENTITY_ID);
+//            if (StringUtils.isBlank(entityId)) {
+//                entityId = generateRandomUUIDString();
+//            }
+
+            JSONArray fields = fields(jsonForm);
+            fields = processCheckbox(fields);
+            if (fields == null) {
+                return;
+            }
+            ArrayList<Address> adresses = new ArrayList<Address>();
+            Address address1 = new Address();
+            String encounterType = getString(jsonForm, ENCOUNTER_TYPE);
+
+            JSONObject metadata = getJSONObject(jsonForm, METADATA);
+
+            // Replace values for location questions with their corresponding location IDs
+
+            Event e = JsonFormUtils.createEvent(openSrpContext, fields, metadata, entityId, encounterType, providerId, bindType);
+
+            if (e != null) {
+                JSONObject eventJson = new JSONObject(gson.toJson(e));
+                ecUpdater.addEvent(e.getBaseEntityId(), eventJson);
+            }
+
+            long lastSyncTimeStamp = allSharedPreferences.fetchLastUpdatedAtDate(0);
+            Date lastSyncDate = new Date(lastSyncTimeStamp);
+            PathClientProcessor.getInstance(context).processClient(ecUpdater.getEvents(lastSyncDate, BaseRepository.TYPE_Unsynced));
+            allSharedPreferences.saveLastUpdatedAtDate(lastSyncDate.getTime());
+
+            Counselling counselling = new Counselling(null,entityId,encounterType,lastSyncDate,providerId,null,BaseRepository.TYPE_Synced,lastSyncTimeStamp,e.getEventId(),e.getFormSubmissionId(),lastSyncDate);
+            counselling.setFormfields(fieldsToHashmap(fields));
+            VaccinatorApplication.getInstance().counsellingRepository().add(counselling);
+        } catch (Exception e) {
+            Log.e(TAG, "", e);
+        }
+    }
+    private static void save_iycf_counselling_form_lactating_woman(Context context, org.smartregister.Context openSrpContext,
+                                                                   String jsonString, String providerId, String imageKey, String bindType) {
         if (context == null || openSrpContext == null || StringUtils.isBlank(providerId)
                 || StringUtils.isBlank(jsonString)) {
             return;

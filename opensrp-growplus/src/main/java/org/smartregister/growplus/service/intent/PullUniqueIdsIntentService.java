@@ -66,7 +66,6 @@ public class PullUniqueIdsIntentService extends IntentService {
         if (baseUrl.endsWith(endString)) {
             baseUrl = baseUrl.substring(0, baseUrl.lastIndexOf(endString));
         }
-
         String url = baseUrl + ID_URL + "?source=" + source + "&numberToGenerate=" + numberToGenerate;
         Log.i(PullUniqueIdsIntentService.class.getName(), "URL: " + url);
 

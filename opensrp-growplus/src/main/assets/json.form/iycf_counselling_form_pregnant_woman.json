@@ -146,6 +146,15 @@
           "Yes",
           "No"
         ],
+        "has_media_content": true,
+        "media": [
+          {
+            "media_type":"video",
+            "media_trigger_value":"No",
+            "media_link":"android.resource://org.smartregister.growplus/raw/pregnantfood",
+            "media_text":"\u2022 She should reduce tea and coffee consumption during pregnancy as it can interfere with her body’s use of foods. Don’t drink tea/coffee at least 2 hours before and after taking food."
+          }
+        ],
         "v_required": {
           "value": "true",
           "err": "Please answer the question"
@@ -155,6 +164,43 @@
           "type": "string",
           "ex": "regex(., \"(?i).*?\\bwomans_diet\\b.*?\")"
         }
+        }
+      },
+      {
+        "key": "how_has_diet_changed",
+        "openmrs_entity_parent": "",
+        "openmrs_entity": "",
+        "openmrs_entity_id": "",
+        "type": "spinner",
+        "hint": "Are you eating additional foods than what you normally eat?",
+        "values": [
+          "Yes",
+          "No"
+        ],
+        "has_media_content": true,
+        "media": [
+          {
+            "media_type":"video",
+            "media_trigger_value":"Yes",
+            "media_link":"android.resource://org.smartregister.growplus/raw/pregnantfood",
+            "media_text":"\u2022 She should reduce tea and coffee consumption during pregnancy as it can interfere with her body’s use of foods. Don’t drink tea/coffee at least 2 hours before and after taking food."
+          },
+          {
+            "media_type":"video",
+            "media_trigger_value":"No",
+            "media_link":"android.resource://org.smartregister.growplus/raw/pregnantfood",
+            "media_text":"\u2022 She should reduce tea and coffee consumption during pregnancy as it can interfere with her body’s use of foods. Don’t drink tea/coffee at least 2 hours before and after taking food."
+          }
+        ],
+        "v_required": {
+          "value": "true",
+          "err": "Please answer the question"
+        },
+        "relevance": {
+          "step1:has_diet_changed": {
+            "type": "string",
+            "ex": "equalTo(., \"Yes\")"
+          }
         }
       },
       {

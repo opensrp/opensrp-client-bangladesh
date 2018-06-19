@@ -1,2 +1,2 @@
 rootProject.name = 'opensrp-app-path'
-include ':opensrp-path',':opensrp-growplus'
+include ':opensrp-path',':opensrp-growplus',':fancydialoglib'
