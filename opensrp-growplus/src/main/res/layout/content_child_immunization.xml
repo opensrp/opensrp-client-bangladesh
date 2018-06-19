@@ -283,6 +283,15 @@
                     android:orientation="vertical">
 
                 </LinearLayout>
+                <LinearLayout
+                    android:id="@+id/weight_group_canvas_ll"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+                    <include layout="@layout/weightwidget"
+                        android:padding="20dp"/>
+
+                </LinearLayout>
             </LinearLayout>
         </android.support.v7.widget.CardView>
     </LinearLayout>

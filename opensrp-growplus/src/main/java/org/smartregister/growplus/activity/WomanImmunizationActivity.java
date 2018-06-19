@@ -16,6 +16,7 @@ import android.util.Pair;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.GridView;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -428,11 +429,16 @@ public class WomanImmunizationActivity extends BaseActivity
         LayoutInflater layoutInflater = (LayoutInflater)getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         LinearLayout counselling_group = (LinearLayout) layoutInflater.inflate(R.layout.view_counselling_group,null, true);
         ViewGroup.LayoutParams layoutParams = new ViewGroup.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,
-                ViewGroup.LayoutParams.WRAP_CONTENT);
-        counselling_group.setLayoutParams(layoutParams);
+                ViewGroup.LayoutParams.MATCH_PARENT);
+//        counselling_group.setLayoutParams(layoutParams);
         counsellingCanvas.addView(counselling_group);
         CounsellingCardAdapter counsellingCardAdapter = new CounsellingCardAdapter(this,counsellingList);
         ExpandableHeightGridView expandableHeightGridView = (ExpandableHeightGridView)counselling_group.findViewById(R.id.counselling_gv);
+//        final float scale = getResources().getDisplayMetrics().density;
+//        GridView.LayoutParams gridlayoutparams = new GridView.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,
+//                ViewGroup.LayoutParams.WRAP_CONTENT);
+//        gridlayoutparams.height = (int)(scale*50*counsellingList.size());
+        expandableHeightGridView.setExpanded(true);
         expandableHeightGridView.setAdapter(counsellingCardAdapter);
         counsellingCardAdapter.notifyDataSetChanged();
     }

@@ -13,6 +13,7 @@ import android.os.Looper;
 import android.text.TextUtils;
 import android.util.Log;
 import android.util.Pair;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -26,11 +27,14 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.opensrp.api.constants.Gender;
+import org.smartregister.clientandeventmodel.Event;
 import org.smartregister.commonregistry.AllCommonsRepository;
 import org.smartregister.commonregistry.CommonPersonObject;
 import org.smartregister.commonregistry.CommonPersonObjectClient;
 import org.smartregister.domain.Alert;
 import org.smartregister.domain.Photo;
+import org.smartregister.growplus.sync.ECSyncUpdater;
+import org.smartregister.growplus.viewComponents.WidgetFactory;
 import org.smartregister.growthmonitoring.domain.Weight;
 import org.smartregister.growthmonitoring.domain.WeightWrapper;
 import org.smartregister.growthmonitoring.fragment.GrowthDialogFragment;
@@ -56,6 +60,7 @@ import org.smartregister.growplus.domain.RegisterClickables;
 import org.smartregister.growplus.toolbar.LocationSwitcherToolbar;
 import org.smartregister.growplus.view.SiblingPicturesGroup;
 import org.smartregister.repository.DetailsRepository;
+import org.smartregister.repository.EventClientRepository;
 import org.smartregister.service.AlertService;
 import org.smartregister.util.DateUtil;
 import org.smartregister.util.OpenSRPImageLoader;
@@ -71,6 +76,7 @@ import java.util.Calendar;
 import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
@@ -80,6 +86,10 @@ import java.util.regex.Pattern;
 import util.ImageUtils;
 import util.JsonFormUtils;
 import util.PathConstants;
+
+import static org.smartregister.util.DateUtil.getDuration;
+import static org.smartregister.util.Utils.getValue;
+import static org.smartregister.util.Utils.kgStringSuffix;
 
 
 /**
@@ -232,6 +242,7 @@ public class ChildImmunizationActivity extends BaseActivity
 
         updateViewTask.setAlertService(alertService);
         Utils.startAsyncTask(updateViewTask, null);
+        createWeightLayout((LinearLayout) findViewById(R.id.weight_group_canvas_ll),false,getLayoutInflater());
     }
 
     private void updateProfilePicture(Gender gender) {
@@ -322,30 +333,103 @@ public class ChildImmunizationActivity extends BaseActivity
 
         return selectedColor;
     }
+    private void createWeightLayout(LinearLayout fragmentContainer, boolean editmode, LayoutInflater inflater) {
+        LinkedHashMap<Long, Pair<String, String>> weightmap = new LinkedHashMap<>();
+        ArrayList<Boolean> weighteditmode = new ArrayList<Boolean>();
+        ArrayList<View.OnClickListener> listeners = new ArrayList<View.OnClickListener>();
 
-    private void updateVaccinationViews(List<Vaccine> vaccineList, List<Alert> alerts) {
+        WeightRepository wp = VaccinatorApplication.getInstance().weightRepository();
+        List<Weight> weightlist = wp.findLast5(childDetails.entityId());
+        ECSyncUpdater ecUpdater = ECSyncUpdater.getInstance(this);
 
-        if (vaccineGroups == null) {
-            vaccineGroups = new ArrayList<>();
-            String supportedVaccinesString = VaccinatorUtils.getSupportedVaccines(this);
 
-            try {
-                JSONArray supportedVaccines = new JSONArray(supportedVaccinesString);
+        for (int i = 0; i < weightlist.size(); i++) {
+            Weight weight = weightlist.get(i);
+            String formattedAge = "";
+            if (weight.getDate() != null) {
 
-                for (int i = 0; i < supportedVaccines.length(); i++) {
-                    JSONObject vaccineGroupObject = supportedVaccines.getJSONObject(i);
-
-                    //Add BCG2 special vaccine to birth vaccine group
-                    VaccinateActionUtils.addBcg2SpecialVaccine(this, vaccineGroupObject, vaccineList);
-
-                    addVaccineGroup(-1, vaccineGroupObject, vaccineList, alerts);
+                Date weighttaken = weight.getDate();
+                String birthdate = getValue(childDetails.getColumnmaps(), "dob", false);
+                DateTime birthday = new DateTime(birthdate);
+                Date birth = birthday.toDate();
+                long timeDiff = weighttaken.getTime() - birth.getTime();
+                Log.v("timeDiff is ", timeDiff + "");
+                if (timeDiff >= 0) {
+                    formattedAge = getDuration(timeDiff);
+                    Log.v("age is ", formattedAge);
                 }
-            } catch (JSONException e) {
-                Log.e(TAG, Log.getStackTraceString(e));
             }
-        }
+            if (!formattedAge.equalsIgnoreCase("0d")) {
+                weightmap.put(weight.getId(), Pair.create(formattedAge, kgStringSuffix(weight.getKg())));
 
-        showVaccineNotifications(vaccineList, alerts);
+                ////////////////////////check 3 months///////////////////////////////
+                boolean less_than_three_months_event_created = false;
+
+                Event event = null;
+                EventClientRepository db = (EventClientRepository) VaccinatorApplication.getInstance().eventClientRepository();
+                if (weight.getEventId() != null) {
+                    event = ecUpdater.convert(db.getEventsByEventId(weight.getEventId()), Event.class);
+                } else if (weight.getFormSubmissionId() != null) {
+                    event = ecUpdater.convert(db.getEventsByFormSubmissionId(weight.getFormSubmissionId()),Event.class);
+                }
+                if (event != null) {
+                    Date weight_create_date = event.getDateCreated();
+                    if (!ChildDetailTabbedActivity.check_if_date_three_months_older(weight_create_date)) {
+                        less_than_three_months_event_created = true;
+                    }
+                } else {
+                    less_than_three_months_event_created = true;
+                }
+                ///////////////////////////////////////////////////////////////////////
+                if (less_than_three_months_event_created) {
+                    weighteditmode.add(editmode);
+                } else {
+                    weighteditmode.add(false);
+                }
+
+                final int finalI = i;
+
+            }
+
+        }
+        if (weightmap.size() < 5) {
+            weightmap.put(0l, Pair.create(getDuration(0), getValue(childDetails, "Birth_Weight", true) + " kg"));
+            weighteditmode.add(false);
+            listeners.add(null);
+        }
+        listeners = new ArrayList<View.OnClickListener>();
+        for(int i = 0;i<weighteditmode.size();i++){
+            listeners.add(null);
+        }
+        WidgetFactory wd = new WidgetFactory();
+        if (weightmap.size() > 0) {
+            wd.createWeightWidget(inflater, fragmentContainer, weightmap, listeners, weighteditmode);
+        }
+    }
+    private void updateVaccinationViews(List<Vaccine> vaccineList, List<Alert> alerts) {
+        if(false) {
+            if (vaccineGroups == null) {
+                vaccineGroups = new ArrayList<>();
+                String supportedVaccinesString = VaccinatorUtils.getSupportedVaccines(this);
+
+                try {
+                    JSONArray supportedVaccines = new JSONArray(supportedVaccinesString);
+
+                    for (int i = 0; i < supportedVaccines.length(); i++) {
+                        JSONObject vaccineGroupObject = supportedVaccines.getJSONObject(i);
+
+                        //Add BCG2 special vaccine to birth vaccine group
+                        VaccinateActionUtils.addBcg2SpecialVaccine(this, vaccineGroupObject, vaccineList);
+
+                        addVaccineGroup(-1, vaccineGroupObject, vaccineList, alerts);
+                    }
+                } catch (JSONException e) {
+                    Log.e(TAG, Log.getStackTraceString(e));
+                }
+            }
+
+            showVaccineNotifications(vaccineList, alerts);
+        }
     }
 
     private void showVaccineNotifications(List<Vaccine> vaccineList, List<Alert> alerts) {
