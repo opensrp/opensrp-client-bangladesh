@@ -6,11 +6,14 @@ import android.app.FragmentTransaction;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.database.Cursor;
 import android.graphics.drawable.ColorDrawable;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
+import android.preference.PreferenceManager;
 import android.text.TextUtils;
 import android.util.Log;
 import android.util.Pair;
@@ -32,7 +35,11 @@ import org.smartregister.domain.Alert;
 import org.smartregister.domain.Photo;
 import org.smartregister.growplus.adapter.CounsellingCardAdapter;
 import org.smartregister.growplus.domain.Counselling;
+import org.smartregister.growplus.fragment.HouseholdMemberAddFragment;
+import org.smartregister.growplus.fragment.HouseholdSmartRegisterFragment;
 import org.smartregister.growplus.repository.CounsellingRepository;
+import org.smartregister.growplus.repository.PathRepository;
+import org.smartregister.growplus.view.LocationPickerView;
 import org.smartregister.growthmonitoring.domain.Weight;
 import org.smartregister.growthmonitoring.domain.WeightWrapper;
 import org.smartregister.growthmonitoring.fragment.GrowthDialogFragment;
@@ -63,6 +70,7 @@ import org.smartregister.growplus.application.VaccinatorApplication;
 import org.smartregister.growplus.domain.RegisterClickables;
 import org.smartregister.growplus.toolbar.LocationSwitcherToolbar;
 import org.smartregister.growplus.view.SiblingPicturesGroup;
+import org.smartregister.repository.AllSharedPreferences;
 import org.smartregister.repository.DetailsRepository;
 import org.smartregister.service.AlertService;
 import org.smartregister.util.DateUtil;
@@ -429,6 +437,7 @@ public class WomanImmunizationActivity extends BaseActivity
     }
 
     private void updateCounsellingViews(List<Counselling> counsellingList, LinearLayout counsellingCanvas) {
+        counsellingCanvas.removeAllViews();
         LayoutInflater layoutInflater = (LayoutInflater)getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         LinearLayout counselling_group = (LinearLayout) layoutInflater.inflate(R.layout.view_counselling_group,null, true);
         ViewGroup.LayoutParams layoutParams = new ViewGroup.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,
@@ -487,6 +496,23 @@ public class WomanImmunizationActivity extends BaseActivity
         counsellingCardAdapter.notifyDataSetChanged();
     }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == REQUEST_CODE_GET_JSON) {
+            if (resultCode == RESULT_OK) {
+
+                String jsonString = data.getStringExtra("json");
+                Log.d("JSONResult", jsonString);
+
+                SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
+                AllSharedPreferences allSharedPreferences = new AllSharedPreferences(preferences);
+
+                JsonFormUtils.saveForm(this, context(), jsonString, allSharedPreferences.fetchRegisteredANM());
+               updateViews();
+            }
+        }
+    }
+
     private String getmetaDataForLactatingCounsellingForm(CommonPersonObjectClient pc) {
         org.smartregister.Context context = VaccinatorApplication.getInstance().context();
         try {
@@ -536,7 +562,9 @@ public class WomanImmunizationActivity extends BaseActivity
 
         return "";
     }
-
+    protected org.smartregister.Context context() {
+        return VaccinatorApplication.getInstance().context();
+    }
 
 
     private void addVaccineGroup(int canvasId, JSONObject vaccineGroupData, List<Vaccine> vaccineList, List<Alert> alerts) {

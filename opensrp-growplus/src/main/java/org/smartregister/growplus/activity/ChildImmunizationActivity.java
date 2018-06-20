@@ -405,6 +405,7 @@ public class ChildImmunizationActivity extends BaseActivity
         if (weightmap.size() > 0) {
             wd.createWeightWidget(inflater, fragmentContainer, weightmap, listeners, weighteditmode);
         }
+        ((TextView)fragmentContainer.findViewById(R.id.textView3)).setText("Growth Chart");
     }
     private void updateVaccinationViews(List<Vaccine> vaccineList, List<Alert> alerts) {
         if(false) {
