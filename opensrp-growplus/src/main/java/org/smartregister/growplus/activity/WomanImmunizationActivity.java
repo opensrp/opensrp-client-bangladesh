@@ -1,5 +1,6 @@
 package org.smartregister.growplus.activity;
 
+import android.app.Activity;
 import android.app.Fragment;
 import android.app.FragmentTransaction;
 import android.content.ContentValues;
@@ -65,6 +66,7 @@ import org.smartregister.growplus.view.SiblingPicturesGroup;
 import org.smartregister.repository.DetailsRepository;
 import org.smartregister.service.AlertService;
 import org.smartregister.util.DateUtil;
+import org.smartregister.util.FormUtils;
 import org.smartregister.util.OpenSRPImageLoader;
 import org.smartregister.view.activity.DrishtiApplication;
 import org.joda.time.DateTime;
@@ -94,6 +96,7 @@ import util.ImageUtils;
 import util.JsonFormUtils;
 import util.PathConstants;
 
+import static org.smartregister.growplus.activity.WomanSmartRegisterActivity.REQUEST_CODE_GET_JSON;
 import static org.smartregister.util.Utils.getName;
 import static org.smartregister.util.Utils.getValue;
 import static org.smartregister.util.Utils.kgStringSuffix;
@@ -438,9 +441,100 @@ public class WomanImmunizationActivity extends BaseActivity
 //        GridView.LayoutParams gridlayoutparams = new GridView.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,
 //                ViewGroup.LayoutParams.WRAP_CONTENT);
 //        gridlayoutparams.height = (int)(scale*50*counsellingList.size());
+        TextView recordnewCounselling = (TextView)counselling_group.findViewById(R.id.record_all_tv);
+        recordnewCounselling.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                boolean pregnant = false;
+                boolean lactating = false;
+                Map<String,String> detailmaps = childDetails.getColumnmaps();
+                detailmaps.putAll(childDetails.getDetails());
+                if(detailmaps.get("pregnant")!=null){
+                    if(detailmaps.get("pregnant").equalsIgnoreCase("Yes")){
+                        pregnant = true;
+
+                    }
+                }
+                if(detailmaps.get("lactating_woman")!=null){
+                    if(detailmaps.get("lactating_woman").equalsIgnoreCase("Yes")){
+                        lactating = true;
+                    }
+                }
+                if(pregnant&&!lactating){
+
+                    String metadata = getmetaDataForPregnantCounsellingForm(childDetails);
+                    Intent intent = new Intent(WomanImmunizationActivity.this, PathJsonFormActivity.class);
+
+                    intent.putExtra("json", metadata);
+
+                    startActivityForResult(intent, REQUEST_CODE_GET_JSON);
+
+                }
+                if(lactating){
+
+                    String metadata = getmetaDataForLactatingCounsellingForm(childDetails);
+                    Intent intent = new Intent(WomanImmunizationActivity.this, PathJsonFormActivity.class);
+
+                    intent.putExtra("json", metadata);
+
+                    startActivityForResult(intent, REQUEST_CODE_GET_JSON);
+
+                }
+            }
+        });
         expandableHeightGridView.setExpanded(true);
         expandableHeightGridView.setAdapter(counsellingCardAdapter);
         counsellingCardAdapter.notifyDataSetChanged();
+    }
+
+    private String getmetaDataForLactatingCounsellingForm(CommonPersonObjectClient pc) {
+        org.smartregister.Context context = VaccinatorApplication.getInstance().context();
+        try {
+            JSONObject form = FormUtils.getInstance(this).getFormJson("iycf_counselling_form_lactating_woman");
+
+            if (form != null) {
+
+
+                JSONObject jsonObject = form;
+                if (jsonObject.getString(JsonFormUtils.ENTITY_ID) != null) {
+                    jsonObject.remove(JsonFormUtils.ENTITY_ID);
+                    jsonObject.put(JsonFormUtils.ENTITY_ID, pc.entityId());
+                }
+
+//            intent.putExtra("json", form.toString());
+//            startActivityForResult(intent, REQUEST_CODE_GET_JSON);
+                return form.toString();
+            }
+        } catch (Exception e) {
+            Log.e("exception counselling", e.getMessage());
+        }
+
+        return "";
+    }
+
+    private String getmetaDataForPregnantCounsellingForm(CommonPersonObjectClient pc) {
+        org.smartregister.Context context = VaccinatorApplication.getInstance().context();
+        try {
+            JSONObject form = FormUtils.getInstance(this).getFormJson("iycf_counselling_form_pregnant_woman");
+
+            if (form != null) {
+
+
+                JSONObject jsonObject = form;
+                if (jsonObject.getString(JsonFormUtils.ENTITY_ID) != null) {
+                    jsonObject.remove(JsonFormUtils.ENTITY_ID);
+                    jsonObject.put(JsonFormUtils.ENTITY_ID, pc.entityId());
+                }
+
+//            intent.putExtra("json", form.toString());
+//            startActivityForResult(intent, REQUEST_CODE_GET_JSON);
+                return form.toString();
+            }
+        } catch (Exception e) {
+            Log.e("exception counselling", e.getMessage());
+        }
+
+        return "";
     }
 
 

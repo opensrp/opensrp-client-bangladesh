@@ -55,6 +55,68 @@
     "title": "Mother Follow Up",
     "fields": [
       {
+        "key": "Visit_date",
+        "openmrs_entity_parent": "",
+        "openmrs_entity": "",
+        "openmrs_entity_id": "",
+        "openmrs_data_type": "text",
+        "type": "date_picker",
+        "hint": "Visit date",
+        "v_required": {
+          "value": true,
+          "err": "Please Enter date"
+        }
+      },
+      {
+        "key": "is_pregnant",
+        "openmrs_entity_parent": "",
+        "openmrs_entity": "",
+        "openmrs_entity_id": "",
+        "openmrs_data_type": "text",
+        "type": "edit_text",
+        "hidden": true,
+        "hint": "",
+        "value": ""
+      },
+      {
+        "key": "lactating_woman",
+        "openmrs_entity_parent": "",
+        "openmrs_entity": "",
+        "openmrs_entity_id": "",
+        "openmrs_data_type": "text",
+        "type": "spinner",
+        "hint": "Haven you given birth?",
+        "values":[
+          "No",
+          "Yes"
+        ],
+        "relevance": {
+          "step1:is_pregnant": {
+            "type": "string",
+            "ex": "equalTo(., \"Yes\")"
+          }
+        }
+      },
+      {
+        "key": "date_of_delivery",
+        "openmrs_entity_parent": "",
+        "openmrs_entity": "",
+        "openmrs_entity_id": "",
+        "openmrs_data_type": "text",
+        "type": "date_picker",
+        "hint": "Date of Delivery",
+        "v_required": {
+          "value": true,
+          "err": "Please Enter date"
+        },
+        "relevance": {
+          "step1:lactating_woman": {
+            "type": "string",
+            "ex": "equalTo(., \"Yes\")"
+          }
+        }
+      },
+      {
         "key": "pregnant",
         "openmrs_entity_parent": "",
         "openmrs_entity": "",
@@ -66,7 +128,13 @@
           "No",
           "Yes",
           "Don't Know"
-        ]
+        ],
+        "relevance": {
+          "step1:is_pregnant": {
+            "type": "string",
+            "ex": "notEqualTo(., \"Yes\")"
+          }
+        }
       },
       {
         "key": "edd_lmp",
@@ -187,7 +255,7 @@
         ]
       },
       {
-        "key": "visit_date",
+        "key": "followup_visit_date",
         "openmrs_entity_parent": "",
         "openmrs_entity": "",
         "openmrs_entity_id": "",

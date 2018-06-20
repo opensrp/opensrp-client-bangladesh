@@ -126,36 +126,7 @@ public class HouseholdSmartClientsProvider implements SmartRegisterCLientsProvid
             }
         });
 //
-//        String firstName = getValue(pc.getColumnmaps(), "first_name", true);
-//        String lastName = getValue(pc.getColumnmaps(), "last_name", true);
-//        String childName = getName(firstName, lastName);
-//
-//        String motherFirstName = getValue(pc.getColumnmaps(), "mother_first_name", true);
-//        if (StringUtils.isBlank(childName) && StringUtils.isNotBlank(motherFirstName)) {
-//            childName = "B/o " + motherFirstName.trim();
-//        }
-//        fillValue((TextView) convertView.findViewById(R.id.child_name), childName);
-//
-//        String motherName = getValue(pc.getColumnmaps(), "mother_first_name", true) + " " + getValue(pc, "mother_last_name", true);
-//        if (!StringUtils.isNotBlank(motherName)) {
-//            motherName = "M/G: " + motherName.trim();
-//        }
-//        fillValue((TextView) convertView.findViewById(R.id.child_mothername), motherName);
-//
-//        DateTime birthDateTime = new DateTime((new Date()).getTime());
-//        String dobString = getValue(pc.getColumnmaps(), "dob", false);
-//        String durationString = "";
-//        if (StringUtils.isNotBlank(dobString)) {
-//            try {
-//                birthDateTime = new DateTime(dobString);
-//                String duration = DateUtils.getDuration(birthDateTime);
-//                if (duration != null) {
-//                    durationString = duration;
-//                }
-//            } catch (Exception e) {
-//                Log.e(getClass().getName(), e.toString(), e);
-//            }
-//        }
+
 
     }
 

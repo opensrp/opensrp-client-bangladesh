@@ -494,78 +494,90 @@ public class JsonFormUtils extends org.smartregister.util.JsonFormUtils {
             if (fields == null) {
                 return;
             }
-
+            Map<String, String> fieldmap = fieldsToHashmap(fields);
             String encounterType = getString(jsonForm, ENCOUNTER_TYPE);
 
             JSONObject metadata = getJSONObject(jsonForm, METADATA);
-
-            // Replace values for location questions with their corresponding location IDs
-            for (int i = 0; i < fields.length(); i++) {
-                String key = fields.getJSONObject(i).getString("key");
-                if (key.equals("lmp")) {
-                    if(TextUtils.isEmpty(fields.getJSONObject(i).getString("value"))) {
-                        boolean USGNeeded = false;
-                        for (int j = 0; j < fields.length(); j++) {
-                            String keyJ = fields.getJSONObject(j).getString("key");
-                            if(keyJ.equals("edd")) {
-                                if(!TextUtils.isEmpty(fields.getJSONObject(j).getString("value"))) {
-                                    String eddValue = fields.getJSONObject(j).getString("value");
-                                    DateTime now = new DateTime(dd_MM_yyyy.parse(eddValue));
-                                    DateTime dob = now.minusDays(280);
-                                    fields.getJSONObject(i).put("value", dd_MM_yyyy.format(dob.toDate()));
-                                }else{
-                                    USGNeeded = true;
-                                }
-                            }
-                        }
-                        if(USGNeeded){
-                            String ultrasound_dateValue = "";
-                            String ultrasound_weeksValue = "";
-
-
+            boolean lactatingwoman = false;
+            boolean pregnantwoman = false;
+            if(fieldmap.get("lactating_woman")!=null){
+                if(fieldmap.get("lactating_woman").equalsIgnoreCase("Yes")){
+                    lactatingwoman = true;
+                }
+            }
+            if(fieldmap.get("pregnant")!=null){
+                if(fieldmap.get("pregnant").equalsIgnoreCase("Yes")){
+                    pregnantwoman = true;
+                }
+            }
+            if(!lactatingwoman && pregnantwoman) {
+                // Replace values for location questions with their corresponding location IDs
+                for (int i = 0; i < fields.length(); i++) {
+                    String key = fields.getJSONObject(i).getString("key");
+                    if (key.equals("lmp")) {
+                        if (TextUtils.isEmpty(fields.getJSONObject(i).getString("value"))) {
+                            boolean USGNeeded = false;
                             for (int j = 0; j < fields.length(); j++) {
                                 String keyJ = fields.getJSONObject(j).getString("key");
-                                if(keyJ.equals("ultrasound_date")) {
-                                    if(!TextUtils.isEmpty(fields.getJSONObject(j).getString("value"))) {
-                                        ultrasound_dateValue = fields.getJSONObject(j).getString("value");
-                                    }
-                                }
-                                if(keyJ.equals("ultrasound_weeks")) {
-                                    if(!TextUtils.isEmpty(fields.getJSONObject(j).getString("value"))) {
-                                        ultrasound_weeksValue = fields.getJSONObject(j).getString("value");
+                                if (keyJ.equals("edd")) {
+                                    if (!TextUtils.isEmpty(fields.getJSONObject(j).getString("value"))) {
+                                        String eddValue = fields.getJSONObject(j).getString("value");
+                                        DateTime now = new DateTime(dd_MM_yyyy.parse(eddValue));
+                                        DateTime dob = now.minusDays(280);
+                                        fields.getJSONObject(i).put("value", dd_MM_yyyy.format(dob.toDate()));
+                                    } else {
+                                        USGNeeded = true;
                                     }
                                 }
                             }
-                            DateTime ultrasoundDate = new DateTime(dd_MM_yyyy.parse(ultrasound_dateValue));
-                            int ultraSoundWeeks = Integer.parseInt(ultrasound_weeksValue);
+                            if (USGNeeded) {
+                                String ultrasound_dateValue = "";
+                                String ultrasound_weeksValue = "";
+
+
+                                for (int j = 0; j < fields.length(); j++) {
+                                    String keyJ = fields.getJSONObject(j).getString("key");
+                                    if (keyJ.equals("ultrasound_date")) {
+                                        if (!TextUtils.isEmpty(fields.getJSONObject(j).getString("value"))) {
+                                            ultrasound_dateValue = fields.getJSONObject(j).getString("value");
+                                        }
+                                    }
+                                    if (keyJ.equals("ultrasound_weeks")) {
+                                        if (!TextUtils.isEmpty(fields.getJSONObject(j).getString("value"))) {
+                                            ultrasound_weeksValue = fields.getJSONObject(j).getString("value");
+                                        }
+                                    }
+                                }
+                                DateTime ultrasoundDate = new DateTime(dd_MM_yyyy.parse(ultrasound_dateValue));
+                                int ultraSoundWeeks = Integer.parseInt(ultrasound_weeksValue);
+                                for (int j = 0; j < fields.length(); j++) {
+                                    String keyJ = fields.getJSONObject(j).getString("key");
+                                    if (keyJ.equals("edd")) {
+                                        if (TextUtils.isEmpty(fields.getJSONObject(j).getString("value"))) {
+                                            DateTime edddate = ultrasoundDate.plusDays(280 - (7 * ultraSoundWeeks));
+                                            fields.getJSONObject(j).put("value", dd_MM_yyyy.format(edddate.toDate()));
+                                            fields.getJSONObject(i).put("value", dd_MM_yyyy.format(edddate.minusDays(280).toDate()));
+                                        }
+                                    }
+                                }
+                            }
+                        } else {
+                            String lmpValue = fields.getJSONObject(i).getString("value");
                             for (int j = 0; j < fields.length(); j++) {
                                 String keyJ = fields.getJSONObject(j).getString("key");
-                                if(keyJ.equals("edd")) {
-                                    if(TextUtils.isEmpty(fields.getJSONObject(j).getString("value"))) {
-                                        DateTime edddate = ultrasoundDate.plusDays(280-(7*ultraSoundWeeks));
-                                        fields.getJSONObject(j).put("value", dd_MM_yyyy.format(edddate.toDate()));
-                                        fields.getJSONObject(i).put("value", dd_MM_yyyy.format(edddate.minusDays(280).toDate()));
-                                    }
-                                }
-                            }
-                        }
-                    }else{
-                        String lmpValue = fields.getJSONObject(i).getString("value");
-                        for (int j = 0; j < fields.length(); j++) {
-                            String keyJ = fields.getJSONObject(j).getString("key");
-                            if(keyJ.equals("edd")) {
-                                if(TextUtils.isEmpty(fields.getJSONObject(j).getString("value"))) {
+                                if (keyJ.equals("edd")) {
+                                    if (TextUtils.isEmpty(fields.getJSONObject(j).getString("value"))) {
 
-                                    DateTime now = new DateTime(dd_MM_yyyy.parse(lmpValue));
-                                    DateTime dob = now.plusDays(280);
-                                    fields.getJSONObject(j).put("value", dd_MM_yyyy.format(dob.toDate()));
+                                        DateTime now = new DateTime(dd_MM_yyyy.parse(lmpValue));
+                                        DateTime dob = now.plusDays(280);
+                                        fields.getJSONObject(j).put("value", dd_MM_yyyy.format(dob.toDate()));
+                                    }
                                 }
                             }
                         }
                     }
                 }
             }
-
             Event e = JsonFormUtils.createEvent(openSrpContext, fields, metadata, entityId, encounterType, providerId, bindType);
 
             if (e != null) {
