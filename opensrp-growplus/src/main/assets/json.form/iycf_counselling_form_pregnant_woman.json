@@ -55,6 +55,27 @@
     "title": "IYCF Councelling Form Pregnant woman",
     "fields": [
       {
+        "key":"basicinstroductions",
+        "type":"label",
+        "text":"How do you feel?\nHave you had any illnesses in the last 2 weeks?"
+      },
+      {
+        "key": "pregnant_counselling_actions_decided_previous_meeting",
+        "openmrs_entity_parent": "",
+        "openmrs_entity": "",
+        "openmrs_entity_id": "",
+        "openmrs_data_type": "text",
+        "type": "spinner",
+        "hidden": true,
+        "read_only": true,
+        "hint": "",
+        "values": [
+          "Yes",
+          "No"
+        ],
+        "value": ""
+      },
+      {
         "key": "any_member_present",
         "openmrs_entity_parent": "",
         "openmrs_entity": "",
@@ -236,6 +257,21 @@
           "7 Tablet or more",
           "6 tablet or less"
         ],
+        "has_media_content": true,
+        "media": [
+          {
+            "media_type":"text",
+            "media_trigger_value":"7 Tablet or more",
+            "media_link":"",
+            "media_text":"\u2022  Congratulate her and encourage her to keep taking iron tablets daily."
+          },
+          {
+            "media_type":"text",
+            "media_trigger_value":"6 tablet or less",
+            "media_link":"",
+            "media_text":"Take iron and folic acid tablets to prevent anaemia during pregnancy and for at least 3 months after your baby’s birth.\n Ask: What hinders you from taking IFA daily? \n- If she is having trouble with the taste, encourage her to take the tablet with a flavored drink, or with food.\n - If that is difficult, counsel her on taking half a tablet of IFA per day."
+          }
+        ],
         "relevance": {
           "step1:nutrition_to_discuss": {
             "type": "string",
@@ -257,6 +293,15 @@
         "values": [
           "Yes",
           "No"
+        ],
+        "has_media_content": true,
+        "media": [
+          {
+            "media_type":"text",
+            "media_trigger_value":"Yes",
+            "media_link":"",
+            "media_text":"Which supplements are you taking?\nDo you have access to iodized salt? (only ask if country does not have mandatory national salt iodization)\nDiscuss:\n- Use iodised salt to help your baby’s brain and body develop well\n- Take de-worming tablets to help prevent anaemia only after first trimester"
+          }
         ],
         "relevance": {
           "step1:nutrition_to_discuss": {
@@ -280,6 +325,21 @@
           "Yes",
           "No"
         ],
+        "has_media_content": true,
+        "media": [
+          {
+            "media_type":"text",
+            "media_trigger_value":"Yes",
+            "media_link":"",
+            "media_text":"Congratulate her and encourage her to keep taking time to rest throughout her day and not to take on a high work load. If other family members are present, praise them for taking on more in terms of workload"
+          },
+          {
+            "media_type":"text",
+            "media_trigger_value":"No",
+            "media_link":"",
+            "media_text":"Getting adequate rest during pregnancy is very important. Make sure you schedule in times throughout the day to rest and relax. This will help your baby build up strength for a less painful delivery.If a pregnant woman especially in her third trimester continues to do strenuous work, this could result in her baby being born early with a low birth weight. This will affect the health and development of her baby.\n - Are there ways she can talk with family members to share some of her work with others in the family?They can exchange strenuous chores with her so she can sit and rest more often."
+          }
+        ],
         "relevance": {
           "step1:nutrition_to_discuss": {
             "type": "string",
@@ -301,6 +361,21 @@
         "values": [
           "Yes",
           "No"
+        ],
+        "has_media_content": true,
+        "media": [
+          {
+            "media_type":"text",
+            "media_trigger_value":"Yes",
+            "media_link":"",
+            "media_text":"Congratulate her and encourage her to continue sleeping under a ITN"
+          },
+          {
+            "media_type":"text",
+            "media_trigger_value":"No",
+            "media_link":"",
+            "media_text":"Do you know why it is important to sleep under a mosquito net? \n- It helps to prevent malaria which makes you tired and affects your energy levels. It is best to sleep under an insecticide-treated mosquito net.\n- Mosquitos are the cause of malaria, and bednets prevent mosquitos from biting you. More important for pregnant women and babies to be protected from malaria \n Ask: Are there any barriers in you sleeping under an insecticide treated net?\nSuggesting some alternative actions: Use a fan, ensure no stagnant water present, be receptive to indoor residual spray"
+          }
         ],
         "relevance": {
           "step1:nutrition_to_discuss": {
@@ -324,6 +399,21 @@
           "Yes",
           "No"
         ],
+        "has_media_content": true,
+        "media": [
+          {
+            "media_type":"text",
+            "media_trigger_value":"Yes",
+            "media_link":"",
+            "media_text":"Congratulate her and encourage her to continue taking IPT for prevention of malaria"
+          },
+          {
+            "media_type":"text",
+            "media_trigger_value":"No",
+            "media_link":"",
+            "media_text":"Ask: What are your current barriers in taking IPT? How can we work through these barriers together?\nIt is best to take antimalarial medicine as prescribed(talk about why IPT is important for pregnant women).\nMore important for pregnant women and babies to be protected from malaria. Discussion of how to get antimalarial meds – CHV, alternative community based resources, private sector"
+          }
+        ],
         "relevance": {
           "step1:nutrition_to_discuss": {
             "type": "string",
@@ -346,6 +436,21 @@
           "I plan to breastfeed",
           "I do not want to breastfeed"
         ],
+        "has_media_content": true,
+        "media": [
+          {
+            "media_type":"text",
+            "media_trigger_value":"I plan to breastfeed",
+            "media_link":"",
+            "media_text":"This is an excellent choice. You are making a good choice to give your child the best start to life.\nBreastmilk is clean and wholesome and provides all the essential nutrients and vitamins your baby needs for a healthy start to life. Give only breastmilk in the first 5 months of life including no water, tea, or milk or any other liquid and immediately breastfeed within an hour of delivery."
+          },
+          {
+            "media_type":"video",
+            "media_trigger_value":"I do not want to breastfeed",
+            "media_link":"android.resource://org.smartregister.growplus/raw/understandingbreastfeeding",
+            "media_text":""
+          }
+        ],
         "relevance": {
           "step1:nutrition_to_discuss": {
             "type": "string",
@@ -358,12 +463,51 @@
         }
       },
       {
+        "key": "pregnant_counselling_actions_for_next_meeting",
+        "openmrs_entity_parent": "",
+        "openmrs_entity": "",
+        "openmrs_entity_id": "",
+        "type": "check_box",
+        "label": "Let’s identify one or two small actions we can work on before your next visit. Of the topics we discussed, what would you like to work on before our next meeting? Some possible actions:",
+        "v_required": {
+          "value": true,
+          "err": "Please answer the question"
+        },
+        "options":[
+          {
+            "key":"ifa_each_day",
+            "text":"Take IFA each day or try to take it as frequently as possible",
+            "value":"false"
+          },
+          {
+            "key":"iodized_salt",
+            "text":"Use iodized salt instead of regular salt if available",
+            "value":"false"
+          },
+          {
+            "key":"extra_snack",
+            "text":"Eat an extra snack a day",
+            "value":"false"
+          },
+          {
+            "key":"discuss_husband_extra_food",
+            "text":"Discuss with husband or mother in law about eating extra and diverse food throughout the day",
+            "value":"false"
+          },
+          {
+            "key":"negotiate_family_anc_visit",
+            "text":"Negotiate with family members to take on some of her workload and to attend ANC visits together",
+            "value":"false"
+          }
+        ]
+      },
+      {
         "key": "Date_Of_next_appointment",
         "openmrs_entity_parent": "",
         "openmrs_entity": "",
         "openmrs_entity_id": "",
         "type": "date_picker",
-        "hint": "Let’s schedule our next appointment",
+        "hint": "Let’s schedule next appointment",
         "expanded": false,
         "min_date": "today",
         "v_required": {

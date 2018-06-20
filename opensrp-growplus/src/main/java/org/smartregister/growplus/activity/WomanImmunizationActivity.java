@@ -471,7 +471,7 @@ public class WomanImmunizationActivity extends BaseActivity
                 }
                 if(pregnant&&!lactating){
 
-                    String metadata = getmetaDataForPregnantCounsellingForm(childDetails);
+                    String metadata = getmetaDataForPregnantCounsellingForm(childDetails,WomanImmunizationActivity.this);
                     Intent intent = new Intent(WomanImmunizationActivity.this, PathJsonFormActivity.class);
 
                     intent.putExtra("json", metadata);
@@ -538,10 +538,10 @@ public class WomanImmunizationActivity extends BaseActivity
         return "";
     }
 
-    private String getmetaDataForPregnantCounsellingForm(CommonPersonObjectClient pc) {
+    public static String getmetaDataForPregnantCounsellingForm(CommonPersonObjectClient pc,Context activitycontext) {
         org.smartregister.Context context = VaccinatorApplication.getInstance().context();
         try {
-            JSONObject form = FormUtils.getInstance(this).getFormJson("iycf_counselling_form_pregnant_woman");
+            JSONObject form = FormUtils.getInstance(activitycontext).getFormJson("iycf_counselling_form_pregnant_woman");
 
             if (form != null) {
 
@@ -550,6 +550,51 @@ public class WomanImmunizationActivity extends BaseActivity
                 if (jsonObject.getString(JsonFormUtils.ENTITY_ID) != null) {
                     jsonObject.remove(JsonFormUtils.ENTITY_ID);
                     jsonObject.put(JsonFormUtils.ENTITY_ID, pc.entityId());
+                }
+
+                JSONObject stepOne = form.getJSONObject(JsonFormUtils.STEP1);
+                JSONArray jsonArray = stepOne.getJSONArray(JsonFormUtils.FIELDS);
+
+                if(pc.getColumnmaps().get("pregnant_counselling_actions_for_next_meeting")!=null) {
+                    if(!pc.getColumnmaps().get("pregnant_counselling_actions_for_next_meeting").equalsIgnoreCase("")) {
+                        String[] valuelist = pc.getColumnmaps().get("pregnant_counselling_actions_for_next_meeting").split(",");
+                        String ValueString = "";
+                        for(int i = 0;i<valuelist.length;i++){
+                            if(valuelist[i].equalsIgnoreCase("ifa_each_day")){
+                                valuelist[i] = "Take IFA each day or try to take it as frequently as possible";
+                            }
+                            if(valuelist[i].equalsIgnoreCase("iodized_salt")){
+                                valuelist[i] = "Use iodized salt instead of regular salt if available";
+                            }
+                            if(valuelist[i].equalsIgnoreCase("extra_snack")){
+                                valuelist[i] = "Eat an extra snack a day";
+                            }
+                            if(valuelist[i].equalsIgnoreCase("discuss_husband_extra_food")){
+                                valuelist[i] = "Discuss with husband or mother in law about eating extra and diverse food throughout the day";
+                            }
+                            if(valuelist[i].equalsIgnoreCase("negotiate_family_anc_visit")){
+                                valuelist[i] = "Negotiate with family members to take on some of her workload and to attend ANC visits together";
+                            }
+                            if(i !=0) {
+                                ValueString = ValueString +","+ valuelist[i];
+                            }else if(i==0){
+                                ValueString = valuelist[i];
+                            }
+                        }
+
+                        for (int i = 0; i < jsonArray.length(); i++) {
+                            JSONObject fieldjsonObject = jsonArray.getJSONObject(i);
+                            if (fieldjsonObject.getString(JsonFormUtils.KEY)
+                                    .equalsIgnoreCase("pregnant_counselling_actions_decided_previous_meeting")) {
+//                                fieldjsonObject.remove(JsonFormUtils.VALUE);
+                                fieldjsonObject.put("hint", "In the last session, your resolution was- "+ValueString+ "- Did you practice this resolution?");
+                                fieldjsonObject.remove("hidden");
+                                fieldjsonObject.put("hidden", false);
+
+                                continue;
+                            }
+                        }
+                    }
                 }
 
 //            intent.putExtra("json", form.toString());
