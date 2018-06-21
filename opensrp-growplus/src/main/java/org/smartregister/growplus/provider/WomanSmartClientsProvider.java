@@ -247,8 +247,14 @@ public class WomanSmartClientsProvider implements SmartRegisterCLientsProviderFo
         }
         if(lactating){
             profileImageIV.setImageDrawable(context.getResources().getDrawable(R.drawable.lactating_woman));
+            fillValue((TextView) convertView.findViewById(R.id.nid), "");
+            fillValue((TextView) convertView.findViewById(R.id.zeir_id), "");
+            fillValue((TextView) convertView.findViewById(R.id.brid), "");
         }else if(!lactating && !pregnant){
             profileImageIV.setImageDrawable(context.getResources().getDrawable(R.drawable.women));
+            fillValue((TextView) convertView.findViewById(R.id.nid), "");
+            fillValue((TextView) convertView.findViewById(R.id.zeir_id), "");
+            fillValue((TextView) convertView.findViewById(R.id.brid), "");
 
         }
 

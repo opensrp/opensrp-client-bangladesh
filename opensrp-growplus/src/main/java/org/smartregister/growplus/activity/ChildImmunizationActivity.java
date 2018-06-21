@@ -270,7 +270,10 @@ public class ChildImmunizationActivity extends BaseActivity
         TextView nameTV = (TextView) findViewById(R.id.name_tv);
         nameTV.setText(name);
         TextView childIdTV = (TextView) findViewById(R.id.child_id_tv);
-        childIdTV.setText(String.format("%s: %s", getString(R.string.label_openmrsid), childId));
+        childIdTV.setText(childId);
+        ((TextView) findViewById(R.id.mother_name_id_tv)).setText(Utils.getValue(childDetails.getColumnmaps(), PathConstants.KEY.MOTHER_FIRST_NAME, true));
+        ((TextView) findViewById(R.id.father_name_id_tv)).setText(Utils.getValue(childDetails.getColumnmaps(), "Father_Guardian_Name", true));
+        ((TextView) findViewById(R.id.birth_weight_id_tv)).setText(getValue(childDetails, "Birth_Weight", true) + " kg");
 
         Utils.startAsyncTask(new GetSiblingsTask(), null);
     }
@@ -293,9 +296,9 @@ public class ChildImmunizationActivity extends BaseActivity
             }
         }
         TextView dobTV = (TextView) findViewById(R.id.dob_tv);
-        dobTV.setText(String.format("%s: %s", getString(R.string.birthdate), formattedDob));
+        dobTV.setText(formattedDob);
         TextView ageTV = (TextView) findViewById(R.id.age_tv);
-        ageTV.setText(String.format("%s: %s", getString(R.string.age), formattedAge));
+        ageTV.setText(formattedAge);
     }
 
     public void updateGenderViews() {

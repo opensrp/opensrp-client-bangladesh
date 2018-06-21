@@ -8,7 +8,7 @@
     android:fillViewport="true"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:context="org.smartregister.growplus.activity.WomanImmunizationActivity"
-    tools:showIn="@layout/app_bar_child_immunization">
+    tools:showIn="@layout/app_bar_woman_immunization">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -38,12 +38,13 @@
 
                 <ImageView
                     android:id="@+id/profile_image_iv"
-                    android:layout_width="@dimen/immun_child_card_height_growplus"
-                    android:layout_height="@dimen/immun_child_card_height_growplus"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
                     android:adjustViewBounds="true"
                     android:scaleType="centerCrop"
                     android:layout_gravity="center"
-                    android:src="@drawable/woman_path_register_logo" />
+                    android:src="@drawable/woman_path_register_logo"
+                    android:layout_marginLeft="10dp" />
 
                 <LinearLayout
                     android:layout_width="wrap_content"
@@ -60,7 +61,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:gravity="center_vertical"
-                        android:text="Joyce Mwansa"
+                        android:text=""
                         android:textColor="@android:color/black"
                         android:textSize="16sp"
                         android:paddingLeft="@dimen/abc_action_bar_subtitle_bottom_margin_material" />
@@ -328,6 +329,109 @@
                 </LinearLayout>
             </android.support.v7.widget.CardView>
         </LinearLayout>
+
+        <android.support.v7.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/white"
+            android:clickable="false"
+            android:layout_marginTop="@dimen/card_category_horizontal_margin"
+            android:foreground="?android:attr/selectableItemBackground"
+            app:cardCornerRadius="@dimen/card_view_corner_radius"
+            app:cardElevation="@dimen/card_elevation"
+            android:padding="10dp">
+
+
+            <LinearLayout
+                android:orientation="vertical"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:padding="10dp">
+                <org.smartregister.view.customcontrols.CustomFontTextView
+                    style="@style/CustomFontTextViewStyle.ClientList"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentLeft="true"
+                    android:layout_centerVertical="true"
+                    android:text="Pregnancy Details"
+                    android:textColor="@color/text_black"
+                    android:textSize="@dimen/activity_sub_title_size" />
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_marginTop="5dp">
+                    <org.smartregister.view.customcontrols.CustomFontTextView
+                        android:id="@+id/pregnant_label"
+                        style="@style/CustomFontTextViewStyle.ListView.Normal.MultipleLines"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Pregnant"
+                        android:textColor="@color/dark_grey"
+                        android:textSize="16sp" />
+                    <org.smartregister.view.customcontrols.CustomFontTextView
+                        android:id="@+id/pregnant_id_tv"
+                        style="@style/CustomFontTextViewStyle.ListView.Normal.MultipleLines"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:gravity="right"
+                        android:text="EIR"
+                        android:textColor="@color/dark_grey"
+                        android:textSize="16sp" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_marginTop="5dp">
+                    <org.smartregister.view.customcontrols.CustomFontTextView
+                        android:id="@+id/lmp_label"
+                        style="@style/CustomFontTextViewStyle.ListView.Normal.MultipleLines"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="LMP"
+                        android:textColor="@color/dark_grey"
+                        android:textSize="16sp" />
+                    <org.smartregister.view.customcontrols.CustomFontTextView
+                        android:id="@+id/lmp_id_tv"
+                        style="@style/CustomFontTextViewStyle.ListView.Normal.MultipleLines"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:gravity="right"
+                        android:text="EIR"
+                        android:textColor="@color/dark_grey"
+                        android:textSize="16sp" />
+                </LinearLayout>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_marginTop="5dp">
+                    <org.smartregister.view.customcontrols.CustomFontTextView
+                        android:id="@+id/edd_label"
+                        style="@style/CustomFontTextViewStyle.ListView.Normal.MultipleLines"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="EDD"
+                        android:textColor="@color/dark_grey"
+                        android:textSize="16sp" />
+                    <org.smartregister.view.customcontrols.CustomFontTextView
+                        android:id="@+id/edd_id_tv"
+                        style="@style/CustomFontTextViewStyle.ListView.Normal.MultipleLines"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:gravity="right"
+                        android:text="EIR"
+                        android:textColor="@color/dark_grey"
+                        android:textSize="16sp" />
+                </LinearLayout>
+            </LinearLayout>
+
+        </android.support.v7.widget.CardView>
 
         <android.support.v7.widget.CardView
             android:layout_width="match_parent"

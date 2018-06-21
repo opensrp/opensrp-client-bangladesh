@@ -108,6 +108,7 @@ import util.PathConstants;
 
 import static org.smartregister.growplus.activity.WomanSmartRegisterActivity.REQUEST_CODE_GET_JSON;
 import static org.smartregister.growplus.fragment.HouseholdMemberAddFragment.DATE_FORMAT;
+import static org.smartregister.util.Utils.fillValue;
 import static org.smartregister.util.Utils.getName;
 import static org.smartregister.util.Utils.getValue;
 import static org.smartregister.util.Utils.kgStringSuffix;
@@ -330,6 +331,19 @@ public class WomanImmunizationActivity extends BaseActivity
 
             }
         });
+        final String lmpstring = getValue(childDetails.getColumnmaps(), "lmp", false);
+        final String eddstring = getValue(childDetails.getColumnmaps(), "edd", false);
+        String pregnant = "No";
+        if(childDetails.getColumnmaps().get("pregnant")!=null){
+            if(childDetails.getColumnmaps().get("pregnant").equalsIgnoreCase("Yes")){
+                pregnant = "Yes";
+
+            }
+        }
+
+        fillValue((TextView) findViewById(R.id.lmp_id_tv), lmpstring);
+        fillValue((TextView) findViewById(R.id.edd_id_tv), eddstring);
+        fillValue((TextView) findViewById(R.id.pregnant_id_tv), pregnant);
         startAsyncTask(new GetSiblingsTask(), null);
     }
 
