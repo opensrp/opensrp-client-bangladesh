@@ -255,7 +255,7 @@
         ]
       },
       {
-        "key": "followup_visit_date",
+        "key": "Date_Of_next_appointment",
         "openmrs_entity_parent": "",
         "openmrs_entity": "",
         "openmrs_entity_id": "",

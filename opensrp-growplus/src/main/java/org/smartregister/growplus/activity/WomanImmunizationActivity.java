@@ -293,6 +293,23 @@ public class WomanImmunizationActivity extends BaseActivity
         TextView childIdTV = (TextView) findViewById(R.id.child_id_tv);
         childIdTV.setText(String.format("%s: %s", getString(R.string.label_openmrsid), childId));
 
+        String dobString = "";
+        String formattedDob = "";
+        if (isDataOk()) {
+            dobString = getValue(childDetails.getColumnmaps(), "dob", false);
+            if (!TextUtils.isEmpty(dobString)) {
+                DateTime dateTime = new DateTime(dobString);
+                Date dob = dateTime.toDate();
+                formattedDob = DATE_FORMAT.format(dob);
+            }
+        }
+
+        String openmrsid = String.format("%s:%s", "OpenMRS ID","     "+childId);
+        String birthdate = String.format("%s:%s", "Birth Date","     "+formattedDob);
+        String husbaname = String.format("%s:%s", "Husband's Name"," "+getValue(childDetails.getColumnmaps(), "husband_name", false));
+        String contactno = String.format("%s:%s", "Contact Number"," "+getValue(childDetails.getColumnmaps(), "contact_phone_number", false));
+        childIdTV.setText(openmrsid+"\n"+birthdate+"\n"+husbaname+"\n"+contactno);
+
         startAsyncTask(new GetSiblingsTask(), null);
     }
 
@@ -314,7 +331,7 @@ public class WomanImmunizationActivity extends BaseActivity
             }
         }
         TextView dobTV = (TextView) findViewById(R.id.dob_tv);
-        dobTV.setText(String.format("%s: %s", getString(R.string.birthdate), formattedDob));
+        dobTV.setText("");
         TextView ageTV = (TextView) findViewById(R.id.age_tv);
         ageTV.setText(String.format("%s: %s", getString(R.string.age), formattedAge));
     }

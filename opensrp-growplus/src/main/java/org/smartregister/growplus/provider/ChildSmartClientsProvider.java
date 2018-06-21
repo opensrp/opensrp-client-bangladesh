@@ -95,7 +95,7 @@ public class ChildSmartClientsProvider implements SmartRegisterCLientsProviderFo
     public void getView(Cursor cursor, SmartRegisterClient client, final View convertView) {
         CommonPersonObjectClient pc = (CommonPersonObjectClient) client;
 
-        fillValue((TextView) convertView.findViewById(R.id.child_zeir_id), getValue(pc.getColumnmaps(), PathConstants.KEY.ZEIR_ID, false));
+//        fillValue((TextView) convertView.findViewById(R.id.child_zeir_id), getValue(pc.getColumnmaps(), PathConstants.KEY.ZEIR_ID, false));
 
         String firstName = getValue(pc.getColumnmaps(), PathConstants.KEY.FIRST_NAME, true);
         String lastName = getValue(pc.getColumnmaps(), PathConstants.KEY.LAST_NAME, true).replaceAll(Pattern.quote("."),"");
@@ -107,7 +107,7 @@ public class ChildSmartClientsProvider implements SmartRegisterCLientsProviderFo
         }
         fillValue((TextView) convertView.findViewById(R.id.child_name), childName);
 
-        String motherName = getValue(pc.getColumnmaps(), PathConstants.KEY.MOTHER_LAST_NAME, true) + " " + getValue(pc, PathConstants.KEY.MOTHER_LAST_NAME, true);
+        String motherName = getValue(pc.getColumnmaps(), PathConstants.KEY.MOTHER_FIRST_NAME, true).replaceAll(Pattern.quote("."),"") + " " + getValue(pc, PathConstants.KEY.MOTHER_LAST_NAME, true).replaceAll(Pattern.quote("."),"");
         if (!StringUtils.isNotBlank(motherName)) {
             motherName = "M/G: " + motherName.trim();
         }
@@ -129,7 +129,7 @@ public class ChildSmartClientsProvider implements SmartRegisterCLientsProviderFo
         }
         fillValue((TextView) convertView.findViewById(R.id.child_age), durationString);
 
-        fillValue((TextView) convertView.findViewById(R.id.child_card_number), pc.getColumnmaps(), PathConstants.KEY.EPI_CARD_NUMBER, false);
+//        fillValue((TextView) convertView.findViewById(R.id.child_card_number), pc.getColumnmaps(), PathConstants.KEY.EPI_CARD_NUMBER, false);
 
         String gender = getValue(pc.getColumnmaps(), PathConstants.KEY.GENDER, true);
 
@@ -138,11 +138,6 @@ public class ChildSmartClientsProvider implements SmartRegisterCLientsProviderFo
         final ImageView profilePic = (ImageView) convertView.findViewById(R.id.child_profilepic);
         int defaultImageResId = ImageUtils.profileImageResourceByGender(gender);
         profilePic.setImageResource(defaultImageResId);
-        if (pc.entityId() != null) { //image already in local storage most likely ):
-            //set profile image by passing the client id.If the image doesn't exist in the image repository then download and save locally
-            profilePic.setTag(org.smartregister.R.id.entity_id, pc.entityId());
-            DrishtiApplication.getCachedImageLoaderInstance().getImageByClientId(pc.entityId(), OpenSRPImageLoader.getStaticImageListener(profilePic, 0, 0));
-        }
 
         convertView.findViewById(R.id.child_profile_info_layout).setTag(client);
         convertView.findViewById(R.id.child_profile_info_layout).setOnClickListener(onClickListener);
@@ -155,28 +150,47 @@ public class ChildSmartClientsProvider implements SmartRegisterCLientsProviderFo
 
 
 
-        View recordVaccination = convertView.findViewById(R.id.record_vaccination);
-        recordVaccination.setTag(client);
-        recordVaccination.setOnClickListener(onClickListener);
-        recordVaccination.setVisibility(View.INVISIBLE);
+//        View recordVaccination = convertView.findViewById(R.id.record_vaccination);
+//        recordVaccination.setTag(client);
+//        recordVaccination.setOnClickListener(onClickListener);
+//        recordVaccination.setVisibility(View.INVISIBLE);
 
         String lostToFollowUp = getValue(pc.getColumnmaps(), PathConstants.KEY.LOST_TO_FOLLOW_UP, false);
         String inactive = getValue(pc.getColumnmaps(), PathConstants.KEY.INACTIVE, false);
 
         try {
             Utils.startAsyncTask(new WeightAsyncTask(convertView, pc.entityId(), lostToFollowUp, inactive, client, cursor), null);
-            Utils.startAsyncTask(new VaccinationAsyncTask(convertView, pc.entityId(), dobString, lostToFollowUp, inactive, client, cursor), null);
+//            Utils.startAsyncTask(new VaccinationAsyncTask(convertView, pc.entityId(), dobString, lostToFollowUp, inactive, client, cursor), null);
         } catch (Exception e) {
             Log.e(getClass().getName(), e.getMessage(), e);
         }
-        if(weightRepository.findLast5(pc.entityId()).size() >= 1) {
-            boolean adequate = checkForWeightGainCalc(birthDateTime.toDate(), Gender.valueOf(gender.toUpperCase()), weightRepository.findLast5(pc.entityId()).get(0), pc, getOpenSRPContext().detailsRepository());
+        List<Weight> weightlist = weightRepository.findLast5(pc.entityId());
+        if(weightlist.size() >= 1) {
+            boolean adequate = checkForWeightGainCalc(birthDateTime.toDate(), Gender.valueOf(gender.toUpperCase()), weightlist.get(0), pc, getOpenSRPContext().detailsRepository());
             if (!adequate) {
-                convertView.setBackgroundColor(getOpenSRPContext().getColorResource(R.color.alert_urgent_red));
+                convertView.findViewById(R.id.weightbox).setBackgroundColor(getOpenSRPContext().getColorResource(R.color.weightred));
+                ((TextView)convertView.findViewById(R.id.weightcaptured)).setTextColor(getOpenSRPContext().getColorResource(R.color.status_bar_text_almost_white));
+                ((TextView)convertView.findViewById(R.id.weightcaptureddate)).setTextColor(getOpenSRPContext().getColorResource(R.color.status_bar_text_almost_white));
+
             }else{
-                convertView.setBackgroundColor(getOpenSRPContext().getColorResource(R.color.alert_complete_green));
+                convertView.findViewById(R.id.weightbox).setBackgroundColor(getOpenSRPContext().getColorResource(R.color.weightgreen));
+                ((TextView)convertView.findViewById(R.id.weightcaptured)).setTextColor(getOpenSRPContext().getColorResource(R.color.status_bar_text_almost_white));
+                ((TextView)convertView.findViewById(R.id.weightcaptureddate)).setTextColor(getOpenSRPContext().getColorResource(R.color.status_bar_text_almost_white));
 
             }
+            ((TextView)convertView.findViewById(R.id.weightcaptured)).setText(weightlist.get(0).getKg()+"Kg");
+            ((TextView)convertView.findViewById(R.id.weightcaptureddate)).setText(Utils.convertDateFormat(new DateTime(weightlist.get(0).getDate().getTime())));
+
+        }else{
+            Map<String, String> detailsMap =  getOpenSRPContext().detailsRepository().getAllDetailsForClient(pc.entityId());
+            Float birthweight = new Float(getValue(detailsMap, "Birth_Weight", true));
+
+            ((TextView)convertView.findViewById(R.id.weightcaptured)).setText(birthweight+"Kg");
+            ((TextView)convertView.findViewById(R.id.weightcaptureddate)).setText(dobString);
+            ((TextView)convertView.findViewById(R.id.weightcaptured)).setTextColor(getOpenSRPContext().getColorResource(R.color.client_list_grey));
+            ((TextView)convertView.findViewById(R.id.weightcaptureddate)).setTextColor(getOpenSRPContext().getColorResource(R.color.client_list_grey));
+
+
         }
     }
 

@@ -11,6 +11,7 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import org.smartregister.commonregistry.CommonPersonObject;
 import org.smartregister.commonregistry.CommonPersonObjectClient;
 import org.smartregister.cursoradapter.SmartRegisterCLientsProviderForCursorAdapter;
 import org.smartregister.growthmonitoring.repository.WeightRepository;
@@ -32,9 +33,11 @@ import org.smartregister.view.dialog.SortOption;
 import org.json.JSONException;
 import org.smartregister.view.viewholder.OnClickFormLauncher;
 
+import java.util.List;
 import java.util.Map;
 
 import util.JsonFormUtils;
+import util.PathConstants;
 
 import static android.view.ViewGroup.LayoutParams.MATCH_PARENT;
 import static android.view.ViewGroup.LayoutParams.WRAP_CONTENT;
@@ -76,7 +79,7 @@ public class HouseholdSmartClientsProvider implements SmartRegisterCLientsProvid
         final CommonPersonObjectClient pc = (CommonPersonObjectClient) client;
         fillValue((TextView) convertView.findViewById(R.id.householdheadname), getValue(pc.getColumnmaps(), "first_name", false));
 
-        fillValue((TextView) convertView.findViewById(R.id.id), getValue(pc.getColumnmaps(), "HHID", false));
+        fillValue((TextView) convertView.findViewById(R.id.id),findmemberDetails(pc));
         fillValue((TextView) convertView.findViewById(R.id.registrationdate), getValue(pc.getColumnmaps(), "Date_Of_Reg", false));
 //        fillValue((TextView) convertView.findViewById(R.id.address), getValue(pc.getColumnmaps(), "address1", false));
 //        fillValue((TextView) convertView.findViewById(R.id.householdprimarytext), getValue(pc.getColumnmaps(), "block", false));
@@ -85,11 +88,11 @@ public class HouseholdSmartClientsProvider implements SmartRegisterCLientsProvid
         DetailsRepository detailsRepository;
         detailsRepository = org.smartregister.Context.getInstance().detailsRepository();
         Map<String, String> details = detailsRepository.getAllDetailsForClient(pc.entityId());
-        fillValue((TextView) convertView.findViewById(R.id.householdprimarytext), getValue(details, "address3", false));
-        fillValue((TextView) convertView.findViewById(R.id.housholdsecondarytext), getValue(details, "address2", false));
-        fillValue((TextView) convertView.findViewById(R.id.address), getValue(details, "address1", false));
+        fillValue((TextView) convertView.findViewById(R.id.householdprimarytext), getValue(details, "address3", false).substring( getValue(details, "address3", false).lastIndexOf(":")+1));
+        fillValue((TextView) convertView.findViewById(R.id.housholdsecondarytext), getValue(details, "address2", false).substring( getValue(details, "address2", false).lastIndexOf(":")+1));
 
-        Button addmember = (Button)convertView.findViewById(R.id.add_member);
+
+        ImageView addmember = (ImageView) convertView.findViewById(R.id.add_member);
         LocationPickerView locationPickerView = ((HouseholdSmartRegisterFragment) mBaseFragment).getLocationPickerView();
 
         try {
@@ -102,12 +105,7 @@ public class HouseholdSmartClientsProvider implements SmartRegisterCLientsProvid
         convertView.findViewById(R.id.child_profile_info_layout).setOnClickListener(onClickListener);
 
         ImageView profileImageIV = (ImageView) convertView.findViewById(R.id.profilepic);
-        if (pc.entityId() != null) {//image already in local storage most likey ):
-            //set profile image by passing the client id.If the image doesn't exist in the image repository then download and save locally
-            profileImageIV.setTag(org.smartregister.R.id.entity_id, pc.entityId());
-            DrishtiApplication.getCachedImageLoaderInstance().getImageByClientId(pc.entityId(), OpenSRPImageLoader.getStaticImageListener((ImageView) profileImageIV, R.drawable.houshold_register_placeholder, R.drawable.houshold_register_placeholder));
 
-        }
 
         addmember.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -128,6 +126,37 @@ public class HouseholdSmartClientsProvider implements SmartRegisterCLientsProvid
 //
 
 
+    }
+    public String findmemberDetails(CommonPersonObjectClient pc){
+        DetailsRepository detailsRepository = org.smartregister.Context.getInstance().detailsRepository();
+
+        List<CommonPersonObject> mothers = context().commonrepository(PathConstants.MOTHER_TABLE_NAME)
+                .findByRelational_IDs(pc.entityId());
+        int children = 0;
+        int pregnantwoman = 0;
+        int mother = mothers.size();
+        for(int i= 0;i<mothers.size();i++){
+            List<CommonPersonObject> childrennumber = context().commonrepository(PathConstants.CHILD_TABLE_NAME)
+                    .findByRelational_IDs(mothers.get(i).getCaseId());
+            children = children + childrennumber.size();
+            Map<String, String> detailmaps = detailsRepository.getAllDetailsForClient(mothers.get(i).getCaseId());
+            boolean pregnant = false;
+            boolean lactating = false;
+            if(detailmaps.get("pregnant")!=null){
+                if(detailmaps.get("pregnant").equalsIgnoreCase("Yes")){
+                    pregnant = true;
+                }
+            }
+            if(detailmaps.get("lactating_woman")!=null){
+                if(detailmaps.get("lactating_woman").equalsIgnoreCase("Yes")){
+                    lactating = true;
+                }
+            }
+            if(pregnant && !lactating){
+                pregnantwoman++;
+            }
+        }
+        return "Woman: "+mother+ "\n"+"Child: "+children+"\n"+"Pregnant: "+pregnantwoman;
     }
 
     @Override

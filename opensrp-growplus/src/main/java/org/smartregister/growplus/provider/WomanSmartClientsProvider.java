@@ -11,6 +11,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AbsListView;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -143,21 +144,25 @@ public class WomanSmartClientsProvider implements SmartRegisterCLientsProviderFo
 
         detailsRepository = detailsRepository == null ? org.smartregister.Context.getInstance().updateApplicationContext(context.getApplicationContext()).detailsRepository() : detailsRepository;
         Map<String, String> detailmaps = detailsRepository.getAllDetailsForClient(pc.entityId());
-
+        pc.getColumnmaps().putAll(detailmaps);
         String husbandname = getValue(detailmaps, "spouseName", false);
         fillValue((TextView) convertView.findViewById(R.id.spousename), husbandname);
 
-        fillValue((TextView) convertView.findViewById(R.id.nid), "NID: "+getValue(detailmaps, "nationalId", false));
+        fillValue((TextView) convertView.findViewById(R.id.nid), "LMP: "+getValue(detailmaps, "nationalId", false));
 
         final String lmpstring = getValue(pc.getColumnmaps(), "lmp", false);
+        final String eddstring = getValue(pc.getColumnmaps(), "edd", false);
+        final String gastring = getValue(pc.getColumnmaps(), "ultrasound_weeks", false);
 
-        View recordVaccination = convertView.findViewById(R.id.record_vaccination);
-        recordVaccination.setTag(client);
-        recordVaccination.setOnClickListener(onClickListener);
-        recordVaccination.setVisibility(View.INVISIBLE);
+        fillValue((TextView) convertView.findViewById(R.id.nid), "LMP: "+lmpstring);
+        fillValue((TextView) convertView.findViewById(R.id.zeir_id), "EDD: "+eddstring);
+        fillValue((TextView) convertView.findViewById(R.id.brid), "GA: "+gastring);
 
 
-        View add_child = convertView.findViewById(R.id.add_member);
+        fillValue((TextView) convertView.findViewById(R.id.followup_date), getValue(detailmaps, "Date_Of_next_appointment", false));
+
+
+        Button add_child = (Button)convertView.findViewById(R.id.add_member);
         add_child.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -187,6 +192,7 @@ public class WomanSmartClientsProvider implements SmartRegisterCLientsProviderFo
             }
         }
         if(!pregnant&&!lactating){
+            add_child.setText("Follow Up");
             add_child.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -202,6 +208,8 @@ public class WomanSmartClientsProvider implements SmartRegisterCLientsProviderFo
                 }
             });
         }else if(pregnant&&!lactating){
+            add_child.setText("Follow Up");
+
             add_child.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -217,6 +225,8 @@ public class WomanSmartClientsProvider implements SmartRegisterCLientsProviderFo
                 }
             });
         }else if(lactating){
+            add_child.setText("IYCF Counselling");
+
             add_child.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -233,22 +243,20 @@ public class WomanSmartClientsProvider implements SmartRegisterCLientsProviderFo
             });
         }
         if(pregnant){
-            profileImageIV.setImageDrawable(context.getResources().getDrawable(R.drawable.pregnant_woman_path_register_logo));
+            profileImageIV.setImageDrawable(context.getResources().getDrawable(R.drawable.pregnant_woman));
         }
         if(lactating){
-            profileImageIV.setImageDrawable(context.getResources().getDrawable(R.drawable.woman_path_register_logo));
+            profileImageIV.setImageDrawable(context.getResources().getDrawable(R.drawable.lactating_woman));
+        }else if(!lactating && !pregnant){
+            profileImageIV.setImageDrawable(context.getResources().getDrawable(R.drawable.women));
+
         }
 
 //        Intent intent = new Intent(context, PathJsonFormActivity.class);
 //
 //        intent.putExtra("json", metadata);
 
-        try {
-//            Utils.startAsyncTask(new ChildSmartClientsProvider.WeightAsyncTask(convertView, pc.entityId(), lostToFollowUp, inactive), null);
-            startAsyncTask(new WomanSmartClientsProvider.VaccinationAsyncTask(convertView, pc.entityId(), lmpstring,client, cursor), null);
-        } catch (Exception e) {
-            Log.e(getClass().getName(), e.getMessage(), e);
-        }
+
     }
 
     @Override

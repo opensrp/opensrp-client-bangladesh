@@ -55,21 +55,13 @@
     "title": "Household Registration",
     "fields": [
       {
-        "key": "household_photo",
-        "openmrs_entity_parent": "",
-        "openmrs_entity": "",
-        "openmrs_entity_id": "",
-        "type": "choose_image",
-        "uploadButtonText": "পরিবারের প্রধানের ছবি তুলুন "
-      },
-      {
         "key": "HIE_FACILITIES",
         "openmrs_entity_parent": "",
         "openmrs_entity": "",
         "openmrs_entity_id": "",
         "openmrs_data_type": "text",
         "type": "tree",
-        "hint": "পরিবারের প্রধানের স্বাস্থ্য কেন্দ্র *",
+        "hint": "Sub-Block",
         "tree": [],
         "v_required": {
           "value": true,
@@ -83,7 +75,7 @@
         "openmrs_entity_id": "address1",
         "openmrs_data_type": "text",
         "type": "edit_text",
-        "hint": "বাড়ীর ঠিকানা-"
+        "hint": "Address"
       },
       {
         "key": "First_Name",
@@ -91,7 +83,7 @@
         "openmrs_entity": "person",
         "openmrs_entity_id": "first_name",
         "type": "edit_text",
-        "hint": "পরিবারের প্রধানের নাম",
+        "hint": "Household Head Name",
         "edit_type": "name",
         "v_regex": {
           "value": "[A-Za-z\\s\.\-]*",
@@ -108,7 +100,7 @@
         "openmrs_entity": "person_identifier",
         "openmrs_entity_id": "OpenMRS_ID",
         "type": "edit_text",
-        "hint": "নিবন্ধন নম্বর *",
+        "hint": "OpenMRS ID *",
         "read_only":"true",
         "value": "0",
         "v_numeric": {
@@ -126,7 +118,7 @@
         "openmrs_entity": "person",
         "openmrs_entity_id": "gender",
         "type": "spinner",
-        "hint": "পরিবারের প্রধানের লিঙ্গ *",
+        "hint": "Gender *",
         "values": [
           "Male",
           "Female"
@@ -137,75 +129,12 @@
         }
       },
       {
-        "key": "date_of_birth_known",
-        "openmrs_entity_parent": "",
-        "openmrs_entity": "",
-        "openmrs_entity_id": "",
-        "openmrs_data_type": "text",
-        "type": "spinner",
-        "hint": "আপনি কি আপনার জন্ম তারিখ বলতে পারেন?",
-        "values":[
-          "YES",
-          "NO"
-        ]
-      },
-      {
-        "key": "Date_Birth",
-        "openmrs_entity_parent": "",
-        "openmrs_entity": "person",
-        "openmrs_entity_id": "birthdate",
-        "type": "date_picker",
-        "hint": "পরিবারের প্রধানের জন্ম তারিখ *",
-        "expanded": false,
-        "duration": {
-          "label": "Age"
-        },
-        "max_date": "today-20y",
-        "v_required": {
-          "value": "true",
-          "err": "Please enter the date of birth"
-        },
-        "relevance": {
-          "step1:date_of_birth_known": {
-            "type": "string",
-            "ex": "equalTo(., \"YES\")"
-          }
-        }
-      },
-      {
-        "key": "age",
-        "openmrs_entity_parent": "",
-        "openmrs_entity": "person",
-        "openmrs_entity_id": "birthdate",
-        "type": "edit_text",
-        "hint": " বয়স টাইপ করুন *",
-        "expanded": false,
-        "duration": {
-          "label": "Age"
-        },
-        "max_date": "today-20y",
-        "v_required": {
-          "value": "true",
-          "err": "Please enter the date of birth"
-        },
-        "v_numeric": {
-          "value": "true",
-          "err": "Enter a valid age"
-        },
-        "relevance": {
-          "step1:date_of_birth_known": {
-            "type": "string",
-            "ex": "equalTo(., \"NO\")"
-          }
-        }
-      },
-      {
         "key": "Date_Of_Reg",
         "openmrs_entity_parent": "",
         "openmrs_entity": "",
         "openmrs_entity_id": "",
         "type": "date_picker",
-        "hint": "রেজিস্ট্রেশন তারিখ",
+        "hint": "Registration Date",
         "expanded": false,
         "min_date": "today-5y",
         "max_date": "today",
@@ -221,7 +150,7 @@
         "openmrs_entity_id": "phoneNumber",
         "openmrs_data_type": "text",
         "type": "edit_text",
-        "hint": "মোবাইল নম্বর:",
+        "hint": "Mobile Number",
         "v_numeric": {
           "value": "true",
           "err": "Number must begin with 095, 096, or 097 and must be a total of 11 digits in length"
