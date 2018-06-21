@@ -26,6 +26,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import org.apache.commons.lang3.StringUtils;
 import org.smartregister.commonregistry.AllCommonsRepository;
@@ -39,6 +40,7 @@ import org.smartregister.growplus.fragment.HouseholdMemberAddFragment;
 import org.smartregister.growplus.fragment.HouseholdSmartRegisterFragment;
 import org.smartregister.growplus.repository.CounsellingRepository;
 import org.smartregister.growplus.repository.PathRepository;
+import org.smartregister.growplus.repository.UniqueIdRepository;
 import org.smartregister.growplus.view.LocationPickerView;
 import org.smartregister.growthmonitoring.domain.Weight;
 import org.smartregister.growthmonitoring.domain.WeightWrapper;
@@ -105,6 +107,7 @@ import util.JsonFormUtils;
 import util.PathConstants;
 
 import static org.smartregister.growplus.activity.WomanSmartRegisterActivity.REQUEST_CODE_GET_JSON;
+import static org.smartregister.growplus.fragment.HouseholdMemberAddFragment.DATE_FORMAT;
 import static org.smartregister.util.Utils.getName;
 import static org.smartregister.util.Utils.getValue;
 import static org.smartregister.util.Utils.kgStringSuffix;
@@ -304,13 +307,123 @@ public class WomanImmunizationActivity extends BaseActivity
             }
         }
 
-        String openmrsid = String.format("%s:%s", "OpenMRS ID","     "+childId);
-        String birthdate = String.format("%s:%s", "Birth Date","     "+formattedDob);
-        String husbaname = String.format("%s:%s", "Husband's Name"," "+getValue(childDetails.getColumnmaps(), "husband_name", false));
-        String contactno = String.format("%s:%s", "Contact Number"," "+getValue(childDetails.getColumnmaps(), "contact_phone_number", false));
-        childIdTV.setText(openmrsid+"\n"+birthdate+"\n"+husbaname+"\n"+contactno);
+        String openmrsid = childId;
+        String birthdate = formattedDob;
+        String husbaname = getValue(childDetails.getColumnmaps(), "spouseName", false);
+        String contactno = getValue(childDetails.getColumnmaps(), "phoneNumber", false);
+        childIdTV.setText(openmrsid);
+        ((TextView) findViewById(R.id.birthdate_id_tv)).setText(birthdate);
+        ((TextView) findViewById(R.id.husband_name_id_tv)).setText(husbaname);
+        ((TextView) findViewById(R.id.contact_number_id_tv)).setText(contactno);
+        ImageView add_child = (ImageView)findViewById(R.id.add_child);
+        add_child.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
 
+
+                String metadata = getmetaDataForEditForm(childDetails);
+                Intent intent = new Intent(WomanImmunizationActivity.this, PathJsonFormActivity.class);
+
+                intent.putExtra("json", metadata);
+
+                startActivityForResult(intent, REQUEST_CODE_GET_JSON);
+
+            }
+        });
         startAsyncTask(new GetSiblingsTask(), null);
+    }
+
+    private String getmetaDataForEditForm(CommonPersonObjectClient pc) {
+        org.smartregister.Context context = VaccinatorApplication.getInstance().context();
+        try {
+            JSONObject form = FormUtils.getInstance(this).getFormJson("child_enrollment");
+            LocationPickerView lpv = new LocationPickerView(this);
+            lpv.init(context);
+            JsonFormUtils.addHouseholdRegLocHierarchyQuestions(form, context);
+            Log.d("add child form", "Form is " + form.toString());
+            if (form != null) {
+                JSONObject metaDataJson = form.getJSONObject("metadata");
+                JSONObject lookup = metaDataJson.getJSONObject("look_up");
+                lookup.put("entity_id", "mother");
+                lookup.put("value", pc.entityId());
+
+                UniqueIdRepository uniqueIdRepo = VaccinatorApplication.getInstance().uniqueIdRepository();
+                String entityId = uniqueIdRepo.getNextUniqueId() != null ? uniqueIdRepo.getNextUniqueId().getOpenmrsId() : "";
+                if (entityId.isEmpty()) {
+                    Toast.makeText(context.applicationContext(), context.getInstance().applicationContext().getString(R.string.no_openmrs_id), Toast.LENGTH_SHORT).show();
+                }
+//
+//                JSONObject stepOne = form.getJSONObject(JsonFormUtils.STEP1);
+//                JSONArray jsonArray = stepOne.getJSONArray(JsonFormUtils.FIELDS);
+//                for (int i = 0; i < jsonArray.length(); i++) {
+//                    JSONObject jsonObject = jsonArray.getJSONObject(i);
+//                    if (jsonObject.getString(JsonFormUtils.KEY)
+//                            .equalsIgnoreCase(JsonFormUtils.OpenMRS_ID)) {
+//                        jsonObject.remove(JsonFormUtils.VALUE);
+//                        jsonObject.put(JsonFormUtils.VALUE, entityId);
+//                        continue;
+//                    }
+//                }
+                String locationid = "";
+                DetailsRepository detailsRepository;
+                detailsRepository = org.smartregister.Context.getInstance().detailsRepository();
+                Map<String, String> details = detailsRepository.getAllDetailsForClient(pc.entityId());
+                locationid = JsonFormUtils.getOpenMrsLocationId(context,getValue(details, "address3", false) );
+
+                String birthFacilityHierarchy = JsonFormUtils.getOpenMrsLocationHierarchy(
+                        context,locationid ).toString();
+                //inject zeir id into the form
+                JSONObject stepOne = form.getJSONObject(JsonFormUtils.STEP1);
+                JSONArray jsonArray = stepOne.getJSONArray(JsonFormUtils.FIELDS);
+                for (int i = 0; i < jsonArray.length(); i++) {
+                    JSONObject jsonObject = jsonArray.getJSONObject(i);
+                    if (jsonObject.getString(JsonFormUtils.KEY).equalsIgnoreCase(JsonFormUtils.OpenMRS_ID)) {
+                        jsonObject.remove(JsonFormUtils.VALUE);
+                        jsonObject.put(JsonFormUtils.VALUE, entityId);
+                    }
+                    if (jsonObject.getString(JsonFormUtils.KEY).equalsIgnoreCase("HIE_FACILITIES")) {
+                        jsonObject.put(JsonFormUtils.VALUE, birthFacilityHierarchy);
+
+                    }
+                    if (jsonObject.getString(JsonFormUtils.KEY).equalsIgnoreCase("Mother_Guardian_First_Name")) {
+                        jsonObject.put(JsonFormUtils.READ_ONLY, true);
+                        jsonObject.put(JsonFormUtils.VALUE, (getValue(pc.getDetails(), "first_name", true).isEmpty() ? getValue(pc.getDetails(), "first_name", true) : getValue(pc.getDetails(), "first_name", true)));
+
+                    }
+                    if (jsonObject.getString(JsonFormUtils.KEY).equalsIgnoreCase("Mother_Guardian_Last_Name")) {
+                        jsonObject.put(JsonFormUtils.READ_ONLY, true);
+                        jsonObject.put(JsonFormUtils.VALUE, (getValue(pc.getDetails(), "last_name", true).isEmpty() ? getValue(pc.getDetails(), "last_name", true) : getValue(pc.getDetails(), "last_name", true)));
+                    }
+                    if (jsonObject.getString(JsonFormUtils.KEY).equalsIgnoreCase("Mother_Guardian_Date_Birth")) {
+                        jsonObject.put(JsonFormUtils.READ_ONLY, true);
+                        if (!TextUtils.isEmpty(getValue(pc.getDetails(), "dob", true))) {
+                            try {
+                                DateTime dateTime = new DateTime(getValue(pc.getDetails(), "dob", true));
+                                Date dob = dateTime.toDate();
+                                Date defaultDate = DATE_FORMAT.parse(JsonFormUtils.MOTHER_DEFAULT_DOB);
+                                long timeDiff = Math.abs(dob.getTime() - defaultDate.getTime());
+                                if (timeDiff > 86400000) {// Mother's date of birth occurs more than a day from the default date
+                                    jsonObject.put(JsonFormUtils.VALUE, DATE_FORMAT.format(dob));
+                                }
+                            } catch (Exception e) {
+                            }
+                        }
+                    }
+
+
+
+
+
+                }
+//            intent.putExtra("json", form.toString());
+//            startActivityForResult(intent, REQUEST_CODE_GET_JSON);
+                return form.toString();
+            }
+        } catch (Exception e) {
+            Log.e("exception in addchild", e.getMessage());
+        }
+
+        return "";
     }
 
     public void updateAgeViews() {
@@ -333,7 +446,7 @@ public class WomanImmunizationActivity extends BaseActivity
         TextView dobTV = (TextView) findViewById(R.id.dob_tv);
         dobTV.setText("");
         TextView ageTV = (TextView) findViewById(R.id.age_tv);
-        ageTV.setText(String.format("%s: %s", getString(R.string.age), formattedAge));
+        ageTV.setText(formattedAge);
     }
 
     public void updateGenderViews() {
