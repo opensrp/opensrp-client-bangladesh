@@ -66,7 +66,7 @@
     <dimen name="login_horizontal_margin">30dp</dimen>
     <!-- Default screen margins, per the Android Design guidelines. -->
     <dimen name="immun_child_card_height">100dp</dimen>
-    <dimen name="immun_child_card_height_growplus">125dp</dimen>
+    <dimen name="immun_child_card_height_growplus">140dp</dimen>
     <dimen name="immun_pencil_card_height">24dp</dimen>
     <dimen name="immun_more_vert_width">50dp</dimen>
     <dimen name="card_view_corner_radius">3dp</dimen>

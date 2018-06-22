@@ -43,7 +43,8 @@
                     android:scaleType="centerCrop"
                     android:src="@drawable/child_transgender_inflant"
                     android:layout_marginLeft="10dp"
-                    android:layout_gravity="center" />
+                    android:layout_gravity="top|center"
+                    android:layout_marginTop="10dp" />
 
                 <LinearLayout
                     android:layout_width="wrap_content"
@@ -219,6 +220,7 @@
                     android:layout_height="match_parent"
                     android:layout_gravity="right"
                     android:layout_marginRight="12.5dp"
+                    android:visibility="gone"
                     android:src="@drawable/ic_more_vert" />
             </LinearLayout>
 

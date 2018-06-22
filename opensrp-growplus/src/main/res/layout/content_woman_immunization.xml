@@ -42,9 +42,10 @@
                     android:layout_height="50dp"
                     android:adjustViewBounds="true"
                     android:scaleType="centerCrop"
-                    android:layout_gravity="center"
+                    android:layout_gravity="top|center"
                     android:src="@drawable/woman_path_register_logo"
-                    android:layout_marginLeft="10dp" />
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginTop="10dp" />
 
                 <LinearLayout
                     android:layout_width="wrap_content"
@@ -192,13 +193,7 @@
 
                 </LinearLayout>
 
-                <ImageView
-                    android:id="@+id/add_child"
-                    android:layout_width="50dp"
-                    android:layout_height="50dp"
-                    android:src="@drawable/add_member_logo"
-                    android:layout_margin="10dp"
-                    android:layout_gravity="center" />
+
 
             </LinearLayout>
 
@@ -319,12 +314,24 @@
                         android:text="HER SIBLINGS"
                         android:textColor="@color/text_black"
                         android:textSize="@dimen/activity_sub_title_size" />
-
-                    <org.smartregister.growplus.view.SiblingPicturesGroup
-                        android:id="@+id/sibling_pictures"
+                    <LinearLayout
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="10dp" />
+                        android:layout_height="wrap_content">
+                        <org.smartregister.growplus.view.SiblingPicturesGroup
+                            android:id="@+id/sibling_pictures"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:layout_marginTop="10dp" />
+                        <ImageView
+                            android:id="@+id/add_child"
+                            android:layout_width="50dp"
+                            android:layout_height="50dp"
+                            android:src="@drawable/add_member_logo"
+                            android:layout_margin="10dp"
+                            android:layout_gravity="center" />
+                    </LinearLayout>
+
 
                 </LinearLayout>
             </android.support.v7.widget.CardView>

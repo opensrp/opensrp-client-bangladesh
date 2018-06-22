@@ -53,7 +53,7 @@
                 android:layout_height="@dimen/login_logo_height"
                 android:layout_gravity="center"
                 android:scaleType="centerInside"
-                android:src="@drawable/login_logo"
+                android:src="@drawable/growplus_icon_login_screen"
                 android:layout_marginTop="30dp" />
 
             <TextView
