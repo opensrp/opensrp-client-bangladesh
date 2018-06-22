@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/client_list_header_dark_grey"
+    android:orientation="horizontal"
+    android:weightSum="10">
+
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginRight="1dp"
+        android:layout_weight="3.1">
+
+        <org.smartregister.view.customcontrols.CustomFontTextView
+            android:id="@+id/woman_pic"
+            style="@style/CustomFontTextViewStyle.ClientList.Medium"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/str_provider_profile"
+            android:textAllCaps="true"
+            android:textColor="@color/client_list_grey"
+            android:textSize="14sp" />
+
+    </LinearLayout>
+
+
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginRight="1dp"
+        android:layout_weight="2.5">
+
+        <org.smartregister.view.customcontrols.CustomFontTextView
+            android:id="@+id/woman_unique_ids"
+            style="@style/CustomFontTextViewStyle.ClientList.Medium"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/lmp_edd_ga"
+            android:textAllCaps="true"
+            android:textColor="@color/client_list_grey"
+            android:textSize="14sp" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginRight="1dp"
+        android:layout_weight="2.4">
+
+        <org.smartregister.view.customcontrols.CustomFontTextView
+            android:id="@+id/woman_vaccines"
+            style="@style/CustomFontTextViewStyle.ClientList.Medium"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Follow Up"
+            android:textAllCaps="true"
+            android:textColor="@color/client_list_grey"
+            android:textSize="14sp" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="2">
+
+        <org.smartregister.view.customcontrols.CustomFontTextView
+            android:id="@+id/woman_nbnf"
+            style="@style/CustomFontTextViewStyle.ClientList.Medium"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/woman_nbnf"
+            android:textAllCaps="true"
+            android:textColor="@color/client_list_grey"
+            android:textSize="14sp" />
+    </LinearLayout>
+</LinearLayout>
