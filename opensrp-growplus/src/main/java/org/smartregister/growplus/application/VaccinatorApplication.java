@@ -90,7 +90,7 @@ public class VaccinatorApplication extends DrishtiApplication
         applyUserLanguagePreference();
         cleanUpSyncState();
         initOfflineSchedules();
-        setCrashlyticsUser(context);
+//        setCrashlyticsUser(context);
         PathUpdateActionsTask.setAlarms(this);
 
         //Initialize Modules
