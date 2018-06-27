@@ -179,7 +179,7 @@ public class HouseholdSmartRegisterActivity extends BaseRegisterActivity {
             protected Object doInBackground(Object[] objects) {
                 for(int z= 0;z < 2000;z++ ) {
                     householdregistrydummy();
-                    publishProgress(""+((z/2000)*100));
+                    publishProgress(((z/20)));
                 }
                 return null;
             }
@@ -187,7 +187,7 @@ public class HouseholdSmartRegisterActivity extends BaseRegisterActivity {
             @Override
             protected void onProgressUpdate(Object[] values) {
                 super.onProgressUpdate(values);
-                int progress = Integer.parseInt((String)values[0]);
+                int progress = (int)values[0];
                 prog.setProgress(progress);
             }
 
