@@ -2,11 +2,13 @@ package org.smartregister.growplus.activity;
 
 import android.app.AlertDialog;
 import android.app.FragmentTransaction;
+import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
 import android.database.Cursor;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
@@ -16,8 +18,10 @@ import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.util.Log;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.Toast;
 
 import org.apache.commons.lang3.StringUtils;
+import org.json.JSONArray;
 import org.smartregister.Context;
 import org.smartregister.adapter.SmartRegisterPaginatedAdapter;
 import org.smartregister.domain.FetchStatus;
@@ -33,6 +37,7 @@ import org.smartregister.growplus.fragment.ChildSmartRegisterFragment;
 import org.smartregister.growplus.fragment.HouseholdMemberAddFragment;
 import org.smartregister.growplus.fragment.HouseholdSmartRegisterFragment;
 import org.smartregister.growplus.repository.PathRepository;
+import org.smartregister.growplus.repository.UniqueIdRepository;
 import org.smartregister.growplus.view.LocationPickerView;
 import org.smartregister.provider.SmartRegisterClientsProvider;
 import org.smartregister.repository.AllSharedPreferences;
@@ -156,16 +161,54 @@ public class HouseholdSmartRegisterActivity extends BaseRegisterActivity {
     @Override
     public void startFormActivity(String formName, String entityId, String metaData) {
         Log.d("-------------",formName);
-        try {
-            if (mBaseFragment instanceof HouseholdSmartRegisterFragment) {
-                LocationPickerView locationPickerView = ((HouseholdSmartRegisterFragment) mBaseFragment).getLocationPickerView();
-                String locationId = JsonFormUtils.getOpenMrsLocationId(context(), locationPickerView.getSelectedItem());
-                JsonFormUtils.startForm(this, context(), REQUEST_CODE_GET_JSON, formName, entityId,
-                        metaData, locationId);
+        (new AsyncTask(){
+            ProgressDialog prog;
+            @Override
+            protected void onPreExecute() {
+                super.onPreExecute();
+
+                prog = new ProgressDialog(HouseholdSmartRegisterActivity.this);
+                prog.setTitle("making dummy household");
+                prog.setMessage("making dummies");
+                prog.setIndeterminate(false);
+                prog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
+                prog.show();
             }
-        } catch (Exception e) {
-            Log.e(TAG, Log.getStackTraceString(e));
-        }
+
+            @Override
+            protected Object doInBackground(Object[] objects) {
+                for(int z= 0;z < 2000;z++ ) {
+                    householdregistrydummy();
+                    publishProgress(""+((z/2000)*100));
+                }
+                return null;
+            }
+
+            @Override
+            protected void onProgressUpdate(Object[] values) {
+                super.onProgressUpdate(values);
+                int progress = Integer.parseInt((String)values[0]);
+                prog.setProgress(progress);
+            }
+
+            @Override
+            protected void onPostExecute(Object o) {
+                super.onPostExecute(o);
+                Toast.makeText(HouseholdSmartRegisterActivity.this, "members added", Toast.LENGTH_SHORT).show();
+                prog.dismiss();
+
+            }
+        }).execute();
+//        try {
+//            if (mBaseFragment instanceof HouseholdSmartRegisterFragment) {
+//                LocationPickerView locationPickerView = ((HouseholdSmartRegisterFragment) mBaseFragment).getLocationPickerView();
+//                String locationId = JsonFormUtils.getOpenMrsLocationId(context(), locationPickerView.getSelectedItem());
+//                JsonFormUtils.startForm(this, context(), REQUEST_CODE_GET_JSON, formName, entityId,
+//                        metaData, locationId);
+//            }
+//        } catch (Exception e) {
+//            Log.e(TAG, Log.getStackTraceString(e));
+//        }
 
     }
 
@@ -176,6 +219,40 @@ public class HouseholdSmartRegisterActivity extends BaseRegisterActivity {
 //        intent.putExtra("json", metaData);
         startActivityForResult(intent, REQUEST_CODE_GET_JSON);
 
+
+    }
+
+    public void householdregistrydummy(){
+            try {
+
+
+                JSONObject form = new JSONObject("{\"count\":\"1\",\"encounter_type\":\"Household Registration\",\"entity_id\":\"\",\"relational_id\":\"\",\"metadata\":{\"start\":{\"openmrs_entity_parent\":\"\",\"openmrs_entity\":\"concept\",\"openmrs_data_type\":\"start\",\"openmrs_entity_id\":\"163137AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA\",\"value\":\"2018-06-27 04:59:46\"},\"end\":{\"openmrs_entity_parent\":\"\",\"openmrs_entity\":\"concept\",\"openmrs_data_type\":\"end\",\"openmrs_entity_id\":\"163138AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA\",\"value\":\"2018-06-27 05:00:21\"},\"today\":{\"openmrs_entity_parent\":\"\",\"openmrs_entity\":\"encounter\",\"openmrs_entity_id\":\"encounter_date\",\"value\":\"27-06-2018\"},\"deviceid\":{\"openmrs_entity_parent\":\"\",\"openmrs_entity\":\"concept\",\"openmrs_data_type\":\"deviceid\",\"openmrs_entity_id\":\"163149AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA\",\"value\":\"868030028857769\"},\"subscriberid\":{\"openmrs_entity_parent\":\"\",\"openmrs_entity\":\"concept\",\"openmrs_data_type\":\"subscriberid\",\"openmrs_entity_id\":\"163150AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA\",\"value\":\"470010100063805\"},\"simserial\":{\"openmrs_entity_parent\":\"\",\"openmrs_entity\":\"concept\",\"openmrs_data_type\":\"simserial\",\"openmrs_entity_id\":\"163151AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA\",\"value\":\"8988010101000638058f\"},\"phonenumber\":{\"openmrs_entity_parent\":\"\",\"openmrs_entity\":\"concept\",\"openmrs_data_type\":\"phonenumber\",\"openmrs_entity_id\":\"163152AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA\",\"value\":\"\"},\"encounter_location\":\"d65e41e3-3281-4594-958a-46bf23fefa8e\",\"look_up\":{\"entity_id\":\"\",\"value\":\"\"}},\"step1\":{\"title\":\"Household Registration\",\"fields\":[{\"key\":\"HIE_FACILITIES\",\"openmrs_entity_parent\":\"\",\"openmrs_entity\":\"\",\"openmrs_entity_id\":\"\",\"openmrs_data_type\":\"text\",\"type\":\"tree\",\"hint\":\"Sub-Block\",\"tree\":[{\"name\":\"Bangladesh\",\"key\":\"Bangladesh\",\"level\":\"\",\"nodes\":[{\"name\":\"Dhaka\",\"key\":\"Dhaka\",\"level\":\"\",\"nodes\":[{\"name\":\"Gazipur\",\"key\":\"Gazipur\",\"level\":\"\",\"nodes\":[{\"name\":\"Kaliganj\",\"key\":\"Kaliganj\",\"level\":\"\",\"nodes\":[{\"name\":\"Bahadursadi\",\"key\":\"Bahadursadi\",\"level\":\"\",\"nodes\":[{\"name\":\"Ward-1\",\"key\":\"Bahadursadi:Ward-1\",\"level\":\"\",\"nodes\":[{\"name\":\"Ga-1\",\"key\":\"Bahadursadi:Ward-1:Ga-1\",\"level\":\"\",\"nodes\":[]},{\"name\":\"Ga-2\",\"key\":\"Bahadursadi:Ward-1:Ga-2\",\"level\":\"\",\"nodes\":[]},{\"name\":\"Gha-1\",\"key\":\"Bahadursadi:Ward-1:Gha-1\",\"level\":\"\",\"nodes\":[]},{\"name\":\"Gha-2\",\"key\":\"Bahadursadi:Ward-1:Gha-2\",\"level\":\"\",\"nodes\":[]},{\"name\":\"Ka-1\",\"key\":\"Bahadursadi:Ward-1:Ka-1\",\"level\":\"\",\"nodes\":[]},{\"name\":\"Ka-2\",\"key\":\"Bahadursadi:Ward-1:Ka-2\",\"level\":\"\",\"nodes\":[]},{\"name\":\"Kha-1\",\"key\":\"Bahadursadi:Ward-1:Kha-1\",\"level\":\"\",\"nodes\":[]},{\"name\":\"Kha-2\",\"key\":\"Bahadursadi:Ward-1:Kha-2\",\"level\":\"\",\"nodes\":[]}]}]}]}]}]}]}],\"v_required\":{\"value\":true,\"err\":\"Please enter the Household head's home facility\"},\"default\":\"[\\\"Bangladesh\\\",\\\"Dhaka\\\",\\\"Gazipur\\\",\\\"Kaliganj\\\"]\",\"value\":\"[\\\"Bangladesh\\\",\\\"Dhaka\\\",\\\"Gazipur\\\",\\\"Kaliganj\\\",\\\"Bahadursadi\\\",\\\"Bahadursadi:Ward-1\\\",\\\"Bahadursadi:Ward-1:Ga-2\\\"]\"},{\"key\":\"ADDRESS_LINE\",\"openmrs_entity_parent\":\"usual_residence\",\"openmrs_entity\":\"person_address\",\"openmrs_entity_id\":\"address1\",\"openmrs_data_type\":\"text\",\"type\":\"edit_text\",\"hint\":\"Address\",\"value\":\"alkaran\"},{\"key\":\"First_Name\",\"openmrs_entity_parent\":\"\",\"openmrs_entity\":\"person\",\"openmrs_entity_id\":\"first_name\",\"type\":\"edit_text\",\"hint\":\"Household Head Name\",\"edit_type\":\"name\",\"v_regex\":{\"value\":\"[A-Za-z\\\\s.-]*\",\"err\":\"Please enter a valid name\"},\"v_required\":{\"value\":\"true\",\"err\":\"Please enter the Child's ZEIR ID\"},\"value\":\"headoofhousehold\"},{\"key\":\"OpenMRS_ID\",\"openmrs_entity_parent\":\"\",\"openmrs_entity\":\"person_identifier\",\"openmrs_entity_id\":\"OpenMRS_ID\",\"type\":\"edit_text\",\"hint\":\"OpenMRS ID *\",\"read_only\":\"true\",\"v_numeric\":{\"value\":\"true\",\"err\":\"Please enter a valid ID\"},\"v_required\":{\"value\":\"true\",\"err\":\"Please enter the Child's ZEIR ID\"}},{\"key\":\"Sex\",\"openmrs_entity_parent\":\"\",\"openmrs_entity\":\"person\",\"openmrs_entity_id\":\"gender\",\"type\":\"spinner\",\"hint\":\"Gender *\",\"values\":[\"Male\",\"Female\"],\"v_required\":{\"value\":\"true\",\"err\":\"Please enter the sex\"},\"value\":\"Male\"},{\"key\":\"Date_Of_Reg\",\"openmrs_entity_parent\":\"\",\"openmrs_entity\":\"\",\"openmrs_entity_id\":\"\",\"type\":\"date_picker\",\"hint\":\"Registration Date\",\"expanded\":false,\"min_date\":\"today-5y\",\"max_date\":\"today\",\"v_required\":{\"value\":\"true\",\"err\":\"Please enter the date of Registration\"},\"value\":\"27-06-2018\"},{\"key\":\"contact_phone_number\",\"openmrs_entity_parent\":\"\",\"openmrs_entity\":\"person_attribute\",\"openmrs_entity_id\":\"phoneNumber\",\"openmrs_data_type\":\"text\",\"type\":\"edit_text\",\"hint\":\"Mobile Number\",\"v_numeric\":{\"value\":\"true\",\"err\":\"Number must begin with 095, 096, or 097 and must be a total of 11 digits in length\"},\"v_regex\":{\"value\":\"(01[5-9][0-9]{8})|s*\",\"err\":\"Number must begin with 015, 016,017,018 or 019 and must be a total of 11 digits in length\"},\"value\":\"01716958804\"},{\"key\":\"HHID\",\"openmrs_entity_parent\":\"\",\"openmrs_entity\":\"person_attribute\",\"openmrs_entity_id\":\"householdCode\",\"type\":\"edit_text\",\"hint\":\"Household ID\",\"value\":\"0001\"}]}}");
+                String entityId = "";
+                if (StringUtils.isBlank(entityId)) {
+                    UniqueIdRepository uniqueIdRepo = VaccinatorApplication.getInstance().uniqueIdRepository();
+                    entityId = uniqueIdRepo.getNextUniqueId() != null ? uniqueIdRepo.getNextUniqueId().getOpenmrsId() : "";
+                    if (entityId.isEmpty()) {
+                        Toast.makeText(this, getString(R.string.no_openmrs_id), Toast.LENGTH_SHORT).show();
+                        return;
+                    }
+                }
+                JSONObject stepOne = form.getJSONObject(JsonFormUtils.STEP1);
+                JSONArray jsonArray = stepOne.getJSONArray(JsonFormUtils.FIELDS);
+                for (int i = 0; i < jsonArray.length(); i++) {
+                    JSONObject jsonObject = jsonArray.getJSONObject(i);
+                    if (jsonObject.getString(JsonFormUtils.KEY)
+                            .equalsIgnoreCase(JsonFormUtils.OpenMRS_ID)) {
+                        jsonObject.remove(JsonFormUtils.VALUE);
+                        jsonObject.put(JsonFormUtils.VALUE, entityId);
+                        continue;
+                    }
+                }
+                SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
+                AllSharedPreferences allSharedPreferences = new AllSharedPreferences(preferences);
+                JsonFormUtils.saveForm(this, context(), form.toString(), allSharedPreferences.fetchRegisteredANM());
+            } catch (Exception e) {
+
+            }
 
     }
 
