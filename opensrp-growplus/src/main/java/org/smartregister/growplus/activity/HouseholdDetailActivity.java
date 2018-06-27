@@ -2,8 +2,13 @@ package org.smartregister.growplus.activity;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.database.Cursor;
+import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
+import android.preference.PreferenceManager;
+import android.provider.MediaStore;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.CursorAdapter;
 import android.support.v4.widget.DrawerLayout;
@@ -30,17 +35,23 @@ import org.smartregister.growplus.toolbar.LocationSwitcherToolbar;
 import org.smartregister.repository.AllSharedPreferences;
 import org.smartregister.util.DateUtil;
 import org.smartregister.util.OpenSRPImageLoader;
+import org.smartregister.util.Utils;
 import org.smartregister.view.activity.DrishtiApplication;
 import org.joda.time.DateTime;
 import org.opensrp.api.constants.Gender;
 import org.smartregister.view.customcontrols.CustomFontTextView;
 
+import java.io.File;
+import java.io.IOException;
 import java.io.Serializable;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 
 import util.ImageUtils;
+import util.JsonFormUtils;
+import util.Logger;
 import util.PathConstants;
-
 import static org.smartregister.util.Utils.getValue;
 
 
@@ -54,9 +65,13 @@ public class HouseholdDetailActivity extends BaseActivity {
     public org.smartregister.Context context;
 
 
-
     private CommonPersonObjectClient householdDetails;
     private static final String EXTRA_HOUSEHOLD_DETAILS = "household_details";
+
+
+    static final int REQUEST_TAKE_PHOTO = 1;
+    public static Gender gender;
+    private File currentfile;
 
 
     @Override
@@ -83,8 +98,8 @@ public class HouseholdDetailActivity extends BaseActivity {
                 householdDetails = (CommonPersonObjectClient) serializable;
             }
         }
-//        Logger.largeErrorLog("-------------",householdDetails.getDetails().toString());
-//        Logger.largeErrorLog("-------------",householdDetails.getDetails().get("_id"));
+        Logger.largeErrorLog("-------------",householdDetails.getDetails().toString());
+        Logger.largeErrorLog("-------------",householdDetails.getDetails().get("_id"));
 
 
         DrawerLayout drawer = (DrawerLayout) findViewById(getDrawerLayoutId());
@@ -101,7 +116,7 @@ public class HouseholdDetailActivity extends BaseActivity {
 
         ((TextView) findViewById(R.id.name_tv)).setText(householdDetails.getDetails().get("first_name"));
         ((TextView) findViewById(R.id.child_id_tv)).setText("HHID : " +householdDetails.getDetails().get("HHID"));
-        String dobString = getValue(householdDetails.getDetails(), "dob", false);
+        String dobString = Utils.getValue(householdDetails.getDetails(), "dob", false);
         String durationString = "";
         if (StringUtils.isNotBlank(dobString)) {
             try {
@@ -118,9 +133,16 @@ public class HouseholdDetailActivity extends BaseActivity {
         ImageView profileImageIV = (ImageView)findViewById(R.id.profile_image_iv);
         String entityid = householdDetails.getDetails().get("_id");
         if(entityid!=null) {
+            profileImageIV.setTag(org.smartregister.R.id.entity_id, entityid);
             DrishtiApplication.getCachedImageLoaderInstance().getImageByClientId(entityid, OpenSRPImageLoader.getStaticImageListener((ImageView) profileImageIV, R.drawable.houshold_register_placeholder, R.drawable.houshold_register_placeholder));
 
         }
+        profileImageIV.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dispatchTakePictureIntent();
+            }
+        });
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
@@ -159,10 +181,91 @@ public class HouseholdDetailActivity extends BaseActivity {
         //get Household members repository
     }
 
+    private void dispatchTakePictureIntent() {
+        Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        // Ensure that there's a camera activity to handle the intent
+        if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
+            // Create the File where the photo should go
+            File photoFile = null;
+            try {
+                photoFile = createImageFile();
+            } catch (IOException ex) {
+                // Error occurred while creating the File
+
+            }
+            // Continue only if the File was successfully created
+            if (photoFile != null) {
+                currentfile = photoFile;
+                takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT,
+                        Uri.fromFile(photoFile));
+                startActivityForResult(takePictureIntent, REQUEST_TAKE_PHOTO);
+            }
+        }
+    }
+
+    private File createImageFile() throws IOException {
+        // Create an image file name
+        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
+        String imageFileName = "JPEG_" + timeStamp + "_";
+        File storageDir = Environment.getExternalStoragePublicDirectory(
+                Environment.DIRECTORY_PICTURES);
+        File image = File.createTempFile(
+                imageFileName,  /* prefix */
+                ".jpg",         /* suffix */
+                storageDir      /* directory */
+        );
+
+        // Save a file: path for use with ACTION_VIEW intents
+//        mCurrentPhotoPath = "file:" + image.getAbsolutePath();
+        return image;
+    }
     @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        isLaunched = false;
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        refreshadapter();
+//        if (requestCode == REQUEST_CODE_GET_JSON) {
+//            if (resultCode == RESULT_OK) {
+//                try {
+//                    String jsonString = data.getStringExtra("json");
+//                    Log.d("JSONResult", jsonString);
+//
+//                    SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
+//                    AllSharedPreferences allSharedPreferences = new AllSharedPreferences(preferences);
+//
+//                    JSONObject form = new JSONObject(jsonString);
+//                    if (form.getString("encounter_type").equals("Death")) {
+//                        confirmReportDeceased(jsonString, allSharedPreferences);
+//                    } else if (form.getString("encounter_type").equals("Birth Registration")) {
+//                        JsonFormUtils.editsave(this, getOpenSRPContext(), jsonString, allSharedPreferences.fetchRegisteredANM(), "Child_Photo", "child", "mother");
+//                    } else if (form.getString("encounter_type").equals("AEFI")) {
+//                        JsonFormUtils.saveAdverseEvent(jsonString, location_name,
+//                                childDetails.entityId(), allSharedPreferences.fetchRegisteredANM());
+//                    }
+//                    childDataFragment.childDetails = childDetails;
+//                    childDataFragment.loadData();
+//                } catch (Exception e) {
+//                    Log.e(TAG, e.getMessage());
+//                }
+//            }
+//        } else
+        if (requestCode == REQUEST_TAKE_PHOTO) {
+            if (resultCode == RESULT_OK) {
+                String imageLocation = currentfile.getAbsolutePath();
+                SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
+                AllSharedPreferences allSharedPreferences = new AllSharedPreferences(preferences);
+                String entityid = householdDetails.getDetails().get("_id");
+                JsonFormUtils.saveImage(this, allSharedPreferences.fetchRegisteredANM(), entityid, imageLocation);
+                updateProfilePicture(entityid);
+            }
+        }
+    }
+
+    private void updateProfilePicture(String entityid) {
+        if(entityid!=null) {
+            ImageView profileImageIV = (ImageView)findViewById(R.id.profile_image_iv);
+            profileImageIV.setTag(org.smartregister.R.id.entity_id, entityid);
+            DrishtiApplication.getCachedImageLoaderInstance().getImageByClientId(entityid, OpenSRPImageLoader.getStaticImageListener((ImageView) profileImageIV, R.drawable.houshold_register_placeholder, R.drawable.houshold_register_placeholder));
+
+        }
     }
 
     private void initQueries(){
@@ -201,6 +304,12 @@ public class HouseholdDetailActivity extends BaseActivity {
         HouseholdCursorAdpater cursorAdpater = new HouseholdCursorAdpater(getApplicationContext(),cursor);
 
         householdList.setAdapter(cursorAdpater);
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        isLaunched = false;
     }
 
     @Override
@@ -256,14 +365,9 @@ public class HouseholdDetailActivity extends BaseActivity {
             final CommonPersonObjectClient pClient = new CommonPersonObjectClient(personinlist.getCaseId(), personinlist.getDetails(), personinlist.getDetails().get("FWHOHFNAME"));
             pClient.setColumnmaps(personinlist.getColumnmaps());
             TextView member_name = (TextView) view.findViewById(R.id.name_tv);
-            TextView member_age = (TextView) view.findViewById(R.id.age_tv);       ;
-//            int nameColumnIndex = cursor.getColumnIndex("first_name");
-//            member_name.setText("Name : " + cursor.getString(nameColumnIndex));
-            member_name.setText("Name : " + getValue(personinlist.getColumnmaps(),"first_name",true));
-
-//            String dobString = cursor.getString(cursor.getColumnIndex("dob"));
-            String dobString = getValue(personinlist.getColumnmaps(),"dob",true);
-
+            TextView member_age = (TextView) view.findViewById(R.id.age_tv);
+            member_name.setText("Name : " + cursor.getString(cursor.getColumnIndex("first_name")));
+            String dobString = cursor.getString(cursor.getColumnIndex("dob"));
             String durationString = "";
             if (StringUtils.isNotBlank(dobString)) {
                 try {
@@ -280,7 +384,7 @@ public class HouseholdDetailActivity extends BaseActivity {
             ((LinearLayout)view.findViewById(R.id.profile_name_layout)).setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-//                    WomanImmunizationActivity.launchActivity(HouseholdDetailActivity.this,pClient,null);
+                    WomanImmunizationActivity.launchActivity(HouseholdDetailActivity.this,pClient,null);
                 }
             });
             ImageView profileImageIV = (ImageView)view.findViewById(R.id.profile_image_iv);
@@ -291,19 +395,18 @@ public class HouseholdDetailActivity extends BaseActivity {
                 DrishtiApplication.getCachedImageLoaderInstance().getImageByClientId(pClient.entityId(), OpenSRPImageLoader.getStaticImageListener((ImageView) profileImageIV, R.drawable.woman_path_register_logo, R.drawable.woman_path_register_logo));
 
             }
+            LinearLayout child_added = (LinearLayout) view.findViewById(R.id.children_added);
+            child_added.removeAllViews();
+            addChild(child_added,pClient.entityId());
         }
 
         @Override
         public View newView(Context context, Cursor cursor, ViewGroup parent) {
             Log.e("------------","new view call");
-            CommonRepository commonRepository = org.smartregister.Context.getInstance().commonrepository(PathConstants.MOTHER_TABLE_NAME);
-            CommonPersonObject personinlist = commonRepository.readAllcommonforCursorAdapter(cursor);
-            final CommonPersonObjectClient pClient = new CommonPersonObjectClient(personinlist.getCaseId(), personinlist.getDetails(), personinlist.getDetails().get("FWHOHFNAME"));
-            pClient.setColumnmaps(personinlist.getColumnmaps());
+
 
             View view = inflater.inflate(R.layout.household_details_list_row,parent,false);
-            LinearLayout household_details_list_row = (LinearLayout) view.findViewById(R.id.child_holder);
-            addChild(household_details_list_row,pClient.entityId());
+
             return  view;
         }
 
@@ -381,7 +484,7 @@ public class HouseholdDetailActivity extends BaseActivity {
 
                 Gender gender = Gender.UNKNOWN;
                 if (pClient != null && pClient.getDetails() != null) {
-                    String genderString = getValue(pClient, "gender", false);
+                    String genderString = Utils.getValue(pClient, "gender", false);
                     if (genderString != null && genderString.toLowerCase().equals("female")) {
                         gender = Gender.FEMALE;
                     } else if (genderString != null && genderString.toLowerCase().equals("male")) {

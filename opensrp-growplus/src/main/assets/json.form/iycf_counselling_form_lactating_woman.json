@@ -178,6 +178,21 @@
           "2 times or less",
           "3 times or more"
         ],
+        "has_media_content": true,
+        "media": [
+          {
+            "media_type":"text",
+            "media_trigger_value":"2 times or less",
+            "media_link":"",
+            "media_text":"Should eat three meals a day with two extra small healthy snacks in between.\n -what makes it difficult for you to eat three meals a day and healthy snacks?"
+          },
+          {
+            "media_type":"text",
+            "media_trigger_value":"3 times or more",
+            "media_link":"",
+            "media_text":"Are you eating healthy snacks in between meals? If so, congratulate mother and encourage her to keep eating three or more times a time"
+          }
+        ],
         "relevance": {
           "step1:nutrition_to_discuss": {
             "type": "string",
@@ -200,6 +215,27 @@
           "Yes",
           "No"
         ],
+        "has_media_content": true,
+        "media": [
+          {
+            "media_type":"text",
+            "media_trigger_value":"Yes",
+            "media_link":"",
+            "media_text":"Congratulate the mother and encourage her to eat an extra meal or healthy snacks to supplement her diet"
+          },
+          {
+            "media_type":"text",
+            "media_trigger_value":"No",
+            "media_link":"",
+            "media_text":"Until your child is weaned,eat two extra small meals or “healthy snacks” (extra food between meals)eachday to provide energy and nutrition for you and your growing baby\n- Name examples of healthy snacks such as banana, avocado…etc.\n- Encourage mother to eat adiverse set of foodincluding milk, fresh fruit and vegetables, meat, fish, eggs, grains, peas and beans."
+          }
+        ],
+        "relevance": {
+          "step1:nutrition_to_discuss": {
+            "type": "string",
+            "ex": "regex(., \"(?i).*?\\bmothers_diet\\b.*?\")"
+          }
+        },
         "relevance": {
           "step1:nutrition_to_discuss": {
             "type": "string",

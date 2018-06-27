@@ -5,16 +5,19 @@ import android.app.FragmentTransaction;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.drawable.ColorDrawable;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
+import android.preference.PreferenceManager;
 import android.text.TextUtils;
 import android.util.Log;
 import android.util.Pair;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -33,6 +36,9 @@ import org.smartregister.commonregistry.CommonPersonObject;
 import org.smartregister.commonregistry.CommonPersonObjectClient;
 import org.smartregister.domain.Alert;
 import org.smartregister.domain.Photo;
+import org.smartregister.growplus.adapter.CounsellingCardAdapter;
+import org.smartregister.growplus.domain.Counselling;
+import org.smartregister.growplus.repository.CounsellingRepository;
 import org.smartregister.growplus.sync.ECSyncUpdater;
 import org.smartregister.growplus.viewComponents.WidgetFactory;
 import org.smartregister.growthmonitoring.domain.Weight;
@@ -53,16 +59,19 @@ import org.smartregister.immunization.repository.RecurringServiceTypeRepository;
 import org.smartregister.immunization.repository.VaccineRepository;
 import org.smartregister.immunization.util.VaccinateActionUtils;
 import org.smartregister.immunization.util.VaccinatorUtils;
+import org.smartregister.immunization.view.ExpandableHeightGridView;
 import org.smartregister.immunization.view.VaccineGroup;
 import org.smartregister.growplus.R;
 import org.smartregister.growplus.application.VaccinatorApplication;
 import org.smartregister.growplus.domain.RegisterClickables;
 import org.smartregister.growplus.toolbar.LocationSwitcherToolbar;
 import org.smartregister.growplus.view.SiblingPicturesGroup;
+import org.smartregister.repository.AllSharedPreferences;
 import org.smartregister.repository.DetailsRepository;
 import org.smartregister.repository.EventClientRepository;
 import org.smartregister.service.AlertService;
 import org.smartregister.util.DateUtil;
+import org.smartregister.util.FormUtils;
 import org.smartregister.util.OpenSRPImageLoader;
 import org.smartregister.util.Utils;
 import org.smartregister.view.activity.DrishtiApplication;
@@ -87,6 +96,7 @@ import util.ImageUtils;
 import util.JsonFormUtils;
 import util.PathConstants;
 
+import static org.smartregister.growplus.activity.WomanSmartRegisterActivity.REQUEST_CODE_GET_JSON;
 import static org.smartregister.util.DateUtil.getDuration;
 import static org.smartregister.util.Utils.getValue;
 import static org.smartregister.util.Utils.kgStringSuffix;
@@ -243,6 +253,9 @@ public class ChildImmunizationActivity extends BaseActivity
         updateViewTask.setAlertService(alertService);
         Utils.startAsyncTask(updateViewTask, null);
         createWeightLayout((LinearLayout) findViewById(R.id.weight_group_canvas_ll),false,getLayoutInflater());
+        CounsellingRepository counsellingRepository= VaccinatorApplication.getInstance().counsellingRepository();
+        updateCounsellingViews(counsellingRepository.findByEntityId(childDetails.entityId()),(LinearLayout)findViewById(R.id.counselling_group_canvas_ll));
+
     }
 
     private void updateProfilePicture(Gender gender) {
@@ -435,6 +448,87 @@ public class ChildImmunizationActivity extends BaseActivity
             showVaccineNotifications(vaccineList, alerts);
         }
     }
+    private void updateCounsellingViews(List<Counselling> counsellingList, LinearLayout counsellingCanvas) {
+        counsellingCanvas.removeAllViews();
+        LayoutInflater layoutInflater = (LayoutInflater)getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        LinearLayout counselling_group = (LinearLayout) layoutInflater.inflate(R.layout.view_counselling_group,null, true);
+        ViewGroup.LayoutParams layoutParams = new ViewGroup.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,
+                ViewGroup.LayoutParams.MATCH_PARENT);
+//        counselling_group.setLayoutParams(layoutParams);
+        counsellingCanvas.addView(counselling_group);
+        CounsellingCardAdapter counsellingCardAdapter = new CounsellingCardAdapter(this,counsellingList);
+        ExpandableHeightGridView expandableHeightGridView = (ExpandableHeightGridView)counselling_group.findViewById(R.id.counselling_gv);
+//        final float scale = getResources().getDisplayMetrics().density;
+//        GridView.LayoutParams gridlayoutparams = new GridView.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,
+//                ViewGroup.LayoutParams.WRAP_CONTENT);
+//        gridlayoutparams.height = (int)(scale*50*counsellingList.size());
+        TextView recordnewCounselling = (TextView)counselling_group.findViewById(R.id.record_all_tv);
+        recordnewCounselling.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                    String metadata = getmetaDataForLactatingCounsellingForm(childDetails);
+                    Intent intent = new Intent(ChildImmunizationActivity.this, PathJsonFormActivity.class);
+
+                    intent.putExtra("json", metadata);
+
+                    startActivityForResult(intent, REQUEST_CODE_GET_JSON);
+
+
+            }
+        });
+        expandableHeightGridView.setExpanded(true);
+        expandableHeightGridView.setAdapter(counsellingCardAdapter);
+        counsellingCardAdapter.notifyDataSetChanged();
+    }
+
+    private String getmetaDataForLactatingCounsellingForm(CommonPersonObjectClient pc) {
+        org.smartregister.Context context = VaccinatorApplication.getInstance().context();
+        try {
+            JSONObject form = FormUtils.getInstance(this).getFormJson("iycf_counselling_form_lactating_woman");
+
+            if (form != null) {
+
+
+                JSONObject jsonObject = form;
+                if (jsonObject.getString(JsonFormUtils.ENTITY_ID) != null) {
+                    jsonObject.remove(JsonFormUtils.ENTITY_ID);
+                    jsonObject.put(JsonFormUtils.ENTITY_ID, pc.entityId());
+                }
+
+//            intent.putExtra("json", form.toString());
+//            startActivityForResult(intent, REQUEST_CODE_GET_JSON);
+                return form.toString();
+            }
+        } catch (Exception e) {
+            Log.e("exception counselling", e.getMessage());
+        }
+
+        return "";
+    }
+
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == REQUEST_CODE_GET_JSON) {
+            if (resultCode == RESULT_OK) {
+
+                String jsonString = data.getStringExtra("json");
+                Log.d("JSONResult", jsonString);
+
+                SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
+                AllSharedPreferences allSharedPreferences = new AllSharedPreferences(preferences);
+
+                JsonFormUtils.saveForm(this, context(), jsonString, allSharedPreferences.fetchRegisteredANM());
+                updateViews();
+            }
+        }
+    }
+    protected org.smartregister.Context context() {
+        return VaccinatorApplication.getInstance().context();
+    }
+
+
 
     private void showVaccineNotifications(List<Vaccine> vaccineList, List<Alert> alerts) {
 
