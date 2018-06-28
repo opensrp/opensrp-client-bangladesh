@@ -242,13 +242,13 @@ public class ChildImmunizationActivity extends BaseActivity
 
         WeightRepository weightRepository = VaccinatorApplication.getInstance().weightRepository();
 
-        VaccineRepository vaccineRepository = VaccinatorApplication.getInstance().vaccineRepository();
+//        VaccineRepository vaccineRepository = VaccinatorApplication.getInstance().vaccineRepository();
 
         AlertService alertService = getOpenSRPContext().alertService();
 
         UpdateViewTask updateViewTask = new UpdateViewTask();
         updateViewTask.setWeightRepository(weightRepository);
-        updateViewTask.setVaccineRepository(vaccineRepository);
+//        updateViewTask.setVaccineRepository(vaccineRepository);
 
         updateViewTask.setAlertService(alertService);
         Utils.startAsyncTask(updateViewTask, null);
@@ -1233,15 +1233,13 @@ public class ChildImmunizationActivity extends BaseActivity
 
     private class UpdateViewTask extends AsyncTask<Void, Void, Map<String, NamedObject<?>>> {
 
-        private VaccineRepository vaccineRepository;
+//        private VaccineRepository vaccineRepository;
         private WeightRepository weightRepository;
         private RecurringServiceTypeRepository recurringServiceTypeRepository;
         private RecurringServiceRecordRepository recurringServiceRecordRepository;
         private AlertService alertService;
 
-        public void setVaccineRepository(VaccineRepository vaccineRepository) {
-            this.vaccineRepository = vaccineRepository;
-        }
+
 
         public void setWeightRepository(WeightRepository weightRepository) {
             this.weightRepository = weightRepository;
@@ -1317,10 +1315,7 @@ public class ChildImmunizationActivity extends BaseActivity
 
 
             List<Alert> alertList = new ArrayList<>();
-            if (vaccineRepository != null) {
-                vaccineList = vaccineRepository.findByEntityId(childDetails.entityId());
 
-            }
             if (weightRepository != null) {
                 weight = weightRepository.findUnSyncedByEntityId(childDetails.entityId());
             }

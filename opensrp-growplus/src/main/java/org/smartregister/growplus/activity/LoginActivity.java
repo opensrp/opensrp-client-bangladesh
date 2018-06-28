@@ -384,7 +384,7 @@ public class LoginActivity extends AppCompatActivity {
             Utils.startAsyncTask(new SaveTeamLocationsTask(), null);
         }
         VaccinatorApplication.setCrashlyticsUser(getOpenSRPContext());
-        Intent intent = new Intent(this, ChildSmartRegisterActivity.class);
+        Intent intent = new Intent(this, HouseholdSmartRegisterActivity.class);
         intent.putExtra(BaseRegisterActivity.IS_REMOTE_LOGIN, remote);
         startActivity(intent);
 
