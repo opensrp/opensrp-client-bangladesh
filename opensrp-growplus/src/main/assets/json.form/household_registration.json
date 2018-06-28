@@ -69,6 +69,14 @@
         }
       },
       {
+        "key": "HHID",
+        "openmrs_entity_parent": "",
+        "openmrs_entity": "person_attribute",
+        "openmrs_entity_id": "householdCode",
+        "type": "edit_text",
+        "hint": "House/Holding No"
+      },
+      {
         "key": "ADDRESS_LINE",
         "openmrs_entity_parent": "usual_residence",
         "openmrs_entity": "person_address",
@@ -76,6 +84,32 @@
         "openmrs_data_type": "text",
         "type": "edit_text",
         "hint": "Address"
+      },
+      {
+        "key": "OpenMRS_ID",
+        "openmrs_entity_parent": "",
+        "openmrs_entity": "person_identifier",
+        "openmrs_entity_id": "OpenMRS_ID",
+        "type": "edit_text",
+        "hint": "Household ID *",
+        "read_only":"true",
+        "value": "0",
+        "v_numeric": {
+          "value": "true",
+          "err": "Please enter a valid ID"
+        },
+        "v_required": {
+          "value": "true",
+          "err": "Please enter the Child's ZEIR ID"
+        }
+      },
+      {
+        "key": "gps",
+        "openmrs_entity_parent": "usual_residence",
+        "openmrs_entity": "person_address",
+        "openmrs_entity_id": "geopoint",
+        "openmrs_data_type": "text",
+        "type": "gps"
       },
       {
         "key": "First_Name",
@@ -95,30 +129,12 @@
         }
       },
       {
-        "key": "OpenMRS_ID",
-        "openmrs_entity_parent": "",
-        "openmrs_entity": "person_identifier",
-        "openmrs_entity_id": "OpenMRS_ID",
-        "type": "edit_text",
-        "hint": "OpenMRS ID *",
-        "read_only":"true",
-        "value": "0",
-        "v_numeric": {
-          "value": "true",
-          "err": "Please enter a valid ID"
-        },
-        "v_required": {
-          "value": "true",
-          "err": "Please enter the Child's ZEIR ID"
-        }
-      },
-      {
         "key": "Sex",
         "openmrs_entity_parent": "",
         "openmrs_entity": "person",
         "openmrs_entity_id": "gender",
         "type": "spinner",
-        "hint": "Gender *",
+        "hint": "Head of Household Gender *",
         "values": [
           "Male",
           "Female"
@@ -159,14 +175,6 @@
           "value": "(01[5-9][0-9]{8})|\s*",
           "err": "Number must begin with 015, 016,017,018 or 019 and must be a total of 11 digits in length"
         }
-      },
-      {
-        "key": "HHID",
-        "openmrs_entity_parent": "",
-        "openmrs_entity": "person_attribute",
-        "openmrs_entity_id": "householdCode",
-        "type": "edit_text",
-        "hint": "Household ID"
       }
     ]
   }

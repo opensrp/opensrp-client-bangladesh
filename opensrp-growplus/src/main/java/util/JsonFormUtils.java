@@ -7,6 +7,7 @@ import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.os.AsyncTask;
 import android.preference.PreferenceManager;
+import android.provider.CalendarContract;
 import android.telephony.TelephonyManager;
 import android.text.TextUtils;
 import android.util.Log;
@@ -45,9 +46,11 @@ import org.smartregister.growplus.sync.ECSyncUpdater;
 import org.smartregister.growplus.sync.PathClientProcessor;
 import org.smartregister.repository.AllSharedPreferences;
 import org.smartregister.repository.BaseRepository;
+import org.smartregister.repository.DetailsRepository;
 import org.smartregister.repository.EventClientRepository;
 import org.smartregister.repository.ImageRepository;
 import org.smartregister.util.AssetHandler;
+import org.smartregister.util.DateUtil;
 import org.smartregister.util.FormUtils;
 import org.smartregister.view.activity.DrishtiApplication;
 
@@ -62,6 +65,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
 import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -71,6 +75,8 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import id.zelory.compressor.Compressor;
+
+import static org.smartregister.util.Utils.getValue;
 
 /**
  * Created by keyman on 08/02/2017.
@@ -638,10 +644,36 @@ public class JsonFormUtils extends org.smartregister.util.JsonFormUtils {
             Date lastSyncDate = new Date(lastSyncTimeStamp);
             PathClientProcessor.getInstance(context).processClient(ecUpdater.getEvents(lastSyncDate, BaseRepository.TYPE_Unsynced));
             allSharedPreferences.saveLastUpdatedAtDate(lastSyncDate.getTime());
-
+            Map<String, String> fieldshashmap = fieldsToHashmap(fields);
             Counselling counselling = new Counselling(null,entityId,encounterType,lastSyncDate,providerId,null,BaseRepository.TYPE_Synced,lastSyncTimeStamp,e.getEventId(),e.getFormSubmissionId(),lastSyncDate);
-            counselling.setFormfields(fieldsToHashmap(fields));
+            counselling.setFormfields(fieldshashmap);
             VaccinatorApplication.getInstance().counsellingRepository().add(counselling);
+
+            String date_of_next_apointment = fieldshashmap.get("Date_Of_next_appointment");
+            Date appointment_date = dd_MM_yyyy.parse(date_of_next_apointment);
+
+
+
+            DetailsRepository detailsRepository;
+            detailsRepository = org.smartregister.Context.getInstance().detailsRepository();
+            Map<String, String> details = detailsRepository.getAllDetailsForClient(entityId);
+            String locationid = JsonFormUtils.getOpenMrsLocationId(org.smartregister.Context.getInstance(),getValue(details, "address3", false) );
+            String womanName = getValue(details, "first_name", false);
+            String birthFacilityHierarchy = JsonFormUtils.getOpenMrsLocationHierarchy(org.smartregister.Context.getInstance(),locationid ).toString();
+
+            Intent calIntent = new Intent(Intent.ACTION_INSERT);
+            calIntent.setType("vnd.android.cursor.item/event");
+            calIntent.putExtra(CalendarContract.Events.TITLE, "Pregnant Woman Counselling");
+            calIntent.putExtra(CalendarContract.Events.EVENT_LOCATION, "");
+            calIntent.putExtra(CalendarContract.Events.DESCRIPTION, "Visit "+womanName+" for Counselling in"+birthFacilityHierarchy);
+            GregorianCalendar calDate = new GregorianCalendar(appointment_date.getYear(), appointment_date.getMonth(), appointment_date.getDay());
+
+            calIntent.putExtra(CalendarContract.EXTRA_EVENT_ALL_DAY, true);
+            calIntent.putExtra(CalendarContract.EXTRA_EVENT_BEGIN_TIME,
+                    calDate.getTimeInMillis());
+            calIntent.putExtra(CalendarContract.EXTRA_EVENT_END_TIME,
+                    calDate.getTimeInMillis());
+            context.startActivity(calIntent);
         } catch (Exception e) {
             Log.e(TAG, "", e);
         }

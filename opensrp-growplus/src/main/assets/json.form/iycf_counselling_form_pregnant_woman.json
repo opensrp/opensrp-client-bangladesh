@@ -506,6 +506,7 @@
         "openmrs_entity_parent": "",
         "openmrs_entity": "",
         "openmrs_entity_id": "",
+        "openmrs_data_type": "text",
         "type": "date_picker",
         "hint": "Let’s schedule next appointment",
         "expanded": false,

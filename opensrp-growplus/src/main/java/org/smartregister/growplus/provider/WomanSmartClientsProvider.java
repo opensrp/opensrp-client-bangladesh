@@ -192,7 +192,7 @@ public class WomanSmartClientsProvider implements SmartRegisterCLientsProviderFo
             }
         }
         if(!pregnant&&!lactating){
-            add_child.setText("Follow Up");
+            add_child.setText("Follow\nUp");
             add_child.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -208,7 +208,7 @@ public class WomanSmartClientsProvider implements SmartRegisterCLientsProviderFo
                 }
             });
         }else if(pregnant&&!lactating){
-            add_child.setText("Follow Up");
+            add_child.setText("Follow\nUp");
 
             add_child.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -225,14 +225,13 @@ public class WomanSmartClientsProvider implements SmartRegisterCLientsProviderFo
                 }
             });
         }else if(lactating){
-            add_child.setText("IYCF Counselling");
-
+            add_child.setText("Follow\nUp");
             add_child.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
 
 
-                    String metadata = getmetaDataForLactatingCounsellingForm(pc);
+                    String metadata = getmetaDataForFollowUpForm(pc);
                     Intent intent = new Intent(context, PathJsonFormActivity.class);
 
                     intent.putExtra("json", metadata);

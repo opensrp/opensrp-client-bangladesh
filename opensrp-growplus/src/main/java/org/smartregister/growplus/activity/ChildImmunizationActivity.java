@@ -226,7 +226,7 @@ public class ChildImmunizationActivity extends BaseActivity
         findViewById(R.id.profile_name_layout).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                launchDetailActivity(ChildImmunizationActivity.this, childDetails, null);
+//                launchDetailActivity(ChildImmunizationActivity.this, childDetails, null);
             }
         });
 
@@ -494,6 +494,34 @@ public class ChildImmunizationActivity extends BaseActivity
                 if (jsonObject.getString(JsonFormUtils.ENTITY_ID) != null) {
                     jsonObject.remove(JsonFormUtils.ENTITY_ID);
                     jsonObject.put(JsonFormUtils.ENTITY_ID, pc.entityId());
+                }
+                JSONObject stepOne = form.getJSONObject(JsonFormUtils.STEP1);
+                JSONArray jsonArray = stepOne.getJSONArray(JsonFormUtils.FIELDS);
+
+                if(pc.getColumnmaps().get("lactating_woman_counselling_actions_for_next_meeting")!=null) {
+                    if(!pc.getColumnmaps().get("lactating_woman_counselling_actions_for_next_meeting").equalsIgnoreCase("")) {
+                        String valuelist = pc.getColumnmaps().get("lactating_woman_counselling_actions_for_next_meeting");
+                        String ValueString = "";
+                            if(valuelist.equalsIgnoreCase("If child is growth faltering for 2 or more months or severely underweight")){
+                                ValueString = "CHILD IS GROWTH FALTERING, SPEND MORE TIME ON ACTION PLAN AND ENSURING MOTHER UNDERSTANDS ALL ASPECTS DISCUSSED DURING INTERACTION. \n            Refer child to a social support program to receive extra assistance, or refer to health clinic\"";
+                            }
+                            if(valuelist.equalsIgnoreCase("All children")){
+                                ValueString = "Some possible actions:\n - Improve consistency of food that I give my child, make sure the food I give is thick enough (if between 6-23 months)\n- Give an egg to my child at least once every day\n- Talk to my husband to ask if he could feed the child one meal tomorrow\n- Corralling my chickens so my child is not exposed to them during the day and night";
+                            }
+
+                        for (int i = 0; i < jsonArray.length(); i++) {
+                            JSONObject fieldjsonObject = jsonArray.getJSONObject(i);
+                            if (fieldjsonObject.getString(JsonFormUtils.KEY)
+                                    .equalsIgnoreCase("lactating_counselling_actions_decided_previous_meeting")) {
+//                                fieldjsonObject.remove(JsonFormUtils.VALUE);
+                                fieldjsonObject.put("hint", "In the last session, your resolution was- "+ValueString+ "- Did you practice this resolution?");
+                                fieldjsonObject.remove("hidden");
+                                fieldjsonObject.put("hidden", false);
+
+                                continue;
+                            }
+                        }
+                    }
                 }
 
 //            intent.putExtra("json", form.toString());

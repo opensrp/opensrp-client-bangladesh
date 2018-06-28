@@ -368,7 +368,7 @@ public abstract class BaseRegisterActivity extends SecuredNativeSmartRegisterAct
                 Intent intent = new Intent(getApplicationContext(), HouseholdSmartRegisterActivity.class);
                 intent.putExtra(BaseRegisterActivity.IS_REMOTE_LOGIN, false);
                 startActivity(intent);
-                finish();
+//                finish();
                 drawer.closeDrawer(GravityCompat.START);
 
 //                finish();
@@ -382,7 +382,7 @@ public abstract class BaseRegisterActivity extends SecuredNativeSmartRegisterAct
                 Intent intent = new Intent(getApplicationContext(), WomanSmartRegisterActivity.class);
                 intent.putExtra(BaseRegisterActivity.IS_REMOTE_LOGIN, false);
                 startActivity(intent);
-                finish();
+//                finish();
                 drawer.closeDrawer(GravityCompat.START);
 
 //                finish();

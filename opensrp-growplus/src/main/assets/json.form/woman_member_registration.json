@@ -76,7 +76,7 @@
         "openmrs_entity": "person_identifier",
         "openmrs_entity_id": "OpenMRS_ID",
         "type": "edit_text",
-        "hint": "OpenMRS ID *",
+        "hint": "System ID *",
         "read_only":"true",
         "value": "0",
         "v_numeric": {

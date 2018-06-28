@@ -55,6 +55,22 @@
     "title": "IYCF Councelling Form Lactating woman",
     "fields": [
       {
+        "key": "lactating_counselling_actions_decided_previous_meeting",
+        "openmrs_entity_parent": "",
+        "openmrs_entity": "",
+        "openmrs_entity_id": "",
+        "openmrs_data_type": "text",
+        "type": "spinner",
+        "hidden": true,
+        "read_only": true,
+        "hint": "",
+        "values": [
+          "Yes",
+          "No"
+        ],
+        "value": ""
+      },
+      {
         "key": "nutrition_to_discuss",
         "openmrs_entity_parent": "",
         "openmrs_entity": "",
@@ -258,6 +274,21 @@
           "Yes",
           "No"
         ],
+        "has_media_content": true,
+        "media": [
+          {
+            "media_type":"text",
+            "media_trigger_value":"Yes",
+            "media_link":"",
+            "media_text":" Great, praise the mother and encourage her to continue to take iron supplements until at least 3 months after your baby’s birth."
+          },
+          {
+            "media_type":"text",
+            "media_trigger_value":"No",
+            "media_link":"",
+            "media_text":" - Take iron and folic acid tablets to prevent anaemia for at least 3 months after your baby’s birth.\n- These tablets help to keep you strong and healthy for breastfeeding and to replenish your energy after birth.\nAsk:What hinders you from taking IFA daily?\n- If she is having trouble with the taste, encourage her to take the tablet with a flavored drink, or with food.\n If that is difficult counsel her on:\n - Taking two tablets per week, 120mg each OR \n- Taking half a tablet of IFA per day"
+          }
+        ],
         "relevance": {
           "step1:nutrition_to_discuss": {
             "type": "string",
@@ -279,6 +310,21 @@
         "values": [
           "Yes",
           "No"
+        ],
+        "has_media_content": true,
+        "media": [
+          {
+            "media_type":"text",
+            "media_trigger_value":"Yes",
+            "media_link":"",
+            "media_text":" Ask: Which supplements are you taking?\nAsk: Do you have access to iodized salt? (only ask if country does not have mandatory national salt iodization)"
+          },
+          {
+            "media_type":"text",
+            "media_trigger_value":"No",
+            "media_link":"",
+            "media_text":"Discuss:\n- Use iodised salt to help your baby’s brain and body develop well.\n- Take de-worming tablets to help prevent anaemia.\n- Takevitamin A capsules/solution immediately after delivery or within 6 weeks so that your baby receives the vitamin A in your breast milk to help prevent illness."
+          }
         ],
         "relevance": {
           "step1:nutrition_to_discuss": {
@@ -302,6 +348,21 @@
           "Yes",
           "No"
         ],
+        "has_media_content": true,
+        "media": [
+          {
+            "media_type":"text",
+            "media_trigger_value":"Yes",
+            "media_link":"",
+            "media_text":"Congratulate and encourage the mother to continue"
+          },
+          {
+            "media_type":"video",
+            "media_trigger_value":"No",
+            "media_link":"android.resource://org.smartregister.growplus/raw/understandingbreastfeeding",
+            "media_text":"Breastmilk is clean and wholesome and provides all the essential nutrients and vitamins your baby needs for a healthy start to life. Give only breastmilk in the first 5 months of life including no water, tea, or milk or any other liquid and immediately breastfeed within an hour of delivery."
+          }
+        ],
         "relevance": {
           "step1:nutrition_to_discuss": {
             "type": "string",
@@ -323,6 +384,21 @@
         "values": [
           "Yes",
           "No"
+        ],
+        "has_media_content": true,
+        "media": [
+          {
+            "media_type":"text",
+            "media_trigger_value":"Yes",
+            "media_link":"",
+            "media_text":" Congratulate Her"
+          },
+          {
+            "media_type":"text",
+            "media_trigger_value":"No",
+            "media_link":"",
+            "media_text":"For child 0-5 months \n- Continue breastfeeding your baby on demand both day and night. This will maintain his or her health and strength as breast milk continues to be the most important part of your baby’s diet.\n\nFor child 6-11 months:\n- Continue breastfeeding your baby on demand both day and night. This will maintain his or her health and strength as breast milk continues to be the most important part of your baby’s diet.\n- Breastfeed first before giving other foods.\n- Breastmilk supplies half (1/2) baby’s energy needs \n\n For 12-23 month olds:  - Continue breastfeeding your baby on demand both day and night. This will maintain his or her health and strength as breast milk continues to be the most important part of your baby’s diet.\n  - Breastfeedfirstbefore giving other foods.\n- Breastmilk continues to make up about one third (1/3) of the energy needs of the young child."
+          }
         ],
         "relevance": {
           "step1:nutrition_to_discuss": {
@@ -346,6 +422,21 @@
           "value": "true",
           "err": "Enter a valid number"
         },
+        "has_media_content": true,
+        "media": [
+          {
+            "media_type":"text",
+            "media_trigger_value":"10",
+            "media_link":"",
+            "media_text":" Congratulate and encourage the mother to continue"
+          },
+          {
+            "media_type":"text",
+            "media_trigger_value":"No",
+            "media_link":"",
+            "media_text":""
+          }
+        ],
         "relevance": {
           "step1:nutrition_to_discuss": {
             "type": "string",
@@ -391,6 +482,21 @@
             "value":"false"
           }
         ],
+        "has_media_content": true,
+        "media": [
+          {
+            "media_type":"text",
+            "media_trigger_value":"dont_know",
+            "media_link":"",
+            "media_text":"Mention the signs that they missed. Also say: Crying is a late sign of hunger. Early signs that your baby wants to breastfeed include:\n a. Restlessness \n b. Openingmouthand turning head from side-to-side \n c. Puttingtonguein and out \n d. Suckling on fingers and fists"
+          },
+          {
+            "media_type":"text",
+            "media_trigger_value":"No",
+            "media_link":"",
+            "media_text":""
+          }
+        ],
         "relevance": {
           "step1:nutrition_to_discuss": {
             "type": "string",
@@ -427,6 +533,34 @@
             "value":"false"
           }
         ],
+        "has_media_content": true,
+        "media": [
+          {
+            "media_type":"text",
+            "media_trigger_value":"position_during_breastfeeding",
+            "media_link":"",
+            "media_text":" Show: IMAGE Good positioning helps to ensure that your baby suckles well and helps you to produce a good supply of breast milk. The four key points about your baby’s position are: straight, facing the breast, close, and supported: 1. The baby’s body should be straight, not bent or twisted, but with the head slightly back 2. The baby’s body should be facing the breast not held flat to your chest or abdomen, and he or she should be able to look up to your face 3. The baby should be close to you 4. You should support the baby’s whole body, not just the neck and shoulders, with your hand and forearm There are different ways to position your baby: 1. Cradle position (most commonly used) 2. Cross cradle position (good for small babies) 3. Side-lyingposition(useto rest while breastfeeding and at night) 4. Under-arm position (use after caesarean section, if your nipples are painful or if you are breastfeeding twins or a small baby)"
+          },
+          {
+            "media_type":"text",
+            "media_trigger_value":"poor_attachment",
+            "media_link":"",
+            "media_text":"Show: IMAGE · Good attachment helps to ensure that your baby suckles well and helps you to produce a good supply of breast milk. · Good attachment helps to prevent sore and cracked nipples. · Breastfeeding should not be painful. · Get help to improve the attachment if you experience pain. There are 4 signs of good attachment: 1. Baby’s mouth is wide open 2. You can see more of the darker skin (areola) above the baby’s mouth than below 3. Baby’s lower lip is turned outwards 4. Baby’s chin is touching mother’s breast"
+          },
+          {
+            "media_type":"text",
+            "media_trigger_value":"suckling",
+            "media_link":"",
+            "media_text":"The signs of effective suckling are:\n  a)The baby takes slow deep suckles, sometimes pausing.\n  b)You may be able to see or hear your baby swallowing after one or two suckles.\n  c)Suckling is comfortable and pain free for you.\n  d)Your baby finishes the feed, releases the breast and looks contented and relaxed.\n  e)The breast is softer after the feed.\n  · Effective suckling helps you to produce milk and satisfy your baby.\n  · After your baby releases one breast offer your baby the other breast. This will ensure that your baby stimulates your milk production in both breasts, and also gets the most nutritious and satisfying milk."
+          },
+          {
+            "media_type":"text",
+            "media_trigger_value":"hand_express_cup_feeding_storing_breastmilk",
+            "media_link":"",
+            "media_text":" Show: IMAGE Demonstrate these steps with a doll or a baby: · Make sure your hands and utensils are clean. · Washyour hands with soap and running water. · Cleanand boil the container you will use to collect your breast milk. · Get comfortable. · It is sometimes helpful to gently stroke your breasts. A warm cloth may help stimulate the flow of milk. · Putyour thumb on the breast above the dark area around the nipple (areola) and the other fingers on the underside of the breast behind the areola. • With your thumb and first 2 fingers press a little bit in towards chest wall andthen press gently towards the dark area (areola). • Milk may start to flow in drops, or sometimes in fine streams. Collect the milk inthe clean container. • Avoid rubbing the skin, which can cause bruising, or squeezing the nipple,which stops the flow of milk. • Rotate the thumb and finger positions and press/compress and release allaround the areola. · Expressone breast for at least 3 to 5 minutes until the flow slows, then express the other breast, then repeat both sides again (20 to 30 minutes total). Say: · Storebreastmilk in a clean, covered container. Milk can be stored 6 to 8 hours in a cool place and up to 72 hours in the back of the refrigerator. · Givebaby expressed breast milk from a cup. Bring cup to the baby’s lower lip and allow baby to take small amounts of milk, lapping the milk with his or her tongue. Do not pour the milk into baby’s mouth · Pourjustenough breast milk from the clean covered container into the feeding cup. · Bottlesareunsafeto use because they are difficult to wash and can be easily contaminated."
+          }
+
+        ],
         "relevance": {
           "step1:nutrition_to_discuss": {
             "type": "string",
@@ -444,6 +578,21 @@
         "values": [
           "Yes",
           "No"
+        ],
+        "has_media_content": true,
+        "media": [
+          {
+            "media_type":"text",
+            "media_trigger_value":"Yes",
+            "media_link":"",
+            "media_text":"Child age = 0-5 months: \n Ask: Do you know why it is important to fee the child only breastmilk in the first 6 months?\n Show: IMAGE- Breast milk provides all the food and water that your baby needs during the first 6 months - Giving your baby anything else will cause him/her to suckle less and will reduce the amount of breast milk that you produce. - Discourage giving tea, water, or other liquids because they can make a baby sick"
+          },
+          {
+            "media_type":"text",
+            "media_trigger_value":"No",
+            "media_link":"",
+            "media_text":"Child age = 0-5 months: \n Congratulate and encourage mother to continue breastfeeding to keep baby healthy"
+          }
         ],
         "relevance": {
           "step1:nutrition_to_discuss": {
@@ -467,6 +616,27 @@
           "3 or more times",
           "Less than 3 times",
           "No other food"
+        ],
+        "has_media_content": true,
+        "media": [
+          {
+            "media_type":"text",
+            "media_trigger_value":"3 or more times",
+            "media_link":"",
+            "media_text":"Child age = 6-8 months\n  Congratulate and encourage mother to continue"
+          },
+          {
+            "media_type":"text",
+            "media_trigger_value":"Less than 3 times",
+            "media_link":"",
+            "media_text":"Child age = 6-8 months\n  Feed the child one or more meals or snacks to supplement breastmilk. This can include a healthy snack such as a banana or avocado."
+          },
+          {
+            "media_type":"text",
+            "media_trigger_value":"No other food",
+            "media_link":"",
+            "media_text":"Child age = 6-8 months\n  Encourage mother to start adding other foods to child’s diet"
+          }
         ],
         "relevance": {
           "step1:additional_liquids_other_than_breastmilk": {
@@ -535,6 +705,27 @@
           "Thick porridge not enriched",
           "Watery porridge"
         ],
+        "has_media_content": true,
+        "media": [
+          {
+            "media_type":"text",
+            "media_trigger_value":"Porridge is thick and enriched",
+            "media_link":"",
+            "media_text":"Congratulate mother for feeding thick enriched porridge to her child"
+          },
+          {
+            "media_type":"text",
+            "media_trigger_value":"Thick porridge not enriched",
+            "media_link":"",
+            "media_text":"Enrich by cooking porridge with palm oil, groundnut paste, soya flour, fish powder, milk (list foods available according to local context and season)."
+          },
+          {
+            "media_type":"text",
+            "media_trigger_value":"Watery porridge",
+            "media_link":"",
+            "media_text":"Make porridge thicker by adding more flour, egg or bread and enrich with oil, groundnut paste, fish powder, milk, vegetable (list foods available according to local context and season)."
+          }
+        ],
         "relevance": {
           "step1:nutrition_to_discuss": {
             "type": "string",
@@ -556,6 +747,21 @@
         "values": [
           "Yes",
           "No"
+        ],
+        "has_media_content": true,
+        "media": [
+          {
+            "media_type":"text",
+            "media_trigger_value":"Yes",
+            "media_link":"",
+            "media_text":"For children under 6 months:\nCould you help me understand what foods you give to your child? Ask questions to understand why they feed semi-solid or solid foods. Counsel them on promoting exclusive breastfeeding.\nFor 4 month olds:\nIn two months, you will start adding semi-solid foods to your child’s diet, give mashed/pureed family foods\nFor 5 month olds: Next month, you will start adding semi-solid foods to your child’s diet, give mashed/pureed family foods\nFor 6-8 month olds: Give mashed/pureed family foods. By 8 months your baby can begin eating finger foods.\nFor 9-11 month olds: Give finely chopped family foods, finger foods, sliced foods.\nFor 12-23 month olds: Give family foods cut into small pieces, finger foods, sliced food."
+          },
+          {
+            "media_type":"text",
+            "media_trigger_value":"No",
+            "media_link":"",
+            "media_text":"For children under 6 months:\nCould you help me understand what foods you give to your child? Ask questions to understand why they feed semi-solid or solid foods. Counsel them on promoting exclusive breastfeeding.\nFor 4 month olds:\nIn two months, you will start adding semi-solid foods to your child’s diet, give mashed/pureed family foods\nFor 5 month olds: Next month, you will start adding semi-solid foods to your child’s diet, give mashed/pureed family foods\nFor 6-8 month olds: Give mashed/pureed family foods. By 8 months your baby can begin eating finger foods.\nFor 9-11 month olds: Give finely chopped family foods, finger foods, sliced foods.\nFor 12-23 month olds: Give family foods cut into small pieces, finger foods, sliced food."
+          }
         ],
         "relevance": {
           "step1:nutrition_to_discuss": {
@@ -579,6 +785,27 @@
           "Yes",
           "Little",
           "no animal sourced foods are given to child"
+        ],
+        "has_media_content": true,
+        "media": [
+          {
+            "media_type":"text",
+            "media_trigger_value":"Yes",
+            "media_link":"",
+            "media_text":"For children under 6 months\nCould you help me understand what foods you give to your child? Ask questions to understand why they feed animal sourced foods. Counsel them on promoting exclusive breastfeeding. \nFor 4 month olds\n:In two months, In two months, you will start adding semi-solid foods to your child’s diet, an important part of their diet will be meat, fish, egg, dairy products. You can do this by adding mashed or powdered fish, beans, egg, organ meats to your child’s food.\nFor 5 month olds: Next month, you will start adding semi-solid foods to your child’s diet, an important part of their diet will be meat, fish, egg, dairy products. You can do this by adding mashed or powdered fish, beans, egg, organ meats to your child’s food.\n For children above 6 months - Praise mother and encourage her to continue to give these foods to her child"
+          },
+          {
+            "media_type":"text",
+            "media_trigger_value":"Little",
+            "media_link":"",
+            "media_text":"For children above 6 months • Encourage mother to add mashed or powdered fish, beans, egg, organ meats, to child’s food\n• Give mashed beef, chicken, snail, insects, or another other meat available\n• Animal source foods are very important. Start animal source foods as early and as often as possible. Cook well and chop fine.\n• Infants can eat well-cooked and finely-chopped eggs, meat and fish even if they don’t have teeth"
+          },
+          {
+            "media_type":"text",
+            "media_trigger_value":"no animal sourced foods are given to child",
+            "media_link":"",
+            "media_text":"For children above 6 months • Encourage mother to add mashed or powdered fish, beans, egg, organ meats, to child’s food\n• Give mashed beef, chicken, snail, insects, or another other meat available\n• Animal source foods are very important. Start animal source foods as early and as often as possible. Cook well and chop fine.\n• Infants can eat well-cooked and finely-chopped eggs, meat and fish even if they don’t have teeth"
+          }
         ],
         "relevance": {
           "step1:nutrition_to_discuss": {
@@ -620,6 +847,21 @@
           "I actively practiced being patient and encouraging my child to eat",
           "I did not do anything or the baby still refused to eat"
         ],
+        "has_media_content": true,
+        "media": [
+          {
+            "media_type":"text",
+            "media_trigger_value":"I actively practiced being patient and encouraging my child to eat",
+            "media_link":"",
+            "media_text":"Congratulate the mother and encourage her to continue"
+          },
+          {
+            "media_type":"text",
+            "media_trigger_value":"I did not do anything or the baby still refused to eat",
+            "media_link":"",
+            "media_text":"- Be patient and actively encourage your baby to eat.\n- Don’t force your baby to eat.\n- Use a separate plate to feed the baby to make sure he or she eats all the food given."
+          }
+        ],
         "relevance": {
           "step1:nutrition_to_discuss": {
             "type": "string",
@@ -641,6 +883,21 @@
         "values": [
           "greater than five ways to ensure food is clean before serving food",
           "less than five ways to ensure a hygienic environment before serving food"
+        ],
+        "has_media_content": true,
+        "media": [
+          {
+            "media_type":"text",
+            "media_trigger_value":"greater than five ways to ensure food is clean before serving food",
+            "media_link":"",
+            "media_text":"Congratulate the mother and encourage her to continue"
+          },
+          {
+            "media_type":"text",
+            "media_trigger_value":"less than five ways to ensure a hygienic environment before serving food",
+            "media_link":"",
+            "media_text":" Show Image: INSERT IMAGE Make sure to emphasize that: Good hygiene (cleanliness) is important to avoid diarrhoeadiarrhea and other illnesses \n• Use a clean spoon or cup to give foods or liquids to your baby. \n• Store the foods to be given to your baby in a safe hygienic place. \n• Wash your hands with soap and water before preparing foods and feeding baby. \n• Wash your hands and your baby’s hands before eating. \n• Wash your hands with soap and water after using the toilet and washing or cleaning baby’s bottom \n• Feed your baby using clean hands, clean utensils and clean cups. \n• Use a clean spoon or cup to give foods or liquids to your baby. \n• Do not use bottles, teats or spouted cups since they are difficult to clean and can cause your baby to become sick."
+          }
         ],
         "relevance": {
           "step1:nutrition_to_discuss": {
@@ -664,6 +921,21 @@
           "Yes",
           "No"
         ],
+        "has_media_content": true,
+        "media": [
+          {
+            "media_type":"text",
+            "media_trigger_value":"Yes",
+            "media_link":"",
+            "media_text":" This is excellent, encourage mother to continue using soap/ash and water for handwashing"
+          },
+          {
+            "media_type":"text",
+            "media_trigger_value":"No",
+            "media_link":"",
+            "media_text":"Discuss ways you can prioritize getting soap/ash and water for handwashing and the importance of washing hands with clean water and soap"
+          }
+        ],
         "relevance": {
           "step1:nutrition_to_discuss": {
             "type": "string",
@@ -685,6 +957,21 @@
         "values": [
           "All five critical times",
           "Less than the five critical times"
+        ],
+        "has_media_content": true,
+        "media": [
+          {
+            "media_type":"text",
+            "media_trigger_value":"All five critical times",
+            "media_link":"",
+            "media_text":"Congratulate her and encourage her to continue washing her hands at these important times"
+          },
+          {
+            "media_type":"text",
+            "media_trigger_value":"Less than the five critical times",
+            "media_link":"",
+            "media_text":"Mention that it is important to wash hands before preparing foods, feeding child, after using toilet, after cleaning baby, after any contact with feces"
+          }
         ],
         "relevance": {
           "step1:nutrition_to_discuss": {
@@ -708,6 +995,21 @@
           "No",
           "Yes"
         ],
+        "has_media_content": true,
+        "media": [
+          {
+            "media_type":"text",
+            "media_trigger_value":"No",
+            "media_link":"",
+            "media_text":"Congratulate her and encourage her to keep animals sleeping outside"
+          },
+          {
+            "media_type":"text",
+            "media_trigger_value":"Yes",
+            "media_link":"",
+            "media_text":"Ask: Which animals sleep inside?\nIt is important to keep animals separate from children as animals create a dirty environment for children. If children are exposed to a dirty environment and animal droppings, then they can get sick and it affects their long term growth and development. What could you do to separate children from these animals throughout the day and at night?\n Some suggestions:\n - Corralling animals\n - Ensuring a clean play space for children separate from where animals can go\n What other actions could you take to ensure a child’s environment is clean?"
+          }
+        ],
         "relevance": {
           "step1:nutrition_to_discuss": {
             "type": "string",
@@ -729,6 +1031,15 @@
         "values": [
           "Yes",
           "No"
+        ],
+        "has_media_content": true,
+        "media": [
+          {
+            "media_type":"text",
+            "media_trigger_value":"No",
+            "media_link":"",
+            "media_text":"talk about how to reach husbands, grandmothers, what other ways to create a supportive environment for child feeding.\nProbe: What steps could you take to get support from family members to help with child feeding?"
+          }
         ],
         "relevance": {
           "step1:nutrition_to_discuss": {
@@ -766,7 +1077,7 @@
         }
       },
       {
-        "key": "identify_actions",
+        "key": "lactating_woman_counselling_actions_for_next_meeting",
         "openmrs_entity_parent": "",
         "openmrs_entity": "",
         "openmrs_entity_id": "",
@@ -775,6 +1086,21 @@
         "values": [
           "If child is growth faltering for 2 or more months or severely underweight",
           "All children"
+        ],
+        "has_media_content": true,
+        "media": [
+          {
+            "media_type":"text",
+            "media_trigger_value":"If child is growth faltering for 2 or more months or severely underweight",
+            "media_link":"",
+            "media_text":"CHILD IS GROWTH FALTERING, SPEND MORE TIME ON ACTION PLAN AND ENSURING MOTHER UNDERSTANDS ALL ASPECTS DISCUSSED DURING INTERACTION. \n            Refer child to a social support program to receive extra assistance, or refer to health clinic"
+          },
+          {
+            "media_type":"text",
+            "media_trigger_value":"All children",
+            "media_link":"",
+            "media_text":"Some possible actions:\n - Improve consistency of food that I give my child, make sure the food I give is thick enough (if between 6-23 months)\n- Give an egg to my child at least once every day\n- Talk to my husband to ask if he could feed the child one meal tomorrow\n- Corralling my chickens so my child is not exposed to them during the day and night"
+          }
         ],
         "v_required": {
           "value": "true",
