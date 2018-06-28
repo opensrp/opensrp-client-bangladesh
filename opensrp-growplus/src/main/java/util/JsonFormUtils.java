@@ -29,6 +29,7 @@ import org.smartregister.clientandeventmodel.Client;
 import org.smartregister.clientandeventmodel.Event;
 import org.smartregister.clientandeventmodel.FormEntityConstants;
 import org.smartregister.clientandeventmodel.Obs;
+import org.smartregister.commonregistry.CommonPersonObject;
 import org.smartregister.domain.ProfileImage;
 import org.smartregister.growplus.domain.Counselling;
 import org.smartregister.growplus.repository.CounsellingRepository;
@@ -49,9 +50,7 @@ import org.smartregister.repository.BaseRepository;
 import org.smartregister.repository.DetailsRepository;
 import org.smartregister.repository.EventClientRepository;
 import org.smartregister.repository.ImageRepository;
-import org.smartregister.util.AssetHandler;
-import org.smartregister.util.DateUtil;
-import org.smartregister.util.FormUtils;
+import org.smartregister.util.*;
 import org.smartregister.view.activity.DrishtiApplication;
 
 import java.io.File;
@@ -666,8 +665,8 @@ public class JsonFormUtils extends org.smartregister.util.JsonFormUtils {
             calIntent.putExtra(CalendarContract.Events.TITLE, "Pregnant Woman Counselling");
             calIntent.putExtra(CalendarContract.Events.EVENT_LOCATION, "");
             calIntent.putExtra(CalendarContract.Events.DESCRIPTION, "Visit "+womanName+" for Counselling in"+birthFacilityHierarchy);
-            GregorianCalendar calDate = new GregorianCalendar(appointment_date.getYear(), appointment_date.getMonth(), appointment_date.getDay());
-
+            GregorianCalendar calDate = new GregorianCalendar();
+            calDate.setTime(appointment_date);
             calIntent.putExtra(CalendarContract.EXTRA_EVENT_ALL_DAY, true);
             calIntent.putExtra(CalendarContract.EXTRA_EVENT_BEGIN_TIME,
                     calDate.getTimeInMillis());
@@ -723,8 +722,42 @@ public class JsonFormUtils extends org.smartregister.util.JsonFormUtils {
             allSharedPreferences.saveLastUpdatedAtDate(lastSyncDate.getTime());
 
             Counselling counselling = new Counselling(null,entityId,encounterType,lastSyncDate,providerId,null,BaseRepository.TYPE_Synced,lastSyncTimeStamp,e.getEventId(),e.getFormSubmissionId(),lastSyncDate);
-            counselling.setFormfields(fieldsToHashmap(fields));
+            Map<String,String> fieldshashmap = fieldsToHashmap(fields);
+            counselling.setFormfields(fieldshashmap);
             VaccinatorApplication.getInstance().counsellingRepository().add(counselling);
+
+
+
+            String date_of_next_apointment = fieldshashmap.get("Date_Of_next_appointment");
+            Date appointment_date = dd_MM_yyyy.parse(date_of_next_apointment);
+
+            CommonPersonObject ecchildobject = org.smartregister.Context.getInstance().commonrepository("ec_child").findByCaseID(entityId);
+            DetailsRepository detailsRepository;
+            detailsRepository = org.smartregister.Context.getInstance().detailsRepository();
+            Map<String, String> details = detailsRepository.getAllDetailsForClient(entityId);
+            ecchildobject.getColumnmaps().putAll(details);
+            String motherBaseEntityId = org.smartregister.util.Utils.getValue(ecchildobject.getColumnmaps(), PathConstants.KEY.RELATIONAL_ID, false);
+
+            Map<String, String> motherdetails = detailsRepository.getAllDetailsForClient(motherBaseEntityId);
+
+
+            String locationid = JsonFormUtils.getOpenMrsLocationId(org.smartregister.Context.getInstance(),getValue(motherdetails, "address3", false) );
+            String womanName = getValue(motherdetails, "first_name", false);
+            String birthFacilityHierarchy = JsonFormUtils.getOpenMrsLocationHierarchy(org.smartregister.Context.getInstance(),locationid ).toString();
+
+            Intent calIntent = new Intent(Intent.ACTION_INSERT);
+            calIntent.setType("vnd.android.cursor.item/event");
+            calIntent.putExtra(CalendarContract.Events.TITLE, "Pregnant Woman Counselling");
+            calIntent.putExtra(CalendarContract.Events.EVENT_LOCATION, "");
+            calIntent.putExtra(CalendarContract.Events.DESCRIPTION, "Visit "+womanName+" for Counselling in"+birthFacilityHierarchy);
+            GregorianCalendar calDate = new GregorianCalendar();
+            calDate.setTime(appointment_date);
+            calIntent.putExtra(CalendarContract.EXTRA_EVENT_ALL_DAY, true);
+            calIntent.putExtra(CalendarContract.EXTRA_EVENT_BEGIN_TIME,
+                    calDate.getTimeInMillis());
+            calIntent.putExtra(CalendarContract.EXTRA_EVENT_END_TIME,
+                    calDate.getTimeInMillis());
+            context.startActivity(calIntent);
         } catch (Exception e) {
             Log.e(TAG, "", e);
         }

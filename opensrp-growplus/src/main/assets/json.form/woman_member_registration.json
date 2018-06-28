@@ -366,8 +366,7 @@
             "type": "string",
             "ex": "equalTo(., \"EDD\")"
           }
-        },
-        "max_date": "today"
+        }
       },
       {
         "key": "ultrasound_date",
@@ -386,8 +385,7 @@
             "type": "string",
             "ex": "equalTo(., \"UltraSound\")"
           }
-        },
-        "max_date": "today"
+        }
       },
       {
         "key": "ultrasound_weeks",
