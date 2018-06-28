@@ -95,8 +95,8 @@ public class VaccinatorApplication extends DrishtiApplication
 
         //Initialize Modules
         CoreLibrary.init(context());
-        GrowthMonitoringLibrary.init(context(), getRepository());
-        ImmunizationLibrary.init(context(), getRepository(), createCommonFtsObject());
+        GrowthMonitoringLibrary.init(context(), getRepository(), BuildConfig.VERSION_CODE, BuildConfig.DATABASE_VERSION);
+        ImmunizationLibrary.init(context(), getRepository(), createCommonFtsObject(), BuildConfig.VERSION_CODE, BuildConfig.DATABASE_VERSION);
 
     }
 
@@ -328,8 +328,8 @@ public class VaccinatorApplication extends DrishtiApplication
             JSONArray childVaccines = new JSONArray(VaccinatorUtils.getSupportedVaccines(this));
             JSONArray specialVaccines = new JSONArray(VaccinatorUtils.getSpecialVaccines(this));
             JSONArray womanVaccines = new JSONArray(VaccinatorUtils.getSupportedWomanVaccines(this));
-            VaccineSchedule.init(childVaccines, specialVaccines, "child");
-            VaccineSchedule.init(womanVaccines, null, "woman");
+//            VaccineSchedule.init(childVaccines, specialVaccines, "child");
+//            VaccineSchedule.init(womanVaccines, null, "woman");
         } catch (Exception e) {
             Log.e(TAG, Log.getStackTraceString(e));
         }

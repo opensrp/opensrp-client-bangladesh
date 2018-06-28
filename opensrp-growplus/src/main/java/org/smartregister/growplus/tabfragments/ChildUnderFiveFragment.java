@@ -208,46 +208,46 @@ public class ChildUnderFiveFragment extends Fragment {
     }
 
     private void updateVaccinationViews(LinearLayout fragmentContainer, boolean editmode) {
-        vaccineGroups = new ArrayList<>();
-        VaccineRepository vaccineRepository = VaccinatorApplication.getInstance().vaccineRepository();
-        List<Vaccine> vaccineList = vaccineRepository.findByEntityId(childDetails.entityId());
-        LinearLayout vaccineGroupCanvasLL = (LinearLayout) fragmentContainer.findViewById(R.id.immunizations);
-        vaccineGroupCanvasLL.removeAllViews();
-
-        CustomFontTextView title = new CustomFontTextView(getActivity());
-        title.setAllCaps(true);
-        title.setTextAppearance(getActivity(), android.R.style.TextAppearance_Medium);
-        title.setTextColor(getResources().getColor(R.color.text_black));
-        title.setText(getString(R.string.immunizations));
-        vaccineGroupCanvasLL.addView(title);
-
-        List<Alert> alertList = new ArrayList<>();
-        if (alertService != null) {
-            alertList = alertService.findByEntityIdAndAlertNames(childDetails.entityId(),
-                    VaccinateActionUtils.allAlertNames("child"));
-        }
-
-        String supportedVaccinesString = readAssetContents(VACCINES_FILE);
-        try {
-            JSONArray supportedVaccines = new JSONArray(supportedVaccinesString);
-            for (int i = 0; i < supportedVaccines.length(); i++) {
-                ImmunizationRowGroup curGroup = new ImmunizationRowGroup(getActivity(), editmode);
-                curGroup.setData(supportedVaccines.getJSONObject(i), childDetails, vaccineList, alertList);
-                curGroup.setOnVaccineUndoClickListener(new ImmunizationRowGroup.OnVaccineUndoClickListener() {
-                    @Override
-                    public void onUndoClick(ImmunizationRowGroup vaccineGroup, VaccineWrapper vaccine) {
-                        addVaccinationDialogFragment(Arrays.asList(vaccine), vaccineGroup);
-
-                    }
-                });
-
-                vaccineGroupCanvasLL.addView(curGroup);
-                vaccineGroups.add(curGroup);
-            }
-        } catch (JSONException e) {
-            Log.e(getClass().getName(), Log.getStackTraceString(e));
-        }
-
+//        vaccineGroups = new ArrayList<>();
+//        VaccineRepository vaccineRepository = VaccinatorApplication.getInstance().vaccineRepository();
+//        List<Vaccine> vaccineList = vaccineRepository.findByEntityId(childDetails.entityId());
+//        LinearLayout vaccineGroupCanvasLL = (LinearLayout) fragmentContainer.findViewById(R.id.immunizations);
+//        vaccineGroupCanvasLL.removeAllViews();
+//
+//        CustomFontTextView title = new CustomFontTextView(getActivity());
+//        title.setAllCaps(true);
+//        title.setTextAppearance(getActivity(), android.R.style.TextAppearance_Medium);
+//        title.setTextColor(getResources().getColor(R.color.text_black));
+//        title.setText(getString(R.string.immunizations));
+//        vaccineGroupCanvasLL.addView(title);
+//
+//        List<Alert> alertList = new ArrayList<>();
+//        if (alertService != null) {
+//            alertList = alertService.findByEntityIdAndAlertNames(childDetails.entityId(),
+//                    VaccinateActionUtils.allAlertNames("child"));
+//        }
+//
+//        String supportedVaccinesString = readAssetContents(VACCINES_FILE);
+//        try {
+//            JSONArray supportedVaccines = new JSONArray(supportedVaccinesString);
+//            for (int i = 0; i < supportedVaccines.length(); i++) {
+//                ImmunizationRowGroup curGroup = new ImmunizationRowGroup(getActivity(), editmode);
+//                curGroup.setData(supportedVaccines.getJSONObject(i), childDetails, vaccineList, alertList);
+//                curGroup.setOnVaccineUndoClickListener(new ImmunizationRowGroup.OnVaccineUndoClickListener() {
+//                    @Override
+//                    public void onUndoClick(ImmunizationRowGroup vaccineGroup, VaccineWrapper vaccine) {
+//                        addVaccinationDialogFragment(Arrays.asList(vaccine), vaccineGroup);
+//
+//                    }
+//                });
+//
+//                vaccineGroupCanvasLL.addView(curGroup);
+//                vaccineGroups.add(curGroup);
+//            }
+//        } catch (JSONException e) {
+//            Log.e(getClass().getName(), Log.getStackTraceString(e));
+//        }
+//
     }
 
     private void updateServiceViews(LinearLayout fragmentContainer, boolean editmode) {

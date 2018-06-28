@@ -1,10 +1,10 @@
 package org.smartregister.growplus.activity;
 
+import android.Manifest;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.res.Configuration;
@@ -13,6 +13,8 @@ import android.graphics.drawable.ColorDrawable;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
 import android.util.DisplayMetrics;
@@ -32,29 +34,28 @@ import android.widget.TextView;
 import org.joda.time.DateTime;
 import org.smartregister.Context;
 import org.smartregister.domain.LoginResponse;
-import org.smartregister.domain.Response;
-import org.smartregister.domain.ResponseStatus;
 import org.smartregister.domain.TimeStatus;
+import org.smartregister.domain.jsonmapping.LoginResponseData;
 import org.smartregister.event.Listener;
-import org.smartregister.growthmonitoring.service.intent.ZScoreRefreshIntentService;
-import org.smartregister.immunization.util.IMDatabaseUtils;
+import org.smartregister.growplus.BuildConfig;
 import org.smartregister.growplus.R;
 import org.smartregister.growplus.application.VaccinatorApplication;
+import org.smartregister.growplus.helper.LocationHelper;
+import org.smartregister.growplus.receiver.VaccinatorAlarmReceiver;
 import org.smartregister.growplus.service.intent.PullUniqueIdsIntentService;
 import org.smartregister.repository.AllSharedPreferences;
-import org.smartregister.sync.DrishtiSyncScheduler;
-import org.smartregister.util.Log;
-import org.smartregister.view.BackgroundAction;
-import org.smartregister.view.LockingBackgroundTask;
-import org.smartregister.view.ProgressIndicator;
+import org.smartregister.util.PermissionUtils;
+import org.smartregister.util.Utils;
 
 import java.io.IOException;
 import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.HashMap;
 import java.util.Locale;
+import java.util.Map;
 import java.util.TimeZone;
-import java.util.zip.ZipEntry;
-import java.util.zip.ZipFile;
 
+import util.NetworkUtils;
 import util.PathConstants;
 
 import static android.preference.PreferenceManager.getDefaultSharedPreferences;
@@ -67,15 +68,56 @@ import static org.smartregister.util.Log.logError;
 import static org.smartregister.util.Log.logVerbose;
 
 public class LoginActivity extends AppCompatActivity {
-    private EditText userNameEditText;
-    private EditText passwordEditText;
-    private ProgressDialog progressDialog;
     public static final String ENGLISH_LOCALE = "en";
     private static final String URDU_LOCALE = "ur";
     private static final String ENGLISH_LANGUAGE = "English";
     private static final String URDU_LANGUAGE = "Urdu";
+    private EditText userNameEditText;
+    private EditText passwordEditText;
+    private ProgressDialog progressDialog;
     private android.content.Context appContext;
     private RemoteLoginTask remoteLoginTask;
+
+    public static void setLanguage() {
+        AllSharedPreferences allSharedPreferences = new AllSharedPreferences(getDefaultSharedPreferences(getOpenSRPContext().applicationContext()));
+        String preferredLocale = allSharedPreferences.fetchLanguagePreference();
+        Resources res = getOpenSRPContext().applicationContext().getResources();
+        // Change locale settings in the app.
+        DisplayMetrics dm = res.getDisplayMetrics();
+        Configuration conf = res.getConfiguration();
+        conf.locale = new Locale(preferredLocale);
+        res.updateConfiguration(conf, dm);
+
+    }
+
+    public static String switchLanguagePreference() {
+        AllSharedPreferences allSharedPreferences = new AllSharedPreferences(getDefaultSharedPreferences(getOpenSRPContext().applicationContext()));
+
+        String preferredLocale = allSharedPreferences.fetchLanguagePreference();
+        if (URDU_LOCALE.equals(preferredLocale)) {
+            allSharedPreferences.saveLanguagePreference(URDU_LOCALE);
+            Resources res = getOpenSRPContext().applicationContext().getResources();
+            // Change locale settings in the app.
+            DisplayMetrics dm = res.getDisplayMetrics();
+            android.content.res.Configuration conf = res.getConfiguration();
+            conf.locale = new Locale(URDU_LOCALE);
+            res.updateConfiguration(conf, dm);
+            return URDU_LANGUAGE;
+        } else {
+            allSharedPreferences.saveLanguagePreference(ENGLISH_LOCALE);
+            Resources res = getOpenSRPContext().applicationContext().getResources();
+            // Change locale settings in the app.
+            DisplayMetrics dm = res.getDisplayMetrics();
+            android.content.res.Configuration conf = res.getConfiguration();
+            conf.locale = new Locale(ENGLISH_LOCALE);
+            res.updateConfiguration(conf, dm);
+            return ENGLISH_LANGUAGE;
+        }
+    }
+
+    public static Context getOpenSRPContext() {
+        return VaccinatorApplication.getInstance().context();
+    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -110,8 +152,9 @@ public class LoginActivity extends AppCompatActivity {
         setDoneActionHandlerOnPasswordField();
         initializeProgressDialog();
 
-        setLanguage();
+        checkPermissions();
 
+        setLanguage();
     }
 
     @Override
@@ -198,7 +241,7 @@ public class LoginActivity extends AppCompatActivity {
         progressDialog.setMessage(getString(org.smartregister.R.string.loggin_in_dialog_message));
     }
 
-    public void localLogin(View view, String userName, String password) {
+    private void localLogin(View view, String userName, String password) {
         view.setClickable(true);
         if (getOpenSRPContext().userService().isUserInValidGroup(userName, password)
                 && (!PathConstants.TIME_CHECK || TimeStatus.OK.equals(getOpenSRPContext().userService().validateStoredServerTimeZone()))) {
@@ -209,9 +252,7 @@ public class LoginActivity extends AppCompatActivity {
         }
     }
 
-
     private void remoteLogin(final View view, final String userName, final String password) {
-
         if (!getOpenSRPContext().allSharedPreferences().fetchBaseURL("").isEmpty()) {
             tryRemoteLogin(userName, password, new Listener<LoginResponse>() {
                 public void onEvent(LoginResponse loginResponse) {
@@ -221,6 +262,7 @@ public class LoginActivity extends AppCompatActivity {
                             TimeStatus timeStatus = getOpenSRPContext().userService().validateDeviceTime(
                                     loginResponse.payload(), PathConstants.MAX_SERVER_TIME_DIFFERENCE);
                             if (!PathConstants.TIME_CHECK || timeStatus.equals(TimeStatus.OK)) {
+                                getOpenSRPContext().allSharedPreferences().saveIsSyncInitial(true);
                                 remoteLoginWith(userName, password, loginResponse.payload());
                                 Intent intent = new Intent(appContext, PullUniqueIdsIntentService.class);
                                 appContext.startService(intent);
@@ -247,8 +289,9 @@ public class LoginActivity extends AppCompatActivity {
                                 showErrorDialog(getResources().getString(R.string.unknown_response));
                             } else if (loginResponse == UNAUTHORIZED) {
                                 showErrorDialog(getResources().getString(R.string.unauthorized));
+                            } else {
+                                showErrorDialog(loginResponse.message());
                             }
-//                        showErrorDialog(loginResponse.message());
                         }
                     }
                 }
@@ -265,7 +308,7 @@ public class LoginActivity extends AppCompatActivity {
         AlertDialog dialog = new AlertDialog.Builder(this)
                 .setTitle(getString(org.smartregister.R.string.login_failed_dialog_title))
                 .setMessage(message)
-                .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                .setPositiveButton(getString(R.string.ok_button_label), new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
                     }
@@ -274,54 +317,21 @@ public class LoginActivity extends AppCompatActivity {
         dialog.show();
     }
 
-    private void showMessageDialog(String message, DialogInterface.OnClickListener ok, DialogInterface.OnClickListener cancel) {
+    private void showPermissionDialog(String title, String message) {
         AlertDialog dialog = new AlertDialog.Builder(this)
-                .setTitle(getString(org.smartregister.R.string.login_failed_dialog_title))
+                .setTitle(title)
                 .setMessage(message)
-                .setPositiveButton("OK", ok)
-                .setNegativeButton("Cancel", cancel)
+                .setPositiveButton(getString(R.string.ok_button_label), new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        checkPermissions();
+                    }
+                })
                 .create();
-
         dialog.show();
     }
 
-    private void getLocation() {
-        tryGetLocation(new Listener<Response<String>>() {
-            @Override
-            public void onEvent(Response<String> data) {
-                if (data.status() == ResponseStatus.success) {
-                    getOpenSRPContext().userService().saveAnmLocation(data.payload());
-                }
-            }
-        });
-    }
-
-    private void tryGetLocation(final Listener<Response<String>> afterGet) {
-        LockingBackgroundTask task = new LockingBackgroundTask(new ProgressIndicator() {
-            @Override
-            public void setVisible() {
-            }
-
-            @Override
-            public void setInvisible() {
-                Log.logInfo("Successfully get location");
-            }
-        });
-
-        task.doActionInBackground(new BackgroundAction<Response<String>>() {
-            @Override
-            public Response<String> actionToDoInBackgroundThread() {
-                return getOpenSRPContext().userService().getLocationInformation();
-            }
-
-            @Override
-            public void postExecuteInUIThread(Response<String> result) {
-                afterGet.onEvent(result);
-            }
-        });
-    }
-
-    public void tryRemoteLogin(final String userName, final String password, final Listener<LoginResponse> afterLoginCheck) {
+    private void tryRemoteLogin(final String userName, final String password, final Listener<LoginResponse> afterLoginCheck) {
         if (remoteLoginTask != null && !remoteLoginTask.isCancelled()) {
             remoteLoginTask.cancel(true);
         }
@@ -349,35 +359,34 @@ public class LoginActivity extends AppCompatActivity {
     private void localLoginWith(String userName, String password) {
         getOpenSRPContext().userService().localLogin(userName, password);
         goToHome(false);
-        startZScoreIntentService();
         new Thread(new Runnable() {
             @Override
             public void run() {
                 android.util.Log.i(getClass().getName(), "Starting DrishtiSyncScheduler " + DateTime.now().toString());
-                DrishtiSyncScheduler.startOnlyIfConnectedToNetwork(getApplicationContext());
+                if (NetworkUtils.isNetworkAvailable()) {
+                    VaccinatorAlarmReceiver.setAlarm(getApplicationContext(), BuildConfig.AUTO_SYNC_DURATION, PathConstants.ServiceType.AUTO_SYNC);
+                }
                 android.util.Log.i(getClass().getName(), "Started DrishtiSyncScheduler " + DateTime.now().toString());
             }
         }).start();
     }
 
-    private void startZScoreIntentService() {
-        Intent intent = new Intent(this, ZScoreRefreshIntentService.class);
-        startService(intent);
-    }
-
-    private void remoteLoginWith(String userName, String password, String userInfo) {
+    private void remoteLoginWith(String userName, String password, LoginResponseData userInfo) {
         getOpenSRPContext().userService().remoteLogin(userName, password, userInfo);
         goToHome(true);
-        DrishtiSyncScheduler.startOnlyIfConnectedToNetwork(getApplicationContext());
+        if (NetworkUtils.isNetworkAvailable()) {
+            VaccinatorAlarmReceiver.setAlarm(getApplicationContext(), BuildConfig.AUTO_SYNC_DURATION, PathConstants.ServiceType.AUTO_SYNC);
+        }
     }
 
     private void goToHome(boolean remote) {
-        if (!remote) startZScoreIntentService();
+        if (remote) {
+            Utils.startAsyncTask(new SaveTeamLocationsTask(), null);
+        }
         VaccinatorApplication.setCrashlyticsUser(getOpenSRPContext());
-        Intent intent = new Intent(this, HouseholdSmartRegisterActivity.class);
+        Intent intent = new Intent(this, ChildSmartRegisterActivity.class);
         intent.putExtra(BaseRegisterActivity.IS_REMOTE_LOGIN, remote);
         startActivity(intent);
-        IMDatabaseUtils.accessAssetsAndFillDataBaseForVaccineTypes(this, null);
 
         finish();
     }
@@ -388,51 +397,15 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     private String getBuildDate() throws PackageManager.NameNotFoundException, IOException {
-        ApplicationInfo applicationInfo = getPackageManager().getApplicationInfo(getPackageName(), 0);
-        ZipFile zf = new ZipFile(applicationInfo.sourceDir);
-        ZipEntry ze = zf.getEntry("classes.dex");
-        return new SimpleDateFormat("dd MMM yyyy", Locale.getDefault()).format(new java.util.Date(ze.getTime()));
-    }
-
-    public static void setLanguage() {
-        AllSharedPreferences allSharedPreferences = new AllSharedPreferences(getDefaultSharedPreferences(getOpenSRPContext().applicationContext()));
-        String preferredLocale = allSharedPreferences.fetchLanguagePreference();
-        Resources res = getOpenSRPContext().applicationContext().getResources();
-        // Change locale settings in the app.
-        DisplayMetrics dm = res.getDisplayMetrics();
-        Configuration conf = res.getConfiguration();
-        conf.locale = new Locale(preferredLocale);
-        res.updateConfiguration(conf, dm);
-
-    }
-
-    public static String switchLanguagePreference() {
-        AllSharedPreferences allSharedPreferences = new AllSharedPreferences(getDefaultSharedPreferences(getOpenSRPContext().applicationContext()));
-
-        String preferredLocale = allSharedPreferences.fetchLanguagePreference();
-        if (URDU_LOCALE.equals(preferredLocale)) {
-            allSharedPreferences.saveLanguagePreference(URDU_LOCALE);
-            Resources res = getOpenSRPContext().applicationContext().getResources();
-            // Change locale settings in the app.
-            DisplayMetrics dm = res.getDisplayMetrics();
-            android.content.res.Configuration conf = res.getConfiguration();
-            conf.locale = new Locale(URDU_LOCALE);
-            res.updateConfiguration(conf, dm);
-            return URDU_LANGUAGE;
-        } else {
-            allSharedPreferences.saveLanguagePreference(ENGLISH_LOCALE);
-            Resources res = getOpenSRPContext().applicationContext().getResources();
-            // Change locale settings in the app.
-            DisplayMetrics dm = res.getDisplayMetrics();
-            android.content.res.Configuration conf = res.getConfiguration();
-            conf.locale = new Locale(ENGLISH_LOCALE);
-            res.updateConfiguration(conf, dm);
-            return ENGLISH_LANGUAGE;
-        }
+        return new SimpleDateFormat("dd MMM yyyy", Locale.getDefault()).format(new Date(BuildConfig.BUILD_TIMESTAMP));
     }
 
     private void positionViews() {
         final ScrollView canvasSV = (ScrollView) findViewById(R.id.canvasSV);
+        if (canvasSV == null) {
+            return;
+        }
+
         final RelativeLayout canvasRL = (RelativeLayout) findViewById(R.id.canvasRL);
         final LinearLayout logoCanvasLL = (LinearLayout) findViewById(R.id.logoCanvasLL);
         final LinearLayout credentialsCanvasLL = (LinearLayout) findViewById(R.id.credentialsCanvasLL);
@@ -458,8 +431,29 @@ public class LoginActivity extends AppCompatActivity {
         });
     }
 
-    public static Context getOpenSRPContext() {
-        return VaccinatorApplication.getInstance().context();
+
+    private void checkPermissions() {
+        PermissionUtils.isPermissionGranted(this,
+                new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_EXTERNAL_STORAGE},
+                PermissionUtils.READ_EXTERNAL_STORAGE_REQUEST_CODE);
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        if (requestCode == PermissionUtils.READ_EXTERNAL_STORAGE_REQUEST_CODE) {
+            Map<String, Integer> perms = new HashMap<>();
+
+            perms.put(Manifest.permission.WRITE_EXTERNAL_STORAGE, PackageManager.PERMISSION_GRANTED);
+            perms.put(Manifest.permission.READ_EXTERNAL_STORAGE, PackageManager.PERMISSION_GRANTED);
+            // Fill with actual results from user
+            for (int i = 0; i < permissions.length; i++) {
+                perms.put(permissions[i], grantResults[i]);
+            }
+
+            if (ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) && perms.get(Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_DENIED && perms.get(Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_DENIED) {
+                showPermissionDialog(getString(R.string.permissions_required), getString(R.string.read_write_permissions_required));
+            }
+        }
     }
 
     ////////////////////////////////////////////////////////////////
@@ -490,8 +484,19 @@ public class LoginActivity extends AppCompatActivity {
         @Override
         protected void onPostExecute(LoginResponse loginResponse) {
             super.onPostExecute(loginResponse);
-            progressDialog.dismiss();
-            afterLoginCheck.onEvent(loginResponse);
+            if (!isDestroyed()) {
+                progressDialog.dismiss();
+                afterLoginCheck.onEvent(loginResponse);
+            }
+        }
+    }
+
+    private class SaveTeamLocationsTask extends AsyncTask<Void, Void, Void> {
+
+        @Override
+        protected Void doInBackground(Void... params) {
+            LocationHelper.getInstance().locationIdsFromHierarchy();
+            return null;
         }
     }
 }

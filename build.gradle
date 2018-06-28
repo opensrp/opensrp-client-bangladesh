@@ -1,6 +1,9 @@
 configure(allprojects) { project ->
     buildscript {
         repositories {
+            maven {
+                url "https://maven.google.com"
+            }
             jcenter()
             mavenCentral()
             maven { url 'https://oss.sonatype.org/content/repositories/snapshots/' }
@@ -16,15 +19,18 @@ subprojects {
     group = 'org.smartregister'
 
     ext.androidToolsBuildGradle     = '21.1.2'
-    ext.androidBuildToolsVersion    = '26.0.0'
+    ext.androidBuildToolsVersion    = '27.0.3'
     ext.androidMinSdkVersion        = 19
     ext.androidCompileSdkVersion    = 21
-    ext.androidTargetSdkVersion     = 21
+    ext.androidTargetSdkVersion     = 27
 
     ext.androidAnnotationsVersion = '3.0.1';
     ext.androidAnnotationsAPIVersion = '3.0.1';
 
     repositories {
+        maven {
+            url "https://maven.google.com"
+        }
         jcenter()
         mavenCentral()
         maven { url 'https://jitpack.io' }

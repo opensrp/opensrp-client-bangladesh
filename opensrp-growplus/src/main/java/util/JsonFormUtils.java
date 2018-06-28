@@ -1,13 +1,16 @@
 package util;
 
+import android.Manifest;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.os.AsyncTask;
 import android.preference.PreferenceManager;
 import android.provider.CalendarContract;
+import android.support.v4.app.ActivityCompat;
 import android.telephony.TelephonyManager;
 import android.text.TextUtils;
 import android.util.Log;
@@ -91,7 +94,7 @@ public class JsonFormUtils extends org.smartregister.util.JsonFormUtils {
     public static final String READ_ONLY = "read_only";
     private static final String METADATA = "metadata";
     public static final String ZEIR_ID = "ZEIR_ID";
-    public static final String  OpenMRS_ID = "OpenMRS_ID";
+    public static final String OpenMRS_ID = "OpenMRS_ID";
     private static final String M_ZEIR_ID = "M_ZEIR_ID";
     public static final String encounterType = "Update Birth Registration";
     private static final SimpleDateFormat DATE_TIME_FORMAT = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
@@ -114,22 +117,21 @@ public class JsonFormUtils extends org.smartregister.util.JsonFormUtils {
                 saveOutOfAreaService(context, openSrpContext, jsonString);
             } else if (form.getString("encounter_type").equals("Birth Registration")) {
                 saveBirthRegistration(context, openSrpContext, jsonString, providerId, "Child_Photo", "child", "mother");
-            }else if (form.getString("encounter_type").equals("Household Registration")) {
+            } else if (form.getString("encounter_type").equals("Household Registration")) {
                 saveHouseholdRegistration(context, openSrpContext, jsonString, providerId, "household_photo", "household");
-            }else if (form.getString("encounter_type").equals("New Woman Member Registration")) {
-                saveWomanRegistration(context, openSrpContext, jsonString, providerId, "woman_photo", "mother","household");
-            }else if (form.getString("encounter_type").equals("Pregnant Woman Counselling")) {
+            } else if (form.getString("encounter_type").equals("New Woman Member Registration")) {
+                saveWomanRegistration(context, openSrpContext, jsonString, providerId, "woman_photo", "mother", "household");
+            } else if (form.getString("encounter_type").equals("Pregnant Woman Counselling")) {
                 save_iycf_counselling_form_pregnants_woman(context, openSrpContext, jsonString, providerId, "woman_photo", "mother");
-            }else if (form.getString("encounter_type").equals("Lactating Woman Counselling")) {
+            } else if (form.getString("encounter_type").equals("Lactating Woman Counselling")) {
                 save_iycf_counselling_form_lactating_woman(context, openSrpContext, jsonString, providerId, "woman_photo", "mother");
-            }else if (form.getString("encounter_type").equals("Woman Member Follow Up")) {
-                saveWomanFollowUp(context, openSrpContext, jsonString, providerId, "woman_photo", "mother","household");
+            } else if (form.getString("encounter_type").equals("Woman Member Follow Up")) {
+                saveWomanFollowUp(context, openSrpContext, jsonString, providerId, "woman_photo", "mother", "household");
             }
         } catch (JSONException e) {
             Log.e(TAG, Log.getStackTraceString(e));
         }
     }
-
 
 
     public static void saveAdverseEvent(String jsonString, String locationId, String baseEntityId,
@@ -185,15 +187,15 @@ public class JsonFormUtils extends org.smartregister.util.JsonFormUtils {
                         Log.e(TAG, Log.getStackTraceString(e));
                     }
                 } else if (key.equals("Date_Birth")) {
-                    if(TextUtils.isEmpty(fields.getJSONObject(i).getString("value"))) {
+                    if (TextUtils.isEmpty(fields.getJSONObject(i).getString("value"))) {
                         for (int j = 0; j < fields.length(); j++) {
                             String keyJ = fields.getJSONObject(j).getString("key");
-                            if(keyJ.equals("age")) {
+                            if (keyJ.equals("age")) {
                                 String ageValue = fields.getJSONObject(j).getString("value");
                                 int age = 0;
                                 try {
                                     age = Integer.parseInt(ageValue);
-                                }catch (Exception e ){
+                                } catch (Exception e) {
                                     age = 0;
                                 }
                                 int dobYear = age;
@@ -208,13 +210,13 @@ public class JsonFormUtils extends org.smartregister.util.JsonFormUtils {
                             }
                         }
                     }
-                }else if (key.equals("HIE_FACILITIES")) {
-                    if(!TextUtils.isEmpty(fields.getJSONObject(i).getString("value"))){
+                } else if (key.equals("HIE_FACILITIES")) {
+                    if (!TextUtils.isEmpty(fields.getJSONObject(i).getString("value"))) {
                         String address = fields.getJSONObject(i).getString("value");
                         try {
                             address = address.replace("[", "").replace("]", "");
                             String[] addressStringArray = address.split(",");
-                            if(addressStringArray.length>0) {
+                            if (addressStringArray.length > 0) {
                                 address1.setAddressType("usual_residence");
                                 address1.addAddressField("country", addressStringArray[0].replaceAll("^\"|\"$", ""));
                                 address1.addAddressField("stateProvince", addressStringArray[1].replaceAll("^\"|\"$", ""));
@@ -226,19 +228,19 @@ public class JsonFormUtils extends org.smartregister.util.JsonFormUtils {
                                 address1.addAddressField("address4", addressStringArray[7].replaceAll("^\"|\"$", ""));
                             }
                             Log.v("address", address);
-                        }catch (Exception e){
+                        } catch (Exception e) {
 
                         }
                     }
-                }else if (key.equals("HHID")) {
-                    if(!TextUtils.isEmpty(fields.getJSONObject(i).getString("value"))) {
+                } else if (key.equals("HHID")) {
+                    if (!TextUtils.isEmpty(fields.getJSONObject(i).getString("value"))) {
                         String hhid = fields.getJSONObject(i).getString("value");
-                        address1.addAddressField("address5",hhid);
+                        address1.addAddressField("address5", hhid);
                     }
-                }else if (key.equals("ADDRESS_LINE")) {
-                    if(!TextUtils.isEmpty(fields.getJSONObject(i).getString("value"))) {
+                } else if (key.equals("ADDRESS_LINE")) {
+                    if (!TextUtils.isEmpty(fields.getJSONObject(i).getString("value"))) {
                         String addressLine = fields.getJSONObject(i).getString("value");
-                        address1.addAddressField("address6",addressLine);
+                        address1.addAddressField("address6", addressLine);
                     }
                 }
             }
@@ -247,8 +249,6 @@ public class JsonFormUtils extends org.smartregister.util.JsonFormUtils {
             adresses.add(address1);
             c.withAddresses(adresses);
             Event e = JsonFormUtils.createEvent(openSrpContext, fields, metadata, entityId, encounterType, providerId, bindType);
-
-
 
 
             if (c != null) {
@@ -332,16 +332,16 @@ public class JsonFormUtils extends org.smartregister.util.JsonFormUtils {
                     if (TextUtils.isEmpty(fields.getJSONObject(i).optString("value"))) {
                         fields.getJSONObject(i).put("value", MOTHER_DEFAULT_DOB);
                     }
-                }else if (key.equals("member_birth_date")) {
-                    if(TextUtils.isEmpty(fields.getJSONObject(i).getString("value"))) {
+                } else if (key.equals("member_birth_date")) {
+                    if (TextUtils.isEmpty(fields.getJSONObject(i).getString("value"))) {
                         for (int j = 0; j < fields.length(); j++) {
                             String keyJ = fields.getJSONObject(j).getString("key");
-                            if(keyJ.equals("age")) {
+                            if (keyJ.equals("age")) {
                                 String ageValue = fields.getJSONObject(j).getString("value");
                                 int age = 0;
                                 try {
                                     age = Integer.parseInt(ageValue);
-                                }catch (Exception e ){
+                                } catch (Exception e) {
                                     age = 0;
                                 }
                                 int dobYear = age;
@@ -356,36 +356,36 @@ public class JsonFormUtils extends org.smartregister.util.JsonFormUtils {
                             }
                         }
                     }
-                }else if (key.equals("lmp")) {
-                    if(TextUtils.isEmpty(fields.getJSONObject(i).getString("value"))) {
+                } else if (key.equals("lmp")) {
+                    if (TextUtils.isEmpty(fields.getJSONObject(i).getString("value"))) {
                         boolean USGNeeded = false;
                         for (int j = 0; j < fields.length(); j++) {
                             String keyJ = fields.getJSONObject(j).getString("key");
-                            if(keyJ.equals("edd")) {
-                                if(!TextUtils.isEmpty(fields.getJSONObject(j).getString("value"))) {
+                            if (keyJ.equals("edd")) {
+                                if (!TextUtils.isEmpty(fields.getJSONObject(j).getString("value"))) {
                                     String eddValue = fields.getJSONObject(j).getString("value");
                                     DateTime now = new DateTime(dd_MM_yyyy.parse(eddValue));
                                     DateTime dob = now.minusDays(280);
                                     fields.getJSONObject(i).put("value", dd_MM_yyyy.format(dob.toDate()));
-                                }else{
+                                } else {
                                     USGNeeded = true;
                                 }
                             }
                         }
-                        if(USGNeeded){
+                        if (USGNeeded) {
                             String ultrasound_dateValue = "";
                             String ultrasound_weeksValue = "";
 
 
                             for (int j = 0; j < fields.length(); j++) {
                                 String keyJ = fields.getJSONObject(j).getString("key");
-                                if(keyJ.equals("ultrasound_date")) {
-                                    if(!TextUtils.isEmpty(fields.getJSONObject(j).getString("value"))) {
+                                if (keyJ.equals("ultrasound_date")) {
+                                    if (!TextUtils.isEmpty(fields.getJSONObject(j).getString("value"))) {
                                         ultrasound_dateValue = fields.getJSONObject(j).getString("value");
                                     }
                                 }
-                                if(keyJ.equals("ultrasound_weeks")) {
-                                    if(!TextUtils.isEmpty(fields.getJSONObject(j).getString("value"))) {
+                                if (keyJ.equals("ultrasound_weeks")) {
+                                    if (!TextUtils.isEmpty(fields.getJSONObject(j).getString("value"))) {
                                         ultrasound_weeksValue = fields.getJSONObject(j).getString("value");
                                     }
                                 }
@@ -403,16 +403,16 @@ public class JsonFormUtils extends org.smartregister.util.JsonFormUtils {
                                         }
                                     }
                                 }
-                            }catch (Exception e){
+                            } catch (Exception e) {
 
                             }
                         }
-                    }else{
+                    } else {
                         String lmpValue = fields.getJSONObject(i).getString("value");
                         for (int j = 0; j < fields.length(); j++) {
                             String keyJ = fields.getJSONObject(j).getString("key");
-                            if(keyJ.equals("edd")) {
-                                if(TextUtils.isEmpty(fields.getJSONObject(j).getString("value"))) {
+                            if (keyJ.equals("edd")) {
+                                if (TextUtils.isEmpty(fields.getJSONObject(j).getString("value"))) {
 
                                     DateTime now = new DateTime(dd_MM_yyyy.parse(lmpValue));
                                     DateTime dob = now.plusDays(280);
@@ -441,7 +441,7 @@ public class JsonFormUtils extends org.smartregister.util.JsonFormUtils {
                 Client ss = new Client(lookUpBaseEntityId);
                 addRelationship(context, ss, c);
                 SQLiteDatabase db = VaccinatorApplication.getInstance().getRepository().getReadableDatabase();
-                PathRepository pathRepository = new PathRepository(context,VaccinatorApplication.getInstance().context());
+                PathRepository pathRepository = new PathRepository(context, VaccinatorApplication.getInstance().context());
                 EventClientRepository eventClientRepository = new EventClientRepository(pathRepository);
                 JSONObject clientjson = eventClientRepository.getClient(db, lookUpBaseEntityId);
                 c.setAddresses(getAddressFromClientJson(clientjson));
@@ -465,7 +465,6 @@ public class JsonFormUtils extends org.smartregister.util.JsonFormUtils {
             VaccinatorApplication.getInstance().uniqueIdRepository().close(zeirId);
 
 
-
             String imageLocation = getFieldValue(fields, imageKey);
             saveImage(context, providerId, entityId, imageLocation);
 
@@ -478,9 +477,10 @@ public class JsonFormUtils extends org.smartregister.util.JsonFormUtils {
             Log.e(TAG, "", e);
         }
     }
+
     private static void saveWomanFollowUp(Context context, org.smartregister.Context openSrpContext,
-                                              String jsonString, String providerId, String imageKey, String bindType,
-                                              String subBindType) {
+                                          String jsonString, String providerId, String imageKey, String bindType,
+                                          String subBindType) {
         if (context == null || openSrpContext == null || StringUtils.isBlank(providerId)
                 || StringUtils.isBlank(jsonString)) {
             return;
@@ -505,17 +505,17 @@ public class JsonFormUtils extends org.smartregister.util.JsonFormUtils {
             JSONObject metadata = getJSONObject(jsonForm, METADATA);
             boolean lactatingwoman = false;
             boolean pregnantwoman = false;
-            if(fieldmap.get("lactating_woman")!=null){
-                if(fieldmap.get("lactating_woman").equalsIgnoreCase("Yes")){
+            if (fieldmap.get("lactating_woman") != null) {
+                if (fieldmap.get("lactating_woman").equalsIgnoreCase("Yes")) {
                     lactatingwoman = true;
                 }
             }
-            if(fieldmap.get("pregnant")!=null){
-                if(fieldmap.get("pregnant").equalsIgnoreCase("Yes")){
+            if (fieldmap.get("pregnant") != null) {
+                if (fieldmap.get("pregnant").equalsIgnoreCase("Yes")) {
                     pregnantwoman = true;
                 }
             }
-            if(!lactatingwoman && pregnantwoman) {
+            if (!lactatingwoman && pregnantwoman) {
                 // Replace values for location questions with their corresponding location IDs
                 for (int i = 0; i < fields.length(); i++) {
                     String key = fields.getJSONObject(i).getString("key");
@@ -601,7 +601,7 @@ public class JsonFormUtils extends org.smartregister.util.JsonFormUtils {
     }
 
     private static void save_iycf_counselling_form_pregnants_woman(Context context, org.smartregister.Context openSrpContext,
-                                                  String jsonString, String providerId, String imageKey, String bindType) {
+                                                                   String jsonString, String providerId, String imageKey, String bindType) {
         if (context == null || openSrpContext == null || StringUtils.isBlank(providerId)
                 || StringUtils.isBlank(jsonString)) {
             return;
@@ -644,7 +644,7 @@ public class JsonFormUtils extends org.smartregister.util.JsonFormUtils {
             PathClientProcessor.getInstance(context).processClient(ecUpdater.getEvents(lastSyncDate, BaseRepository.TYPE_Unsynced));
             allSharedPreferences.saveLastUpdatedAtDate(lastSyncDate.getTime());
             Map<String, String> fieldshashmap = fieldsToHashmap(fields);
-            Counselling counselling = new Counselling(null,entityId,encounterType,lastSyncDate,providerId,null,BaseRepository.TYPE_Synced,lastSyncTimeStamp,e.getEventId(),e.getFormSubmissionId(),lastSyncDate);
+            Counselling counselling = new Counselling(null, entityId, encounterType, lastSyncDate, providerId, null, BaseRepository.TYPE_Synced, lastSyncTimeStamp, e.getEventId(), e.getFormSubmissionId(), lastSyncDate);
             counselling.setFormfields(fieldshashmap);
             VaccinatorApplication.getInstance().counsellingRepository().add(counselling);
 
@@ -652,19 +652,18 @@ public class JsonFormUtils extends org.smartregister.util.JsonFormUtils {
             Date appointment_date = dd_MM_yyyy.parse(date_of_next_apointment);
 
 
-
             DetailsRepository detailsRepository;
             detailsRepository = org.smartregister.Context.getInstance().detailsRepository();
             Map<String, String> details = detailsRepository.getAllDetailsForClient(entityId);
-            String locationid = JsonFormUtils.getOpenMrsLocationId(org.smartregister.Context.getInstance(),getValue(details, "address3", false) );
+            String locationid = JsonFormUtils.getOpenMrsLocationId(org.smartregister.Context.getInstance(), getValue(details, "address3", false));
             String womanName = getValue(details, "first_name", false);
-            String birthFacilityHierarchy = JsonFormUtils.getOpenMrsLocationHierarchy(org.smartregister.Context.getInstance(),locationid ).toString();
+            String birthFacilityHierarchy = JsonFormUtils.getOpenMrsLocationHierarchy(org.smartregister.Context.getInstance(), locationid).toString();
 
             Intent calIntent = new Intent(Intent.ACTION_INSERT);
             calIntent.setType("vnd.android.cursor.item/event");
             calIntent.putExtra(CalendarContract.Events.TITLE, "Pregnant Woman Counselling");
             calIntent.putExtra(CalendarContract.Events.EVENT_LOCATION, "");
-            calIntent.putExtra(CalendarContract.Events.DESCRIPTION, "Visit "+womanName+" for Counselling in"+birthFacilityHierarchy);
+            calIntent.putExtra(CalendarContract.Events.DESCRIPTION, "Visit " + womanName + " for Counselling in" + birthFacilityHierarchy);
             GregorianCalendar calDate = new GregorianCalendar();
             calDate.setTime(appointment_date);
             calIntent.putExtra(CalendarContract.EXTRA_EVENT_ALL_DAY, true);
@@ -677,6 +676,7 @@ public class JsonFormUtils extends org.smartregister.util.JsonFormUtils {
             Log.e(TAG, "", e);
         }
     }
+
     private static void save_iycf_counselling_form_lactating_woman(Context context, org.smartregister.Context openSrpContext,
                                                                    String jsonString, String providerId, String imageKey, String bindType) {
         if (context == null || openSrpContext == null || StringUtils.isBlank(providerId)
@@ -721,11 +721,10 @@ public class JsonFormUtils extends org.smartregister.util.JsonFormUtils {
             PathClientProcessor.getInstance(context).processClient(ecUpdater.getEvents(lastSyncDate, BaseRepository.TYPE_Unsynced));
             allSharedPreferences.saveLastUpdatedAtDate(lastSyncDate.getTime());
 
-            Counselling counselling = new Counselling(null,entityId,encounterType,lastSyncDate,providerId,null,BaseRepository.TYPE_Synced,lastSyncTimeStamp,e.getEventId(),e.getFormSubmissionId(),lastSyncDate);
-            Map<String,String> fieldshashmap = fieldsToHashmap(fields);
+            Counselling counselling = new Counselling(null, entityId, encounterType, lastSyncDate, providerId, null, BaseRepository.TYPE_Synced, lastSyncTimeStamp, e.getEventId(), e.getFormSubmissionId(), lastSyncDate);
+            Map<String, String> fieldshashmap = fieldsToHashmap(fields);
             counselling.setFormfields(fieldshashmap);
             VaccinatorApplication.getInstance().counsellingRepository().add(counselling);
-
 
 
             String date_of_next_apointment = fieldshashmap.get("Date_Of_next_appointment");
@@ -741,15 +740,15 @@ public class JsonFormUtils extends org.smartregister.util.JsonFormUtils {
             Map<String, String> motherdetails = detailsRepository.getAllDetailsForClient(motherBaseEntityId);
 
 
-            String locationid = JsonFormUtils.getOpenMrsLocationId(org.smartregister.Context.getInstance(),getValue(motherdetails, "address3", false) );
+            String locationid = JsonFormUtils.getOpenMrsLocationId(org.smartregister.Context.getInstance(), getValue(motherdetails, "address3", false));
             String womanName = getValue(motherdetails, "first_name", false);
-            String birthFacilityHierarchy = JsonFormUtils.getOpenMrsLocationHierarchy(org.smartregister.Context.getInstance(),locationid ).toString();
+            String birthFacilityHierarchy = JsonFormUtils.getOpenMrsLocationHierarchy(org.smartregister.Context.getInstance(), locationid).toString();
 
             Intent calIntent = new Intent(Intent.ACTION_INSERT);
             calIntent.setType("vnd.android.cursor.item/event");
             calIntent.putExtra(CalendarContract.Events.TITLE, "Pregnant Woman Counselling");
             calIntent.putExtra(CalendarContract.Events.EVENT_LOCATION, "");
-            calIntent.putExtra(CalendarContract.Events.DESCRIPTION, "Visit "+womanName+" for Counselling in"+birthFacilityHierarchy);
+            calIntent.putExtra(CalendarContract.Events.DESCRIPTION, "Visit " + womanName + " for Counselling in" + birthFacilityHierarchy);
             GregorianCalendar calDate = new GregorianCalendar();
             calDate.setTime(appointment_date);
             calIntent.putExtra(CalendarContract.EXTRA_EVENT_ALL_DAY, true);
@@ -764,25 +763,25 @@ public class JsonFormUtils extends org.smartregister.util.JsonFormUtils {
     }
 
     private static JSONArray processCheckbox(JSONArray fields) {
-        for(int i = 0;i<fields.length();i++){
+        for (int i = 0; i < fields.length(); i++) {
             try {
 
                 JSONObject questiongroup = fields.getJSONObject(i);
-                if(questiongroup.has("type")){
-                    if(questiongroup.getString("type").equalsIgnoreCase("check_box")){
+                if (questiongroup.has("type")) {
+                    if (questiongroup.getString("type").equalsIgnoreCase("check_box")) {
                         JSONArray options = questiongroup.getJSONArray("options");
                         String value = "";
-                        for(int j = 0;j<options.length();j++){
-                            if(options.getJSONObject(j).getString("value").equalsIgnoreCase("true")){
-                                if(value.equalsIgnoreCase("")) {
+                        for (int j = 0; j < options.length(); j++) {
+                            if (options.getJSONObject(j).getString("value").equalsIgnoreCase("true")) {
+                                if (value.equalsIgnoreCase("")) {
                                     value = value + options.getJSONObject(j).getString("key");
-                                }else {
-                                    value = value+","+options.getJSONObject(j).getString("key");
+                                } else {
+                                    value = value + "," + options.getJSONObject(j).getString("key");
                                 }
                             }
                         }
                         questiongroup.remove("value");
-                        questiongroup.put("value",value);
+                        questiongroup.put("value", value);
                     }
                 }
             } catch (JSONException e) {
@@ -793,17 +792,17 @@ public class JsonFormUtils extends org.smartregister.util.JsonFormUtils {
     }
 
     private static Map<String, String> fieldsToHashmap(JSONArray fields) {
-        HashMap<String,String> fieldsToHashmap = new HashMap<String, String>();
-            try {
-                for(int i = 0;i<fields.length();i++) {
-                    JSONObject field = fields.getJSONObject(i);
-                    if(field.has("key")&&field.has("value")){
-                        fieldsToHashmap.put(field.getString("key"),field.getString("value"));
-                    }
+        HashMap<String, String> fieldsToHashmap = new HashMap<String, String>();
+        try {
+            for (int i = 0; i < fields.length(); i++) {
+                JSONObject field = fields.getJSONObject(i);
+                if (field.has("key") && field.has("value")) {
+                    fieldsToHashmap.put(field.getString("key"), field.getString("value"));
                 }
-            } catch (JSONException e) {
-                e.printStackTrace();
             }
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
 
         return fieldsToHashmap;
     }
@@ -812,17 +811,17 @@ public class JsonFormUtils extends org.smartregister.util.JsonFormUtils {
         ArrayList<Address> addresses = new ArrayList<Address>();
         try {
             JSONArray addressArray = clientjson.getJSONArray("addresses");
-            for(int i = 0 ;i<addressArray.length();i++){
+            for (int i = 0; i < addressArray.length(); i++) {
                 Address address = new Address();
                 address.setAddressType(addressArray.getJSONObject(i).getString("addressType"));
                 JSONObject addressfields = addressArray.getJSONObject(i).getJSONObject("addressFields");
 
                 Iterator<?> keys = addressfields.keys();
 
-                while( keys.hasNext() ) {
-                    String key = (String)keys.next();
-                    if ( addressfields.get(key) instanceof String ) {
-                        address.addAddressField(key,addressfields.getString(key));
+                while (keys.hasNext()) {
+                    String key = (String) keys.next();
+                    if (addressfields.get(key) instanceof String) {
+                        address.addAddressField(key, addressfields.getString(key));
                     }
                 }
                 addresses.add(address);
@@ -885,13 +884,13 @@ public class JsonFormUtils extends org.smartregister.util.JsonFormUtils {
                     if (TextUtils.isEmpty(fields.getJSONObject(i).optString("value"))) {
                         fields.getJSONObject(i).put("value", MOTHER_DEFAULT_DOB);
                     }
-                }else if (key.equals("HIE_FACILITIES")) {
-                    if(!TextUtils.isEmpty(fields.getJSONObject(i).getString("value"))){
+                } else if (key.equals("HIE_FACILITIES")) {
+                    if (!TextUtils.isEmpty(fields.getJSONObject(i).getString("value"))) {
                         String address = fields.getJSONObject(i).getString("value");
                         try {
                             address = address.replace("[", "").replace("]", "");
                             String[] addressStringArray = address.split(",");
-                            if(addressStringArray.length>0) {
+                            if (addressStringArray.length > 0) {
                                 address1.setAddressType("usual_residence");
                                 address1.addAddressField("country", addressStringArray[0].replaceAll("^\"|\"$", ""));
                                 address1.addAddressField("stateProvince", addressStringArray[1].replaceAll("^\"|\"$", ""));
@@ -903,7 +902,7 @@ public class JsonFormUtils extends org.smartregister.util.JsonFormUtils {
                                 address1.addAddressField("address4", addressStringArray[7].replaceAll("^\"|\"$", ""));
                             }
                             Log.v("address", address);
-                        }catch (Exception e){
+                        } catch (Exception e) {
 
                         }
                     }
@@ -1839,6 +1838,7 @@ public class JsonFormUtils extends org.smartregister.util.JsonFormUtils {
             //Log.e(TAG, Log.getStackTraceString(e));
         }
     }
+
     public static void addHouseholdRegLocHierarchyQuestions(JSONObject form,
                                                             org.smartregister.Context context) {
         try {
@@ -1893,115 +1893,115 @@ public class JsonFormUtils extends org.smartregister.util.JsonFormUtils {
 
 
     public static void addAddAvailableVaccines(Context context, JSONObject form) {
-        String supportedVaccinesString = VaccinatorUtils.getSupportedVaccines(context);
-        if (StringUtils.isNotEmpty(supportedVaccinesString) && form != null) {
-            // For each of the vaccine groups, create a checkbox question
-            try {
-                JSONArray questionList = form.getJSONObject("step1").getJSONArray("fields");
-                JSONObject vaccinationLabel = new JSONObject();
-                vaccinationLabel.put("key", "Vaccines_Provided_Label");
-                vaccinationLabel.put("type", "label");
-                vaccinationLabel.put("text", "Which vaccinations were provided?");
-                vaccinationLabel.put("openmrs_entity_parent", "-");
-                vaccinationLabel.put("openmrs_entity", "-");
-                vaccinationLabel.put("openmrs_entity_id", "-");
-                questionList.put(vaccinationLabel);
-                JSONArray supportedVaccines = new JSONArray(supportedVaccinesString);
-
-                HashMap<String, ArrayList<JSONObject>> vaccineTypeConstraints = new HashMap<>();
-                for (int i = 0; i < supportedVaccines.length(); i++) {
-                    JSONObject curVaccineGroup = supportedVaccines.getJSONObject(i);
-                    JSONArray vaccines = curVaccineGroup.getJSONArray("vaccines");
-                    for (int j = 0; j < vaccines.length(); j++) {
-                        JSONObject curVaccine = vaccines.getJSONObject(j);
-                        if (!vaccineTypeConstraints.containsKey(curVaccine.getString("type"))) {
-                            vaccineTypeConstraints.put(curVaccine.getString("type"),
-                                    new ArrayList<JSONObject>());
-                        }
-                        ArrayList<String> vaccineNamesDefined = new ArrayList<>();
-                        if (curVaccine.has("vaccine_separator")) {
-                            String unsplitNames = curVaccine.getString("name");
-                            String separator = curVaccine.getString("vaccine_separator");
-                            String[] splitValues = unsplitNames.split(separator);
-                            for (String splitValue : splitValues) {
-                                vaccineNamesDefined.add(splitValue);
-                            }
-                        } else {
-                            vaccineNamesDefined.add(curVaccine.getString("name"));
-                        }
-
-                        for (String curVaccineName : vaccineNamesDefined) {
-                            JSONObject curConstraint = new JSONObject();
-                            curConstraint.put("vaccine", curVaccineName);
-                            curConstraint.put("type", "array");
-                            curConstraint.put("ex",
-                                    "notEqualTo(step1:" + curVaccineGroup.getString("id") + ", \"[\"" + curVaccineName + "\"]\")");
-                            curConstraint.put("err", "Cannot be given with the other " + curVaccine.getString("type") + " dose");
-                            vaccineTypeConstraints.get(curVaccine.getString("type")).add(curConstraint);
-                        }
-                    }
-                }
-
-                for (int i = 0; i < supportedVaccines.length(); i++) {
-                    JSONObject curVaccineGroup = supportedVaccines.getJSONObject(i);
-                    JSONObject curQuestion = new JSONObject();
-                    curQuestion.put("key", curVaccineGroup.getString("id"));
-                    curQuestion.put("type", "check_box");
-                    curQuestion.put("is_vaccine_group", true);
-                    curQuestion.put("label", curVaccineGroup.getString("name"));
-                    curQuestion.put("openmrs_entity_parent", "-");
-                    curQuestion.put("openmrs_entity", "-");
-                    curQuestion.put("openmrs_entity_id", "-");
-
-                    JSONArray vaccines = curVaccineGroup.getJSONArray("vaccines");
-                    JSONArray options = new JSONArray();
-                    for (int j = 0; j < vaccines.length(); j++) {
-                        ArrayList<String> definedVaccineNames = new ArrayList<>();
-                        if (vaccines.getJSONObject(j).has("vaccine_separator")) {
-                            String rawNames = vaccines.getJSONObject(j).getString("name");
-                            String separator = vaccines.getJSONObject(j).getString("vaccine_separator");
-                            String[] split = rawNames.split(separator);
-                            for (String aSplit : split) {
-                                definedVaccineNames.add(aSplit);
-                            }
-                        } else {
-                            definedVaccineNames.add(vaccines.getJSONObject(j).getString("name"));
-                        }
-
-                        for (String curVaccineName : definedVaccineNames) {
-                            JSONObject curVaccines = new JSONObject();
-                            curVaccines.put("key", curVaccineName);
-                            curVaccines.put("text", curVaccineName);
-                            curVaccines.put("value", "false");
-                            JSONArray constraints = new JSONArray();
-
-                            // Add the constraints
-                            if (vaccineTypeConstraints.containsKey(vaccines.getJSONObject(j).getString("type"))) {
-                                for (JSONObject curConstraint : vaccineTypeConstraints.get(vaccines.getJSONObject(j).getString("type"))) {
-                                    if (!curConstraint.getString("vaccine")
-                                            .equals(curVaccineName)) {
-                                        JSONObject constraintClone = new JSONObject(curConstraint.toString());
-                                        constraintClone.remove("vaccine");
-                                        constraints.put(constraintClone);
-                                    }
-                                }
-                            }
-
-                            if (constraints.length() > 0) {
-                                curVaccines.put("constraints", constraints);
-                            }
-
-                            options.put(curVaccines);
-                        }
-                    }
-
-                    curQuestion.put("options", options);
-                    questionList.put(curQuestion);
-                }
-            } catch (JSONException e) {
-                Log.e(TAG, Log.getStackTraceString(e));
-            }
-        }
+//        String supportedVaccinesString = VaccinatorUtils.getSupportedVaccines(context);
+//        if (StringUtils.isNotEmpty(supportedVaccinesString) && form != null) {
+//            // For each of the vaccine groups, create a checkbox question
+//            try {
+//                JSONArray questionList = form.getJSONObject("step1").getJSONArray("fields");
+//                JSONObject vaccinationLabel = new JSONObject();
+//                vaccinationLabel.put("key", "Vaccines_Provided_Label");
+//                vaccinationLabel.put("type", "label");
+//                vaccinationLabel.put("text", "Which vaccinations were provided?");
+//                vaccinationLabel.put("openmrs_entity_parent", "-");
+//                vaccinationLabel.put("openmrs_entity", "-");
+//                vaccinationLabel.put("openmrs_entity_id", "-");
+//                questionList.put(vaccinationLabel);
+//                JSONArray supportedVaccines = new JSONArray(supportedVaccinesString);
+//
+//                HashMap<String, ArrayList<JSONObject>> vaccineTypeConstraints = new HashMap<>();
+//                for (int i = 0; i < supportedVaccines.length(); i++) {
+//                    JSONObject curVaccineGroup = supportedVaccines.getJSONObject(i);
+//                    JSONArray vaccines = curVaccineGroup.getJSONArray("vaccines");
+//                    for (int j = 0; j < vaccines.length(); j++) {
+//                        JSONObject curVaccine = vaccines.getJSONObject(j);
+//                        if (!vaccineTypeConstraints.containsKey(curVaccine.getString("type"))) {
+//                            vaccineTypeConstraints.put(curVaccine.getString("type"),
+//                                    new ArrayList<JSONObject>());
+//                        }
+//                        ArrayList<String> vaccineNamesDefined = new ArrayList<>();
+//                        if (curVaccine.has("vaccine_separator")) {
+//                            String unsplitNames = curVaccine.getString("name");
+//                            String separator = curVaccine.getString("vaccine_separator");
+//                            String[] splitValues = unsplitNames.split(separator);
+//                            for (String splitValue : splitValues) {
+//                                vaccineNamesDefined.add(splitValue);
+//                            }
+//                        } else {
+//                            vaccineNamesDefined.add(curVaccine.getString("name"));
+//                        }
+//
+//                        for (String curVaccineName : vaccineNamesDefined) {
+//                            JSONObject curConstraint = new JSONObject();
+//                            curConstraint.put("vaccine", curVaccineName);
+//                            curConstraint.put("type", "array");
+//                            curConstraint.put("ex",
+//                                    "notEqualTo(step1:" + curVaccineGroup.getString("id") + ", \"[\"" + curVaccineName + "\"]\")");
+//                            curConstraint.put("err", "Cannot be given with the other " + curVaccine.getString("type") + " dose");
+//                            vaccineTypeConstraints.get(curVaccine.getString("type")).add(curConstraint);
+//                        }
+//                    }
+//                }
+//
+//                for (int i = 0; i < supportedVaccines.length(); i++) {
+//                    JSONObject curVaccineGroup = supportedVaccines.getJSONObject(i);
+//                    JSONObject curQuestion = new JSONObject();
+//                    curQuestion.put("key", curVaccineGroup.getString("id"));
+//                    curQuestion.put("type", "check_box");
+//                    curQuestion.put("is_vaccine_group", true);
+//                    curQuestion.put("label", curVaccineGroup.getString("name"));
+//                    curQuestion.put("openmrs_entity_parent", "-");
+//                    curQuestion.put("openmrs_entity", "-");
+//                    curQuestion.put("openmrs_entity_id", "-");
+//
+//                    JSONArray vaccines = curVaccineGroup.getJSONArray("vaccines");
+//                    JSONArray options = new JSONArray();
+//                    for (int j = 0; j < vaccines.length(); j++) {
+//                        ArrayList<String> definedVaccineNames = new ArrayList<>();
+//                        if (vaccines.getJSONObject(j).has("vaccine_separator")) {
+//                            String rawNames = vaccines.getJSONObject(j).getString("name");
+//                            String separator = vaccines.getJSONObject(j).getString("vaccine_separator");
+//                            String[] split = rawNames.split(separator);
+//                            for (String aSplit : split) {
+//                                definedVaccineNames.add(aSplit);
+//                            }
+//                        } else {
+//                            definedVaccineNames.add(vaccines.getJSONObject(j).getString("name"));
+//                        }
+//
+//                        for (String curVaccineName : definedVaccineNames) {
+//                            JSONObject curVaccines = new JSONObject();
+//                            curVaccines.put("key", curVaccineName);
+//                            curVaccines.put("text", curVaccineName);
+//                            curVaccines.put("value", "false");
+//                            JSONArray constraints = new JSONArray();
+//
+//                            // Add the constraints
+//                            if (vaccineTypeConstraints.containsKey(vaccines.getJSONObject(j).getString("type"))) {
+//                                for (JSONObject curConstraint : vaccineTypeConstraints.get(vaccines.getJSONObject(j).getString("type"))) {
+//                                    if (!curConstraint.getString("vaccine")
+//                                            .equals(curVaccineName)) {
+//                                        JSONObject constraintClone = new JSONObject(curConstraint.toString());
+//                                        constraintClone.remove("vaccine");
+//                                        constraints.put(constraintClone);
+//                                    }
+//                                }
+//                            }
+//
+//                            if (constraints.length() > 0) {
+//                                curVaccines.put("constraints", constraints);
+//                            }
+//
+//                            options.put(curVaccines);
+//                        }
+//                    }
+//
+//                    curQuestion.put("options", options);
+//                    questionList.put(curQuestion);
+//                }
+//            } catch (JSONException e) {
+//                Log.e(TAG, Log.getStackTraceString(e));
+//            }
+//        }
     }
 
     public static String getOpenMrsLocationId(org.smartregister.Context context,
@@ -2254,7 +2254,7 @@ public class JsonFormUtils extends org.smartregister.util.JsonFormUtils {
                 }
                 JsonFormUtils.addAddAvailableVaccines(context, form);
 
-            }else  if (formName.equals("household_registration")) {
+            } else if (formName.equals("household_registration")) {
                 if (StringUtils.isBlank(entityId)) {
                     UniqueIdRepository uniqueIdRepo = VaccinatorApplication.getInstance().uniqueIdRepository();
                     entityId = uniqueIdRepo.getNextUniqueId() != null ? uniqueIdRepo.getNextUniqueId().getOpenmrsId() : "";
@@ -2311,6 +2311,7 @@ public class JsonFormUtils extends org.smartregister.util.JsonFormUtils {
         event.addObs(obs);
 
         TelephonyManager mTelephonyManager = (TelephonyManager) context.getSystemService(Context.TELEPHONY_SERVICE);
+
 
         String deviceId = mTelephonyManager.getSimSerialNumber();
 

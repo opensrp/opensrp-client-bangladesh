@@ -218,11 +218,7 @@ public class PathUpdateActionsTask {
                 db.markEventsAsSynced(pendingEvents);
                 Log.i(getClass().getName(), "Events synced successfully.");
             }
-        } catch (JSONException e) {
-            Log.e(getClass().getName(), e.getMessage());
-        } catch (ParseException e) {
-            Log.e(getClass().getName(), e.getMessage());
-        } catch (UnsupportedEncodingException e) {
+        } catch (Exception e) {
             Log.e(getClass().getName(), e.getMessage());
         }
 
@@ -288,11 +284,7 @@ public class PathUpdateActionsTask {
                 db.markReportsAsSynced(pendingReports);
                 Log.i(getClass().getName(), "Reports synced successfully.");
             }
-        } catch (JSONException e) {
-            Log.e(getClass().getName(), e.getMessage());
-        } catch (ParseException e) {
-            Log.e(getClass().getName(), e.getMessage());
-        } catch (UnsupportedEncodingException e) {
+        } catch (Exception e) {
             Log.e(getClass().getName(), e.getMessage());
         }
     }

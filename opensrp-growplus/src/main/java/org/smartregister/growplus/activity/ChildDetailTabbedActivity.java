@@ -1006,8 +1006,8 @@ public class ChildDetailTabbedActivity extends BaseActivity implements Vaccinati
         weightWrapper.setPhoto(photo);
         weightWrapper.setPmtctStatus(getValue(childDetails.getColumnmaps(), "pmtct_status", false));
 
-        EditWeightDialogFragment editWeightDialogFragment = EditWeightDialogFragment.newInstance(this, weightWrapper);
-        editWeightDialogFragment.show(ft, DIALOG_TAG);
+//        EditWeightDialogFragment editWeightDialogFragment = EditWeightDialogFragment.newInstance(this, weightWrapper);
+//        editWeightDialogFragment.show(ft, DIALOG_TAG);
 
     }
 

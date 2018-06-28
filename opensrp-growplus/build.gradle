@@ -4,7 +4,7 @@ buildscript {
         maven { url 'https://maven.fabric.io/public' }
     }
     dependencies {
-        classpath "com.android.tools.build:gradle:1.2.3"
+        classpath "com.android.tools.build:gradle:3.1.2"
         classpath 'org.apache.commons:commons-lang3:3.3.2'
         classpath 'org.robolectric:robolectric-gradle-plugin:1.1.0'
         classpath 'io.fabric.tools:gradle:1.+'
@@ -31,21 +31,21 @@ repositories {
 }
 
 android {
-    compileSdkVersion 23
-    buildToolsVersion "26.0.1"
+    compileSdkVersion 27
+    buildToolsVersion "27.0.3"
 
     defaultConfig {
         applicationId "org.smartregister.growplus"
         minSdkVersion 19
-        targetSdkVersion 21
+        targetSdkVersion 27
         versionCode 8
         versionName "1.2.2"
         multiDexEnabled true
+        buildConfigField "long", "BUILD_TIMESTAMP", System.currentTimeMillis() + "L"
         testInstrumentationRunner 'android.support.test.runner.AndroidJUnitRunner'
     }
 
     dexOptions {
-        incremental true
         javaMaxHeapSize "4g"
     }
 
@@ -66,6 +66,14 @@ android {
             buildConfigField "int", "DATABASE_VERSION", '8'
             buildConfigField "long", "MAX_SERVER_TIME_DIFFERENCE", "1800000l"
             buildConfigField "boolean", "TIME_CHECK", "false"
+            buildConfigField "int", "AUTO_SYNC_DURATION", '2'
+            buildConfigField "int", "WEIGHT_SYNC_PROCESSING_MINUTES", '3'
+            buildConfigField "int", "VACCINE_SYNC_PROCESSING_MINUTES", '3'
+            buildConfigField "int", "RECURRING_SERVICES_SYNC_PROCESSING_MINUTES", '3'
+            buildConfigField "int", "DAILY_TALLIES_GENERATION_MINUTES", '5'
+            buildConfigField "int", "COVERAGE_DROPOUT_GENERATION_MINUTES", '5'
+            buildConfigField "int", "IMAGE_UPLOAD_MINUTES", '7'
+            buildConfigField "int", "PULL_UNIQUE_IDS_MINUTES", '10'
         }
 
         debug {
@@ -78,6 +86,14 @@ android {
             buildConfigField "int", "DATABASE_VERSION", '8'
             buildConfigField "long", "MAX_SERVER_TIME_DIFFERENCE", "1800000l"
             buildConfigField "boolean", "TIME_CHECK", "false"
+            buildConfigField "int", "AUTO_SYNC_DURATION", '2'
+            buildConfigField "int", "WEIGHT_SYNC_PROCESSING_MINUTES", '3'
+            buildConfigField "int", "VACCINE_SYNC_PROCESSING_MINUTES", '3'
+            buildConfigField "int", "RECURRING_SERVICES_SYNC_PROCESSING_MINUTES", '3'
+            buildConfigField "int", "DAILY_TALLIES_GENERATION_MINUTES", '5'
+            buildConfigField "int", "COVERAGE_DROPOUT_GENERATION_MINUTES", '5'
+            buildConfigField "int", "IMAGE_UPLOAD_MINUTES", '7'
+            buildConfigField "int", "PULL_UNIQUE_IDS_MINUTES", '10'
             testCoverageEnabled true
         }
     }
@@ -105,31 +121,39 @@ android {
 dependencies {
     compile('org.smartregister:opensrp-client-native-form:1.2.4-SNAPSHOT@aar') {
         transitive = true
-        exclude group: 'com.android.support', module: 'recyclerview-v7'
+        exclude group: 'com.android.support', module: 'appcompat-v7'
     }
-    compile('org.smartregister:opensrp-client-core:1.0.3-SNAPSHOT@aar') {
+    compile('org.smartregister:opensrp-client-core:1.3.5-SNAPSHOT@aar') {
         transitive = true
         exclude group: 'com.github.bmelnychuk', module: 'atv'
+        exclude group: 'com.android.support', module: 'appcompat-v7'
     }
-    compile('org.smartregister:opensrp-client-immunization:1.2.0-SNAPSHOT@aar') {
+    compile('org.smartregister:opensrp-client-immunization:1.4.2-SNAPSHOT@aar') {
         transitive = true
+        exclude group: 'org.smartregister', module: 'opensrp-client-core'
+        exclude group: 'org.smartregister', module: 'opensrp-client-native-form'
+        exclude group: 'com.android.support', module: 'appcompat-v7'
     }
-    compile ('org.smartregister:opensrp-client-growth-monitoring:1.0.0-SNAPSHOT@aar') {
+    compile ('org.smartregister:opensrp-client-growth-monitoring:1.1.1-SNAPSHOT@aar') {
         transitive = true
+        exclude group: 'org.smartregister', module: 'opensrp-client-core'
+        exclude group: 'com.android.support', module: 'design'
+        exclude group: 'com.android.support', module: 'appcompat-v7'
+
     }
 
-    compile('com.android.support:design:23.4.0') {
+    compile('com.android.support:design:27.0.2') {
         exclude group: 'com.android.support', module: 'recyclerview-v7'
 
     }
-    compile 'com.android.support:appcompat-v7:23.4.0'
-    compile 'com.android.support:cardview-v7:23.4.0'
-    compile 'com.android.support:leanback-v17:23.4.0'
+    compile 'com.android.support:appcompat-v7:27.0.2'
+    compile 'com.android.support:cardview-v7:27.0.2'
+    compile 'com.android.support:leanback-v17:27.0.2'
     compile('com.crashlytics.sdk.android:crashlytics:2.6.5@aar') {
         transitive = true;
     }
     compile 'com.jjoe64:graphview:4.2.1'
-    compile 'com.android.support:support-v4:23.4.0'
+    compile 'com.android.support:support-v4:27.0.2'
     compile 'id.zelory:compressor:1.0.4'
     compile 'com.twotoasters.SectionCursorAdapter:library:1.0.+'
     compile 'com.github.ybq:Android-SpinKit:1.1.0'
@@ -163,7 +187,12 @@ dependencies {
     }
 
     testCompile 'org.apache.maven:maven-ant-tasks:2.1.3'
-    compile project(path: ':fancydialoglib')
+    compile (project(path: ':fancydialoglib')){
+
+            transitive = true
+            exclude group: 'com.android.support', module: 'appcompat-v7'
+
+    }
 }
 
 //Testing and coveralls

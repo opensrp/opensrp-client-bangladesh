@@ -120,6 +120,13 @@ public class Utils {
         }
         return i;
     }
+    public static boolean isEmptyMap(Map map) {
+        return map == null || map.isEmpty();
+    }
+
+    public static boolean isEmptyCollection(Collection collection) {
+        return collection == null || collection.isEmpty();
+    }
 
     public static TableRow addToRow(Context context, String value, TableRow row) {
         return addToRow(context, value, row, false, 1);

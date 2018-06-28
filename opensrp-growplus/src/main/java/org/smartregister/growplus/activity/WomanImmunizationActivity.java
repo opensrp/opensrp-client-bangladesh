@@ -561,22 +561,22 @@ public class WomanImmunizationActivity extends BaseActivity
     }
 
     private void updateVaccinationViews(List<Vaccine> vaccineList, List<Alert> alerts) {
-        if(false) {
-            if (vaccineGroups == null) {
-                vaccineGroups = new ArrayList<>();
-                String supportedVaccinesString = VaccinatorUtils.getSupportedWomanVaccines(this);
-
-                try {
-                    JSONArray supportedVaccines = new JSONArray(supportedVaccinesString);
-
-                    for (int i = 0; i < supportedVaccines.length(); i++) {
-                        addVaccineGroup(-1, supportedVaccines.getJSONObject(i), vaccineList, alerts);
-                    }
-                } catch (JSONException e) {
-                    Log.e(TAG, Log.getStackTraceString(e));
-                }
-            }
-        }
+//        if(false) {
+//            if (vaccineGroups == null) {
+//                vaccineGroups = new ArrayList<>();
+//                String supportedVaccinesString = VaccinatorUtils.getSupportedWomanVaccines(this);
+//
+//                try {
+//                    JSONArray supportedVaccines = new JSONArray(supportedVaccinesString);
+//
+//                    for (int i = 0; i < supportedVaccines.length(); i++) {
+//                        addVaccineGroup(-1, supportedVaccines.getJSONObject(i), vaccineList, alerts);
+//                    }
+//                } catch (JSONException e) {
+//                    Log.e(TAG, Log.getStackTraceString(e));
+//                }
+//            }
+//        }
 
     }
 
@@ -757,45 +757,45 @@ public class WomanImmunizationActivity extends BaseActivity
 
 
     private void addVaccineGroup(int canvasId, JSONObject vaccineGroupData, List<Vaccine> vaccineList, List<Alert> alerts) {
-        LinearLayout vaccineGroupCanvasLL = (LinearLayout) findViewById(R.id.vaccine_group_canvas_ll);
-        VaccineGroup curGroup = new VaccineGroup(this);
-        curGroup.setData(vaccineGroupData, childDetails, vaccineList, alerts,"woman");
-        curGroup.setOnRecordAllClickListener(new VaccineGroup.OnRecordAllClickListener() {
-            @Override
-            public void onClick(VaccineGroup vaccineGroup, ArrayList<VaccineWrapper> dueVaccines) {
-                addVaccinationDialogFragment(dueVaccines, vaccineGroup);
-            }
-        });
-        curGroup.setOnVaccineClickedListener(new VaccineGroup.OnVaccineClickedListener() {
-            @Override
-            public void onClick(VaccineGroup vaccineGroup, VaccineWrapper vaccine) {
-                ArrayList<VaccineWrapper> vaccineWrappers = new ArrayList<VaccineWrapper>();
-                vaccineWrappers.add(vaccine);
-                addVaccinationDialogFragment(vaccineWrappers, vaccineGroup);
-            }
-        });
-        curGroup.setOnVaccineUndoClickListener(new VaccineGroup.OnVaccineUndoClickListener() {
-            @Override
-            public void onUndoClick(VaccineGroup vaccineGroup, VaccineWrapper vaccine) {
-                addVaccineUndoDialogFragment(vaccineGroup, vaccine);
-            }
-        });
-
-        LinearLayout parent;
-        if (canvasId == -1) {
-            Random r = new Random();
-            canvasId = r.nextInt(4232 - 213) + 213;
-            parent = new LinearLayout(this);
-            parent.setId(canvasId);
-            vaccineGroupCanvasLL.addView(parent);
-        } else {
-            parent = (LinearLayout) findViewById(canvasId);
-            parent.removeAllViews();
-        }
-        parent.addView(curGroup);
-        curGroup.setTag(R.id.vaccine_group_vaccine_data, vaccineGroupData.toString());
-        curGroup.setTag(R.id.vaccine_group_parent_id, String.valueOf(canvasId));
-        vaccineGroups.add(curGroup);
+//        LinearLayout vaccineGroupCanvasLL = (LinearLayout) findViewById(R.id.vaccine_group_canvas_ll);
+//        VaccineGroup curGroup = new VaccineGroup(this);
+//        curGroup.setData(vaccineGroupData, childDetails, vaccineList, alerts,"woman");
+//        curGroup.setOnRecordAllClickListener(new VaccineGroup.OnRecordAllClickListener() {
+//            @Override
+//            public void onClick(VaccineGroup vaccineGroup, ArrayList<VaccineWrapper> dueVaccines) {
+//                addVaccinationDialogFragment(dueVaccines, vaccineGroup);
+//            }
+//        });
+//        curGroup.setOnVaccineClickedListener(new VaccineGroup.OnVaccineClickedListener() {
+//            @Override
+//            public void onClick(VaccineGroup vaccineGroup, VaccineWrapper vaccine) {
+//                ArrayList<VaccineWrapper> vaccineWrappers = new ArrayList<VaccineWrapper>();
+//                vaccineWrappers.add(vaccine);
+//                addVaccinationDialogFragment(vaccineWrappers, vaccineGroup);
+//            }
+//        });
+//        curGroup.setOnVaccineUndoClickListener(new VaccineGroup.OnVaccineUndoClickListener() {
+//            @Override
+//            public void onUndoClick(VaccineGroup vaccineGroup, VaccineWrapper vaccine) {
+//                addVaccineUndoDialogFragment(vaccineGroup, vaccine);
+//            }
+//        });
+//
+//        LinearLayout parent;
+//        if (canvasId == -1) {
+//            Random r = new Random();
+//            canvasId = r.nextInt(4232 - 213) + 213;
+//            parent = new LinearLayout(this);
+//            parent.setId(canvasId);
+//            vaccineGroupCanvasLL.addView(parent);
+//        } else {
+//            parent = (LinearLayout) findViewById(canvasId);
+//            parent.removeAllViews();
+//        }
+//        parent.addView(curGroup);
+//        curGroup.setTag(R.id.vaccine_group_vaccine_data, vaccineGroupData.toString());
+//        curGroup.setTag(R.id.vaccine_group_parent_id, String.valueOf(canvasId));
+//        vaccineGroups.add(curGroup);
     }
 
     private void addVaccineUndoDialogFragment(VaccineGroup vaccineGroup, VaccineWrapper vaccineWrapper) {
@@ -907,15 +907,15 @@ public class WomanImmunizationActivity extends BaseActivity
     }
 
     private void showWeightDialog(View view) {
-        FragmentTransaction ft = this.getFragmentManager().beginTransaction();
-        Fragment prev = this.getFragmentManager().findFragmentByTag(DIALOG_TAG);
-        if (prev != null) {
-            ft.remove(prev);
-        }
-        ft.addToBackStack(null);
-        WeightWrapper weightWrapper = (WeightWrapper) view.getTag();
-        RecordWeightDialogFragment recordWeightDialogFragment = RecordWeightDialogFragment.newInstance(weightWrapper);
-        recordWeightDialogFragment.show(ft, DIALOG_TAG);
+//        FragmentTransaction ft = this.getFragmentManager().beginTransaction();
+//        Fragment prev = this.getFragmentManager().findFragmentByTag(DIALOG_TAG);
+//        if (prev != null) {
+//            ft.remove(prev);
+//        }
+//        ft.addToBackStack(null);
+//        WeightWrapper weightWrapper = (WeightWrapper) view.getTag();
+//        RecordWeightDialogFragment recordWeightDialogFragment = RecordWeightDialogFragment.newInstance(weightWrapper);
+//        recordWeightDialogFragment.show(ft, DIALOG_TAG);
 
     }
 

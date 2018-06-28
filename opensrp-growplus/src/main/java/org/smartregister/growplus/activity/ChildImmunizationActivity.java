@@ -424,29 +424,29 @@ public class ChildImmunizationActivity extends BaseActivity
         ((TextView)fragmentContainer.findViewById(R.id.textView3)).setText("Growth Chart");
     }
     private void updateVaccinationViews(List<Vaccine> vaccineList, List<Alert> alerts) {
-        if(false) {
-            if (vaccineGroups == null) {
-                vaccineGroups = new ArrayList<>();
-                String supportedVaccinesString = VaccinatorUtils.getSupportedVaccines(this);
-
-                try {
-                    JSONArray supportedVaccines = new JSONArray(supportedVaccinesString);
-
-                    for (int i = 0; i < supportedVaccines.length(); i++) {
-                        JSONObject vaccineGroupObject = supportedVaccines.getJSONObject(i);
-
-                        //Add BCG2 special vaccine to birth vaccine group
-                        VaccinateActionUtils.addBcg2SpecialVaccine(this, vaccineGroupObject, vaccineList);
-
-                        addVaccineGroup(-1, vaccineGroupObject, vaccineList, alerts);
-                    }
-                } catch (JSONException e) {
-                    Log.e(TAG, Log.getStackTraceString(e));
-                }
-            }
-
-            showVaccineNotifications(vaccineList, alerts);
-        }
+//        if(false) {
+//            if (vaccineGroups == null) {
+//                vaccineGroups = new ArrayList<>();
+//                String supportedVaccinesString = VaccinatorUtils.getSupportedVaccines(this);
+//
+//                try {
+//                    JSONArray supportedVaccines = new JSONArray(supportedVaccinesString);
+//
+//                    for (int i = 0; i < supportedVaccines.length(); i++) {
+//                        JSONObject vaccineGroupObject = supportedVaccines.getJSONObject(i);
+//
+//                        //Add BCG2 special vaccine to birth vaccine group
+//                        VaccinateActionUtils.addBcg2SpecialVaccine(this, vaccineGroupObject, vaccineList);
+//
+//                        addVaccineGroup(-1, vaccineGroupObject, vaccineList, alerts);
+//                    }
+//                } catch (JSONException e) {
+//                    Log.e(TAG, Log.getStackTraceString(e));
+//                }
+//            }
+//
+//            showVaccineNotifications(vaccineList, alerts);
+//        }
     }
     private void updateCounsellingViews(List<Counselling> counsellingList, LinearLayout counsellingCanvas) {
         counsellingCanvas.removeAllViews();
@@ -594,46 +594,46 @@ public class ChildImmunizationActivity extends BaseActivity
     }
 
     public void addVaccineGroup(int canvasId, JSONObject vaccineGroupData, List<Vaccine> vaccineList, List<Alert> alerts) {
-        LinearLayout vaccineGroupCanvasLL = (LinearLayout) findViewById(R.id.vaccine_group_canvas_ll);
-        VaccineGroup curGroup = new VaccineGroup(this);
-        curGroup.setData(vaccineGroupData, childDetails, vaccineList, alerts, "child");
-        curGroup.setOnRecordAllClickListener(new VaccineGroup.OnRecordAllClickListener() {
-            @Override
-            public void onClick(VaccineGroup vaccineGroup, ArrayList<VaccineWrapper> dueVaccines) {
-                addVaccinationDialogFragment(dueVaccines, vaccineGroup);
-            }
-        });
-        curGroup.setOnVaccineClickedListener(new VaccineGroup.OnVaccineClickedListener() {
-            @Override
-            public void onClick(VaccineGroup vaccineGroup, VaccineWrapper vaccine) {
-                ArrayList<VaccineWrapper> vaccineWrappers = new ArrayList<>();
-                vaccineWrappers.add(vaccine);
-                addVaccinationDialogFragment(vaccineWrappers, vaccineGroup);
-            }
-        });
-        curGroup.setOnVaccineUndoClickListener(new VaccineGroup.OnVaccineUndoClickListener() {
-            @Override
-            public void onUndoClick(VaccineGroup vaccineGroup, VaccineWrapper vaccine) {
-                addVaccineUndoDialogFragment(vaccineGroup, vaccine);
-            }
-        });
-
-        LinearLayout parent;
-        int groupParentId = canvasId;
-        if (groupParentId == -1) {
-            Random r = new Random();
-            groupParentId = r.nextInt(RANDOM_MAX_RANGE - RANDOM_MIN_RANGE) + RANDOM_MIN_RANGE;
-            parent = new LinearLayout(this);
-            parent.setId(groupParentId);
-            vaccineGroupCanvasLL.addView(parent);
-        } else {
-            parent = (LinearLayout) findViewById(groupParentId);
-            parent.removeAllViews();
-        }
-        parent.addView(curGroup);
-        curGroup.setTag(R.id.vaccine_group_vaccine_data, vaccineGroupData.toString());
-        curGroup.setTag(R.id.vaccine_group_parent_id, String.valueOf(groupParentId));
-        vaccineGroups.add(curGroup);
+//        LinearLayout vaccineGroupCanvasLL = (LinearLayout) findViewById(R.id.vaccine_group_canvas_ll);
+//        VaccineGroup curGroup = new VaccineGroup(this);
+//        curGroup.setData(vaccineGroupData, childDetails, vaccineList, alerts, "child");
+//        curGroup.setOnRecordAllClickListener(new VaccineGroup.OnRecordAllClickListener() {
+//            @Override
+//            public void onClick(VaccineGroup vaccineGroup, ArrayList<VaccineWrapper> dueVaccines) {
+//                addVaccinationDialogFragment(dueVaccines, vaccineGroup);
+//            }
+//        });
+//        curGroup.setOnVaccineClickedListener(new VaccineGroup.OnVaccineClickedListener() {
+//            @Override
+//            public void onClick(VaccineGroup vaccineGroup, VaccineWrapper vaccine) {
+//                ArrayList<VaccineWrapper> vaccineWrappers = new ArrayList<>();
+//                vaccineWrappers.add(vaccine);
+//                addVaccinationDialogFragment(vaccineWrappers, vaccineGroup);
+//            }
+//        });
+//        curGroup.setOnVaccineUndoClickListener(new VaccineGroup.OnVaccineUndoClickListener() {
+//            @Override
+//            public void onUndoClick(VaccineGroup vaccineGroup, VaccineWrapper vaccine) {
+//                addVaccineUndoDialogFragment(vaccineGroup, vaccine);
+//            }
+//        });
+//
+//        LinearLayout parent;
+//        int groupParentId = canvasId;
+//        if (groupParentId == -1) {
+//            Random r = new Random();
+//            groupParentId = r.nextInt(RANDOM_MAX_RANGE - RANDOM_MIN_RANGE) + RANDOM_MIN_RANGE;
+//            parent = new LinearLayout(this);
+//            parent.setId(groupParentId);
+//            vaccineGroupCanvasLL.addView(parent);
+//        } else {
+//            parent = (LinearLayout) findViewById(groupParentId);
+//            parent.removeAllViews();
+//        }
+//        parent.addView(curGroup);
+//        curGroup.setTag(R.id.vaccine_group_vaccine_data, vaccineGroupData.toString());
+//        curGroup.setTag(R.id.vaccine_group_parent_id, String.valueOf(groupParentId));
+//        vaccineGroups.add(curGroup);
     }
 
     private void addVaccineUndoDialogFragment(VaccineGroup vaccineGroup, VaccineWrapper vaccineWrapper) {
@@ -678,7 +678,26 @@ public class ChildImmunizationActivity extends BaseActivity
         weightWrapper.setPatientAge(duration);
         weightWrapper.setPhoto(photo);
         weightWrapper.setPmtctStatus(Utils.getValue(childDetails.getColumnmaps(), PathConstants.KEY.PMTCT_STATUS, false));
-        weightWrapper.setDateOfBirth(dobString);
+
+
+        String formattedAge = "";
+        String formattedDob = "";
+        if (isDataOk()) {
+            dobString = Utils.getValue(childDetails.getColumnmaps(), PathConstants.KEY.DOB, false);
+            if (!TextUtils.isEmpty(dobString)) {
+                DateTime dateTime = new DateTime(dobString);
+                Date dob = dateTime.toDate();
+                formattedDob = DATE_FORMAT.format(dob);
+                long timeDiff = Calendar.getInstance().getTimeInMillis() - dob.getTime();
+
+                if (timeDiff >= 0) {
+                    formattedAge = DateUtil.getDuration(timeDiff);
+                }
+            }
+        }
+
+
+        weightWrapper.setPatientAge(formattedAge);
 
         if (lastUnsyncedWeight != null) {
             weightWrapper.setWeight(lastUnsyncedWeight.getKg());
@@ -747,8 +766,19 @@ public class ChildImmunizationActivity extends BaseActivity
             ft.remove(prev);
         }
         ft.addToBackStack(null);
+        Date dob = null;
+        String formattedDob = "";
+        if (isDataOk()) {
+            String dobString = Utils.getValue(childDetails.getColumnmaps(), PathConstants.KEY.DOB, false);
+            if (!TextUtils.isEmpty(dobString)) {
+                DateTime dateTime = new DateTime(dobString);
+                dob = dateTime.toDate();
+                formattedDob = DATE_FORMAT.format(dob);
+
+            }
+        }
         WeightWrapper weightWrapper = (WeightWrapper) view.getTag();
-        RecordWeightDialogFragment recordWeightDialogFragment = RecordWeightDialogFragment.newInstance(weightWrapper);
+        RecordWeightDialogFragment recordWeightDialogFragment = RecordWeightDialogFragment.newInstance(dob,weightWrapper);
         recordWeightDialogFragment.show(ft, DIALOG_TAG);
 
     }
@@ -855,9 +885,21 @@ public class ChildImmunizationActivity extends BaseActivity
 
             Date dob = null;
             String dobString = Utils.getValue(childDetails.getColumnmaps(), PathConstants.KEY.DOB, false);
-            if (!TextUtils.isEmpty(dobString)) {
-                DateTime dateTime = new DateTime(dobString);
-                dob = dateTime.toDate();
+
+            String formattedAge = "";
+            String formattedDob = "";
+            if (isDataOk()) {
+                dobString = Utils.getValue(childDetails.getColumnmaps(), PathConstants.KEY.DOB, false);
+                if (!TextUtils.isEmpty(dobString)) {
+                    DateTime dateTime = new DateTime(dobString);
+                    dob = dateTime.toDate();
+                    formattedDob = DATE_FORMAT.format(dob);
+                    long timeDiff = Calendar.getInstance().getTimeInMillis() - dob.getTime();
+
+                    if (timeDiff >= 0) {
+                        formattedAge = DateUtil.getDuration(timeDiff);
+                    }
+                }
             }
 
             if (dob != null && gender != Gender.UNKNOWN) {
@@ -867,7 +909,7 @@ public class ChildImmunizationActivity extends BaseActivity
             }
 
             tag.setDbKey(weight.getId());
-            tag.setDateOfBirth(dobString);
+            tag.setPatientAge(formattedAge);
             updateRecordWeightViews(tag);
             setLastModified(true);
         }

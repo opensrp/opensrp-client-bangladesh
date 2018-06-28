@@ -27,7 +27,9 @@ PathConstants extends AllConstants {
     public static final String OPENMRS_IDGEN_URL =  BuildConfig.OPENMRS_IDGEN_URL;
 
     public static final class ServiceType {
-
+        public static final int AUTO_SYNC = 1;
+        public static final int COVERAGE_DROPOUT_GENERATION = 3;
+        public static final int IMAGE_UPLOAD = 8;
         public static final int DATA_SYNCHRONIZATION = 1;
         public static final int DAILY_TALLIES_GENERATION = 2;
         public static final int MONTHLY_TALLIES_GENERATION = 3;
