@@ -15,12 +15,17 @@ import android.preference.PreferenceManager;
 import android.text.TextUtils;
 import android.util.Log;
 import android.util.Pair;
+import android.util.TypedValue;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ScrollView;
+import android.widget.TableLayout;
+import android.widget.TableRow;
 import android.widget.TextView;
 
 import org.apache.commons.lang3.StringUtils;
@@ -43,8 +48,10 @@ import org.smartregister.growplus.sync.ECSyncUpdater;
 import org.smartregister.growplus.viewComponents.WidgetFactory;
 import org.smartregister.growthmonitoring.domain.Weight;
 import org.smartregister.growthmonitoring.domain.WeightWrapper;
+import org.smartregister.growthmonitoring.domain.ZScore;
 import org.smartregister.growthmonitoring.fragment.GrowthDialogFragment;
 import org.smartregister.growthmonitoring.fragment.RecordWeightDialogFragment;
+import org.smartregister.growthmonitoring.listener.ViewMeasureListener;
 import org.smartregister.growthmonitoring.listener.WeightActionListener;
 import org.smartregister.growthmonitoring.repository.WeightRepository;
 import org.smartregister.immunization.db.VaccineRepo;
@@ -286,7 +293,7 @@ public class ChildImmunizationActivity extends BaseActivity
         childIdTV.setText(childId);
         ((TextView) findViewById(R.id.mother_name_id_tv)).setText(Utils.getValue(childDetails.getColumnmaps(), PathConstants.KEY.MOTHER_FIRST_NAME, true));
         ((TextView) findViewById(R.id.father_name_id_tv)).setText(Utils.getValue(childDetails.getColumnmaps(), "Father_Guardian_Name", true));
-        ((TextView) findViewById(R.id.birth_weight_id_tv)).setText(getValue(childDetails, "Birth_Weight", true) + " kg");
+        ((TextView) findViewById(R.id.birth_weight_id_tv)).setText(getValue(childDetails.getColumnmaps(), "Birth_Weight", true) + " kg");
 
         Utils.startAsyncTask(new GetSiblingsTask(), null);
     }
@@ -355,73 +362,101 @@ public class ChildImmunizationActivity extends BaseActivity
         ArrayList<View.OnClickListener> listeners = new ArrayList<View.OnClickListener>();
 
         WeightRepository wp = VaccinatorApplication.getInstance().weightRepository();
-        List<Weight> weightlist = wp.findLast5(childDetails.entityId());
-        ECSyncUpdater ecUpdater = ECSyncUpdater.getInstance(this);
+        List<Weight> weightlist = wp.findByEntityId(childDetails.entityId());
+        /////////////////////////////////////////////////
+        String dobString = Utils.getValue(childDetails.getColumnmaps(), PathConstants.KEY.DOB, false);
+        Date dob = null;
+        if (!TextUtils.isEmpty(Utils.getValue(childDetails.getColumnmaps(), PathConstants.KEY.BIRTH_WEIGHT, false))
+                && !TextUtils.isEmpty(dobString)) {
+            DateTime dateTime = new DateTime(dobString);
+            dob = dateTime.toDate();
+            Double birthWeight = Double.valueOf(Utils.getValue(childDetails.getColumnmaps(), PathConstants.KEY.BIRTH_WEIGHT, false));
 
+            Weight weight = new Weight(-1l, null, (float) birthWeight.doubleValue(), dateTime.toDate(), null, null, null, Calendar.getInstance().getTimeInMillis(), null, null, 0);
+            weightlist.add(weight);
+        }
 
-        for (int i = 0; i < weightlist.size(); i++) {
-            Weight weight = weightlist.get(i);
-            String formattedAge = "";
-            if (weight.getDate() != null) {
-
-                Date weighttaken = weight.getDate();
-                String birthdate = getValue(childDetails.getColumnmaps(), "dob", false);
-                DateTime birthday = new DateTime(birthdate);
-                Date birth = birthday.toDate();
-                long timeDiff = weighttaken.getTime() - birth.getTime();
-                Log.v("timeDiff is ", timeDiff + "");
-                if (timeDiff >= 0) {
-                    formattedAge = getDuration(timeDiff);
-                    Log.v("age is ", formattedAge);
-                }
+        ////////////////////////////////////////////////
+        Gender gender = Gender.UNKNOWN;
+        if (isDataOk()) {
+            String genderString = Utils.getValue(childDetails, PathConstants.KEY.GENDER, false);
+            if (genderString != null && genderString.equalsIgnoreCase(PathConstants.GENDER.FEMALE)) {
+                gender = Gender.FEMALE;
+            } else if (genderString != null && genderString.equalsIgnoreCase(PathConstants.GENDER.MALE)) {
+                gender = Gender.MALE;
             }
-            if (!formattedAge.equalsIgnoreCase("0d")) {
-                weightmap.put(weight.getId(), Pair.create(formattedAge, kgStringSuffix(weight.getKg())));
-
-                ////////////////////////check 3 months///////////////////////////////
-                boolean less_than_three_months_event_created = false;
-
-                Event event = null;
-                EventClientRepository db = (EventClientRepository) VaccinatorApplication.getInstance().eventClientRepository();
-                if (weight.getEventId() != null) {
-                    event = ecUpdater.convert(db.getEventsByEventId(weight.getEventId()), Event.class);
-                } else if (weight.getFormSubmissionId() != null) {
-                    event = ecUpdater.convert(db.getEventsByFormSubmissionId(weight.getFormSubmissionId()),Event.class);
-                }
-                if (event != null) {
-                    Date weight_create_date = event.getDateCreated();
-                    if (!ChildDetailTabbedActivity.check_if_date_three_months_older(weight_create_date)) {
-                        less_than_three_months_event_created = true;
-                    }
-                } else {
-                    less_than_three_months_event_created = true;
-                }
-                ///////////////////////////////////////////////////////////////////////
-                if (less_than_three_months_event_created) {
-                    weighteditmode.add(editmode);
-                } else {
-                    weighteditmode.add(false);
-                }
-
-                final int finalI = i;
-
-            }
-
         }
-        if (weightmap.size() < 5) {
-            weightmap.put(0l, Pair.create(getDuration(0), getValue(childDetails, "Birth_Weight", true) + " kg"));
-            weighteditmode.add(false);
-            listeners.add(null);
-        }
-        listeners = new ArrayList<View.OnClickListener>();
-        for(int i = 0;i<weighteditmode.size();i++){
-            listeners.add(null);
-        }
-        WidgetFactory wd = new WidgetFactory();
-        if (weightmap.size() > 0) {
-            wd.createWeightWidget(inflater, fragmentContainer, weightmap, listeners, weighteditmode);
-        }
-        ((TextView)fragmentContainer.findViewById(R.id.textView3)).setText("Growth Chart");
+
+
+
+        ///////////////////////////////////////////////
+
+        refreshPreviousWeightsTable(fragmentContainer,gender,dob,weightlist);
+        /////////////////////////////////////////////////////
+
+
+
+//            ECSyncUpdater ecUpdater = ECSyncUpdater.getInstance(this);
+//
+//
+//        for (int i = 0; i < weightlist.size(); i++) {
+//            Weight weight = weightlist.get(i);
+//            String formattedAge = "";
+//            if (weight.getDate() != null) {
+//
+//                Date weighttaken = weight.getDate();
+//                String birthdate = getValue(childDetails.getColumnmaps(), "dob", false);
+//                DateTime birthday = new DateTime(birthdate);
+//                Date birth = birthday.toDate();
+//                long timeDiff = weighttaken.getTime() - birth.getTime();
+//                Log.v("timeDiff is ", timeDiff + "");
+//                if (timeDiff >= 0) {
+//                    formattedAge = getDuration(timeDiff);
+//                    Log.v("age is ", formattedAge);
+//                }
+//            }
+////            if (formattedAge.equalsIgnoreCase("0d")) {
+//                weightmap.put(weight.getId(), Pair.create(formattedAge, kgStringSuffix(weight.getKg())));
+//
+//                ////////////////////////check 3 months///////////////////////////////
+//                boolean less_than_three_months_event_created = false;
+//
+//                Event event = null;
+//                EventClientRepository db = (EventClientRepository) VaccinatorApplication.getInstance().eventClientRepository();
+//                if (weight.getEventId() != null) {
+//                    event = ecUpdater.convert(db.getEventsByEventId(weight.getEventId()), Event.class);
+//                } else if (weight.getFormSubmissionId() != null) {
+//                    event = ecUpdater.convert(db.getEventsByFormSubmissionId(weight.getFormSubmissionId()),Event.class);
+//                }
+//                if (event != null) {
+//                    Date weight_create_date = event.getDateCreated();
+//                    if (!ChildDetailTabbedActivity.check_if_date_three_months_older(weight_create_date)) {
+//                        less_than_three_months_event_created = true;
+//                    }
+//                } else {
+//                    less_than_three_months_event_created = true;
+//                }
+//                ///////////////////////////////////////////////////////////////////////
+//                if (less_than_three_months_event_created) {
+//                    weighteditmode.add(editmode);
+//                } else {
+//                    weighteditmode.add(false);
+//                }
+//
+//                final int finalI = i;
+//
+////            }
+//
+//        }
+//        listeners = new ArrayList<View.OnClickListener>();
+//        for(int i = 0;i<weighteditmode.size();i++){
+//            listeners.add(null);
+//        }
+//        WidgetFactory wd = new WidgetFactory();
+//        if (weightmap.size() > 0) {
+//            wd.createWeightWidget(inflater, fragmentContainer, weightmap, listeners, weighteditmode);
+//        }
+//        ((TextView)fragmentContainer.findViewById(R.id.textView3)).setText("Growth Chart");
     }
     private void updateVaccinationViews(List<Vaccine> vaccineList, List<Alert> alerts) {
 //        if(false) {
@@ -1558,6 +1593,138 @@ public class ChildImmunizationActivity extends BaseActivity
             SiblingPicturesGroup siblingPicturesGroup = (SiblingPicturesGroup) ChildImmunizationActivity.this.findViewById(R.id.sibling_pictures);
             siblingPicturesGroup.setSiblingBaseEntityIds(ChildImmunizationActivity.this, ids);
         }
+    }
+
+    private void refreshPreviousWeightsTable(final LinearLayout previousweightholder, Gender gender, Date dob ,List<Weight> weights) {
+        HashMap<Long, Weight> weightHashMap = new HashMap<>();
+        for (Weight curWeight : weights) {
+            if (curWeight.getDate() != null) {
+                Calendar curCalendar = Calendar.getInstance();
+                curCalendar.setTime(curWeight.getDate());
+                standardiseCalendarDate(curCalendar);
+
+                if (!weightHashMap.containsKey(curCalendar.getTimeInMillis())) {
+                    weightHashMap.put(curCalendar.getTimeInMillis(), curWeight);
+                } else if (curWeight.getUpdatedAt() > weightHashMap.get(curCalendar.getTimeInMillis()).getUpdatedAt()) {
+                    weightHashMap.put(curCalendar.getTimeInMillis(), curWeight);
+                }
+            }
+        }
+
+        List<Long> keys = new ArrayList<>(weightHashMap.keySet());
+        Collections.sort(keys, Collections.<Long>reverseOrder());
+
+        List<Weight> result = new ArrayList<>();
+        for (Long curKey : keys) {
+            result.add(weightHashMap.get(curKey));
+        }
+
+        weights = result;
+
+
+        Calendar[] weighingDates = getMinAndMaxWeighingDates(dob);
+        Calendar minWeighingDate = weighingDates[0];
+        Calendar maxWeighingDate = weighingDates[1];
+        if (minWeighingDate == null || maxWeighingDate == null) {
+            return;
+        }
+
+        TableLayout tableLayout = (TableLayout) previousweightholder.findViewById(org.smartregister.growthmonitoring.R.id.weights_table);
+        for (Weight weight : weights) {
+            TableRow dividerRow = new TableRow(previousweightholder.getContext());
+            View divider = new View(previousweightholder.getContext());
+            TableRow.LayoutParams params = (TableRow.LayoutParams) divider.getLayoutParams();
+            if (params == null) params = new TableRow.LayoutParams();
+            params.width = TableRow.LayoutParams.MATCH_PARENT;
+            params.height = getResources().getDimensionPixelSize(org.smartregister.growthmonitoring.R.dimen.weight_table_divider_height);
+            params.span = 3;
+            divider.setLayoutParams(params);
+            divider.setBackgroundColor(getResources().getColor(org.smartregister.growthmonitoring.R.color.client_list_header_dark_grey));
+            dividerRow.addView(divider);
+            tableLayout.addView(dividerRow);
+
+            TableRow curRow = new TableRow(previousweightholder.getContext());
+
+            TextView ageTextView = new TextView(previousweightholder.getContext());
+            ageTextView.setHeight(getResources().getDimensionPixelSize(org.smartregister.growthmonitoring.R.dimen.table_contents_text_height));
+            ageTextView.setTextSize(TypedValue.COMPLEX_UNIT_PX,
+                    getResources().getDimension(org.smartregister.growthmonitoring.R.dimen.weight_table_contents_text_size));
+            ageTextView.setText(DateUtil.getDuration(weight.getDate().getTime() - dob.getTime()));
+            ageTextView.setGravity(Gravity.LEFT | Gravity.CENTER_VERTICAL);
+            ageTextView.setTextColor(getResources().getColor(org.smartregister.growthmonitoring.R.color.client_list_grey));
+            curRow.addView(ageTextView);
+
+            TextView weightTextView = new TextView(previousweightholder.getContext());
+            weightTextView.setHeight(getResources().getDimensionPixelSize(org.smartregister.growthmonitoring.R.dimen.table_contents_text_height));
+            weightTextView.setTextSize(TypedValue.COMPLEX_UNIT_PX,
+                    getResources().getDimension(org.smartregister.growthmonitoring.R.dimen.weight_table_contents_text_size));
+            weightTextView.setGravity(Gravity.LEFT | Gravity.CENTER_VERTICAL);
+            weightTextView.setText(
+                    String.format("%s %s", String.valueOf(weight.getKg()), getString(org.smartregister.growthmonitoring.R.string.kg)));
+            weightTextView.setTextColor(getResources().getColor(org.smartregister.growthmonitoring.R.color.client_list_grey));
+            curRow.addView(weightTextView);
+
+            TextView zScoreTextView = new TextView(previousweightholder.getContext());
+            zScoreTextView.setHeight(getResources().getDimensionPixelSize(org.smartregister.growthmonitoring.R.dimen.table_contents_text_height));
+            zScoreTextView.setTextSize(TypedValue.COMPLEX_UNIT_PX,
+                    getResources().getDimension(org.smartregister.growthmonitoring.R.dimen.weight_table_contents_text_size));
+            zScoreTextView.setGravity(Gravity.LEFT | Gravity.CENTER_VERTICAL);
+            if (weight.getDate().compareTo(maxWeighingDate.getTime()) > 0) {
+                zScoreTextView.setText("");
+            } else {
+                double zScore = ZScore.calculate(gender, dob, weight.getDate(), weight.getKg());
+                zScore = ZScore.roundOff(zScore);
+                zScoreTextView.setTextColor(getResources().getColor(ZScore.getZScoreColor(zScore)));
+                zScoreTextView.setText(String.valueOf(zScore));
+            }
+            curRow.addView(zScoreTextView);
+            tableLayout.addView(curRow);
+        }
+        //Now set the expand button if items are too many
+
+    }
+
+    private static final int GRAPH_MONTHS_TIMELINE = 12;
+
+    private Calendar[] getMinAndMaxWeighingDates(Date dob) {
+        Calendar minGraphTime = null;
+        Calendar maxGraphTime = null;
+        if (dob != null) {
+            Calendar dobCalendar = Calendar.getInstance();
+            dobCalendar.setTime(dob);
+            standardiseCalendarDate(dobCalendar);
+
+            minGraphTime = Calendar.getInstance();
+            maxGraphTime = Calendar.getInstance();
+
+            if (ZScore.getAgeInMonths(dob, maxGraphTime.getTime()) > ZScore.MAX_REPRESENTED_AGE) {
+                Calendar cal = Calendar.getInstance();
+                cal.setTime(dob);
+                cal.add(Calendar.MONTH, (int) Math.round(ZScore.MAX_REPRESENTED_AGE));
+                maxGraphTime = cal;
+                minGraphTime = (Calendar) maxGraphTime.clone();
+            }
+
+            minGraphTime.add(Calendar.MONTH, -GRAPH_MONTHS_TIMELINE);
+            standardiseCalendarDate(minGraphTime);
+            standardiseCalendarDate(maxGraphTime);
+
+            if (minGraphTime.getTimeInMillis() < dobCalendar.getTimeInMillis()) {
+                minGraphTime.setTime(dob);
+                standardiseCalendarDate(minGraphTime);
+
+                maxGraphTime = (Calendar) minGraphTime.clone();
+                maxGraphTime.add(Calendar.MONTH, GRAPH_MONTHS_TIMELINE);
+            }
+        }
+
+        return new Calendar[]{minGraphTime, maxGraphTime};
+    }
+    private static void standardiseCalendarDate(Calendar calendarDate) {
+        calendarDate.set(Calendar.HOUR_OF_DAY, 0);
+        calendarDate.set(Calendar.MINUTE, 0);
+        calendarDate.set(Calendar.SECOND, 0);
+        calendarDate.set(Calendar.MILLISECOND, 0);
     }
 
 
