@@ -531,7 +531,7 @@
         "relevance": {
           "step1:breastfeeding": {
             "type": "string",
-            "ex": "equalTo(., \"Yes\")"
+            "ex": "equalTo(., \"No\")"
           }
         }
       },
