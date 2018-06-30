@@ -2,6 +2,7 @@ package org.smartregister.growplus.activity;
 
 import android.graphics.Color;
 import android.os.Bundle;
+import android.view.View;
 
 import com.rengwuxian.materialedittext.MaterialEditText;
 import com.shashank.sony.fancydialoglib.Animation;
@@ -15,6 +16,8 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.smartregister.growplus.fragment.PathJsonFormFragment;
+
+import java.util.ArrayList;
 
 /**
  * Created by keyman on 11/04/2017.
@@ -53,6 +56,54 @@ public class PathJsonFormActivity extends JsonFormActivity {
         super.onFormFinish();
     }
 
+    @Override
+    public void refreshConstraints(String parentKey, String childKey) {
+        super.refreshConstraints(parentKey,childKey);
+        calculatelogicForCheckBox(parentKey);
+    }
+
+    private void calculatelogicForCheckBox(String parentKey) {
+        try {
+            JSONObject object = getStep("step1");
+            JSONArray fields = object.getJSONArray("fields");
+            for (int i = 0; i < fields.length(); i++) {
+                JSONObject questionGroup = fields.getJSONObject(i);
+                if (questionGroup.has("type") && questionGroup.getString("type").equalsIgnoreCase("check_box")) {
+                    JSONArray checkBoxArray = questionGroup.getJSONArray("options");
+                    ArrayList<String> selectedbox = new ArrayList<String>();
+                    for (int j = 0; j < checkBoxArray.length(); j++) {
+                        if (checkBoxArray.getJSONObject(j).getString("value").equalsIgnoreCase("true")) {
+                            String valueOFCheckbox = checkBoxArray.getJSONObject(j).getString("key");
+                            selectedbox.add(valueOFCheckbox);
+                        }
+                    }
+                    if (questionGroup.has("has_media_content")) {
+                        if (questionGroup.getString("key").equalsIgnoreCase(parentKey)) {
+                            if (questionGroup.getBoolean("has_media_content")) {
+                                JSONArray medias = questionGroup.getJSONArray("media");
+                                for (int j = 0; j < medias.length(); j++) {
+                                    JSONObject media = medias.getJSONObject(j);
+                                    if (media.has("checkbox_count")) {
+                                        if (media.getBoolean("checkbox_count")) {
+                                            mediadialog(media, "" + selectedbox.size());
+                                        }
+                                    } else {
+                                        for (int k = 0; k < selectedbox.size(); k++) {
+                                            mediadialog(media, "" + selectedbox.get(k));
+                                        }
+                                    }
+                                }
+                            }
+                        }
+
+                    }
+                }
+            }
+        }catch (Exception e){
+
+        }
+    }
+
     private void refreshCalculateLogic(String stepName,String key, String value) {
         try {
             JSONObject object = getStep("step1");
@@ -71,20 +122,12 @@ public class PathJsonFormActivity extends JsonFormActivity {
                     }
 
                 }
-                if(questionGroup.has("type") && questionGroup.getString("type").equalsIgnoreCase("check_box")){
-                    JSONArray checkBoxArray = questionGroup.getJSONArray("options");
-                    for(int j = 0;j<checkBoxArray.length();j++){
-                        if(checkBoxArray.getJSONObject(j).getString("value").equalsIgnoreCase("true")){
-                            String valueOFCheckbox = checkBoxArray.getJSONObject(j).getString("key");
-                            questionGroup.put("value",valueOFCheckbox);
-//                            super.writeValue(stepName, key, valueOFCheckbox, "", "", "");
-                        }
-                    }
-                }
+
             }
         }catch(Exception e){
 
         }
+
 
     }
 

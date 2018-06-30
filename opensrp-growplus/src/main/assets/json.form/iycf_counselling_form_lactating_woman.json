@@ -176,6 +176,71 @@
             "value":"false"
           }
         ],
+        "has_media_content": true,
+        "media": [
+          {
+            "media_type":"text",
+            "media_trigger_value":"1",
+            "media_link":"",
+            "media_text":"Probing questions:\n- What makes it difficult for you to eat a variety of foods?",
+            "checkbox_count": true
+          },
+          {
+            "media_type":"text",
+            "media_trigger_value":"2",
+            "media_link":"",
+            "media_text":"Probing questions:\n- What makes it difficult for you to eat a variety of foods?",
+            "checkbox_count": true
+          },
+          {
+            "media_type":"text",
+            "media_trigger_value":"3",
+            "media_link":"",
+            "media_text":"Probing questions:\n- What makes it difficult for you to eat a variety of foods?",
+            "checkbox_count": true
+          },
+          {
+            "media_type":"text",
+            "media_trigger_value":"4",
+            "media_link":"",
+            "media_text":"Probing questions:\n- What makes it difficult for you to eat a variety of foods?",
+            "checkbox_count": true
+          },
+          {
+            "media_type":"text",
+            "media_trigger_value":"5",
+            "media_link":"",
+            "media_text":"Congratulations",
+            "checkbox_count": true
+          },
+          {
+            "media_type":"text",
+            "media_trigger_value":"6",
+            "media_link":"",
+            "media_text":"Congratulations",
+            "checkbox_count": true
+          },
+          {
+            "media_type":"text",
+            "media_trigger_value":"7",
+            "media_link":"",
+            "media_text":"Congratulations",
+            "checkbox_count": true
+          },
+          {
+            "media_type":"text",
+            "media_trigger_value":"8",
+            "media_link":"",
+            "media_text":"Congratulations",
+            "checkbox_count": true
+          },
+          {
+            "media_type":"text",
+            "media_trigger_value":"eggs",
+            "media_link":"",
+            "media_text":"Do you have eggs at home or are you able to purchase eggs? Would it be possible to eat one egg a day?"
+          }
+        ],
         "relevance": {
         "step1:nutrition_to_discuss": {
           "type": "string",
@@ -292,7 +357,7 @@
         "relevance": {
           "step1:nutrition_to_discuss": {
             "type": "string",
-            "ex": "regex(., \"(?i).*?\\bwmothers_diet\\b.*?\")"
+            "ex": "regex(., \"(?i).*?\\bmothers_diet\\b.*?\")"
           }
         },
         "v_required": {
@@ -329,7 +394,7 @@
         "relevance": {
           "step1:nutrition_to_discuss": {
             "type": "string",
-            "ex": "regex(., \"(?i).*?\\bwmothers_diet\\b.*?\")"
+            "ex": "regex(., \"(?i).*?\\bmothers_diet\\b.*?\")"
           }
         },
         "v_required": {
@@ -372,6 +437,102 @@
         "v_required": {
           "value": "true",
           "err": "Please answer the question"
+        }
+      },
+      {
+        "key": "why_not_currently_breastfeed",
+        "openmrs_entity_parent": "",
+        "openmrs_entity": "",
+        "openmrs_entity_id": "",
+        "type": "check_box",
+        "label": "Why do you not currently breastfeed?",
+        "options":[
+          {
+            "key":"not_enough_breastmilk",
+            "text":"I don’t have enough breast milk",
+            "value":"false"
+          },
+          {
+            "key":"baby_needs_drink_water",
+            "text":"Every baby needs to drink water",
+            "value":"false"
+          },
+          {
+            "key":"breast_engorged_painful",
+            "text":"Breasts are engorged and painful",
+            "value":"false"
+          },
+          {
+            "key":"inverted_nipple",
+            "text":"Inverted nipple",
+            "value":"false"
+          },
+          {
+            "key":"cracked_and_sore_nipple",
+            "text":"Cracked and sore nipple",
+            "value":"false"
+          },
+          {
+            "key":"mother_away_for_long_periods",
+            "text":"Mother is away from home for long periods",
+            "value":"false"
+          },
+          {
+            "key":"pregnant_and_afraid_to_breastfeed",
+            "text":"I am pregnant and am afraid to breastfeed",
+            "value":"false"
+          }
+        ],
+        "has_media_content": true,
+        "media": [
+          {
+            "media_type":"text",
+            "media_trigger_value":"not_enough_breastmilk",
+            "media_link":"",
+            "media_text":"•Reassure the mother the baby is receiving enough milk. If the child is gaining weight adequately and is passing urine 6-8 times day and night and the urine is not yellow.\n•Check positioning and attachment, and correct if needed\n•Breastfeed when baby cries. You will make more milk.\n•Breastfeed long enough to empty one breast to give rich part of milk, before moving to other breast.\n•Stop water, milk, other liquids or foods because mother's milk is best for baby at this age.\n•Mother should eat and drink more to keep herself healthy."
+          },
+          {
+            "media_type":"text",
+            "media_trigger_value":"baby_needs_drink_water",
+            "media_link":"",
+            "media_text":"•There is enough water in breastmilk for the baby so breastfeed more to quench thirst"
+          },
+          {
+            "media_type":"text",
+            "media_trigger_value":"breast_engorged_painful",
+            "media_link":"",
+            "media_text":"•Advise to apply warm moist towel for about 10 minutes to the breast before trying to express the milk\n•If areola area is too tight, help mother to express some milk to make breasts softer for baby to suckle.\n•Reassure her the condition will improve and to continue to breastfeed\n•Breastfeed more frequently to help soften the breast"
+          },
+          {
+            "media_type":"text",
+            "media_trigger_value":"inverted_nipple",
+            "media_link":"",
+            "media_text":"•Ask mother to see a health worker for help."
+          },
+          {
+            "media_type":"text",
+            "media_trigger_value":"cracked_and_sore_nipple",
+            "media_link":"",
+            "media_text":"•Explain that her condition will improve with proper positioning and attachment.\n•Apply a drop of the breast milk to the nipple and expose to fresh air"
+          },
+          {
+            "media_type":"text",
+            "media_trigger_value":"mother_away_for_long_periods",
+            "media_link":"",
+            "media_text":"•Show her how to express her milk and leave in a clean container to be fed by cup\n•If unable to express enough breastmilk, discuss how to supplement with other milk."
+          },
+          {
+            "media_type":"text",
+            "media_trigger_value":"pregnant_and_afraid_to_breastfeed",
+            "media_link":"",
+            "media_text":"•Breastmilk is clean and wholesome for your growing child. You can still breastfeed even when pregnant.\n•Breastfeeding will not harm your pregnancy. You can breastfeed for as long as your child wants."
+          }
+        ],
+        "relevance": {
+          "step1:breastfeeding": {
+            "type": "string",
+            "ex": "equalTo(., \"Yes\")"
+          }
         }
       },
       {
