@@ -55,6 +55,17 @@
     "title": "IYCF Councelling Form Lactating woman",
     "fields": [
       {
+        "key": "dummy_view_for_text_resize",
+        "openmrs_entity_parent": "",
+        "openmrs_entity": "",
+        "openmrs_entity_id": "",
+        "openmrs_data_type": "text",
+        "type": "edit_text",
+        "hidden": true,
+        "hint": "",
+        "value": "Yes"
+      },
+      {
         "key": "lactating_counselling_actions_decided_previous_meeting",
         "openmrs_entity_parent": "",
         "openmrs_entity": "",
@@ -103,7 +114,13 @@
             "text":"Support from family",
             "value":"false"
           }
-        ]
+        ],
+        "relevance": {
+          "step1:dummy_view_for_text_resize": {
+            "type": "string",
+            "ex": "equalTo(., \"Yes\")"
+          }
+        }
       },
       {
         "key": "trouble_eating",

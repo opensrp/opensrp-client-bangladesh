@@ -60,6 +60,17 @@
         "text":"How do you feel?\nHave you had any illnesses in the last 2 weeks?"
       },
       {
+        "key": "dummy_view_for_text_resize",
+        "openmrs_entity_parent": "",
+        "openmrs_entity": "",
+        "openmrs_entity_id": "",
+        "openmrs_data_type": "text",
+        "type": "edit_text",
+        "hidden": true,
+        "hint": "",
+        "value": "Yes"
+      },
+      {
         "key": "pregnant_counselling_actions_decided_previous_meeting",
         "openmrs_entity_parent": "",
         "openmrs_entity": "",
@@ -154,7 +165,13 @@
             "text":"Breastfeeding",
             "value":"false"
           }
-        ]
+        ],
+        "relevance": {
+          "step1:dummy_view_for_text_resize": {
+            "type": "string",
+            "ex": "equalTo(., \"Yes\")"
+          }
+        }
       },
       {
         "key": "has_diet_changed",
@@ -499,7 +516,13 @@
             "text":"Negotiate with family members to take on some of her workload and to attend ANC visits together",
             "value":"false"
           }
-        ]
+        ],
+        "relevance": {
+          "step1:dummy_view_for_text_resize": {
+            "type": "string",
+            "ex": "equalTo(., \"Yes\")"
+          }
+        }
       },
       {
         "key": "Date_Of_next_appointment",

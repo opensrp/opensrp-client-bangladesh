@@ -357,6 +357,8 @@ public class ChildImmunizationActivity extends BaseActivity
         return selectedColor;
     }
     private void createWeightLayout(LinearLayout fragmentContainer, boolean editmode, LayoutInflater inflater) {
+        fragmentContainer.removeAllViews();
+        fragmentContainer.addView(inflater.inflate(R.layout.previous_weightview,null));
         LinkedHashMap<Long, Pair<String, String>> weightmap = new LinkedHashMap<>();
         ArrayList<Boolean> weighteditmode = new ArrayList<Boolean>();
         ArrayList<View.OnClickListener> listeners = new ArrayList<View.OnClickListener>();
@@ -1630,6 +1632,7 @@ public class ChildImmunizationActivity extends BaseActivity
         }
 
         TableLayout tableLayout = (TableLayout) previousweightholder.findViewById(org.smartregister.growthmonitoring.R.id.weights_table);
+//        tableLayout.removeAllViews();
         for (Weight weight : weights) {
             TableRow dividerRow = new TableRow(previousweightholder.getContext());
             View divider = new View(previousweightholder.getContext());

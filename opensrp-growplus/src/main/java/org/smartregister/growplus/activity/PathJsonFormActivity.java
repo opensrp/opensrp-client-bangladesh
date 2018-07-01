@@ -2,7 +2,11 @@ package org.smartregister.growplus.activity;
 
 import android.graphics.Color;
 import android.os.Bundle;
+import android.util.TypedValue;
 import android.view.View;
+import android.view.ViewGroup;
+import android.widget.FrameLayout;
+import android.widget.TextView;
 
 import com.rengwuxian.materialedittext.MaterialEditText;
 import com.shashank.sony.fancydialoglib.Animation;
@@ -33,6 +37,7 @@ public class PathJsonFormActivity extends JsonFormActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         isLaunched = true;
+
     }
 
     @Override
@@ -41,6 +46,8 @@ public class PathJsonFormActivity extends JsonFormActivity {
         pathJsonFormFragment = PathJsonFormFragment.getFormFragment(JsonFormConstants.FIRST_STEP_NAME);
         getSupportFragmentManager().beginTransaction()
                 .add(com.vijay.jsonwizard.R.id.container, pathJsonFormFragment).commit();
+        FrameLayout containter = (FrameLayout)findViewById(com.vijay.jsonwizard.R.id.container) ;
+
     }
 
     @Override
@@ -60,6 +67,33 @@ public class PathJsonFormActivity extends JsonFormActivity {
     public void refreshConstraints(String parentKey, String childKey) {
         super.refreshConstraints(parentKey,childKey);
         calculatelogicForCheckBox(parentKey);
+    }
+
+    @Override
+    protected void toggleViewVisibility(View view, boolean visible) {
+        super.toggleViewVisibility(view,visible);
+        adjustTextViews(view);
+    }
+
+    public void adjustTextViews( View v){
+        try {
+            if (v instanceof ViewGroup) {
+                ViewGroup vg = (ViewGroup) v;
+                for (int i = 0; i < vg.getChildCount(); i++) {
+                    View child = vg.getChildAt(i);
+                    //you can recursively call this method
+                    adjustTextViews( child);
+                }
+            } else if (v instanceof TextView) {
+                //do whatever you want ...
+               float dimension =  getResources().getDimensionPixelSize(com.vijay.jsonwizard.R.dimen.default_text_size);
+                if(((TextView)v).getTextSize()!=dimension){
+                    ((TextView)v).setTextSize(TypedValue.COMPLEX_UNIT_PX,dimension);
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     private void calculatelogicForCheckBox(String parentKey) {
