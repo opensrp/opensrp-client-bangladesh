@@ -127,11 +127,8 @@ public class UniqueIdRepository extends BaseRepository {
         try {
             String id;
             String userName = VaccinatorApplication.getInstance().context().allSharedPreferences().fetchRegisteredANM();
-            if (!openmrsId.contains("-")) {
-                id = formatId(openmrsId);
-            } else {
-                id = openmrsId;
-            }
+
+            id = openmrsId;
             ContentValues values = new ContentValues();
             values.put(STATUS_COLUMN, STATUS_USED);
             values.put(USED_BY_COLUMN, userName);

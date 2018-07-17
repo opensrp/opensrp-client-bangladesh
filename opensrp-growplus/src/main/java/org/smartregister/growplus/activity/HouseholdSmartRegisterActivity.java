@@ -14,6 +14,7 @@ import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.support.v7.app.AppCompatDelegate;
 import android.util.Log;
 import android.view.inputmethod.InputMethodManager;
 
@@ -81,6 +82,7 @@ public class HouseholdSmartRegisterActivity extends BaseRegisterActivity {
         ButterKnife.bind(this);
 
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+        AppCompatDelegate.setCompatVectorFromResourcesEnabled(true);
 
         mBaseFragment = new HouseholdSmartRegisterFragment();
         advancedSearchFragment = new AdvancedSearchFragment();

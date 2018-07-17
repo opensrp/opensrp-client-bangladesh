@@ -242,6 +242,11 @@ public class JsonFormUtils extends org.smartregister.util.JsonFormUtils {
                         String addressLine = fields.getJSONObject(i).getString("value");
                         address1.addAddressField("address6", addressLine);
                     }
+                }else if (key.equals("gps")) {
+                    if (!TextUtils.isEmpty(fields.getJSONObject(i).getString("value"))) {
+                        String addressLine = fields.getJSONObject(i).getString("value");
+                        address1.addAddressField("gps", addressLine);
+                    }
                 }
             }
 
@@ -927,6 +932,16 @@ public class JsonFormUtils extends org.smartregister.util.JsonFormUtils {
             if ("mother".equals(lookUpEntityId) && StringUtils.isNotBlank(lookUpBaseEntityId)) {
                 Client ss = new Client(lookUpBaseEntityId);
                 addRelationship(context, ss, c);
+
+                ////////////////////adding child addresses////////////////
+                SQLiteDatabase db = VaccinatorApplication.getInstance().getRepository().getReadableDatabase();
+                PathRepository pathRepository = new PathRepository(context, VaccinatorApplication.getInstance().context());
+                EventClientRepository eventClientRepository = new EventClientRepository(pathRepository);
+                JSONObject clientjson = eventClientRepository.getClient(db, lookUpBaseEntityId);
+                c.setAddresses(getAddressFromClientJson(clientjson));
+                //////////////////////////////////////////////////////////
+
+
             } else {
 
                 if (StringUtils.isNotBlank(subBindType)) {
@@ -1859,7 +1874,7 @@ public class JsonFormUtils extends org.smartregister.util.JsonFormUtils {
             healthFacilities.add("Union");
             healthFacilities.add("Ward");
             healthFacilities.add("Subunit");
-            healthFacilities.add("EPI center");
+            healthFacilities.add("Vaccination Center");
 
 
             ArrayList<String> defaultFacilities = new ArrayList<>();
@@ -1870,7 +1885,7 @@ public class JsonFormUtils extends org.smartregister.util.JsonFormUtils {
             healthFacilities.add("Union");
             healthFacilities.add("Ward");
             healthFacilities.add("Subunit");
-            healthFacilities.add("EPI center");
+            healthFacilities.add("Vaccination Center");
 
             JSONArray defaultLocation = generateDefaultLocationHierarchy(context, allLevels);
             JSONArray defaultFacility = generateDefaultLocationHierarchy(context, healthFacilities);
