@@ -6,6 +6,7 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 
+import org.smartregister.growplus.service.intent.GrowPlusWeightIntentService;
 import org.smartregister.growthmonitoring.service.intent.WeightIntentService;
 import org.smartregister.immunization.service.intent.RecurringIntentService;
 import org.smartregister.immunization.service.intent.VaccineIntentService;
@@ -45,7 +46,7 @@ public class VaccinatorAlarmReceiver extends BroadcastReceiver {
                     android.util.Log.i(TAG, "Started PULL_UNIQUE_IDS service at: " + dateFormatter.format(new Date()));
                     break;
                 case PathConstants.ServiceType.WEIGHT_SYNC_PROCESSING:
-                    serviceIntent = new Intent(context, WeightIntentService.class);
+                    serviceIntent = new Intent(context, GrowPlusWeightIntentService.class);
                     android.util.Log.i(TAG, "Started WEIGHT_SYNC_PROCESSING service at: " + dateFormatter.format(new Date()));
                     break;
                 case PathConstants.ServiceType.VACCINE_SYNC_PROCESSING:

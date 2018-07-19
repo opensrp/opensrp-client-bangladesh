@@ -69,7 +69,7 @@ android {
             buildConfigField "long", "MAX_SERVER_TIME_DIFFERENCE", "1800000l"
             buildConfigField "boolean", "TIME_CHECK", "false"
             buildConfigField "int", "AUTO_SYNC_DURATION", '2'
-            buildConfigField "int", "WEIGHT_SYNC_PROCESSING_MINUTES", '3'
+            buildConfigField "int", "WEIGHT_SYNC_PROCESSING_MINUTES", '1'
             buildConfigField "int", "VACCINE_SYNC_PROCESSING_MINUTES", '3'
             buildConfigField "int", "RECURRING_SERVICES_SYNC_PROCESSING_MINUTES", '3'
             buildConfigField "int", "DAILY_TALLIES_GENERATION_MINUTES", '5'
@@ -89,7 +89,7 @@ android {
             buildConfigField "long", "MAX_SERVER_TIME_DIFFERENCE", "1800000l"
             buildConfigField "boolean", "TIME_CHECK", "false"
             buildConfigField "int", "AUTO_SYNC_DURATION", '2'
-            buildConfigField "int", "WEIGHT_SYNC_PROCESSING_MINUTES", '3'
+            buildConfigField "int", "WEIGHT_SYNC_PROCESSING_MINUTES", '1'
             buildConfigField "int", "VACCINE_SYNC_PROCESSING_MINUTES", '3'
             buildConfigField "int", "RECURRING_SERVICES_SYNC_PROCESSING_MINUTES", '3'
             buildConfigField "int", "DAILY_TALLIES_GENERATION_MINUTES", '5'

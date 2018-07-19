@@ -311,16 +311,16 @@ public class VaccinatorApplication extends DrishtiApplication
 
     @Override
     public void onTimeChanged() {
-        Toast.makeText(this, R.string.device_time_changed, Toast.LENGTH_LONG).show();
-        context.userService().forceRemoteLogin();
-        logoutCurrentUser();
+//        Toast.makeText(this, R.string.device_time_changed, Toast.LENGTH_LONG).show();
+//        context.userService().forceRemoteLogin();
+//        logoutCurrentUser();
     }
 
     @Override
     public void onTimeZoneChanged() {
-        Toast.makeText(this, R.string.device_timezone_changed, Toast.LENGTH_LONG).show();
-        context.userService().forceRemoteLogin();
-        logoutCurrentUser();
+//        Toast.makeText(this, R.string.device_timezone_changed, Toast.LENGTH_LONG).show();
+//        context.userService().forceRemoteLogin();
+//        logoutCurrentUser();
     }
 
     private void initOfflineSchedules() {

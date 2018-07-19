@@ -174,7 +174,7 @@ public class LocationPickerView extends CustomFontTextView implements View.OnCli
             }
         }
 
-        return null;
+        return "";
     }
 
     @Override

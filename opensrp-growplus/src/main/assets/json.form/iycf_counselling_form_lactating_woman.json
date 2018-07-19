@@ -73,7 +73,6 @@
         "openmrs_data_type": "text",
         "type": "spinner",
         "hidden": true,
-        "read_only": true,
         "hint": "",
         "values": [
           "Yes",
