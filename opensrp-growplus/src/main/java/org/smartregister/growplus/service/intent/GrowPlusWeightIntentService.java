@@ -18,6 +18,7 @@ import org.smartregister.growthmonitoring.repository.WeightRepository;
 import org.smartregister.growthmonitoring.service.intent.WeightIntentService;
 import org.smartregister.growthmonitoring.util.GMConstants;
 import org.smartregister.growthmonitoring.util.JsonFormUtils;
+import org.smartregister.repository.DetailsRepository;
 import org.smartregister.util.Utils;
 
 import java.util.ArrayList;
@@ -26,6 +27,7 @@ import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import util.PathConstants;
 
@@ -48,6 +50,7 @@ public class GrowPlusWeightIntentService extends IntentService {
 
     @Override
     protected void onHandleIntent(Intent intent) {
+        DetailsRepository detailsRepository = VaccinatorApplication.getInstance().context().detailsRepository();
 
         try {
             List<Weight> weights = weightRepository.findUnSyncedBeforeTime(GMConstants.WEIGHT_SYNC_TIME);
@@ -79,6 +82,8 @@ public class GrowPlusWeightIntentService extends IntentService {
 
                     List<Weight> weightlist = weightRepository.findByEntityId(weight.getBaseEntityId());
                     CommonPersonObject childDetails = VaccinatorApplication.getInstance().context().commonrepository("ec_child").findByBaseEntityId(weight.getBaseEntityId());
+                    Map<String,String> details =  detailsRepository.getAllDetailsForClient(childDetails.getCaseId());
+                    childDetails.getColumnmaps().putAll(details);
                     String dobString = Utils.getValue(childDetails.getColumnmaps(), PathConstants.KEY.DOB, false);
                     Date dob = null;
                     if (!TextUtils.isEmpty(Utils.getValue(childDetails.getColumnmaps(), PathConstants.KEY.BIRTH_WEIGHT, false))
@@ -114,14 +119,15 @@ public class GrowPlusWeightIntentService extends IntentService {
                     }
 
                     weightlist = result;
-                    int currentweightindex = 0;
-                    for(int i = 0;i<weightlist.size();i++){
+
+                    int currentweightindex = -1;
+                    for(int i = weightlist.size()-1;i>-1;i--){
                         if(weight.getId().equals(weightlist.get(i).getId())){
                             currentweightindex = i;
                         }
                     }
-                    if(currentweightindex>0) {
-                        Weight previousWeight = weightlist.get(currentweightindex - 1);
+                    if(currentweightindex<(weightlist.size()-1)&&currentweightindex!=-1) {
+                        Weight previousWeight = weightlist.get(currentweightindex + 1);
 
                         JSONObject previousWeightObject = new JSONObject();
                         previousWeightObject.put(GMConstants.JsonForm.KEY, "previous_weight");
@@ -144,14 +150,12 @@ public class GrowPlusWeightIntentService extends IntentService {
                     }
 
 
-
                     jsonArray.put(jsonObject);
                     jsonArray.put(zScoreObject);
 
                     JsonFormUtils.createWeightEvent(getApplicationContext(), weight, EVENT_TYPE, ENTITY_TYPE, jsonArray);
                     if (weight.getBaseEntityId() == null || weight.getBaseEntityId().isEmpty()) {
                         JsonFormUtils.createWeightEvent(getApplicationContext(), weight, EVENT_TYPE_OUT_OF_CATCHMENT, ENTITY_TYPE, jsonArray);
-
                     }
                     weightRepository.close(weight.getId());
                 }

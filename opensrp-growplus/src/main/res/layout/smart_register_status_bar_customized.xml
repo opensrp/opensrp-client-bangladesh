@@ -22,7 +22,7 @@
             android:layout_width="@dimen/ec_main_header_search_box_width"
             android:layout_height="match_parent"
             android:layout_alignParentLeft="true"
-            android:background="@android:color/transparent"
+            android:background="@color/transparent"
             android:ellipsize="end"
             android:hint="@string/str_search_hint"
             android:singleLine="true"
@@ -35,7 +35,7 @@
             android:layout_width="@dimen/ec_main_header_search_cancel_button_width"
             android:layout_height="match_parent"
             android:layout_alignParentRight="true"
-            android:background="@android:color/transparent"
+            android:background="@color/transparent"
             android:src="@drawable/ic_cross"
             android:visibility="visible" />
     </RelativeLayout>
