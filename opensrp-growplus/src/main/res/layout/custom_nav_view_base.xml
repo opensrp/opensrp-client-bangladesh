@@ -239,7 +239,7 @@
                     <ImageView
                         android:layout_width="55dp"
                         android:id="@+id/stockcontrolImageview"
-                        android:src="@drawable/stockreg"
+                        android:src="@drawable/ic_daily_tallies"
                         android:paddingTop="10dp"
                         android:paddingBottom="10dp"
                         android:paddingRight="10dp"
@@ -257,7 +257,7 @@
                         android:textSize="@dimen/label_text_size"
                         android:layout_weight="1"
                         android:layout_gravity="center_vertical"
-                        android:text="Stock Control" />
+                        android:text="Reports" />
                 </LinearLayout>
             </LinearLayout>
         </ScrollView>

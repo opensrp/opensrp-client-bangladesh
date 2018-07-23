@@ -333,6 +333,10 @@ public abstract class BaseRegisterActivity extends SecuredNativeSmartRegisterAct
             public void onClick(View v) {
 //                Intent intent = new Intent(getApplicationContext(), StockActivity.class);
 //                startActivity(intent);
+                Intent intent2 = new Intent(getApplicationContext(), GrowthReportActivity.class);
+//                intent.putExtra(BaseRegisterActivity.IS_REMOTE_LOGIN, false);
+                startActivity(intent2);
+
                 drawer.closeDrawer(GravityCompat.START);
 
             }
@@ -355,6 +359,9 @@ public abstract class BaseRegisterActivity extends SecuredNativeSmartRegisterAct
                 Intent intent = new Intent(getApplicationContext(), ChildSmartRegisterActivity.class);
                 intent.putExtra(BaseRegisterActivity.IS_REMOTE_LOGIN, false);
                 startActivity(intent);
+                ////////////////////////////////////////////////////////////
+
+                ///////////////////////////////////////////////////////////
                 drawer.closeDrawer(GravityCompat.START);
 
 //                finish();
@@ -390,7 +397,7 @@ public abstract class BaseRegisterActivity extends SecuredNativeSmartRegisterAct
         });
         /////disabling buttons
         outofcatchment.setVisibility(View.GONE);
-        stockregister.setVisibility(View.GONE);
+        stockregister.setVisibility(View.VISIBLE);
         hia2.setVisibility(View.GONE);
         addchild.setVisibility(View.GONE);
         ///////////////////////////////////////

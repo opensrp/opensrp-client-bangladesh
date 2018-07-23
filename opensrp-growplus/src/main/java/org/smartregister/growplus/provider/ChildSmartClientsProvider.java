@@ -589,7 +589,7 @@ public class ChildSmartClientsProvider implements SmartRegisterCLientsProviderFo
     }
 
 
-    private boolean checkForWeightGainCalc(Date dob, Gender gender, Weight weight, CommonPersonObjectClient childDetails, DetailsRepository detailsRepository) {
+    public static boolean checkForWeightGainCalc(Date dob, Gender gender, Weight weight, CommonPersonObjectClient childDetails, DetailsRepository detailsRepository) {
         String dobString = "";
         String formattedAge = "";
         String formattedDob = "";
@@ -642,7 +642,7 @@ public class ChildSmartClientsProvider implements SmartRegisterCLientsProviderFo
 
     }
 
-    private boolean checkWeighGainVelocity(Weight weight, Weight previouseWeight, int age_when_weight_taken, int monthLastWeightTaken, Gender gender) {
+    public static boolean checkWeighGainVelocity(Weight weight, Weight previouseWeight, int age_when_weight_taken, int monthLastWeightTaken, Gender gender) {
         boolean check = true;
         Float weightDifference = weight.getKg() - previouseWeight.getKg();
         Float weightDifferenceInGrams = weightDifference*1000;
