@@ -122,4 +122,10 @@
         <item name="android:maxLines">1</item>
         <item name="android:ellipsize">end</item>
     </style>
+
+    <style name="reporttabtextappearance" parent="CustomFontTextViewStyle.tabIndicator">
+        <item name="android:textSize">14sp</item>
+        <item name="android:textColor">@android:color/white</item>
+        <item name="android:inputType">textMultiLine</item>
+    </style>
 </resources>

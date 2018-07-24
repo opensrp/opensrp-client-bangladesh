@@ -21,6 +21,8 @@ import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.text.TextUtils;
 import android.util.Log;
+import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -40,6 +42,7 @@ import org.smartregister.commonregistry.CommonPersonObjectClient;
 import org.smartregister.domain.Photo;
 import org.smartregister.growplus.R;
 import org.smartregister.growplus.application.VaccinatorApplication;
+import org.smartregister.growplus.fragment.ReportGeoMapFragment;
 import org.smartregister.growplus.fragment.StatusEditDialogFragment;
 import org.smartregister.growplus.listener.StatusChangeListener;
 import org.smartregister.growplus.sync.ECSyncUpdater;
@@ -47,6 +50,7 @@ import org.smartregister.growplus.sync.PathClientProcessor;
 import org.smartregister.growplus.tabfragments.ChildRegistrationDataFragment;
 import org.smartregister.growplus.tabfragments.ChildUnderFiveFragment;
 import org.smartregister.growplus.toolbar.ChildDetailsToolbar;
+import org.smartregister.growplus.toolbar.LocationSwitcherToolbar;
 import org.smartregister.growthmonitoring.domain.Weight;
 import org.smartregister.growthmonitoring.domain.WeightWrapper;
 import org.smartregister.growthmonitoring.listener.WeightActionListener;
@@ -121,34 +125,60 @@ public class GrowthReportActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.report_detail_activity_simple_tabs);
+        ((TextView)findViewById(R.id.title)).setText("Report");
 
 
         tabLayout = (TabLayout) findViewById(R.id.tabs);
 //        getSupportActionBar().
 
         viewPager = (ViewPager) findViewById(R.id.viewpager);
-        viewPager.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
-            @Override
-            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+//        viewPager.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+//            @Override
+//            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+//
+//            }
+//
+//            @Override
+//            public void onPageSelected(int position) {
+//
+//            }
+//
+//            @Override
+//            public void onPageScrollStateChanged(int state) {
+//
+//            }
+//        });
 
-            }
-
-            @Override
-            public void onPageSelected(int position) {
-
-            }
-
-            @Override
-            public void onPageScrollStateChanged(int state) {
-
-            }
-        });
         setupViewPager(viewPager);
 
 
 
         tabLayout.setupWithViewPager(viewPager);
+        createTabIcons();
 
+
+    }
+    private void createTabIcons() {
+        TextView tabOne = new TextView(this);
+        tabOne.setText("Key"+ System.getProperty("line.separator") +"Achievement");
+        tabOne.setCompoundDrawablesWithIntrinsicBounds(0, R.mipmap.bargraph, 0, 0);
+        tabOne.setGravity(Gravity.CENTER);
+        tabOne.setTextColor(getResources().getColor(R.color.status_bar_text_almost_white));
+        tabLayout.getTabAt(0).setCustomView(tabOne);
+//        tabLayout.getTabAt(0).setIcon(R.mipmap.bargraph);
+        TextView tabtwo = new TextView(this);
+        tabtwo.setText("Geo"+ System.getProperty("line.separator") +"Map");
+        tabtwo.setCompoundDrawablesWithIntrinsicBounds(0, R.mipmap.ic_geo_loc, 0, 0);
+        tabtwo.setGravity(Gravity.CENTER);
+        tabtwo.setTextColor(getResources().getColor(R.color.status_bar_text_almost_white));
+        tabLayout.getTabAt(1).setCustomView(tabtwo);
+
+        TextView tabthree = new TextView(this);
+        tabthree.setText("Growth"+ System.getProperty("line.separator") +"Faltering Trend");
+        tabthree.setCompoundDrawablesWithIntrinsicBounds(0, R.mipmap.ic_chart, 0, 0);
+        tabthree.setGravity(Gravity.CENTER);
+        tabthree.setTextColor(getResources().getColor(R.color.status_bar_text_almost_white));
+        tabLayout.getTabAt(2).setCustomView(tabthree);
     }
 
 
@@ -179,7 +209,7 @@ public class GrowthReportActivity extends BaseActivity {
         adapter = new ViewPagerAdapter(getSupportFragmentManager());
 
         adapter.addFragment(new Fragment(), "Key Achievement");
-        adapter.addFragment(new Fragment(), "Geo Map");
+        adapter.addFragment(new ReportGeoMapFragment(), "Geo Map");
         adapter.addFragment(new Fragment(), "Growth Faltering Trend");
         viewPager.setAdapter(adapter);
     }
