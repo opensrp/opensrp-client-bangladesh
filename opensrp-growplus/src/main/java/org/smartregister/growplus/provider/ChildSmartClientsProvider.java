@@ -632,6 +632,8 @@ public class ChildSmartClientsProvider implements SmartRegisterCLientsProviderFo
         }
         long timeDiffwhenWeightwastaken =  weight.getDate().getTime() - dob.getTime();
 
+       /////////////////////////month last weight was taken calculation needs fixing /////////////////
+
         int age_when_weight_taken = (int) Math.floor((float) timeDiffwhenWeightwastaken /
                 TimeUnit.MILLISECONDS.convert(30, TimeUnit.DAYS));
 

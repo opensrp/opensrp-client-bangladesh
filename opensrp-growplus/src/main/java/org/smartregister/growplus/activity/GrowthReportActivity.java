@@ -42,6 +42,7 @@ import org.smartregister.commonregistry.CommonPersonObjectClient;
 import org.smartregister.domain.Photo;
 import org.smartregister.growplus.R;
 import org.smartregister.growplus.application.VaccinatorApplication;
+import org.smartregister.growplus.fragment.GrowthFalteringTrendReportFragment;
 import org.smartregister.growplus.fragment.ReportGeoMapFragment;
 import org.smartregister.growplus.fragment.StatusEditDialogFragment;
 import org.smartregister.growplus.listener.StatusChangeListener;
@@ -210,7 +211,7 @@ public class GrowthReportActivity extends BaseActivity {
 
         adapter.addFragment(new Fragment(), "Key Achievement");
         adapter.addFragment(new ReportGeoMapFragment(), "Geo Map");
-        adapter.addFragment(new Fragment(), "Growth Faltering Trend");
+        adapter.addFragment(new GrowthFalteringTrendReportFragment(), "Growth Faltering Trend");
         viewPager.setAdapter(adapter);
     }
 
