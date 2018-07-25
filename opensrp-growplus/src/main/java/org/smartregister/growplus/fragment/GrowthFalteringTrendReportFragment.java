@@ -22,6 +22,8 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.jjoe64.graphview.GraphView;
+import com.jjoe64.graphview.helper.DateAsXAxisLabelFormatter;
+import com.jjoe64.graphview.helper.StaticLabelsFormatter;
 import com.jjoe64.graphview.series.DataPoint;
 import com.jjoe64.graphview.series.LineGraphSeries;
 
@@ -57,6 +59,7 @@ import org.smartregister.provider.SmartRegisterClientsProvider;
 import org.smartregister.repository.AllSharedPreferences;
 import org.smartregister.repository.DetailsRepository;
 import org.smartregister.repository.EventClientRepository;
+import org.smartregister.util.DateUtil;
 import org.smartregister.view.activity.SecuredNativeSmartRegisterActivity;
 import org.smartregister.view.dialog.DialogOption;
 import org.smartregister.view.dialog.FilterOption;
@@ -64,12 +67,15 @@ import org.smartregister.view.dialog.ServiceModeOption;
 import org.smartregister.view.dialog.SortOption;
 
 import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
+
+import util.PathConstants;
 
 import static android.view.View.INVISIBLE;
 import static com.vijay.jsonwizard.utils.FormUtils.DATE_FORMAT;
@@ -78,14 +84,18 @@ import static org.smartregister.growthmonitoring.repository.WeightRepository.*;
 import static org.smartregister.util.Utils.getValue;
 
 public class GrowthFalteringTrendReportFragment extends Fragment {
+ public static SimpleDateFormat sql_lite_DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd");
+    public static SimpleDateFormat axis_DATE_FORMAT = new SimpleDateFormat("MMM");
 
  static final String TAG = WeightRepository.class.getCanonicalName();
 
  WeightRepository weightRepository;
  CommonRepository commonRepository;
+ DetailsRepository detailRepository;
  public GrowthFalteringTrendReportFragment(){
      weightRepository = VaccinatorApplication.getInstance().weightRepository();
      commonRepository = VaccinatorApplication.getInstance().context().commonrepository("ec_child");
+     detailRepository = VaccinatorApplication.getInstance().context().detailsRepository();
  }
 
     @Nullable
@@ -95,36 +105,82 @@ public class GrowthFalteringTrendReportFragment extends Fragment {
         GraphView graph = (GraphView) view.findViewById(R.id.graph);
 
 
-        LineGraphSeries<DataPoint> series2 = new LineGraphSeries<>(new DataPoint[] {
-                new DataPoint(0, 3),
-                new DataPoint(1, 3),
-                new DataPoint(2, 6),
-                new DataPoint(3, 2),
-                new DataPoint(4, 5)
-        });
+
+//        "2018-07-29");
+        DateTime today = new DateTime();
+        DateTime firstofNextMonth = today.plusMonths(-11).withDayOfMonth(1);
+        DataPoint [] points = new DataPoint[12];
+        String [] months = new String[12];
+        for(int i =0;i<12;i++){
+            points [i] =new DataPoint(firstofNextMonth.plusMonths(i).toDate(),getWeightOfCertainMonth(sql_lite_DATE_FORMAT.format(firstofNextMonth.plusMonths(i).toDate())));
+             months[i] = firstofNextMonth.plusMonths(i).toString("MMM");
+        }
+        LineGraphSeries<DataPoint> series2 = new LineGraphSeries<>(points);
         graph.addSeries(series2);
-        getWeightOfCertainMonth("2018-07-29");
+//        StaticLabelsFormatter staticLabelsFormatter = new StaticLabelsFormatter(graph);
+//        staticLabelsFormatter.setHorizontalLabels(months);
+//        graph.getGridLabelRenderer().setNumHorizontalLabels(12); // only 4 because of the space
+        graph.getGridLabelRenderer().setLabelFormatter(new DateAsXAxisLabelFormatter(getActivity(),axis_DATE_FORMAT));
+        graph.getGridLabelRenderer().setNumHorizontalLabels(3); // only 4 because of the space
+
+//        graph.getGridLabelRenderer().setLabelFormatter(staticLabelsFormatter);
+        graph.getViewport().setMinY(0);
+        graph.getViewport().setMaxY(100);
+        graph.getViewport().setXAxisBoundsManual(true);
+
+// as we use dates as labels, the human rounding to nice readable numbers
+// is not necessary
+        graph.getGridLabelRenderer().setHumanRounding(false);
         return view;
     }
 
-    public void getWeightOfCertainMonth(String date){
+    public int getWeightOfCertainMonth(String date){
 //     weightRepository.
        Cursor cursor =  commonRepository.rawCustomQueryForAdapter("SELECT * FROM weights where date( date / 1000, 'unixepoch') < '"+date+"' group by base_entity_id having date = max(date)");
        List <Weight> latest = readAllWeights(cursor);
+       int falteredweight = 0;
        for(int i = 0;i<latest.size();i++){
-           processWeightForGrowthChart(latest.get(i));
+           boolean check = processWeightForGrowthChart(latest.get(i));
+           if(!check){
+               falteredweight++;
+           }
+       }
+       if(latest.size()>0){
+           return (int)Math.round(((double)falteredweight/latest.size())*100);
+       }else{
+           return 0;
        }
 
 
  }
 
-    private void processWeightForGrowthChart(Weight weight) {
+    private boolean processWeightForGrowthChart(Weight weight) {
         Date weightdate =weight.getDate();
         Cursor cursor =  commonRepository.rawCustomQueryForAdapter("SELECT * FROM weights where date( date / 1000, 'unixepoch') < date( "+weightdate.getTime()+"/1000,'unixepoch') and base_entity_id = '"+weight.getBaseEntityId()+"' group by base_entity_id having date = max(date)");
-        List <Weight> previousweight = readAllWeights(cursor);
+        List <Weight> previousweightlist = readAllWeights(cursor);
+        Weight previousWeight = null;
+        if(previousweightlist.size()>0){
+            previousWeight = previousweightlist.get(0);
+        }
 
         CommonPersonObject child = commonRepository.findByBaseEntityId(weight.getBaseEntityId());
+        DateTime birthDateTime = null;
+        String dobString = getValue(child.getColumnmaps(), PathConstants.KEY.DOB, false);
+        String durationString = "";
+        if (StringUtils.isNotBlank(dobString)) {
+            try {
+                birthDateTime = new DateTime(dobString);
+                String duration = DateUtil.getDuration(birthDateTime);
+                if (duration != null) {
+                    durationString = duration;
+                }
+            } catch (Exception e) {
+                Log.e(getClass().getName(), e.toString(), e);
+            }
+        }
 
+        boolean check = checkForWeightGainCalc(birthDateTime.toDate(),weight,previousWeight,child,detailRepository);
+        return check;
     }
 
     private List<Weight> readAllWeights(Cursor cursor) {
@@ -182,12 +238,14 @@ public class GrowthFalteringTrendReportFragment extends Fragment {
 
     }
 
-    public static boolean checkForWeightGainCalc(Date dob, Gender gender, Weight weight, CommonPersonObjectClient childDetails, DetailsRepository detailsRepository) {
+    public static boolean checkForWeightGainCalc(Date dob, Weight weight,Weight previousWeight, CommonPersonObject childDetails, DetailsRepository detailsRepository) {
         String dobString = "";
         String formattedAge = "";
         String formattedDob = "";
-
-
+        int monthLastWeightTaken = 0;
+        Map<String, String> detailsMap = detailsRepository.getAllDetailsForClient(childDetails.getCaseId());
+        childDetails.getColumnmaps().putAll(detailsMap);
+        Gender gender =   Gender.valueOf(getValue(childDetails.getColumnmaps(), PathConstants.KEY.GENDER, true).toUpperCase());
 
 
         formattedDob = DATE_FORMAT.format(dob);
@@ -196,19 +254,24 @@ public class GrowthFalteringTrendReportFragment extends Fragment {
         int age_in_months = (int) Math.floor((float) timeDiff /
                 TimeUnit.MILLISECONDS.convert(30, TimeUnit.DAYS));
         DateTime tempweighttime = null;
-        Map<String, String> detailsMap = detailsRepository.getAllDetailsForClient(childDetails.entityId());
-        Float birthweight = new Float(getValue(detailsMap, "Birth_Weight", true));
-        Weight previouseWeight = new Weight();
-        previouseWeight.setKg(birthweight);
-        previouseWeight.setDate(dob);
-        int monthLastWeightTaken = 0;
+        if(previousWeight == null) {
+            Float birthweight = new Float(getValue(detailsMap, "Birth_Weight", true));
+            previousWeight = new Weight();
+            previousWeight.setKg(birthweight);
+            previousWeight.setDate(dob);
+            monthLastWeightTaken = 0;
+        }else{
+            long timeDiffwhenLastWeightwastaken =  previousWeight.getDate().getTime() - dob.getTime();
+            monthLastWeightTaken = (int) Math.round((float) timeDiffwhenLastWeightwastaken /
+                    TimeUnit.MILLISECONDS.convert(30, TimeUnit.DAYS));
+        }
 
         long timeDiffwhenWeightwastaken =  weight.getDate().getTime() - dob.getTime();
 
-        int age_when_weight_taken = (int) Math.floor((float) timeDiffwhenWeightwastaken /
+        int age_when_weight_taken = (int) Math.round((float) timeDiffwhenWeightwastaken /
                 TimeUnit.MILLISECONDS.convert(30, TimeUnit.DAYS));
 
-        boolean check = checkWeighGainVelocity(weight,previouseWeight,age_when_weight_taken,monthLastWeightTaken,gender);
+        boolean check = checkWeighGainVelocity(weight,previousWeight,age_when_weight_taken,monthLastWeightTaken,gender);
         return check;
 //        net.sqlcipher.database.SQLiteDatabase db = wp.getPathRepository().getReadableDatabase();
 

@@ -634,9 +634,11 @@ public class ChildSmartClientsProvider implements SmartRegisterCLientsProviderFo
 
        /////////////////////////month last weight was taken calculation needs fixing /////////////////
 
-        int age_when_weight_taken = (int) Math.floor((float) timeDiffwhenWeightwastaken /
+        int age_when_weight_taken = (int) Math.round((float) timeDiffwhenWeightwastaken /
                 TimeUnit.MILLISECONDS.convert(30, TimeUnit.DAYS));
-
+        //////////////////////calculation fix///////////////
+        monthLastWeightTaken = age_when_weight_taken-monthLastWeightTaken;
+        ////////////////////////////////////////////////////////////////
         boolean check = checkWeighGainVelocity(weight,previouseWeight,age_when_weight_taken,monthLastWeightTaken,gender);
         return check;
 //        net.sqlcipher.database.SQLiteDatabase db = wp.getPathRepository().getReadableDatabase();
