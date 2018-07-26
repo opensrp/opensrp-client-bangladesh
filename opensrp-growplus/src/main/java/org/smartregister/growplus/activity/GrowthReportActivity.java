@@ -43,6 +43,7 @@ import org.smartregister.domain.Photo;
 import org.smartregister.growplus.R;
 import org.smartregister.growplus.application.VaccinatorApplication;
 import org.smartregister.growplus.fragment.GrowthFalteringTrendReportFragment;
+import org.smartregister.growplus.fragment.KeyAchievementFragment;
 import org.smartregister.growplus.fragment.ReportGeoMapFragment;
 import org.smartregister.growplus.fragment.StatusEditDialogFragment;
 import org.smartregister.growplus.listener.StatusChangeListener;
@@ -209,7 +210,7 @@ public class GrowthReportActivity extends BaseActivity {
     private void setupViewPager(ViewPager viewPager) {
         adapter = new ViewPagerAdapter(getSupportFragmentManager());
 
-        adapter.addFragment(new Fragment(), "Key Achievement");
+        adapter.addFragment(new KeyAchievementFragment(), "Key Achievement");
         adapter.addFragment(new ReportGeoMapFragment(), "Geo Map");
         adapter.addFragment(new GrowthFalteringTrendReportFragment(), "Growth Faltering Trend");
         viewPager.setAdapter(adapter);

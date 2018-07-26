@@ -58,6 +58,7 @@ import util.PathConstants;
 import static android.view.ViewGroup.LayoutParams.MATCH_PARENT;
 import static com.vijay.jsonwizard.utils.FormUtils.DATE_FORMAT;
 import static org.smartregister.growplus.activity.LoginActivity.getOpenSRPContext;
+import static org.smartregister.growplus.fragment.GrowthFalteringTrendReportFragment.readAllWeights;
 import static org.smartregister.immunization.util.VaccinatorUtils.generateScheduleList;
 import static org.smartregister.immunization.util.VaccinatorUtils.nextVaccineDue;
 import static org.smartregister.immunization.util.VaccinatorUtils.receivedVaccines;
@@ -611,25 +612,21 @@ public class ChildSmartClientsProvider implements SmartRegisterCLientsProviderFo
         previouseWeight.setKg(birthweight);
         previouseWeight.setDate(dob);
         int monthLastWeightTaken = 0;
-        for(int j = 6;j>0;j--) {
-            DateTime weighttakentime = new DateTime(weight.getDate());
-            DateTime weighttakenA_month_back_time = weighttakentime.minusMonths(j);
-            for (int i = 0; i < weightlist.size(); i++) {
-                DateTime weighttime = new DateTime(weightlist.get(i).getDate());
-                if (weighttime.isBefore(weighttakenA_month_back_time)) {
-                    if (tempweighttime == null) {
-                        tempweighttime = weighttime;
-                        previouseWeight = weightlist.get(i);
-                        monthLastWeightTaken = j;
-                    } else if (weighttime.isAfter(tempweighttime)) {
-                        tempweighttime = weighttime;
-                        previouseWeight = weightlist.get(i);
-                        monthLastWeightTaken = j;
-                    }
 
-                }
-            }
+
+        CommonRepository commonRepository = VaccinatorApplication.getInstance().context().commonrepository("ec_child");
+        Cursor cursor =  commonRepository.rawCustomQueryForAdapter("SELECT * FROM weights where date( date / 1000, 'unixepoch') < date( "+weight.getDate().getTime()+"/1000,'unixepoch') and base_entity_id = '"+weight.getBaseEntityId()+"' group by base_entity_id having date = max(date)");
+        List <Weight> previousweightlist = readAllWeights(cursor);
+
+        if(previousweightlist.size()>0){
+            previouseWeight = previousweightlist.get(0);
+            long timeDiffwhenLastWeightwastaken =  previouseWeight.getDate().getTime() - dob.getTime();
+            monthLastWeightTaken = (int) Math.round((float) timeDiffwhenLastWeightwastaken /
+                    TimeUnit.MILLISECONDS.convert(30, TimeUnit.DAYS));
+
         }
+
+
         long timeDiffwhenWeightwastaken =  weight.getDate().getTime() - dob.getTime();
 
        /////////////////////////month last weight was taken calculation needs fixing /////////////////
@@ -637,7 +634,6 @@ public class ChildSmartClientsProvider implements SmartRegisterCLientsProviderFo
         int age_when_weight_taken = (int) Math.round((float) timeDiffwhenWeightwastaken /
                 TimeUnit.MILLISECONDS.convert(30, TimeUnit.DAYS));
         //////////////////////calculation fix///////////////
-        monthLastWeightTaken = age_when_weight_taken-monthLastWeightTaken;
         ////////////////////////////////////////////////////////////////
         boolean check = checkWeighGainVelocity(weight,previouseWeight,age_when_weight_taken,monthLastWeightTaken,gender);
         return check;
@@ -645,6 +641,8 @@ public class ChildSmartClientsProvider implements SmartRegisterCLientsProviderFo
 
 
     }
+
+
 
     public static boolean checkWeighGainVelocity(Weight weight, Weight previouseWeight, int age_when_weight_taken, int monthLastWeightTaken, Gender gender) {
         boolean check = true;

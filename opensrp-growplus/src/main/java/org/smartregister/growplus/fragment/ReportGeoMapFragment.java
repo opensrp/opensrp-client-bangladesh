@@ -244,12 +244,12 @@ public class ReportGeoMapFragment extends Fragment implements
                 Marker marker = mMap.addMarker(new MarkerOptions()
                         .position(allgeoChildWeightHolders.get(i).position)
                         .title(allgeoChildWeightHolders.get(i).childname)
-                        .icon(vectorToBitmap(R.drawable.ic_cross, getResources().getColor(R.color.alert_complete_green))));
+                        .icon(vectorToBitmap(R.drawable.mapmarker, getResources().getColor(R.color.alert_complete_green))));
             }else if(!allgeoChildWeightHolders.get(i).isChild_growth_rate()){
                 Marker marker = mMap.addMarker(new MarkerOptions()
                         .position(allgeoChildWeightHolders.get(i).position)
                         .title(allgeoChildWeightHolders.get(i).childname)
-                        .icon(vectorToBitmap(R.drawable.ic_cross, getResources().getColor(R.color.alert_urgent_red))));
+                        .icon(vectorToBitmap(R.drawable.mapmarker, getResources().getColor(R.color.alert_urgent_red))));
             }
         }
     }

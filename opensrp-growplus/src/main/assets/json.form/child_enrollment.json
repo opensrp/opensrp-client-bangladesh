@@ -161,7 +161,7 @@
           "err": "Enter a valid weight"
         },
         "v_required": {
-          "value": "false",
+          "value": "true",
           "err": "Enter the child's birth weight"
         }
       },

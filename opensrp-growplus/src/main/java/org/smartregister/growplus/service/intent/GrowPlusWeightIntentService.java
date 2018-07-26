@@ -2,6 +2,7 @@ package org.smartregister.growplus.service.intent;
 
 import android.app.IntentService;
 import android.content.Intent;
+import android.database.Cursor;
 import android.text.TextUtils;
 import android.util.Log;
 import android.widget.LinearLayout;
@@ -11,6 +12,7 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 import org.smartregister.commonregistry.CommonPersonObject;
 import org.smartregister.commonregistry.CommonPersonObjectClient;
+import org.smartregister.commonregistry.CommonRepository;
 import org.smartregister.growplus.application.VaccinatorApplication;
 import org.smartregister.growthmonitoring.GrowthMonitoringLibrary;
 import org.smartregister.growthmonitoring.domain.Weight;
@@ -42,6 +44,7 @@ public class GrowPlusWeightIntentService extends IntentService {
     public static final String EVENT_TYPE_OUT_OF_CATCHMENT = "Out of Area Service - Growth Monitoring";
     public static final String ENTITY_TYPE = "weight";
     private WeightRepository weightRepository;
+    private CommonRepository commonRepository;
 
 
     public GrowPlusWeightIntentService() {
@@ -50,6 +53,7 @@ public class GrowPlusWeightIntentService extends IntentService {
 
     @Override
     protected void onHandleIntent(Intent intent) {
+        commonRepository = VaccinatorApplication.getInstance().context().commonrepository("ec_child");
         DetailsRepository detailsRepository = VaccinatorApplication.getInstance().context().detailsRepository();
 
         try {
@@ -129,13 +133,24 @@ public class GrowPlusWeightIntentService extends IntentService {
                     if(currentweightindex<(weightlist.size()-1)&&currentweightindex!=-1) {
                         Weight previousWeight = weightlist.get(currentweightindex + 1);
 
+
+
                         JSONObject previousWeightObject = new JSONObject();
                         previousWeightObject.put(GMConstants.JsonForm.KEY, "previous_weight");
                         previousWeightObject.put(GMConstants.JsonForm.OPENMRS_ENTITY, "");
                         previousWeightObject.put(GMConstants.JsonForm.OPENMRS_ENTITY_ID, "");
                         previousWeightObject.put(GMConstants.JsonForm.OPENMRS_ENTITY_PARENT, "");
                         previousWeightObject.put(GMConstants.JsonForm.OPENMRS_DATA_TYPE, "");
-                        previousWeightObject.put(GMConstants.JsonForm.VALUE, previousWeight.getKg());
+                        previousWeightObject.put(GMConstants.JsonForm.VALUE, previousWeight.getDate());
+                        String previousweightdatetimestamp ="";
+                        if(previousWeight.getId()!=-1) {
+                            Cursor previousweightcursor = commonRepository.rawCustomQueryForAdapter("select date from weights where _id = '" + previousWeight.getId() + "'");
+                            previousweightcursor.moveToFirst();
+                            previousweightdatetimestamp = previousweightcursor.getString(0);
+                            previousweightcursor.close();
+                        }else{
+                            previousweightdatetimestamp = ""+dob.getTime();
+                        }
 
                         JSONObject previousWeightDateObject = new JSONObject();
                         previousWeightDateObject.put(GMConstants.JsonForm.KEY, "previous_weight_date");
@@ -143,7 +158,7 @@ public class GrowPlusWeightIntentService extends IntentService {
                         previousWeightDateObject.put(GMConstants.JsonForm.OPENMRS_ENTITY_ID, "");
                         previousWeightDateObject.put(GMConstants.JsonForm.OPENMRS_ENTITY_PARENT, "");
                         previousWeightDateObject.put(GMConstants.JsonForm.OPENMRS_DATA_TYPE, "");
-                        previousWeightDateObject.put(GMConstants.JsonForm.VALUE, previousWeight.getDate());
+                        previousWeightDateObject.put(GMConstants.JsonForm.VALUE,    previousweightdatetimestamp);
 
                         jsonArray.put(previousWeightObject);
                         jsonArray.put(previousWeightDateObject);
