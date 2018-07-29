@@ -10,8 +10,10 @@ import android.util.Log;
 import org.apache.commons.lang3.StringUtils;
 import org.joda.time.DateTime;
 import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 import org.smartregister.clientandeventmodel.DateUtil;
+import org.smartregister.growplus.domain.Counselling;
 import org.smartregister.growthmonitoring.domain.Weight;
 import org.smartregister.growthmonitoring.repository.WeightRepository;
 import org.smartregister.growthmonitoring.service.intent.WeightIntentService;
@@ -27,6 +29,7 @@ import org.smartregister.immunization.service.intent.RecurringIntentService;
 import org.smartregister.immunization.service.intent.VaccineIntentService;
 import org.smartregister.growplus.application.VaccinatorApplication;
 import org.smartregister.repository.AllSharedPreferences;
+import org.smartregister.repository.BaseRepository;
 import org.smartregister.repository.DetailsRepository;
 import org.smartregister.sync.ClientProcessor;
 import org.smartregister.sync.CloudantDataHandler;
@@ -36,7 +39,9 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import util.MoveToMyCatchmentUtils;
 import util.PathConstants;
@@ -104,6 +109,22 @@ public class PathClientProcessor extends ClientProcessor {
                     unsyncEvents.add(event);
                 } else if (type.equals(PathConstants.EventType.DEATH)) {
                     unsyncEvents.add(event);
+                }else if (type.equals(PathConstants.EventType.Pregnant_Woman_Counselling)) {
+                    processPregnantWomanCounselling(event);
+                    JSONObject clientClassificationJson = new JSONObject(clientClassificationStr);
+                    if (isNullOrEmptyJSONObject(clientClassificationJson)) {
+                        continue;
+                    }
+                    processEvent(event, clientClassificationJson);
+
+                }else if (type.equals(PathConstants.EventType.Pregnant_Woman_Lactating)) {
+                    processPregnantWomanLactating(event);
+                    JSONObject clientClassificationJson = new JSONObject(clientClassificationStr);
+                    if (isNullOrEmptyJSONObject(clientClassificationJson)) {
+                        continue;
+                    }
+                    processEvent(event, clientClassificationJson);
+
                 } else {
                     JSONObject clientClassificationJson = new JSONObject(clientClassificationStr);
                     if (isNullOrEmptyJSONObject(clientClassificationJson)) {
@@ -121,6 +142,70 @@ public class PathClientProcessor extends ClientProcessor {
         }
 
         allSharedPreferences.saveLastSyncDate(lastSyncDate.getTime());
+    }
+
+    private void processPregnantWomanCounselling(JSONObject event) {
+        String String_event = event.toString();
+
+        try {
+            Long timestamp = getEventDateinLong(event.get("eventDate"));
+
+            Date date = new DateTime(timestamp).toDate();
+
+            Map<String, String> fieldshashmap = EventfieldsToHashmapForCounselling(event.getJSONArray("obs"));
+            Counselling counselling = new Counselling(null, event.getString("baseEntityId"), event.getString("eventType"), date, event.getString("providerId"), null, BaseRepository.TYPE_Synced, date.getTime(), event.getString("id"), event.getString("formSubmissionId"), date);
+            counselling.setFormfields(fieldshashmap);
+            VaccinatorApplication.getInstance().counsellingRepository().add(counselling);
+        }catch (Exception e){
+
+        }
+        Log.v("logo logs",String_event);
+    }
+
+    private void processPregnantWomanLactating(JSONObject event) {
+        String String_event = event.toString();
+
+        try {
+            Long timestamp = getEventDateinLong(event.get("eventDate"));
+
+            Date date = new DateTime(timestamp).toDate();
+
+            Map<String, String> fieldshashmap = EventfieldsToHashmapForCounselling(event.getJSONArray("obs"));
+            Counselling counselling = new Counselling(null, event.getString("baseEntityId"), event.getString("eventType"), date, event.getString("providerId"), null, BaseRepository.TYPE_Synced, date.getTime(), event.getString("id"), event.getString("formSubmissionId"), date);
+            counselling.setFormfields(fieldshashmap);
+            VaccinatorApplication.getInstance().counsellingRepository().add(counselling);
+        }catch (Exception e){
+
+        }
+        Log.v("logo logs",String_event);
+    }
+
+    private long getEventDateinLong(Object eventDate) {
+        if (eventDate instanceof Long) {
+            return (Long) eventDate;
+        } else {
+            Date date = DateUtil.toDate(eventDate);
+            if (date != null) {
+                return date.getTime();
+            }
+        }
+        return new Date().getTime();
+    }
+
+    private static Map<String, String> EventfieldsToHashmapForCounselling(JSONArray fields) {
+        HashMap<String, String> fieldsToHashmap = new HashMap<String, String>();
+        try {
+            for (int i = 0; i < fields.length(); i++) {
+                JSONObject field = fields.getJSONObject(i);
+                if (field.has("fieldCode") && field.has("values")) {
+                    fieldsToHashmap.put(field.getString("fieldCode"), field.getJSONArray("values").getString(0));
+                }
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        return fieldsToHashmap;
     }
 
     @Override
@@ -164,7 +249,7 @@ public class PathClientProcessor extends ClientProcessor {
                     unsyncEvents.add(event);
                 } else if (eventType.equals(PathConstants.EventType.DEATH)) {
                     unsyncEvents.add(event);
-                } else {
+                }  else {
                     JSONObject clientClassificationJson = new JSONObject(clientClassificationStr);
                     if (isNullOrEmptyJSONObject(clientClassificationJson)) {
                         continue;
