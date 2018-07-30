@@ -16,11 +16,9 @@
         android:name=".application.VaccinatorApplication"
         android:allowBackup="true"
         android:icon="@drawable/growplus_icon">
-
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="@string/google_maps_key" />
-
 
         <activity
             android:name=".activity.LoginActivity"
@@ -85,13 +83,11 @@
         <activity
             android:name=".activity.GrowthGeoMapActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme"
-            />
+            android:theme="@style/AppTheme" />
         <activity
             android:name=".activity.GrowthReportActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme"
-            />
+            android:theme="@style/AppTheme" />
         <activity
             android:name=".activity.SettingsActivity"
             android:screenOrientation="portrait" />
@@ -124,6 +120,10 @@
                 android:resource="@xml/captured_images_path" />
         </provider>
 
+        <activity
+            android:name=".activity.HomeDashboardActivity"
+            android:label="@string/title_activity_home_dashboard"
+            android:theme="@style/AppTheme"></activity>
     </application>
 
 </manifest>

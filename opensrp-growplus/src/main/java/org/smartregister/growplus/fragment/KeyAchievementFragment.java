@@ -191,22 +191,26 @@ public class KeyAchievementFragment extends Fragment {
 
         CommonPersonObject child = commonRepository.findByBaseEntityId(weight.getBaseEntityId());
         DateTime birthDateTime = null;
-        String dobString = getValue(child.getColumnmaps(), PathConstants.KEY.DOB, false);
-        String durationString = "";
-        if (StringUtils.isNotBlank(dobString)) {
-            try {
-                birthDateTime = new DateTime(dobString);
-                String duration = DateUtil.getDuration(birthDateTime);
-                if (duration != null) {
-                    durationString = duration;
+        if(child!=null) {
+            String dobString = getValue(child.getColumnmaps(), PathConstants.KEY.DOB, false);
+            String durationString = "";
+            if (StringUtils.isNotBlank(dobString)) {
+                try {
+                    birthDateTime = new DateTime(dobString);
+                    String duration = DateUtil.getDuration(birthDateTime);
+                    if (duration != null) {
+                        durationString = duration;
+                    }
+                } catch (Exception e) {
+                    Log.e(getClass().getName(), e.toString(), e);
                 }
-            } catch (Exception e) {
-                Log.e(getClass().getName(), e.toString(), e);
             }
-        }
 
-        boolean check = checkForWeightGainCalc(birthDateTime.toDate(),weight,previousWeight,child,detailRepository);
-        return check;
+            boolean check = checkForWeightGainCalc(birthDateTime.toDate(), weight, previousWeight, child, detailRepository);
+            return check;
+        }else{
+            return false;
+        }
     }
 
     private List<Weight> readAllWeights(Cursor cursor) {

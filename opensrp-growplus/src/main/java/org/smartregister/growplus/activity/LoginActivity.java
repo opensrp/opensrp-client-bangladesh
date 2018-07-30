@@ -384,7 +384,9 @@ public class LoginActivity extends AppCompatActivity {
             Utils.startAsyncTask(new SaveTeamLocationsTask(), null);
         }
         VaccinatorApplication.setCrashlyticsUser(getOpenSRPContext());
-        Intent intent = new Intent(this, HouseholdSmartRegisterActivity.class);
+//        Intent intent = new Intent(this, HouseholdSmartRegisterActivity.class);
+        Intent intent = new Intent(this, HomeDashboardActivity.class);
+
         intent.putExtra(BaseRegisterActivity.IS_REMOTE_LOGIN, remote);
         startActivity(intent);
 
@@ -406,7 +408,7 @@ public class LoginActivity extends AppCompatActivity {
             return;
         }
 
-        final RelativeLayout canvasRL = (RelativeLayout) findViewById(R.id.canvasRL);
+        final LinearLayout canvasRL = (LinearLayout) findViewById(R.id.canvasRL);
         final LinearLayout logoCanvasLL = (LinearLayout) findViewById(R.id.logoCanvasLL);
         final LinearLayout credentialsCanvasLL = (LinearLayout) findViewById(R.id.credentialsCanvasLL);
 
@@ -422,7 +424,7 @@ public class LoginActivity extends AppCompatActivity {
                         - logoCanvasLL.getHeight();
                 topMargin = topMargin / 2;
 
-                RelativeLayout.LayoutParams logoCanvasLP = (RelativeLayout.LayoutParams) logoCanvasLL.getLayoutParams();
+                LinearLayout.LayoutParams logoCanvasLP = (LinearLayout.LayoutParams) logoCanvasLL.getLayoutParams();
                 logoCanvasLP.setMargins(0, topMargin, 0, 0);
                 logoCanvasLL.setLayoutParams(logoCanvasLP);
 

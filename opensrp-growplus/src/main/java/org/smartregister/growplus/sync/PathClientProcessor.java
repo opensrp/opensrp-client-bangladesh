@@ -249,7 +249,29 @@ public class PathClientProcessor extends ClientProcessor {
                     unsyncEvents.add(event);
                 } else if (eventType.equals(PathConstants.EventType.DEATH)) {
                     unsyncEvents.add(event);
-                }  else {
+                } else if (eventType.equals(PathConstants.EventType.Pregnant_Woman_Counselling)) {
+                    processPregnantWomanCounselling(event);
+                    JSONObject clientClassificationJson = new JSONObject(clientClassificationStr);
+                    if (isNullOrEmptyJSONObject(clientClassificationJson)) {
+                        continue;
+                    }
+                    //iterate through the events
+                    if (event.has("client")) {
+                        processEvent(event, event.getJSONObject("client"), clientClassificationJson);
+                    }
+
+                }else if (eventType.equals(PathConstants.EventType.Pregnant_Woman_Lactating)) {
+                    processPregnantWomanLactating(event);
+                    JSONObject clientClassificationJson = new JSONObject(clientClassificationStr);
+                    if (isNullOrEmptyJSONObject(clientClassificationJson)) {
+                        continue;
+                    }
+                    //iterate through the events
+                    if (event.has("client")) {
+                        processEvent(event, event.getJSONObject("client"), clientClassificationJson);
+                    }
+
+                } else {
                     JSONObject clientClassificationJson = new JSONObject(clientClassificationStr);
                     if (isNullOrEmptyJSONObject(clientClassificationJson)) {
                         continue;
