@@ -17,6 +17,52 @@
             android:layout_height="match_parent"
             android:scaleType="fitXY"
             app:srcCompat="@drawable/dashboardhead" />
+        <TextView
+            android:id="@+id/name_inits"
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:layout_marginTop="50dp"
+            android:layout_marginLeft="25dp"
+            android:layout_gravity="top"
+            android:background="@drawable/name_inits_bg"
+            android:gravity="center"
+            android:text="RW"
+            android:textAllCaps="true"
+            android:textColor="@color/actionbar"
+            android:textSize="40sp" />
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_marginTop="70dp"
+            android:layout_gravity="top"
+            android:layout_marginLeft="110dp"
+            >
+            <org.smartregister.view.customcontrols.CustomFontTextView
+                android:id="@+id/provider_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:inputType="textCapWords"
+                style="@style/CustomFontTextViewStyle.ClientList.Light"
+                android:text="ron ward"
+                android:layout_weight="1"
+                android:textSize="18sp"
+                android:textColor="#E9E8E8" />
+            <org.smartregister.view.customcontrols.CustomFontTextView
+                android:id="@+id/phone_number"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                style="@style/CustomFontTextViewStyle.ClientList.Light"
+                android:text=" "
+                android:layout_weight="1"
+                android:textSize="15sp"
+                android:textAllCaps="true"
+                android:textColor="#E9E8E8" />
+
+        </LinearLayout>
+
     </FrameLayout>
     <android.support.v7.widget.GridLayout
         xmlns:android="http://schemas.android.com/apk/res/android"
