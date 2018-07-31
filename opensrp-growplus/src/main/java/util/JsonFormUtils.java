@@ -514,6 +514,17 @@ public class JsonFormUtils extends org.smartregister.util.JsonFormUtils {
                 if (fieldmap.get("lactating_woman").equalsIgnoreCase("Yes")) {
                     lactatingwoman = true;
                 }
+                for (int i = 0; i < fields.length(); i++) {
+                    String key = fields.getJSONObject(i).getString("key");
+                    if (key.equals("pregnant")) {
+                        fields.getJSONObject(i).put("value","No");
+
+                    }
+                    if (key.equals("is_pregnant")) {
+                        fields.getJSONObject(i).put("value","No");
+
+                    }
+                }
             }
             if (fieldmap.get("pregnant") != null) {
                 if (fieldmap.get("pregnant").equalsIgnoreCase("Yes")) {

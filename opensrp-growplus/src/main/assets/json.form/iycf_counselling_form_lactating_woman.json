@@ -730,16 +730,16 @@
         "has_media_content": true,
         "media": [
           {
-            "media_type":"text",
+            "media_type":"image",
             "media_trigger_value":"position_during_breastfeeding",
-            "media_link":"",
-            "media_text":" Show: IMAGE Good positioning helps to ensure that your baby suckles well and helps you to produce a good supply of breast milk. The four key points about your baby’s position are: straight, facing the breast, close, and supported: 1. The baby’s body should be straight, not bent or twisted, but with the head slightly back 2. The baby’s body should be facing the breast not held flat to your chest or abdomen, and he or she should be able to look up to your face 3. The baby should be close to you 4. You should support the baby’s whole body, not just the neck and shoulders, with your hand and forearm There are different ways to position your baby: 1. Cradle position (most commonly used) 2. Cross cradle position (good for small babies) 3. Side-lyingposition(useto rest while breastfeeding and at night) 4. Under-arm position (use after caesarean section, if your nipples are painful or if you are breastfeeding twins or a small baby)"
+            "media_link":"android.resource://org.smartregister.growplus/raw/position_during_breastfeeding",
+            "media_text":"Good positioning helps to ensure that your baby suckles well and helps you to produce a good supply of breast milk. The four key points about your baby’s position are: straight, facing the breast, close, and supported: \n1. The baby’s body should be straight, not bent or twisted, but with the head slightly back \n2. The baby’s body should be facing the breast not held flat to your chest or abdomen, and he or she should be able to look up to your face \n3. The baby should be close to you \n4. You should support the baby’s whole body, not just the neck and shoulders, with your hand and forearm There are different ways to position your baby: 1. Cradle position (most commonly used) 2. Cross cradle position (good for small babies) 3. Side-lyingposition(useto rest while breastfeeding and at night) 4. Under-arm position (use after caesarean section, if your nipples are painful or if you are breastfeeding twins or a small baby)"
           },
           {
-            "media_type":"text",
+            "media_type":"image",
             "media_trigger_value":"poor_attachment",
-            "media_link":"",
-            "media_text":"Show: IMAGE · Good attachment helps to ensure that your baby suckles well and helps you to produce a good supply of breast milk. · Good attachment helps to prevent sore and cracked nipples. · Breastfeeding should not be painful. · Get help to improve the attachment if you experience pain. There are 4 signs of good attachment: 1. Baby’s mouth is wide open 2. You can see more of the darker skin (areola) above the baby’s mouth than below 3. Baby’s lower lip is turned outwards 4. Baby’s chin is touching mother’s breast"
+            "media_link":"android.resource://org.smartregister.growplus/raw/poor_attachments",
+            "media_text":"Good attachment helps to ensure that your baby suckles well and helps you to produce a good supply of breast milk. · Good attachment helps to prevent sore and cracked nipples. · Breastfeeding should not be painful. · Get help to improve the attachment if you experience pain. There are 4 signs of good attachment: 1. Baby’s mouth is wide open 2. You can see more of the darker skin (areola) above the baby’s mouth than below 3. Baby’s lower lip is turned outwards 4. Baby’s chin is touching mother’s breast"
           },
           {
             "media_type":"text",
@@ -748,10 +748,10 @@
             "media_text":"The signs of effective suckling are:\n  a)The baby takes slow deep suckles, sometimes pausing.\n  b)You may be able to see or hear your baby swallowing after one or two suckles.\n  c)Suckling is comfortable and pain free for you.\n  d)Your baby finishes the feed, releases the breast and looks contented and relaxed.\n  e)The breast is softer after the feed.\n  · Effective suckling helps you to produce milk and satisfy your baby.\n  · After your baby releases one breast offer your baby the other breast. This will ensure that your baby stimulates your milk production in both breasts, and also gets the most nutritious and satisfying milk."
           },
           {
-            "media_type":"text",
+            "media_type":"image",
             "media_trigger_value":"hand_express_cup_feeding_storing_breastmilk",
-            "media_link":"",
-            "media_text":" Show: IMAGE Demonstrate these steps with a doll or a baby: · Make sure your hands and utensils are clean. · Washyour hands with soap and running water. · Cleanand boil the container you will use to collect your breast milk. · Get comfortable. · It is sometimes helpful to gently stroke your breasts. A warm cloth may help stimulate the flow of milk. · Putyour thumb on the breast above the dark area around the nipple (areola) and the other fingers on the underside of the breast behind the areola. • With your thumb and first 2 fingers press a little bit in towards chest wall andthen press gently towards the dark area (areola). • Milk may start to flow in drops, or sometimes in fine streams. Collect the milk inthe clean container. • Avoid rubbing the skin, which can cause bruising, or squeezing the nipple,which stops the flow of milk. • Rotate the thumb and finger positions and press/compress and release allaround the areola. · Expressone breast for at least 3 to 5 minutes until the flow slows, then express the other breast, then repeat both sides again (20 to 30 minutes total). Say: · Storebreastmilk in a clean, covered container. Milk can be stored 6 to 8 hours in a cool place and up to 72 hours in the back of the refrigerator. · Givebaby expressed breast milk from a cup. Bring cup to the baby’s lower lip and allow baby to take small amounts of milk, lapping the milk with his or her tongue. Do not pour the milk into baby’s mouth · Pourjustenough breast milk from the clean covered container into the feeding cup. · Bottlesareunsafeto use because they are difficult to wash and can be easily contaminated."
+            "media_link":"android.resource://org.smartregister.growplus/raw/hand_express",
+            "media_text":" Demonstrate these steps with a doll or a baby: · Make sure your hands and utensils are clean. · Washyour hands with soap and running water. · Cleanand boil the container you will use to collect your breast milk. · Get comfortable. · It is sometimes helpful to gently stroke your breasts. A warm cloth may help stimulate the flow of milk. · Putyour thumb on the breast above the dark area around the nipple (areola) and the other fingers on the underside of the breast behind the areola. • With your thumb and first 2 fingers press a little bit in towards chest wall andthen press gently towards the dark area (areola). • Milk may start to flow in drops, or sometimes in fine streams. Collect the milk inthe clean container. • Avoid rubbing the skin, which can cause bruising, or squeezing the nipple,which stops the flow of milk. • Rotate the thumb and finger positions and press/compress and release allaround the areola. · Expressone breast for at least 3 to 5 minutes until the flow slows, then express the other breast, then repeat both sides again (20 to 30 minutes total). Say: · Storebreastmilk in a clean, covered container. Milk can be stored 6 to 8 hours in a cool place and up to 72 hours in the back of the refrigerator. · Givebaby expressed breast milk from a cup. Bring cup to the baby’s lower lip and allow baby to take small amounts of milk, lapping the milk with his or her tongue. Do not pour the milk into baby’s mouth · Pourjustenough breast milk from the clean covered container into the feeding cup. · Bottlesareunsafeto use because they are difficult to wash and can be easily contaminated."
           }
 
         ],
@@ -776,10 +776,10 @@
         "has_media_content": true,
         "media": [
           {
-            "media_type":"text",
+            "media_type":"image",
             "media_trigger_value":"Yes",
-            "media_link":"",
-            "media_text":"Child age = 0-5 months: \n Ask: Do you know why it is important to fee the child only breastmilk in the first 6 months?\n Show: IMAGE- Breast milk provides all the food and water that your baby needs during the first 6 months - Giving your baby anything else will cause him/her to suckle less and will reduce the amount of breast milk that you produce. - Discourage giving tea, water, or other liquids because they can make a baby sick"
+            "media_link":"android.resource://org.smartregister.growplus/raw/importance_of_breastfeeding",
+            "media_text":"Child age = 0-5 months: \n Ask: Do you know why it is important to feed the child only breastmilk in the first 6 months?\n  Breast milk provides all the food and water that your baby needs during the first 6 months - Giving your baby anything else will cause him/her to suckle less and will reduce the amount of breast milk that you produce. - Discourage giving tea, water, or other liquids because they can make a baby sick"
           },
           {
             "media_type":"text",
@@ -1087,10 +1087,10 @@
             "media_text":"Congratulate the mother and encourage her to continue"
           },
           {
-            "media_type":"text",
+            "media_type":"image",
             "media_trigger_value":"less than five ways to ensure a hygienic environment before serving food",
-            "media_link":"",
-            "media_text":" Show Image: INSERT IMAGE Make sure to emphasize that: Good hygiene (cleanliness) is important to avoid diarrhoeadiarrhea and other illnesses \n• Use a clean spoon or cup to give foods or liquids to your baby. \n• Store the foods to be given to your baby in a safe hygienic place. \n• Wash your hands with soap and water before preparing foods and feeding baby. \n• Wash your hands and your baby’s hands before eating. \n• Wash your hands with soap and water after using the toilet and washing or cleaning baby’s bottom \n• Feed your baby using clean hands, clean utensils and clean cups. \n• Use a clean spoon or cup to give foods or liquids to your baby. \n• Do not use bottles, teats or spouted cups since they are difficult to clean and can cause your baby to become sick."
+            "media_link":"android.resource://org.smartregister.growplus/raw/hygene",
+            "media_text":"Make sure to emphasize that: Good hygiene (cleanliness) is important to avoid diarrhoeadiarrhea and other illnesses \n• Use a clean spoon or cup to give foods or liquids to your baby. \n• Store the foods to be given to your baby in a safe hygienic place. \n• Wash your hands with soap and water before preparing foods and feeding baby. \n• Wash your hands and your baby’s hands before eating. \n• Wash your hands with soap and water after using the toilet and washing or cleaning baby’s bottom \n• Feed your baby using clean hands, clean utensils and clean cups. \n• Use a clean spoon or cup to give foods or liquids to your baby. \n• Do not use bottles, teats or spouted cups since they are difficult to clean and can cause your baby to become sick."
           }
         ],
         "relevance": {
