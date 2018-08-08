@@ -55,11 +55,6 @@
     "title": "IYCF Councelling Form Pregnant woman",
     "fields": [
       {
-        "key":"basicinstroductions",
-        "type":"label",
-        "text":"How do you feel?\nHave you had any illnesses in the last 2 weeks?"
-      },
-      {
         "key": "dummy_view_for_text_resize",
         "openmrs_entity_parent": "",
         "openmrs_entity": "",
@@ -69,6 +64,14 @@
         "hidden": true,
         "hint": "",
         "value": "Yes"
+      },
+      {
+        "key":"basicinstroductions",
+        "openmrs_entity_parent": "",
+        "openmrs_entity": "",
+        "openmrs_entity_id": "",
+        "type":"label",
+        "text":"How do you feel?\nHave you had any illnesses in the last 2 weeks?"
       },
       {
         "key": "pregnant_counselling_actions_decided_previous_meeting",

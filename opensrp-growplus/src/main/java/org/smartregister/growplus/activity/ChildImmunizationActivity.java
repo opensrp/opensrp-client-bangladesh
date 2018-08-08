@@ -520,6 +520,19 @@ public class ChildImmunizationActivity extends BaseActivity
     }
 
     private String getmetaDataForLactatingCounsellingForm(CommonPersonObjectClient pc) {
+        int age_in_months = 0;
+        if (isDataOk()) {
+            String dobString = Utils.getValue(childDetails.getColumnmaps(), PathConstants.KEY.DOB, false);
+            if (!TextUtils.isEmpty(dobString)) {
+                DateTime dateTime = new DateTime(dobString);
+                Date dob = dateTime.toDate();
+                long timeDiff = Calendar.getInstance().getTimeInMillis() - dob.getTime();
+                age_in_months = (int) Math.floor((float) timeDiff /
+                        TimeUnit.MILLISECONDS.convert(30, TimeUnit.DAYS));
+            }
+        }
+
+
         org.smartregister.Context context = VaccinatorApplication.getInstance().context();
         try {
             JSONObject form = FormUtils.getInstance(this).getFormJson("iycf_counselling_form_lactating_woman");
@@ -549,13 +562,40 @@ public class ChildImmunizationActivity extends BaseActivity
                         for (int i = 0; i < jsonArray.length(); i++) {
                             JSONObject fieldjsonObject = jsonArray.getJSONObject(i);
                             if (fieldjsonObject.getString(JsonFormUtils.KEY)
+                                    .equalsIgnoreCase("age_in_months_for_calculation_complimentary_feeding")) {
+                                    fieldjsonObject.remove(JsonFormUtils.VALUE);
+                                    fieldjsonObject.put(JsonFormUtils.VALUE, age_in_months);
+                                    fieldjsonObject.remove("hidden");
+                                    fieldjsonObject.put("hidden", true);
+                            }
+                            if (fieldjsonObject.getString(JsonFormUtils.KEY)
                                     .equalsIgnoreCase("lactating_counselling_actions_decided_previous_meeting")) {
 //                                fieldjsonObject.remove(JsonFormUtils.VALUE);
                                 fieldjsonObject.put("hint", "In the last session, your resolution was- "+ValueString+ "- Did you practice this resolution?");
                                 fieldjsonObject.remove("hidden");
                                 fieldjsonObject.put("hidden", false);
-
-                                continue;
+                            }
+                            if (fieldjsonObject.getString(JsonFormUtils.KEY)
+                                    .equalsIgnoreCase("complimentary_feeding_6_to_8_months_less_than_three")) {
+//                                fieldjsonObject.remove(JsonFormUtils.VALUE);
+                                if(age_in_months>=6 && age_in_months<=8) {
+                                    fieldjsonObject.remove("hidden");
+                                    fieldjsonObject.put("hidden", false);
+                                }else{
+                                    fieldjsonObject.remove("hidden");
+                                    fieldjsonObject.put("hidden", true);
+                                }
+                            }
+                            if (fieldjsonObject.getString(JsonFormUtils.KEY)
+                                    .equalsIgnoreCase("complimentary_feeding_6_to_8_months_more_than_three")) {
+//                                fieldjsonObject.remove(JsonFormUtils.VALUE);
+                                if(age_in_months>=6 && age_in_months<=8) {
+                                    fieldjsonObject.remove("hidden");
+                                    fieldjsonObject.put("hidden", false);
+                                }else{
+                                    fieldjsonObject.remove("hidden");
+                                    fieldjsonObject.put("hidden", true);
+                                }
                             }
                         }
                     }

@@ -866,6 +866,95 @@
         }
       },
       {
+        "key": "age_in_months_for_calculation_complimentary_feeding",
+        "openmrs_entity_parent": "",
+        "openmrs_entity": "",
+        "openmrs_entity_id": "",
+        "openmrs_data_type": "text",
+        "type": "edit_text",
+        "hidden": true,
+        "hint": "",
+        "value": "",
+        "relevance": {
+          "step1:nutrition_to_discuss": {
+            "type": "string",
+            "ex": "regex(., \"(?i).*?\\bcomplementary_feeding\\b.*?\")"
+          }
+        }
+      },
+      {
+        "key":"complimentary_feeding_under_six_months",
+        "openmrs_entity_parent": "",
+        "openmrs_entity": "",
+        "openmrs_entity_id": "",
+        "type":"label",
+        "text":" Could you help me understand what foods you give to your child? Ask questions to understand why they feed semi-solid or solid foods. Counsel them on promoting exclusive breastfeeding.",
+        "relevance": {
+          "step1:age_in_months_for_calculation_complimentary_feeding": {
+            "type": "numeric",
+            "ex": "lessThanEqualTo(., \"6\")"
+          }
+        }
+      },
+      {
+        "key":"complimentary_feeding_4_months",
+        "openmrs_entity_parent": "",
+        "openmrs_entity": "",
+        "openmrs_entity_id": "",
+        "type":"label",
+        "text":"In two months, you will start adding semi-solid foods to your child’s diet, at least 3 times a day",
+        "relevance": {
+          "step1:age_in_months_for_calculation_complimentary_feeding": {
+            "type": "numeric",
+            "ex": "equalTo(., \"4\")"
+          }
+        }
+      },
+      {
+        "key":"complimentary_feeding_5_months",
+        "openmrs_entity_parent": "",
+        "openmrs_entity": "",
+        "openmrs_entity_id": "",
+        "type":"label",
+        "text":" Next month, you will start adding semi-solid foods to your child’s diet, at least 3 times a day",
+        "relevance": {
+          "step1:age_in_months_for_calculation_complimentary_feeding": {
+            "type": "numeric",
+            "ex": "equalTo(., \"5\")"
+          }
+        }
+      },
+      {
+        "key": "complimentary_feeding_6_to_8_months_less_than_three",
+        "openmrs_entity_parent": "",
+        "openmrs_entity": "",
+        "openmrs_entity_id": "",
+        "type":"label",
+        "text":"It is important to feed your baby complementary foods 3 times a day. Discuss ways to add another meal to a child’s diet.",
+        "hidden": true,
+        "relevance": {
+          "step1:complimentary_frequency": {
+            "type": "numeric",
+            "ex": "lessThan(., \"3\")"
+          }
+        }
+      },
+      {
+        "key": "complimentary_feeding_6_to_8_months_more_than_three",
+        "openmrs_entity_parent": "",
+        "openmrs_entity": "",
+        "openmrs_entity_id": "",
+        "type":"label",
+        "text":"Congratulate mother and encourage her to continue",
+        "hidden": true,
+        "relevance": {
+          "step1:complimentary_frequency": {
+            "type": "numeric",
+            "ex": "greaterThan(., \"3\")"
+          }
+        }
+      },
+      {
         "key": "complimentary_amount",
         "openmrs_entity_parent": "",
         "openmrs_entity": "",
