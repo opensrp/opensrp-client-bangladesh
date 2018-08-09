@@ -561,13 +561,7 @@ public class ChildImmunizationActivity extends BaseActivity
 
                         for (int i = 0; i < jsonArray.length(); i++) {
                             JSONObject fieldjsonObject = jsonArray.getJSONObject(i);
-                            if (fieldjsonObject.getString(JsonFormUtils.KEY)
-                                    .equalsIgnoreCase("age_in_months_for_calculation_complimentary_feeding")) {
-                                    fieldjsonObject.remove(JsonFormUtils.VALUE);
-                                    fieldjsonObject.put(JsonFormUtils.VALUE, age_in_months);
-                                    fieldjsonObject.remove("hidden");
-                                    fieldjsonObject.put("hidden", true);
-                            }
+
                             if (fieldjsonObject.getString(JsonFormUtils.KEY)
                                     .equalsIgnoreCase("lactating_counselling_actions_decided_previous_meeting")) {
 //                                fieldjsonObject.remove(JsonFormUtils.VALUE);
@@ -575,28 +569,89 @@ public class ChildImmunizationActivity extends BaseActivity
                                 fieldjsonObject.remove("hidden");
                                 fieldjsonObject.put("hidden", false);
                             }
-                            if (fieldjsonObject.getString(JsonFormUtils.KEY)
-                                    .equalsIgnoreCase("complimentary_feeding_6_to_8_months_less_than_three")) {
+
+                        }
+                    }
+                }
+                for (int i = 0; i < jsonArray.length(); i++) {
+                    JSONObject fieldjsonObject = jsonArray.getJSONObject(i);
+                    if (fieldjsonObject.getString(JsonFormUtils.KEY)
+                            .equalsIgnoreCase("age_in_months_for_calculation_complimentary_feeding")) {
+                        fieldjsonObject.remove(JsonFormUtils.VALUE);
+                        fieldjsonObject.put(JsonFormUtils.VALUE, age_in_months);
+                    }
+                    if (fieldjsonObject.getString(JsonFormUtils.KEY)
+                            .equalsIgnoreCase("complimentary_feeding_negative")) {
 //                                fieldjsonObject.remove(JsonFormUtils.VALUE);
-                                if(age_in_months>=6 && age_in_months<=8) {
-                                    fieldjsonObject.remove("hidden");
-                                    fieldjsonObject.put("hidden", false);
-                                }else{
-                                    fieldjsonObject.remove("hidden");
-                                    fieldjsonObject.put("hidden", true);
-                                }
-                            }
-                            if (fieldjsonObject.getString(JsonFormUtils.KEY)
-                                    .equalsIgnoreCase("complimentary_feeding_6_to_8_months_more_than_three")) {
+                        if(age_in_months>=6 && age_in_months<=8) {
+                            complimentary_feeding_negative_6_to_8_months(fieldjsonObject);
+                        }else if(age_in_months>=9 && age_in_months<=11) {
+                            complimentary_feeding_negative_9_to_11_months(fieldjsonObject);
+                        }else if(age_in_months>=12 && age_in_months<=23) {
+                            complimentary_feeding_negative_12_to_23_months(fieldjsonObject);
+                        }
+                    }
+                    if (fieldjsonObject.getString(JsonFormUtils.KEY)
+                            .equalsIgnoreCase("complimentary_feeding_positive")) {
 //                                fieldjsonObject.remove(JsonFormUtils.VALUE);
-                                if(age_in_months>=6 && age_in_months<=8) {
-                                    fieldjsonObject.remove("hidden");
-                                    fieldjsonObject.put("hidden", false);
-                                }else{
-                                    fieldjsonObject.remove("hidden");
-                                    fieldjsonObject.put("hidden", true);
-                                }
-                            }
+                        if(age_in_months>=6 && age_in_months<=8) {
+                            complimentary_feeding_positive_6_to_8_months(fieldjsonObject);
+                        }else if(age_in_months>=9 && age_in_months<=11) {
+                            complimentary_feeding_positive_9_to_11_months(fieldjsonObject);
+                        }else if(age_in_months>=12 && age_in_months<=23) {
+                            complimentary_feeding_positive_12_to_23_months(fieldjsonObject);
+                        }
+                    }
+                    //////complementary amount/////////////////
+
+                    if (fieldjsonObject.getString(JsonFormUtils.KEY)
+                            .equalsIgnoreCase("complimentary_feeding_amount_positive")) {
+//                                fieldjsonObject.remove(JsonFormUtils.VALUE);
+                        if(age_in_months>=6 && age_in_months<=8) {
+                            complimentary_feeding_positive_amount(fieldjsonObject," Give 2 to 3 tablespoonfuls (‘tastes’) at each feed.");
+                        }else if(age_in_months>=9 && age_in_months<=11) {
+                            complimentary_feeding_positive_amount(fieldjsonObject,"At each feed:Increase amount to half (½) cup (250 ml cup: show amount in cup brought by mother). Use a separate plate to make sure young child eats all the food given");
+                        }else if(age_in_months>=12 && age_in_months<=23) {
+                            complimentary_feeding_positive_amount(fieldjsonObject,"Increase amount to three-quarters (¾) to 1 cup (250 ml cup: how amount in cup brought by mother). Use a separate plate to make sure young child eats all the food given");
+                        }
+                    }
+                    //////////////////////////////////////////////////////////////
+                    if (fieldjsonObject.getString(JsonFormUtils.KEY)
+                            .equalsIgnoreCase("complimentary_feeding_under_six_months")) {
+//                                fieldjsonObject.remove(JsonFormUtils.VALUE);
+                        if(age_in_months<6) {
+//                                    fieldjsonObject.remove("relevance");
+                            complimentary_feeding_less_than_6_months(fieldjsonObject);
+                        }
+                    }
+                    if (fieldjsonObject.getString(JsonFormUtils.KEY)
+                            .equalsIgnoreCase("complimentary_feeding_4_months")) {
+//                                fieldjsonObject.remove(JsonFormUtils.VALUE);
+                        if(age_in_months==4) {
+                            complimentary_feeding_less_than_6_months(fieldjsonObject);
+
+                        }
+                    }
+                    if (fieldjsonObject.getString(JsonFormUtils.KEY)
+                            .equalsIgnoreCase("complimentary_feeding_5_months")) {
+//                                fieldjsonObject.remove(JsonFormUtils.VALUE);
+                        if(age_in_months==5) {
+                            complimentary_feeding_less_than_6_months(fieldjsonObject);
+                        }
+                    }
+                    if (fieldjsonObject.getString(JsonFormUtils.KEY)
+                            .equalsIgnoreCase("complimentary_feeding_amount_4_months")) {
+//                                fieldjsonObject.remove(JsonFormUtils.VALUE);
+                        if(age_in_months==4) {
+                            complimentary_feeding_less_than_6_months(fieldjsonObject);
+
+                        }
+                    }
+                    if (fieldjsonObject.getString(JsonFormUtils.KEY)
+                            .equalsIgnoreCase("complimentary_feeding_amount_5_months")) {
+//                                fieldjsonObject.remove(JsonFormUtils.VALUE);
+                        if(age_in_months==5) {
+                            complimentary_feeding_less_than_6_months(fieldjsonObject);
                         }
                     }
                 }
@@ -611,6 +666,119 @@ public class ChildImmunizationActivity extends BaseActivity
 
         return "";
     }
+
+    private void complimentary_feeding_less_than_6_months(JSONObject fieldjsonObject) {
+        try {
+            JSONObject relevance = fieldjsonObject.getJSONObject("relevance");
+            relevance.remove("step1:age_in_months_for_calculation_complimentary_feeding");
+            JSONObject newCondition = new JSONObject();
+            newCondition.put("type","string");
+            newCondition.put("ex","regex(., \"(?i).*?\\bcomplementary_feeding\\b.*?\")");
+            relevance.put("step1:nutrition_to_discuss",newCondition);
+                   } catch (JSONException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void complimentary_feeding_negative_6_to_8_months(JSONObject fieldjsonObject) {
+        try {
+            JSONObject relevance = fieldjsonObject.getJSONObject("relevance");
+            JSONObject condition = relevance.getJSONObject("step1:complimentary_frequency");
+            condition.remove("ex");
+            condition.put("ex", "lessThan(., \"3\")");
+            fieldjsonObject.remove("text");
+            fieldjsonObject.put("text","It is important to feed your baby complementary foods 3 times a day. Discuss ways to add another meal to a child’s diet.");
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void complimentary_feeding_positive_amount(JSONObject fieldjsonObject,String message) {
+        try {
+            JSONObject relevance = fieldjsonObject.getJSONObject("relevance");
+            relevance.remove("step1:complimentary_amount");
+            JSONObject newCondition = new JSONObject();
+            newCondition.put("type","string");
+            newCondition.put("ex","regex(., \"(?i).*?\\bcomplementary_feeding\\b.*?\")");
+            relevance.put("step1:nutrition_to_discuss",newCondition);
+
+
+            fieldjsonObject.remove("text");
+            fieldjsonObject.put("text",message);
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void complimentary_feeding_positive_6_to_8_months(JSONObject fieldjsonObject) {
+        try {
+            JSONObject relevance = fieldjsonObject.getJSONObject("relevance");
+            JSONObject condition = relevance.getJSONObject("step1:complimentary_frequency");
+            condition.remove("ex");
+            condition.put("ex", "greaterThanEqualTo(., \"3\")");
+            fieldjsonObject.remove("text");
+            fieldjsonObject.put("text","Congratulate mother and encourage her to continue");
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void complimentary_feeding_negative_9_to_11_months(JSONObject fieldjsonObject) {
+        try {
+            JSONObject relevance = fieldjsonObject.getJSONObject("relevance");
+            JSONObject condition = relevance.getJSONObject("step1:complimentary_frequency");
+            condition.remove("ex");
+            condition.put("ex", "lessThan(., \"4\")");
+            fieldjsonObject.remove("text");
+            fieldjsonObject.put("text","It is important to feed your baby complementary foods 4 times a day.");
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+    }
+
+
+    private void complimentary_feeding_positive_9_to_11_months(JSONObject fieldjsonObject) {
+        try {
+            JSONObject relevance = fieldjsonObject.getJSONObject("relevance");
+            JSONObject condition = relevance.getJSONObject("step1:complimentary_frequency");
+            condition.remove("ex");
+            condition.put("ex", "greaterThanEqualTo(., \"4\")");
+            fieldjsonObject.remove("text");
+            fieldjsonObject.put("text","Congratulate mother and encourage her to continue");
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+    }
+    private void complimentary_feeding_negative_12_to_23_months(JSONObject fieldjsonObject) {
+        try {
+            JSONObject relevance = fieldjsonObject.getJSONObject("relevance");
+            JSONObject condition = relevance.getJSONObject("step1:complimentary_frequency");
+            condition.remove("ex");
+            condition.put("ex", "lessThan(., \"5\")");
+            fieldjsonObject.remove("text");
+            fieldjsonObject.put("text"," It is important to feed your baby complementary foods 5 times a day");
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void complimentary_feeding_positive_12_to_23_months(JSONObject fieldjsonObject) {
+        try {
+            JSONObject relevance = fieldjsonObject.getJSONObject("relevance");
+            JSONObject condition = relevance.getJSONObject("step1:complimentary_frequency");
+            condition.remove("ex");
+            condition.put("ex", "greaterThanEqualTo(., \"5\")");
+            fieldjsonObject.remove("text");
+            fieldjsonObject.put("text","Congratulate mother and encourage her to continue");
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+    }
+
 
 
     @Override

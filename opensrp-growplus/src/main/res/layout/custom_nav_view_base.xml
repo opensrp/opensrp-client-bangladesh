@@ -127,7 +127,7 @@
                     <ImageView
                         android:layout_width="55dp"
                         android:id="@+id/household_registerImageview"
-                        android:src="@drawable/houshold"
+                        android:src="@drawable/household_nav_bar"
                         android:paddingTop="10dp"
                         android:paddingBottom="10dp"
                         android:paddingRight="10dp"
@@ -154,22 +154,23 @@
                     <ImageView
                         android:layout_width="55dp"
                         android:id="@+id/woman_registerImageview"
-                        android:src="@drawable/woman"
+                        android:src="@drawable/pregnant_woman_nav_bar"
                         android:paddingTop="10dp"
                         android:paddingBottom="10dp"
                         android:paddingRight="10dp"
                         android:layout_margin="5dp"
                         android:layout_height="55dp" />
+
                     <org.smartregister.view.customcontrols.CustomFontTextView
+                        android:id="@+id/woman_registertextview"
+                        style="@style/CustomFontTextViewStyle.ClientList.Light.twoline"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        style="@style/CustomFontTextViewStyle.ClientList.Light.twoline"
-                        android:text="Woman Register"
-                        android:id="@+id/woman_registertextview"
-                        android:textColor="@color/white"
-                        android:textSize="@dimen/label_text_size"
+                        android:layout_gravity="center_vertical"
                         android:layout_weight="1"
-                        android:layout_gravity="center_vertical" />
+                        android:text="Mother Register"
+                        android:textColor="@color/white"
+                        android:textSize="@dimen/label_text_size" />
                 </LinearLayout>
 
                 <LinearLayout
@@ -180,14 +181,19 @@
                     android:layout_marginTop="5dp">
 
                     <ImageView
-                        android:layout_width="55dp"
                         android:id="@+id/child_registerImageview"
-                        android:src="@drawable/child_navigationbar_icon"
-                        android:paddingTop="10dp"
+                        android:layout_width="55dp"
+                        android:layout_height="50dp"
+                        android:layout_marginBottom="10dp"
+                        android:layout_marginEnd="5dp"
+                        android:layout_marginLeft="5dp"
+                        android:layout_marginRight="5dp"
+                        android:layout_marginStart="5dp"
+                        android:layout_marginTop="5dp"
                         android:paddingBottom="10dp"
                         android:paddingRight="10dp"
-                        android:layout_margin="5dp"
-                        android:layout_height="55dp" />
+                        android:paddingTop="10dp"
+                        android:src="@drawable/child_navigationbar_icon" />
                     <org.smartregister.view.customcontrols.CustomFontTextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
