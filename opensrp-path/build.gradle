@@ -1,14 +1,15 @@
 buildscript {
     repositories {
+        google()
         jcenter()
         maven { url 'https://maven.fabric.io/public' }
+
     }
     dependencies {
-        classpath "com.android.tools.build:gradle:1.2.3"
-        classpath 'org.apache.commons:commons-lang3:3.3.2'
-        classpath 'org.robolectric:robolectric-gradle-plugin:1.1.0'
-        classpath 'io.fabric.tools:gradle:1.+'
-        classpath 'org.kt3k.gradle.plugin:coveralls-gradle-plugin:2.4.0'
+        classpath "com.android.tools.build:gradle:3.1.2"
+        classpath 'org.kt3k.gradle.plugin:coveralls-gradle-plugin:2.5.0-x'
+        classpath 'io.fabric.tools:gradle:1.25.4'
+
     }
 }
 
@@ -31,13 +32,13 @@ repositories {
 }
 
 android {
-    compileSdkVersion 22
-    buildToolsVersion "26.0.1"
+    compileSdkVersion androidCompileSdkVersion
+    buildToolsVersion androidBuildToolsVersion
 
     defaultConfig {
         applicationId "org.smartregister.path"
-        minSdkVersion 19
-        targetSdkVersion 21
+        minSdkVersion androidMinSdkVersion
+        targetSdkVersion androidTargetSdkVersion
         versionCode 8
         versionName "1.2.2"
         multiDexEnabled true
