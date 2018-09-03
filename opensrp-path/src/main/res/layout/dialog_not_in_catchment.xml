@@ -43,7 +43,7 @@
         android:paddingLeft="40dp"
         android:paddingRight="40dp"
         android:gravity="center"
-        android:text="Record out of catchment service"
+        android:text="Record out of catchment org.smartregister.cbhc.service"
         android:textColor="#767676"
         android:textSize="@dimen/default_text_size" />
 

@@ -7,7 +7,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
-import android.telephony.TelephonyManager;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -17,8 +16,6 @@ import android.widget.FrameLayout;
 import android.widget.Toast;
 
 import org.apache.commons.lang3.StringUtils;
-import org.smartregister.clientandeventmodel.Event;
-import org.smartregister.clientandeventmodel.Obs;
 import org.smartregister.growthmonitoring.listener.WeightActionListener;
 import org.smartregister.path.R;
 import org.smartregister.path.activity.PathJsonFormActivity;
@@ -26,16 +23,11 @@ import org.smartregister.path.application.VaccinatorApplication;
 import org.smartregister.path.repository.UniqueIdRepository;
 import org.smartregister.util.FormUtils;
 import org.json.JSONArray;
-import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
 
-import util.JsonFormUtils;
+import org.smartregister.cbhc.util.JsonFormUtils;
 
 @SuppressLint("ValidFragment")
 public class HouseholdMemberAddFragment extends DialogFragment {

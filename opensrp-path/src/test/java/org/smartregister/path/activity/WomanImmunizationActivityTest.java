@@ -33,13 +33,9 @@ import org.smartregister.immunization.repository.RecurringServiceTypeRepository;
 import org.smartregister.immunization.repository.VaccineRepository;
 import org.smartregister.immunization.view.VaccineGroup;
 import org.smartregister.path.R;
-import org.smartregister.path.activity.mockactivity.ChildImmunizationActivityMock;
 import org.smartregister.path.activity.mockactivity.WomanImmunizationActivityMock;
-import org.smartregister.path.activity.shadow.BaseActivityShadow;
-import org.smartregister.path.activity.shadow.ContextShadow;
 import org.smartregister.path.activity.shadow.ImageRepositoryShadow;
 import org.smartregister.path.activity.shadow.JsonFormUtilsShadow;
-import org.smartregister.path.activity.shadow.LocationSwitcherToolbarShadow;
 import org.smartregister.path.activity.shadow.VaccinateActionUtilsShadow;
 import org.smartregister.path.activity.shadow.VaccineGroupShadow;
 import org.smartregister.path.application.VaccinatorApplication;
@@ -61,8 +57,8 @@ import shared.VaccinatorApplicationTestVersion;
 import shared.customshadows.ImageUtilsShadow;
 import shared.customshadows.ImmunizationRowAdapterShadow;
 import shared.customshadows.ImmunizationRowCardShadow;
-import shared.customshadows.LocationPickerViewShadow;
-import util.PathConstants;
+
+import org.smartregister.cbhc.util.PathConstants;
 
 /**
  * Created by Raihan Ahmed on 30/01/18.

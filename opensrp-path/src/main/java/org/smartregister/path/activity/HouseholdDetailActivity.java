@@ -3,7 +3,6 @@ package org.smartregister.path.activity;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
-import android.database.MatrixCursor;
 import android.os.Bundle;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.CursorAdapter;
@@ -39,9 +38,8 @@ import org.smartregister.view.customcontrols.CustomFontTextView;
 import java.io.Serializable;
 
 
-import util.ImageUtils;
-import util.PathConstants;
-import util.Utils;
+import org.smartregister.cbhc.util.ImageUtils;
+import org.smartregister.cbhc.util.PathConstants;
 
 import static org.smartregister.util.Utils.getValue;
 
@@ -158,7 +156,7 @@ public class HouseholdDetailActivity extends BaseActivity {
 
 
         context = org.smartregister.Context.getInstance().updateApplicationContext(this.getApplicationContext());
-        //get Household members repository
+        //get Household members org.smartregister.cbhc.repository
     }
 
     @Override
@@ -221,7 +219,7 @@ public class HouseholdDetailActivity extends BaseActivity {
     }
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
-        // Handle navigation view item clicks here.
+        // Handle navigation org.smartregister.cbhc.view item clicks here.
         return true;
     }
 
@@ -252,7 +250,7 @@ public class HouseholdDetailActivity extends BaseActivity {
 
         @Override
         public void bindView(View view, final Context context, Cursor cursor) {
-            Log.e("------------","bind view call");
+            Log.e("------------","bind org.smartregister.cbhc.view call");
             CommonRepository commonRepository = org.smartregister.Context.getInstance().commonrepository(PathConstants.MOTHER_TABLE_NAME);
             CommonPersonObject personinlist = commonRepository.readAllcommonforCursorAdapter(cursor);
             final CommonPersonObjectClient pClient = new CommonPersonObjectClient(personinlist.getCaseId(), personinlist.getDetails(), personinlist.getDetails().get("FWHOHFNAME"));
@@ -288,7 +286,7 @@ public class HouseholdDetailActivity extends BaseActivity {
             ImageView profileImageIV = (ImageView)view.findViewById(R.id.profile_image_iv);
 
             if (pClient.entityId() != null) {//image already in local storage most likey ):
-                //set profile image by passing the client id.If the image doesn't exist in the image repository then download and save locally
+                //set profile image by passing the client id.If the image doesn't exist in the image org.smartregister.cbhc.repository then download and save locally
                 profileImageIV.setTag(org.smartregister.R.id.entity_id, pClient.entityId());
                 DrishtiApplication.getCachedImageLoaderInstance().getImageByClientId(pClient.entityId(), OpenSRPImageLoader.getStaticImageListener((ImageView) profileImageIV, R.drawable.woman_path_register_logo, R.drawable.woman_path_register_logo));
 
@@ -297,7 +295,7 @@ public class HouseholdDetailActivity extends BaseActivity {
 
         @Override
         public View newView(Context context, Cursor cursor, ViewGroup parent) {
-            Log.e("------------","new view call");
+            Log.e("------------","new org.smartregister.cbhc.view call");
             CommonRepository commonRepository = org.smartregister.Context.getInstance().commonrepository(PathConstants.MOTHER_TABLE_NAME);
             CommonPersonObject personinlist = commonRepository.readAllcommonforCursorAdapter(cursor);
             final CommonPersonObjectClient pClient = new CommonPersonObjectClient(personinlist.getCaseId(), personinlist.getDetails(), personinlist.getDetails().get("FWHOHFNAME"));
@@ -392,7 +390,7 @@ public class HouseholdDetailActivity extends BaseActivity {
                     ImageView profileImageIV = (ImageView)childrenLayout.findViewById(R.id.profile_image_iv);
 
                     if (pClient.entityId() != null) {//image already in local storage most likey ):
-                        //set profile image by passing the client id.If the image doesn't exist in the image repository then download and save locally
+                        //set profile image by passing the client id.If the image doesn't exist in the image org.smartregister.cbhc.repository then download and save locally
                         profileImageIV.setTag(org.smartregister.R.id.entity_id, pClient.entityId());
                         DrishtiApplication.getCachedImageLoaderInstance().getImageByClientId(pClient.entityId(), OpenSRPImageLoader.getStaticImageListener((ImageView) profileImageIV, ImageUtils.profileImageResourceByGender(gender), ImageUtils.profileImageResourceByGender(gender)));
 

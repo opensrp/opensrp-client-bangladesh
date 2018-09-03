@@ -55,7 +55,7 @@ import java.util.TimeZone;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
 
-import util.PathConstants;
+import org.smartregister.cbhc.util.PathConstants;
 
 import static android.preference.PreferenceManager.getDefaultSharedPreferences;
 import static android.view.inputmethod.InputMethodManager.HIDE_NOT_ALWAYS;

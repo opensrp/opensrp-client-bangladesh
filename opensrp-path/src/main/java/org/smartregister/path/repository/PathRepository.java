@@ -19,15 +19,13 @@ import org.smartregister.path.application.VaccinatorApplication;
 import org.smartregister.repository.AlertRepository;
 import org.smartregister.repository.EventClientRepository;
 import org.smartregister.repository.Repository;
-import org.smartregister.util.Utils;
 
 import java.util.ArrayList;
 import java.util.LinkedHashSet;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
 
-import util.PathConstants;
+import org.smartregister.cbhc.util.PathConstants;
 
 public class PathRepository extends Repository {
 
@@ -239,7 +237,7 @@ public class PathRepository extends Repository {
 
             dumpHIA2IndicatorsCSV(db);
 
-            // Recurring service json changed. update
+            // Recurring org.smartregister.cbhc.service json changed. update
             RecurringServiceTypeRepository recurringServiceTypeRepository = VaccinatorApplication.getInstance().recurringServiceTypeRepository();
             IMDatabaseUtils.populateRecurringServices(context, db, recurringServiceTypeRepository);
 

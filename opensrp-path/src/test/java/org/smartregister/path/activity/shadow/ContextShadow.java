@@ -1,15 +1,8 @@
 package org.smartregister.path.activity.shadow;
 
-import org.mockito.Mockito;
 import org.robolectric.annotation.Implementation;
 import org.robolectric.annotation.Implements;
 import org.robolectric.shadow.api.Shadow;
-import org.smartregister.clientandeventmodel.Gender;
-
-import java.util.HashMap;
-import java.util.Map;
-
-import util.PathConstants;
 
 /**
  * Created by kaderchowdhury on 17/12/17.
@@ -25,7 +18,7 @@ public class ContextShadow extends  Shadow {
 //    @Implementation
 //    public static org.smartregister.Context getInstance() {
 //        org.smartregister.Context context = Mockito.mock(org.smartregister.Context.class);
-//        org.smartregister.repository.DetailsRepository detailsRepository = Mockito.mock(org.smartregister.repository.DetailsRepository.class);
+//        org.smartregister.org.smartregister.cbhc.repository.DetailsRepository detailsRepository = Mockito.mock(org.smartregister.org.smartregister.cbhc.repository.DetailsRepository.class);
 //        Mockito.doReturn(detailsRepository).when(context).detailsRepository();
 //        Map<String, String> details = new HashMap<>();
 //        details.put("dob","1985-07-24T00:00:00.000Z");

@@ -18,7 +18,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import util.MotherLookUpUtils;
+import org.smartregister.cbhc.util.MotherLookUpUtils;
 
 public class LookUpTextWatcher implements TextWatcher {
     private static Map<String, EntityLookUp> lookUpMap;

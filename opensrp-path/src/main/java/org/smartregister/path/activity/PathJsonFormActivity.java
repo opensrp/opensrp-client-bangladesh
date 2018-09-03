@@ -1,26 +1,13 @@
 package org.smartregister.path.activity;
 
-import android.graphics.Color;
-import android.graphics.Typeface;
 import android.os.Bundle;
-import android.view.View;
 
 import com.rengwuxian.materialedittext.MaterialEditText;
 import com.vijay.jsonwizard.activities.JsonFormActivity;
 import com.vijay.jsonwizard.constants.JsonFormConstants;
 
-import org.apache.commons.lang3.StringUtils;
-import org.json.JSONArray;
 import org.json.JSONException;
-import org.json.JSONObject;
-import org.smartregister.immunization.repository.VaccineTypeRepository;
-import org.smartregister.path.application.VaccinatorApplication;
 import org.smartregister.path.fragment.PathJsonFormFragment;
-
-import java.util.ArrayList;
-import java.util.Date;
-
-import util.JsonFormUtils;
 
 /**
  * Created by keyman on 11/04/2017.

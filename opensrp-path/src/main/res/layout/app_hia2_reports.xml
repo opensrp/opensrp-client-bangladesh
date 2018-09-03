@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.design.org.smartregister.cbhc.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/main_content"
@@ -8,7 +8,7 @@
     android:fitsSystemWindows="true"
     tools:context=".activity.HIA2ReportsActivity">
 
-    <android.support.design.widget.AppBarLayout
+    <android.support.design.org.smartregister.cbhc.widget.AppBarLayout
         android:id="@+id/appbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -18,7 +18,7 @@
         <include layout="@layout/toolbar_hia2" />
 
 
-        <android.support.design.widget.TabLayout
+        <android.support.design.org.smartregister.cbhc.widget.TabLayout
             android:id="@+id/tabs"
             android:layout_width="fill_parent"
             android:layout_height="?attr/actionBarSize"
@@ -30,9 +30,9 @@
             app:tabSelectedTextColor="#404040"
             app:tabTextAppearance="@style/CustomFontTextViewStyle.tabIndicator" />
 
-    </android.support.design.widget.AppBarLayout>
+    </android.support.design.org.smartregister.cbhc.widget.AppBarLayout>
 
-    <android.support.v4.view.ViewPager
+    <android.support.v4.org.smartregister.cbhc.view.ViewPager
         android:id="@+id/container"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -40,4 +40,4 @@
 
     <include layout="@layout/notification_base" />
 
-</android.support.design.widget.CoordinatorLayout>
+</android.support.design.org.smartregister.cbhc.widget.CoordinatorLayout>

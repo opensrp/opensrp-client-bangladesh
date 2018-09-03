@@ -19,26 +19,19 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
-import android.support.v7.app.AlertDialog;
 import android.text.TextUtils;
 import android.util.Log;
-import android.util.TypedValue;
-import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import org.apache.commons.lang3.StringUtils;
-import org.apache.commons.lang3.tuple.Triple;
 import org.smartregister.Context;
 import org.smartregister.clientandeventmodel.Event;
 import org.smartregister.commonregistry.CommonPersonObjectClient;
-import org.smartregister.domain.Alert;
 import org.smartregister.domain.Photo;
 import org.smartregister.growthmonitoring.domain.Weight;
 import org.smartregister.growthmonitoring.domain.WeightWrapper;
@@ -46,37 +39,27 @@ import org.smartregister.growthmonitoring.fragment.EditWeightDialogFragment;
 import org.smartregister.growthmonitoring.listener.WeightActionListener;
 import org.smartregister.growthmonitoring.repository.WeightRepository;
 import org.smartregister.immunization.domain.ServiceRecord;
-import org.smartregister.immunization.domain.ServiceSchedule;
-import org.smartregister.immunization.domain.ServiceType;
-import org.smartregister.immunization.domain.ServiceWrapper;
 import org.smartregister.immunization.domain.Vaccine;
 import org.smartregister.immunization.domain.VaccineSchedule;
 import org.smartregister.immunization.domain.VaccineWrapper;
-import org.smartregister.immunization.listener.ServiceActionListener;
 import org.smartregister.immunization.listener.VaccinationActionListener;
 import org.smartregister.immunization.repository.RecurringServiceRecordRepository;
-import org.smartregister.immunization.repository.RecurringServiceTypeRepository;
 import org.smartregister.immunization.repository.VaccineRepository;
-import org.smartregister.immunization.util.RecurringServiceUtils;
-import org.smartregister.immunization.util.VaccinateActionUtils;
 import org.smartregister.immunization.util.VaccinatorUtils;
 import org.smartregister.immunization.view.ImmunizationRowGroup;
 import org.smartregister.path.R;
 import org.smartregister.path.application.VaccinatorApplication;
 import org.smartregister.path.fragment.StatusEditDialogFragment;
 import org.smartregister.path.listener.StatusChangeListener;
-import org.smartregister.path.repository.PathRepository;
 import org.smartregister.path.sync.ECSyncUpdater;
 import org.smartregister.path.sync.PathClientProcessor;
 import org.smartregister.path.tabfragments.ChildRegistrationDataFragment;
 import org.smartregister.path.tabfragments.ChildUnderFiveFragment;
 import org.smartregister.path.toolbar.ChildDetailsToolbar;
-import org.smartregister.path.view.LocationPickerView;
 import org.smartregister.repository.AllSharedPreferences;
 import org.smartregister.repository.BaseRepository;
 import org.smartregister.repository.DetailsRepository;
 import org.smartregister.repository.EventClientRepository;
-import org.smartregister.service.AlertService;
 import org.smartregister.util.FormUtils;
 import org.smartregister.util.OpenSRPImageLoader;
 import org.smartregister.view.activity.DrishtiApplication;
@@ -100,10 +83,9 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
-import util.ImageUtils;
-import util.JsonFormUtils;
-import util.PathConstants;
-import util.Utils;
+import org.smartregister.cbhc.util.ImageUtils;
+import org.smartregister.cbhc.util.JsonFormUtils;
+import org.smartregister.cbhc.util.PathConstants;
 
 import static org.smartregister.util.DateUtil.getDuration;
 import static org.smartregister.util.Utils.dobToDateTime;
@@ -791,7 +773,7 @@ public class ChildDetailTabbedActivity extends BaseActivity implements Vaccinati
             ImageView profileImageIV = (ImageView) findViewById(R.id.profile_image_iv);
 
             if (childDetails.entityId() != null) {//image already in local storage most likey ):
-                //set profile image by passing the client id.If the image doesn't exist in the image repository then download and save locally
+                //set profile image by passing the client id.If the image doesn't exist in the image org.smartregister.cbhc.repository then download and save locally
                 profileImageIV.setTag(org.smartregister.R.id.entity_id, childDetails.entityId());
                 DrishtiApplication.getCachedImageLoaderInstance().getImageByClientId(childDetails.entityId(), OpenSRPImageLoader.getStaticImageListener((ImageView) profileImageIV, ImageUtils.profileImageResourceByGender(gender), ImageUtils.profileImageResourceByGender(gender)));
 

@@ -9,7 +9,7 @@ import org.robolectric.shadow.api.Shadow;
 
 import java.util.ArrayList;
 
-import util.JsonFormUtils;
+import org.smartregister.cbhc.util.JsonFormUtils;
 
 /**
  * Created by kaderchowdhury on 14/12/17.

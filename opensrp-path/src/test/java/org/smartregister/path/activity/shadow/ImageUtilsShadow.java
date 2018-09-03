@@ -6,7 +6,7 @@ import org.robolectric.shadow.api.Shadow;
 import org.smartregister.commonregistry.CommonPersonObjectClient;
 import org.smartregister.domain.Photo;
 
-import util.ImageUtils;
+import org.smartregister.cbhc.util.ImageUtils;
 
 /**
  * Created by kaderchowdhury on 14/12/17.

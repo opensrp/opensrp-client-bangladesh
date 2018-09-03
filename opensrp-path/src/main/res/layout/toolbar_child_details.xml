@@ -7,13 +7,13 @@
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
-        <org.smartregister.view.customcontrols.CustomFontTextView
+        <org.smartregister.org.smartregister.cbhc.view.customcontrols.CustomFontTextView
             android:id="@+id/title"
             style="@style/CustomFontTextViewStyle.NavBar.Black"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:background="@android:color/transparent" />
-        <org.smartregister.view.customcontrols.CustomFontTextView
+        <org.smartregister.org.smartregister.cbhc.view.customcontrols.CustomFontTextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             style="@style/CustomFontTextViewStyle.NavBar.Black"
