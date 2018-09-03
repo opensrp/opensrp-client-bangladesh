@@ -172,7 +172,7 @@
         android:src="@drawable/separator"
         android:visibility="gone" />
 
-    <org.smartregister.anc.view.LocationPickerView
+    <org.smartregister.cbhc.view.LocationPickerView
         android:id="@+id/facility_selection"
         style="@style/CustomFontTextViewStyle.NavBar.Bold"
         android:layout_width="wrap_content"
