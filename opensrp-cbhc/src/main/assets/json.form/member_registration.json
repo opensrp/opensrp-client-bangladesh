@@ -1,0 +1,710 @@
+{
+  "count": "1",
+  "encounter_type": "Member Registration",
+  "entity_id": "",
+  "relational_id": "",
+  "metadata": {
+    "start": {
+      "openmrs_entity_parent": "",
+      "openmrs_entity": "concept",
+      "openmrs_data_type": "start",
+      "openmrs_entity_id": "163137AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
+    },
+    "end": {
+      "openmrs_entity_parent": "",
+      "openmrs_entity": "concept",
+      "openmrs_data_type": "end",
+      "openmrs_entity_id": "163138AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
+    },
+    "today": {
+      "openmrs_entity_parent": "",
+      "openmrs_entity": "encounter",
+      "openmrs_entity_id": "encounter_date"
+    },
+    "deviceid": {
+      "openmrs_entity_parent": "",
+      "openmrs_entity": "concept",
+      "openmrs_data_type": "deviceid",
+      "openmrs_entity_id": "163149AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
+    },
+    "subscriberid": {
+      "openmrs_entity_parent": "",
+      "openmrs_entity": "concept",
+      "openmrs_data_type": "subscriberid",
+      "openmrs_entity_id": "163150AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
+    },
+    "simserial": {
+      "openmrs_entity_parent": "",
+      "openmrs_entity": "concept",
+      "openmrs_data_type": "simserial",
+      "openmrs_entity_id": "163151AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
+    },
+    "phonenumber": {
+      "openmrs_entity_parent": "",
+      "openmrs_entity": "concept",
+      "openmrs_data_type": "phonenumber",
+      "openmrs_entity_id": "163152AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
+    },
+    "encounter_location": "",
+    "look_up": {
+        "entity_id":"",
+        "value":""
+    }
+  },
+  "step1": {
+    "title": "Woman Member Registration",
+    "fields": [
+      {
+        "key": "woman_photo",
+        "openmrs_entity_parent": "",
+        "openmrs_entity": "",
+        "openmrs_entity_id": "",
+        "openmrs_data_type": "text",
+        "type": "choose_image",
+        "uploadButtonText": "Take a photo of the woman"
+      },
+      {
+        "key": "member_Reg_Date",
+        "openmrs_entity_parent": "",
+        "openmrs_entity": "",
+        "openmrs_entity_id": "",
+        "openmrs_data_type": "text",
+        "type": "date_picker",
+        "hint": "রেজিস্ট্রেশন তারিখ",
+        "expanded": false,
+        "min_date": "today-5y",
+        "max_date": "today",
+        "v_required": {
+          "value": "false",
+          "err": "Please enter the date of Registration."
+        }
+      },
+      {
+        "key": "OpenMRS_ID",
+        "openmrs_entity_parent": "",
+        "openmrs_entity": "person_identifier",
+        "openmrs_entity_id": "OpenMRS_ID",
+        "type": "edit_text",
+        "hint": "নিবন্ধন নম্বর *",
+        "read_only":"true",
+        "value": "0",
+        "v_numeric": {
+          "value": "true",
+          "err": "Please enter a valid ID"
+        },
+        "v_required": {
+          "value": "true",
+          "err": "Please enter the Child's ZEIR ID"
+        }
+      },
+      {
+        "key": "member_f_name",
+        "openmrs_entity_parent": "",
+        "openmrs_entity": "person",
+        "openmrs_entity_id": "first_name",
+        "openmrs_data_type": "text",
+        "type": "edit_text",
+        "hint": "নাম  (ইংরেজীতে)",
+        "expanded": false,
+        "v_required": {
+          "value": "true",
+          "err": "Please Enter a Valid Name"
+        },
+        "v_regex": {
+          "value": "[A-Za-z\\s\.\-]*",
+          "err": "Please Enter a Valid Name"
+        }
+      },
+      {
+        "key": "relation_with_household_head",
+        "openmrs_entity_parent": "",
+        "openmrs_entity": "",
+        "openmrs_entity_id": "",
+        "openmrs_data_type": "text",
+        "type": "spinner",
+        "hint": "থানা প্রধানের সাথে সম্পর্ক",
+        "values": [
+          "খানা প্রধান",
+          "স্বামী/স্ত্রী",
+          "পুত্র",
+          "কন্যা",
+          "পুত্রবধূ",
+          "নাতি",
+          "নাতনি",
+          "পিতা",
+          "মাতা",
+          "ভাই",
+          "বোন",
+          "ভাইপো",
+          "ভাইঝি",
+          "ভাগ্নে",
+          "ভাগ্নি",
+          "শ্বশুর",
+          "শাশুড়ি",
+          "শ্যালক",
+          "শ্যালিকা",
+          "দেবর",
+          "জা",
+          "ননদ",
+          "ভাইয়ের স্ত্রী",
+          "ভগ্নিপতি",
+          "জামাতা",
+          "অন্যান্য আত্মীয়",
+          "অন্যান্য অনাত্মীয়"
+        ]
+      },
+      {
+        "key": "religion",
+        "openmrs_entity_parent": "",
+        "openmrs_entity": "",
+        "openmrs_entity_id": "",
+        "openmrs_data_type": "text",
+        "type": "spinner",
+        "hint": "ধর্ম",
+        "values": [
+          "মুসলিম",
+          "হিন্দু",
+          "বৌদ্ধ",
+          "খ্রিস্টান",
+          "অন্যান্য"
+        ]
+      },
+      {
+        "key": "blood_group",
+        "openmrs_entity_parent": "",
+        "openmrs_entity": "",
+        "openmrs_entity_id": "",
+        "openmrs_data_type": "text",
+        "type": "spinner",
+        "hint": "রক্তের গ্রুপ",
+        "values": [
+          "A+",
+          "A-",
+          "B+",
+          "B-",
+          "O+",
+          "O-",
+          "AB+",
+          "AB-"
+        ]
+      },
+      {
+        "key": "marital_status",
+        "openmrs_entity_parent": "",
+        "openmrs_entity": "",
+        "openmrs_entity_id": "",
+        "openmrs_data_type": "text",
+        "type": "spinner",
+        "hint": "বৈবাহিক অবস্থা",
+        "values": [
+          "বিবাহিত",
+          "দাম্পত্য বিছিন্ন",
+          "তালাক প্রাপ্ত",
+          "অবিবাহিত",
+          "বিধবা",
+          "বিপত্নীক"
+        ]
+      },
+      {
+        "key": "educational_qualification",
+        "openmrs_entity_parent": "",
+        "openmrs_entity": "",
+        "openmrs_entity_id": "",
+        "openmrs_data_type": "text",
+        "type": "spinner",
+        "hint": "শিক্ষাগত যোগ্যতা",
+        "values": [
+          "কোন শ্রেণীতে উত্তীর্ণ হয়নি",
+          "প্লে/নার্সারি/ কেজি",
+          "১ম শ্রেণী",
+          "২য় শ্রেণী",
+          "৩য় শ্রেণী",
+          "৪র্থ শ্রেণী",
+          "৫ম শ্রেণী",
+          "৬ষ্ঠ শ্রেণী",
+          "৭ম শ্রেণী",
+          "৮ম শ্রেণী",
+          "৯ম শ্রেণী",
+          "এসএসসি বা সমমান",
+          "এইচএসসি বা সমমান",
+          "স্নাতক বা সমমান",
+          "স্নাতকোত্তর বা সমমান",
+          "ডাক্তারী",
+          "ইঞ্জিনিয়ারিং",
+          "বৃত্তিমূলক",
+          "কারিগরি",
+          "ধাত্রীবিদ্যা/নার্সিং",
+          "অন্যান্য"
+        ]
+      },
+      {
+        "key": "occupation",
+        "openmrs_entity_parent": "",
+        "openmrs_entity": "",
+        "openmrs_entity_id": "",
+        "openmrs_data_type": "text",
+        "type": "spinner",
+        "hint": "পেশা",
+        "values": [
+          "ভৌত বিজ্ঞানী এবং এতদসম্পর্কিত টেকনিশিয়ান
+          "ইঞ্জিনিয়ারিং ও স্থপতি
+          "ইঞ্জিনিয়ারিং ও স্থপতি সম্পর্কিত টেকনিশিয়ান
+          "বিমান এবং জাহাজের কর্মকর্তা
+          "জীব বিজ্ঞান এবং এতদসম্পর্কিত টেকনিশিয়ান
+          "চিকিৎসক, দন্ত চিকিৎসক ও প্রাণী চিকিৎসক
+          "নার্স এবং চিকিৎসা-সংক্রান্ত অন্যান্য কর্মী
+          "পরিসংখ্যানবিদ, গণিতবিদ সিস্টেম, এনালিস্ট এবং এতদসম্পকিত কর্মী
+          "অর্থনীতিবিদ
+          "হিসাব রক্ষক
+          "বিচারক
+          "শিক্ষক
+          "ধর্মীয় কর্মী
+          "লেখক, সাংবাদিক এবং এতদসম্পর্কিত কর্মী
+          "চিত্রশিল্পী, ফটোগ্রাফার এবং এতদসম্পর্কিত সৃজনশীল শিল্পী
+          "অভিনয়, কণ্ঠশিল্পী এবং নৃত্য শিল্পী
+          "খেলোয়াড় এবং এতদসম্পর্কিত কর্মী
+          "পেশাগত, কারিগরি এবং অন্যান্য অশ্রেণীভুক্ত এতদসম্পর্কিত কর্মী
+          "আইনজীবী
+          "ম্যানেজার
+          "সরকারী নির্বাহী কর্মকর্তা
+          "করণীক (কেরাণী)
+          "টাইপিস্ট/স্টেনোগ্রাফার/কম্পিউটার অপারেটর
+          "রেকর্ড কিপার,ক্যাশিয়ার এবং এতদসম্পর্কিত কর্মী
+          "কম্পিউটার সম্পর্কিত কর্মী
+          "যানবাহন ও যোগাযোগ তত্ত্বাবধায়ক
+          "গাড়ির চালক, কন্ডাক্টর
+          "চিঠিপত্র বিলিকারী (ডাক পিয়ন)
+          টেলিফোন ও টেলিগ্রাফ অপারেটর
+          অশ্রেণীভুক্ত দাপ্তরিক কাজ।
+          ম্যানেজার (পাইকারী ও খুচরা ব্যবসা)
+          বিক্রয় তত্বাবধায়ক
+          ভ্রমণ সংক্রান্ত কাজে নিয়োজিত কর্মী
+          বীমা, রিয়েল এস্টেট, ব্যবসা এবং এতদসম্পর্কিত সেবা বিক্রেতা
+          ফেরিওয়ালা
+          অশ্রেণীভুক্ত বিক্রয় কর্মী
+          আবাসিক হোটেল ম্যানেজার
+          হোটেল মালিক
+          আবাসিক হোটেল তত্ত্বাবধায়ক
+          বাবুর্চি, হোটেল বয় এবং এতদসম্পর্কিত সম্পর্কিত কর্মী,
+          অশ্রেণীভুক্ত গৃহপরিচারিকা
+          বাড়ির কেয়ারটেকার, ঝাড়ুদার এবং এতদসম্পর্কিত কর্মী
+          ধোপার কাজ
+          নিরাপত্তা কর্মী
+          অশ্রেণীভুক্ত সেবা কর্মী
+          কৃষি খামার ব্যবস্থাপক ও তত্বাবধায়ক
+          কৃষি কাজ
+          বনকর্মী
+          জেলে, শিকারী এবং এতদসম্পর্কিত কর্মী
+          উৎপাদন তত্ত্বাবধায়ক এবং ফোরম্যান
+          খনন কর্মী ও খননকারী
+          ধাতু প্রক্রিয়াকারী
+          রাসায়নিক দ্রব্য প্রক্রিয়াকারী
+          তাঁতি কাপড় বোনা ও রং করা
+          চামড়া প্রক্রিয়াকরণ
+          খাদ্য ও পানীয় প্রক্রিয়া কারী
+          তামাক প্রক্রিয়াকারী
+          দর্জি ও অন্যান্য সেলাই কর্মী
+          জুতা ও চামড়াজাত দ্রব্য প্রস্তুতকারী
+          কাঠ মিস্ত্রি
+          পাথর কাটা ও প্রক্রিয়কারী
+          কর্মকার, ঢালাই কর্মী ও যন্ত্রাংশ প্রস্তুতকারী
+          বৈদ্যুতিক ব্যতীত অন্যান্য মেশিন কর্মী
+          বৈদ্যুতিক কর্মী
+          শব্দ প্রচারকর্মী ও চলচ্চিত্র প্রদর্শনকারী
+          পানি ও পয়ঃনিষ্কাশন কাঠামো নির্মাণকারী ও ধাতু ঝালাইকারী
+          স্বর্ণকার
+          গ্লাস ও মাটির জিনিস প্রস্তুতকারী
+          রাবার ও প্লাস্টিক দ্রব্য প্রস্তুতকারী
+          কাগজ ও কাগজের বোর্ড প্রস্তুতকারী
+          মুদ্রণ কাজ
+          অকৃষি শ্রমিক
+          গৃহকর্ম
+          ছাত্র/ছাত্রী
+          অন্যান্য
+        ]
+      },
+      {
+        "key": "member_unique_ID",
+        "openmrs_entity_parent": "",
+        "openmrs_entity": "person_attribute",
+        "openmrs_entity_id": "idtype",
+        "openmrs_data_type": "text",
+        "type": "spinner",
+        "hint": "কোন আইডি কার্ড আছে?",
+        "values": [
+          "NID",
+          "BRID",
+          "None"
+        ]
+      },
+      {
+        "key": "member_NID",
+        "openmrs_entity_parent": "",
+        "openmrs_entity": "person_attribute",
+        "openmrs_entity_id": "nationalId",
+        "openmrs_data_type": "text",
+        "type": "edit_text",
+        "hint": "NID টাইপ করুন",
+        "v_numeric": {
+          "value": "true",
+          "err": "Enter a valid NID No."
+        },
+        "v_regex": {
+          "value": "^(?=[0-9]*$)(?:.{10}|.{13}|.{17})$",
+          "err": "Number must be a total of 10,13 or 17 digits in length"
+        },
+        "v_required": {
+          "value": true,
+          "err": "Please Type NID"
+        },
+        "relevance": {
+          "step1:member_unique_ID": {
+            "type": "string",
+            "ex": "equalTo(., \"NID\")"
+          }
+        }
+      },
+      {
+        "key": "member_BRID",
+        "openmrs_entity_parent": "",
+        "openmrs_entity": "person_attribute",
+        "openmrs_entity_id": "nationalId",
+        "openmrs_data_type": "text",
+        "type": "edit_text",
+        "hint": "BRID টাইপ করুন",
+        "v_numeric": {
+          "value": "true",
+          "err": "Enter a valid BRID"
+        },
+        "v_regex": {
+          "value": "^(?=[0-9]*$)(?:.{17})$",
+          "err": "Number must be a total of 17 digits in length"
+        },
+        "v_required": {
+          "value": true,
+          "err": "Please Type BRID"
+        },
+        "relevance": {
+          "step1:member_unique_ID": {
+            "type": "string",
+            "ex": "equalTo(., \"BRID\")"
+          }
+        }
+      },
+      {
+        "key": "member_birth_date_known",
+        "openmrs_entity_parent": "",
+        "openmrs_entity": "",
+        "openmrs_entity_id": "",
+        "openmrs_data_type": "text",
+        "type": "spinner",
+        "hint": "আপনি কি আপনার জন্ম তারিখ বলতে পারেন?",
+        "values": [
+          "YES",
+          "NO"
+        ]
+      },
+      {
+        "key": "member_birth_date",
+        "openmrs_entity_parent": "",
+        "openmrs_entity": "person",
+        "openmrs_entity_id": "birthdate",
+        "openmrs_data_type": "text",
+        "type": "date_picker",
+        "hint": "জন্ম তারিখ",
+        "v_required": {
+          "value": true,
+          "err": "Please Enter birth date"
+        },
+        "relevance": {
+          "step1:member_birth_date_known": {
+            "type": "string",
+            "ex": "equalTo(., \"YES\")"
+          }
+        },
+        "max_date": "today"
+      },
+      {
+        "key": "age",
+        "openmrs_entity_parent": "",
+        "openmrs_entity": "",
+        "openmrs_entity_id": "",
+        "openmrs_data_type": "text",
+        "type": "edit_text",
+        "hint": "বয়স টাইপ কর ",
+        "v_numeric": {
+          "value": "true",
+          "err": "Enter age"
+        },
+        "v_required": {
+          "value": true,
+          "err": "Please Type Age"
+        },
+        "relevance": {
+          "step1:member_birth_date_known": {
+            "type": "string",
+            "ex": "equalTo(., \"NO\")"
+          }
+        }
+      },
+    {
+        "key": "contact_phone_number",
+        "openmrs_entity_parent": "",
+        "openmrs_entity": "person_attribute",
+        "openmrs_entity_id": "phoneNumber",
+        "openmrs_data_type": "text",
+        "type": "edit_text",
+        "hint": "মোবাইল নম্বর (ইংরেজীতে)",
+        "v_required": {
+          "value": true,
+          "err": "Enter 11 digits Mobile Number."
+        },
+        "v_numeric": {
+          "value": "true",
+          "err": "Number must begin with 095, 096, or 097 and must be a total of 11 digits in length"
+        },
+        "v_regex": {
+          "value": "(01[5-9][0-9]{8})|\s*",
+          "err": "Number must begin with 015, 016,017,018 or 019 and must be a total of 11 digits in length"
+        },
+        "v_max_length":{
+          "value" : "11",
+          "err" : "Please Enter 11 digit Mobile number"
+        },
+        "v_min_length":{
+          "value" : "11",
+          "err" : "Please Enter 11 digit Mobile number"
+        }
+      },
+      {
+        "key": "maritial_status",
+        "openmrs_entity_parent": "",
+        "openmrs_entity": "",
+        "openmrs_entity_id": "",
+        "openmrs_data_type": "text",
+        "type": "spinner",
+        "hint": "বৈবাহিক অবস্থা",
+        "values": [
+          "Unmarried",
+          "Married",
+          "Divorced/Widow"
+        ]
+      },
+      {
+        "key": "husband_name",
+        "openmrs_entity_parent": "",
+        "openmrs_entity": "person_attribute",
+        "openmrs_entity_id": "spouseName",
+        "openmrs_data_type": "text",
+        "type": "edit_text",
+        "hint": "স্বামীর নাম",
+        "v_required": {
+          "value": true,
+          "err": "Please Type Husband Name."
+        },
+        "v_regex": {
+          "value": "[A-Za-z\\s\.\-]*",
+          "err": "Please Enter a Valid Name"
+        },
+        "relevance": {
+          "step1:maritial_status": {
+            "type": "string",
+            "ex": "equalTo(., \"Married\")"
+          }
+        }
+      },
+      {
+        "key": "couple_no",
+        "openmrs_entity_parent": "",
+        "openmrs_entity": "",
+        "openmrs_entity_id": "",
+        "openmrs_data_type": "text",
+        "type": "edit_text",
+        "hint": "দম্পতি নম্বর",
+        "v_required": {
+          "value": false,
+          "err": "Please Enter a Valid Number."
+        },
+        "v_numeric": {
+          "value": "true",
+          "err": "Please Enter 8 Valid Number."
+        },
+        "relevance": {
+          "step1:maritial_status": {
+            "type": "string",
+            "ex": "equalTo(., \"Married\")"
+          }
+        }
+      },
+      {
+        "key": "pregnant",
+        "openmrs_entity_parent": "",
+        "openmrs_entity": "",
+        "openmrs_entity_id": "",
+        "openmrs_data_type": "text",
+        "type": "spinner",
+        "hint": "আপনি কি বর্তমানে গর্ভব্তী?",
+        "values":[
+          "No",
+          "Yes",
+          "Don't Know"
+        ],
+        "relevance": {
+        "step1:maritial_status": {
+          "type": "string",
+          "ex": "equalTo(., \"Married\")"
+        }
+      }
+      },
+      {
+        "key": "fp_user",
+        "openmrs_entity_parent": "",
+        "openmrs_entity": "",
+        "openmrs_entity_id": "",
+        "openmrs_data_type": "text",
+        "type": "spinner",
+        "hint": "আপনি কি বর্তমানে জন্মবিরতি কোন ব্যবস্থা গ্রহন করতেছেন?",
+        "values":[
+          "Yes",
+          "No"
+        ],
+        "v_required": {
+          "value": false,
+          "err": "Please Select Yes/No."
+        },
+        "relevance": {
+        "step1:maritial_status": {
+          "type": "string",
+          "ex": "equalTo(., \"Married\")"
+          }
+        }
+      },
+      {
+        "key": "fp_methods",
+        "openmrs_entity_parent": "",
+        "openmrs_entity": "concept",
+        "openmrs_entity_id": "50b7f374-9406-49d1-bcfb-9bf613184030",
+        "openmrs_data_type": "text",
+        "type": "spinner",
+        "hint": "আপনি জন্মবিরতি কি ব্যবস্থা গ্রহন করতেছেন?",
+        "values":[
+          "Condoms",
+          "Oral Pill",
+          "Injectable"
+        ],
+        "relevance": {
+          "step1:fp_user": {
+            "type": "string",
+            "ex": "equalTo(., \"Yes\")"
+          }
+        },
+        "v_required": {
+          "value": true,
+          "err": "Please Select Any One."
+        }
+      },
+      {
+        "key": "edd_lmp",
+        "openmrs_entity_parent": "",
+        "openmrs_entity": "concept",
+        "openmrs_entity_id": "50b7f374-9406-49d1-bcfb-9bf613184030",
+        "openmrs_data_type": "text",
+        "type": "spinner",
+        "hint": "আপনি আপনার এলএমপি, ইডিডি বা শেষ আলট্রাসাউন্ড তথ্য জানেন?",
+        "values":[
+          "LMP",
+          "EDD",
+          "UltraSound"
+        ]
+      },
+         {
+        "key": "lmp",
+        "openmrs_entity_parent": "",
+        "openmrs_entity": "",
+        "openmrs_entity_id": "",
+        "openmrs_data_type": "text",
+        "type": "date_picker",
+        "hint": "এলএমপি তারিখ",
+        "v_required": {
+          "value": true,
+          "err": "Please Enter LMP date"
+        },
+        "relevance": {
+          "step1:edd_lmp": {
+            "type": "string",
+            "ex": "equalTo(., \"LMP\")"
+          }
+        },
+        "max_date": "today"
+      },
+      {
+        "key": "edd",
+        "openmrs_entity_parent": "",
+        "openmrs_entity": "",
+        "openmrs_entity_id": "",
+        "openmrs_data_type": "text",
+        "type": "date_picker",
+        "hint": "ইডিডি তারিখ",
+        "v_required": {
+          "value": true,
+          "err": "Please Enter LMP date"
+        },
+        "relevance": {
+          "step1:edd_lmp": {
+            "type": "string",
+            "ex": "equalTo(., \"EDD\")"
+          }
+        },
+        "max_date": "today"
+      },
+      {
+        "key": "ultrasound_date",
+        "openmrs_entity_parent": "",
+        "openmrs_entity": "",
+        "openmrs_entity_id": "",
+        "openmrs_data_type": "text",
+        "type": "date_picker",
+        "hint": "আল্ট্রাসাউন্ড তারিখ",
+        "v_required": {
+          "value": true,
+          "err": "Please Enter LMP date"
+        },
+        "relevance": {
+          "step1:edd_lmp": {
+            "type": "string",
+            "ex": "equalTo(., \"UltraSound\")"
+          }
+        },
+        "max_date": "today"
+      },
+      {
+        "key": "ultrasound_weeks",
+        "openmrs_entity_parent": "",
+        "openmrs_entity": "",
+        "openmrs_entity_id": "",
+        "openmrs_data_type": "text",
+        "type": "edit_text",
+        "hint": "গর্ভাবস্থার আল্ট্রাসাউন্ড দ্বারা নির্ধারিত বয়স",
+        "v_required": {
+          "value": true,
+          "err": "Enter Ultrasound Weeks."
+        },
+        "v_numeric": {
+          "value": "true",
+          "err": "Enter Ultrasound Weeks."
+        },
+        "v_max_length":{
+          "value" : "2",
+          "err" : "Max length can be at most 2."
+        },
+        "relevance": {
+          "step1:edd_lmp": {
+            "type": "string",
+            "ex": "equalTo(., \"UltraSound\")"
+          }
+        }
+      }
+
+        ]
+  }
+}
