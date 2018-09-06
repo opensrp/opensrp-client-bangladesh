@@ -51,6 +51,7 @@ public class LocationHelper {
         ALLOWED_LEVELS = new ArrayList<>();
         ALLOWED_LEVELS.add(DEFAULT_LOCATION_LEVEL);
         ALLOWED_LEVELS.add(FACILITY);
+        ALLOWED_LEVELS.add("Country");
     }
 
     private LocationHelper() {

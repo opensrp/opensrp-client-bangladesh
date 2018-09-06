@@ -7,6 +7,13 @@
         "fields": [
           {
             "field": "eventType",
+            "field_value": "Household Registration",
+            "creates_case": [
+              "ec_household"
+            ]
+          },
+          {
+            "field": "eventType",
             "field_value": "ANC Close",
             "creates_case": [
               "ec_woman"

@@ -111,10 +111,10 @@
         }
       },
       {
-        "key": "OpenMRS_ID",
+        "key": "Patient_Identifier",
         "openmrs_entity_parent": "",
         "openmrs_entity": "person_identifier",
-        "openmrs_entity_id": "OpenMRS_ID",
+        "openmrs_entity_id": "Patient_Identifier",
         "type": "edit_text",
         "hint": "খানার আইডি",
         "read_only":"true",

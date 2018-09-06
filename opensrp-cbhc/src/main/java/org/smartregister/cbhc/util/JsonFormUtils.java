@@ -104,6 +104,17 @@ public class JsonFormUtils extends org.smartregister.util.JsonFormUtils {
             }
         } else {
             Log.w(TAG, "Unsupported form requested for launch " + formName);
+            if (StringUtils.isNotBlank(entityId)) {
+                entityId = entityId.replace("-", "");
+            }
+
+            // Inject opensrp id into the form
+            JSONArray field = fields(form);
+            JSONObject ancId = getFieldJSONObject(field, "Patient_Identifier");
+            if (ancId != null) {
+                ancId.remove(JsonFormUtils.VALUE);
+                ancId.put(JsonFormUtils.VALUE, entityId);
+            }
         }
         Log.d(TAG, "form is " + form.toString());
         return form;

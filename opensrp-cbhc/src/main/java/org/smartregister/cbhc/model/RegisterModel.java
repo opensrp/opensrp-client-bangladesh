@@ -31,7 +31,12 @@ public class RegisterModel implements RegisterContract.Model {
 
     @Override
     public void unregisterViewConfiguration(List<String> viewIdentifiers) {
-        ConfigurableViewsLibrary.getInstance().getConfigurableViewsHelper().unregisterViewConfiguration(viewIdentifiers);
+        try {
+            ConfigurableViewsLibrary.getInstance().getConfigurableViewsHelper().unregisterViewConfiguration(viewIdentifiers);
+        }catch (Exception e){
+
+        }
+
     }
 
     @Override

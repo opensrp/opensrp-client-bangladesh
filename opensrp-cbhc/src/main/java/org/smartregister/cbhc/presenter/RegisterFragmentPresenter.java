@@ -49,8 +49,9 @@ public class RegisterFragmentPresenter implements RegisterFragmentContract.Prese
         if (StringUtils.isBlank(viewConfigurationIdentifier)) {
             return;
         }
+        try {
+            ViewConfiguration viewConfiguration = model.getViewConfiguration(viewConfigurationIdentifier);
 
-        ViewConfiguration viewConfiguration = model.getViewConfiguration(viewConfigurationIdentifier);
         if (viewConfiguration != null) {
             config = (RegisterConfiguration) viewConfiguration.getMetadata();
             setVisibleColumns(model.getRegisterActiveColumns(viewConfigurationIdentifier));
@@ -58,6 +59,9 @@ public class RegisterFragmentPresenter implements RegisterFragmentContract.Prese
 
         if (config.getSearchBarText() != null && getView() != null) {
             getView().updateSearchBarHint(config.getSearchBarText());
+        }
+        }catch (Exception e){
+
         }
     }
 
