@@ -28,21 +28,19 @@
                 android:id="@+id/login_logo"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/login_logo_height"
-                android:layout_alignParentTop="true"
-                android:layout_gravity="center"
                 android:layout_weight="1"
                 android:contentDescription="logo"
                 android:scaleType="centerInside"
-                android:src="@drawable/ic_who_logo" />
+                android:src="@drawable/community_clinic_rounded" />
 
             <TextView
                 android:id="@+id/login_title_text_view"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="5dp"
-                android:layout_marginTop="@dimen/login_text_build_margin"
+                android:layout_marginTop="5dp"
                 android:gravity="center_horizontal"
-                android:text="@string/antenatal_care_module"
+                android:text="@string/cbhc_app"
                 android:textColor="@color/white"
                 android:textSize="@dimen/login_title_text_size"
                 android:typeface="sans" />

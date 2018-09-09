@@ -375,7 +375,7 @@ public abstract class BaseRegisterActivity extends SecuredNativeSmartRegisterAct
 
     @Override
     public void startFormActivity(JSONObject form) {
-        Intent intent = new Intent(this, AncJsonFormActivity.class);
+        Intent intent = new Intent(this, PathJsonFormActivity.class);
         intent.putExtra("json", form.toString());
         startActivityForResult(intent, JsonFormUtils.REQUEST_CODE_GET_JSON);
     }

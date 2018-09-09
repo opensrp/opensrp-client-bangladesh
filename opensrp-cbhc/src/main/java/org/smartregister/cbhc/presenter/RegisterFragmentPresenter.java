@@ -67,7 +67,7 @@ public class RegisterFragmentPresenter implements RegisterFragmentContract.Prese
 
     @Override
     public void initializeQueries(String mainCondition) {
-        String tableName = DBConstants.WOMAN_TABLE_NAME;
+        String tableName = DBConstants.HOUSEHOLD_TABLE_NAME;
 
         String countSelect = model.countSelect(tableName, mainCondition);
         String mainSelect = model.mainSelect(tableName, mainCondition);

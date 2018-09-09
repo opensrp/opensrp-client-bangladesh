@@ -4,7 +4,7 @@
     <string name="action_language">Language</string>
 
     <!-- General -->
-    <string name="app_name">WHO ANC</string>
+    <string name="app_name">OpenSRP CBHC</string>
     <string name="saving_dialog_title">Saving…</string>
     <string name="removing_dialog_title">Removing…</string>
     <string name="please_wait_message">Please wait</string>
@@ -222,5 +222,7 @@
     <string name="yes">Yes</string>
     <string name="no">No</string>
     <string name="population_characteristics">Population Characteristics</string>
+    <string name="cbhc_app">CBHC</string>
+    <string name="household_register">Household Register</string>
 
 </resources>

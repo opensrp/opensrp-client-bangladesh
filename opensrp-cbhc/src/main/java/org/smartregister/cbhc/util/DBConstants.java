@@ -6,6 +6,7 @@ package org.smartregister.cbhc.util;
 public class DBConstants {
 
     public static final String WOMAN_TABLE_NAME = "ec_woman";
+    public static final String HOUSEHOLD_TABLE_NAME = "ec_household";
 
     public static final class KEY {
         public static final String STEPNAME = "stepName";
