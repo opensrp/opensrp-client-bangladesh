@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.text.TextUtils;
 import android.util.Log;
 import android.util.Pair;
 
@@ -23,6 +24,7 @@ import org.smartregister.cbhc.domain.QuickCheck;
 import org.smartregister.cbhc.helper.ECSyncHelper;
 import org.smartregister.cbhc.helper.LocationHelper;
 import org.smartregister.cbhc.view.LocationPickerView;
+import org.smartregister.clientandeventmodel.Address;
 import org.smartregister.clientandeventmodel.Client;
 import org.smartregister.clientandeventmodel.Event;
 import org.smartregister.clientandeventmodel.FormEntityConstants;
@@ -115,6 +117,8 @@ public class JsonFormUtils extends org.smartregister.util.JsonFormUtils {
                 ancId.remove(JsonFormUtils.VALUE);
                 ancId.put(JsonFormUtils.VALUE, entityId);
             }
+            JsonFormUtils.addWomanRegisterHierarchyQuestions(form);
+
         }
         Log.d(TAG, "form is " + form.toString());
         return form;
@@ -188,8 +192,44 @@ public class JsonFormUtils extends org.smartregister.util.JsonFormUtils {
             formTag.databaseVersion = BuildConfig.DATABASE_VERSION;
 
 
-            Client baseClient = org.smartregister.util.JsonFormUtils.createBaseClient(fields, formTag, entityId);
+
+            ArrayList<Address> adresses = new ArrayList<Address>();
+            Address address1 = new Address();
+            try{
+            for (int i = 0; i < fields.length(); i++) {
+                String key = fields.getJSONObject(i).getString("key");
+
+                if (key.equals("HIE_FACILITIES")) {
+                    if (!TextUtils.isEmpty(fields.getJSONObject(i).getString("value"))) {
+                        String address = fields.getJSONObject(i).getString("value");
+                        address = address.replace("[", "").replace("]", "");
+                        String[] addressStringArray = address.split(",");
+                        if (addressStringArray.length > 0) {
+                            address1.setAddressType("usual_residence");
+                            address1.addAddressField("country", addressStringArray[0].replaceAll("^\"|\"$", ""));
+                            address1.addAddressField("stateProvince", addressStringArray[1].replaceAll("^\"|\"$", ""));
+                            address1.addAddressField("countyDistrict", addressStringArray[2].replaceAll("^\"|\"$", ""));
+                            address1.addAddressField("cityVillage", addressStringArray[3].replaceAll("^\"|\"$", ""));
+                            address1.addAddressField("address1", addressStringArray[4].replaceAll("^\"|\"$", ""));
+                            address1.addAddressField("address2", addressStringArray[5].replaceAll("^\"|\"$", ""));
+                            address1.addAddressField("address3", addressStringArray[6].replaceAll("^\"|\"$", ""));
+                            address1.addAddressField("address4", addressStringArray[7].replaceAll("^\"|\"$", ""));
+                        }
+                        Log.v("address", address);
+
+                    }
+                }
+            }
+                }catch (Exception e){
+
+                }
+
+
+
+                Client baseClient = org.smartregister.util.JsonFormUtils.createBaseClient(fields, formTag, entityId);
             baseClient.setGender("m");
+            adresses.add(address1);
+            baseClient.setAddresses(adresses);
             Event baseEvent = org.smartregister.util.JsonFormUtils.createEvent(fields, metadata, formTag, entityId, encounterType, DBConstants.WOMAN_TABLE_NAME);
 
             JsonFormUtils.tagSyncMetadata(allSharedPreferences, baseEvent);// tag docs
@@ -411,15 +451,35 @@ public class JsonFormUtils extends org.smartregister.util.JsonFormUtils {
             JSONArray questions = form.getJSONObject("step1").getJSONArray("fields");
             ArrayList<String> allLevels = new ArrayList<>();
             allLevels.add("Country");
-            allLevels.add("Province");
+            allLevels.add("Division");
             allLevels.add("District");
-            allLevels.add("City/Town");
-            allLevels.add("Health Facility");
-            allLevels.add(LocationHelper.HOME_ADDRESS);
+            allLevels.add("Upazilla");
+            allLevels.add("Union");
+            allLevels.add("Ward");
+            allLevels.add("Subunit");
+            allLevels.add("EPI center");
 
 
             ArrayList<String> healthFacilities = new ArrayList<>();
-            healthFacilities.add(LocationHelper.HOME_ADDRESS);
+            healthFacilities.add("Country");
+            healthFacilities.add("Division");
+            healthFacilities.add("District");
+            healthFacilities.add("Upazilla");
+            healthFacilities.add("Union");
+            healthFacilities.add("Ward");
+            healthFacilities.add("Subunit");
+            healthFacilities.add("EPI center");
+
+
+            ArrayList<String> defaultFacilities = new ArrayList<>();
+            healthFacilities.add("Country");
+            healthFacilities.add("Division");
+            healthFacilities.add("District");
+            healthFacilities.add("Upazilla");
+            healthFacilities.add("Union");
+            healthFacilities.add("Ward");
+            healthFacilities.add("Subunit");
+            healthFacilities.add("EPI center");
 
 
             List<String> defaultFacility = LocationHelper.getInstance().generateDefaultLocationHierarchy(healthFacilities);
@@ -434,7 +494,7 @@ public class JsonFormUtils extends org.smartregister.util.JsonFormUtils {
                     }.getType());
 
             for (int i = 0; i < questions.length(); i++) {
-                if (questions.getJSONObject(i).getString(Constants.KEY.KEY).equalsIgnoreCase(LocationHelper.HOME_ADDRESS)) {
+                if (questions.getJSONObject(i).getString(Constants.KEY.KEY).equalsIgnoreCase("HIE_FACILITIES")) {
                     if (StringUtils.isNotBlank(upToFacilitiesString)) {
                         questions.getJSONObject(i).put(Constants.KEY.TREE, new JSONArray(upToFacilitiesString));
                     }
