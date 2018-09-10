@@ -32,6 +32,7 @@ public class Constants {
 
     public static final class EventType {
         public static final String HouseholdREGISTRATION = "Household Registration";
+        public static final String MemberREGISTRATION = "Member Registration";
 
         public static final String REGISTRATION = "ANC Registration";
         public static final String UPDATE_REGISTRATION = "Update ANC Registration";
@@ -41,6 +42,7 @@ public class Constants {
 
     public static class JSON_FORM {
         public static final String Household_REGISTER = "household_registration";
+        public static final String MEMBER_REGISTER = "member_registration";
         public static final String ANC_REGISTER = "anc_register";
         public static final String ANC_CLOSE = "anc_close";
     }

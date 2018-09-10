@@ -85,6 +85,30 @@ public class RegisterInteractor implements RegisterContract.Interactor {
     }
 
     @Override
+    public void getNextUniqueId(final String formName,final String metadata,final String currentLocationId,final String householdID, final RegisterContract.InteractorCallBack callBack) {
+
+        Runnable runnable = new Runnable() {
+            @Override
+            public void run() {
+                UniqueId uniqueId = getUniqueIdRepository().getNextUniqueId();
+                final String entityId = uniqueId != null ? uniqueId.getOpenmrsId() : "";
+                appExecutors.mainThread().execute(new Runnable() {
+                    @Override
+                    public void run() {
+                        if (StringUtils.isBlank(entityId)) {
+                            callBack.onNoUniqueId();
+                        } else {
+                            callBack.onUniqueIdFetched(formName, metadata, currentLocationId,householdID, entityId);
+                        }
+                    }
+                });
+            }
+        };
+
+        appExecutors.diskIO().execute(runnable);
+    }
+
+    @Override
     public void saveRegistration(final Pair<Client, Event> pair, final String jsonString, final boolean isEditMode, final RegisterContract.InteractorCallBack callBack) {
 
         Runnable runnable = new Runnable() {

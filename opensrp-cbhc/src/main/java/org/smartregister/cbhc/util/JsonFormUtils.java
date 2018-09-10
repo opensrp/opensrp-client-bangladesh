@@ -10,6 +10,8 @@ import android.util.Pair;
 
 import com.google.common.reflect.TypeToken;
 
+import net.sqlcipher.database.SQLiteDatabase;
+
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.math.NumberUtils;
 import org.apache.commons.lang3.tuple.Triple;
@@ -23,6 +25,7 @@ import org.smartregister.cbhc.domain.FormLocation;
 import org.smartregister.cbhc.domain.QuickCheck;
 import org.smartregister.cbhc.helper.ECSyncHelper;
 import org.smartregister.cbhc.helper.LocationHelper;
+import org.smartregister.cbhc.repository.AncRepository;
 import org.smartregister.cbhc.view.LocationPickerView;
 import org.smartregister.clientandeventmodel.Address;
 import org.smartregister.clientandeventmodel.Client;
@@ -34,6 +37,7 @@ import org.smartregister.domain.Photo;
 import org.smartregister.domain.ProfileImage;
 import org.smartregister.domain.tag.FormTag;
 import org.smartregister.repository.AllSharedPreferences;
+import org.smartregister.repository.EventClientRepository;
 import org.smartregister.repository.ImageRepository;
 import org.smartregister.util.AssetHandler;
 import org.smartregister.util.FormUtils;
@@ -77,7 +81,7 @@ public class JsonFormUtils extends org.smartregister.util.JsonFormUtils {
 
     public static JSONObject getFormAsJson(JSONObject form,
                                            String formName, String id,
-                                           String currentLocationId) throws Exception {
+                                           String currentLocationId,String HouseholdEnitityID) throws Exception {
         if (form == null) {
             return null;
         }
@@ -104,6 +108,25 @@ public class JsonFormUtils extends org.smartregister.util.JsonFormUtils {
                 form.remove(JsonFormUtils.ENTITY_ID);
                 form.put(JsonFormUtils.ENTITY_ID, entityId);
             }
+        }else if (Constants.JSON_FORM.MEMBER_REGISTER.equals(formName)) {
+            
+
+            if (StringUtils.isNotBlank(entityId)) {
+                entityId = entityId.replace("-", "");
+            }
+
+            // Inject opensrp id into the form
+            JSONArray field = fields(form);
+            JSONObject ancId = getFieldJSONObject(field,"Patient_Identifier");
+            if (ancId != null) {
+                ancId.remove(JsonFormUtils.VALUE);
+                ancId.put(JsonFormUtils.VALUE, entityId);
+            }
+            JSONObject metaDataJson = form.getJSONObject("metadata");
+            JSONObject lookup = metaDataJson.getJSONObject("look_up");
+            lookup.put("entity_id", "household");
+            lookup.put("value", HouseholdEnitityID);
+
         } else {
             Log.w(TAG, "Unsupported form requested for launch " + formName);
             if (StringUtils.isNotBlank(entityId)) {
@@ -226,10 +249,35 @@ public class JsonFormUtils extends org.smartregister.util.JsonFormUtils {
 
 
 
-                Client baseClient = org.smartregister.util.JsonFormUtils.createBaseClient(fields, formTag, entityId);
-            baseClient.setGender("m");
+            Client baseClient = org.smartregister.util.JsonFormUtils.createBaseClient(fields, formTag, entityId);
+
+            if(baseClient.getGender()==null) {
+                baseClient.setGender("m");
+            }
+
             adresses.add(address1);
             baseClient.setAddresses(adresses);
+
+
+            JSONObject lookUpJSONObject = getJSONObject(metadata, "look_up");
+            String lookUpEntityId = "";
+            String lookUpBaseEntityId = "";
+            if (lookUpJSONObject != null) {
+                lookUpEntityId = getString(lookUpJSONObject, "entity_id");
+                lookUpBaseEntityId = getString(lookUpJSONObject, "value");
+            }
+
+            if (lookUpEntityId.equals("household") && StringUtils.isNotBlank(lookUpBaseEntityId)) {
+                Client ss = new Client(lookUpBaseEntityId);
+                Context context = AncApplication.getInstance().getContext().applicationContext();
+                addRelationship(context, ss, baseClient);
+                SQLiteDatabase db = AncApplication.getInstance().getRepository().getReadableDatabase();
+                AncRepository pathRepository = new AncRepository(context,AncApplication.getInstance().getContext());
+                EventClientRepository eventClientRepository = new EventClientRepository(pathRepository);
+                JSONObject clientjson = eventClientRepository.getClient(db, lookUpBaseEntityId);
+                baseClient.setAddresses(getAddressFromClientJson(clientjson));
+            }
+
             Event baseEvent = org.smartregister.util.JsonFormUtils.createEvent(fields, metadata, formTag, entityId, encounterType, DBConstants.WOMAN_TABLE_NAME);
 
             JsonFormUtils.tagSyncMetadata(allSharedPreferences, baseEvent);// tag docs
@@ -238,6 +286,51 @@ public class JsonFormUtils extends org.smartregister.util.JsonFormUtils {
         } catch (Exception e) {
             Log.e(TAG, Log.getStackTraceString(e));
             return null;
+        }
+    }
+
+    private static ArrayList<Address> getAddressFromClientJson(JSONObject clientjson) {
+        ArrayList<Address> addresses = new ArrayList<Address>();
+        try {
+            JSONArray addressArray = clientjson.getJSONArray("addresses");
+            for(int i = 0 ;i<addressArray.length();i++){
+                Address address = new Address();
+                address.setAddressType(addressArray.getJSONObject(i).getString("addressType"));
+                JSONObject addressfields = addressArray.getJSONObject(i).getJSONObject("addressFields");
+
+                Iterator<?> keys = addressfields.keys();
+
+                while( keys.hasNext() ) {
+                    String key = (String)keys.next();
+                    if ( addressfields.get(key) instanceof String ) {
+                        address.addAddressField(key,addressfields.getString(key));
+                    }
+                }
+                addresses.add(address);
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return addresses;
+    }
+
+    private static void addRelationship(Context context, Client parent, Client child) {
+        try {
+            String relationships = AssetHandler.readFileFromAssetsFolder(FormUtils.ecClientRelationships, context);
+            JSONArray jsonArray = null;
+
+            jsonArray = new JSONArray(relationships);
+
+            for (int i = 0; i < jsonArray.length(); i++) {
+                JSONObject rObject = jsonArray.getJSONObject(i);
+                if (rObject.has("field") && getString(rObject, "field").equals(ENTITY_ID)) {
+                    child.addRelationship(rObject.getString("client_relationship"), parent.getBaseEntityId());
+                } /* else {
+                    //TODO how to add other kind of relationships
+                  } */
+            }
+        } catch (Exception e) {
+            Log.e(TAG, e.toString(), e);
         }
     }
 
@@ -710,6 +803,21 @@ public class JsonFormUtils extends org.smartregister.util.JsonFormUtils {
             JSONObject form = FormUtils.getInstance(activity).getFormJson(Constants.JSON_FORM.ANC_CLOSE);
             if (form != null) {
                 form.put(Constants.JSON_FORM_KEY.ENTITY_ID, activity.getIntent().getStringExtra(Constants.INTENT_KEY.BASE_ENTITY_ID));
+                intent.putExtra(Constants.INTENT_KEY.JSON, form.toString());
+                activity.startActivityForResult(intent, JsonFormUtils.REQUEST_CODE_GET_JSON);
+            }
+        } catch (Exception e) {
+            Log.e(TAG, e.getMessage());
+        }
+    }
+
+    public static void launchMemberRegistrationForm(Activity activity,String locationID, String HouseholdID) {
+        try {
+            Intent intent = new Intent(activity, AncJsonFormActivity.class);
+
+            JSONObject form = FormUtils.getInstance(activity).getFormJson(Constants.JSON_FORM.MEMBER_REGISTER);
+            form = getFormAsJson(form,Constants.JSON_FORM.MEMBER_REGISTER,null,locationID,HouseholdID);
+            if (form != null) {
                 intent.putExtra(Constants.INTENT_KEY.JSON, form.toString());
                 activity.startActivityForResult(intent, JsonFormUtils.REQUEST_CODE_GET_JSON);
             }

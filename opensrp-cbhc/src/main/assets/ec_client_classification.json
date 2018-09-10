@@ -32,6 +32,13 @@
             "creates_case": [
               "ec_woman"
             ]
+          },
+          {
+            "field": "eventType",
+            "field_value": "Member Registration",
+            "creates_case": [
+              "ec_woman"
+            ]
           }
         ]
       }

@@ -34,7 +34,7 @@
         </activity>
         <activity
             android:name=".activity.AncJsonFormActivity"
-            android:launchMode="singleTask"
+            android:launchMode="singleTop"
             android:screenOrientation="portrait"
             android:theme="@style/AncAppTheme.NoActionBar"
             android:windowSoftInputMode="stateAlwaysHidden|adjustResize" />

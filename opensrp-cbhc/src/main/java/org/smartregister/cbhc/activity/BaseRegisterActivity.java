@@ -390,6 +390,8 @@ public abstract class BaseRegisterActivity extends SecuredNativeSmartRegisterAct
                 JSONObject form = new JSONObject(jsonString);
                 if (form.getString(JsonFormUtils.ENCOUNTER_TYPE).equals(Constants.EventType.HouseholdREGISTRATION)) {
                     presenter.saveForm(jsonString, false);
+                } else if (form.getString(JsonFormUtils.ENCOUNTER_TYPE).equals(Constants.EventType.MemberREGISTRATION)) {
+                    presenter.saveForm(jsonString,false);
                 } else if (form.getString(JsonFormUtils.ENCOUNTER_TYPE).equals(Constants.EventType.CLOSE)) {
                     presenter.closeAncRecord(jsonString);
                 }
@@ -448,10 +450,20 @@ public abstract class BaseRegisterActivity extends SecuredNativeSmartRegisterAct
         alertDialog.setButton(AlertDialog.BUTTON_POSITIVE, getString(R.string.record_birth).toUpperCase(),
                 new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
-                        JsonFormUtils.launchANCCloseForm(BaseRegisterActivity.this);
+//                        JsonFormUtils.launchMemberRegistrationForm(BaseRegisterActivity.this,null, getIntent().getExtras().getString(Constants.INTENT_KEY.BASE_ENTITY_ID));
+                        try {
+                            getPresenter().startMemberRegistrationForm(Constants.JSON_FORM.MEMBER_REGISTER, null, null, null, getIntent().getExtras().getString(Constants.INTENT_KEY.BASE_ENTITY_ID));
+                        }catch (Exception e){
+
+                        }
+//   JsonFormUtils.launchANCCloseForm(BaseRegisterActivity.this);
                     }
                 });
         return alertDialog;
+    }
+
+    public RegisterPresenter getPresenter(){
+        return presenter;
     }
 
     @Override

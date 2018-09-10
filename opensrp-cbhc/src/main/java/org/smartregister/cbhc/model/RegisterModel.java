@@ -65,7 +65,7 @@ public class RegisterModel implements RegisterContract.Model {
         if (form == null) {
             return null;
         }
-        return JsonFormUtils.getFormAsJson(form, formName, entityId, currentLocationId);
+        return JsonFormUtils.getFormAsJson(form, formName, entityId, currentLocationId, null);
     }
 
     private FormUtils getFormUtils() {

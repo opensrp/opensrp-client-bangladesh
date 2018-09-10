@@ -52,7 +52,7 @@
     }
   },
   "step1": {
-    "title": "Woman Member Registration",
+    "title": "Member Registration",
     "fields": [
       {
         "key": "woman_photo",
@@ -61,7 +61,7 @@
         "openmrs_entity_id": "",
         "openmrs_data_type": "text",
         "type": "choose_image",
-        "uploadButtonText": "Take a photo of the woman"
+        "uploadButtonText": "Take a photo of the member"
       },
       {
         "key": "member_Reg_Date",
@@ -80,10 +80,10 @@
         }
       },
       {
-        "key": "OpenMRS_ID",
+        "key": "Patient_Identifier",
         "openmrs_entity_parent": "",
         "openmrs_entity": "person_identifier",
-        "openmrs_entity_id": "OpenMRS_ID",
+        "openmrs_entity_id": "Patient_Identifier",
         "type": "edit_text",
         "hint": "নিবন্ধন নম্বর *",
         "read_only":"true",
@@ -114,6 +114,20 @@
           "value": "[A-Za-z\\s\.\-]*",
           "err": "Please Enter a Valid Name"
         }
+      },
+      {
+        "key": "gender",
+        "openmrs_entity_parent": "",
+        "openmrs_entity": "person",
+        "openmrs_entity_id": "gender",
+        "openmrs_data_type": "text",
+        "type": "spinner",
+        "hint": "লিঙ্গ",
+        "values": [
+          "পুরুষ",
+          "মহিলা",
+          "তৃতীয় লিঙ্গ"
+        ]
       },
       {
         "key": "relation_with_household_head",
