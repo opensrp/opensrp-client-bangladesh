@@ -6,7 +6,7 @@ import org.smartregister.cbhc.BuildConfig;
  * Created by ndegwamartin on 14/03/2018.
  */
 
-public class Constants {
+public abstract class Constants {
     public static final String SQLITE_DATE_TIME_FORMAT = "yyyy-MM-dd";
     public static final int OPENMRS_UNIQUE_ID_INITIAL_BATCH_SIZE = BuildConfig.OPENMRS_UNIQUE_ID_INITIAL_BATCH_SIZE;
     public static final int OPENMRS_UNIQUE_ID_BATCH_SIZE = BuildConfig.OPENMRS_UNIQUE_ID_BATCH_SIZE;
@@ -43,6 +43,7 @@ public class Constants {
     public static class JSON_FORM {
         public static final String Household_REGISTER = "household_registration";
         public static final String MEMBER_REGISTER = "member_registration";
+
         public static final String ANC_REGISTER = "anc_register";
         public static final String ANC_CLOSE = "anc_close";
     }
@@ -79,6 +80,7 @@ public class Constants {
         public static final String BASE_ENTITY_ID = "base_entity_id";
         public static final String JSON = "json";
         public static final String WHO_ANC_ID = "who_anc_id";
+        public static final String TO_RESCHEDULE = "to_reschedule";
     }
 
     public static class OPENMRS {
@@ -94,4 +96,9 @@ public class Constants {
         public static final int TRUE = 1;
     }
 
+    public static final class SyncFilters {
+
+        public static final String FILTER_TEAM_ID = "teamId";
+        public static final String PROVIDER_ID = "providerId";
+    }
 }

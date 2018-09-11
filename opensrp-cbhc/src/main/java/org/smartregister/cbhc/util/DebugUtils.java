@@ -89,7 +89,7 @@ public final class DebugUtils {
         }
     }
 
-    public static void importFromDatabase(SQLiteDatabase db,InputStream is){
+    public static void importFromDatabase(SQLiteDatabase db, InputStream is){
         StringBuilder createStatement = new StringBuilder();
 
 //        db.beginTransaction();

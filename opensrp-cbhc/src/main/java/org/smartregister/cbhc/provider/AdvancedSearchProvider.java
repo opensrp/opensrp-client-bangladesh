@@ -176,7 +176,7 @@ public class AdvancedSearchProvider implements RecyclerViewProvider<AdvancedSear
             ViewConfiguration commonConfiguration = helper.getViewConfiguration(COMMON_REGISTER_ROW);
 
             if (viewConfiguration != null) {
-                return helper.inflateDynamicView(viewConfiguration, commonConfiguration, org.smartregister.cbhc.view, R.id.register_columns, false);
+                return helper.inflateDynamicView(viewConfiguration, commonConfiguration, view, R.id.register_columns, false);
             }
         }*/
 

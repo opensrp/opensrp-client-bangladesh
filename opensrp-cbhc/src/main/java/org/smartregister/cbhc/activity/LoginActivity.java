@@ -29,13 +29,12 @@ import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 import org.joda.time.DateTime;
 import org.smartregister.cbhc.R;
-import org.smartregister.cbhc.event.ViewConfigurationSyncCompleteEvent;
-import org.smartregister.util.Utils;
-
 import org.smartregister.cbhc.contract.LoginContract;
+import org.smartregister.cbhc.event.ViewConfigurationSyncCompleteEvent;
 import org.smartregister.cbhc.presenter.LoginPresenter;
 import org.smartregister.cbhc.task.SaveTeamLocationsTask;
 import org.smartregister.cbhc.util.Constants;
+import org.smartregister.util.Utils;
 
 import static org.smartregister.util.Log.logError;
 import static org.smartregister.util.Log.logInfo;

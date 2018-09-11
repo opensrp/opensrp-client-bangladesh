@@ -136,9 +136,9 @@ public class RegisterProvider implements RecyclerViewProvider<RegisterProvider.R
     /*private void updateDoseButton(){
         DoseStatus doseStatus = Utils.getCurrentDoseStatus(pc);
 
-        Button patient = (Button) org.smartregister.cbhc.view.findViewById(R.id.dose_button);
+        Button patient = (Button) view.findViewById(R.id.dose_button);
 
-        LinearLayout completeView = (LinearLayout) org.smartregister.cbhc.view.findViewById(R.id.completedView);
+        LinearLayout completeView = (LinearLayout) view.findViewById(R.id.completedView);
 
         if (StringUtils.isNotBlank(doseStatus.getDateDoseTwoGiven())) {
             patient.setVisibility(View.GONE);
@@ -173,10 +173,10 @@ public class RegisterProvider implements RecyclerViewProvider<RegisterProvider.R
     }
 
     /*
-    private void adjustLayoutParams(View org.smartregister.cbhc.view, TextView details) {
-        ViewGroup.LayoutParams params = org.smartregister.cbhc.view.getLayoutParams();
+    private void adjustLayoutParams(View view, TextView details) {
+        ViewGroup.LayoutParams params = view.getLayoutParams();
         params.height = ViewGroup.LayoutParams.WRAP_CONTENT;
-        org.smartregister.cbhc.view.setLayoutParams(params);
+        view.setLayoutParams(params);
 
         params = details.getLayoutParams();
         params.height = ViewGroup.LayoutParams.WRAP_CONTENT;
@@ -222,7 +222,7 @@ public class RegisterProvider implements RecyclerViewProvider<RegisterProvider.R
             ViewConfiguration commonConfiguration = helper.getViewConfiguration(COMMON_REGISTER_ROW);
 
             if (viewConfiguration != null) {
-                return helper.inflateDynamicView(viewConfiguration, commonConfiguration, org.smartregister.cbhc.view, R.id.register_columns, false);
+                return helper.inflateDynamicView(viewConfiguration, commonConfiguration, view, R.id.register_columns, false);
             }
         }*/
 

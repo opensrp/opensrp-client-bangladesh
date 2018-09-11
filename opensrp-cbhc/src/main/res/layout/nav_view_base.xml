@@ -43,7 +43,7 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
                     android:padding="@dimen/nav_view_item_padding"
-                    android:text="@string/household_register"
+                    android:text="@string/anc_clients"
                     android:textColor="@color/white"
                     android:textSize="@dimen/nav_view_text_size" />
 

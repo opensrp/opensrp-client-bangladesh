@@ -32,7 +32,7 @@ public class LocationHelper {
     private static final String TAG = LocationHelper.class.getCanonicalName();
 
     public static final ArrayList<String> ALLOWED_LEVELS;
-    private static final String DEFAULT_LOCATION_LEVEL = "Health Facility";
+    private static final String DEFAULT_LOCATION_LEVEL = "Country";
     private static LocationHelper instance;
 
     private String childLocationId;
@@ -51,7 +51,6 @@ public class LocationHelper {
         ALLOWED_LEVELS = new ArrayList<>();
         ALLOWED_LEVELS.add(DEFAULT_LOCATION_LEVEL);
         ALLOWED_LEVELS.add(FACILITY);
-        ALLOWED_LEVELS.add("Country");
     }
 
     private LocationHelper() {
@@ -490,7 +489,7 @@ public class LocationHelper {
     }
 
     /**
-     * This method sorts the options provided for a native form tree org.smartregister.cbhc.view question
+     * This method sorts the options provided for a native form tree view question
      *
      * @return The sorted options
      */

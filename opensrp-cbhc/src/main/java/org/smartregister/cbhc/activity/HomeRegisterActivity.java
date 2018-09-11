@@ -2,15 +2,14 @@ package org.smartregister.cbhc.activity;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v4.widget.DrawerLayout;
 import android.util.Log;
 import android.view.MenuItem;
-import android.view.View;
 
-import org.smartregister.cbhc.R;
 import org.smartregister.cbhc.fragment.AdvancedSearchFragment;
 import org.smartregister.cbhc.fragment.BaseRegisterFragment;
 import org.smartregister.cbhc.fragment.HomeRegisterFragment;
+import org.smartregister.cbhc.fragment.LibraryFragment;
+import org.smartregister.cbhc.fragment.MeFragment;
 import org.smartregister.cbhc.fragment.SortFilterFragment;
 import org.smartregister.cbhc.presenter.RegisterPresenter;
 import org.smartregister.cbhc.util.Constants;
@@ -44,20 +43,13 @@ public class HomeRegisterActivity extends BaseRegisterActivity {
 
     @Override
     protected Fragment[] getOtherFragments() {
-        return new Fragment[]{new AdvancedSearchFragment(), new SortFilterFragment()};
+        return new Fragment[]{new AdvancedSearchFragment(), new SortFilterFragment(), new MeFragment(), new LibraryFragment()};
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         return superOnOptionsItemsSelected(item);
 
-    }
-
-    @Override
-    protected void onResumption() {
-        final DrawerLayout drawer = findViewById(R.id.drawer_layout);
-        View ancRegister = drawer.findViewById(R.id.anc_register);
-        ancRegister.setBackgroundColor(getResources().getColor(R.color.tintcolor));
     }
 
     @Override

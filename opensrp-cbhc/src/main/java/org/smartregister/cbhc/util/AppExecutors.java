@@ -14,7 +14,7 @@ import java.util.concurrent.Executors;
 /**
  * Global executor pools for the whole application.
  * <p>
- * Grouping tasks like this avoids the effects of org.smartregister.cbhc.task starvation (e.g. disk reads don't wait behind
+ * Grouping tasks like this avoids the effects of task starvation (e.g. disk reads don't wait behind
  * webservice requests).
  */
 public class AppExecutors {
@@ -60,7 +60,7 @@ public class AppExecutors {
     }
 
     /**
-     * Executor that runs a org.smartregister.cbhc.task on a new background thread.
+     * Executor that runs a task on a new background thread.
      */
     private static class DiskIOThreadExecutor implements Executor {
 

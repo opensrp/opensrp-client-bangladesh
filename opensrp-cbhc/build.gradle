@@ -63,26 +63,26 @@ android {
             buildConfigField "int", "DATABASE_VERSION", '1'
             buildConfigField "long", "MAX_SERVER_TIME_DIFFERENCE", "1800000l"
             buildConfigField "boolean", "TIME_CHECK", "true"
-            buildConfigField "int", "AUTO_SYNC_DURATION", '15'
+            buildConfigField "int", "DATA_SYNC_DURATION_MINUTES", '15'
             buildConfigField "int", "VACCINE_SYNC_PROCESSING_MINUTES", '30'
             buildConfigField "int", "IMAGE_UPLOAD_MINUTES", '180'
             buildConfigField "int", "PULL_UNIQUE_IDS_MINUTES", '180'
-            buildConfigField "int", "SYNC_VIEW_CONFIGURATIONS_MINUTES", '2'
+            buildConfigField "int", "VIEW_SYNC_CONFIGURATIONS_MINUTES", '2'
         }
 
         debug {
-            resValue "string", 'opensrp_url', '"http://103.247.238.31:9979/opensrp/"'
+            resValue "string", 'opensrp_url', '"http://192.168.22.236:8080/opensrp/"'
             buildConfigField "int", "OPENMRS_UNIQUE_ID_INITIAL_BATCH_SIZE", '250'
             buildConfigField "int", "OPENMRS_UNIQUE_ID_BATCH_SIZE", '100'
             buildConfigField "int", "OPENMRS_UNIQUE_ID_SOURCE", '2'
             buildConfigField "int", "DATABASE_VERSION", '1'
             buildConfigField "long", "MAX_SERVER_TIME_DIFFERENCE", "1800000l"
             buildConfigField "boolean", "TIME_CHECK", "false"
-            buildConfigField "int", "AUTO_SYNC_DURATION", '2'
+            buildConfigField "int", "DATA_SYNC_DURATION_MINUTES", '2'
             buildConfigField "int", "VACCINE_SYNC_PROCESSING_MINUTES", '2'
             buildConfigField "int", "IMAGE_UPLOAD_MINUTES", '7'
             buildConfigField "int", "PULL_UNIQUE_IDS_MINUTES", '10'
-            buildConfigField "int", "SYNC_VIEW_CONFIGURATIONS_MINUTES", '2'
+            buildConfigField "int", "VIEW_SYNC_CONFIGURATIONS_MINUTES", '2'
             testCoverageEnabled true
         }
     }
@@ -129,6 +129,7 @@ tasks.withType(Test) {
 
 dependencies {
 
+
     implementation('org.smartregister:opensrp-client-native-form:1.2.5-SNAPSHOT@aar') {
         transitive = true
         exclude group: 'com.android.support', module: 'recyclerview-v7'
@@ -171,13 +172,18 @@ dependencies {
     // explicitly depend on RxJava's latest version for bug fixes and new features.
     implementation 'io.reactivex.rxjava2:rxjava:2.1.5'
 
+    implementation 'com.evernote:android-job:1.2.6'
+
     implementation 'com.github.lecho:hellocharts-android:v1.5.8'
     implementation 'id.zelory:compressor:1.0.4'
     implementation('com.android.support:design:27.1.1') {
         exclude group: 'com.android.support', module: 'recyclerview-v7'
+        exclude group: 'com.android.support', module: 'cardview-v7'
 
     }
     implementation 'com.android.support:recyclerview-v7:27.1.1'
+    implementation 'com.android.support:cardview-v7:27.1.1'
+
 
     implementation group: 'com.crashlytics.sdk.android', name: 'crashlytics', version: '2.6.8'
     implementation 'com.github.ybq:Android-SpinKit:1.1.0'

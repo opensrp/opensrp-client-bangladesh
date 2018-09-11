@@ -3,6 +3,7 @@ package org.smartregister.cbhc.model;
 import android.util.Log;
 import android.util.Pair;
 
+import org.apache.commons.lang3.StringUtils;
 import org.json.JSONObject;
 import org.smartregister.cbhc.application.AncApplication;
 import org.smartregister.cbhc.contract.RegisterContract;
@@ -26,17 +27,18 @@ public class RegisterModel implements RegisterContract.Model {
 
     @Override
     public void registerViewConfigurations(List<String> viewIdentifiers) {
-        ConfigurableViewsLibrary.getInstance().getConfigurableViewsHelper().registerViewConfigurations(viewIdentifiers);
+        try {
+
+            ConfigurableViewsLibrary.getInstance().getConfigurableViewsHelper().registerViewConfigurations(viewIdentifiers);
+
+        } catch (Exception e) {
+        }
     }
+
 
     @Override
     public void unregisterViewConfiguration(List<String> viewIdentifiers) {
-        try {
-            ConfigurableViewsLibrary.getInstance().getConfigurableViewsHelper().unregisterViewConfiguration(viewIdentifiers);
-        }catch (Exception e){
-
-        }
-
+        ConfigurableViewsLibrary.getInstance().getConfigurableViewsHelper().unregisterViewConfiguration(viewIdentifiers);
     }
 
     @Override
@@ -65,9 +67,9 @@ public class RegisterModel implements RegisterContract.Model {
         if (form == null) {
             return null;
         }
-        return JsonFormUtils.getFormAsJson(form, formName, entityId, currentLocationId, null);
+        return JsonFormUtils.getFormAsJson(form, formName, entityId, currentLocationId,null);
     }
-
+    
     private FormUtils getFormUtils() {
         if (formUtils == null) {
             try {
@@ -93,6 +95,29 @@ public class RegisterModel implements RegisterContract.Model {
     public void setAllSharedPreferences(AllSharedPreferences allSharedPreferences) {
         this.allSharedPreferences = allSharedPreferences;
     }
-
-
+	
+	@Override
+	public   String getInitials() {
+		String initials = null;
+		String preferredName = getPrefferedName();
+		
+		if (StringUtils.isNotBlank(preferredName)) {
+			String[] preferredNameArray = preferredName.split(" ");
+			initials = "";
+			if (preferredNameArray.length > 1) {
+				initials = String.valueOf(preferredNameArray[0].charAt(0)) + String.valueOf(preferredNameArray[1].charAt(0));
+			} else if (preferredNameArray.length == 1) {
+				initials = String.valueOf(preferredNameArray[0].charAt(0));
+			}
+		}
+		return initials;
+	}
+	
+	private  String getPrefferedName() {
+		if (getAllSharedPreferences() == null) {
+			return null;
+		}
+		
+		return getAllSharedPreferences().getANMPreferredName(getAllSharedPreferences().fetchRegisteredANM());
+	}
 }

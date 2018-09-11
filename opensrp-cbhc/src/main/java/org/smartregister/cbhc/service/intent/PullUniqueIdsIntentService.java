@@ -12,7 +12,6 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 import org.smartregister.cbhc.application.AncApplication;
 import org.smartregister.cbhc.exception.PullUniqueIdsException;
-import org.smartregister.cbhc.receiver.AlarmReceiver;
 import org.smartregister.cbhc.repository.UniqueIdRepository;
 import org.smartregister.cbhc.util.Constants;
 import org.smartregister.domain.Response;
@@ -49,8 +48,6 @@ public class PullUniqueIdsIntentService extends IntentService {
             }
         } catch (Exception e) {
             Log.e(TAG, e.getMessage(), e);
-        } finally {
-            AlarmReceiver.completeWakefulIntent(intent);
         }
     }
 

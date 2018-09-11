@@ -49,9 +49,8 @@ public class RegisterFragmentPresenter implements RegisterFragmentContract.Prese
         if (StringUtils.isBlank(viewConfigurationIdentifier)) {
             return;
         }
-        try {
-            ViewConfiguration viewConfiguration = model.getViewConfiguration(viewConfigurationIdentifier);
 
+        ViewConfiguration viewConfiguration = model.getViewConfiguration(viewConfigurationIdentifier);
         if (viewConfiguration != null) {
             config = (RegisterConfiguration) viewConfiguration.getMetadata();
             setVisibleColumns(model.getRegisterActiveColumns(viewConfigurationIdentifier));
@@ -59,9 +58,6 @@ public class RegisterFragmentPresenter implements RegisterFragmentContract.Prese
 
         if (config.getSearchBarText() != null && getView() != null) {
             getView().updateSearchBarHint(config.getSearchBarText());
-        }
-        }catch (Exception e){
-
         }
     }
 
@@ -82,18 +78,10 @@ public class RegisterFragmentPresenter implements RegisterFragmentContract.Prese
     }
 
     @Override
-    public void updateInitials() {
-        String initials = model.getInitials();
-        if (initials != null) {
-            getView().updateInitialsText(initials);
-        }
-    }
-
-    @Override
     public void startSync() {
         //ServiceTools.startSyncService(getActivity());
     }
-
+    
     @Override
     public void updateSortAndFilter(List<Field> filterList, Field sortField) {
         String filterText = model.getFilterText(filterList, getView().getString(R.string.filter));

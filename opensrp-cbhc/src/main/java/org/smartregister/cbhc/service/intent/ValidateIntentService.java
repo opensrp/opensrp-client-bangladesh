@@ -10,7 +10,6 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 import org.smartregister.cbhc.R;
 import org.smartregister.cbhc.application.AncApplication;
-import org.smartregister.cbhc.receiver.AlarmReceiver;
 import org.smartregister.domain.Response;
 import org.smartregister.repository.EventClientRepository;
 import org.smartregister.service.HTTPAgent;
@@ -115,8 +114,6 @@ public class ValidateIntentService extends IntentService {
 
         } catch (Exception e) {
             Log.e(getClass().getName(), "", e);
-        } finally {
-            AlarmReceiver.completeWakefulIntent(intent);
         }
     }
 

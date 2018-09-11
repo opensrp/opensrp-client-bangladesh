@@ -34,6 +34,8 @@ public interface RegisterContract {
         void closeAncRecord(String jsonString);
 
         void onDestroy(boolean isChangingConfiguration);
+        
+	    void updateInitials();
     }
 
     interface View {
@@ -59,6 +61,8 @@ public interface RegisterContract {
         void hideProgressDialog();
 
         void showAttentionFlagsDialog(List<AttentionFlag> attentionFlags);
+        
+	    void updateInitialsText(String initials);
     }
 
     interface Model {
@@ -74,14 +78,14 @@ public interface RegisterContract {
 
         JSONObject getFormAsJson(String formName, String entityId,
                                  String currentLocationId) throws Exception;
+	
+	    String getInitials();
     }
 
     interface Interactor {
         void onDestroy(boolean isChangingConfiguration);
 
         void getNextUniqueId(Triple<String, String, String> triple, RegisterContract.InteractorCallBack callBack);
-
-        void getNextUniqueId(String formName,String metadata,String currentLocationId,String householdID, RegisterContract.InteractorCallBack callBack);
 
         void saveRegistration(final Pair<Client, Event> pair, final String jsonString, final boolean isEditMode, final RegisterContract.InteractorCallBack callBack);
 
@@ -91,8 +95,6 @@ public interface RegisterContract {
 
     public interface InteractorCallBack {
         void onUniqueIdFetched(Triple<String, String, String> triple, String entityId);
-
-        void onUniqueIdFetched(String formName,String metadata,String currentLocationId,String householdID, String entityId);
 
         void onNoUniqueId();
 

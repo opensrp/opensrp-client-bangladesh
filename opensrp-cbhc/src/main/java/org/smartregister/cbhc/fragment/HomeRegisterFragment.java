@@ -1,6 +1,5 @@
 package org.smartregister.cbhc.fragment;
 
-
 import android.annotation.SuppressLint;
 import android.view.View;
 
@@ -9,7 +8,6 @@ import org.smartregister.cbhc.activity.BaseRegisterActivity;
 import org.smartregister.cbhc.activity.HomeRegisterActivity;
 import org.smartregister.cbhc.helper.DBQueryHelper;
 import org.smartregister.cbhc.presenter.RegisterFragmentPresenter;
-import org.smartregister.cbhc.view.LocationPickerView;
 
 import java.util.Objects;
 
@@ -18,8 +16,7 @@ import java.util.Objects;
  */
 
 public class HomeRegisterFragment extends BaseRegisterFragment {
-
-    @Override
+	@Override
     protected void initializePresenter() {
         if (getActivity() == null) {
             return;
@@ -34,40 +31,29 @@ public class HomeRegisterFragment extends BaseRegisterFragment {
         return DBQueryHelper.getHomePatientRegisterCondition();
     }
 
-    public LocationPickerView getLocationPickerView() {
+   /* public LocationPickerView getLocationPickerView() {
         return getFacilitySelection();
-    }
+    }*/
 
     @Override
     public void setupViews(View view) {
-        super.setupViews(view);
-        View searchButton = view.findViewById(R.id.search_button);
-        if (searchButton != null) {
-            searchButton.setOnClickListener(registerActionHandler);
-        }
-
-        if (filterStatus != null) {
-            filterStatus.setOnClickListener(registerActionHandler);
-        }
-
-        // QR Code
-        View qrCode = view.findViewById(R.id.scan_qr_code);
-        if (qrCode != null) {
-            qrCode.setOnClickListener(registerActionHandler);
-        }
-
-        // Due Button
-        View contactButton = view.findViewById(R.id.due_button);
-        if (contactButton != null) {
-            contactButton.setOnClickListener(registerActionHandler);
-        }
-
-        //Risk org.smartregister.cbhc.view
-        View attentionFlag = view.findViewById(R.id.risk_layout);
-        if (attentionFlag != null) {
-            attentionFlag.setOnClickListener(registerActionHandler);
-        }
-
+	    super.setupViews(view);
+	    View filterText = view.findViewById(R.id.filter_text_view);
+	    if (filterText != null) {
+		    filterText.setOnClickListener(registerActionHandler);
+	    }
+	
+	    // Due Button
+	    View contactButton = view.findViewById(R.id.due_button);
+	    if (contactButton != null) {
+		    contactButton.setOnClickListener(registerActionHandler);
+	    }
+	
+	    //Risk view
+	    View attentionFlag = view.findViewById(R.id.risk_layout);
+	    if (attentionFlag != null) {
+		    attentionFlag.setOnClickListener(registerActionHandler);
+	    }
     }
 
     @Override
@@ -79,15 +65,9 @@ public class HomeRegisterFragment extends BaseRegisterFragment {
         HomeRegisterActivity homeRegisterActivity = (HomeRegisterActivity) getActivity();
 
         switch (view.getId()) {
-            case R.id.scan_qr_code:
-                homeRegisterActivity.startQrCodeScanner();
-                break;
-            case R.id.search_button:
-                homeRegisterActivity.switchToFragment(1);
-                break;
-            case R.id.filter_status:
-                homeRegisterActivity.switchToFragment(2);
-                break;
+	        case R.id.filter_text_view:
+	        	homeRegisterActivity.switchToFragment(2);
+	        	break;
             default:
                 break;
         }
@@ -98,6 +78,4 @@ public class HomeRegisterFragment extends BaseRegisterFragment {
     public void showNotFoundPopup(String whoAncId) {
         NoMatchDialogFragment.launchDialog((BaseRegisterActivity)Objects.requireNonNull(getActivity()), DIALOG_TAG, whoAncId);
     }
-    
-    
 }
