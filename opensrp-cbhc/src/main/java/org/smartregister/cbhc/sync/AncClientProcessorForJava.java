@@ -66,7 +66,7 @@ public class AncClientProcessorForJava extends ClientProcessorForJava {
 
                 if (eventType.equals(Constants.EventType.CLOSE)) {
                     unsyncEvents.add(event);
-                } else if (eventType.equals(Constants.EventType.REGISTRATION) || eventType.equals(Constants.EventType.UPDATE_REGISTRATION)) {
+                } else if (eventType.equals(Constants.EventType.HouseholdREGISTRATION) || eventType.equals(Constants.EventType.UPDATE_REGISTRATION)) {
                     if (clientClassification == null) {
                         continue;
                     }
