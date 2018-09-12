@@ -96,7 +96,6 @@ public class ProfileOverviewFragment extends BaseProfileFragment {
                 tableName + ".relationalid",
                 tableName + ".details",
                 tableName + ".first_name",
-                tableName + ".gender",
                 tableName + ".dob"
         });
 
@@ -175,7 +174,7 @@ public class ProfileOverviewFragment extends BaseProfileFragment {
 
             View view = inflater.inflate(R.layout.household_details_list_row,parent,false);
             LinearLayout household_details_list_row = (LinearLayout) view.findViewById(R.id.child_holder);
-            addChild(household_details_list_row,pClient.entityId());
+//            addChild(household_details_list_row,pClient.entityId());
             return  view;
         }
 
