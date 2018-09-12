@@ -100,10 +100,10 @@
           }
         },
         {
-          "column_name": "anc_id",
+          "column_name": "Patient_Identifier",
           "type": "Client",
           "json_mapping": {
-            "field": "identifiers.ANC_ID"
+            "field": "identifiers.Patient_Identifier"
           }
         },
         {
@@ -118,6 +118,13 @@
           "type": "Client",
           "json_mapping": {
             "field": "lastName"
+          }
+        },
+        {
+          "column_name": "relational_id",
+          "type": "Client",
+          "json_mapping": {
+            "field": "relationships.household"
           }
         },
         {

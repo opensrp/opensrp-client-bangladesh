@@ -384,6 +384,7 @@ public abstract class BaseRegisterFragment extends RecyclerViewFragment implemen
 
         Intent intent = new Intent(getActivity(), ProfileActivity.class);
         intent.putExtra(Constants.INTENT_KEY.BASE_ENTITY_ID, patient.getCaseId());
+        intent.putExtra(ProfileOverviewFragment.EXTRA_HOUSEHOLD_DETAILS,patient);
         startActivity(intent);
     }
 
