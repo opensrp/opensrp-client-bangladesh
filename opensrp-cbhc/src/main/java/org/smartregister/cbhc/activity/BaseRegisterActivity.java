@@ -41,6 +41,7 @@ import org.smartregister.cbhc.fragment.BaseRegisterFragment;
 import org.smartregister.cbhc.fragment.HomeRegisterFragment;
 import org.smartregister.cbhc.helper.BottomNavigationHelper;
 import org.smartregister.cbhc.listener.BottomNavigationListener;
+import org.smartregister.cbhc.presenter.RegisterPresenter;
 import org.smartregister.cbhc.util.Constants;
 import org.smartregister.cbhc.util.DBConstants;
 import org.smartregister.cbhc.util.JsonFormUtils;
@@ -69,7 +70,7 @@ public abstract class BaseRegisterActivity extends SecuredNativeSmartRegisterAct
     @Bind(R.id.view_pager)
     protected OpenSRPViewPager mPager;
 
-    protected RegisterContract.Presenter presenter;
+    protected RegisterPresenter presenter;
     protected BaseRegisterFragment mBaseFragment = null;
     protected String userInitials;
     protected BottomNavigationHelper bottomNavigationHelper;
@@ -375,6 +376,8 @@ public abstract class BaseRegisterActivity extends SecuredNativeSmartRegisterAct
                     presenter.saveForm(jsonString, false);
                 }else if (form.getString(JsonFormUtils.ENCOUNTER_TYPE).equals(Constants.EventType.HouseholdREGISTRATION)) {
                     presenter.saveForm(jsonString, false);
+                }else if (form.getString(JsonFormUtils.ENCOUNTER_TYPE).equals(Constants.EventType.MemberREGISTRATION)) {
+                    presenter.saveForm(jsonString, false);
                 } else if (form.getString(JsonFormUtils.ENCOUNTER_TYPE).equals(Constants.EventType.CLOSE)) {
                     presenter.closeAncRecord(jsonString);
                 }
@@ -412,18 +415,25 @@ public abstract class BaseRegisterActivity extends SecuredNativeSmartRegisterAct
     }
 
     public void showRecordBirthPopUp(CommonPersonObjectClient client) {
+        getIntent().putExtra(Constants.INTENT_KEY.BASE_ENTITY_ID, client.getColumnmaps().get(DBConstants.KEY.BASE_ENTITY_ID));
+//
+        try {
+            getPresenter().startMemberRegistrationForm(Constants.JSON_FORM.MEMBER_REGISTER, null, null, null, client.getColumnmaps().get(DBConstants.KEY.BASE_ENTITY_ID));
+        }catch (Exception e){
 
-        client.getColumnmaps().put(DBConstants.KEY.EDD, "2018-12-25"); //To remove temporary for dev testing
+        }
 
-        getIntent()
-                .putExtra(Constants.INTENT_KEY.BASE_ENTITY_ID, client.getColumnmaps().get(DBConstants.KEY.BASE_ENTITY_ID));
-        recordBirthAlertDialog.setMessage(
-                "GA: " + Utils.getGestationAgeFromDate(client.getColumnmaps().get(DBConstants.KEY.EDD)) + " weeks\nEDD: "
-                        + Utils.convertDateFormat(Utils.dobStringToDate(client.getColumnmaps().get(DBConstants.KEY.EDD)),
-                        dateFormatter) + " (" + Utils.getDuration(client.getColumnmaps().get(DBConstants.KEY.EDD))
-                        + " to go). \n\n" + client.getColumnmaps().get(DBConstants.KEY.FIRST_NAME)
-                        + " should come in immediately for delivery.");
-        recordBirthAlertDialog.show();
+//        client.getColumnmaps().put(DBConstants.KEY.EDD, "2018-12-25"); //To remove temporary for dev testing
+//
+//        getIntent()
+//                .putExtra(Constants.INTENT_KEY.BASE_ENTITY_ID, client.getColumnmaps().get(DBConstants.KEY.BASE_ENTITY_ID));
+//        recordBirthAlertDialog.setMessage(
+//                "GA: " + Utils.getGestationAgeFromDate(client.getColumnmaps().get(DBConstants.KEY.EDD)) + " weeks\nEDD: "
+//                        + Utils.convertDateFormat(Utils.dobStringToDate(client.getColumnmaps().get(DBConstants.KEY.EDD)),
+//                        dateFormatter) + " (" + Utils.getDuration(client.getColumnmaps().get(DBConstants.KEY.EDD))
+//                        + " to go). \n\n" + client.getColumnmaps().get(DBConstants.KEY.FIRST_NAME)
+//                        + " should come in immediately for delivery.");
+//        recordBirthAlertDialog.show();
     }
 
     @NonNull
@@ -441,9 +451,18 @@ public abstract class BaseRegisterActivity extends SecuredNativeSmartRegisterAct
                 new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
                         JsonFormUtils.launchANCCloseForm(BaseRegisterActivity.this);
+                        try {
+                            getPresenter().startMemberRegistrationForm(Constants.JSON_FORM.MEMBER_REGISTER, null, null, null, getIntent().getExtras().getString(Constants.INTENT_KEY.BASE_ENTITY_ID));
+                        }catch (Exception e){
+
+                        }
                     }
                 });
         return alertDialog;
+    }
+
+    public RegisterPresenter getPresenter(){
+        return presenter;
     }
 
     @Override

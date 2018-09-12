@@ -4,7 +4,7 @@
     <string name="action_language">Language</string>
 
     <!-- General -->
-    <string name="app_name">WHO ANC</string>
+    <string name="app_name">OpenSRP CBHC</string>
     <string name="saving_dialog_title">Saving…</string>
     <string name="removing_dialog_title">Removing…</string>
     <string name="please_wait_message">Please wait</string>
@@ -230,7 +230,9 @@
     <string name="yes">Yes</string>
     <string name="no">No</string>
 	<string name="contact">CONTACT&#10;22/05/2018</string>
-	<string name="library_placeholder">Library Placeholder</string>
+    <string name="add_member">ADD&#10;MEMBER</string>
+
+    <string name="library_placeholder">Library Placeholder</string>
 	<string name="me_page_placeholder">Me Page Placeholder</string>
     <string name="action_me">action_me</string>
     <string name="population_characteristics">Population Characteristics</string>
@@ -251,5 +253,7 @@
     <string name="save_changes">Save Changes\nContinue with this contact at\na later time</string>
     <string name="close_without_saving">Close without saving\nLose updates you\'ve made in\nthis contact</string>
 
+    <string name="cbhc_app">CBHC</string>
+    <string name="household_register">Household Register</string>
 
 </resources>

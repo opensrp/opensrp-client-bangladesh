@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/register_columns"
+	xmlns:app="http://schemas.android.com/apk/res-auto"
+	android:id="@+id/register_columns"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_weight="1"
@@ -13,7 +14,16 @@
         android:layout_alignParentStart="true"
         android:orientation="horizontal">
 
-	    <RelativeLayout
+		<ImageView
+			android:id="@+id/imageView"
+			android:layout_width="@dimen/register_list_item_height"
+			android:layout_height="@dimen/register_list_item_height"
+			android:layout_margin="7dp"
+			android:layout_weight="1"
+			android:scaleType="fitXY"
+			app:srcCompat="@drawable/houshold_register_placeholder" />
+
+		<RelativeLayout
 			    android:id="@+id/patient_column"
 			    android:layout_width="wrap_content"
 			    android:layout_height="match_parent"
@@ -61,6 +71,7 @@
 					    android:paddingLeft="10dp"
 					    android:text="GA: 12 weeks"
 					    android:textColor="@color/text_black"
+						android:visibility="gone"
 					    android:textSize="16sp"/>
 		    </LinearLayout>
 
@@ -97,6 +108,7 @@
 				    android:padding="2.5dp"
 				    android:text="2"
 				    android:textColor="@color/dark_grey_text"
+					android:visibility="gone"
 				    android:textSize="16sp"/>
 
 	    </LinearLayout>
@@ -125,7 +137,7 @@
 				android:paddingRight="20dp"
 				android:elevation="8dp"
 				android:stateListAnimator="@drawable/button"
-				android:text="@string/contact"
+				android:text="@string/add_member"
 				android:textAllCaps="false"
 				android:textColor="@color/vaccine_blue_bg_st"
 				android:textSize="15sp"

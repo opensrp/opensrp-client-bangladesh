@@ -9,15 +9,18 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.tuple.Triple;
 import org.json.JSONObject;
 import org.smartregister.cbhc.R;
+import org.smartregister.cbhc.application.AncApplication;
 import org.smartregister.cbhc.contract.RegisterContract;
 import org.smartregister.cbhc.interactor.RegisterInteractor;
 import org.smartregister.cbhc.model.RegisterModel;
 import org.smartregister.cbhc.util.Constants;
+import org.smartregister.cbhc.util.JsonFormUtils;
 import org.smartregister.cbhc.view.LocationPickerView;
 import org.smartregister.clientandeventmodel.Client;
 import org.smartregister.clientandeventmodel.Event;
 import org.smartregister.domain.FetchStatus;
 import org.smartregister.repository.AllSharedPreferences;
+import org.smartregister.util.FormUtils;
 
 import java.lang.ref.WeakReference;
 import java.util.List;
@@ -91,6 +94,22 @@ public class RegisterPresenter implements RegisterContract.Presenter, RegisterCo
 
     }
 
+    public void startMemberRegistrationForm(String formName, String entityId, String metadata, String currentLocationId,String householdID) throws Exception {
+
+        if (StringUtils.isBlank(entityId)) {
+//            Triple<String, String, String> triple = Triple.of(formName, metadata, currentLocationId);
+            interactor.getNextUniqueId(formName, metadata, currentLocationId,householdID, this);
+            return;
+        }
+        JSONObject form = FormUtils.getInstance(AncApplication.getInstance().getApplicationContext()).getFormJson(Constants.JSON_FORM.MEMBER_REGISTER);
+
+        form = JsonFormUtils.getFormAsJson(form,formName, entityId, currentLocationId,householdID);
+        getView().startFormActivity(form);
+
+    }
+
+
+
     @Override
     public void closeAncRecord(String jsonString) {
 
@@ -143,6 +162,15 @@ public class RegisterPresenter implements RegisterContract.Presenter, RegisterCo
         }
     }
 
+    @Override
+    public void onUniqueIdFetched(String formName,String metadata,String currentLocationId,String householdID, String entityId) {
+        try {
+            startMemberRegistrationForm(formName,entityId,metadata,currentLocationId,householdID);
+        } catch (Exception e) {
+            Log.e(TAG, Log.getStackTraceString(e));
+            getView().displayToast(R.string.error_unable_to_start_form);
+        }
+    }
     @Override
     public void onRegistrationSaved(boolean isEdit) {
         getView().refreshList(FetchStatus.fetched);

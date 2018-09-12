@@ -102,6 +102,11 @@ public class ProfilePresenter implements ProfileContract.Presenter, RegisterCont
         //Overriden
     }
 
+    @Override
+    public void onUniqueIdFetched(String formName, String metadata, String currentLocationId, String householdID, String entityId) {
+
+    }
+
 
     @Override
     public void onNoUniqueId() {

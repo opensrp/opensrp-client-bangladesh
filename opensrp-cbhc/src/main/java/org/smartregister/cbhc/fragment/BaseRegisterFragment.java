@@ -540,6 +540,7 @@ public abstract class BaseRegisterFragment extends RecyclerViewFragment implemen
             if (view.getTag() != null && view.getTag(R.id.VIEW_ID) == CLICK_VIEW_NORMAL) {
                 goToPatientDetailActivity((CommonPersonObjectClient) view.getTag(), false);
             } else if (view.getTag() != null && view.getTag(R.id.VIEW_ID) == CLICK_VIEW_DOSAGE_STATUS) {
+
                 ((HomeRegisterActivity) getActivity()).showRecordBirthPopUp((CommonPersonObjectClient) view.getTag());
 
             } else if (view.getTag() != null && view.getTag(R.id.VIEW_ID) == CLICK_VIEW_ATTENTION_FLAG) {
