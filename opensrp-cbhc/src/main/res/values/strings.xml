@@ -124,6 +124,10 @@
     <string name="contacts">CONTACTS</string>
     <string name="tasks">TASKS</string>
 
+    <string name="members">MEMBERS</string>
+    <string name="household_overview">OVERVIEW</string>
+
+
     <string name="new_registration_saved">New registration saved &#x21;</string>
     <string name="registration_info_updated">Registration info updated &#x21;</string>
 

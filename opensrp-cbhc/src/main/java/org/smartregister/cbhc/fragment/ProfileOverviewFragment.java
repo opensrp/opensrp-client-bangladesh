@@ -22,15 +22,24 @@ import org.smartregister.cbhc.repository.AncRepository;
 import org.smartregister.cbhc.util.Constants;
 import org.smartregister.cbhc.util.DBConstants;
 import org.smartregister.cbhc.util.ImageUtils;
+import org.smartregister.cbhc.util.JsonFormUtils;
+import org.smartregister.cbhc.util.Utils;
 import org.smartregister.commonregistry.CommonPersonObject;
 import org.smartregister.commonregistry.CommonPersonObjectClient;
 import org.smartregister.commonregistry.CommonRepository;
 import org.smartregister.cursoradapter.SmartRegisterQueryBuilder;
+import org.smartregister.repository.DetailsRepository;
 import org.smartregister.util.DateUtil;
 import org.smartregister.util.OpenSRPImageLoader;
 import org.smartregister.view.activity.DrishtiApplication;
 
 import java.io.Serializable;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 import static org.smartregister.util.Utils.getValue;
 
@@ -91,6 +100,7 @@ public class ProfileOverviewFragment extends BaseProfileFragment {
         String mother_id = householdDetails.getDetails().get("_id");
 
         String tableName = DBConstants.WOMAN_TABLE_NAME;
+        String childtableName = DBConstants.CHILD_TABLE_NAME;
         SmartRegisterQueryBuilder queryBUilder = new SmartRegisterQueryBuilder();
         queryBUilder.SelectInitiateMainTable(tableName, new String[]{
                 tableName + ".relationalid",
@@ -98,8 +108,15 @@ public class ProfileOverviewFragment extends BaseProfileFragment {
                 tableName + ".first_name",
                 tableName + ".dob"
         });
+        String currentquery = queryBUilder.getSelectquery().concat(" Union all ");
+        queryBUilder.SelectInitiateMainTable(childtableName, new String[]{
+                childtableName + ".relationalid",
+                childtableName + ".details",
+                childtableName + ".first_name",
+                childtableName + ".dob"
+        });
 
-        Cursor cursor = db.rawQuery(queryBUilder.mainCondition("relational_id = ?"),new String[]{mother_id});
+        Cursor cursor = db.rawQuery(currentquery.concat(queryBUilder.mainCondition("relational_id = ?")),new String[]{mother_id});
 
 
         householdList = (ListView)view.findViewById(R.id.household_list);
@@ -131,14 +148,22 @@ public class ProfileOverviewFragment extends BaseProfileFragment {
 //            int nameColumnIndex = cursor.getColumnIndex("first_name");
 //            member_name.setText("Name : " + cursor.getString(nameColumnIndex));
             member_name.setText("Name : " + getValue(personinlist.getColumnmaps(),"first_name",true));
-
-//            String dobString = cursor.getString(cursor.getColumnIndex("dob"));
+            DetailsRepository detailsRepository = AncApplication.getInstance().getContext().detailsRepository();
+            Map<String, String> detailmap = detailsRepository.getAllDetailsForClient(pClient.getCaseId());
+            String gender = detailmap.get("gender");
+            //            String dobString = cursor.getString(cursor.getColumnIndex("dob"));
             String dobString = getValue(personinlist.getColumnmaps(),"dob",true);
-
+            int age = 0;
+            try {
+             age =   getAge((new DateTime(dobString).toString(String.valueOf(JsonFormUtils.DATE_FORMAT))));
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
             String durationString = "";
             if (StringUtils.isNotBlank(dobString)) {
                 try {
                     DateTime birthDateTime = new DateTime(dobString);
+
                     String duration = DateUtil.getDuration(birthDateTime);
                     if (duration != null) {
                         durationString = duration;
@@ -155,26 +180,57 @@ public class ProfileOverviewFragment extends BaseProfileFragment {
                 }
             });
             ImageView profileImageIV = (ImageView)view.findViewById(R.id.profile_image_iv);
+//
+//            if (pClient.entityId() != null) {//image already in local storage most likey ):
+//                //set profile image by passing the client id.If the image doesn't exist in the image org.smartregister.cbhc.repository then download and save locally
+//                profileImageIV.setTag(org.smartregister.R.id.entity_id, pClient.entityId());
+//                DrishtiApplication.getCachedImageLoaderInstance().getImageByClientId(pClient.entityId(), OpenSRPImageLoader.getStaticImageListener((ImageView) profileImageIV, R.drawable.woman_placeholder, R.drawable.woman_placeholder));
+//
+//            }
+            if(age<5){
+                if(gender.equalsIgnoreCase("m")){
+                    if (pClient.entityId() != null) {//image already in local storage most likey ):
+                        //set profile image by passing the client id.If the image doesn't exist in the image org.smartregister.cbhc.repository then download and save locally
+                        profileImageIV.setTag(org.smartregister.R.id.entity_id, pClient.entityId());
+//                        DrishtiApplication.getCachedImageLoaderInstance().getImageByClientId(pClient.entityId(), OpenSRPImageLoader.getStaticImageListener((ImageView) profileImageIV, R.drawable.child_boy_infant, R.drawable.child_boy_infant));
+                        profileImageIV.setImageDrawable(getResources().getDrawable(R.drawable.child_boy_infant));
 
-            if (pClient.entityId() != null) {//image already in local storage most likey ):
-                //set profile image by passing the client id.If the image doesn't exist in the image org.smartregister.cbhc.repository then download and save locally
-                profileImageIV.setTag(org.smartregister.R.id.entity_id, pClient.entityId());
-                DrishtiApplication.getCachedImageLoaderInstance().getImageByClientId(pClient.entityId(), OpenSRPImageLoader.getStaticImageListener((ImageView) profileImageIV, R.drawable.woman_placeholder, R.drawable.woman_placeholder));
+                    }
+                }else if(gender.equalsIgnoreCase("f")){
+                    if (pClient.entityId() != null) {//image already in local storage most likey ):
+                        //set profile image by passing the client id.If the image doesn't exist in the image org.smartregister.cbhc.repository then download and save locally
+                        profileImageIV.setTag(org.smartregister.R.id.entity_id, pClient.entityId());
+//                        DrishtiApplication.getCachedImageLoaderInstance().getImageByClientId(pClient.entityId(), OpenSRPImageLoader.getStaticImageListener((ImageView) profileImageIV, R.drawable.child_girl_infant, R.drawable.child_girl_infant));
+                        profileImageIV.setImageDrawable(getResources().getDrawable(R.drawable.child_girl_infant));
+                    }
+                }
+            }else{
+                if(gender.equalsIgnoreCase("m")){
+                    if (pClient.entityId() != null) {//image already in local storage most likey ):
+                        //set profile image by passing the client id.If the image doesn't exist in the image org.smartregister.cbhc.repository then download and save locally
+                        profileImageIV.setTag(org.smartregister.R.id.entity_id, pClient.entityId());
+//                        DrishtiApplication.getCachedImageLoaderInstance().getImageByClientId(pClient.entityId(), OpenSRPImageLoader.getStaticImageListener((ImageView) profileImageIV, R.drawable.man_cbhc_member_logo, R.drawable.man_cbhc_member_logo));
+                        profileImageIV.setImageDrawable(getResources().getDrawable(R.drawable.woman_cbhc_member_logo));
 
+                    }
+                }else if(gender.equalsIgnoreCase("f")){
+                    if (pClient.entityId() != null) {//image already in local storage most likey ):
+                        //set profile image by passing the client id.If the image doesn't exist in the image org.smartregister.cbhc.repository then download and save locally
+                        profileImageIV.setTag(org.smartregister.R.id.entity_id, pClient.entityId());
+//                        DrishtiApplication.getCachedImageLoaderInstance().getImageByClientId(pClient.entityId(), OpenSRPImageLoader.getStaticImageListener((ImageView) profileImageIV, R.drawable.woman_cbhc_member_logo, R.drawable.woman_cbhc_member_logo));
+                        profileImageIV.setImageDrawable(getResources().getDrawable(R.drawable.woman_cbhc_member_logo));
+
+                    }
+                }
             }
         }
 
         @Override
         public View newView(Context context, Cursor cursor, ViewGroup parent) {
             Log.e("------------","new org.smartregister.cbhc.view call");
-            CommonRepository commonRepository = org.smartregister.Context.getInstance().commonrepository(DBConstants.WOMAN_TABLE_NAME);
-            CommonPersonObject personinlist = commonRepository.readAllcommonforCursorAdapter(cursor);
-            final CommonPersonObjectClient pClient = new CommonPersonObjectClient(personinlist.getCaseId(), personinlist.getDetails(), personinlist.getDetails().get("FWHOHFNAME"));
-            pClient.setColumnmaps(personinlist.getColumnmaps());
 
             View view = inflater.inflate(R.layout.household_details_list_row,parent,false);
-            LinearLayout household_details_list_row = (LinearLayout) view.findViewById(R.id.child_holder);
-//            addChild(household_details_list_row,pClient.entityId());
+
             return  view;
         }
 
@@ -282,5 +338,46 @@ public class ProfileOverviewFragment extends BaseProfileFragment {
 
         }
 
+    }
+
+    public static int getAge(String dateOfBirth) {
+
+        Calendar today = Calendar.getInstance();
+        Calendar birthDate = Calendar.getInstance();
+
+        int age = 0;
+
+        SimpleDateFormat dateFormat = JsonFormUtils.DATE_FORMAT;
+        Date convertedDate = new Date();
+        try {
+            convertedDate = dateFormat.parse(dateOfBirth);
+        } catch (ParseException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+
+        birthDate.setTime(convertedDate);
+        if (birthDate.after(today)) {
+            throw new IllegalArgumentException("Can't be born in the future");
+        }
+
+        age = today.get(Calendar.YEAR) - birthDate.get(Calendar.YEAR);
+
+        // If birth date is greater than todays date (after 2 days adjustment of
+        // leap year) then decrement age one year
+        if ((birthDate.get(Calendar.DAY_OF_YEAR)
+                - today.get(Calendar.DAY_OF_YEAR) > 3)
+                || (birthDate.get(Calendar.MONTH) > today.get(Calendar.MONTH))) {
+            age--;
+
+            // If birth date and todays date are of same month and birth day of
+            // month is greater than todays day of month then decrement age
+        } else if ((birthDate.get(Calendar.MONTH) == today.get(Calendar.MONTH))
+                && (birthDate.get(Calendar.DAY_OF_MONTH) > today
+                .get(Calendar.DAY_OF_MONTH))) {
+            age--;
+        }
+
+        return age;
     }
 }

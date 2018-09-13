@@ -104,7 +104,7 @@ public class SyncIntentService extends IntentService {
 
             Long lastSyncDatetime = ecSyncUpdater.getLastSyncTimeStamp();
             Log.i(SyncIntentService.class.getName(), "LAST SYNC DT :" + new DateTime(lastSyncDatetime));
-
+            lastSyncDatetime = lastSyncDatetime;
 //            String url = baseUrl + SYNC_URL + "?" + Constants.SyncFilters.FILTER_TEAM_ID + "=" + teamId + "&serverVersion=" + lastSyncDatetime + "&limit=" + SyncIntentService.EVENT_PULL_LIMIT;
             String url = baseUrl + SYNC_URL + "?" + Constants.SyncFilters.PROVIDER_ID + "=" + providerID + "&serverVersion=" + lastSyncDatetime + "&limit=" + SyncIntentService.EVENT_PULL_LIMIT;
             Log.i(SyncIntentService.class.getName(), "URL: " + url);

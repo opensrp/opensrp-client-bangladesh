@@ -170,7 +170,7 @@
       {
         "key": "age",
         "openmrs_entity_parent": "",
-        "openmrs_entity": "person_attribute",
+        "openmrs_entity": "",
         "openmrs_entity_id": "age",
         "type": "edit_text",
         "hint": "Enter Age if DOB unknown *",

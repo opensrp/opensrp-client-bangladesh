@@ -14,6 +14,13 @@
           },
           {
             "field": "eventType",
+            "field_value": "Update Household Registration",
+            "creates_case": [
+              "ec_household"
+            ]
+          },
+          {
+            "field": "eventType",
             "field_value": "ANC Close",
             "creates_case": [
               "ec_woman"
@@ -37,7 +44,21 @@
             "field": "eventType",
             "field_value": "Member Registration",
             "creates_case": [
+              "ec_member"
+            ]
+          },
+          {
+            "field": "eventType",
+            "field_value": "Woman Member Registration",
+            "creates_case": [
               "ec_woman"
+            ]
+          },
+          {
+            "field": "eventType",
+            "field_value": "Child Registration",
+            "creates_case": [
+              "ec_child"
             ]
           }
         ]

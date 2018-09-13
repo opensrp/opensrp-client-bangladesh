@@ -14,10 +14,13 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import org.apache.commons.lang3.StringUtils;
+import org.joda.time.DateTime;
 import org.smartregister.cbhc.R;
 import org.smartregister.cbhc.adapter.ViewPagerAdapter;
 import org.smartregister.cbhc.contract.ProfileContract;
@@ -27,11 +30,19 @@ import org.smartregister.cbhc.fragment.ProfileTasksFragment;
 import org.smartregister.cbhc.fragment.QuickCheckFragment;
 import org.smartregister.cbhc.helper.ImageRenderHelper;
 import org.smartregister.cbhc.presenter.ProfilePresenter;
+import org.smartregister.cbhc.task.FetchProfileDataTask;
 import org.smartregister.cbhc.util.Constants;
 import org.smartregister.cbhc.util.JsonFormUtils;
 import org.smartregister.cbhc.util.Utils;
 import org.smartregister.cbhc.view.CopyToClipboardDialog;
+import org.smartregister.commonregistry.CommonPersonObjectClient;
+import org.smartregister.util.DateUtil;
 import org.smartregister.util.PermissionUtils;
+
+import java.io.Serializable;
+
+import static org.smartregister.cbhc.fragment.ProfileOverviewFragment.EXTRA_HOUSEHOLD_DETAILS;
+import static org.smartregister.util.Utils.getValue;
 
 /**
  * Created by ndegwamartin on 10/07/2018.
@@ -49,10 +60,18 @@ public class ProfileActivity extends BaseProfileActivity implements ProfileContr
     private static final String TAG = ProfileActivity.class.getCanonicalName();
 
     public static final String DIALOG_TAG = "PROFILE_DIALOG_TAG";
+    private CommonPersonObjectClient householdDetails;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Bundle extras = this.getIntent().getExtras();
+        if (extras != null) {
+            Serializable serializable = extras.getSerializable(EXTRA_HOUSEHOLD_DETAILS);
+            if (serializable != null && serializable instanceof CommonPersonObjectClient) {
+                householdDetails = (CommonPersonObjectClient) serializable;
+            }
+        }
         setUpViews();
 
         mProfilePresenter = new ProfilePresenter(this);
@@ -74,6 +93,35 @@ public class ProfileActivity extends BaseProfileActivity implements ProfileContr
         nameView = findViewById(R.id.textview_name);
         imageView = findViewById(R.id.imageview_profile);
 
+
+        setProfileName(getValue(householdDetails.getColumnmaps(),"first_name",true));
+        String dobString = getValue(householdDetails.getColumnmaps(),"dob",true);
+        String durationString = "";
+        if (StringUtils.isNotBlank(dobString)) {
+            try {
+                DateTime birthDateTime = new DateTime(dobString);
+
+                String duration = DateUtil.getDuration(birthDateTime);
+                if (duration != null) {
+                    durationString = duration;
+                }
+            } catch (Exception e) {
+                Log.e(getClass().getName(), e.toString(), e);
+            }
+        }
+        setProfileAge(durationString);
+        setProfileID(getValue(householdDetails.getColumnmaps(),"Patient_Identifier",true));
+        gestationAgeView.setVisibility(View.GONE);
+    }
+
+    @Override
+    public void onClick(View view) {
+        String formMetadata = JsonFormUtils.getHouseholdJsonEditFormString(this,householdDetails.getColumnmaps());
+        try {
+            JsonFormUtils.startFormForEdit(this, JsonFormUtils.REQUEST_CODE_GET_JSON, formMetadata);
+        }catch (Exception e){
+
+        }
     }
 
 
@@ -84,9 +132,9 @@ public class ProfileActivity extends BaseProfileActivity implements ProfileContr
         ProfileContactsFragment profileContactsFragment = ProfileContactsFragment.newInstance(this.getIntent().getExtras());
         ProfileTasksFragment profileTasksFragment = ProfileTasksFragment.newInstance(this.getIntent().getExtras());
 
-        adapter.addFragment(profileOverviewFragment, this.getString(R.string.overview));
-        adapter.addFragment(profileContactsFragment, this.getString(R.string.contacts));
-        adapter.addFragment(profileTasksFragment, this.getString(R.string.tasks));
+        adapter.addFragment(profileOverviewFragment, this.getString(R.string.members));
+        adapter.addFragment(profileContactsFragment, this.getString(R.string.household_overview));
+//        adapter.addFragment(profileTasksFragment, this.getString(R.string.tasks));
 
         viewPager.setAdapter(adapter);
 

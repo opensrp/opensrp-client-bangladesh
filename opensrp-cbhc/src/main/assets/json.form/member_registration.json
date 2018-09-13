@@ -116,6 +116,62 @@
         }
       },
       {
+        "key": "member_birth_date_known",
+        "openmrs_entity_parent": "",
+        "openmrs_entity": "",
+        "openmrs_entity_id": "",
+        "openmrs_data_type": "text",
+        "type": "spinner",
+        "hint": "জন্ম তারিখ জানা আছে কি?",
+        "values": [
+          "YES",
+          "NO"
+        ]
+      },
+      {
+        "key": "member_birth_date",
+        "openmrs_entity_parent": "",
+        "openmrs_entity": "person",
+        "openmrs_entity_id": "birthdate",
+        "openmrs_data_type": "text",
+        "type": "date_picker",
+        "hint": "‘হ্যাঁ’ হলে জন্ম তারিখ",
+        "v_required": {
+          "value": true,
+          "err": "Please Enter birth date"
+        },
+        "relevance": {
+          "step1:member_birth_date_known": {
+            "type": "string",
+            "ex": "equalTo(., \"YES\")"
+          }
+        },
+        "max_date": "today"
+      },
+      {
+        "key": "age",
+        "openmrs_entity_parent": "",
+        "openmrs_entity": "",
+        "openmrs_entity_id": "",
+        "openmrs_data_type": "text",
+        "type": "edit_text",
+        "hint": "‘না জানলে বয়স লিখুন (বছর)",
+        "v_numeric": {
+          "value": "true",
+          "err": "Enter age"
+        },
+        "v_required": {
+          "value": true,
+          "err": "Please Type Age"
+        },
+        "relevance": {
+          "step1:member_birth_date_known": {
+            "type": "string",
+            "ex": "equalTo(., \"NO\")"
+          }
+        }
+      },
+      {
         "key": "gender",
         "openmrs_entity_parent": "",
         "openmrs_entity": "person",
@@ -437,62 +493,6 @@
           "step1:member_unique_ID": {
             "type": "string",
             "ex": "equalTo(., \"BRID\")"
-          }
-        }
-      },
-      {
-        "key": "member_birth_date_known",
-        "openmrs_entity_parent": "",
-        "openmrs_entity": "",
-        "openmrs_entity_id": "",
-        "openmrs_data_type": "text",
-        "type": "spinner",
-        "hint": "আপনি কি আপনার জন্ম তারিখ বলতে পারেন?",
-        "values": [
-          "YES",
-          "NO"
-        ]
-      },
-      {
-        "key": "member_birth_date",
-        "openmrs_entity_parent": "",
-        "openmrs_entity": "person",
-        "openmrs_entity_id": "birthdate",
-        "openmrs_data_type": "text",
-        "type": "date_picker",
-        "hint": "জন্ম তারিখ",
-        "v_required": {
-          "value": true,
-          "err": "Please Enter birth date"
-        },
-        "relevance": {
-          "step1:member_birth_date_known": {
-            "type": "string",
-            "ex": "equalTo(., \"YES\")"
-          }
-        },
-        "max_date": "today"
-      },
-      {
-        "key": "age",
-        "openmrs_entity_parent": "",
-        "openmrs_entity": "",
-        "openmrs_entity_id": "",
-        "openmrs_data_type": "text",
-        "type": "edit_text",
-        "hint": "বয়স টাইপ কর ",
-        "v_numeric": {
-          "value": "true",
-          "err": "Enter age"
-        },
-        "v_required": {
-          "value": true,
-          "err": "Please Type Age"
-        },
-        "relevance": {
-          "step1:member_birth_date_known": {
-            "type": "string",
-            "ex": "equalTo(., \"NO\")"
           }
         }
       },

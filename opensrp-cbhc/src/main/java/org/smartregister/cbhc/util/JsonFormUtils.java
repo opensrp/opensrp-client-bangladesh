@@ -15,6 +15,7 @@ import net.sqlcipher.database.SQLiteDatabase;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.math.NumberUtils;
 import org.apache.commons.lang3.tuple.Triple;
+import org.joda.time.DateTime;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -31,6 +32,7 @@ import org.smartregister.clientandeventmodel.Address;
 import org.smartregister.clientandeventmodel.Client;
 import org.smartregister.clientandeventmodel.Event;
 import org.smartregister.clientandeventmodel.FormEntityConstants;
+import org.smartregister.clientandeventmodel.Gender;
 import org.smartregister.clientandeventmodel.Obs;
 import org.smartregister.configurableviews.model.Field;
 import org.smartregister.domain.Photo;
@@ -185,28 +187,71 @@ public class JsonFormUtils extends org.smartregister.util.JsonFormUtils {
             lastInteractedWith.put(Constants.KEY.KEY, DBConstants.KEY.LAST_INTERACTED_WITH);
             lastInteractedWith.put(Constants.KEY.VALUE, Calendar.getInstance().getTimeInMillis());
             fields.put(lastInteractedWith);
+            Gender gender = null;
+            if(!encounterType.equalsIgnoreCase(Constants.EventType.MemberREGISTRATION)) {
 
-            JSONObject dobUnknownObject = getFieldJSONObject(fields, DBConstants.KEY.DOB_UNKNOWN);
-            JSONArray options = getJSONArray(dobUnknownObject, Constants.JSON_FORM_KEY.OPTIONS);
-            JSONObject option = getJSONObject(options, 0);
-            String dobUnKnownString = option != null ? option.getString(VALUE) : null;
-            if (StringUtils.isNotBlank(dobUnKnownString) && Boolean.valueOf(dobUnKnownString)) {
+                JSONObject dobUnknownObject = getFieldJSONObject(fields, DBConstants.KEY.DOB_UNKNOWN);
+                JSONArray options = getJSONArray(dobUnknownObject, Constants.JSON_FORM_KEY.OPTIONS);
+                JSONObject option = getJSONObject(options, 0);
+                String dobUnKnownString = option != null ? option.getString(VALUE) : null;
+                if (StringUtils.isNotBlank(dobUnKnownString) && Boolean.valueOf(dobUnKnownString)) {
 
-                String ageString = getFieldValue(fields, DBConstants.KEY.AGE);
-                if (StringUtils.isNotBlank(ageString) && NumberUtils.isNumber(ageString)) {
-                    int age = Integer.valueOf(ageString);
-                    JSONObject dobJSONObject = getFieldJSONObject(fields, DBConstants.KEY.DOB);
-                    dobJSONObject.put(VALUE, Utils.getDob(age));
+                    String ageString = getFieldValue(fields, DBConstants.KEY.AGE);
+                    if (StringUtils.isNotBlank(ageString) && NumberUtils.isNumber(ageString)) {
+                        int age = Integer.valueOf(ageString);
+                        JSONObject dobJSONObject = getFieldJSONObject(fields, DBConstants.KEY.DOB);
+                        dobJSONObject.put(VALUE, Utils.getDob(age));
 
-                    //Mark the birth date as an approximation
-                    JSONObject isBirthdateApproximate = new JSONObject();
-                    isBirthdateApproximate.put(Constants.KEY.KEY, FormEntityConstants.Person.birthdate_estimated);
-                    isBirthdateApproximate.put(Constants.KEY.VALUE, Constants.BOOLEAN_INT.TRUE);
-                    isBirthdateApproximate.put(Constants.OPENMRS.ENTITY, Constants.ENTITY.PERSON);//Required for value to be processed
-                    isBirthdateApproximate.put(Constants.OPENMRS.ENTITY_ID, FormEntityConstants.Person.birthdate_estimated);
-                    fields.put(isBirthdateApproximate);
+                        //Mark the birth date as an approximation
+                        JSONObject isBirthdateApproximate = new JSONObject();
+                        isBirthdateApproximate.put(Constants.KEY.KEY, FormEntityConstants.Person.birthdate_estimated);
+                        isBirthdateApproximate.put(Constants.KEY.VALUE, Constants.BOOLEAN_INT.TRUE);
+                        isBirthdateApproximate.put(Constants.OPENMRS.ENTITY, Constants.ENTITY.PERSON);//Required for value to be processed
+                        isBirthdateApproximate.put(Constants.OPENMRS.ENTITY_ID, FormEntityConstants.Person.birthdate_estimated);
+                        fields.put(isBirthdateApproximate);
 
+                    }
                 }
+            }else{
+                String agestring ="";
+                String dobstring = "";
+                JSONObject dobknownObject = getFieldJSONObject(fields, "member_birth_date_known");
+                String dobknownObjectvalue = dobknownObject.getString("value");
+                if(dobknownObjectvalue.equalsIgnoreCase("Yes")){
+                    dobstring = getFieldJSONObject(fields, "member_birth_date").getString("value");
+                    DATE_FORMAT.parse(dobstring);
+                    agestring = ""+Utils.getAgeFromDate((new DateTime(DATE_FORMAT.parse(dobstring)).toString()));
+                    JSONObject ageJsonObject = getFieldJSONObject(fields,"age");
+                    ageJsonObject.put("value",agestring);
+                }else if(dobknownObjectvalue.equalsIgnoreCase("No")){
+                    agestring = getFieldJSONObject(fields, "age").getString("value");
+                    dobstring = ""+Utils.getDob(Integer.parseInt(agestring));
+                    JSONObject dobJsonObject = getFieldJSONObject(fields,"member_birth_date");
+                    dobJsonObject.put("value",dobstring);
+                }
+                int age = Integer.parseInt(agestring);
+
+                String genderString = getFieldJSONObject(fields,"gender").getString("value");
+                if(genderString.equalsIgnoreCase("পুরুষ")){
+                    gender = Gender.MALE;
+                }else if(genderString.equalsIgnoreCase("মহিলা")){
+                    gender = Gender.FEMALE;
+                }else{
+                    gender = Gender.UNKNOWN;
+                }
+
+                if(age<5){
+                    encounterType = Constants.EventType.Child_REGISTRATION;
+                }else{
+                    if(gender.equals(Gender.FEMALE)){
+                        encounterType = Constants.EventType.WomanMemberREGISTRATION;
+
+                    }else if(gender.equals(Gender.MALE)){
+                        encounterType = Constants.EventType.MemberREGISTRATION;
+                    }
+                }
+
+
             }
 
             FormTag formTag = new FormTag();
@@ -250,9 +295,17 @@ public class JsonFormUtils extends org.smartregister.util.JsonFormUtils {
 
 
             Client baseClient = org.smartregister.util.JsonFormUtils.createBaseClient(fields, formTag, entityId);
-
+            if(gender!=null){
+                if(gender.equals(Gender.MALE)) {
+                    baseClient.setGender("M");
+                }else if(gender.equals(Gender.FEMALE)) {
+                    baseClient.setGender("F");
+                }else if(gender.equals(Gender.UNKNOWN)) {
+                    baseClient.setGender("O");
+                }
+            }
             if(baseClient.getGender()==null) {
-                baseClient.setGender("m");
+                baseClient.setGender("M");
             }
 
             adresses.add(address1);
@@ -277,8 +330,18 @@ public class JsonFormUtils extends org.smartregister.util.JsonFormUtils {
                 JSONObject clientjson = eventClientRepository.getClient(db, lookUpBaseEntityId);
                 baseClient.setAddresses(getAddressFromClientJson(clientjson));
             }
+            String entitytypeName = "";
+            if(encounterType.equalsIgnoreCase(Constants.EventType.Child_REGISTRATION)){
+                entitytypeName = DBConstants.CHILD_TABLE_NAME;
+            }else if(encounterType.equalsIgnoreCase(Constants.EventType.HouseholdREGISTRATION)){
+                entitytypeName = DBConstants.HOUSEHOLD_TABLE_NAME;
+            }else if(encounterType.equalsIgnoreCase(Constants.EventType.MemberREGISTRATION)){
+                entitytypeName = DBConstants.MEMBER_TABLE_NAME;
+            }else if(encounterType.equalsIgnoreCase(Constants.EventType.WomanMemberREGISTRATION)){
+                entitytypeName = DBConstants.WOMAN_TABLE_NAME;
+            }
 
-            Event baseEvent = org.smartregister.util.JsonFormUtils.createEvent(fields, metadata, formTag, entityId, encounterType, DBConstants.HOUSEHOLD_TABLE_NAME);
+            Event baseEvent = org.smartregister.util.JsonFormUtils.createEvent(fields, metadata, formTag, entityId, encounterType, entitytypeName);
 
             JsonFormUtils.tagSyncMetadata(allSharedPreferences, baseEvent);// tag docs
 
@@ -468,6 +531,36 @@ public class JsonFormUtils extends org.smartregister.util.JsonFormUtils {
                     processPopulatableFields(womanClient, jsonObject);
 
                 }
+
+                return form.toString();
+            }
+        } catch (Exception e) {
+            Log.e(TAG, Log.getStackTraceString(e));
+        }
+
+        return "";
+    }
+
+    public static String getHouseholdJsonEditFormString(Context context, Map<String, String> womanClient) {
+        try {
+            JSONObject form = FormUtils.getInstance(context).getFormJson(Constants.JSON_FORM.Household_REGISTER);
+            LocationPickerView lpv = new LocationPickerView(context);
+            lpv.init();
+            JsonFormUtils.addWomanRegisterHierarchyQuestions(form);
+            Log.d(TAG, "Form is " + form.toString());
+            if (form != null) {
+                form.put(JsonFormUtils.ENTITY_ID, womanClient.get(DBConstants.KEY.BASE_ENTITY_ID));
+                form.put(JsonFormUtils.ENCOUNTER_TYPE, Constants.EventType.UPDATE_Household_REGISTRATION);
+
+                JSONObject metadata = form.getJSONObject(JsonFormUtils.METADATA);
+                String lastLocationId = LocationHelper.getInstance().getOpenMrsLocationId(lpv.getSelectedItem());
+
+                metadata.put(JsonFormUtils.ENCOUNTER_LOCATION, lastLocationId);
+
+                form.put(JsonFormUtils.CURRENT_OPENSRP_ID, womanClient.get("Patient_Identifier").replace("-", ""));
+
+                //inject opensrp id into the form
+
 
                 return form.toString();
             }
