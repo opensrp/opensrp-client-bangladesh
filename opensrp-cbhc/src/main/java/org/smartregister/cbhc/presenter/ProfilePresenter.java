@@ -144,12 +144,12 @@ public class ProfilePresenter implements ProfileContract.Presenter, RegisterCont
     @Override
     public void refreshProfileTopSection(Map<String, String> client) {
 
-        getProfileView().setProfileName(client.get(DBConstants.KEY.FIRST_NAME) + " " + client.get(DBConstants.KEY.LAST_NAME));
-        getProfileView().setProfileAge(String.valueOf(Utils.getAgeFromDate(client.get(DBConstants.KEY.DOB))));
-        getProfileView().setProfileGestationAge(client.containsKey(DBConstants.KEY.EDD) ? String.valueOf(Utils.getGestationAgeFromDate(client.get(DBConstants.KEY.EDD))) : null);
-        getProfileView().setProfileID(client.get(DBConstants.KEY.ANC_ID));
-        getProfileView().setProfileImage(client.get(DBConstants.KEY.BASE_ENTITY_ID));
-        getProfileView().setWomanPhoneNumber(client.get(DBConstants.KEY.PHONE_NUMBER));
+//        getProfileView().setProfileName(client.get(DBConstants.KEY.FIRST_NAME) + " " + client.get(DBConstants.KEY.LAST_NAME));
+//        getProfileView().setProfileAge(String.valueOf(Utils.getAgeFromDate(client.get(DBConstants.KEY.DOB))));
+//        getProfileView().setProfileGestationAge(client.containsKey(DBConstants.KEY.EDD) ? String.valueOf(Utils.getGestationAgeFromDate(client.get(DBConstants.KEY.EDD))) : null);
+//        getProfileView().setProfileID(client.get(DBConstants.KEY.ANC_ID));
+//        getProfileView().setProfileImage(client.get(DBConstants.KEY.BASE_ENTITY_ID));
+//        getProfileView().setWomanPhoneNumber(client.get(DBConstants.KEY.PHONE_NUMBER));
     }
 
     @Override

@@ -345,6 +345,11 @@ public class JsonFormUtils extends org.smartregister.util.JsonFormUtils {
 
             JsonFormUtils.tagSyncMetadata(allSharedPreferences, baseEvent);// tag docs
 
+            String identifier = baseClient.getIdentifier("Patient_Identifier");
+            //mark zeir id as used
+            AncApplication.getInstance().getUniqueIdRepository().close(identifier);
+
+
             return Pair.create(baseClient, baseEvent);
         } catch (Exception e) {
             Log.e(TAG, Log.getStackTraceString(e));
@@ -531,6 +536,45 @@ public class JsonFormUtils extends org.smartregister.util.JsonFormUtils {
                     processPopulatableFields(womanClient, jsonObject);
 
                 }
+
+                return form.toString();
+            }
+        } catch (Exception e) {
+            Log.e(TAG, Log.getStackTraceString(e));
+        }
+
+        return "";
+    }
+
+    public static String getMemberJsonEditFormString(Context context, Map<String, String> womanClient) {
+        try {
+            JSONObject form = FormUtils.getInstance(context).getFormJson(Constants.JSON_FORM.MEMBER_REGISTER);
+            LocationPickerView lpv = new LocationPickerView(context);
+            lpv.init();
+            JsonFormUtils.addWomanRegisterHierarchyQuestions(form);
+            Log.d(TAG, "Form is " + form.toString());
+            if (form != null) {
+                form.put(JsonFormUtils.ENTITY_ID, womanClient.get(DBConstants.KEY.BASE_ENTITY_ID));
+                form.put(JsonFormUtils.ENCOUNTER_TYPE, Constants.EventType.MemberREGISTRATION);
+
+                JSONObject metadata = form.getJSONObject(JsonFormUtils.METADATA);
+                String lastLocationId = LocationHelper.getInstance().getOpenMrsLocationId(lpv.getSelectedItem());
+
+                metadata.put(JsonFormUtils.ENCOUNTER_LOCATION, lastLocationId);
+
+                form.put(JsonFormUtils.CURRENT_OPENSRP_ID, womanClient.get("Patient_Identifier").replace("-", ""));
+
+                //inject opensrp id into the form
+
+                JSONObject stepOne = form.getJSONObject(JsonFormUtils.STEP1);
+                JSONArray jsonArray = stepOne.getJSONArray(JsonFormUtils.FIELDS);
+                for (int i = 0; i < jsonArray.length(); i++) {
+                    JSONObject jsonObject = jsonArray.getJSONObject(i);
+
+                    processPopulatableFieldsForHouseholds(womanClient, jsonObject);
+
+                }
+//                Log.v("test language",womanClient.get("type_of_nearest_clinic"));
 
                 return form.toString();
             }

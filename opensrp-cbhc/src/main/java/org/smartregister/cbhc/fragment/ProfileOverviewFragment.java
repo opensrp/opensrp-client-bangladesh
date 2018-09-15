@@ -17,6 +17,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.joda.time.DateTime;
 import org.opensrp.api.constants.Gender;
 import org.smartregister.cbhc.R;
+import org.smartregister.cbhc.activity.ProfileActivity;
 import org.smartregister.cbhc.application.AncApplication;
 import org.smartregister.cbhc.repository.AncRepository;
 import org.smartregister.cbhc.util.Constants;
@@ -179,7 +180,14 @@ public class ProfileOverviewFragment extends BaseProfileFragment {
 //                    WomanImmunizationActivity.launchActivity(HouseholdDetailActivity.this,pClient,null);
                 }
             });
+
+            pClient.getColumnmaps().putAll(detailmap);
+            ImageView editButton = (ImageView)view.findViewById(R.id.edit_member);
+            editButton.setTag(pClient);
+            editButton.setOnClickListener((ProfileActivity)getActivity());
             ImageView profileImageIV = (ImageView)view.findViewById(R.id.profile_image_iv);
+            String clientype = "";
+
 //
 //            if (pClient.entityId() != null) {//image already in local storage most likey ):
 //                //set profile image by passing the client id.If the image doesn't exist in the image org.smartregister.cbhc.repository then download and save locally
@@ -194,7 +202,7 @@ public class ProfileOverviewFragment extends BaseProfileFragment {
                         profileImageIV.setTag(org.smartregister.R.id.entity_id, pClient.entityId());
 //                        DrishtiApplication.getCachedImageLoaderInstance().getImageByClientId(pClient.entityId(), OpenSRPImageLoader.getStaticImageListener((ImageView) profileImageIV, R.drawable.child_boy_infant, R.drawable.child_boy_infant));
                         profileImageIV.setImageDrawable(getResources().getDrawable(R.drawable.child_boy_infant));
-
+                        clientype = "malechild";
                     }
                 }else if(gender.equalsIgnoreCase("f")){
                     if (pClient.entityId() != null) {//image already in local storage most likey ):
@@ -202,6 +210,7 @@ public class ProfileOverviewFragment extends BaseProfileFragment {
                         profileImageIV.setTag(org.smartregister.R.id.entity_id, pClient.entityId());
 //                        DrishtiApplication.getCachedImageLoaderInstance().getImageByClientId(pClient.entityId(), OpenSRPImageLoader.getStaticImageListener((ImageView) profileImageIV, R.drawable.child_girl_infant, R.drawable.child_girl_infant));
                         profileImageIV.setImageDrawable(getResources().getDrawable(R.drawable.child_girl_infant));
+                        clientype = "femalechild";
                     }
                 }
             }else{
@@ -212,6 +221,7 @@ public class ProfileOverviewFragment extends BaseProfileFragment {
 //                        DrishtiApplication.getCachedImageLoaderInstance().getImageByClientId(pClient.entityId(), OpenSRPImageLoader.getStaticImageListener((ImageView) profileImageIV, R.drawable.man_cbhc_member_logo, R.drawable.man_cbhc_member_logo));
                         profileImageIV.setImageDrawable(getResources().getDrawable(R.drawable.woman_cbhc_member_logo));
 
+                        clientype = "member";
                     }
                 }else if(gender.equalsIgnoreCase("f")){
                     if (pClient.entityId() != null) {//image already in local storage most likey ):
@@ -219,10 +229,15 @@ public class ProfileOverviewFragment extends BaseProfileFragment {
                         profileImageIV.setTag(org.smartregister.R.id.entity_id, pClient.entityId());
 //                        DrishtiApplication.getCachedImageLoaderInstance().getImageByClientId(pClient.entityId(), OpenSRPImageLoader.getStaticImageListener((ImageView) profileImageIV, R.drawable.woman_cbhc_member_logo, R.drawable.woman_cbhc_member_logo));
                         profileImageIV.setImageDrawable(getResources().getDrawable(R.drawable.woman_cbhc_member_logo));
-
+                        clientype = "woman";
                     }
                 }
             }
+
+            profileImageIV.setTag(R.id.clientformemberprofile,pClient);
+            profileImageIV.setTag(R.id.typeofclientformemberprofile,clientype);
+            profileImageIV.setOnClickListener((ProfileActivity)getActivity());
+
         }
 
         @Override

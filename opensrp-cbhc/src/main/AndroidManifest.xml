@@ -52,6 +52,12 @@
             android:screenOrientation="portrait"
             android:theme="@style/AncAppTheme.NoActionBar" />
         <activity
+            android:name=".activity.MemberProfileActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize"
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait"
+            android:theme="@style/AncAppTheme.NoActionBar" />
+        <activity
             android:name=".activity.PopulationCharacteristicsActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"
             android:launchMode="singleTask"

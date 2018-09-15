@@ -203,8 +203,11 @@ public abstract class BaseRegisterFragment extends RecyclerViewFragment implemen
         super.setupViews(view);
         clientsView.setVisibility(View.VISIBLE);
         clientsProgressView.setVisibility(View.INVISIBLE);
+        try {
+            presenter.processViewConfigurations();
+        }catch (Exception e){
 
-        presenter.processViewConfigurations();
+        }
         presenter.initializeQueries(getMainCondition());
         updateSearchView();
         setServiceModeViewDrawableRight(null);
@@ -275,7 +278,11 @@ public abstract class BaseRegisterFragment extends RecyclerViewFragment implemen
             presenter.initializeQueries(getMainCondition());
         }
         updateSearchView();
-        presenter.processViewConfigurations();
+        try {
+            presenter.processViewConfigurations();
+        }catch (Exception e){
+
+        }
         // updateLocationText();
         refreshSyncProgressSpinner();
         setTotalPatients();

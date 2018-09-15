@@ -25,13 +25,13 @@ import org.smartregister.cbhc.R;
 import org.smartregister.cbhc.adapter.ViewPagerAdapter;
 import org.smartregister.cbhc.application.AncApplication;
 import org.smartregister.cbhc.contract.ProfileContract;
+import org.smartregister.cbhc.fragment.MemberProfileContactsFragment;
 import org.smartregister.cbhc.fragment.ProfileContactsFragment;
 import org.smartregister.cbhc.fragment.ProfileOverviewFragment;
 import org.smartregister.cbhc.fragment.ProfileTasksFragment;
 import org.smartregister.cbhc.fragment.QuickCheckFragment;
 import org.smartregister.cbhc.helper.ImageRenderHelper;
 import org.smartregister.cbhc.presenter.ProfilePresenter;
-import org.smartregister.cbhc.task.FetchProfileDataTask;
 import org.smartregister.cbhc.util.Constants;
 import org.smartregister.cbhc.util.DBConstants;
 import org.smartregister.cbhc.util.JsonFormUtils;
@@ -39,7 +39,6 @@ import org.smartregister.cbhc.util.Utils;
 import org.smartregister.cbhc.view.CopyToClipboardDialog;
 import org.smartregister.commonregistry.CommonPersonObject;
 import org.smartregister.commonregistry.CommonPersonObjectClient;
-import org.smartregister.repository.DetailsRepository;
 import org.smartregister.util.DateUtil;
 import org.smartregister.util.PermissionUtils;
 
@@ -51,7 +50,7 @@ import static org.smartregister.util.Utils.getValue;
 /**
  * Created by ndegwamartin on 10/07/2018.
  */
-public class ProfileActivity extends BaseProfileActivity implements ProfileContract.View {
+public class MemberProfileActivity extends BaseProfileActivity implements ProfileContract.View {
 
     private TextView nameView;
     private TextView ageView;
@@ -60,8 +59,10 @@ public class ProfileActivity extends BaseProfileActivity implements ProfileContr
     private ImageView imageView;
     private ImageRenderHelper imageRenderHelper;
     private String womanPhoneNumber;
+    String typeofMember;
 
-    private static final String TAG = ProfileActivity.class.getCanonicalName();
+
+    private static final String TAG = MemberProfileActivity.class.getCanonicalName();
 
     public static final String DIALOG_TAG = "PROFILE_DIALOG_TAG";
     private CommonPersonObjectClient householdDetails;
@@ -75,11 +76,12 @@ public class ProfileActivity extends BaseProfileActivity implements ProfileContr
             if (serializable != null && serializable instanceof CommonPersonObjectClient) {
                 householdDetails = (CommonPersonObjectClient) serializable;
             }
+            typeofMember = extras.getString("type_of_member");
         }
         setUpViews();
 
         mProfilePresenter = new ProfilePresenter(this);
-        mProfilePresenter.setProfileActivity(this);
+//        mProfilePresenter.setProfileActivity(this);
 
         imageRenderHelper = new ImageRenderHelper(this);
 
@@ -87,6 +89,16 @@ public class ProfileActivity extends BaseProfileActivity implements ProfileContr
     }
 
     private void setUpViews() {
+        ImageView circleprofile = (ImageView)findViewById(R.id.imageview_profile);
+        if(typeofMember.equalsIgnoreCase("malechild")){
+            circleprofile.setImageDrawable(getResources().getDrawable(R.drawable.child_boy_infant));
+        }else if(typeofMember.equalsIgnoreCase("femalechild")){
+            circleprofile.setImageDrawable(getResources().getDrawable(R.drawable.child_girl_infant));
+        }else if(typeofMember.equalsIgnoreCase("woman")){
+            circleprofile.setImageDrawable(getResources().getDrawable(R.drawable.woman_cbhc_member_logo));
+        }else if(typeofMember.equalsIgnoreCase("member")){
+            circleprofile.setImageDrawable(getResources().getDrawable(R.drawable.man_cbhc_member_logo));
+        }
 
         TabLayout tabLayout = findViewById(R.id.tabs);
         ViewPager viewPager = findViewById(R.id.viewpager);
@@ -158,7 +170,6 @@ public class ProfileActivity extends BaseProfileActivity implements ProfileContr
                 } catch (Exception e) {
 
                 }
-                break;
             case R.id.edit_member:
                 CommonPersonObjectClient pclient  = (CommonPersonObjectClient) view.getTag();
                 String formMetadataformembers = JsonFormUtils.getMemberJsonEditFormString(this, pclient.getColumnmaps());
@@ -167,16 +178,6 @@ public class ProfileActivity extends BaseProfileActivity implements ProfileContr
                 } catch (Exception e) {
 
                 }
-                break;
-            case R.id.profile_image_iv:
-                CommonPersonObjectClient memberclient  = (CommonPersonObjectClient) view.getTag(R.id.clientformemberprofile);
-                String clienttype = (String)view.getTag(R.id.typeofclientformemberprofile);
-                Intent intent = new Intent(this, MemberProfileActivity.class);
-                intent.putExtra(Constants.INTENT_KEY.BASE_ENTITY_ID, memberclient.getCaseId());
-                intent.putExtra(ProfileOverviewFragment.EXTRA_HOUSEHOLD_DETAILS,memberclient);
-                intent.putExtra("type_of_member",clienttype);
-                startActivity(intent);
-                break;
         }
     }
 
@@ -185,10 +186,10 @@ public class ProfileActivity extends BaseProfileActivity implements ProfileContr
         ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
 
         ProfileOverviewFragment profileOverviewFragment = ProfileOverviewFragment.newInstance(this.getIntent().getExtras());
-        ProfileContactsFragment profileContactsFragment = ProfileContactsFragment.newInstance(this.getIntent().getExtras());
+        MemberProfileContactsFragment profileContactsFragment = MemberProfileContactsFragment.newInstance(this.getIntent().getExtras());
         ProfileTasksFragment profileTasksFragment = ProfileTasksFragment.newInstance(this.getIntent().getExtras());
 
-        adapter.addFragment(profileOverviewFragment, this.getString(R.string.members));
+//        adapter.addFragment(profileOverviewFragment, this.getString(R.string.members));
         adapter.addFragment(profileContactsFragment, this.getString(R.string.household_overview));
 //        adapter.addFragment(profileTasksFragment, this.getString(R.string.tasks));
 
@@ -221,10 +222,10 @@ public class ProfileActivity extends BaseProfileActivity implements ProfileContr
                             launchPhoneDialer(womanPhoneNumber);
                             break;
                         case "Start Contact":
-                            QuickCheckFragment.launchDialog(ProfileActivity.this, DIALOG_TAG);
+                            QuickCheckFragment.launchDialog(MemberProfileActivity.this, DIALOG_TAG);
                             break;
                         case "Close ANC Record":
-                            JsonFormUtils.launchANCCloseForm(ProfileActivity.this);
+                            JsonFormUtils.launchANCCloseForm(MemberProfileActivity.this);
                             break;
                         default:
                             break;
