@@ -2,6 +2,7 @@ package org.smartregister.cbhc.contract;
 
 import android.content.Intent;
 
+import org.smartregister.cbhc.activity.ProfileActivity;
 import org.smartregister.repository.AllSharedPreferences;
 
 import java.util.Map;
@@ -22,6 +23,8 @@ public interface ProfileContract {
         void processFormDetailsSave(Intent data, AllSharedPreferences allSharedPreferences);
 
         void refreshProfileTopSection(Map<String, String> client);
+
+        void setProfileActivity(ProfileActivity profileActivity);
     }
 
     interface View {

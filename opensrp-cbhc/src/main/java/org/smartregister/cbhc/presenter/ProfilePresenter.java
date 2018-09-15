@@ -7,19 +7,27 @@ import android.util.Pair;
 import org.apache.commons.lang3.tuple.Triple;
 import org.json.JSONObject;
 import org.smartregister.cbhc.R;
+import org.smartregister.cbhc.activity.ProfileActivity;
+import org.smartregister.cbhc.application.AncApplication;
 import org.smartregister.cbhc.contract.ProfileContract;
 import org.smartregister.cbhc.contract.RegisterContract;
+import org.smartregister.cbhc.helper.ECSyncHelper;
 import org.smartregister.cbhc.interactor.ProfileInteractor;
 import org.smartregister.cbhc.interactor.RegisterInteractor;
+import org.smartregister.cbhc.receiver.SyncStatusBroadcastReceiver;
+import org.smartregister.cbhc.sync.AncClientProcessorForJava;
 import org.smartregister.cbhc.util.Constants;
 import org.smartregister.cbhc.util.DBConstants;
 import org.smartregister.cbhc.util.JsonFormUtils;
 import org.smartregister.cbhc.util.Utils;
 import org.smartregister.clientandeventmodel.Client;
 import org.smartregister.clientandeventmodel.Event;
+import org.smartregister.domain.FetchStatus;
+import org.smartregister.domain.db.EventClient;
 import org.smartregister.repository.AllSharedPreferences;
 
 import java.lang.ref.WeakReference;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -32,6 +40,7 @@ public class ProfilePresenter implements ProfileContract.Presenter, RegisterCont
     private WeakReference<ProfileContract.View> mProfileView;
     private ProfileContract.Interactor mProfileInteractor;
     private RegisterContract.Interactor mRegisterInteractor;
+    ProfileActivity profileActivity;
 
     public ProfilePresenter(ProfileContract.View loginView) {
         mProfileView = new WeakReference<>(loginView);
@@ -122,8 +131,11 @@ public class ProfilePresenter implements ProfileContract.Presenter, RegisterCont
     @Override
     public void onRegistrationSaved(boolean isEdit) {
 
-        this.refreshProfileView(getProfileView().getIntentString(Constants.INTENT_KEY.BASE_ENTITY_ID));
 
+        ////////////////////////////////////////////////////////////////
+
+        this.refreshProfileView(getProfileView().getIntentString(Constants.INTENT_KEY.BASE_ENTITY_ID));
+        profileActivity.refreshProfileViews();
         getProfileView().hideProgressDialog();
 
         getProfileView().displayToast(isEdit ? R.string.registration_info_updated : R.string.new_registration_saved);
@@ -138,5 +150,10 @@ public class ProfilePresenter implements ProfileContract.Presenter, RegisterCont
         getProfileView().setProfileID(client.get(DBConstants.KEY.ANC_ID));
         getProfileView().setProfileImage(client.get(DBConstants.KEY.BASE_ENTITY_ID));
         getProfileView().setWomanPhoneNumber(client.get(DBConstants.KEY.PHONE_NUMBER));
+    }
+
+    @Override
+    public void setProfileActivity(ProfileActivity profileActivity) {
+        this.profileActivity = profileActivity;
     }
 }

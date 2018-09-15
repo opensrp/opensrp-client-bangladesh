@@ -1,6 +1,7 @@
 package org.smartregister.cbhc.interactor;
 
 import android.content.ContentValues;
+import android.content.Intent;
 import android.support.annotation.VisibleForTesting;
 import android.util.Log;
 import android.util.Pair;
@@ -14,6 +15,8 @@ import org.smartregister.cbhc.domain.UniqueId;
 import org.smartregister.cbhc.event.PatientRemovedEvent;
 import org.smartregister.cbhc.helper.ECSyncHelper;
 import org.smartregister.cbhc.repository.UniqueIdRepository;
+import org.smartregister.cbhc.service.intent.SyncIntentService;
+import org.smartregister.cbhc.sync.AncClientProcessorForJava;
 import org.smartregister.cbhc.util.AppExecutors;
 import org.smartregister.cbhc.util.Constants;
 import org.smartregister.cbhc.util.DBConstants;
@@ -22,11 +25,13 @@ import org.smartregister.cbhc.util.Utils;
 import org.smartregister.clientandeventmodel.Client;
 import org.smartregister.clientandeventmodel.Event;
 import org.smartregister.commonregistry.AllCommonsRepository;
+import org.smartregister.domain.db.EventClient;
 import org.smartregister.repository.AllSharedPreferences;
 import org.smartregister.repository.BaseRepository;
 import org.smartregister.sync.ClientProcessorForJava;
 
 import java.util.Date;
+import java.util.List;
 
 /**
  * Created by keyman 27/06/2018.
@@ -237,6 +242,14 @@ public class RegisterInteractor implements RegisterContract.Interactor {
             Date lastSyncDate = new Date(lastSyncTimeStamp);
             getClientProcessorForJava().processClient(getSyncHelper().getEvents(lastSyncDate, BaseRepository.TYPE_Unsynced));
             getAllSharedPreferences().saveLastUpdatedAtDate(lastSyncDate.getTime());
+
+            /////////////////////////try this out////////////////
+//            ECSyncHelper ecUpdater = ECSyncHelper.getInstance(AncApplication.getInstance().getApplicationContext());
+//            List<EventClient> events = ecUpdater.allEventClients(lastSyncTimeStamp-1, lastSyncTimeStamp);
+//            AncClientProcessorForJava.getInstance(AncApplication.getInstance().getApplicationContext()).processClient(events);
+
+            ////////////////////////////////////////////////////////////////
+
         } catch (Exception e) {
             Log.e(TAG, Log.getStackTraceString(e));
         }

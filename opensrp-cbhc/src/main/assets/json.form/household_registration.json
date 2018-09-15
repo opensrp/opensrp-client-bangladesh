@@ -294,6 +294,14 @@
           "খােলা জায়গা",
           "ঝোপ জংগল"
         ],
+        "openmrs_choice_ids": {
+          "স্যানিটারী": "Sanitary",
+          "পাকা": "Construction",
+          "কাচা": "UnderConstruction",
+          "খােলা জায়গা": "OpenArea",
+          "ঝোপ জংগল" : "Bush"
+
+        },
         "v_required": {
           "value": "true",
           "err": "Please answer the question"

@@ -23,6 +23,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.joda.time.DateTime;
 import org.smartregister.cbhc.R;
 import org.smartregister.cbhc.adapter.ViewPagerAdapter;
+import org.smartregister.cbhc.application.AncApplication;
 import org.smartregister.cbhc.contract.ProfileContract;
 import org.smartregister.cbhc.fragment.ProfileContactsFragment;
 import org.smartregister.cbhc.fragment.ProfileOverviewFragment;
@@ -32,10 +33,13 @@ import org.smartregister.cbhc.helper.ImageRenderHelper;
 import org.smartregister.cbhc.presenter.ProfilePresenter;
 import org.smartregister.cbhc.task.FetchProfileDataTask;
 import org.smartregister.cbhc.util.Constants;
+import org.smartregister.cbhc.util.DBConstants;
 import org.smartregister.cbhc.util.JsonFormUtils;
 import org.smartregister.cbhc.util.Utils;
 import org.smartregister.cbhc.view.CopyToClipboardDialog;
+import org.smartregister.commonregistry.CommonPersonObject;
 import org.smartregister.commonregistry.CommonPersonObjectClient;
+import org.smartregister.repository.DetailsRepository;
 import org.smartregister.util.DateUtil;
 import org.smartregister.util.PermissionUtils;
 
@@ -75,6 +79,7 @@ public class ProfileActivity extends BaseProfileActivity implements ProfileContr
         setUpViews();
 
         mProfilePresenter = new ProfilePresenter(this);
+        mProfilePresenter.setProfileActivity(this);
 
         imageRenderHelper = new ImageRenderHelper(this);
 
@@ -114,8 +119,37 @@ public class ProfileActivity extends BaseProfileActivity implements ProfileContr
         gestationAgeView.setVisibility(View.GONE);
     }
 
+    public void refreshProfileViews(){
+        householdDetails = CommonPersonObjectToClient(AncApplication.getInstance().getContext().commonrepository(DBConstants.HOUSEHOLD_TABLE_NAME).findByBaseEntityId(householdDetails.entityId()));
+        setProfileName(getValue(householdDetails.getColumnmaps(),"first_name",true));
+        String dobString = getValue(householdDetails.getColumnmaps(),"dob",true);
+        String durationString = "";
+        if (StringUtils.isNotBlank(dobString)) {
+            try {
+                DateTime birthDateTime = new DateTime(dobString);
+
+                String duration = DateUtil.getDuration(birthDateTime);
+                if (duration != null) {
+                    durationString = duration;
+                }
+            } catch (Exception e) {
+                Log.e(getClass().getName(), e.toString(), e);
+            }
+        }
+        setProfileAge(durationString);
+        setProfileID(getValue(householdDetails.getColumnmaps(),"Patient_Identifier",true));
+        gestationAgeView.setVisibility(View.GONE);
+    }
+
+    private CommonPersonObjectClient CommonPersonObjectToClient(CommonPersonObject commonPersonObject) {
+        CommonPersonObjectClient commonPersonObjectClient = new CommonPersonObjectClient(commonPersonObject.getCaseId(),commonPersonObject.getDetails(),DBConstants.HOUSEHOLD_TABLE_NAME);
+        commonPersonObjectClient.setColumnmaps(commonPersonObject.getColumnmaps());
+        return commonPersonObjectClient;
+    }
+
     @Override
     public void onClick(View view) {
+        householdDetails.getColumnmaps().putAll(AncApplication.getInstance().getContext().detailsRepository().getAllDetailsForClient(householdDetails.entityId()));
         String formMetadata = JsonFormUtils.getHouseholdJsonEditFormString(this,householdDetails.getColumnmaps());
         try {
             JsonFormUtils.startFormForEdit(this, JsonFormUtils.REQUEST_CODE_GET_JSON, formMetadata);
