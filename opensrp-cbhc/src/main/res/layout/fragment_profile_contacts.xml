@@ -7,7 +7,9 @@
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:context=".activity.HomeRegisterActivity"
     tools:showIn="@layout/activity_profile">
-
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
     <LinearLayout
         android:id="@+id/profile_overview_details_holder"
         android:layout_width="wrap_content"
@@ -15,7 +17,8 @@
         android:gravity="center"
         android:orientation="vertical">
 
-
     </LinearLayout>
+    </ScrollView>
+
 
 </android.support.constraint.ConstraintLayout>

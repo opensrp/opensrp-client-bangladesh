@@ -64,6 +64,74 @@
         "uploadButtonText": "Take a photo of the member"
       },
       {
+        "key": "member_unique_ID",
+        "openmrs_entity_parent": "",
+        "openmrs_entity": "person_attribute",
+        "openmrs_entity_id": "idtype",
+        "openmrs_data_type": "text",
+        "type": "spinner",
+        "hint": "কোন আইডি কার্ড আছে?",
+        "values": [
+          "NID",
+          "BRID",
+          "None"
+        ]
+      },
+      {
+        "key": "member_NID",
+        "openmrs_entity_parent": "",
+        "openmrs_entity": "person_attribute",
+        "openmrs_entity_id": "nationalId",
+        "openmrs_data_type": "text",
+        "type": "edit_text",
+        "hint": "NID টাইপ করুন",
+        "v_numeric": {
+          "value": "true",
+          "err": "Enter a valid NID No."
+        },
+        "v_regex": {
+          "value": "^(?=[0-9]*$)(?:.{10}|.{13}|.{17})$",
+          "err": "Number must be a total of 10,13 or 17 digits in length"
+        },
+        "v_required": {
+          "value": true,
+          "err": "Please Type NID"
+        },
+        "relevance": {
+          "step1:member_unique_ID": {
+            "type": "string",
+            "ex": "equalTo(., \"NID\")"
+          }
+        }
+      },
+      {
+        "key": "member_BRID",
+        "openmrs_entity_parent": "",
+        "openmrs_entity": "person_attribute",
+        "openmrs_entity_id": "nationalId",
+        "openmrs_data_type": "text",
+        "type": "edit_text",
+        "hint": "BRID টাইপ করুন",
+        "v_numeric": {
+          "value": "true",
+          "err": "Enter a valid BRID"
+        },
+        "v_regex": {
+          "value": "^(?=[0-9]*$)(?:.{17})$",
+          "err": "Number must be a total of 17 digits in length"
+        },
+        "v_required": {
+          "value": true,
+          "err": "Please Type BRID"
+        },
+        "relevance": {
+          "step1:member_unique_ID": {
+            "type": "string",
+            "ex": "equalTo(., \"BRID\")"
+          }
+        }
+      },
+      {
         "key": "member_Reg_Date",
         "openmrs_entity_parent": "",
         "openmrs_entity": "",
@@ -113,6 +181,78 @@
         "v_regex": {
           "value": "[A-Za-z\\s\.\-]*",
           "err": "Please Enter a Valid Name"
+        }
+      },
+      {
+        "key": "Mother_Guardian_First_Name_english",
+        "openmrs_entity_parent": "",
+        "openmrs_entity": "",
+        "openmrs_entity_id": "",
+        "type": "edit_text",
+        "hint": "মাতার নাম (ইংরেজীতে)",
+        "edit_type": "name",
+        "look_up": "true",
+        "v_required": {
+          "value": "true",
+          "err": "Please enter the mother/guardian's first name"
+        },
+        "v_regex": {
+          "value": "[A-Za-z\\s\.\-]*",
+          "err": "Please enter a valid name"
+        }
+      },
+      {
+        "key": "Mother_Guardian_First_Name_bengali",
+        "openmrs_entity_parent": "",
+        "openmrs_entity": "",
+        "openmrs_entity_id": "",
+        "type": "edit_text",
+        "hint": "মাতার নাম (বাংলায়)",
+        "edit_type": "name",
+        "look_up": "true",
+        "v_required": {
+          "value": "true",
+          "err": "Please enter the mother/guardian's first name"
+        },
+        "v_regex": {
+          "value": "[A-Za-z\\s\.\-]*",
+          "err": "Please enter a valid name"
+        }
+      },
+      {
+        "key": "Father_Guardian_First_Name_english",
+        "openmrs_entity_parent": "",
+        "openmrs_entity": "",
+        "openmrs_entity_id": "",
+        "type": "edit_text",
+        "hint": "পিতার নাম (ইংরেজীতে)",
+        "edit_type": "name",
+        "look_up": "true",
+        "v_required": {
+          "value": "true",
+          "err": "Please enter the mother/guardian's first name"
+        },
+        "v_regex": {
+          "value": "[A-Za-z\\s\.\-]*",
+          "err": "Please enter a valid name"
+        }
+      },
+      {
+        "key": "Father_Guardian_First_Name_bengali",
+        "openmrs_entity_parent": "",
+        "openmrs_entity": "",
+        "openmrs_entity_id": "",
+        "type": "edit_text",
+        "hint": "পিতার নাম (বাংলায়)",
+        "edit_type": "name",
+        "look_up": "true",
+        "v_required": {
+          "value": "true",
+          "err": "Please enter the mother/guardian's first name"
+        },
+        "v_regex": {
+          "value": "[A-Za-z\\s\.\-]*",
+          "err": "Please enter a valid name"
         }
       },
       {
@@ -224,41 +364,6 @@
         ]
       },
       {
-        "key": "religion",
-        "openmrs_entity_parent": "",
-        "openmrs_entity": "",
-        "openmrs_entity_id": "",
-        "openmrs_data_type": "text",
-        "type": "spinner",
-        "hint": "ধর্ম",
-        "values": [
-          "মুসলিম",
-          "হিন্দু",
-          "বৌদ্ধ",
-          "খ্রিস্টান",
-          "অন্যান্য"
-        ]
-      },
-      {
-        "key": "blood_group",
-        "openmrs_entity_parent": "",
-        "openmrs_entity": "",
-        "openmrs_entity_id": "",
-        "openmrs_data_type": "text",
-        "type": "spinner",
-        "hint": "রক্তের গ্রুপ",
-        "values": [
-          "A+",
-          "A-",
-          "B+",
-          "B-",
-          "O+",
-          "O-",
-          "AB+",
-          "AB-"
-        ]
-      },
-      {
         "key": "marital_status",
         "openmrs_entity_parent": "",
         "openmrs_entity": "",
@@ -273,6 +378,157 @@
           "অবিবাহিত",
           "বিধবা",
           "বিপত্নীক"
+        ]
+      },
+      {
+        "key": "spouseName_english",
+        "openmrs_entity_parent": "",
+        "openmrs_entity": "person_attribute",
+        "openmrs_entity_id": "spouseName",
+        "openmrs_data_type": "text",
+        "type": "edit_text",
+        "hint": "স্বামী/স্ত্রীর নাম (ইংরেজীতে)",
+        "v_required": {
+          "value": true,
+          "err": "Please Type Husband Name."
+        },
+        "v_regex": {
+          "value": "[A-Za-z\\s\.\-]*",
+          "err": "Please Enter a Valid Name"
+        },
+        "relevance": {
+          "step1:maritial_status": {
+            "type": "string",
+            "ex": "equalTo(., \"বিবাহিত\")"
+          }
+        }
+      },
+      {
+        "key": "spouseName_bengali",
+        "openmrs_entity_parent": "",
+        "openmrs_entity": "person_attribute",
+        "openmrs_entity_id": "spouseName",
+        "openmrs_data_type": "text",
+        "type": "edit_text",
+        "hint": "স্বামী/স্ত্রীর নাম (বাংলায়)",
+        "v_required": {
+          "value": true,
+          "err": "Please Type Husband Name."
+        },
+        "v_regex": {
+          "value": "[A-Za-z\\s\.\-]*",
+          "err": "Please Enter a Valid Name"
+        },
+        "relevance": {
+          "step1:maritial_status": {
+            "type": "string",
+            "ex": "equalTo(., \"বিবাহিত\")"
+          }
+        }
+      },
+      {
+        "key": "contact_phone_number",
+        "openmrs_entity_parent": "",
+        "openmrs_entity": "person_attribute",
+        "openmrs_entity_id": "phoneNumber",
+        "openmrs_data_type": "text",
+        "type": "edit_text",
+        "hint": "মোবাইল নম্বর (ইংরেজীতে)",
+        "v_required": {
+          "value": true,
+          "err": "Enter 11 digits Mobile Number."
+        },
+        "v_numeric": {
+          "value": "true",
+          "err": "Number must begin with 095, 096, or 097 and must be a total of 11 digits in length"
+        },
+        "v_regex": {
+          "value": "(01[5-9][0-9]{8})|\s*",
+          "err": "Number must begin with 015, 016,017,018 or 019 and must be a total of 11 digits in length"
+        },
+        "v_max_length":{
+          "value" : "11",
+          "err" : "Please Enter 11 digit Mobile number"
+        },
+        "v_min_length":{
+          "value" : "11",
+          "err" : "Please Enter 11 digit Mobile number"
+        }
+      },
+      {
+        "key": "birth_place",
+        "openmrs_entity_parent": "",
+        "openmrs_entity": "",
+        "openmrs_entity_id": "",
+        "openmrs_data_type": "",
+        "type": "edit_text",
+        "hint": "জন্মস্থান (জেলা)"
+      },
+      {
+        "key": "disability",
+        "openmrs_entity_parent": "",
+        "openmrs_entity": "",
+        "openmrs_entity_id": "",
+        "openmrs_data_type": "text",
+        "type": "spinner",
+        "hint": "প্রতিবন্ধী",
+        "values": [
+          "হ্যাঁ",
+          "না"
+        ]
+      },
+      {
+        "key": "disability_type",
+        "openmrs_entity_parent": "",
+        "openmrs_entity": "",
+        "openmrs_entity_id": "",
+        "openmrs_data_type": "text",
+        "type": "spinner",
+        "hint": "প্রতিবন্ধিতা ধরন",
+        "values": [
+          "অটিজম",
+          "শারীরিক প্রতিবন্ধিতা",
+          "দীর্ঘস্থায়ী মানসিক অসুস্থতাজানিত প্রতিবন্ধিতা",
+          "দৃষ্টিপ্রতিবন্ধিতা",
+          "বাকপ্রতিবন্ধিতা",
+          "বুদ্ধি প্রতিবন্ধিতা",
+          "শ্রবণ প্রতিবন্ধিতা",
+          "শ্রবণদৃষ্টি প্রতিবন্ধিতা",
+          "সেরিব্রালপালসি",
+          "বহুমাত্রিক প্রতিবন্ধিতা",
+          "ডাউন সিনড্রম",
+          "অন্যান্য"
+        ],
+        "relevance": {
+          "step1:disability": {
+            "type": "string",
+            "ex": "equalTo(., \"হ্যাঁ\")"
+          }
+        }
+      },
+      {
+        "key": "ethnicity",
+        "openmrs_entity_parent": "",
+        "openmrs_entity": "",
+        "openmrs_entity_id": "",
+        "openmrs_data_type": "text",
+        "type": "spinner",
+        "hint": "জাতিসত্তা",
+        "values": [
+          "বাঙ্গালী",
+          "চাকমা",
+          "মারমা",
+          "ত্রিপুরা",
+          "সাঁওতাল",
+          "গারো",
+          "মণিপুরী",
+          "ওঁরাও",
+          "তঞ্চ্যঙ্গা",
+          "বর্ম্মন",
+          "খাসিয়া বা খাসি",
+          "ম্রো",
+          "মুন্ডা",
+          "অন্যান্য"
         ]
       },
       {
@@ -394,6 +650,41 @@
         ]
       },
       {
+        "key": "religion",
+        "openmrs_entity_parent": "",
+        "openmrs_entity": "",
+        "openmrs_entity_id": "",
+        "openmrs_data_type": "text",
+        "type": "spinner",
+        "hint": "ধর্ম",
+        "values": [
+          "মুসলিম",
+          "হিন্দু",
+          "বৌদ্ধ",
+          "খ্রিস্টান",
+          "অন্যান্য"
+        ]
+      },
+      {
+        "key": "blood_group",
+        "openmrs_entity_parent": "",
+        "openmrs_entity": "",
+        "openmrs_entity_id": "",
+        "openmrs_data_type": "text",
+        "type": "spinner",
+        "hint": "রক্তের গ্রুপ",
+        "values": [
+          "A+",
+          "A-",
+          "B+",
+          "B-",
+          "O+",
+          "O-",
+          "AB+",
+          "AB-"
+        ]
+      },
+      {
         "key": "illness_information",
         "openmrs_entity_parent": "",
         "openmrs_entity": "",
@@ -429,125 +720,15 @@
         ]
       },
       {
-        "key": "member_unique_ID",
+        "key": "comments",
         "openmrs_entity_parent": "",
-        "openmrs_entity": "person_attribute",
-        "openmrs_entity_id": "idtype",
-        "openmrs_data_type": "text",
-        "type": "spinner",
-        "hint": "কোন আইডি কার্ড আছে?",
-        "values": [
-          "NID",
-          "BRID",
-          "None"
-        ]
-      },
-      {
-        "key": "member_NID",
-        "openmrs_entity_parent": "",
-        "openmrs_entity": "person_attribute",
-        "openmrs_entity_id": "nationalId",
-        "openmrs_data_type": "text",
+        "openmrs_entity": "",
+        "openmrs_entity_id": "",
+        "openmrs_data_type": "",
         "type": "edit_text",
-        "hint": "NID টাইপ করুন",
-        "v_numeric": {
-          "value": "true",
-          "err": "Enter a valid NID No."
-        },
-        "v_regex": {
-          "value": "^(?=[0-9]*$)(?:.{10}|.{13}|.{17})$",
-          "err": "Number must be a total of 10,13 or 17 digits in length"
-        },
-        "v_required": {
-          "value": true,
-          "err": "Please Type NID"
-        },
-        "relevance": {
-          "step1:member_unique_ID": {
-            "type": "string",
-            "ex": "equalTo(., \"NID\")"
-          }
-        }
-      },
-      {
-        "key": "member_BRID",
-        "openmrs_entity_parent": "",
-        "openmrs_entity": "person_attribute",
-        "openmrs_entity_id": "nationalId",
-        "openmrs_data_type": "text",
-        "type": "edit_text",
-        "hint": "BRID টাইপ করুন",
-        "v_numeric": {
-          "value": "true",
-          "err": "Enter a valid BRID"
-        },
-        "v_regex": {
-          "value": "^(?=[0-9]*$)(?:.{17})$",
-          "err": "Number must be a total of 17 digits in length"
-        },
-        "v_required": {
-          "value": true,
-          "err": "Please Type BRID"
-        },
-        "relevance": {
-          "step1:member_unique_ID": {
-            "type": "string",
-            "ex": "equalTo(., \"BRID\")"
-          }
-        }
-      },
-    {
-        "key": "contact_phone_number",
-        "openmrs_entity_parent": "",
-        "openmrs_entity": "person_attribute",
-        "openmrs_entity_id": "phoneNumber",
-        "openmrs_data_type": "text",
-        "type": "edit_text",
-        "hint": "মোবাইল নম্বর (ইংরেজীতে)",
-        "v_required": {
-          "value": true,
-          "err": "Enter 11 digits Mobile Number."
-        },
-        "v_numeric": {
-          "value": "true",
-          "err": "Number must begin with 095, 096, or 097 and must be a total of 11 digits in length"
-        },
-        "v_regex": {
-          "value": "(01[5-9][0-9]{8})|\s*",
-          "err": "Number must begin with 015, 016,017,018 or 019 and must be a total of 11 digits in length"
-        },
-        "v_max_length":{
-          "value" : "11",
-          "err" : "Please Enter 11 digit Mobile number"
-        },
-        "v_min_length":{
-          "value" : "11",
-          "err" : "Please Enter 11 digit Mobile number"
-        }
-      },
-      {
-        "key": "husband_name",
-        "openmrs_entity_parent": "",
-        "openmrs_entity": "person_attribute",
-        "openmrs_entity_id": "spouseName",
-        "openmrs_data_type": "text",
-        "type": "edit_text",
-        "hint": "স্বামীর নাম",
-        "v_required": {
-          "value": true,
-          "err": "Please Type Husband Name."
-        },
-        "v_regex": {
-          "value": "[A-Za-z\\s\.\-]*",
-          "err": "Please Enter a Valid Name"
-        },
-        "relevance": {
-          "step1:maritial_status": {
-            "type": "string",
-            "ex": "equalTo(., \"বিবাহিত\")"
-          }
-        }
+        "hint": "মন্তব্য"
       }
+
 
 
         ]

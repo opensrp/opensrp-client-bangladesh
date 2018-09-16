@@ -36,6 +36,7 @@ import org.smartregister.cbhc.domain.AttentionFlag;
 import org.smartregister.cbhc.event.SyncEvent;
 import org.smartregister.cbhc.provider.RegisterProvider;
 import org.smartregister.cbhc.receiver.SyncStatusBroadcastReceiver;
+import org.smartregister.cbhc.service.intent.SyncIntentService;
 import org.smartregister.cbhc.util.Constants;
 import org.smartregister.cbhc.util.NetworkUtils;
 import org.smartregister.cbhc.util.Utils;
@@ -233,6 +234,8 @@ public abstract class BaseRegisterFragment extends RecyclerViewFragment implemen
                 @Override
                 public void onClick(View view) {
                     //Todo implement sync
+                    Intent intent = new Intent(getActivity().getApplicationContext(), SyncIntentService.class);
+                    getActivity().getApplicationContext().startService(intent);
                 }
             });
         }

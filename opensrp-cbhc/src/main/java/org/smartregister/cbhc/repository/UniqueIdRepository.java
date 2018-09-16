@@ -135,7 +135,7 @@ public class UniqueIdRepository extends BaseRepository {
         try {
             String id;
             String userName = AncApplication.getInstance().getContext().allSharedPreferences().fetchRegisteredANM();
-            if (!openmrsId.contains("-")) {
+            if (openmrsId.contains("-")) {
                 id = formatId(openmrsId);
             } else {
                 id = openmrsId;

@@ -182,6 +182,7 @@
                     android:adjustViewBounds="false"
                     android:cropToPadding="false"
                     android:scaleType="fitCenter"
+                    android:visibility="gone"
                     app:srcCompat="@drawable/dghs_logo" />
 
                 <ImageView

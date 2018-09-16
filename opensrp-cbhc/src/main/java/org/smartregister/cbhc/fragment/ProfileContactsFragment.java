@@ -16,6 +16,7 @@ import org.smartregister.cbhc.util.DBConstants;
 import org.smartregister.cbhc.util.JsonFormUtils;
 import org.smartregister.commonregistry.CommonPersonObjectClient;
 import org.smartregister.util.FormUtils;
+import org.smartregister.view.customcontrols.CustomFontTextView;
 
 import java.io.Serializable;
 
@@ -76,8 +77,10 @@ public class ProfileContactsFragment extends BaseProfileFragment {
                 if(field.getJSONObject(i).has("hint")) {
                     LinearLayout LayoutForDetailRow = new LinearLayout(getActivity());
                     LayoutForDetailRow.setOrientation(LinearLayout.HORIZONTAL);
-                    TextView textLabel = new TextView(getActivity());
-                    TextView textValue = new TextView(getActivity());
+                    CustomFontTextView textLabel = new CustomFontTextView(getActivity());
+                    textLabel.setTextSize(15);
+                    CustomFontTextView textValue = new CustomFontTextView(getActivity());
+                    textValue.setTextSize(15);
 
                     textLabel.setText(field.getJSONObject(i).getString("hint"));
                     textLabel.setSingleLine(false);

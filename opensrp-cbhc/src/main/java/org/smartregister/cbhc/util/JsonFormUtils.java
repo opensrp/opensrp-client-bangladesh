@@ -345,9 +345,18 @@ public class JsonFormUtils extends org.smartregister.util.JsonFormUtils {
 
             JsonFormUtils.tagSyncMetadata(allSharedPreferences, baseEvent);// tag docs
 
-            String identifier = baseClient.getIdentifier("Patient_Identifier");
-            //mark zeir id as used
-            AncApplication.getInstance().getUniqueIdRepository().close(identifier);
+
+            try {
+                for (int i = 0; i < fields.length(); i++) {
+                    String key = fields.getJSONObject(i).getString("key");
+                    if(key.equalsIgnoreCase("Patient_Identifier")){
+                        String identifier = fields.getJSONObject(i).getString("value");
+                        AncApplication.getInstance().getUniqueIdRepository().close(identifier);
+                    }
+                }
+            }catch (Exception e){
+
+            }
 
 
             return Pair.create(baseClient, baseEvent);
