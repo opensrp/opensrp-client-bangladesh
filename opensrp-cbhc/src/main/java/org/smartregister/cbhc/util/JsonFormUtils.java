@@ -622,7 +622,7 @@ public class JsonFormUtils extends org.smartregister.util.JsonFormUtils {
                     processPopulatableFieldsForHouseholds(womanClient, jsonObject);
 
                 }
-                Log.v("test language",womanClient.get("type_of_nearest_clinic"));
+//                Log.v("test language",womanClient.get("type_of_nearest_clinic"));
 
                 return form.toString();
             }

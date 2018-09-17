@@ -283,8 +283,9 @@
       {
         "key": "latrine_structure",
         "openmrs_entity_parent": "",
-        "openmrs_entity": "",
-        "openmrs_entity_id": "",
+        "openmrs_entity": "concept",
+        "openmrs_entity_id": "bd437fcc-f42f-40a6-8baf-b3d3af725ad4",
+        "openmrs_data_type": "select one",
         "type": "spinner",
         "hint": "এই খানার সদস্যগন কি ধরনের ল্যাট্রিন ব্যবহার করেন?",
         "values": [

@@ -102,6 +102,8 @@ public class ProfileOverviewFragment extends BaseProfileFragment {
 
         String tableName = DBConstants.WOMAN_TABLE_NAME;
         String childtableName = DBConstants.CHILD_TABLE_NAME;
+        String membertablename = DBConstants.MEMBER_TABLE_NAME;
+
         SmartRegisterQueryBuilder queryBUilder = new SmartRegisterQueryBuilder();
         queryBUilder.SelectInitiateMainTable(tableName, new String[]{
                 tableName + ".relationalid",
@@ -109,7 +111,15 @@ public class ProfileOverviewFragment extends BaseProfileFragment {
                 tableName + ".first_name",
                 tableName + ".dob"
         });
-        String currentquery = queryBUilder.getSelectquery().concat(" Union all ");
+        String currentquery = queryBUilder.mainCondition("relational_id = '"+mother_id+"'").concat(" Union all ");
+        SmartRegisterQueryBuilder queryBUilder2 = new SmartRegisterQueryBuilder();
+        queryBUilder2.SelectInitiateMainTable(membertablename, new String[]{
+                membertablename + ".relationalid",
+                membertablename + ".details",
+                membertablename + ".first_name",
+                membertablename + ".dob"
+        });
+        currentquery = currentquery.concat(queryBUilder2.mainCondition("relational_id = '"+mother_id+"'").concat(" Union all "));
         queryBUilder.SelectInitiateMainTable(childtableName, new String[]{
                 childtableName + ".relationalid",
                 childtableName + ".details",
@@ -156,7 +166,7 @@ public class ProfileOverviewFragment extends BaseProfileFragment {
             String dobString = getValue(personinlist.getColumnmaps(),"dob",true);
             int age = 0;
             try {
-             age =   getAge((new DateTime(dobString).toString(String.valueOf(JsonFormUtils.DATE_FORMAT))));
+             age =   getAge((new DateTime(dobString)));
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -219,7 +229,7 @@ public class ProfileOverviewFragment extends BaseProfileFragment {
                         //set profile image by passing the client id.If the image doesn't exist in the image org.smartregister.cbhc.repository then download and save locally
                         profileImageIV.setTag(org.smartregister.R.id.entity_id, pClient.entityId());
 //                        DrishtiApplication.getCachedImageLoaderInstance().getImageByClientId(pClient.entityId(), OpenSRPImageLoader.getStaticImageListener((ImageView) profileImageIV, R.drawable.man_cbhc_member_logo, R.drawable.man_cbhc_member_logo));
-                        profileImageIV.setImageDrawable(getResources().getDrawable(R.drawable.woman_cbhc_member_logo));
+                        profileImageIV.setImageDrawable(getResources().getDrawable(R.drawable.man_cbhc_member_logo));
 
                         clientype = "member";
                     }
@@ -355,7 +365,7 @@ public class ProfileOverviewFragment extends BaseProfileFragment {
 
     }
 
-    public static int getAge(String dateOfBirth) {
+    public static int getAge(DateTime dateOfBirth) {
 
         Calendar today = Calendar.getInstance();
         Calendar birthDate = Calendar.getInstance();
@@ -365,8 +375,8 @@ public class ProfileOverviewFragment extends BaseProfileFragment {
         SimpleDateFormat dateFormat = JsonFormUtils.DATE_FORMAT;
         Date convertedDate = new Date();
         try {
-            convertedDate = dateFormat.parse(dateOfBirth);
-        } catch (ParseException e) {
+            convertedDate = dateOfBirth.toDate();
+        } catch (Exception e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
         }

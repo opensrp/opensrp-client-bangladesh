@@ -509,9 +509,9 @@
       {
         "key": "ethnicity",
         "openmrs_entity_parent": "",
-        "openmrs_entity": "",
-        "openmrs_entity_id": "",
-        "openmrs_data_type": "text",
+        "openmrs_entity": "person_attribute",
+        "openmrs_entity_id": "ethnicity",
+        "openmrs_data_type": "select one",
         "type": "spinner",
         "hint": "জাতিসত্তা",
         "values": [
@@ -529,7 +529,12 @@
           "ম্রো",
           "মুন্ডা",
           "অন্যান্য"
-        ]
+        ],
+        "openmrs_choice_ids": {
+          "বাঙ্গালী": "Bengali",
+          "ঝোপ জংগল" : "Bush"
+
+        }
       },
       {
         "key": "educational_qualification",
