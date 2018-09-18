@@ -1,6 +1,7 @@
 package org.smartregister.cbhc.fragment;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -70,38 +71,80 @@ public class ProfileContactsFragment extends BaseProfileFragment {
 
         View fragmentView = inflater.inflate(R.layout.fragment_profile_contacts, container, false);
         LinearLayout linearLayoutholder = (LinearLayout)fragmentView.findViewById(R.id.profile_overview_details_holder);
+        LinearLayout.LayoutParams mainparams =new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,ViewGroup.LayoutParams.WRAP_CONTENT);
+
         try {
             JSONObject form = FormUtils.getInstance(AncApplication.getInstance().getApplicationContext()).getFormJson(Constants.JSON_FORM.Household_REGISTER);
             JSONArray field = fields(form);
             for(int i = 0;i<field.length();i++){
+                if(field.getJSONObject(i).has("openmrs_entity")) {
+                    if(field.getJSONObject(i).getString("openmrs_entity").equalsIgnoreCase("person_attribute")){
+                        if(field.getJSONObject(i).has("hint")) {
+                            LinearLayout LayoutForDetailRow = new LinearLayout(getActivity());
+                            LayoutForDetailRow.setOrientation(LinearLayout.HORIZONTAL);
+                            CustomFontTextView textLabel = new CustomFontTextView(getActivity());
+                            textLabel.setTextSize(15);
+                            CustomFontTextView textValue = new CustomFontTextView(getActivity());
+                            textValue.setTextSize(15);
+                            textLabel.setText(field.getJSONObject(i).getString("hint"));
+                            textLabel.setSingleLine(false);
+                            textValue.setText(householdDetails.getColumnmaps().get(field.getJSONObject(i).getString(JsonFormUtils.OPENMRS_ENTITY_ID)));
+                            textValue.setSingleLine(false);
+                            LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+                            params.weight = 1;
+                            params.setMargins(5, 5, 5, 5);
+                            LayoutForDetailRow.addView(textLabel, params);
+                            LayoutForDetailRow.addView(textValue, params);
+                            linearLayoutholder.addView(LayoutForDetailRow, mainparams);
+                        }
+                    }else if(field.getJSONObject(i).getString("openmrs_entity").equalsIgnoreCase("person")){
+                        if(field.getJSONObject(i).has("hint")) {
+                            LinearLayout LayoutForDetailRow = new LinearLayout(getActivity());
+                            LayoutForDetailRow.setOrientation(LinearLayout.HORIZONTAL);
+                            CustomFontTextView textLabel = new CustomFontTextView(getActivity());
+                            textLabel.setTextSize(15);
+                            CustomFontTextView textValue = new CustomFontTextView(getActivity());
+                            textValue.setTextSize(15);
+                            textLabel.setText(field.getJSONObject(i).getString("hint"));
+                            textLabel.setSingleLine(false);
+                            textValue.setText(householdDetails.getColumnmaps().get(field.getJSONObject(i).getString(JsonFormUtils.OPENMRS_ENTITY_ID)));
+                            textValue.setSingleLine(false);
+                            LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+                            params.weight = 1;
+                            params.setMargins(5, 5, 5, 5);
+                            LayoutForDetailRow.addView(textLabel, params);
+                            LayoutForDetailRow.addView(textValue, params);
+                            linearLayoutholder.addView(LayoutForDetailRow, mainparams);
+                        }
+                    }
+                    }
                 if(field.getJSONObject(i).has("hint")) {
-                    LinearLayout LayoutForDetailRow = new LinearLayout(getActivity());
-                    LayoutForDetailRow.setOrientation(LinearLayout.HORIZONTAL);
-                    CustomFontTextView textLabel = new CustomFontTextView(getActivity());
-                    textLabel.setTextSize(15);
-                    CustomFontTextView textValue = new CustomFontTextView(getActivity());
-                    textValue.setTextSize(15);
+                    if(field.getJSONObject(i).has("hint")) {
 
-                    textLabel.setText(field.getJSONObject(i).getString("hint"));
-                    textLabel.setSingleLine(false);
-                    textValue.setText(householdDetails.getColumnmaps().get(field.getJSONObject(i).getString(JsonFormUtils.KEY)));
-                    textValue.setSingleLine(false);
-//                    textValue.setBackgroundColor(getResources().getColor(R.color.refer_close_red));
+                        LinearLayout LayoutForDetailRow = new LinearLayout(getActivity());
+                        LayoutForDetailRow.setOrientation(LinearLayout.HORIZONTAL);
+                        CustomFontTextView textLabel = new CustomFontTextView(getActivity());
+                        textLabel.setTextSize(15);
+                        CustomFontTextView textValue = new CustomFontTextView(getActivity());
+                        textValue.setTextSize(15);
+                        textLabel.setText(field.getJSONObject(i).getString("hint"));
+                        textLabel.setSingleLine(false);
+                        textValue.setText(householdDetails.getColumnmaps().get(field.getJSONObject(i).getString(JsonFormUtils.KEY)));
+                        textValue.setSingleLine(false);
+                        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+                        params.weight = 1;
+                        params.setMargins(5, 5, 5, 5);
+                        LayoutForDetailRow.addView(textLabel, params);
+                        LayoutForDetailRow.addView(textValue, params);
+                        linearLayoutholder.addView(LayoutForDetailRow, mainparams);
+                    }
 
-                    LinearLayout.LayoutParams params =new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,ViewGroup.LayoutParams.WRAP_CONTENT);
-                    params.weight = 1;
-                    params.setMargins(5,5,5,5);
-
-                    LayoutForDetailRow.addView(textLabel,params);
-                    LayoutForDetailRow.addView(textValue,params);
-
-                    linearLayoutholder.addView(LayoutForDetailRow);
                 }
 
             }
 
         }catch (Exception e){
-
+            Log.e("ereor",e.getMessage());
         }
         return fragmentView;
     }
