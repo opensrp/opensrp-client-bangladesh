@@ -275,6 +275,11 @@
           "সেমি পাকা",
           "পাকা"
         ],
+        "openmrs_choice_ids": {
+          "বাঙ্গালী": "Bengali",
+          "ঝোপ জংগল" : "Bush"
+
+        }
         "v_required": {
           "value": "true",
           "err": "Please answer the question"
@@ -326,6 +331,11 @@
           "পুকুর/ভোৰা",
           "অন্যান্য"
         ],
+        "openmrs_choice_ids": {
+          "বাঙ্গালী": "Bengali",
+          "ঝোপ জংগল" : "Bush"
+
+        },
         "v_required": {
           "value": "true",
           "err": "Please answer the question"
@@ -346,6 +356,11 @@
           "সঞ্চয় হয়",
           "অন্যান্য"
         ],
+        "openmrs_choice_ids": {
+          "বাঙ্গালী": "Bengali",
+          "ঝোপ জংগল" : "Bush"
+
+        },
         "v_required": {
           "value": "true",
           "err": "Please answer the question"
@@ -387,6 +402,11 @@
           "এনজিও",
           "অন্যান্য"
         ],
+        "openmrs_choice_ids": {
+          "বাঙ্গালী": "Bengali",
+          "ঝোপ জংগল" : "Bush"
+
+        },
         "v_required": {
           "value": "true",
           "err": "Please answer the question"
