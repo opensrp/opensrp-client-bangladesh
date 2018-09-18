@@ -216,7 +216,7 @@ public class RegisterInteractor implements RegisterContract.Interactor {
             if (isEditMode) {
                 // Unassign current OPENSRP ID
                 if (baseClient != null) {
-                    String newOpenSRPId = baseClient.getIdentifier(DBConstants.KEY.ANC_ID).replace("-", "");
+                    String newOpenSRPId = baseClient.getIdentifier(DBConstants.KEY.Patient_Identifier).replace("-", "");
                     String currentOpenSRPId = JsonFormUtils.getString(jsonString, JsonFormUtils.CURRENT_OPENSRP_ID).replace("-", "");
                     if (!newOpenSRPId.equals(currentOpenSRPId)) {
                         //OPENSRP ID was changed
@@ -240,7 +240,7 @@ public class RegisterInteractor implements RegisterContract.Interactor {
 
             long lastSyncTimeStamp = getAllSharedPreferences().fetchLastUpdatedAtDate(0);
             Date lastSyncDate = new Date(lastSyncTimeStamp);
-            AncClientProcessorForJava.getInstance(AncApplication.getInstance().getApplicationContext()).processClient(getSyncHelper().getEvents(lastSyncDate, BaseRepository.TYPE_Unsynced));
+            getClientProcessorForJava().processClient(getSyncHelper().getEvents(lastSyncDate, BaseRepository.TYPE_Unsynced));
             getAllSharedPreferences().saveLastUpdatedAtDate(lastSyncDate.getTime());
 
             /////////////////////////try this out////////////////

@@ -99,6 +99,22 @@ public class ProfilePresenter implements ProfileContract.Presenter, RegisterCont
                 Pair<Client, Event> values = JsonFormUtils.processRegistrationForm(allSharedPreferences, jsonString);
                 mRegisterInteractor.saveRegistration(values, jsonString, true, this);
 
+            }else if (form.getString(JsonFormUtils.ENCOUNTER_TYPE).equals(Constants.EventType.HouseholdREGISTRATION)) {
+                Pair<Client, Event> values = JsonFormUtils.processRegistrationForm(allSharedPreferences, jsonString);
+                mRegisterInteractor.saveRegistration(values, jsonString, true, this);
+
+            }else if (form.getString(JsonFormUtils.ENCOUNTER_TYPE).equals(Constants.EventType.MemberREGISTRATION)) {
+                Pair<Client, Event> values = JsonFormUtils.processRegistrationForm(allSharedPreferences, jsonString);
+                mRegisterInteractor.saveRegistration(values, jsonString, true, this);
+
+            }else if (form.getString(JsonFormUtils.ENCOUNTER_TYPE).equals(Constants.EventType.WomanMemberREGISTRATION)) {
+                Pair<Client, Event> values = JsonFormUtils.processRegistrationForm(allSharedPreferences, jsonString);
+                mRegisterInteractor.saveRegistration(values, jsonString, true, this);
+
+            }else if (form.getString(JsonFormUtils.ENCOUNTER_TYPE).equals(Constants.EventType.Child_REGISTRATION)) {
+                Pair<Client, Event> values = JsonFormUtils.processRegistrationForm(allSharedPreferences, jsonString);
+                mRegisterInteractor.saveRegistration(values, jsonString, true, this);
+
             }else if (form.getString(JsonFormUtils.ENCOUNTER_TYPE).equals(Constants.EventType.CLOSE)) {
 
                 mRegisterInteractor.removeWomanFromANCRegister(jsonString, allSharedPreferences.fetchRegisteredANM());

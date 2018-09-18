@@ -77,6 +77,7 @@ public class AncClientProcessorForJava extends ClientProcessorForJava {
                     }
 
                     Client client = eventClient.getClient();
+
                     //iterate through the events
                     if (client != null) {
                         processEvent(event, client, clientClassification);

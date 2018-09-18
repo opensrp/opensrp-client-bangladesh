@@ -75,7 +75,12 @@
           "NID",
           "BRID",
           "None"
-        ]
+        ],
+        "openmrs_choice_ids": {
+          "বাঙ্গালী": "Bengali",
+          "ঝোপ জংগল" : "Bush"
+
+        }
       },
       {
         "key": "member_NID",
@@ -191,7 +196,6 @@
         "type": "edit_text",
         "hint": "মাতার নাম (ইংরেজীতে)",
         "edit_type": "name",
-        "look_up": "true",
         "v_required": {
           "value": "true",
           "err": "Please enter the mother/guardian's first name"
@@ -209,7 +213,6 @@
         "type": "edit_text",
         "hint": "মাতার নাম (বাংলায়)",
         "edit_type": "name",
-        "look_up": "true",
         "v_required": {
           "value": "true",
           "err": "Please enter the mother/guardian's first name"
@@ -227,7 +230,6 @@
         "type": "edit_text",
         "hint": "পিতার নাম (ইংরেজীতে)",
         "edit_type": "name",
-        "look_up": "true",
         "v_required": {
           "value": "true",
           "err": "Please enter the mother/guardian's first name"
@@ -245,7 +247,6 @@
         "type": "edit_text",
         "hint": "পিতার নাম (বাংলায়)",
         "edit_type": "name",
-        "look_up": "true",
         "v_required": {
           "value": "true",
           "err": "Please enter the mother/guardian's first name"
@@ -266,7 +267,12 @@
         "values": [
           "YES",
           "NO"
-        ]
+        ],
+        "openmrs_choice_ids": {
+          "বাঙ্গালী": "Bengali",
+          "ঝোপ জংগল" : "Bush"
+
+        }
       },
       {
         "key": "member_birth_date",
@@ -323,7 +329,12 @@
           "পুরুষ",
           "মহিলা",
           "তৃতীয় লিঙ্গ"
-        ]
+        ],
+        "openmrs_choice_ids": {
+          "বাঙ্গালী": "Bengali",
+          "ঝোপ জংগল" : "Bush"
+
+        }
       },
       {
         "key": "relation_with_household_head",
@@ -361,7 +372,12 @@
           "জামাতা",
           "অন্যান্য আত্মীয়",
           "অন্যান্য অনাত্মীয়"
-        ]
+        ],
+        "openmrs_choice_ids": {
+          "বাঙ্গালী": "Bengali",
+          "ঝোপ জংগল" : "Bush"
+
+        }
       },
       {
         "key": "marital_status",
@@ -378,7 +394,12 @@
           "অবিবাহিত",
           "বিধবা",
           "বিপত্নীক"
-        ]
+        ],
+        "openmrs_choice_ids": {
+          "বাঙ্গালী": "Bengali",
+          "ঝোপ জংগল" : "Bush"
+
+        }
       },
       {
         "key": "spouseName_english",
@@ -475,7 +496,12 @@
         "values": [
           "হ্যাঁ",
           "না"
-        ]
+        ],
+        "openmrs_choice_ids": {
+          "বাঙ্গালী": "Bengali",
+          "ঝোপ জংগল" : "Bush"
+
+        }
       },
       {
         "key": "disability_type",
@@ -499,6 +525,11 @@
           "ডাউন সিনড্রম",
           "অন্যান্য"
         ],
+        "openmrs_choice_ids": {
+          "বাঙ্গালী": "Bengali",
+          "ঝোপ জংগল" : "Bush"
+
+        },
         "relevance": {
           "step1:disability": {
             "type": "string",
@@ -566,7 +597,12 @@
           "কারিগরি",
           "ধাত্রীবিদ্যা/নার্সিং",
           "অন্যান্য"
-        ]
+        ],
+        "openmrs_choice_ids": {
+          "বাঙ্গালী": "Bengali",
+          "ঝোপ জংগল" : "Bush"
+
+        }
       },
       {
         "key": "occupation",
@@ -652,7 +688,12 @@
           "গৃহকর্ম",
           "ছাত্র/ছাত্রী",
           "অন্যান্য"
-        ]
+        ],
+        "openmrs_choice_ids": {
+          "বাঙ্গালী": "Bengali",
+          "ঝোপ জংগল" : "Bush"
+
+        }
       },
       {
         "key": "religion",
@@ -668,7 +709,12 @@
           "বৌদ্ধ",
           "খ্রিস্টান",
           "অন্যান্য"
-        ]
+        ],
+        "openmrs_choice_ids": {
+          "বাঙ্গালী": "Bengali",
+          "ঝোপ জংগল" : "Bush"
+
+        }
       },
       {
         "key": "blood_group",
@@ -687,7 +733,12 @@
           "O-",
           "AB+",
           "AB-"
-        ]
+        ],
+        "openmrs_choice_ids": {
+          "বাঙ্গালী": "Bengali",
+          "ঝোপ জংগল" : "Bush"
+
+        }
       },
       {
         "key": "illness_information",
@@ -704,7 +755,12 @@
           "প্রতিবন্ধিতা",
           "PhycologicalDisease",
           "অন্যান্য"
-        ]
+        ],
+        "openmrs_choice_ids": {
+          "বাঙ্গালী": "Bengali",
+          "ঝোপ জংগল" : "Bush"
+
+        }
       },
       {
         "key": "risky_habits",
@@ -722,7 +778,12 @@
           "স্থুলকায়",
           "অতিরিক্ত লবন",
           "অন্যান্য"
-        ]
+        ],
+        "openmrs_choice_ids": {
+          "বাঙ্গালী": "Bengali",
+          "ঝোপ জংগল" : "Bush"
+
+        }
       },
       {
         "key": "comments",

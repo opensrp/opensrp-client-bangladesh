@@ -60,6 +60,8 @@ import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
 
+import static org.apache.commons.lang3.StringUtils.isBlank;
+
 /**
  * Created by keyman on 27/06/2018.
  */
@@ -171,7 +173,7 @@ public class JsonFormUtils extends org.smartregister.util.JsonFormUtils {
             JSONArray fields = registrationFormParams.getRight();
 
             String entityId = getString(jsonForm, ENTITY_ID);
-            if (StringUtils.isBlank(entityId)) {
+            if (isBlank(entityId)) {
                 entityId = generateRandomUUIDString();
             }
 
@@ -188,7 +190,9 @@ public class JsonFormUtils extends org.smartregister.util.JsonFormUtils {
             lastInteractedWith.put(Constants.KEY.VALUE, Calendar.getInstance().getTimeInMillis());
             fields.put(lastInteractedWith);
             Gender gender = null;
-            if(!encounterType.equalsIgnoreCase(Constants.EventType.MemberREGISTRATION)) {
+            if(!(encounterType.equalsIgnoreCase(Constants.EventType.MemberREGISTRATION)
+            ||encounterType.equalsIgnoreCase(Constants.EventType.Child_REGISTRATION)
+            ||encounterType.equalsIgnoreCase(Constants.EventType.WomanMemberREGISTRATION))) {
 
                 JSONObject dobUnknownObject = getFieldJSONObject(fields, DBConstants.KEY.DOB_UNKNOWN);
                 JSONArray options = getJSONArray(dobUnknownObject, Constants.JSON_FORM_KEY.OPTIONS);
@@ -253,6 +257,7 @@ public class JsonFormUtils extends org.smartregister.util.JsonFormUtils {
 
 
             }
+
 
             FormTag formTag = new FormTag();
             formTag.providerId = allSharedPreferences.fetchRegisteredANM();
@@ -340,8 +345,24 @@ public class JsonFormUtils extends org.smartregister.util.JsonFormUtils {
             }else if(encounterType.equalsIgnoreCase(Constants.EventType.WomanMemberREGISTRATION)){
                 entitytypeName = DBConstants.WOMAN_TABLE_NAME;
             }
+            String formSubmissionID = "";
+//            EventClientRepository eventClientRepository = AncApplication.getInstance().getEventClientRepository();
+//
+//            JSONObject evenjsonobject = eventClientRepository.getEventsByBaseEntityIdAndEventType(baseClient.getBaseEntityId(),encounterType);
+//            if(evenjsonobject == null){
+//                if(encounterType.contains("Update")){
+//                     evenjsonobject = eventClientRepository.getEventsByBaseEntityIdAndEventType(baseClient.getBaseEntityId(),encounterType.replace("Update",""));
+//                }
+//            }
+////
+//            if(evenjsonobject!= null) {
+//                formSubmissionID = evenjsonobject.getString("formSubmissionId");
+//            }
 
             Event baseEvent = org.smartregister.util.JsonFormUtils.createEvent(fields, metadata, formTag, entityId, encounterType, entitytypeName);
+            if(!isBlank(formSubmissionID)){
+               baseEvent.setFormSubmissionId(formSubmissionID);
+            }
 
             JsonFormUtils.tagSyncMetadata(allSharedPreferences, baseEvent);// tag docs
 
@@ -424,7 +445,7 @@ public class JsonFormUtils extends org.smartregister.util.JsonFormUtils {
     }
 
     public static void saveImage(String providerId, String entityId, String imageLocation) {
-        if (StringUtils.isBlank(imageLocation)) {
+        if (isBlank(imageLocation)) {
             return;
         }
 
@@ -440,7 +461,7 @@ public class JsonFormUtils extends org.smartregister.util.JsonFormUtils {
     }
 
     private static void saveStaticImageToDisk(Bitmap image, String providerId, String entityId) {
-        if (image == null || StringUtils.isBlank(providerId) || StringUtils.isBlank(entityId)) {
+        if (image == null || isBlank(providerId) || isBlank(entityId)) {
             return;
         }
         OutputStream os = null;

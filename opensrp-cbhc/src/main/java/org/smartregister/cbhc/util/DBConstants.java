@@ -12,6 +12,8 @@ public class DBConstants {
 
 
     public static final class KEY {
+        public static final String Patient_Identifier = "Patient_Identifier";
+
         public static final String STEPNAME = "stepName";
         public static final String NUMBER_PICKER = "number_picker";
         public static final String FIRST_NAME = "first_name";
