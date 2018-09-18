@@ -65,6 +65,7 @@ public class ProfileActivity extends BaseProfileActivity implements ProfileContr
 
     public static final String DIALOG_TAG = "PROFILE_DIALOG_TAG";
     private CommonPersonObjectClient householdDetails;
+    public ProfileOverviewFragment profileOverviewFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -180,11 +181,16 @@ public class ProfileActivity extends BaseProfileActivity implements ProfileContr
         }
     }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+          super.onActivityResult(requestCode, resultCode, data);
+    }
 
     private ViewPager setupViewPager(ViewPager viewPager) {
         ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
 
-        ProfileOverviewFragment profileOverviewFragment = ProfileOverviewFragment.newInstance(this.getIntent().getExtras());
+        profileOverviewFragment = ProfileOverviewFragment.newInstance(this.getIntent().getExtras());
+
         ProfileContactsFragment profileContactsFragment = ProfileContactsFragment.newInstance(this.getIntent().getExtras());
         ProfileTasksFragment profileTasksFragment = ProfileTasksFragment.newInstance(this.getIntent().getExtras());
 

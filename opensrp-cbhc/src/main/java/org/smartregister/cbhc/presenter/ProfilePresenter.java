@@ -155,6 +155,9 @@ public class ProfilePresenter implements ProfileContract.Presenter, RegisterCont
         getProfileView().hideProgressDialog();
 
         getProfileView().displayToast(isEdit ? R.string.registration_info_updated : R.string.new_registration_saved);
+
+        profileActivity.profileOverviewFragment.refreshadapter(profileActivity.profileOverviewFragment.getFragmentView());
+
     }
 
     @Override

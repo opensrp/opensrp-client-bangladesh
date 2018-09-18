@@ -52,7 +52,11 @@ public class ProfileOverviewFragment extends BaseProfileFragment {
     private CommonPersonObjectClient householdDetails;
     private ListView householdList;
     public static final String EXTRA_HOUSEHOLD_DETAILS = "household_details";
+    public View fragmentView;
 
+    public View getFragmentView() {
+        return fragmentView;
+    }
 
     public static ProfileOverviewFragment newInstance(Bundle bundle) {
         Bundle args = bundle;
@@ -89,12 +93,12 @@ public class ProfileOverviewFragment extends BaseProfileFragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
-        View fragmentView = inflater.inflate(R.layout.fragment_profile_overview, container, false);
+        fragmentView = inflater.inflate(R.layout.fragment_profile_overview, container, false);
         refreshadapter(fragmentView);
         return fragmentView;
     }
 
-    private void refreshadapter(View view) {
+    public void refreshadapter(View view) {
         //setAdapter data of Household member
         AncRepository repo = (AncRepository) AncApplication.getInstance().getRepository();
         net.sqlcipher.database.SQLiteDatabase db = repo.getReadableDatabase();
