@@ -239,6 +239,11 @@
           "হ্যাঁ",
           "না"
         ],
+        "openmrs_choice_ids": {
+          "বাঙ্গালী": "Bengali",
+          "ঝোপ জংগল" : "Bush"
+
+        },
         "v_required": {
           "value": "true",
           "err": "Please answer the question"
@@ -279,7 +284,7 @@
           "বাঙ্গালী": "Bengali",
           "ঝোপ জংগল" : "Bush"
 
-        }
+        },
         "v_required": {
           "value": "true",
           "err": "Please answer the question"
