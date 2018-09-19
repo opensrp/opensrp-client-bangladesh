@@ -1,165 +1,160 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
 	xmlns:app="http://schemas.android.com/apk/res-auto"
 	android:id="@+id/register_columns"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:layout_weight="1"
-    android:background="@color/white"
-    android:orientation="horizontal">
+	android:layout_width="match_parent"
+	android:layout_height="wrap_content"
+	android:layout_margin="5dp"
+	android:layout_weight="1"
+	android:background="@color/white"
+	android:orientation="horizontal">
 
-    <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentStart="true"
-        android:orientation="horizontal">
+	<LinearLayout
+		android:layout_width="0dp"
+		android:layout_height="wrap_content"
+		android:layout_weight="1"
+		android:orientation="horizontal">
 
 		<ImageView
 			android:id="@+id/imageView"
-			android:layout_width="@dimen/register_list_item_height"
-			android:layout_height="@dimen/register_list_item_height"
-			android:layout_margin="7dp"
-			android:layout_weight="1"
+			android:layout_width="@dimen/register_list_item_icon"
+			android:layout_height="@dimen/register_list_item_icon"
+			android:layout_gravity="center"
+			android:layout_margin="10dp"
 			android:scaleType="fitXY"
-			app:srcCompat="@drawable/houshold_register_placeholder" />
+			app:srcCompat="@drawable/household" />
 
-		<RelativeLayout
-			    android:id="@+id/patient_column"
-			    android:layout_width="wrap_content"
-			    android:layout_height="match_parent"
-			    android:layout_gravity="center_vertical"
-			    android:layout_marginBottom="7dp"
-			    android:layout_marginEnd="15dp"
-			    android:layout_marginLeft="15dp"
-			    android:layout_marginRight="15dp"
-			    android:layout_marginStart="15dp"
-			    android:layout_marginTop="7dp">
+		<LinearLayout
+			android:id="@+id/patient_column"
+			android:layout_width="match_parent"
+			android:layout_height="match_parent"
+			android:layout_gravity="center_vertical"
+			android:layout_marginEnd="15dp"
+			android:layout_marginLeft="15dp"
+			android:layout_marginRight="15dp"
+			android:layout_marginStart="15dp"
+			android:gravity="center"
+			android:orientation="vertical">
 
-		    <org.smartregister.view.customcontrols.CustomFontTextView
-				    android:id="@+id/patient_name"
-				    style="@style/CustomFontTextViewStyle.ClientList.Medium"
-				    android:layout_width="wrap_content"
-				    android:layout_height="wrap_content"
-				    android:layout_alignParentTop="true"
-				    android:paddingLeft="0dp"
-				    android:text="Patient Name"
-				    android:textColor="@color/text_black"
-				    android:textSize="18sp"/>
+			<org.smartregister.view.customcontrols.CustomFontTextView
+				android:id="@+id/patient_name"
+				style="@style/CustomFontTextViewStyle.ClientList.Medium"
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:paddingLeft="0dp"
+				android:text="Patient Name"
+				android:textColor="@color/text_black"
+				android:textSize="16sp" />
 
-		    <LinearLayout
-				    android:id="@+id/age_ga_layout"
-				    android:layout_width="wrap_content"
-				    android:layout_height="wrap_content"
-				    android:layout_centerVertical="true"
-				    android:orientation="horizontal">
+			<LinearLayout
+				android:id="@+id/age_ga_layout"
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:orientation="horizontal">
 
-			    <org.smartregister.view.customcontrols.CustomFontTextView
-					    android:id="@+id/age"
-					    style="@style/CustomFontTextViewStyle.ClientList.Light"
-					    android:layout_width="wrap_content"
-					    android:layout_height="wrap_content"
-					    android:paddingLeft="0dp"
-					    android:text="Age: 33"
-					    android:textColor="@color/text_black"
-					    android:textSize="16sp"/>
+				<org.smartregister.view.customcontrols.CustomFontTextView
+					android:id="@+id/age"
+					style="@style/CustomFontTextViewStyle.ClientList.Light"
+					android:layout_width="wrap_content"
+					android:layout_height="wrap_content"
+					android:paddingLeft="0dp"
+					android:text="Age: 33"
+					android:textColor="@color/text_black"
+					android:textSize="14sp" />
 
-			    <org.smartregister.view.customcontrols.CustomFontTextView
-					    android:id="@+id/ga"
-					    style="@style/CustomFontTextViewStyle.ClientList.Light"
-					    android:layout_width="wrap_content"
-					    android:layout_height="wrap_content"
-					    android:paddingLeft="10dp"
-					    android:text="GA: 12 weeks"
-					    android:textColor="@color/text_black"
-						android:visibility="gone"
-					    android:textSize="16sp"/>
-		    </LinearLayout>
+				<org.smartregister.view.customcontrols.CustomFontTextView
+					android:id="@+id/ga"
+					style="@style/CustomFontTextViewStyle.ClientList.Light"
+					android:layout_width="wrap_content"
+					android:layout_height="wrap_content"
+					android:paddingLeft="10dp"
+					android:text="GA: 12 weeks"
+					android:textColor="@color/text_black"
+					android:textSize="16sp"
+					android:visibility="gone" />
+			</LinearLayout>
 
 
-		    <org.smartregister.view.customcontrols.CustomFontTextView
-				    android:id="@+id/anc_id"
-				    style="@style/CustomFontTextViewStyle.ClientList.Light"
-				    android:layout_width="wrap_content"
-				    android:layout_height="wrap_content"
-				    android:layout_alignParentBottom="true"
-				    android:paddingLeft="0dp"
-				    android:text="ID: 3034503"
-				    android:textColor="@color/text_black"
-				    android:textSize="17sp"/>
+			<org.smartregister.view.customcontrols.CustomFontTextView
+				android:id="@+id/anc_id"
+				style="@style/CustomFontTextViewStyle.ClientList.Light"
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:paddingLeft="0dp"
+				android:text="ID: 3034503"
+				android:textColor="@color/text_black"
+				android:textSize="14sp" />
 
-	    </RelativeLayout>
+		</LinearLayout>
 
-	    <LinearLayout
-			    android:id="@+id/risk_layout"
-			    android:layout_width="wrap_content"
-			    android:layout_height="@dimen/register_list_item_height"
-			    android:layout_marginBottom="7dp"
-			    android:layout_marginTop="7dp"
-			    android:gravity="bottom|center_horizontal"
-			    android:orientation="vertical">
+		<LinearLayout
+			android:id="@+id/risk_layout"
+			android:layout_width="wrap_content"
+			android:layout_height="@dimen/register_list_item_height_cbhc"
+			android:gravity="bottom|center_horizontal"
+			android:orientation="vertical">
 
-		    <TextView
-				    android:id="@+id/risk"
-				    android:layout_width="match_parent"
-				    android:layout_height="wrap_content"
-				    android:background="@drawable/grey_border"
-				    android:drawableLeft="@drawable/icon_referral_warning"
-				    android:drawablePadding="2dp"
-				    android:padding="2.5dp"
-				    android:text="2"
-				    android:textColor="@color/dark_grey_text"
-					android:visibility="gone"
-				    android:textSize="16sp"/>
+			<TextView
+				android:id="@+id/risk"
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:background="@drawable/grey_border"
+				android:drawableLeft="@drawable/icon_referral_warning"
+				android:drawablePadding="2dp"
+				android:padding="2.5dp"
+				android:text="2"
+				android:textColor="@color/dark_grey_text"
+				android:textSize="16sp"
+				android:visibility="gone" />
 
-	    </LinearLayout>
+		</LinearLayout>
 
 	</LinearLayout>
 
 	<LinearLayout
+		android:layout_width="wrap_content"
+		android:layout_height="@dimen/register_list_item_height_cbhc"
+		android:layout_alignParentEnd="true"
+		android:layout_centerVertical="true"
+		android:layout_marginRight="10dp"
+		android:gravity="center">
+
+		<Button
+			android:id="@+id/due_button"
+			android:layout_width="100dp"
+			android:layout_height="match_parent"
+			android:layout_gravity="center"
+			android:adjustViewBounds="true"
+			android:background="@drawable/due_contact"
+			android:elevation="8dp"
+			android:gravity="center"
+			android:hapticFeedbackEnabled="true"
+			android:paddingLeft="20dp"
+			android:paddingRight="20dp"
+			android:stateListAnimator="@drawable/button"
+			android:text="@string/add_member"
+			android:textAllCaps="false"
+			android:textAppearance="?android:textAppearanceSmall"
+			android:textColor="@color/vaccine_blue_bg_st"
+			android:textSize="14sp"
+			android:typeface="normal" />
+
+		<Button
+			android:id="@+id/sync"
+			style="?android:attr/borderlessButtonStyle"
 			android:layout_width="wrap_content"
-			android:layout_height="@dimen/register_list_item_height"
-			android:layout_alignParentEnd="true"
-			android:layout_marginBottom="7dp"
-			android:layout_marginLeft="15dp"
-			android:layout_marginRight="10dp"
-			android:layout_marginTop="7dp">
-
-		<Button
-				android:id="@+id/due_button"
-				android:layout_width="120dp"
-				android:layout_height="match_parent"
-				android:layout_gravity="center"
-				android:adjustViewBounds="true"
-				android:background="@drawable/due_contact"
-				android:gravity="center"
-				android:hapticFeedbackEnabled="true"
-				android:paddingLeft="20dp"
-				android:paddingRight="20dp"
-				android:elevation="8dp"
-				android:stateListAnimator="@drawable/button"
-				android:text="@string/add_member"
-				android:textAllCaps="false"
-				android:textColor="@color/vaccine_blue_bg_st"
-				android:textSize="15sp"
-				android:textAppearance="?android:textAppearanceSmall"
-				android:typeface="normal"/>
-
-		<Button
-				android:id="@+id/sync"
-				style="?android:attr/borderlessButtonStyle"
-				android:layout_width="wrap_content"
-				android:layout_height="wrap_content"
-				android:layout_gravity="center"
-				android:elevation="8dp"
-				android:stateListAnimator="@drawable/button"
-				android:background="@color/transparent"
-				android:padding="@dimen/advanced_search_button_padding"
-				android:text="@string/sync"
-				android:textAllCaps="true"
-				android:textAppearance="?android:textAppearanceSmall"
-				android:textColor="@color/button_navy_blue"
-				android:textSize="@dimen/advanced_search_text_size"
-				android:visibility="gone"/>
+			android:layout_height="wrap_content"
+			android:layout_gravity="center"
+			android:background="@color/transparent"
+			android:elevation="8dp"
+			android:padding="@dimen/advanced_search_button_padding"
+			android:stateListAnimator="@drawable/button"
+			android:text="@string/sync"
+			android:textAllCaps="true"
+			android:textAppearance="?android:textAppearanceSmall"
+			android:textColor="@color/button_navy_blue"
+			android:textSize="@dimen/advanced_search_text_size"
+			android:visibility="gone" />
 
 	</LinearLayout>
-</RelativeLayout>
+</LinearLayout>

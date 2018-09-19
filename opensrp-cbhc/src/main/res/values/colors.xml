@@ -5,7 +5,7 @@
     <color name="accent">#3797ca</color>
     <color name="primaryBackground">#a6d1e7</color>
 
-    <color name="customAppThemeBlue">#218CC5</color>
+    <color name="customAppThemeBlue">#1fb2e5</color>
     <color name="customAppThemeDarkest">#272727</color>
     <color name="customAppThemeDark">#373737</color>
     <color name="customAppThemeGray">#EEEEEE</color>
@@ -50,7 +50,11 @@
 
     <color name="radio_dark_grey">#999999</color>
     <color name="radio_light_blue">#1a93d2</color>
-    
+
+    <color name="search_bar_background_cbhc">#4fcffc</color>
+    <color name="search_textfield_background_white">#ffffff</color>
+    <color name="search_textfield_text_color">#9d9d9d</color>
+
     <color name="search_bar_background_black">#2E383D</color>
     <color name="search_textfield_background_grey">#4A5357</color>
 
