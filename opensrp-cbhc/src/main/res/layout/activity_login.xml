@@ -12,7 +12,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_weight="1.0"
-        android:background="#0092D5"
+        android:background="#1fb2e5"
         android:paddingBottom="@dimen/login_bottom_margin">
 
 
@@ -23,7 +23,8 @@
             android:layout_height="wrap_content"
             android:layout_alignParentTop="true"
             android:orientation="vertical"
-            android:paddingTop="@dimen/login_logo_top_padding">
+            android:paddingBottom="10dp"
+            android:paddingTop="25dp">
 
             <ImageView
                 android:id="@+id/login_logo"
@@ -46,7 +47,8 @@
                 android:text="@string/cbhc_app"
                 android:textColor="@color/white"
                 android:textSize="@dimen/login_title_text_size"
-                android:typeface="sans" />
+                android:typeface="sans"
+                android:visibility="gone" />
 
             <TextView
                 android:id="@+id/login_build_text_view"
@@ -65,7 +67,8 @@
             android:id="@+id/middle_section"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/top_section"
+            android:layout_centerInParent="true"
+            android:layout_centerVertical="true"
             android:layout_marginTop="@dimen/login_middle_section_padding_top"
             android:orientation="vertical"
             android:paddingLeft="@dimen/login_horizontal_margin"
@@ -76,7 +79,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/login_view_component_height"
                 android:layout_weight="8"
-                android:background="@drawable/rounded_corner_edit_text"
+                android:background="@drawable/square_corner_edit_text"
                 android:cursorVisible="true"
                 android:ems="10"
                 android:hint="Username"
@@ -85,19 +88,20 @@
                 android:lines="1"
                 android:paddingLeft="10dp"
                 android:textColor="#666666"
-                android:textColorHint="#bfbfbf"
+                android:textColorHint="#6fc8e8"
                 android:textCursorDrawable="@null"
                 android:textSize="@dimen/login_edit_text_textSize"
                 android:typeface="sans" />
 
             <EditText
                 android:id="@+id/login_password_edit_text"
+                style="@style/CustomFontTextViewStyle.ListView.Medium.NoPadding"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/login_view_component_height"
                 android:layout_gravity="center_horizontal"
-                android:layout_marginTop="10dp"
+                android:layout_marginTop="1dp"
                 android:layout_weight="8"
-                android:background="@drawable/rounded_corner_edit_text"
+                android:background="@drawable/square_corner_edit_text"
                 android:cursorVisible="true"
                 android:ems="10"
                 android:hint="Password"
@@ -106,10 +110,10 @@
                 android:lines="1"
                 android:paddingLeft="10dp"
                 android:textColor="#666666"
-                android:textColorHint="#bfbfbf"
+                android:textColorHint="#6fc8e8"
                 android:textCursorDrawable="@null"
                 android:textSize="@dimen/login_edit_text_textSize"
-                android:typeface="sans" />
+                android:typeface="normal" />
 
             <RelativeLayout
                 android:layout_width="match_parent"
@@ -146,7 +150,7 @@
                 android:layout_height="@dimen/login_view_component_height"
                 android:layout_gravity="center_horizontal"
                 android:layout_weight="8"
-                android:background="@drawable/login_button"
+                android:background="@drawable/rounded_corner_login_button"
                 android:ems="10"
                 android:shadowColor="#ffffff"
                 android:shadowDx="0"
@@ -154,7 +158,7 @@
                 android:shadowRadius="0.5"
                 android:text="@string/login_text"
                 android:textAllCaps="true"
-                android:textColor="#666666"
+                android:textColor="#6fc8e8"
                 android:textSize="18sp" />
         </LinearLayout>
         <!-- Bottom section -->
@@ -163,7 +167,6 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
-            android:layout_below="@+id/middle_section"
             android:layout_marginTop="5dp"
             android:orientation="vertical"
             android:paddingTop="5dp">
@@ -172,6 +175,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
+                android:gravity="bottom"
                 android:orientation="vertical">
 
                 <ImageView

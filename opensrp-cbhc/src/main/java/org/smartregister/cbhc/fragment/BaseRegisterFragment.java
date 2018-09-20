@@ -171,6 +171,8 @@ public abstract class BaseRegisterFragment extends RecyclerViewFragment implemen
         }
     }
 
+
+
     @Override
     public void updateSearchBarHint(String searchBarText) {
         if (getSearchView() != null) {

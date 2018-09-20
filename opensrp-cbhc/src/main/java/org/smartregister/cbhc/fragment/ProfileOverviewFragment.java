@@ -215,7 +215,7 @@ public class ProfileOverviewFragment extends BaseProfileFragment {
                         //set profile image by passing the client id.If the image doesn't exist in the image org.smartregister.cbhc.repository then download and save locally
                         profileImageIV.setTag(org.smartregister.R.id.entity_id, pClient.entityId());
 //                        DrishtiApplication.getCachedImageLoaderInstance().getImageByClientId(pClient.entityId(), OpenSRPImageLoader.getStaticImageListener((ImageView) profileImageIV, R.drawable.child_boy_infant, R.drawable.child_boy_infant));
-                        profileImageIV.setImageDrawable(getResources().getDrawable(R.drawable.child_boy_infant));
+                        profileImageIV.setImageDrawable(getResources().getDrawable(R.drawable.male_child_cbhc));
                         clientype = "malechild";
                     }
                 }else if(gender.equalsIgnoreCase("f")){
@@ -223,7 +223,7 @@ public class ProfileOverviewFragment extends BaseProfileFragment {
                         //set profile image by passing the client id.If the image doesn't exist in the image org.smartregister.cbhc.repository then download and save locally
                         profileImageIV.setTag(org.smartregister.R.id.entity_id, pClient.entityId());
 //                        DrishtiApplication.getCachedImageLoaderInstance().getImageByClientId(pClient.entityId(), OpenSRPImageLoader.getStaticImageListener((ImageView) profileImageIV, R.drawable.child_girl_infant, R.drawable.child_girl_infant));
-                        profileImageIV.setImageDrawable(getResources().getDrawable(R.drawable.child_girl_infant));
+                        profileImageIV.setImageDrawable(getResources().getDrawable(R.drawable.female_child_cbhc));
                         clientype = "femalechild";
                     }
                 }
@@ -242,7 +242,7 @@ public class ProfileOverviewFragment extends BaseProfileFragment {
                         //set profile image by passing the client id.If the image doesn't exist in the image org.smartregister.cbhc.repository then download and save locally
                         profileImageIV.setTag(org.smartregister.R.id.entity_id, pClient.entityId());
 //                        DrishtiApplication.getCachedImageLoaderInstance().getImageByClientId(pClient.entityId(), OpenSRPImageLoader.getStaticImageListener((ImageView) profileImageIV, R.drawable.woman_cbhc_member_logo, R.drawable.woman_cbhc_member_logo));
-                        profileImageIV.setImageDrawable(getResources().getDrawable(R.drawable.woman_cbhc_member_logo));
+                        profileImageIV.setImageDrawable(getResources().getDrawable(R.drawable.women_cbhc));
                         clientype = "woman";
                     }
                 }
