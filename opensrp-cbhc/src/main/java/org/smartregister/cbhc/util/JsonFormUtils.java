@@ -171,6 +171,7 @@ public class JsonFormUtils extends org.smartregister.util.JsonFormUtils {
 
             JSONObject jsonForm = registrationFormParams.getMiddle();
             JSONArray fields = registrationFormParams.getRight();
+            fields = processAttributesWithChoiceIDs(fields);
 
             String entityId = getString(jsonForm, ENTITY_ID);
             if (isBlank(entityId)) {
@@ -385,6 +386,27 @@ public class JsonFormUtils extends org.smartregister.util.JsonFormUtils {
             Log.e(TAG, Log.getStackTraceString(e));
             return null;
         }
+    }
+
+    private static JSONArray processAttributesWithChoiceIDs(JSONArray fields) {
+        for(int i = 0;i<fields.length();i++){
+            try {
+                JSONObject fieldObject = fields.getJSONObject(i);
+                if(fieldObject.has("openmrs_entity")){
+                    if(fieldObject.getString("openmrs_entity").equalsIgnoreCase("person_attribute")){
+                        if(fieldObject.has("openmrs_choice_ids")){
+                            if(fieldObject.has("value")){
+                                String valueEntered = fieldObject.getString("value");
+                                fieldObject.put("value",fieldObject.getJSONObject("openmrs_choice_ids").get(valueEntered));
+                            }
+                        }
+                    }
+                }
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
+        return fields;
     }
 
     private static ArrayList<Address> getAddressFromClientJson(JSONObject clientjson) {

@@ -231,8 +231,9 @@
       {
         "key": "is_tribal",
         "openmrs_entity_parent": "",
-        "openmrs_entity": "",
-        "openmrs_entity_id": "",
+        "openmrs_entity": "concept",
+        "openmrs_entity_id": "6f0edffc-3c61-41b7-b29a-3fe9c0753c0a",
+        "openmrs_data_type": "Coded",
         "type": "spinner",
         "hint": "ক্ষুদ্রনৃগােষ্ঠী *",
         "values": [
@@ -240,8 +241,8 @@
           "না"
         ],
         "openmrs_choice_ids": {
-          "বাঙ্গালী": "Bengali",
-          "ঝোপ জংগল" : "Bush"
+          "হ্যাঁ": "Yes",
+          "না" : "No"
 
         },
         "v_required": {
@@ -271,8 +272,9 @@
       {
         "key": "household_structure",
         "openmrs_entity_parent": "",
-        "openmrs_entity": "",
-        "openmrs_entity_id": "",
+        "openmrs_entity": "concept",
+        "openmrs_entity_id": "58a86736-033b-4866-af0c-bc1960a79cfd",
+        "openmrs_data_type": "Coded",
         "type": "spinner",
         "hint": "আপনার বাসস্থানের ধরণ কি?",
         "values": [
@@ -281,9 +283,9 @@
           "পাকা"
         ],
         "openmrs_choice_ids": {
-          "বাঙ্গালী": "Bengali",
-          "ঝোপ জংগল" : "Bush"
-
+          "কাচা": "Raw",
+          "সেমি পাকা" : "Semi_concrete",
+          "পাকা" : "Concrete"
         },
         "v_required": {
           "value": "true",
@@ -295,7 +297,7 @@
         "openmrs_entity_parent": "",
         "openmrs_entity": "concept",
         "openmrs_entity_id": "bd437fcc-f42f-40a6-8baf-b3d3af725ad4",
-        "openmrs_data_type": "select one",
+        "openmrs_data_type": "Coded",
         "type": "spinner",
         "hint": "এই খানার সদস্যগন কি ধরনের ল্যাট্রিন ব্যবহার করেন?",
         "values": [
@@ -321,8 +323,9 @@
       {
         "key": "source_of_water",
         "openmrs_entity_parent": "",
-        "openmrs_entity": "",
-        "openmrs_entity_id": "",
+        "openmrs_entity": "concept",
+        "openmrs_entity_id": "3a46b207-dc8b-4e5b-8b1f-162fca3905ca",
+        "openmrs_data_type": "Coded",
         "type": "spinner",
         "hint": "আপনার পরিবারের খাবার পানির উৎস কি?",
         "values": [
@@ -337,8 +340,15 @@
           "অন্যান্য"
         ],
         "openmrs_choice_ids": {
-          "বাঙ্গালী": "Bengali",
-          "ঝোপ জংগল" : "Bush"
+          "টিউবওয়েল (লাল)": "red_tube_well",
+          "টিউবওয়েল (সবুজ)" : "Green_tube_well",
+          "টিউবওয়েল (আর্সেনিক পরিক্ষা করা হয়নি)" : "NO_arsenic_test_tube_well",
+          "বৃষ্টির পানি" : "Rain_water",
+          "নদা/খাল" : "River_or_canal",
+          "ট্যাপ" : "Tap",
+          "কুয়া/ইন্দারা" : "Well_or_indira",
+          "পুকুর/ভোৰা" : "Pond",
+          "অন্যান্য" : "Others_water_source"
 
         },
         "v_required": {
@@ -349,8 +359,9 @@
       {
         "key": "financial_status",
         "openmrs_entity_parent": "",
-        "openmrs_entity": "",
-        "openmrs_entity_id": "",
+        "openmrs_entity": "concept",
+        "openmrs_entity_id": "95066bce-55eb-405e-9664-9be70e5c17b2",
+        "openmrs_data_type": "Coded",
         "type": "spinner",
         "hint": "আপনার পরিবারের আর্থিক অবস্থা কি?",
         "values": [
@@ -362,8 +373,12 @@
           "অন্যান্য"
         ],
         "openmrs_choice_ids": {
-          "বাঙ্গালী": "Bengali",
-          "ঝোপ জংগল" : "Bush"
+          "সর্বদা অভাব অনটন": "always_hand_to_mouth",
+          "সাময়িক অভাব অনটন" : "Somtimes_hand_to_mouth",
+          "আয়-ব্যয় সমান" : "Income_and_expenditure_equal",
+          "সচ্ছল" : "Solvent",
+          "সঞ্চয় হয়" : "Can_save",
+          "অন্যান্য" : "Others_financial_status"
 
         },
         "v_required": {
