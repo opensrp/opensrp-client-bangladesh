@@ -257,10 +257,6 @@
         "v_required": {
           "value": "true",
           "err": "Please enter the mother/guardian's first name"
-        },
-        "v_regex": {
-          "value": "[A-Za-z\\s\.\-]*",
-          "err": "Please enter a valid name"
         }
       },
       {
@@ -291,10 +287,6 @@
         "v_required": {
           "value": "true",
           "err": "Please enter the mother/guardian's first name"
-        },
-        "v_regex": {
-          "value": "[A-Za-z\\s\.\-]*",
-          "err": "Please enter a valid name"
         }
       },
       {
