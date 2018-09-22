@@ -91,7 +91,38 @@
         "openmrs_entity_id": "address1",
         "openmrs_data_type": "text",
         "type": "edit_text",
-        "hint": "বাড়ীর ঠিকানা-"
+        "hint": "গ্রাম/মহল্লা/বাড়ি/সড়ক নম্বর"
+      },
+      {
+        "key": "Nearby_area_to_community_support_group",
+        "openmrs_entity_parent": "",
+        "openmrs_entity": "concept",
+        "openmrs_entity_id": "dc6b7608-5348-446b-8cfb-c379a9e61db8",
+        "openmrs_data_type": "Coded",
+        "type": "spinner",
+        "hint": "কমিউনিটি সার্পোট গ্রুপ সংলগ্ন এলাকা",
+        "values": [
+          "CSG -১",
+          "CSG-২",
+          "CSG -৩"
+        ],
+        "openmrs_choice_ids": {
+          "CSG -১":"CSG_1",
+          "CSG-২":"CSG_2",
+          "CSG -৩":"CSG_3"
+        },
+        "v_required": {
+          "value": "true",
+          "err": "Please answer the question"
+        }
+      },
+      {
+        "key": "HHID",
+        "openmrs_entity_parent": "",
+        "openmrs_entity": "person_attribute",
+        "openmrs_entity_id": "householdCode",
+        "type": "edit_text",
+        "hint": "খানার আইডি"
       },
       {
         "key": "First_Name",
@@ -173,14 +204,14 @@
         "openmrs_entity": "",
         "openmrs_entity_id": "age",
         "type": "edit_text",
-        "hint": "Enter Age if DOB unknown *",
+        "hint": "বয়স *",
         "v_numeric": {
           "value": "true",
           "err": "Number must begin with 0 and must be a total of 10 digits in length"
         },
         "v_regex": {
-          "value": "([1][5-9])|([2-4][0-9])|\s*",
-          "err": "Number must in the range 15 to 49"
+          "value": "([1][5-9])|([2-9][0-9])|\s*",
+          "err": "Number must in the range 15 to 99"
         },
         "v_required": {
           "value": false
@@ -229,48 +260,7 @@
         }
       },
       {
-        "key": "is_tribal",
-        "openmrs_entity_parent": "",
-        "openmrs_entity": "concept",
-        "openmrs_entity_id": "6f0edffc-3c61-41b7-b29a-3fe9c0753c0a",
-        "openmrs_data_type": "Coded",
-        "type": "spinner",
-        "hint": "ক্ষুদ্রনৃগােষ্ঠী *",
-        "values": [
-          "হ্যাঁ",
-          "না"
-        ],
-        "openmrs_choice_ids": {
-          "হ্যাঁ": "Yes",
-          "না" : "No"
-
-        },
-        "v_required": {
-          "value": "true",
-          "err": "Please answer the question"
-        }
-      },
-      {
-        "key": "which_tribe",
-        "openmrs_entity_parent": "",
-        "openmrs_entity": "",
-        "openmrs_entity_id": "",
-        "type": "edit_text",
-        "edit_type": "name",
-        "hint": "কোন ক্ষুদ্রনৃগােষ্ঠী?",
-        "v_required": {
-          "value": "true",
-          "err": "Please enter the name of the tribe"
-        },
-        "relevance": {
-          "step1:is_tribal": {
-            "type": "string",
-            "ex": "equalTo(., \"হ্যাঁ\")"
-          }
-        }
-      },
-      {
-        "key": "household_structure",
+        "key": "Household_type",
         "openmrs_entity_parent": "",
         "openmrs_entity": "concept",
         "openmrs_entity_id": "58a86736-033b-4866-af0c-bc1960a79cfd",
@@ -299,21 +289,22 @@
         "openmrs_entity_id": "bd437fcc-f42f-40a6-8baf-b3d3af725ad4",
         "openmrs_data_type": "Coded",
         "type": "spinner",
-        "hint": "এই খানার সদস্যগন কি ধরনের ল্যাট্রিন ব্যবহার করেন?",
+        "hint": "খানার সদস্যগন কি ধরনের ল্যাট্রিন ব্যবহার করেন?",
         "values": [
           "স্যানিটারী",
           "পাকা",
           "কাচা",
           "খােলা জায়গা",
-          "ঝোপ জংগল"
+          "ঝোপ জংগল",
+          "অন্যান্য"
         ],
         "openmrs_choice_ids": {
           "স্যানিটারী": "Sanitary",
           "পাকা": "Construction",
           "কাচা": "UnderConstruction",
           "খােলা জায়গা": "OpenArea",
-          "ঝোপ জংগল" : "Bush"
-
+          "ঝোপ জংগল" : "Bush",
+          "অন্যান্য": "Latrine_others"
         },
         "v_required": {
           "value": "true",
@@ -327,7 +318,7 @@
         "openmrs_entity_id": "3a46b207-dc8b-4e5b-8b1f-162fca3905ca",
         "openmrs_data_type": "Coded",
         "type": "spinner",
-        "hint": "আপনার পরিবারের খাবার পানির উৎস কি?",
+        "hint": "পরিবারের খাবার পানির উৎস",
         "values": [
           "টিউবওয়েল (লাল)",
           " টিউবওয়েল (সবুজ)",
@@ -349,7 +340,6 @@
           "কুয়া/ইন্দারা" : "Well_or_indira",
           "পুকুর/ভোৰা" : "Pond",
           "অন্যান্য" : "Others_water_source"
-
         },
         "v_required": {
           "value": "true",
@@ -387,12 +377,13 @@
         }
       },
       {
-        "key": "family_monthly_income",
+        "key": "Monthly_Expenditure",
         "openmrs_entity_parent": "",
-        "openmrs_entity": "",
-        "openmrs_entity_id": "",
+        "openmrs_entity": "concept",
+        "openmrs_entity_id": "66d3c926-8145-4b94-987b-11f250cc6e6f",
+        "openmrs_data_type": "Numeric",
         "type": "edit_text",
-        "hint": "আপনার পরিবারের আনুমানিক মাসিক ব্যয় কত?( টাকা)",
+        "hint": "পরিবারের আনুমানিক মাসিক ব্যয়",
         "v_required": {
           "value": "true",
           "err": "Please enter the amount"
@@ -403,12 +394,13 @@
         }
       },
       {
-        "key": "type_of_nearest_clinic",
+        "key": "Nearby_Health_Facility",
         "openmrs_entity_parent": "",
-        "openmrs_entity": "",
-        "openmrs_entity_id": "",
+        "openmrs_entity": "concept",
+        "openmrs_entity_id": "b624e55b-8144-4623-ba94-4973e9a28ba4",
+        "openmrs_data_type": "Coded",
         "type": "spinner",
-        "hint": "আপনার বাড়ীর নিকটবর্তী স্বাস্থ্য সেবা কেন্দ্র কোনটি?",
+        "hint": "নিকটবর্তী স্বাস্থ্য সেবা কেন্দ্র কোনটি?",
         "values": [
           "কমিউনিটি ক্লিনিক",
           "ইউনিয়ন উপস্বাস্থ্য কেন্দ্র",
@@ -423,9 +415,17 @@
           "অন্যান্য"
         ],
         "openmrs_choice_ids": {
-          "বাঙ্গালী": "Bengali",
-          "ঝোপ জংগল" : "Bush"
-
+          "কমিউনিটি ক্লিনিক": "Community_Clinic",
+          "ইউনিয়ন উপস্বাস্থ্য কেন্দ্র": "Union_Sub_Center",
+          "ইউনিয়ন পরিবার কল্যাণ কেন্দ্র":"Union_Family_Welfare_Center",
+          "ইউনিয়ন স্বাস্থ্য ও পরিবার কল্যাণ কেন্দ্র":"Union_Health_and_Family_Welfare_Center",
+          "মা ও শিশু কল্যাণ কেন্দ্র":"Metarnal_and_Child_Wellfare_Center",
+          "১০ শয্যা বিশিষ্ট হাসপাতাল":"10_Bed_Hospital",
+          "২০ শয্যা বিশিষ্ট হাসপাতাল":"20_Beds_Hospital",
+          "উপজেলা স্বাস্থ্য কমপ্লেক্স":"Upazila_Health_Complex",
+          "বেসরকারী ক্লিনিক/হাসপাতাল":"Private_Clinic_and_Hospital",
+          "এনজিও":"Non-governmental_Organization",
+          "অন্যান্য":"Others_Health_Facility"
         },
         "v_required": {
           "value": "true",
@@ -433,27 +433,114 @@
         }
       },
       {
-        "key": "nearest_clinic_name",
+        "key": "Health_Facility_Distance",
+        "openmrs_entity_parent": "",
+        "openmrs_entity": "concept",
+        "openmrs_entity_id": "f41a8533-f195-4efd-b019-c4f722c7ed74",
+        "openmrs_data_type": "Coded",
+        "type": "spinner",
+        "hint": "নিকটবর্তী স্বাস্থ্য সেবা কেন্দ্রের আনুমানিক দুরত্ব",
+        "values": [
+          "৫০০ মিটারের কম",
+          "৫০০ মিটার থেকে ১ কিলোমিটার",
+          "১ কিলোমিটার থেকে ২ কিলোমিটার",
+          "২ কিলোমিটার থেকে ৩ কিলোমিটার",
+          "৩ কিলোমিটারের বেশী"
+        ],
+        "openmrs_choice_ids": {
+          "৫০০ মিটারের কম":"Less_Than_500_Meters",
+          "৫০০ মিটার থেকে ১ কিলোমিটার":"500_Meters_to_1_KM",
+          "১ কিলোমিটার থেকে ২ কিলোমিটার":"1_KM_to_2_KM",
+          "২ কিলোমিটার থেকে ৩ কিলোমিটার":"2_KM_to_3_KM",
+          "৩ কিলোমিটারের বেশী":"More_Than_3_KM"
+        },
+        "v_required": {
+          "value": "true",
+          "err": "Please answer the question"
+        }
+      },
+      {
+        "key": "Family_Members_Health_Services_From_Health_Care_Center",
+        "openmrs_entity_parent": "",
+        "openmrs_entity": "concept",
+        "openmrs_entity_id": "",
+        "openmrs_data_type": "Coded",
+        "type": "spinner",
+        "hint": "পরিবারের সদস্যগন সাধারনত কোন স্বাস্থ্য সেবা কেন্দ্র থেকে স্বাস্থ্য সেবা নিয়ে থাকেন?",
+        "values": [
+          "কমিউনিটি ক্লিনিক",
+          "ইউনিয়ন উপস্বাস্থ্য কেন্দ্র",
+          "ইউনিয়ন পরিবার কল্যাণ কেন্দ্র",
+          "ইউনিয়ন স্বাস্থ্য ও পরিবার কল্যাণ কেন্দ্র",
+          "মা ও শিশু কল্যাণ কেন্দ্র",
+          "১০ শয্যা বিশিষ্ট হাসপাতাল",
+          "২০ শয্যা বিশিষ্ট হাসপাতাল",
+          "উপজেলা স্বাস্থ্য কমপ্লেক্স",
+          "সদর হাসপাতাল",
+          "মেডিকেল কলেজ হাসপাতাল",
+          "বেসরকারী ক্লিনিক/হাসপাতাল",
+          "এনজিও",
+          "বিশেষায়িত হাসপাতাল",
+          "অন্যান্য"
+        ],
+        "openmrs_choice_ids": {
+          "কমিউনিটি ক্লিনিক":"Community_Clinic",
+          "ইউনিয়ন উপস্বাস্থ্য কেন্দ্র":"Union_Sub_Center",
+          "ইউনিয়ন পরিবার কল্যাণ কেন্দ্র":"Union_Family_Welfare_Center",
+          "ইউনিয়ন স্বাস্থ্য ও পরিবার কল্যাণ কেন্দ্র":"Union_Health_and_Family_Welfare_Center",
+          "মা ও শিশু কল্যাণ কেন্দ্র":"Metarnal_and_Child_Wellfare_Center",
+          "১০ শয্যা বিশিষ্ট হাসপাতাল":"10_Bed_Hospital",
+          "২০ শয্যা বিশিষ্ট হাসপাতাল":"20_Beds_Hospital",
+          "উপজেলা স্বাস্থ্য কমপ্লেক্স":"Upazila_Health_Complex",
+          "সদর হাসপাতাল":"District_Hospital",
+          "মেডিকেল কলেজ হাসপাতাল":"Medical_College_and_Hospital",
+          "বেসরকারী ক্লিনিক/হাসপাতাল":"Private_Clinic_and_Hospital",
+          "এনজিও":"Non-governmental_Organization",
+          "বিশেষায়িত হাসপাতাল":"Specialized_Hospital",
+          "অন্যান্য":"thers_Family_Health_Center"
+        },
+        "v_required": {
+          "value": "true",
+          "err": "Please answer the question"
+        }
+      },
+      {
+        "key": "Near_By_Community_Clinic",
         "openmrs_entity_parent": "",
         "openmrs_entity": "",
         "openmrs_entity_id": "",
         "type": "edit_text",
-        "hint": "আপনার নিকটবর্তী কমিউনিটি ক্লিনিকটির নাম কি?",
+        "hint": "নিকটবর্তী কমিউনিটি ক্লিনিকটির নাম কি?",
         "v_required": {
           "value": "true",
           "err": "Please enter the value"
         }
       },
       {
-        "key": "nearest_clinic_distance",
+        "key": "Community_Clinic_Distance",
         "openmrs_entity_parent": "",
-        "openmrs_entity": "",
+        "openmrs_entity": "concept",
         "openmrs_entity_id": "",
-        "type": "edit_text",
+        "openmrs_data_type": "Coded",
+        "type": "spinner",
         "hint": "নিকটবর্তী কমিউনিটি ক্লিনিকের আনুমানিক দুরত্ব কত কিঃ মিঃ",
+        "values": [
+          "৫০০ মিটারের কম",
+          "৫০০ মিটার থেকে ১ কিলোমিটার",
+          "১ কিলোমিটার থেকে ২ কিলোমিটার",
+          "২ কিলোমিটার থেকে ৩ কিলোমিটার",
+          "৩ কিলোমিটারের বেশী"
+        ],
+        "openmrs_choice_ids": {
+          "৫০০ মিটারের কম":"Less_Than_500_Meters",
+          "৫০০ মিটার থেকে ১ কিলোমিটার":"500_Meters_to_1_KM",
+          "১ কিলোমিটার থেকে ২ কিলোমিটার":"1_KM_to_2_KM",
+          "২ কিলোমিটার থেকে ৩ কিলোমিটার":"2_KM_to_3_KM",
+          "৩ কিলোমিটারের বেশী":"More_Than_3_KM"
+        },
         "v_required": {
           "value": "true",
-          "err": "Please enter the value"
+          "err": "Please answer the question"
         }
       },
       {
@@ -491,14 +578,6 @@
           "value": "true",
           "err": "Please enter the value"
         }
-      },
-      {
-        "key": "HHID",
-        "openmrs_entity_parent": "",
-        "openmrs_entity": "person_attribute",
-        "openmrs_entity_id": "householdCode",
-        "type": "edit_text",
-        "hint": "Household ID"
       }
     ]
   }
