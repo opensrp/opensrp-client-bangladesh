@@ -70,15 +70,16 @@
         "openmrs_entity_id": "idtype",
         "openmrs_data_type": "text",
         "type": "spinner",
-        "hint": "কোন আইডি কার্ড আছে?",
+        "hint": "কোন পরিচয় পত্রটি আছে?",
         "values": [
-          "NID",
-          "BRID",
-          "None"
+          "জাতীয় পরিচয় পত্র",
+          "জন্মনিবন্ধন",
+          "ইপিআই কার্ড নাম্বার"
         ],
         "openmrs_choice_ids": {
-          "বাঙ্গালী": "Bengali",
-          "ঝোপ জংগল": "Bush"
+          "জাতীয় পরিচয় পত্র":"Citizen_NID",
+          "জন্মনিবন্ধন":"Citizen_BRID",
+          "ইপিআই কার্ড নাম্বার":"Citizen_Card_number"
         }
       },
       {
@@ -88,7 +89,7 @@
         "openmrs_entity_id": "nationalId",
         "openmrs_data_type": "text",
         "type": "edit_text",
-        "hint": "NID টাইপ করুন",
+        "hint": "জাতীয় পরিচয় পত্র",
         "v_numeric": {
           "value": "true",
           "err": "Enter a valid NID No."
@@ -104,7 +105,7 @@
         "relevance": {
           "step1:member_unique_ID": {
             "type": "string",
-            "ex": "equalTo(., \"NID\")"
+            "ex": "equalTo(., \"জাতীয় পরিচয় পত্র\")"
           }
         }
       },
@@ -115,7 +116,7 @@
         "openmrs_entity_id": "nationalId",
         "openmrs_data_type": "text",
         "type": "edit_text",
-        "hint": "BRID টাইপ করুন",
+        "hint": "জন্মনিবন্ধন",
         "v_numeric": {
           "value": "true",
           "err": "Enter a valid BRID"
@@ -131,7 +132,34 @@
         "relevance": {
           "step1:member_unique_ID": {
             "type": "string",
-            "ex": "equalTo(., \"BRID\")"
+            "ex": "equalTo(., \"জন্মনিবন্ধন\")"
+          }
+        }
+      },
+      {
+        "key": "Citizen_Card_number",
+        "openmrs_entity_parent": "",
+        "openmrs_entity": "person_attribute",
+        "openmrs_entity_id": "nationalId",
+        "openmrs_data_type": "text",
+        "type": "edit_text",
+        "hint": "ইপিআই কার্ড নাম্বার",
+        "v_numeric": {
+          "value": "true",
+          "err": "Enter a valid BRID"
+        },
+        "v_regex": {
+          "value": "^(?=[0-9]*$)(?:.{17})$",
+          "err": "Number must be a total of 17 digits in length"
+        },
+        "v_required": {
+          "value": true,
+          "err": "Please Type BRID"
+        },
+        "relevance": {
+          "step1:member_unique_ID": {
+            "type": "string",
+            "ex": "equalTo(., \"ইপিআই কার্ড নাম্বার\")"
           }
         }
       },
@@ -184,6 +212,20 @@
         },
         "v_regex": {
           "value": "[A-Za-z\\s\.\-]*",
+          "err": "Please Enter a Valid Name"
+        }
+      },
+      {
+        "key": "member_f_name_bengali",
+        "openmrs_entity_parent": "",
+        "openmrs_entity": "person",
+        "openmrs_entity_id": "first_name",
+        "openmrs_data_type": "text",
+        "type": "edit_text",
+        "hint": "নাম (বাংলায়)",
+        "expanded": false,
+        "v_required": {
+          "value": "true",
           "err": "Please Enter a Valid Name"
         }
       },
