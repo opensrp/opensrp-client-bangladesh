@@ -728,12 +728,59 @@ public class JsonFormUtils extends org.smartregister.util.JsonFormUtils {
             jsonObject.put(JsonFormUtils.VALUE, womanClient.get(DBConstants.KEY.ANC_ID).replace("-", ""));
 
         } else if (womanClient.containsKey(jsonObject.getString(JsonFormUtils.KEY))) {
-
+            String keyname = jsonObject.getString(JsonFormUtils.KEY);
+            keyname = processAttributesForEdit(jsonObject,keyname);
+            String value = womanClient.get(keyname);
+            value = processValueWithChoiceIds(jsonObject,value);
             jsonObject.put(JsonFormUtils.READ_ONLY, false);
-            jsonObject.put(JsonFormUtils.VALUE, womanClient.get(jsonObject.getString(JsonFormUtils.KEY)));
+            jsonObject.put(JsonFormUtils.VALUE, value);
         } else {
+            String keyname = jsonObject.getString(JsonFormUtils.KEY);
+            keyname = processAttributesForEdit(jsonObject,keyname);
+            String value = womanClient.get(keyname);
+            if(value!=null) {
+                value = processValueWithChoiceIds(jsonObject, value);
+                jsonObject.put(JsonFormUtils.READ_ONLY, false);
+                jsonObject.put(JsonFormUtils.VALUE, value);
+            }
             Log.e(TAG, "ERROR:: Unprocessed Form Object Key " + jsonObject.getString(JsonFormUtils.KEY));
         }
+    }
+
+    private static String processValueWithChoiceIds(JSONObject jsonObject,String value) {
+        try {
+        if(jsonObject.has("openmrs_choice_ids")){
+            JSONObject choiceObject = jsonObject.getJSONObject("openmrs_choice_ids");
+
+                for(int i = 0; i<choiceObject.names().length(); i++){
+                            if(value.equalsIgnoreCase(choiceObject.getString(choiceObject.names().getString(i)))){
+                        value = choiceObject.names().getString(i);
+                    }
+                }
+
+
+        }
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return value;
+    }
+
+    private static String processAttributesForEdit(JSONObject jsonObject,String keyname) {
+        if(jsonObject.has("openmrs_entity")){
+            try {
+                if(jsonObject.getString("openmrs_entity").equalsIgnoreCase("person_attribute")
+                        ||jsonObject.getString("openmrs_entity").equalsIgnoreCase("person")
+                        ){
+                    String attributename = jsonObject.getString("openmrs_entity_id");
+                    keyname = attributename;
+                }
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+
+        }
+        return keyname;
     }
 
     protected static void processPopulatableFields(Map<String, String> womanClient, JSONObject jsonObject) throws JSONException {
