@@ -15,9 +15,11 @@ import org.smartregister.cbhc.util.Constants;
 import org.smartregister.cbhc.util.JsonFormUtils;
 import org.smartregister.commonregistry.CommonPersonObjectClient;
 import org.smartregister.util.FormUtils;
+import org.smartregister.view.customcontrols.CustomFontTextView;
 
 import java.io.Serializable;
 
+import static org.smartregister.cbhc.fragment.ProfileContactsFragment.processPopulatableFieldsForHouseholds;
 import static org.smartregister.cbhc.fragment.ProfileOverviewFragment.EXTRA_HOUSEHOLD_DETAILS;
 import static org.smartregister.util.JsonFormUtils.fields;
 
@@ -68,32 +70,34 @@ public class MemberProfileContactsFragment extends BaseProfileFragment {
 
         View fragmentView = inflater.inflate(R.layout.fragment_profile_contacts, container, false);
         LinearLayout linearLayoutholder = (LinearLayout)fragmentView.findViewById(R.id.profile_overview_details_holder);
+        LinearLayout.LayoutParams mainparams =new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,ViewGroup.LayoutParams.WRAP_CONTENT);
         try {
             JSONObject form = FormUtils.getInstance(AncApplication.getInstance().getApplicationContext()).getFormJson(Constants.JSON_FORM.MEMBER_REGISTER);
             JSONArray field = fields(form);
+            for(int i=0;i<field.length();i++){
+                processPopulatableFieldsForHouseholds(householdDetails.getColumnmaps(),field.getJSONObject(i));
+            }
             for(int i = 0;i<field.length();i++){
                 if(field.getJSONObject(i).has("hint")) {
                     LinearLayout LayoutForDetailRow = new LinearLayout(getActivity());
                     LayoutForDetailRow.setOrientation(LinearLayout.HORIZONTAL);
-                    TextView textLabel = new TextView(getActivity());
-                    TextView textValue = new TextView(getActivity());
-
+                    CustomFontTextView textLabel = new CustomFontTextView(getActivity());
+                    textLabel.setTextSize(15);
+                    CustomFontTextView textValue = new CustomFontTextView(getActivity());
+                    textValue.setTextSize(15);
                     textLabel.setText(field.getJSONObject(i).getString("hint"));
                     textLabel.setSingleLine(false);
-                    textValue.setText(householdDetails.getColumnmaps().get(field.getJSONObject(i).getString(JsonFormUtils.KEY)));
+                    if(field.getJSONObject(i).has(JsonFormUtils.VALUE)) {
+                        textValue.setText(field.getJSONObject(i).getString(JsonFormUtils.VALUE));
+                    }
                     textValue.setSingleLine(false);
-//                    textValue.setBackgroundColor(getResources().getColor(R.color.refer_close_red));
-
-                    LinearLayout.LayoutParams params =new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,ViewGroup.LayoutParams.WRAP_CONTENT);
+                    LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
                     params.weight = 1;
-                    params.setMargins(5,5,5,5);
-
-                    LayoutForDetailRow.addView(textLabel,params);
-                    LayoutForDetailRow.addView(textValue,params);
-
-                    linearLayoutholder.addView(LayoutForDetailRow);
+                    params.setMargins(5, 5, 5, 5);
+                    LayoutForDetailRow.addView(textLabel, params);
+                    LayoutForDetailRow.addView(textValue, params);
+                    linearLayoutholder.addView(LayoutForDetailRow, mainparams);
                 }
-
             }
 
         }catch (Exception e){
