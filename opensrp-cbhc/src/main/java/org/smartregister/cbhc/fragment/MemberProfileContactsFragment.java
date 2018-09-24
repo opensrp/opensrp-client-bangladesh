@@ -1,5 +1,6 @@
 package org.smartregister.cbhc.fragment;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -79,11 +80,18 @@ public class MemberProfileContactsFragment extends BaseProfileFragment {
             }
             for(int i = 0;i<field.length();i++){
                 if(field.getJSONObject(i).has("hint")) {
-                    LinearLayout LayoutForDetailRow = new LinearLayout(getActivity());
-                    LayoutForDetailRow.setOrientation(LinearLayout.HORIZONTAL);
-                    CustomFontTextView textLabel = new CustomFontTextView(getActivity());
+                    inflater = (LayoutInflater) getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+                    View view = inflater.inflate(R.layout.overview_list_row, null, false);
+                    LinearLayout LayoutForDetailRow = (LinearLayout)view;
+//                    LinearLayout LayoutForDetailRow = new LinearLayout(getActivity());
+//                    LayoutForDetailRow.setOrientation(LinearLayout.HORIZONTAL);
+                    TextView textLabel = (TextView)LayoutForDetailRow.findViewById(R.id.label);
+                    TextView textValue = (TextView)LayoutForDetailRow.findViewById(R.id.value);
+
+
+//                    CustomFontTextView textLabel = new CustomFontTextView(getActivity());
                     textLabel.setTextSize(15);
-                    CustomFontTextView textValue = new CustomFontTextView(getActivity());
+//                    CustomFontTextView textValue = new CustomFontTextView(getActivity());
                     textValue.setTextSize(15);
                     textLabel.setText(field.getJSONObject(i).getString("hint"));
                     textLabel.setSingleLine(false);
@@ -91,12 +99,13 @@ public class MemberProfileContactsFragment extends BaseProfileFragment {
                         textValue.setText(field.getJSONObject(i).getString(JsonFormUtils.VALUE));
                     }
                     textValue.setSingleLine(false);
-                    LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-                    params.weight = 1;
-                    params.setMargins(5, 5, 5, 5);
-                    LayoutForDetailRow.addView(textLabel, params);
-                    LayoutForDetailRow.addView(textValue, params);
-                    linearLayoutholder.addView(LayoutForDetailRow, mainparams);
+//                    LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+//                    params.weight = 1;
+//                    params.setMargins(5, 5, 5, 5);
+//                    LayoutForDetailRow.addView(textLabel, params);
+//                    LayoutForDetailRow.addView(textValue, params);
+//                    linearLayoutholder.addView(LayoutForDetailRow, mainparams);
+                    linearLayoutholder.addView(LayoutForDetailRow);
                 }
             }
 

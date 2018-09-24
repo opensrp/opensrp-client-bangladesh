@@ -49,6 +49,8 @@ public abstract class Constants {
 
         public static final String ANC_REGISTER = "anc_register";
         public static final String ANC_CLOSE = "anc_close";
+        public static final String FOLLOW_UP = "member_followup";
+
     }
 
     public static class JSON_FORM_KEY {

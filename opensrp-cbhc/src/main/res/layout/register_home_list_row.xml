@@ -33,11 +33,8 @@
 			android:layout_marginEnd="15dp"
 			android:layout_marginLeft="15dp"
 			android:layout_marginRight="15dp"
-			android:layout_marginStart="15dp"
 			android:gravity="center"
-			android:orientation="vertical"
-			android:paddingBottom="5dp"
-			android:paddingTop="5dp">
+			android:orientation="vertical">
 
 			<org.smartregister.view.customcontrols.CustomFontTextView
 				android:id="@+id/patient_name"
@@ -80,6 +77,16 @@
 
 			<org.smartregister.view.customcontrols.CustomFontTextView
 				android:id="@+id/anc_id"
+				style="@style/CustomFontTextViewStyle.ClientList.Light"
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:paddingLeft="0dp"
+				android:text="ID: 3034503"
+				android:textColor="#9d9d9d"
+				android:textSize="12sp" />
+
+			<org.smartregister.view.customcontrols.CustomFontTextView
+				android:id="@+id/member_count"
 				style="@style/CustomFontTextViewStyle.ClientList.Light"
 				android:layout_width="match_parent"
 				android:layout_height="wrap_content"

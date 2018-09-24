@@ -4,7 +4,7 @@
     <string name="action_language">Language</string>
 
     <!-- General -->
-    <string name="app_name">OpenSRP CBHC</string>
+    <string name="app_name">CBHC</string>
     <string name="saving_dialog_title">Saving…</string>
     <string name="removing_dialog_title">Removing…</string>
     <string name="please_wait_message">Please wait</string>
@@ -133,6 +133,8 @@
 
     <string name="call">Call</string>
     <string name="start_contact">Start Contact</string>
+    <string name="start_follow_up">Follow Up</string>
+
     <string name="close_anc_record">Close ANC Record</string>
     <string name="copy_to_clipboard">Copy to clipboard</string>
     <string name="no_matching_woman_found_on_this_device">No matching woman found on this device.</string>
@@ -143,12 +145,12 @@
 
     <string name="record_birth">Record Birth</string>
 	<string name="woman_filter">Filter</string>
-	<string name="clients">%1$d Clients</string>
-	<string name="client">%1$d Client</string>
+	<string name="clients">%1$d Households</string>
+	<string name="client">%1$d Household</string>
     <string name="register">Register</string>
     <string name="library">Library</string>
     <string name="me">Me</string>
-    <string name="clients_menu">Clients</string>
+    <string name="clients_menu">Households</string>
 	<string name="_0_clients_sort_updated">0 Clients (Sort: updated)</string>
 	<string name="the_qr_code_scanner_button">The QR Code Scanner button</string>
 

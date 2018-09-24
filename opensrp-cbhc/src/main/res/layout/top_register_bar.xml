@@ -21,7 +21,7 @@
             android:layout_alignParentBottom="true"
             android:layout_margin="3dp"
             android:gravity="center"
-            android:src="@drawable/ic_icon_qr_code" />
+            android:src="@drawable/opensrp_white_logo_back" />
 
         <ProgressBar
             android:id="@+id/sync_progress_bar"
@@ -55,7 +55,7 @@
             android:adjustViewBounds="false"
             android:contentDescription="@string/app_name"
             android:scaleType="center"
-            android:src="@drawable/ic_opensrp_logo" />
+            android:src="@drawable/cbhc" />
 
     </RelativeLayout>
 

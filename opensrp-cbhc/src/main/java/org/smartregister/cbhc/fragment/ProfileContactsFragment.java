@@ -1,5 +1,6 @@
 package org.smartregister.cbhc.fragment;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -94,24 +95,34 @@ public class ProfileContactsFragment extends BaseProfileFragment {
             }
             for(int i = 0;i<field.length();i++){
                 if(field.getJSONObject(i).has("hint")) {
-                    LinearLayout LayoutForDetailRow = new LinearLayout(getActivity());
-                    LayoutForDetailRow.setOrientation(LinearLayout.HORIZONTAL);
-                    CustomFontTextView textLabel = new CustomFontTextView(getActivity());
+                    inflater = (LayoutInflater) getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+                    View view = inflater.inflate(R.layout.overview_list_row, null, false);
+                    LinearLayout LayoutForDetailRow = (LinearLayout)view;
+//                    LinearLayout LayoutForDetailRow = new LinearLayout(getActivity());
+//                    LayoutForDetailRow.setOrientation(LinearLayout.HORIZONTAL);
+                    TextView textLabel = (TextView)LayoutForDetailRow.findViewById(R.id.label);
+                    TextView textValue = (TextView)LayoutForDetailRow.findViewById(R.id.value);
+
+
+//                    CustomFontTextView textLabel = new CustomFontTextView(getActivity());
                     textLabel.setTextSize(15);
-                    CustomFontTextView textValue = new CustomFontTextView(getActivity());
+//                    CustomFontTextView textValue = new CustomFontTextView(getActivity());
                     textValue.setTextSize(15);
                     textLabel.setText(field.getJSONObject(i).getString("hint"));
                     textLabel.setSingleLine(false);
                     if(field.getJSONObject(i).has(JsonFormUtils.VALUE)) {
-                        textValue.setText(field.getJSONObject(i).getString(JsonFormUtils.VALUE));
+                        String value = field.getJSONObject(i).getString(JsonFormUtils.VALUE);
+                        value = processLocationValue(value);
+                        textValue.setText(value);
                     }
-                    textValue.setSingleLine(false);
-                    LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-                    params.weight = 1;
-                    params.setMargins(5, 5, 5, 5);
-                    LayoutForDetailRow.addView(textLabel, params);
-                    LayoutForDetailRow.addView(textValue, params);
-                    linearLayoutholder.addView(LayoutForDetailRow, mainparams);
+                                        textValue.setSingleLine(false);
+//                    LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+//                    params.weight = 1;
+//                    params.setMargins(5, 5, 5, 5);
+//                    LayoutForDetailRow.addView(textLabel, params);
+//                    LayoutForDetailRow.addView(textValue, params);
+//                    linearLayoutholder.addView(LayoutForDetailRow, mainparams);
+                    linearLayoutholder.addView(LayoutForDetailRow);
                 }
             }
 
@@ -188,6 +199,19 @@ public class ProfileContactsFragment extends BaseProfileFragment {
             Log.e("ereor",e.getMessage());
         }
         return fragmentView;
+    }
+
+    private String processLocationValue(String value) {
+        if(value.contains("[")){
+            value = value.replace("[","").replace("]","");
+            if(value.contains(",")){
+                value = value.split(",")[value.split(",").length-1];
+                if(value.contains("\"")){
+                    value = value.replace("\"","");
+                }
+            }
+        }
+        return value;
     }
 
     public static void processPopulatableFieldsForHouseholds(Map<String, String> womanClient, JSONObject jsonObject) throws JSONException {
@@ -285,6 +309,12 @@ public class ProfileContactsFragment extends BaseProfileFragment {
             try {
                 if(jsonObject.getString("openmrs_entity").equalsIgnoreCase("person_attribute")
                         ||jsonObject.getString("openmrs_entity").equalsIgnoreCase("person")
+                        ){
+                    String attributename = jsonObject.getString("openmrs_entity_id");
+                    keyname = attributename;
+                }
+                if(jsonObject.getString("openmrs_entity").equalsIgnoreCase("person_address")
+                        &&jsonObject.getString("openmrs_entity_id").equalsIgnoreCase("address7")
                         ){
                     String attributename = jsonObject.getString("openmrs_entity_id");
                     keyname = attributename;

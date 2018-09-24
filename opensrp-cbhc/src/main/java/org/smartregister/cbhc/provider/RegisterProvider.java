@@ -2,7 +2,9 @@ package org.smartregister.cbhc.provider;
 
 import android.content.Context;
 import android.database.Cursor;
+import android.os.AsyncTask;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,7 +12,9 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import org.apache.commons.lang3.text.WordUtils;
+import org.mozilla.javascript.EcmaError;
 import org.smartregister.cbhc.R;
+import org.smartregister.cbhc.application.AncApplication;
 import org.smartregister.cbhc.fragment.BaseRegisterFragment;
 import org.smartregister.cbhc.util.DBConstants;
 import org.smartregister.cbhc.util.Utils;
@@ -57,7 +61,7 @@ public class RegisterProvider implements RecyclerViewProvider<RegisterProvider.R
             populatePatientColumn(pc, client, viewHolder);
             populateIdentifierColumn(pc, viewHolder);
             populateLastColumn(pc, viewHolder);
-
+            (new MemberCountAsyncTask(pc,viewHolder.memberCount)).execute();
             return;
         }
 
@@ -106,6 +110,7 @@ public class RegisterProvider implements RecyclerViewProvider<RegisterProvider.R
 
         View riskLayout = viewHolder.risk;
         attachRiskLayoutOnclickListener(riskLayout, client);
+
     }
 
 
@@ -235,6 +240,52 @@ public class RegisterProvider implements RecyclerViewProvider<RegisterProvider.R
 
     }
 
+    class MemberCountAsyncTask extends AsyncTask{
+        CommonPersonObjectClient pc;
+        int count = 0;
+        TextView countView;
+        public MemberCountAsyncTask(CommonPersonObjectClient pc,TextView countview){
+            this.pc = pc;
+            this.countView = countview;
+        }
+
+        @Override
+        protected Object doInBackground(Object[] objects) {
+            Cursor cursor  ;
+            try{
+                cursor = AncApplication.getInstance().getContext().commonrepository("ec_member").rawCustomQueryForAdapter("Select Count(*) from ec_member where relational_id = '"+pc.getCaseId()+"'");
+                cursor.moveToFirst();
+                count = count+Integer.parseInt(cursor.getString(0));
+                cursor.close();
+            }catch (Exception e){
+                Log.e("member error",e.getMessage());
+            }
+            try{
+                cursor = AncApplication.getInstance().getContext().commonrepository("ec_child").rawCustomQueryForAdapter("Select Count(*) from ec_child where relational_id = '"+pc.getCaseId()+"'");
+                cursor.moveToFirst();
+                count = count+Integer.parseInt(cursor.getString(0));
+                cursor.close();
+            }catch (Exception e){
+
+            }
+            try{
+                cursor = AncApplication.getInstance().getContext().commonrepository("ec_woman").rawCustomQueryForAdapter("Select Count(*) from ec_woman where relational_id = '"+pc.getCaseId()+"'");
+                count = count+Integer.parseInt(cursor.getString(0));
+                cursor.moveToFirst();
+                cursor.close();
+            }catch (Exception e){
+
+            }
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Object o) {
+            super.onPostExecute(o);
+            countView.setText("Members: "+count);
+        }
+    }
+
     ////////////////////////////////////////////////////////////////
     // Inner classes
     ////////////////////////////////////////////////////////////////
@@ -244,6 +295,7 @@ public class RegisterProvider implements RecyclerViewProvider<RegisterProvider.R
         public TextView age;
         public TextView ga;
         public TextView ancId;
+        public TextView memberCount;
         public TextView risk;
         public Button dueButton;
         public Button sync;
@@ -259,6 +311,7 @@ public class RegisterProvider implements RecyclerViewProvider<RegisterProvider.R
             risk = itemView.findViewById(R.id.risk);
             dueButton = itemView.findViewById(R.id.due_button);
             sync = itemView.findViewById(R.id.sync);
+            memberCount = itemView.findViewById(R.id.member_count);
 
             patientColumn = itemView.findViewById(R.id.patient_column);
         }

@@ -4,25 +4,13 @@
 	<item
 			android:id="@+id/action_clients"
 			android:enabled="true"
-			android:icon="@drawable/ic_icon_nav_clients"
+			android:icon="@drawable/household_bottom"
 			android:title="@string/clients_menu"
-			app:showAsAction="ifRoom"/>
-	<item
-			android:id="@+id/action_search"
-			android:enabled="true"
-			android:icon="@drawable/ic_icon_search"
-			android:title="@string/search"
 			app:showAsAction="ifRoom"/>
 	<item
 			android:id="@+id/action_register"
 			android:enabled="true"
 			android:icon="@drawable/ic_icon_nav_new"
 			android:title="@string/register"
-			app:showAsAction="ifRoom"/>
-	<item
-			android:id="@+id/action_library"
-			android:enabled="true"
-			android:icon="@drawable/ic_icon_open_book"
-			android:title="@string/library"
 			app:showAsAction="ifRoom"/>
 </menu>

@@ -55,15 +55,6 @@
     "title": "Member Registration",
     "fields": [
       {
-        "key": "woman_photo",
-        "openmrs_entity_parent": "",
-        "openmrs_entity": "",
-        "openmrs_entity_id": "",
-        "openmrs_data_type": "text",
-        "type": "choose_image",
-        "uploadButtonText": "Take a photo of the member"
-      },
-      {
         "key": "member_unique_ID",
         "openmrs_entity_parent": "",
         "openmrs_entity": "person_attribute",
@@ -74,12 +65,14 @@
         "values": [
           "জাতীয় পরিচয় পত্র",
           "জন্মনিবন্ধন",
-          "ইপিআই কার্ড নাম্বার"
+          "ইপিআই কার্ড নাম্বার",
+          "আইডি কার্ড নেই"
         ],
         "openmrs_choice_ids": {
           "জাতীয় পরিচয় পত্র":"Citizen_NID",
           "জন্মনিবন্ধন":"Citizen_BRID",
-          "ইপিআই কার্ড নাম্বার":"Citizen_Card_number"
+          "ইপিআই কার্ড নাম্বার":"Citizen_Card_number",
+          "আইডি কার্ড নেই":"no_id_card"
         }
       },
       {
@@ -113,7 +106,7 @@
         "key": "member_BRID",
         "openmrs_entity_parent": "",
         "openmrs_entity": "person_attribute",
-        "openmrs_entity_id": "nationalId",
+        "openmrs_entity_id": "birthRegistrationID",
         "openmrs_data_type": "text",
         "type": "edit_text",
         "hint": "জন্মনিবন্ধন",
@@ -140,7 +133,7 @@
         "key": "Citizen_Card_number",
         "openmrs_entity_parent": "",
         "openmrs_entity": "person_attribute",
-        "openmrs_entity_id": "nationalId",
+        "openmrs_entity_id": "epicardnumber",
         "openmrs_data_type": "text",
         "type": "edit_text",
         "hint": "ইপিআই কার্ড নাম্বার",
@@ -194,7 +187,7 @@
         },
         "v_required": {
           "value": "true",
-          "err": "Please enter the Child's ZEIR ID"
+          "err": "Please enter the  ID"
         }
       },
       {
@@ -232,8 +225,9 @@
       {
         "key": "Mother_Guardian_First_Name_english",
         "openmrs_entity_parent": "",
-        "openmrs_entity": "",
-        "openmrs_entity_id": "",
+        "openmrs_entity": "person_attribute",
+        "openmrs_entity_id": "motherNameEnglish",
+        "openmrs_data_type": "text",
         "type": "edit_text",
         "hint": "মাতার নাম (ইংরেজীতে)",
         "edit_type": "name",
@@ -249,8 +243,9 @@
       {
         "key": "Mother_Guardian_First_Name_bengali",
         "openmrs_entity_parent": "",
-        "openmrs_entity": "",
-        "openmrs_entity_id": "",
+        "openmrs_entity": "person_attribute",
+        "openmrs_entity_id": "motherNameBangla",
+        "openmrs_data_type": "text",
         "type": "edit_text",
         "hint": "মাতার নাম (বাংলায়)",
         "edit_type": "name",
@@ -300,12 +295,12 @@
         "type": "spinner",
         "hint": "জন্ম তারিখ জানা আছে কি?",
         "values": [
-          "YES",
-          "NO"
+          "হ্যাঁ",
+          "না"
         ],
         "openmrs_choice_ids": {
-          "বাঙ্গালী": "Bengali",
-          "ঝোপ জংগল": "Bush"
+          "হ্যাঁ": "Yes",
+          "না": "No"
         }
       },
       {
@@ -323,7 +318,7 @@
         "relevance": {
           "step1:member_birth_date_known": {
             "type": "string",
-            "ex": "equalTo(., \"YES\")"
+            "ex": "equalTo(., \"হ্যাঁ\")"
           }
         },
         "max_date": "today"
@@ -347,7 +342,7 @@
         "relevance": {
           "step1:member_birth_date_known": {
             "type": "string",
-            "ex": "equalTo(., \"NO\")"
+            "ex": "equalTo(., \"না\")"
           }
         }
       },
@@ -365,8 +360,9 @@
           "তৃতীয় লিঙ্গ"
         ],
         "openmrs_choice_ids": {
-          "বাঙ্গালী": "Bengali",
-          "ঝোপ জংগল": "Bush"
+          "পুরুষ":"M",
+          "মহিলা":"F",
+          "তৃতীয় লিঙ্গ":"O"
         }
       },
       {
@@ -478,7 +474,7 @@
           "err": "Please Enter a Valid Name"
         },
         "relevance": {
-          "step1:maritial_status": {
+          "step1:marital_status": {
             "type": "string",
             "ex": "equalTo(., \"বিবাহিত\")"
           }
@@ -501,7 +497,7 @@
           "err": "Please Enter a Valid Name"
         },
         "relevance": {
-          "step1:maritial_status": {
+          "step1:marital_status": {
             "type": "string",
             "ex": "equalTo(., \"বিবাহিত\")"
           }
@@ -918,6 +914,80 @@
         }
       },
       {
+        "key": "has_disease",
+        "openmrs_entity_parent": "",
+        "openmrs_entity": "person_attribute",
+        "openmrs_entity_id": "has_disease",
+        "openmrs_data_type": "text",
+        "type": "spinner",
+        "hint": "রোগ (যদি থাকে)",
+        "values": [
+          "হ্যাঁ",
+          "না"
+        ],
+        "openmrs_choice_ids": {
+          "হ্যাঁ": "Yes",
+          "না": "No"
+        }
+      },
+      {
+        "key": "Disease_status",
+        "openmrs_entity_parent": "",
+        "openmrs_entity": "person_attribute",
+        "openmrs_entity_id": "Disease_status",
+        "openmrs_data_type": "text",
+        "type": "spinner",
+        "hint": "রোগ বা অবস্থা",
+        "values": [
+          "উচ্চ রক্তচাপ",
+          "ডায়াবেটিস",
+          "সম্ভাব্য যক্ষ্মা",
+          "খুব মারাত্বক রোগ",
+          "নিউমোনিয়া",
+          "নিউমোনিয়া নয় সর্দি, কাশী",
+          "ডায়ারিয়া ও আমাশয়",
+          "জ্বর",
+          "জ্বর, (ম্যালারিয়া)" ,
+          "কানের সমস্যা",
+          "হাম",
+          "নাভিতে সংক্রামন",
+          "চোখ উঠা",
+          "আঘাত",
+          "প্রসব পূর্ব",
+          "প্রসবোত্তর",
+          "পরিবার পরিকল্পনা",
+          "স্বাভাবিক প্রসব",
+          "অন্যান্য"
+        ],
+        "openmrs_choice_ids": {
+          "উচ্চ রক্তচাপ":"High Blood Pressure",
+          "ডায়াবেটিস":"Diabetes",
+          "সম্ভাব্য যক্ষ্মা":"Tuberculosis",
+          "খুব মারাত্বক রোগ":"Very_severe_disease",
+          "নিউমোনিয়া":"Pneumonia",
+          "নিউমোনিয়া নয় সর্দি, কাশী":"Pneumonia, unspec.",
+          "ডায়ারিয়া ও আমাশয়":"dieriaanddysentry",
+          "জ্বর":"Fever",
+          "জ্বর, (ম্যালারিয়া)":"maleria",
+          "কানের সমস্যা":"Hearing loss, unspec.",
+          "হাম":"Measles",
+          "নাভিতে সংক্রামন":"nevalinfection",
+          "চোখ উঠা":"Conjunctivitis, unspec.",
+          "আঘাত":"Injury",
+          "প্রসব পূর্ব":"Antenatal Period",
+          "প্রসবোত্তর":"Postnatal",
+          "পরিবার পরিকল্পনা":"familyplanning",
+          "স্বাভাবিক প্রসব":"regulardelivery",
+          "অন্যান্য":"Others_member_disease"
+        },
+        "relevance": {
+          "step1:has_disease": {
+            "type": "string",
+            "ex": "equalTo(., \"হ্যাঁ\")"
+          }
+        }
+      },
+      {
         "key": "illness_information",
         "openmrs_entity_parent": "",
         "openmrs_entity": "person_attribute",
@@ -930,7 +1000,7 @@
           "ডায়াবেটিস",
           "যক্ষ্মা",
           "প্রতিবন্ধিতা",
-          "PhycologicalDisease",
+          "মানসিক অসুখ",
           "অন্যান্য"
         ],
         "openmrs_choice_ids": {
@@ -938,7 +1008,7 @@
           "ডায়াবেটিস": "Diabetes",
           "যক্ষ্মা": "Tuberculosis",
           "প্রতিবন্ধিতা": "Disability",
-          "PhycologicalDisease": "Psychological Disease",
+          "মানসিক অসুখ":"Psychological Disease",
           "অন্যান্য": "Others (Family Disease)"
         }
       },

@@ -233,7 +233,7 @@ public class ProfileOverviewFragment extends BaseProfileFragment {
                         //set profile image by passing the client id.If the image doesn't exist in the image org.smartregister.cbhc.repository then download and save locally
                         profileImageIV.setTag(org.smartregister.R.id.entity_id, pClient.entityId());
 //                        DrishtiApplication.getCachedImageLoaderInstance().getImageByClientId(pClient.entityId(), OpenSRPImageLoader.getStaticImageListener((ImageView) profileImageIV, R.drawable.man_cbhc_member_logo, R.drawable.man_cbhc_member_logo));
-                        profileImageIV.setImageDrawable(getResources().getDrawable(R.drawable.man_cbhc_member_logo));
+                        profileImageIV.setImageDrawable(getResources().getDrawable(R.drawable.male));
 
                         clientype = "member";
                     }

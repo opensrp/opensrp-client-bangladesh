@@ -1,0 +1,143 @@
+{
+  "count": "1",
+  "encounter_type": "Member Follow Up",
+  "entity_id": "",
+  "metadata": {
+    "start": {
+      "openmrs_entity_parent": "",
+      "openmrs_entity": "concept",
+      "openmrs_data_type": "start",
+      "openmrs_entity_id": "163137AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
+    },
+    "end": {
+      "openmrs_entity_parent": "",
+      "openmrs_entity": "concept",
+      "openmrs_data_type": "end",
+      "openmrs_entity_id": "163138AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
+    },
+    "today": {
+      "openmrs_entity_parent": "",
+      "openmrs_entity": "encounter",
+      "openmrs_entity_id": "encounter_date"
+    },
+    "deviceid": {
+      "openmrs_entity_parent": "",
+      "openmrs_entity": "concept",
+      "openmrs_data_type": "deviceid",
+      "openmrs_entity_id": "163149AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
+    },
+    "subscriberid": {
+      "openmrs_entity_parent": "",
+      "openmrs_entity": "concept",
+      "openmrs_data_type": "subscriberid",
+      "openmrs_entity_id": "163150AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
+    },
+    "simserial": {
+      "openmrs_entity_parent": "",
+      "openmrs_entity": "concept",
+      "openmrs_data_type": "simserial",
+      "openmrs_entity_id": "163151AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
+    },
+    "phonenumber": {
+      "openmrs_entity_parent": "",
+      "openmrs_entity": "concept",
+      "openmrs_data_type": "phonenumber",
+      "openmrs_entity_id": "163152AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
+    },
+    "encounter_location": ""
+  },
+  "step1": {
+    "title": "Member Follow Up",
+    "fields": [
+      {
+        "key": "status",
+        "openmrs_entity_parent": "",
+        "openmrs_entity": "",
+        "openmrs_entity_id": "",
+        "openmrs_data_type": "",
+        "type": "spinner",
+        "hint": "স্ট্যাটাস",
+        "values": [
+          "গর্ভবতী",
+          "প্রসব",
+          "ডিভোর্স",
+          "মৃত্যু",
+          "স্থানান্তরিত"
+        ],
+        "v_required": {
+          "value": "true",
+          "err": "Please select one option *"
+        }
+      },
+      {
+        "key": "lmp_date",
+        "openmrs_entity_parent": "",
+        "openmrs_entity": "",
+        "openmrs_entity_id": "",
+        "type": "date_picker",
+        "hint": "শেষ মাসিকের তারিখ।",
+        "expanded": false,
+        "duration": {
+          "label": "Yrs"
+        },
+        "max_date": "today",
+        "v_required": {
+          "value": "true",
+          "err": "Please enter the date of delivery"
+        },
+        "relevance": {
+          "step1:status": {
+            "type": "string",
+            "ex": "regex(., \"(গর্ভবতী)\")"
+          }
+        }
+      },
+      {
+        "key": "delivery_date",
+        "openmrs_entity_parent": "",
+        "openmrs_entity": "",
+        "openmrs_entity_id": "",
+        "type": "date_picker",
+        "hint": "প্রসবের তারিখ",
+        "expanded": false,
+        "duration": {
+          "label": "Yrs"
+        },
+        "max_date": "today",
+        "v_required": {
+          "value": "true",
+          "err": "Please enter the date of delivery"
+        },
+        "relevance": {
+          "step1:status": {
+            "type": "string",
+            "ex": "regex(., \"(প্রসব)\")"
+          }
+        }
+      },
+      {
+        "key": "death_date",
+        "openmrs_entity_parent": "",
+        "openmrs_entity": "",
+        "openmrs_entity_id": "",
+        "type": "date_picker",
+        "hint": "মৃত্যু তারিখ",
+        "expanded": false,
+        "duration": {
+          "label": "Yrs"
+        },
+        "max_date": "today",
+        "v_required": {
+          "value": "true",
+          "err": "Please enter the date of death"
+        },
+        "relevance": {
+          "step1:status": {
+            "type": "string",
+            "ex": "regex(., \"(মৃত্যু)\")"
+          }
+        }
+      }
+    ]
+  }
+}

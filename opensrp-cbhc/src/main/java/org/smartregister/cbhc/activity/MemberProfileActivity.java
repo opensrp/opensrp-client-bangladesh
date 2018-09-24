@@ -95,9 +95,9 @@ public class MemberProfileActivity extends BaseProfileActivity implements Profil
         }else if(typeofMember.equalsIgnoreCase("femalechild")){
             circleprofile.setImageDrawable(getResources().getDrawable(R.drawable.child_girl_infant));
         }else if(typeofMember.equalsIgnoreCase("woman")){
-            circleprofile.setImageDrawable(getResources().getDrawable(R.drawable.woman_cbhc_member_logo));
+            circleprofile.setImageDrawable(getResources().getDrawable(R.drawable.female_register_placeholder_profile));
         }else if(typeofMember.equalsIgnoreCase("member")){
-            circleprofile.setImageDrawable(getResources().getDrawable(R.drawable.man_cbhc_member_logo));
+            circleprofile.setImageDrawable(getResources().getDrawable(R.drawable.male_register_placeholder_profile));
         }
 
         TabLayout tabLayout = findViewById(R.id.tabs);
@@ -164,20 +164,22 @@ public class MemberProfileActivity extends BaseProfileActivity implements Profil
         switch (view.getId()) {
             case R.id.btn_profile_registration_info:
                 householdDetails.getColumnmaps().putAll(AncApplication.getInstance().getContext().detailsRepository().getAllDetailsForClient(householdDetails.entityId()));
-                String formMetadata = JsonFormUtils.getHouseholdJsonEditFormString(this, householdDetails.getColumnmaps());
-                try {
-                    JsonFormUtils.startFormForEdit(this, JsonFormUtils.REQUEST_CODE_GET_JSON, formMetadata);
-                } catch (Exception e) {
-
-                }
-            case R.id.edit_member:
-                CommonPersonObjectClient pclient  = (CommonPersonObjectClient) view.getTag();
-                String formMetadataformembers = JsonFormUtils.getMemberJsonEditFormString(this, pclient.getColumnmaps());
+                String formMetadataformembers = JsonFormUtils.getMemberJsonEditFormString(this, householdDetails.getColumnmaps());
                 try {
                     JsonFormUtils.startFormForEdit(this, JsonFormUtils.REQUEST_CODE_GET_JSON, formMetadataformembers);
                 } catch (Exception e) {
 
                 }
+                break;
+            case R.id.edit_member:
+//                CommonPersonObjectClient pclient  = (CommonPersonObjectClient) view.getTag();
+//                String formMetadataformembers = JsonFormUtils.getMemberJsonEditFormString(this, pclient.getColumnmaps());
+//                try {
+//                    JsonFormUtils.startFormForEdit(this, JsonFormUtils.REQUEST_CODE_GET_JSON, formMetadataformembers);
+//                } catch (Exception e) {
+//
+//                }
+                break;
         }
     }
 
@@ -210,8 +212,8 @@ public class MemberProfileActivity extends BaseProfileActivity implements Profil
 
             final ArrayAdapter<String> arrayAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1);
             arrayAdapter.add(getString(R.string.call));
-            arrayAdapter.add(getString(R.string.start_contact));
-            arrayAdapter.add(getString(R.string.close_anc_record));
+            arrayAdapter.add(getString(R.string.start_follow_up));
+//            arrayAdapter.add(getString(R.string.close_anc_record));
 
             builderSingle.setAdapter(arrayAdapter, new DialogInterface.OnClickListener() {
                 @Override
@@ -221,8 +223,10 @@ public class MemberProfileActivity extends BaseProfileActivity implements Profil
                         case "Call":
                             launchPhoneDialer(womanPhoneNumber);
                             break;
-                        case "Start Contact":
-                            QuickCheckFragment.launchDialog(MemberProfileActivity.this, DIALOG_TAG);
+                        case "Follow Up":
+                            getIntent().putExtra(Constants.INTENT_KEY.BASE_ENTITY_ID,householdDetails.getCaseId());
+//                            (Constants.INTENT_KEY.BASE_ENTITY_ID)
+                            JsonFormUtils.launchFollowUpForm(MemberProfileActivity.this);
                             break;
                         case "Close ANC Record":
                             JsonFormUtils.launchANCCloseForm(MemberProfileActivity.this);

@@ -10,13 +10,14 @@
 			android:layout_width="match_parent"
 			android:layout_height="match_parent">
 
-		<TextView
-				android:id="@+id/library_placeholder"
-				android:text="@string/me_page_placeholder"
-				android:gravity="center"
-				android:layout_gravity="center"
-				android:layout_width="match_parent"
-				android:layout_height="wrap_content"/>
+		<Button
+			android:id="@+id/logout"
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:layout_gravity="center"
+			android:layout_margin="25dp"
+			android:gravity="center"
+			android:text="@string/logout_text" />
 
 	</LinearLayout>
 </RelativeLayout>

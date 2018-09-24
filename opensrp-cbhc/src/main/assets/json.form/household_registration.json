@@ -55,14 +55,6 @@
     "title": "Household Registration",
     "fields": [
       {
-        "key": "household_photo",
-        "openmrs_entity_parent": "",
-        "openmrs_entity": "",
-        "openmrs_entity_id": "",
-        "type": "choose_image",
-        "uploadButtonText": "পরিবারের প্রধানের ছবি তুলুন "
-      },
-      {
         "key": "gps",
         "openmrs_entity_parent": "usual_residence",
         "openmrs_entity": "person_address",
@@ -88,7 +80,7 @@
         "key": "ADDRESS_LINE",
         "openmrs_entity_parent": "usual_residence",
         "openmrs_entity": "person_address",
-        "openmrs_entity_id": "address1",
+        "openmrs_entity_id": "address7",
         "openmrs_data_type": "text",
         "type": "edit_text",
         "hint": "গ্রাম/মহল্লা/বাড়ি/সড়ক নম্বর"
@@ -147,7 +139,7 @@
         "openmrs_entity": "person_identifier",
         "openmrs_entity_id": "Patient_Identifier",
         "type": "edit_text",
-        "hint": "খানার আইডি",
+        "hint": "খানার নিবন্ধন আইডি",
         "read_only":"true",
         "value": "0",
         "v_numeric": {
@@ -312,7 +304,7 @@
         }
       },
       {
-        "key": "source_of_water",
+        "key": "water_source",
         "openmrs_entity_parent": "",
         "openmrs_entity": "concept",
         "openmrs_entity_id": "3a46b207-dc8b-4e5b-8b1f-162fca3905ca",
@@ -321,7 +313,7 @@
         "hint": "পরিবারের খাবার পানির উৎস",
         "values": [
           "টিউবওয়েল (লাল)",
-          " টিউবওয়েল (সবুজ)",
+          "টিউবওয়েল (সবুজ)",
           "টিউবওয়েল (আর্সেনিক পরিক্ষা করা হয়নি)",
           "বৃষ্টির পানি",
           "নদা/খাল",
@@ -387,6 +379,10 @@
         "v_required": {
           "value": "true",
           "err": "Please enter the amount"
+        },
+        "v_regex": {
+          "value": "^[1-9]+[0-9]*$",
+          "err": "must be greater than 0"
         },
         "v_numeric": {
           "value": "true",
@@ -550,30 +546,6 @@
         "openmrs_entity_id": "",
         "type": "edit_text",
         "hint": "তথ্য প্রদানকারীর নামঃ",
-        "v_required": {
-          "value": "true",
-          "err": "Please enter the value"
-        }
-      },
-      {
-        "key": "information_collector_name",
-        "openmrs_entity_parent": "",
-        "openmrs_entity": "",
-        "openmrs_entity_id": "",
-        "type": "edit_text",
-        "hint": "তথ্য সংগ্রহকারীর নামঃ",
-        "v_required": {
-          "value": "true",
-          "err": "Please enter the value"
-        }
-      },
-      {
-        "key": "designation",
-        "openmrs_entity_parent": "",
-        "openmrs_entity": "",
-        "openmrs_entity_id": "",
-        "type": "edit_text",
-        "hint": "পদবী",
         "v_required": {
           "value": "true",
           "err": "Please enter the value"

@@ -298,6 +298,22 @@ public class JsonFormUtils extends org.smartregister.util.JsonFormUtils {
 
             }
 
+            try{
+                for (int i = 0; i < fields.length(); i++) {
+                    String key = fields.getJSONObject(i).getString("key");
+
+                    if (key.equals("ADDRESS_LINE")) {
+                        if (!TextUtils.isEmpty(fields.getJSONObject(i).getString("value"))) {
+                            String address = fields.getJSONObject(i).getString("value");
+                               address1.addAddressField("address7",address);
+
+                        }
+                    }
+                }
+            }catch (Exception e){
+
+            }
+
 
 
             Client baseClient = org.smartregister.util.JsonFormUtils.createBaseClient(fields, formTag, entityId);
@@ -340,6 +356,8 @@ public class JsonFormUtils extends org.smartregister.util.JsonFormUtils {
             if(encounterType.equalsIgnoreCase(Constants.EventType.Child_REGISTRATION)){
                 entitytypeName = DBConstants.CHILD_TABLE_NAME;
             }else if(encounterType.equalsIgnoreCase(Constants.EventType.HouseholdREGISTRATION)){
+                entitytypeName = DBConstants.HOUSEHOLD_TABLE_NAME;
+            }else if(encounterType.equalsIgnoreCase(Constants.EventType.UPDATE_Household_REGISTRATION)){
                 entitytypeName = DBConstants.HOUSEHOLD_TABLE_NAME;
             }else if(encounterType.equalsIgnoreCase(Constants.EventType.MemberREGISTRATION)){
                 entitytypeName = DBConstants.MEMBER_TABLE_NAME;
@@ -775,6 +793,12 @@ public class JsonFormUtils extends org.smartregister.util.JsonFormUtils {
                     String attributename = jsonObject.getString("openmrs_entity_id");
                     keyname = attributename;
                 }
+                if(jsonObject.getString("openmrs_entity").equalsIgnoreCase("person_address")
+                        &&jsonObject.getString("openmrs_entity_id").equalsIgnoreCase("address7")
+                        ){
+                    String attributename = jsonObject.getString("openmrs_entity_id");
+                    keyname = attributename;
+                }
             } catch (JSONException e) {
                 e.printStackTrace();
             }
@@ -1105,6 +1129,20 @@ public class JsonFormUtils extends org.smartregister.util.JsonFormUtils {
             Intent intent = new Intent(activity, AncJsonFormActivity.class);
 
             JSONObject form = FormUtils.getInstance(activity).getFormJson(Constants.JSON_FORM.ANC_CLOSE);
+            if (form != null) {
+                form.put(Constants.JSON_FORM_KEY.ENTITY_ID, activity.getIntent().getStringExtra(Constants.INTENT_KEY.BASE_ENTITY_ID));
+                intent.putExtra(Constants.INTENT_KEY.JSON, form.toString());
+                activity.startActivityForResult(intent, JsonFormUtils.REQUEST_CODE_GET_JSON);
+            }
+        } catch (Exception e) {
+            Log.e(TAG, e.getMessage());
+        }
+    }
+    public static void launchFollowUpForm(Activity activity) {
+        try {
+            Intent intent = new Intent(activity, AncJsonFormActivity.class);
+
+            JSONObject form = FormUtils.getInstance(activity).getFormJson(Constants.JSON_FORM.FOLLOW_UP);
             if (form != null) {
                 form.put(Constants.JSON_FORM_KEY.ENTITY_ID, activity.getIntent().getStringExtra(Constants.INTENT_KEY.BASE_ENTITY_ID));
                 intent.putExtra(Constants.INTENT_KEY.JSON, form.toString());

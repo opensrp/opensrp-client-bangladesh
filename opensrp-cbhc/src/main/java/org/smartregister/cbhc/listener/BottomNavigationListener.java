@@ -21,15 +21,15 @@ public class BottomNavigationListener implements BottomNavigationView.OnNavigati
             case R.id.action_clients:
                 ((HomeRegisterActivity) context).switchToBaseFragment();
                 break;
-            case R.id.action_search:
-                ((HomeRegisterActivity) context).switchToFragment(1);
-                break;
+//            case R.id.action_search:
+//                ((HomeRegisterActivity) context).switchToFragment(1);
+//                break;
             case R.id.action_register:
                 ((HomeRegisterActivity) context).startRegistration();
                 break;
-            case R.id.action_library:
-                ((HomeRegisterActivity) context).switchToFragment(4);
-                break;
+//            case R.id.action_library:
+//                ((HomeRegisterActivity) context).switchToFragment(4);
+//                break;
             case R.string.action_me:
                 ((HomeRegisterActivity) context).switchToFragment(3);
                 break;
