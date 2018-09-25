@@ -9,6 +9,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import org.apache.commons.lang3.text.WordUtils;
@@ -61,7 +62,7 @@ public class RegisterProvider implements RecyclerViewProvider<RegisterProvider.R
             populatePatientColumn(pc, client, viewHolder);
             populateIdentifierColumn(pc, viewHolder);
             populateLastColumn(pc, viewHolder);
-            (new MemberCountAsyncTask(pc,viewHolder.memberCount,viewHolder.femalechild,viewHolder.malechild,viewHolder.pregnantcount)).execute();
+            (new MemberCountAsyncTask(pc,viewHolder)).execute();
             return;
         }
 
@@ -251,12 +252,20 @@ public class RegisterProvider implements RecyclerViewProvider<RegisterProvider.R
         TextView malechildcount;
         TextView pregnantcountView;
 
-        public MemberCountAsyncTask(CommonPersonObjectClient pc,TextView countview,TextView femalechildcount,TextView malechildcount,TextView pregnantcountView){
+        ImageView femalechildpresent;
+        ImageView malechildpresent;
+        ImageView pregnantpresent;
+
+        public MemberCountAsyncTask(CommonPersonObjectClient pc, RegisterViewHolder viewHolder){
             this.pc = pc;
-            this.countView = countview;
-            this.femalechildcount = femalechildcount;
-            this.malechildcount = malechildcount;
-            this.pregnantcountView = pregnantcountView;
+            this.countView = viewHolder.memberCount;
+            this.femalechildcount = viewHolder.femalechild;
+            this.malechildcount = viewHolder.malechild;
+            this.pregnantcountView = viewHolder.pregnantcount;
+
+            this.femalechildpresent = viewHolder.femalepresent;
+            this.malechildpresent = viewHolder.malepresent;
+            this.pregnantpresent = viewHolder.pregnantpresent;
         }
 
         @Override
@@ -288,7 +297,7 @@ public class RegisterProvider implements RecyclerViewProvider<RegisterProvider.R
             }
             try{
                 cursor = AncApplication.getInstance().getContext().commonrepository("ec_child").rawCustomQueryForAdapter("Select Count(*) from ec_child where relational_id = '"+pc.getCaseId()+"'"
-                +" and ec_child.id in (Select id from ec_details where key = 'gender' and value = 'F');"
+                +" and ec_child.id in (Select base_entity_id from ec_details where key = 'gender' and value = 'F');"
                 );
                 cursor.moveToFirst();
                 femalechild = femalechild+Integer.parseInt(cursor.getString(0));
@@ -298,7 +307,7 @@ public class RegisterProvider implements RecyclerViewProvider<RegisterProvider.R
             }
             try{
                 cursor = AncApplication.getInstance().getContext().commonrepository("ec_child").rawCustomQueryForAdapter("Select Count(*) from ec_child where relational_id = '"+pc.getCaseId()+"'"
-                        +" and ec_child.id in (Select id from ec_details where key = 'gender' and value = 'M');"
+                        +" and ec_child.id in (Select base_entity_id from ec_details where key = 'gender' and value = 'M');"
                 );
                 cursor.moveToFirst();
                 malechild = malechild+Integer.parseInt(cursor.getString(0));
@@ -308,7 +317,7 @@ public class RegisterProvider implements RecyclerViewProvider<RegisterProvider.R
             }
             try{
                 cursor = AncApplication.getInstance().getContext().commonrepository("ec_woman").rawCustomQueryForAdapter("Select Count(*) from ec_woman where relational_id = '"+pc.getCaseId()+"'"
-                        +" and ec_woman.id in (Select id from ec_details where key = 'Disease_status' and value = 'Antenatal Period');"
+                        +" and ec_woman.id in (Select base_entity_id from ec_details where key = 'Disease_status' and value = 'Antenatal Period');"
                 );
                 cursor.moveToFirst();
                 pregnantcount = pregnantcount+Integer.parseInt(cursor.getString(0));
@@ -326,21 +335,27 @@ public class RegisterProvider implements RecyclerViewProvider<RegisterProvider.R
             countView.setText("Members: "+count);
             if(femalechild>0){
                 femalechildcount.setVisibility(View.VISIBLE);
+                femalechildpresent.setVisibility(View.VISIBLE);
                 femalechildcount.setText(""+femalechild);
             }else{
                 femalechildcount.setVisibility(View.GONE);
+                femalechildpresent.setVisibility(View.GONE);
             }
             if(malechild>0){
                 malechildcount.setVisibility(View.VISIBLE);
+                malechildpresent.setVisibility(View.VISIBLE);
                 malechildcount.setText(""+malechild);
             }else{
                 malechildcount.setVisibility(View.GONE);
+                malechildpresent.setVisibility(View.GONE);
             }
             if(pregnantcount>0){
                 pregnantcountView.setVisibility(View.VISIBLE);
+                pregnantpresent.setVisibility(View.VISIBLE);
                 pregnantcountView.setText(""+pregnantcount);
             }else{
                 pregnantcountView.setVisibility(View.GONE);
+                pregnantpresent.setVisibility(View.GONE);
             }
         }
     }
@@ -358,6 +373,10 @@ public class RegisterProvider implements RecyclerViewProvider<RegisterProvider.R
         public TextView femalechild;
         public TextView malechild;
         public TextView pregnantcount;
+        public ImageView femalepresent;
+        public ImageView malepresent;
+        public ImageView pregnantpresent;
+
         public TextView risk;
         public Button dueButton;
         public Button sync;
@@ -377,6 +396,10 @@ public class RegisterProvider implements RecyclerViewProvider<RegisterProvider.R
             femalechild = itemView.findViewById(R.id.child_girl_count);
             malechild = itemView.findViewById(R.id.child_boy_count);
             pregnantcount = itemView.findViewById(R.id.pregnant_woman_count);
+
+            malepresent = itemView.findViewById(R.id.male_child_present);
+            femalepresent = itemView.findViewById(R.id.female_child_present);
+            pregnantpresent = itemView.findViewById(R.id.pregnant_woman_present);
 
             patientColumn = itemView.findViewById(R.id.patient_column);
         }
