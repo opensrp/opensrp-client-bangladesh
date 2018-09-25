@@ -9,6 +9,7 @@ import android.util.Log;
 import android.util.Pair;
 
 import com.google.common.reflect.TypeToken;
+import com.google.gson.JsonArray;
 
 import net.sqlcipher.database.SQLiteDatabase;
 
@@ -237,9 +238,9 @@ public class JsonFormUtils extends org.smartregister.util.JsonFormUtils {
                 int age = Integer.parseInt(agestring);
 
                 String genderString = getFieldJSONObject(fields,"gender").getString("value");
-                if(genderString.equalsIgnoreCase("পুরুষ")){
+                if(genderString.equalsIgnoreCase("M")){
                     gender = Gender.MALE;
-                }else if(genderString.equalsIgnoreCase("মহিলা")){
+                }else if(genderString.equalsIgnoreCase("F")){
                     gender = Gender.FEMALE;
                 }else{
                     gender = Gender.UNKNOWN;
@@ -410,16 +411,16 @@ public class JsonFormUtils extends org.smartregister.util.JsonFormUtils {
         for(int i = 0;i<fields.length();i++){
             try {
                 JSONObject fieldObject = fields.getJSONObject(i);
-                if(fieldObject.has("openmrs_entity")){
-                    if(fieldObject.getString("openmrs_entity").equalsIgnoreCase("person_attribute")){
+//                if(fieldObject.has("openmrs_entity")){
+//                    if(fieldObject.getString("openmrs_entity").equalsIgnoreCase("person_attribute")){
                         if(fieldObject.has("openmrs_choice_ids")){
                             if(fieldObject.has("value")){
                                 String valueEntered = fieldObject.getString("value");
                                 fieldObject.put("value",fieldObject.getJSONObject("openmrs_choice_ids").get(valueEntered));
                             }
                         }
-                    }
-                }
+//                    }
+//                }
             } catch (JSONException e) {
                 e.printStackTrace();
             }
@@ -920,8 +921,13 @@ public class JsonFormUtils extends org.smartregister.util.JsonFormUtils {
                     if (StringUtils.isNotBlank(upToFacilitiesString)) {
                         questions.getJSONObject(i).put(Constants.KEY.TREE, new JSONArray(upToFacilitiesString));
                     }
+                    JSONArray defaultvalueArray = new JSONArray(upToFacilitiesString);
+                    String processedDefaultValue = processDefaultValueArray(defaultvalueArray);
+                    questions.getJSONObject(i).put(Constants.KEY.VALUE, processedDefaultValue);
+
                     if (StringUtils.isNotBlank(defaultFacilityString)) {
                         questions.getJSONObject(i).put(Constants.KEY.DEFAULT, defaultFacilityString);
+
                     }
                 }
             }
@@ -930,6 +936,33 @@ public class JsonFormUtils extends org.smartregister.util.JsonFormUtils {
             Log.e(TAG, e.getMessage());
         }
     }
+
+    private static String processDefaultValueArray(JSONArray defaultvalueArray) throws JSONException {
+        String toreturn = "[]";
+        for(int i = 0;i<defaultvalueArray.length();i++){
+            JSONArray nodes = defaultvalueArray.getJSONObject(i).getJSONArray("nodes");
+            JSONArray nodeStringArray = new JSONArray();
+            for(int j = 0;j<nodes.length();j++){
+                nodeStringArray.put(nodes.getJSONObject(i).getString("key"));
+                return_JSON_RECURSIVELY(nodes.getJSONObject(j).getJSONArray("nodes"),nodeStringArray);
+            }
+            toreturn = nodeStringArray.toString();
+        }
+        return toreturn;
+    }
+    private static String return_JSON_RECURSIVELY(JSONArray nodes,JSONArray nodestring)throws  JSONException{
+        String toreturn = null;
+        for(int j = 0;j<nodes.length();j++) {
+
+            toreturn = nodes.getJSONObject(j).getString("key");
+            nodestring.put(toreturn);
+            if(nodes.getJSONObject(j).has("nodes")) {
+                return_JSON_RECURSIVELY(nodes.getJSONObject(j).getJSONArray("nodes"), nodestring);
+            }
+            }
+        return  toreturn;
+    }
+
     public static void startFormForEdit(Activity context, int jsonFormActivityRequestCode, String metaData) {
         Intent intent = new Intent(context, AncJsonFormActivity.class);
         intent.putExtra(Constants.INTENT_KEY.JSON, metaData);

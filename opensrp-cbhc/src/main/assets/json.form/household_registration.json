@@ -69,7 +69,7 @@
         "openmrs_entity_id": "",
         "openmrs_data_type": "text",
         "type": "tree",
-        "hint": "পরিবারের প্রধানের স্বাস্থ্য কেন্দ্র *",
+        "hint": "খানার ঠিকানা(ওয়ার্ড,ইউনিয়ন)",
         "tree": [],
         "v_required": {
           "value": true,
@@ -86,29 +86,6 @@
         "hint": "গ্রাম/মহল্লা/বাড়ি/সড়ক নম্বর"
       },
       {
-        "key": "Nearby_area_to_community_support_group",
-        "openmrs_entity_parent": "",
-        "openmrs_entity": "concept",
-        "openmrs_entity_id": "dc6b7608-5348-446b-8cfb-c379a9e61db8",
-        "openmrs_data_type": "Coded",
-        "type": "spinner",
-        "hint": "কমিউনিটি সার্পোট গ্রুপ সংলগ্ন এলাকা",
-        "values": [
-          "CSG -১",
-          "CSG-২",
-          "CSG -৩"
-        ],
-        "openmrs_choice_ids": {
-          "CSG -১":"CSG_1",
-          "CSG-২":"CSG_2",
-          "CSG -৩":"CSG_3"
-        },
-        "v_required": {
-          "value": "true",
-          "err": "Please answer the question"
-        }
-      },
-      {
         "key": "HHID",
         "openmrs_entity_parent": "",
         "openmrs_entity": "person_attribute",
@@ -122,7 +99,7 @@
         "openmrs_entity": "person",
         "openmrs_entity_id": "first_name",
         "type": "edit_text",
-        "hint": "পরিবারের প্রধানের নাম",
+        "hint": "পরিবারের প্রধানের নাম এর প্রথম অংশ",
         "edit_type": "name",
         "v_regex": {
           "value": "[A-Za-z\\s\.\-]*",
@@ -130,7 +107,24 @@
         },
         "v_required": {
           "value": "true",
-          "err": "Please enter the Child's ZEIR ID"
+          "err": "Please enter the Name correctly"
+        }
+      },
+      {
+        "key": "last_name",
+        "openmrs_entity_parent": "",
+        "openmrs_entity": "person",
+        "openmrs_entity_id": "last_name",
+        "type": "edit_text",
+        "hint": "পরিবারের প্রধানের নাম এর শেষ অংশ",
+        "edit_type": "name",
+        "v_required": {
+          "value": "true",
+          "err": "Please enter the last name"
+        },
+        "v_regex": {
+          "value": "[A-Za-z\\s\.\-]*",
+          "err": "Please enter a valid name"
         }
       },
       {
@@ -148,7 +142,7 @@
         },
         "v_required": {
           "value": "true",
-          "err": "Please enter the Child's ZEIR ID"
+          "err": "Please enter the valid ID"
         }
       },
       {
@@ -381,8 +375,8 @@
           "err": "Please enter the amount"
         },
         "v_regex": {
-          "value": "^[1-9]+[0-9]*$",
-          "err": "must be greater than 0"
+          "value": "^\\d{1,6}$",
+          "err": "must be greater than 0 and less than 9999999"
         },
         "v_numeric": {
           "value": "true",

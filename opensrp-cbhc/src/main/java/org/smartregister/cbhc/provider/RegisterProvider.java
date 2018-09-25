@@ -61,7 +61,7 @@ public class RegisterProvider implements RecyclerViewProvider<RegisterProvider.R
             populatePatientColumn(pc, client, viewHolder);
             populateIdentifierColumn(pc, viewHolder);
             populateLastColumn(pc, viewHolder);
-            (new MemberCountAsyncTask(pc,viewHolder.memberCount)).execute();
+            (new MemberCountAsyncTask(pc,viewHolder.memberCount,viewHolder.femalechild,viewHolder.malechild,viewHolder.pregnantcount)).execute();
             return;
         }
 
@@ -243,10 +243,20 @@ public class RegisterProvider implements RecyclerViewProvider<RegisterProvider.R
     class MemberCountAsyncTask extends AsyncTask{
         CommonPersonObjectClient pc;
         int count = 0;
+        int femalechild = 0;
+        int malechild = 0;
+        int pregnantcount = 0;
         TextView countView;
-        public MemberCountAsyncTask(CommonPersonObjectClient pc,TextView countview){
+        TextView femalechildcount;
+        TextView malechildcount;
+        TextView pregnantcountView;
+
+        public MemberCountAsyncTask(CommonPersonObjectClient pc,TextView countview,TextView femalechildcount,TextView malechildcount,TextView pregnantcountView){
             this.pc = pc;
             this.countView = countview;
+            this.femalechildcount = femalechildcount;
+            this.malechildcount = malechildcount;
+            this.pregnantcountView = pregnantcountView;
         }
 
         @Override
@@ -270,12 +280,43 @@ public class RegisterProvider implements RecyclerViewProvider<RegisterProvider.R
             }
             try{
                 cursor = AncApplication.getInstance().getContext().commonrepository("ec_woman").rawCustomQueryForAdapter("Select Count(*) from ec_woman where relational_id = '"+pc.getCaseId()+"'");
-                count = count+Integer.parseInt(cursor.getString(0));
                 cursor.moveToFirst();
+                count = count+Integer.parseInt(cursor.getString(0));
                 cursor.close();
             }catch (Exception e){
 
             }
+            try{
+                cursor = AncApplication.getInstance().getContext().commonrepository("ec_child").rawCustomQueryForAdapter("Select Count(*) from ec_child where relational_id = '"+pc.getCaseId()+"'"
+                +" and ec_child.id in (Select id from ec_details where key = 'gender' and value = 'F');"
+                );
+                cursor.moveToFirst();
+                femalechild = femalechild+Integer.parseInt(cursor.getString(0));
+                cursor.close();
+            }catch (Exception e){
+
+            }
+            try{
+                cursor = AncApplication.getInstance().getContext().commonrepository("ec_child").rawCustomQueryForAdapter("Select Count(*) from ec_child where relational_id = '"+pc.getCaseId()+"'"
+                        +" and ec_child.id in (Select id from ec_details where key = 'gender' and value = 'M');"
+                );
+                cursor.moveToFirst();
+                malechild = malechild+Integer.parseInt(cursor.getString(0));
+                cursor.close();
+            }catch (Exception e){
+
+            }
+            try{
+                cursor = AncApplication.getInstance().getContext().commonrepository("ec_woman").rawCustomQueryForAdapter("Select Count(*) from ec_woman where relational_id = '"+pc.getCaseId()+"'"
+                        +" and ec_woman.id in (Select id from ec_details where key = 'Disease_status' and value = 'Antenatal Period');"
+                );
+                cursor.moveToFirst();
+                pregnantcount = pregnantcount+Integer.parseInt(cursor.getString(0));
+                cursor.close();
+            }catch (Exception e){
+
+            }
+
             return null;
         }
 
@@ -283,6 +324,24 @@ public class RegisterProvider implements RecyclerViewProvider<RegisterProvider.R
         protected void onPostExecute(Object o) {
             super.onPostExecute(o);
             countView.setText("Members: "+count);
+            if(femalechild>0){
+                femalechildcount.setVisibility(View.VISIBLE);
+                femalechildcount.setText(""+femalechild);
+            }else{
+                femalechildcount.setVisibility(View.GONE);
+            }
+            if(malechild>0){
+                malechildcount.setVisibility(View.VISIBLE);
+                malechildcount.setText(""+malechild);
+            }else{
+                malechildcount.setVisibility(View.GONE);
+            }
+            if(pregnantcount>0){
+                pregnantcountView.setVisibility(View.VISIBLE);
+                pregnantcountView.setText(""+pregnantcount);
+            }else{
+                pregnantcountView.setVisibility(View.GONE);
+            }
         }
     }
 
@@ -296,6 +355,9 @@ public class RegisterProvider implements RecyclerViewProvider<RegisterProvider.R
         public TextView ga;
         public TextView ancId;
         public TextView memberCount;
+        public TextView femalechild;
+        public TextView malechild;
+        public TextView pregnantcount;
         public TextView risk;
         public Button dueButton;
         public Button sync;
@@ -312,6 +374,9 @@ public class RegisterProvider implements RecyclerViewProvider<RegisterProvider.R
             dueButton = itemView.findViewById(R.id.due_button);
             sync = itemView.findViewById(R.id.sync);
             memberCount = itemView.findViewById(R.id.member_count);
+            femalechild = itemView.findViewById(R.id.child_girl_count);
+            malechild = itemView.findViewById(R.id.child_boy_count);
+            pregnantcount = itemView.findViewById(R.id.pregnant_woman_count);
 
             patientColumn = itemView.findViewById(R.id.patient_column);
         }

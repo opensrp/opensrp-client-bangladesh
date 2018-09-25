@@ -69,10 +69,10 @@
           "আইডি কার্ড নেই"
         ],
         "openmrs_choice_ids": {
-          "জাতীয় পরিচয় পত্র":"Citizen_NID",
-          "জন্মনিবন্ধন":"Citizen_BRID",
-          "ইপিআই কার্ড নাম্বার":"Citizen_Card_number",
-          "আইডি কার্ড নেই":"no_id_card"
+          "জাতীয় পরিচয় পত্র":"NID",
+          "জন্মনিবন্ধন":"BRID",
+          "ইপিআই কার্ড নাম্বার":"EPI",
+          "আইডি কার্ড নেই":"noIdentifier"
         }
       },
       {
@@ -197,7 +197,7 @@
         "openmrs_entity_id": "first_name",
         "openmrs_data_type": "text",
         "type": "edit_text",
-        "hint": "নাম  (ইংরেজীতে)",
+        "hint": "নাম এর প্রথম অংশ(ইংরেজীতে)",
         "expanded": false,
         "v_required": {
           "value": "true",
@@ -206,6 +206,23 @@
         "v_regex": {
           "value": "[A-Za-z\\s\.\-]*",
           "err": "Please Enter a Valid Name"
+        }
+      },
+      {
+        "key": "last_name",
+        "openmrs_entity_parent": "",
+        "openmrs_entity": "person",
+        "openmrs_entity_id": "last_name",
+        "type": "edit_text",
+        "hint": "নাম এর শেষ অংশ(ইংরেজীতে)",
+        "edit_type": "name",
+        "v_required": {
+          "value": "true",
+          "err": "Please enter the last name"
+        },
+        "v_regex": {
+          "value": "[A-Za-z\\s\.\-]*",
+          "err": "Please enter a valid name"
         }
       },
       {
@@ -900,7 +917,8 @@
           "O+",
           "O-",
           "AB+",
-          "AB-"
+          "AB-",
+          "রক্তের গ্রুপ জানা নেই"
         ],
         "openmrs_choice_ids": {
           "A+": "A+",
@@ -910,7 +928,8 @@
           "O+": "O+",
           "O-": "O-",
           "AB+": "AB+",
-          "AB-": "AB-"
+          "AB-": "AB-",
+          "রক্তের গ্রুপ জানা নেই":"BloodGroupUnknown"
         }
       },
       {
