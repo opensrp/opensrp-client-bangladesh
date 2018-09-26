@@ -46,6 +46,7 @@ import org.smartregister.util.PermissionUtils;
 import java.io.Serializable;
 
 import static org.smartregister.cbhc.fragment.ProfileOverviewFragment.EXTRA_HOUSEHOLD_DETAILS;
+import static org.smartregister.util.Utils.getName;
 import static org.smartregister.util.Utils.getValue;
 
 /**
@@ -100,7 +101,15 @@ public class ProfileActivity extends BaseProfileActivity implements ProfileContr
         imageView = findViewById(R.id.imageview_profile);
 
 
-        setProfileName(getValue(householdDetails.getColumnmaps(),"first_name",true));
+        String firstName = org.smartregister.util.Utils.getValue(householdDetails.getColumnmaps(), DBConstants.KEY.FIRST_NAME, true);
+        String lastName = org.smartregister.util.Utils.getValue(householdDetails.getColumnmaps(), DBConstants.KEY.LAST_NAME, true);
+        if(lastName.equalsIgnoreCase("null")||lastName==null){
+            lastName = "";
+        }
+        String patientName = getName(firstName, lastName);
+
+
+        setProfileName(patientName);
         String dobString = getValue(householdDetails.getColumnmaps(),"dob",true);
         String durationString = "";
         if (StringUtils.isNotBlank(dobString)) {
@@ -122,8 +131,16 @@ public class ProfileActivity extends BaseProfileActivity implements ProfileContr
 
     public void refreshProfileViews(){
         householdDetails = CommonPersonObjectToClient(AncApplication.getInstance().getContext().commonrepository(DBConstants.HOUSEHOLD_TABLE_NAME).findByBaseEntityId(householdDetails.entityId()));
-        setProfileName(getValue(householdDetails.getColumnmaps(),"first_name",true));
-        String dobString = getValue(householdDetails.getColumnmaps(),"dob",true);
+        String firstName = org.smartregister.util.Utils.getValue(householdDetails.getColumnmaps(), DBConstants.KEY.FIRST_NAME, true);
+        String lastName = org.smartregister.util.Utils.getValue(householdDetails.getColumnmaps(), DBConstants.KEY.LAST_NAME, true);
+        if(lastName.equalsIgnoreCase("null")||lastName==null){
+            lastName = "";
+        }
+        String patientName = getName(firstName, lastName);
+
+
+        setProfileName(patientName);
+           String dobString = getValue(householdDetails.getColumnmaps(),"dob",true);
         String durationString = "";
         if (StringUtils.isNotBlank(dobString)) {
             try {
@@ -214,9 +231,9 @@ public class ProfileActivity extends BaseProfileActivity implements ProfileContr
             AlertDialog.Builder builderSingle = new AlertDialog.Builder(this);
 
             final ArrayAdapter<String> arrayAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1);
-            arrayAdapter.add(getString(R.string.call));
-            arrayAdapter.add(getString(R.string.start_contact));
-            arrayAdapter.add(getString(R.string.close_anc_record));
+//            arrayAdapter.add(getString(R.string.call));
+//            arrayAdapter.add(getString(R.string.start_contact));
+//            arrayAdapter.add(getString(R.string.close_anc_record));
 
             builderSingle.setAdapter(arrayAdapter, new DialogInterface.OnClickListener() {
                 @Override

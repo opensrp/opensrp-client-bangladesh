@@ -93,6 +93,9 @@ public class RegisterProvider implements RecyclerViewProvider<RegisterProvider.R
 
         String firstName = org.smartregister.util.Utils.getValue(pc.getColumnmaps(), DBConstants.KEY.FIRST_NAME, true);
         String lastName = org.smartregister.util.Utils.getValue(pc.getColumnmaps(), DBConstants.KEY.LAST_NAME, true);
+        if(lastName.equalsIgnoreCase("null")||lastName==null){
+            lastName = "";
+        }
         String patientName = getName(firstName, lastName);
 
         fillValue(viewHolder.patientName, WordUtils.capitalize(patientName));
@@ -100,6 +103,7 @@ public class RegisterProvider implements RecyclerViewProvider<RegisterProvider.R
         String dobString = Utils.getDuration(org.smartregister.util.Utils.getValue(pc.getColumnmaps(), DBConstants.KEY.DOB, false));
         dobString = dobString.contains("y") ? dobString.substring(0, dobString.indexOf("y")) : dobString;
         fillValue((viewHolder.age), String.format(context.getString(R.string.age_text), dobString));
+        attachPatientOnclickListener(viewHolder.registericon,client);
 
         View patient = viewHolder.patientColumn;
         attachPatientOnclickListener(patient, client);
@@ -365,6 +369,7 @@ public class RegisterProvider implements RecyclerViewProvider<RegisterProvider.R
     ////////////////////////////////////////////////////////////////
 
     public class RegisterViewHolder extends RecyclerView.ViewHolder {
+        public ImageView registericon;
         public TextView patientName;
         public TextView age;
         public TextView ga;
@@ -384,7 +389,7 @@ public class RegisterProvider implements RecyclerViewProvider<RegisterProvider.R
 
         public RegisterViewHolder(View itemView) {
             super(itemView);
-
+            registericon = itemView.findViewById(R.id.imageViewregistericon);
             patientName = itemView.findViewById(R.id.patient_name);
             age = itemView.findViewById(R.id.age);
             ga = itemView.findViewById(R.id.ga);

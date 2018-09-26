@@ -235,7 +235,7 @@
         "hint": "নাম (বাংলায়)",
         "expanded": false,
         "v_required": {
-          "value": "true",
+          "value": "false",
           "err": "Please Enter a Valid Name"
         }
       },
@@ -267,7 +267,7 @@
         "hint": "মাতার নাম (বাংলায়)",
         "edit_type": "name",
         "v_required": {
-          "value": "true",
+          "value": "false",
           "err": "Please enter the mother/guardian's first name"
         }
       },
@@ -299,7 +299,7 @@
         "hint": "পিতার নাম (বাংলায়)",
         "edit_type": "name",
         "v_required": {
-          "value": "true",
+          "value": "false",
           "err": "Please enter the mother/guardian's first name"
         }
       },
@@ -506,7 +506,7 @@
         "type": "edit_text",
         "hint": "স্বামী/স্ত্রীর নাম (বাংলায়)",
         "v_required": {
-          "value": true,
+          "value": false,
           "err": "Please Type Husband Name."
         },
         "v_regex": {

@@ -34,30 +34,31 @@
 
             <ImageView
                 android:id="@+id/profile_image_iv"
-                android:layout_width="@dimen/client_profile_pic_height"
-                android:layout_height="@dimen/client_profile_pic_height"
+                android:layout_width="@dimen/cbhc_register_list_item_icon"
+                android:layout_height="@dimen/cbhc_register_list_item_icon"
                 android:layout_margin="10dp"
                 android:adjustViewBounds="true"
-                android:scaleType="centerCrop"
+                android:scaleType="fitXY"
                 android:src="@drawable/women_cbhc" />
 
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
+                android:layout_weight="1"
                 android:gravity="center_vertical"
                 android:orientation="vertical"
-                android:paddingLeft="10dp"
                 android:paddingRight="20dp">
 
                 <org.smartregister.view.customcontrols.CustomFontTextView
                     android:id="@+id/name_tv"
                     style="@style/CustomFontTextViewStyle.ClientList.Medium"
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:gravity="center_vertical"
-                    android:text="Joyce Mwansa"
-                    android:textColor="@android:color/black"
-                    android:textSize="@dimen/activity_title_size" />
+                    android:paddingLeft="0dp"
+                    android:text="Patient Name"
+                    android:singleLine="false"
+                    android:textColor="@color/text_black"
+                    android:textSize="14sp" />
 
                 <LinearLayout
                     android:layout_width="wrap_content"
@@ -69,21 +70,55 @@
                         style="@style/CustomFontTextViewStyle.ClientList.Light"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginLeft="10dp"
-                        android:text="Age"
-                        android:textColor="@color/dark_grey"
-                        android:textSize="@dimen/activity_sub_title_size" />
+                        android:paddingLeft="0dp"
+                        android:text="Age: 33"
+                        android:textColor="#9d9d9d"
+                        android:textSize="12sp" />
                 </LinearLayout>
             </LinearLayout>
-        </LinearLayout>
 
-        <ImageView
-            android:id="@+id/edit_member"
-            android:layout_width="@dimen/ec_main_header_search_cancel_button_width"
-            android:layout_height="@dimen/ec_main_header_search_cancel_button_width"
-            android:layout_gravity="right|center_vertical"
-            android:layout_marginRight="12.5dp"
-            android:src="@drawable/ic_menu_edit" />
+            <LinearLayout
+                android:id="@+id/edit_member"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_gravity="right|center_vertical"
+                android:layout_marginBottom="8dp"
+                android:layout_marginRight="12.5dp"
+                android:layout_marginTop="8dp"
+                android:background="@drawable/due_contact_blue"
+                android:elevation="3dp"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/edit_member_button"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginRight="15dp"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:stateListAnimator="@drawable/button"
+                    android:text="Edit"
+                    android:textAllCaps="false"
+                    android:textAppearance="?android:textAppearanceSmall"
+                    android:textColor="#ffffff"
+                    android:textSize="14sp"
+                    android:typeface="normal" />
+
+                <ImageView
+                    android:id="@+id/edit_member_imageview"
+                    android:layout_width="25dp"
+                    android:layout_height="25dp"
+                    android:layout_gravity="center"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginRight="5dp"
+                    android:scaleType="fitXY"
+                    android:src="@drawable/edit_icon"
+                    android:tint="@color/white" />
+            </LinearLayout>
+
+        </LinearLayout>
     </android.support.v7.widget.CardView>
 
 

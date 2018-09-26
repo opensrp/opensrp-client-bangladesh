@@ -8,6 +8,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
@@ -42,6 +43,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
+import static org.smartregister.util.Utils.getName;
 import static org.smartregister.util.Utils.getValue;
 
 /**
@@ -113,6 +115,7 @@ public class ProfileOverviewFragment extends BaseProfileFragment {
                 tableName + ".relationalid",
                 tableName + ".details",
                 tableName + ".first_name",
+                tableName + "." + DBConstants.KEY.LAST_NAME,
                 tableName + ".dob"
         });
         String currentquery = queryBUilder.mainCondition("relational_id = '"+mother_id+"'").concat(" Union all ");
@@ -121,6 +124,7 @@ public class ProfileOverviewFragment extends BaseProfileFragment {
                 membertablename + ".relationalid",
                 membertablename + ".details",
                 membertablename + ".first_name",
+                membertablename + "." + DBConstants.KEY.LAST_NAME,
                 membertablename + ".dob"
         });
         currentquery = currentquery.concat(queryBUilder2.mainCondition("relational_id = '"+mother_id+"'").concat(" Union all "));
@@ -128,6 +132,7 @@ public class ProfileOverviewFragment extends BaseProfileFragment {
                 childtableName + ".relationalid",
                 childtableName + ".details",
                 childtableName + ".first_name",
+                childtableName + "." + DBConstants.KEY.LAST_NAME,
                 childtableName + ".dob"
         });
 
@@ -159,10 +164,22 @@ public class ProfileOverviewFragment extends BaseProfileFragment {
             final CommonPersonObjectClient pClient = new CommonPersonObjectClient(personinlist.getCaseId(), personinlist.getDetails(), personinlist.getDetails().get("FWHOHFNAME"));
             pClient.setColumnmaps(personinlist.getColumnmaps());
             TextView member_name = (TextView) view.findViewById(R.id.name_tv);
-            TextView member_age = (TextView) view.findViewById(R.id.age_tv);       ;
+            TextView member_age = (TextView) view.findViewById(R.id.age_tv);
+
+            String firstName = org.smartregister.util.Utils.getValue(pClient.getColumnmaps(), DBConstants.KEY.FIRST_NAME, true);
+            String lastName = org.smartregister.util.Utils.getValue(pClient.getColumnmaps(), DBConstants.KEY.LAST_NAME, true);
+            if(lastName.equalsIgnoreCase("null")||lastName==null){
+                lastName = "";
+            }
+            String patientName = getName(firstName, lastName);
+
+            ;
 //            int nameColumnIndex = cursor.getColumnIndex("first_name");
 //            member_name.setText("Name : " + cursor.getString(nameColumnIndex));
-            member_name.setText("Name : " + getValue(personinlist.getColumnmaps(),"first_name",true));
+//            member_name.setText(getValue(personinlist.getColumnmaps(),"first_name",true));
+
+            member_name.setText(patientName);
+
             DetailsRepository detailsRepository = AncApplication.getInstance().getContext().detailsRepository();
             Map<String, String> detailmap = detailsRepository.getAllDetailsForClient(pClient.getCaseId());
             String gender = detailmap.get("gender");
@@ -196,7 +213,7 @@ public class ProfileOverviewFragment extends BaseProfileFragment {
             });
 
             pClient.getColumnmaps().putAll(detailmap);
-            ImageView editButton = (ImageView)view.findViewById(R.id.edit_member);
+            LinearLayout editButton = (LinearLayout)view.findViewById(R.id.edit_member);
             editButton.setTag(pClient);
             editButton.setOnClickListener((ProfileActivity)getActivity());
             ImageView profileImageIV = (ImageView)view.findViewById(R.id.profile_image_iv);

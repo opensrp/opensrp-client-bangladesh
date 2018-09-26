@@ -185,7 +185,7 @@ public class AncApplication extends DrishtiApplication implements TimeChangedBro
     }
 
     private static String[] getFtsTables() {
-        return new String[]{DBConstants.HOUSEHOLD_TABLE_NAME};
+        return new String[]{DBConstants.HOUSEHOLD_TABLE_NAME,DBConstants.WOMAN_TABLE_NAME};
     }
 
     private static String[] getFtsSearchFields() {
@@ -301,16 +301,16 @@ public class AncApplication extends DrishtiApplication implements TimeChangedBro
 
     @Override
     public void onTimeChanged() {
-        Utils.showToast(this, this.getString(R.string.device_time_changed));
-        context.userService().forceRemoteLogin();
-        logoutCurrentUser();
+//        Utils.showToast(this, this.getString(R.string.device_time_changed));
+//        context.userService().forceRemoteLogin();
+//        logoutCurrentUser();
     }
 
     @Override
     public void onTimeZoneChanged() {
-        Utils.showToast(this, this.getString(R.string.device_timezone_changed));
-        context.userService().forceRemoteLogin();
-        logoutCurrentUser();
+//        Utils.showToast(this, this.getString(R.string.device_timezone_changed));
+//        context.userService().forceRemoteLogin();
+//        logoutCurrentUser();
     }
 
     private void scheduleJobs() {

@@ -45,6 +45,7 @@ import org.smartregister.util.PermissionUtils;
 import java.io.Serializable;
 
 import static org.smartregister.cbhc.fragment.ProfileOverviewFragment.EXTRA_HOUSEHOLD_DETAILS;
+import static org.smartregister.util.Utils.getName;
 import static org.smartregister.util.Utils.getValue;
 
 /**
@@ -111,7 +112,15 @@ public class MemberProfileActivity extends BaseProfileActivity implements Profil
         imageView = findViewById(R.id.imageview_profile);
 
 
-        setProfileName(getValue(householdDetails.getColumnmaps(),"first_name",true));
+        String firstName = org.smartregister.util.Utils.getValue(householdDetails.getColumnmaps(), DBConstants.KEY.FIRST_NAME, true);
+        String lastName = org.smartregister.util.Utils.getValue(householdDetails.getColumnmaps(), DBConstants.KEY.LAST_NAME, true);
+        if(lastName.equalsIgnoreCase("null")||lastName==null){
+            lastName = "";
+        }
+        String patientName = getName(firstName, lastName);
+
+
+        setProfileName(patientName);
         String dobString = getValue(householdDetails.getColumnmaps(),"dob",true);
         String durationString = "";
         if (StringUtils.isNotBlank(dobString)) {
@@ -133,7 +142,16 @@ public class MemberProfileActivity extends BaseProfileActivity implements Profil
 
     public void refreshProfileViews(){
         householdDetails = CommonPersonObjectToClient(AncApplication.getInstance().getContext().commonrepository(DBConstants.HOUSEHOLD_TABLE_NAME).findByBaseEntityId(householdDetails.entityId()));
-        setProfileName(getValue(householdDetails.getColumnmaps(),"first_name",true));
+        String firstName = org.smartregister.util.Utils.getValue(householdDetails.getColumnmaps(), DBConstants.KEY.FIRST_NAME, true);
+        String lastName = org.smartregister.util.Utils.getValue(householdDetails.getColumnmaps(), DBConstants.KEY.LAST_NAME, true);
+        if(lastName.equalsIgnoreCase("null")||lastName==null){
+            lastName = "";
+        }
+        String patientName = getName(firstName, lastName);
+
+
+        setProfileName(patientName);
+
         String dobString = getValue(householdDetails.getColumnmaps(),"dob",true);
         String durationString = "";
         if (StringUtils.isNotBlank(dobString)) {
