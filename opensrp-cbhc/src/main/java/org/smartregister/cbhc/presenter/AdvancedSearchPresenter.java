@@ -73,7 +73,7 @@ public class AdvancedSearchPresenter extends RegisterFragmentPresenter implement
         getView().recalculatePagination(matrixCursor);
 
         getView().filterandSortInInitializeQueries();
-        
+
 
         getView().hideProgressView();
     }
