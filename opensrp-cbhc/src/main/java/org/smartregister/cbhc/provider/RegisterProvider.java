@@ -30,6 +30,7 @@ import org.smartregister.view.dialog.ServiceModeOption;
 import org.smartregister.view.dialog.SortOption;
 import org.smartregister.view.viewholder.OnClickFormLauncher;
 
+import java.text.MessageFormat;
 import java.util.Set;
 
 import static org.smartregister.util.Utils.getName;
@@ -46,15 +47,20 @@ public class RegisterProvider implements RecyclerViewProvider<RegisterProvider.R
     private Context context;
     private CommonRepository commonRepository;
 
-    public RegisterProvider(Context context, CommonRepository commonRepository, Set visibleColumns, View.OnClickListener onClickListener) {
+    private View.OnClickListener paginationClickListener;
+
+
+    public RegisterProvider(Context context, CommonRepository commonRepository, Set visibleColumns, View.OnClickListener onClickListener, View.OnClickListener paginationClickListener) {
 
         inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         this.visibleColumns = visibleColumns;
+
         this.onClickListener = onClickListener;
+        this.paginationClickListener = paginationClickListener;
+
         this.context = context;
         this.commonRepository = commonRepository;
     }
-
     @Override
     public void getView(Cursor cursor, SmartRegisterClient client, RegisterViewHolder viewHolder) {
         CommonPersonObjectClient pc = (CommonPersonObjectClient) client;
@@ -193,6 +199,20 @@ public class RegisterProvider implements RecyclerViewProvider<RegisterProvider.R
         details.setLayoutParams(params);
     }
 */
+
+    @Override
+    public void getFooterView(RecyclerView.ViewHolder viewHolder, int currentPageCount, int totalPageCount, boolean hasNext, boolean hasPrevious) {
+        FooterViewHolder footerViewHolder = (FooterViewHolder) viewHolder;
+        footerViewHolder.pageInfoView.setText(
+                MessageFormat.format(context.getString(R.string.str_page_info), currentPageCount,
+                        totalPageCount));
+
+        footerViewHolder.nextPageView.setVisibility(hasNext ? View.VISIBLE : View.INVISIBLE);
+        footerViewHolder.previousPageView.setVisibility(hasPrevious ? View.VISIBLE : View.INVISIBLE);
+
+        footerViewHolder.nextPageView.setOnClickListener(paginationClickListener);
+        footerViewHolder.previousPageView.setOnClickListener(paginationClickListener);
+    }
 
     private void attachDosageOnclickListener(View view, SmartRegisterClient client) {
         view.setOnClickListener(onClickListener);
@@ -409,5 +429,31 @@ public class RegisterProvider implements RecyclerViewProvider<RegisterProvider.R
             patientColumn = itemView.findViewById(R.id.patient_column);
         }
     }
+
+    @Override
+    public RecyclerView.ViewHolder createFooterHolder(ViewGroup parent) {
+        View view = inflater.inflate(R.layout.smart_register_pagination, parent, false);
+        return new FooterViewHolder(view);
+    }
+
+    @Override
+    public boolean isFooterViewHolder(RecyclerView.ViewHolder viewHolder) {
+        return FooterViewHolder.class.isInstance(viewHolder);
+    }
+
+    public class FooterViewHolder extends RecyclerView.ViewHolder {
+        public TextView pageInfoView;
+        public Button nextPageView;
+        public Button previousPageView;
+
+        public FooterViewHolder(View view) {
+            super(view);
+
+            nextPageView = view.findViewById(org.smartregister.R.id.btn_next_page);
+            previousPageView = view.findViewById(org.smartregister.R.id.btn_previous_page);
+            pageInfoView = view.findViewById(org.smartregister.R.id.txt_page_info);
+        }
+    }
+
 
 }

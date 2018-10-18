@@ -74,8 +74,9 @@ public class RegisterFragmentPresenter implements RegisterFragmentContract.Prese
         getView().countExecute();
         getView().filterandSortInInitializeQueries();
 
-        getView().refresh();
     }
+
+
 
     @Override
     public void startSync() {
@@ -110,10 +111,10 @@ public class RegisterFragmentPresenter implements RegisterFragmentContract.Prese
     		getView().recalculatePagination(matrixCursor);
 			
     		getView().filterandSortInInitializeQueries();
-    		getView().refresh();
     		getView().hideProgressView();
     	}
     }
+
 
     protected RegisterFragmentContract.View getView() {
         if (viewReference != null)
