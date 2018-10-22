@@ -13,6 +13,9 @@
 
     <color name="text_color_primary">#737373</color>
 
+    <color name="client_list_grey">#737373</color>
+
+
     <color name="light_grey">#cccccc</color>
     <color name="light_grey_text">#7f7f7f</color>
     <color name="lighter_grey">#e5e5e5</color>

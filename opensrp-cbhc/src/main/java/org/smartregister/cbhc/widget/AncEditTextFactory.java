@@ -18,9 +18,11 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 import org.smartregister.cbhc.R;
 import org.smartregister.cbhc.util.DBConstants;
+import org.smartregister.cbhc.watchers.LookUpTextWatcher;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 
 /**
@@ -31,6 +33,27 @@ public class AncEditTextFactory extends EditTextFactory {
     @Override
     public void attachJson(String stepName, Context context, JsonFormFragment formFragment, JSONObject jsonObject, MaterialEditText editText) throws Exception {
         super.attachJson(stepName, context, formFragment, jsonObject, editText);
+        // lookup hook
+        if (jsonObject.has("look_up") && jsonObject.get("look_up").toString().equalsIgnoreCase(Boolean.TRUE.toString())) {
+            String entityId = jsonObject.getString("key");
+            if(jsonObject.has("entity_id")) {
+                entityId = jsonObject.getString("entity_id");
+            }
+
+            Map<String, List<View>> lookupMap = formFragment.getLookUpMap();
+            List<View> lookUpViews = new ArrayList<>();
+            if (lookupMap.containsKey(entityId)) {
+                lookUpViews = lookupMap.get(entityId);
+            }
+
+            if (!lookUpViews.contains(editText)) {
+                lookUpViews.add(editText);
+            }
+            lookupMap.put(entityId, lookUpViews);
+
+            editText.addTextChangedListener(new LookUpTextWatcher(formFragment, editText, entityId,""));
+            editText.setTag(com.vijay.jsonwizard.R.id.after_look_up, false);
+        }
     }
 
     @Override

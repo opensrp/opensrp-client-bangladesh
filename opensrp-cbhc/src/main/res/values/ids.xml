@@ -2,4 +2,5 @@
 <resources>
     <item name="clientformemberprofile" type="id">clientformemberprofile</item>
     <item name="typeofclientformemberprofile" type="id">typeofclientformemberprofile</item>
+    <item name="typekey" type="id">typeforlookup</item>
 </resources>
