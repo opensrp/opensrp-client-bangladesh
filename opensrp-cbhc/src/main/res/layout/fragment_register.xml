@@ -61,5 +61,7 @@
 	<include
 			layout="@layout/smart_register_pagination"
 			android:layout_width="match_parent"
-			android:layout_height="35dp"/>
+			android:layout_height="35dp"
+			android:visibility="gone"
+		/>
 </LinearLayout>
