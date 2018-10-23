@@ -93,6 +93,7 @@ public abstract class BaseRegisterFragment extends RecyclerViewFragment implemen
     private ImageView qrCodeScanImageView;
     private ProgressBar syncProgressBar;
     private boolean globalQrSearch = false;
+    private String default_sort_query = DBConstants.KEY.LAST_INTERACTED_WITH + " DESC";
     protected final TextWatcher textWatcher = new TextWatcher() {
         @Override
         public void beforeTextChanged(CharSequence charSequence, int i, int i2, int i3) {
@@ -354,11 +355,15 @@ public abstract class BaseRegisterFragment extends RecyclerViewFragment implemen
             filterStatus.setText(Html.fromHtml(clientAdapter.getTotalcount() + " patients " + sortText));
         }
     }
+    public void clearSortAndFilter(){
+        this.Sortqueries = default_sort_query;
 
+        filter(this.filters,this.joinTable,this.mainCondition,false);
+    }
     public void updateSortAndFilter(List<Field> filterList, Field sortField) {
         presenter.updateSortAndFilter(filterList, sortField);
-        this.Sortqueries = sortField.getDbAlias();
 
+        this.Sortqueries = sortField.getDbAlias();
         filter(this.filters,this.joinTable,this.mainCondition,false);
     }
 
