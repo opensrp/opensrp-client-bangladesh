@@ -45,6 +45,7 @@ import org.smartregister.commonregistry.CommonPersonObjectClient;
 import org.smartregister.configurableviews.model.Field;
 import org.smartregister.cursoradapter.RecyclerViewFragment;
 import org.smartregister.cursoradapter.RecyclerViewPaginatedAdapter;
+import org.smartregister.cursoradapter.SmartRegisterQueryBuilder;
 import org.smartregister.domain.FetchStatus;
 import org.smartregister.provider.SmartRegisterClientsProvider;
 import org.smartregister.view.activity.SecuredNativeSmartRegisterActivity;
@@ -54,6 +55,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Set;
 
+import static android.text.TextUtils.isEmpty;
 import static org.apache.commons.lang3.StringUtils.isEmpty;
 
 /**
@@ -100,6 +102,7 @@ public abstract class BaseRegisterFragment extends RecyclerViewFragment implemen
         @Override
         public void onTextChanged(final CharSequence cs, int start, int before, int count) {
             filter(cs.toString(), "", getMainCondition(), false);
+
         }
 
         @Override
@@ -310,7 +313,8 @@ public abstract class BaseRegisterFragment extends RecyclerViewFragment implemen
         this.mainCondition = getMainCondition();
         this.countSelect = countSelect;
         this.mainSelect = mainSelect;
-        this.Sortqueries = DBConstants.KEY.LAST_INTERACTED_WITH + " DESC";
+        if(StringUtils.isBlank(this.Sortqueries))
+            this.Sortqueries = DBConstants.KEY.LAST_INTERACTED_WITH + " DESC";
     }
 
     @Override
@@ -322,12 +326,12 @@ public abstract class BaseRegisterFragment extends RecyclerViewFragment implemen
     }
 
     public void filter(String filterString, String joinTableString, String mainConditionString, boolean qrCode) {
-        getSearchCancelView().setVisibility(isEmpty(filterString) ? View.INVISIBLE : View.VISIBLE);
+        getSearchCancelView().setVisibility(StringUtils.isEmpty(filterString) ? View.INVISIBLE : View.VISIBLE);
 
         this.filters = filterString;
         this.joinTable = joinTableString;
         this.mainCondition = mainConditionString;
-
+        this.joinTables = new String[]{"ec_woman","ec_child","ec_member"};
         countExecute();
 
         if (qrCode && StringUtils.isNotBlank(filterString) && clientAdapter.getTotalcount() == 0 && NetworkUtils.isNetworkAvailable()) {
@@ -353,6 +357,9 @@ public abstract class BaseRegisterFragment extends RecyclerViewFragment implemen
 
     public void updateSortAndFilter(List<Field> filterList, Field sortField) {
         presenter.updateSortAndFilter(filterList, sortField);
+        this.Sortqueries = sortField.getDbAlias();
+
+        filter(this.filters,this.joinTable,this.mainCondition,false);
     }
 
     @Override
