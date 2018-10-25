@@ -1,4 +1,4 @@
-package org.smartregister.path.toolbar;
+package org.smartregister.growplus.toolbar;
 
 import android.content.Context;
 import android.support.annotation.Nullable;

@@ -1,4 +1,4 @@
-package org.smartregister.path.activity;
+package org.smartregister.growplus.activity;
 
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
@@ -41,6 +41,9 @@ import org.smartregister.immunization.util.IMDatabaseUtils;
 import org.smartregister.growplus.R;
 import org.smartregister.growplus.application.VaccinatorApplication;
 import org.smartregister.growplus.service.intent.PullUniqueIdsIntentService;
+import org.smartregister.path.activity.BaseRegisterActivity;
+import org.smartregister.path.activity.HouseholdSmartRegisterActivity;
+import org.smartregister.path.activity.SettingsActivity;
 import org.smartregister.repository.AllSharedPreferences;
 import org.smartregister.sync.DrishtiSyncScheduler;
 import org.smartregister.util.Log;
@@ -415,7 +418,7 @@ public class LoginActivity extends AppCompatActivity {
             Resources res = getOpenSRPContext().applicationContext().getResources();
             // Change locale settings in the app.
             DisplayMetrics dm = res.getDisplayMetrics();
-            android.content.res.Configuration conf = res.getConfiguration();
+            Configuration conf = res.getConfiguration();
             conf.locale = new Locale(URDU_LOCALE);
             res.updateConfiguration(conf, dm);
             return URDU_LANGUAGE;
@@ -424,7 +427,7 @@ public class LoginActivity extends AppCompatActivity {
             Resources res = getOpenSRPContext().applicationContext().getResources();
             // Change locale settings in the app.
             DisplayMetrics dm = res.getDisplayMetrics();
-            android.content.res.Configuration conf = res.getConfiguration();
+            Configuration conf = res.getConfiguration();
             conf.locale = new Locale(ENGLISH_LOCALE);
             res.updateConfiguration(conf, dm);
             return ENGLISH_LANGUAGE;

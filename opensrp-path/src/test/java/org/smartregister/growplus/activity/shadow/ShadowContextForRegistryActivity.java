@@ -1,4 +1,4 @@
-package org.smartregister.path.activity.shadow;
+package org.smartregister.growplus.activity.shadow;
 
 import org.mockito.Mock;
 import org.mockito.Mockito;
@@ -69,12 +69,12 @@ public class ShadowContextForRegistryActivity extends Shadow {
     }
 
     @Implementation
-    public org.smartregister.commonregistry.CommonRepository commonrepository(java.lang.String tablename) {
+    public CommonRepository commonrepository(String tablename) {
         return commonRepository;
     }
 
     @Implementation
-    public static org.smartregister.Context getInstance() {
+    public static Context getInstance() {
         if(mInstance == null){
             mInstance = Mockito.mock(Context.class);
         }

@@ -1,4 +1,4 @@
-package org.smartregister.path.viewComponents;
+package org.smartregister.growplus.viewComponents;
 
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
@@ -13,6 +13,7 @@ import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 import org.robolectric.RuntimeEnvironment;
 import org.smartregister.growplus.R;
+import org.smartregister.path.viewComponents.*;
 
 import shared.BaseUnitTest;
 
@@ -22,7 +23,7 @@ import shared.BaseUnitTest;
 
 public class WidgetFactoryTest extends BaseUnitTest {
 
-    WidgetFactory widgetFactory;
+    org.smartregister.path.viewComponents.WidgetFactory widgetFactory;
 
     @Mock
     LayoutInflater layoutInflater;
@@ -33,7 +34,7 @@ public class WidgetFactoryTest extends BaseUnitTest {
     @Before
     public void setUp(){
         MockitoAnnotations.initMocks(this);
-        widgetFactory = new WidgetFactory();
+        widgetFactory = new org.smartregister.path.viewComponents.WidgetFactory();
 
     }
 

@@ -1,4 +1,4 @@
-package org.smartregister.path.toolbar;
+package org.smartregister.growplus.toolbar;
 
 import android.content.Context;
 import android.support.annotation.Nullable;
@@ -6,12 +6,13 @@ import android.util.AttributeSet;
 import android.view.MenuItem;
 
 import org.smartregister.growplus.R;
+import org.smartregister.path.toolbar.*;
 
 /**
  * Created by Jason Rogena - jrogena@ona.io on 30/03/2017.
  */
 
-public class ChildDetailsToolbar extends BaseToolbar {
+public class ChildDetailsToolbar extends org.smartregister.path.toolbar.BaseToolbar {
     public ChildDetailsToolbar(Context context) {
         super(context);
     }

@@ -1,4 +1,4 @@
-package org.smartregister.path.activity;
+package org.smartregister.growplus.activity;
 
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -30,6 +30,8 @@ import org.smartregister.growplus.fragment.AdvancedSearchFragment;
 import org.smartregister.growplus.fragment.BaseSmartRegisterFragment;
 import org.smartregister.growplus.fragment.ChildSmartRegisterFragment;
 import org.smartregister.growplus.view.LocationPickerView;
+import org.smartregister.path.activity.*;
+import org.smartregister.path.activity.LoginActivity;
 import org.smartregister.provider.SmartRegisterClientsProvider;
 import org.smartregister.repository.AllSharedPreferences;
 import org.smartregister.service.FormSubmissionService;
@@ -47,7 +49,7 @@ import static android.view.inputmethod.InputMethodManager.HIDE_NOT_ALWAYS;
 /**
  * Created by Ahmed on 13-Oct-15.
  */
-public class ChildSmartRegisterActivity extends BaseRegisterActivity {
+public class ChildSmartRegisterActivity extends org.smartregister.path.activity.BaseRegisterActivity {
     private static final String TAG = ChildSmartRegisterActivity.class.getCanonicalName();
 
     @Bind(R.id.view_pager)
@@ -57,7 +59,7 @@ public class ChildSmartRegisterActivity extends BaseRegisterActivity {
     private int currentPage;
     public static final int ADVANCED_SEARCH_POSITION = 1;
 
-    public android.support.v4.app.Fragment mBaseFragment = null;
+    public Fragment mBaseFragment = null;
 
 
     @Override
@@ -253,7 +255,7 @@ public class ChildSmartRegisterActivity extends BaseRegisterActivity {
         }
     }
 
-    public android.support.v4.app.Fragment findFragmentByPosition(int position) {
+    public Fragment findFragmentByPosition(int position) {
         FragmentPagerAdapter fragmentPagerAdapter = mPagerAdapter;
         return getSupportFragmentManager().findFragmentByTag("android:switcher:" + mPager.getId() + ":" + fragmentPagerAdapter.getItemId(position));
     }
@@ -300,7 +302,7 @@ public class ChildSmartRegisterActivity extends BaseRegisterActivity {
                 registerFragment.refreshListView();
             }
         } else {
-            Handler handler = new android.os.Handler(Looper.getMainLooper());
+            Handler handler = new Handler(Looper.getMainLooper());
             handler.post(new Runnable() {
                 @Override
                 public void run() {

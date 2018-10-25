@@ -1,4 +1,4 @@
-package org.smartregister.path.servicemode;
+package org.smartregister.growplus.servicemode;
 
 import org.smartregister.provider.SmartRegisterClientsProvider;
 import org.smartregister.view.activity.SecuredNativeSmartRegisterActivity;

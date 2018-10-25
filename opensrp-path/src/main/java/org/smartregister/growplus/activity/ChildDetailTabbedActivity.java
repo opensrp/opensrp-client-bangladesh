@@ -1,4 +1,4 @@
-package org.smartregister.path.activity;
+package org.smartregister.growplus.activity;
 
 import android.app.FragmentTransaction;
 import android.content.ContentValues;
@@ -58,6 +58,8 @@ import org.smartregister.growplus.tabfragments.ChildRegistrationDataFragment;
 import org.smartregister.growplus.tabfragments.ChildUnderFiveFragment;
 import org.smartregister.growplus.toolbar.ChildDetailsToolbar;
 import org.smartregister.growplus.view.LocationPickerView;
+import org.smartregister.path.activity.*;
+import org.smartregister.path.activity.PathJsonFormActivity;
 import org.smartregister.repository.AllSharedPreferences;
 import org.smartregister.repository.BaseRepository;
 import org.smartregister.repository.DetailsRepository;
@@ -100,7 +102,7 @@ import static org.smartregister.util.Utils.startAsyncTask;
  * Created by raihan on 1/03/2017.
  */
 
-public class ChildDetailTabbedActivity extends BaseActivity implements VaccinationActionListener, WeightActionListener, StatusChangeListener {
+public class ChildDetailTabbedActivity extends org.smartregister.path.activity.BaseActivity implements VaccinationActionListener, WeightActionListener, StatusChangeListener {
 
     public Menu overflow;
     private ChildDetailsToolbar detailtoolbar;
@@ -437,7 +439,7 @@ public class ChildDetailTabbedActivity extends BaseActivity implements Vaccinati
                 form.put(JsonFormUtils.CURRENT_ZEIR_ID, getValue(childDetails.getColumnmaps(), "zeir_id", true).replace("-", ""));
 
 
-                Intent intent = new Intent(getApplicationContext(), PathJsonFormActivity.class);
+                Intent intent = new Intent(getApplicationContext(), org.smartregister.path.activity.PathJsonFormActivity.class);
                 //inject zeir id into the form
                 JSONObject stepOne = form.getJSONObject(JsonFormUtils.STEP1);
                 JSONArray jsonArray = stepOne.getJSONArray(JsonFormUtils.FIELDS);

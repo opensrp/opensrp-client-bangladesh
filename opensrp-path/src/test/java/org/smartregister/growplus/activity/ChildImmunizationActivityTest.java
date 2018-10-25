@@ -1,4 +1,4 @@
-package org.smartregister.path.activity;
+package org.smartregister.growplus.activity;
 
 import android.content.Intent;
 import android.util.Log;
@@ -45,6 +45,7 @@ import org.smartregister.growplus.customshadow.MyShadowAsyncTask;
 import org.smartregister.growplus.customshadow.ViewGroupShadow;
 import org.smartregister.growplus.toolbar.BaseToolbar;
 import org.smartregister.growplus.toolbar.LocationSwitcherToolbar;
+import org.smartregister.path.activity.*;
 import org.smartregister.repository.AllSharedPreferences;
 import org.smartregister.repository.DetailsRepository;
 import org.smartregister.repository.ImageRepository;
@@ -180,7 +181,7 @@ public class ChildImmunizationActivityTest extends BaseUnitTest {
     public void showWeightDialogShouldRender() {
 
         activity.findViewById(R.id.record_weight).performClick();
-        assertNotNull(activity.getFragmentManager().findFragmentByTag(ChildImmunizationActivity.DIALOG_TAG));
+        assertNotNull(activity.getFragmentManager().findFragmentByTag(org.smartregister.path.activity.ChildImmunizationActivity.DIALOG_TAG));
 
     }
 

@@ -1,4 +1,4 @@
-package org.smartregister.path.fragment.mocks;
+package org.smartregister.growplus.fragment.mocks;
 
 import android.os.Bundle;
 
@@ -9,6 +9,7 @@ import android.widget.LinearLayout;
 
 import org.smartregister.growplus.R;
 import org.smartregister.growplus.fragment.BaseSmartRegisterFragment;
+import org.smartregister.path.fragment.mocks.AdvancedSearchFragmentMock;
 
 /**
  * Created by kaderchowdhury on 06/12/17.

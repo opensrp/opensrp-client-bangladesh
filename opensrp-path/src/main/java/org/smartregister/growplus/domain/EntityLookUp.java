@@ -1,4 +1,4 @@
-package org.smartregister.path.domain;
+package org.smartregister.growplus.domain;
 
 import org.apache.commons.lang3.StringUtils;
 

@@ -1,4 +1,4 @@
-package org.smartregister.path.provider;
+package org.smartregister.growplus.provider;
 
 import android.content.Context;
 import android.util.Log;

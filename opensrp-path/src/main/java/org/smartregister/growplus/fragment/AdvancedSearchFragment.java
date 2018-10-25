@@ -1,4 +1,4 @@
-package org.smartregister.path.fragment;
+package org.smartregister.growplus.fragment;
 
 import android.app.DatePickerDialog;
 import android.app.ProgressDialog;
@@ -45,6 +45,7 @@ import org.joda.time.DateTime;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.smartregister.path.fragment.BaseSmartRegisterFragment;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -371,7 +372,7 @@ public class AdvancedSearchFragment extends BaseSmartRegisterFragment {
     }
 
     public void search(final View view) {
-        android.util.Log.i(getClass().getName(), "Hiding Keyboard " + DateTime.now().toString());
+        Log.i(getClass().getName(), "Hiding Keyboard " + DateTime.now().toString());
         ((ChildSmartRegisterActivity) getActivity()).hideKeyboard();
         view.setClickable(false);
 

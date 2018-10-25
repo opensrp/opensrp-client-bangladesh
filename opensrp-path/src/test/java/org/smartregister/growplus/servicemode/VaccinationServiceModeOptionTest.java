@@ -1,9 +1,10 @@
-package org.smartregister.path.servicemode;
+package org.smartregister.growplus.servicemode;
 
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
+import org.smartregister.path.servicemode.*;
 import org.smartregister.provider.SmartRegisterClientsProvider;
 import org.smartregister.view.activity.SecuredNativeSmartRegisterActivity;
 
@@ -17,12 +18,12 @@ public class VaccinationServiceModeOptionTest extends BaseUnitTest {
 
     @Mock
     SmartRegisterClientsProvider smartRegisterClientsProvider;
-    VaccinationServiceModeOption vaccinationServiceModeOption;
+    org.smartregister.path.servicemode.VaccinationServiceModeOption vaccinationServiceModeOption;
 
     @Before
     public void setUp() {
         MockitoAnnotations.initMocks(this);
-        vaccinationServiceModeOption = new VaccinationServiceModeOption(smartRegisterClientsProvider,"NAME",new int[]{0}, new int[]{0});
+        vaccinationServiceModeOption = new org.smartregister.path.servicemode.VaccinationServiceModeOption(smartRegisterClientsProvider,"NAME",new int[]{0}, new int[]{0});
         vaccinationServiceModeOption.name();
         SecuredNativeSmartRegisterActivity.ClientsHeaderProvider clientsHeaderProvider = vaccinationServiceModeOption.getHeaderProvider();
         clientsHeaderProvider.count();

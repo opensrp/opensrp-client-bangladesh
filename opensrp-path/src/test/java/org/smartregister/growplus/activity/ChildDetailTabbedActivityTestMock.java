@@ -1,4 +1,4 @@
-package org.smartregister.path.activity;
+package org.smartregister.growplus.activity;
 
 import android.content.pm.ApplicationInfo;
 import android.content.res.AssetManager;

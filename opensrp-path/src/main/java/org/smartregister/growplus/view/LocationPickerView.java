@@ -1,4 +1,4 @@
-package org.smartregister.path.view;
+package org.smartregister.growplus.view;
 
 import android.app.Dialog;
 import android.content.Context;

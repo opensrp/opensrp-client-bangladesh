@@ -1,4 +1,4 @@
-package org.smartregister.path.provider;
+package org.smartregister.growplus.provider;
 
 import android.content.Context;
 import android.database.Cursor;
@@ -8,13 +8,14 @@ import org.smartregister.commonregistry.CommonRepository;
 import org.smartregister.growthmonitoring.repository.WeightRepository;
 import org.smartregister.immunization.repository.VaccineRepository;
 import org.smartregister.growplus.R;
+import org.smartregister.path.provider.*;
 import org.smartregister.service.AlertService;
 import org.smartregister.view.contract.SmartRegisterClient;
 
 /**
  * Created by Keyman on 06-Apr-17.
  */
-public class AdvancedSearchClientsProvider extends ChildSmartClientsProvider {
+public class AdvancedSearchClientsProvider extends org.smartregister.path.provider.ChildSmartClientsProvider {
 
     public AdvancedSearchClientsProvider(Context context, View.OnClickListener onClickListener,
                                          AlertService alertService, VaccineRepository vaccineRepository, WeightRepository weightRepository, CommonRepository commonRepository) {

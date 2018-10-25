@@ -1,4 +1,4 @@
-package org.smartregister.path.interactors;
+package org.smartregister.growplus.interactors;
 
 import com.vijay.jsonwizard.constants.JsonFormConstants;
 import com.vijay.jsonwizard.interactors.JsonFormInteractor;

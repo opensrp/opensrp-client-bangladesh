@@ -1,4 +1,4 @@
-package org.smartregister.path.receiver;
+package org.smartregister.growplus.receiver;
 
 import android.app.AlarmManager;
 import android.app.PendingIntent;

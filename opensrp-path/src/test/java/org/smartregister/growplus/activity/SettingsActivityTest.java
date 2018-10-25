@@ -1,4 +1,4 @@
-package org.smartregister.path.activity;
+package org.smartregister.growplus.activity;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -14,6 +14,7 @@ import org.mockito.MockitoAnnotations;
 import org.robolectric.Robolectric;
 import org.robolectric.RuntimeEnvironment;
 import org.robolectric.android.controller.ActivityController;
+import org.smartregister.path.activity.*;
 
 import shared.BaseUnitTest;
 
@@ -23,14 +24,14 @@ import shared.BaseUnitTest;
 @Ignore
 public class SettingsActivityTest extends BaseUnitTest {
 
-    SettingsActivity activity;
-    ActivityController<SettingsActivity>controller;
+    org.smartregister.path.activity.SettingsActivity activity;
+    ActivityController<org.smartregister.path.activity.SettingsActivity>controller;
 
     @Before
     public void setUp() {
         MockitoAnnotations.initMocks(this);
-        Intent intent = new Intent(RuntimeEnvironment.application,SettingsActivity.class);
-        controller = Robolectric.buildActivity(SettingsActivity.class,intent);
+        Intent intent = new Intent(RuntimeEnvironment.application, org.smartregister.path.activity.SettingsActivity.class);
+        controller = Robolectric.buildActivity(org.smartregister.path.activity.SettingsActivity.class,intent);
         activity = controller.get();
 
     }

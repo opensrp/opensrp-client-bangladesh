@@ -1,4 +1,4 @@
-package org.smartregister.path.wrapper;
+package org.smartregister.growplus.wrapper;
 
 import android.database.Cursor;
 import android.view.View;
@@ -7,6 +7,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
+import org.smartregister.path.wrapper.*;
 import org.smartregister.view.contract.SmartRegisterClient;
 
 import shared.BaseUnitTest;
@@ -16,7 +17,7 @@ import shared.BaseUnitTest;
  */
 
 public class BaseViewRecordUpdateWrapperTest extends BaseUnitTest {
-    BaseViewRecordUpdateWrapper baseViewRecordUpdateWrapper;
+    org.smartregister.path.wrapper.BaseViewRecordUpdateWrapper baseViewRecordUpdateWrapper;
     @Mock
     View convertView;
     String lostToFollowUp = "";
@@ -28,7 +29,7 @@ public class BaseViewRecordUpdateWrapperTest extends BaseUnitTest {
     @Before
     public void setUp(){
         MockitoAnnotations.initMocks(this);
-        baseViewRecordUpdateWrapper = new BaseViewRecordUpdateWrapper();
+        baseViewRecordUpdateWrapper = new org.smartregister.path.wrapper.BaseViewRecordUpdateWrapper();
     }
     @Test
     public void getConvertView() {

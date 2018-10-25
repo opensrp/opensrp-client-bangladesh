@@ -1,4 +1,4 @@
-package org.smartregister.path.wrapper;
+package org.smartregister.growplus.wrapper;
 
 import android.database.Cursor;
 import android.view.View;

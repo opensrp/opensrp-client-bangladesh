@@ -1,4 +1,4 @@
-package org.smartregister.path.activity;
+package org.smartregister.growplus.activity;
 
 import android.app.AlertDialog;
 import android.app.FragmentTransaction;
@@ -34,6 +34,9 @@ import org.smartregister.growplus.fragment.HouseholdMemberAddFragment;
 import org.smartregister.growplus.fragment.HouseholdSmartRegisterFragment;
 import org.smartregister.growplus.repository.PathRepository;
 import org.smartregister.growplus.view.LocationPickerView;
+import org.smartregister.path.activity.*;
+import org.smartregister.path.activity.LoginActivity;
+import org.smartregister.path.activity.PathJsonFormActivity;
 import org.smartregister.provider.SmartRegisterClientsProvider;
 import org.smartregister.repository.AllSharedPreferences;
 import org.smartregister.repository.DetailsRepository;
@@ -57,7 +60,7 @@ import static org.smartregister.util.Utils.getValue;
 /**
  * Created by Ahmed on 13-Oct-15.
  */
-public class HouseholdSmartRegisterActivity extends BaseRegisterActivity {
+public class HouseholdSmartRegisterActivity extends org.smartregister.path.activity.BaseRegisterActivity {
     private static String TAG = HouseholdSmartRegisterActivity.class.getCanonicalName();
 
     @Bind(R.id.view_pager)
@@ -224,7 +227,7 @@ public class HouseholdSmartRegisterActivity extends BaseRegisterActivity {
                         }
                         String locationid = "";
                         DetailsRepository detailsRepository;
-                        detailsRepository = org.smartregister.Context.getInstance().detailsRepository();
+                        detailsRepository = Context.getInstance().detailsRepository();
                         Map<String, String> details = detailsRepository.getAllDetailsForClient(householdid);
                         locationid = JsonFormUtils.getOpenMrsLocationId(context(),getValue(details, "address4", false) );
 

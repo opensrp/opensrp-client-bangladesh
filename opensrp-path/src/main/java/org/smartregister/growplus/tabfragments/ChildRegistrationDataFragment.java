@@ -1,4 +1,4 @@
-package org.smartregister.path.tabfragments;
+package org.smartregister.growplus.tabfragments;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;

@@ -1,4 +1,4 @@
-package org.smartregister.path.provider;
+package org.smartregister.growplus.provider;
 
 import android.app.Activity;
 import android.content.Context;
@@ -177,7 +177,7 @@ public class WomanSmartClientsProvider implements SmartRegisterCLientsProviderFo
 
         try {
 //            Utils.startAsyncTask(new ChildSmartClientsProvider.WeightAsyncTask(convertView, pc.entityId(), lostToFollowUp, inactive), null);
-            startAsyncTask(new WomanSmartClientsProvider.VaccinationAsyncTask(convertView, pc.entityId(), lmpstring,client, cursor), null);
+            startAsyncTask(new VaccinationAsyncTask(convertView, pc.entityId(), lmpstring,client, cursor), null);
         } catch (Exception e) {
             Log.e(getClass().getName(), e.getMessage(), e);
         }
@@ -517,7 +517,7 @@ public class WomanSmartClientsProvider implements SmartRegisterCLientsProviderFo
 
         List<Map<String, Object>> sch = generateScheduleList(PathConstants.KEY.WOMAN, dateTimetoSend, recievedVaccines, updateWrapper.getAlertList());
 
-        WomanSmartClientsProvider.State state = WomanSmartClientsProvider.State.FULLY_IMMUNIZED;
+        State state = State.FULLY_IMMUNIZED;
         String stateKey = null;
 
         Map<String, Object> nv = null;

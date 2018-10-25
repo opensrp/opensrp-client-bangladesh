@@ -1,4 +1,4 @@
-package org.smartregister.path.viewstates;
+package org.smartregister.growplus.viewstates;
 
 import android.os.Parcel;
 import android.os.Parcelable;
@@ -7,6 +7,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
+import org.smartregister.path.viewstates.*;
 
 import shared.BaseUnitTest;
 
@@ -16,16 +17,16 @@ import shared.BaseUnitTest;
 
 public class PathJsonFormFragmentViewStateTest extends BaseUnitTest {
 
-    PathJsonFormFragmentViewState pathJsonFormFragmentViewState;
+    org.smartregister.path.viewstates.PathJsonFormFragmentViewState pathJsonFormFragmentViewState;
     @Mock
     Parcel parcel;
 
     @Before
     public void setUp() {
         MockitoAnnotations.initMocks(this);
-        pathJsonFormFragmentViewState = new PathJsonFormFragmentViewState();
+        pathJsonFormFragmentViewState = new org.smartregister.path.viewstates.PathJsonFormFragmentViewState();
         pathJsonFormFragmentViewState.writeToParcel(parcel,1);
-        Parcelable.Creator<PathJsonFormFragmentViewState> creator = PathJsonFormFragmentViewState.CREATOR;
+        Parcelable.Creator<org.smartregister.path.viewstates.PathJsonFormFragmentViewState> creator = org.smartregister.path.viewstates.PathJsonFormFragmentViewState.CREATOR;
         creator.createFromParcel(parcel);
         creator.newArray(0);
     }

@@ -1,4 +1,4 @@
-package org.smartregister.path.sync;
+package org.smartregister.growplus.sync;
 
 import android.content.Context;
 import android.content.Intent;
@@ -18,6 +18,8 @@ import org.smartregister.growplus.application.VaccinatorApplication;
 import org.smartregister.growplus.receiver.SyncStatusBroadcastReceiver;
 import org.smartregister.growplus.receiver.VaccinatorAlarmReceiver;
 import org.smartregister.growplus.service.intent.PullUniqueIdsIntentService;
+import org.smartregister.path.sync.*;
+import org.smartregister.path.sync.PathClientProcessor;
 import org.smartregister.repository.AllSharedPreferences;
 import org.smartregister.repository.EventClientRepository;
 import org.smartregister.service.ActionService;
@@ -124,7 +126,7 @@ public class PathUpdateActionsTask {
                 Intent intent = new Intent(context, ZScoreRefreshIntentService.class);
                 context.startService(intent);
                 if (result.equals(FetchStatus.nothingFetched) || result.equals(FetchStatus.fetched)) {
-                    ECSyncUpdater ecSyncUpdater = ECSyncUpdater.getInstance(context);
+                    org.smartregister.path.sync.ECSyncUpdater ecSyncUpdater = org.smartregister.path.sync.ECSyncUpdater.getInstance(context);
                     ecSyncUpdater.updateLastCheckTimeStamp(Calendar.getInstance().getTimeInMillis());
                 }
                 pathAfterFetchListener.afterFetch(result);
@@ -137,7 +139,7 @@ public class PathUpdateActionsTask {
         try {
             int totalCount = 0;
             pushToServer();
-            ECSyncUpdater ecUpdater = ECSyncUpdater.getInstance(context);
+            org.smartregister.path.sync.ECSyncUpdater ecUpdater = org.smartregister.path.sync.ECSyncUpdater.getInstance(context);
 
             // Retrieve database host from preferences
             SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);

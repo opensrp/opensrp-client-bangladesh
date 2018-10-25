@@ -1,4 +1,4 @@
-package org.smartregister.path.widgets;
+package org.smartregister.growplus.widgets;
 
 import android.content.Context;
 import android.util.Log;

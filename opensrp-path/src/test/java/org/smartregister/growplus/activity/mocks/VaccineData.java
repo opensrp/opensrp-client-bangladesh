@@ -1,4 +1,4 @@
-package org.smartregister.path.activity.mocks;
+package org.smartregister.growplus.activity.mocks;
 
 /**
  * Created by kaderchowdhury on 07/12/17.

@@ -1,4 +1,4 @@
-package org.smartregister.path.activity;
+package org.smartregister.growplus.activity;
 
 
 import android.support.test.espresso.ViewInteraction;
@@ -16,6 +16,7 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.smartregister.growplus.R;
+import org.smartregister.path.activity.*;
 
 import static android.support.test.InstrumentationRegistry.getInstrumentation;
 import static android.support.test.espresso.Espresso.onView;
@@ -32,7 +33,7 @@ import static org.hamcrest.Matchers.allOf;
 public class LoginActivitySettingsInstrumentationTest {
 
     @Rule
-    public ActivityTestRule<LoginActivity> mActivityTestRule = new ActivityTestRule<>(LoginActivity.class);
+    public ActivityTestRule<org.smartregister.path.activity.LoginActivity> mActivityTestRule = new ActivityTestRule<>(org.smartregister.path.activity.LoginActivity.class);
 
     @Test
     public void loginActivitySettingsInstrumentationTest() {

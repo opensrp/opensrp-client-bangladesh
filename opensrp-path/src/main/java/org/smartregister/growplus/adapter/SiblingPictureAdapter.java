@@ -1,4 +1,4 @@
-package org.smartregister.path.adapter;
+package org.smartregister.growplus.adapter;
 
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;

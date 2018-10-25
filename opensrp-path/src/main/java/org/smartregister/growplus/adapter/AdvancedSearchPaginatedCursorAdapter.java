@@ -1,4 +1,4 @@
-package org.smartregister.path.adapter;
+package org.smartregister.growplus.adapter;
 
 import android.content.Context;
 import android.database.Cursor;

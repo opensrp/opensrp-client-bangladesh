@@ -1,4 +1,4 @@
-package org.smartregister.path.sync;
+package org.smartregister.growplus.sync;
 
 import android.content.Context;
 import android.util.Log;

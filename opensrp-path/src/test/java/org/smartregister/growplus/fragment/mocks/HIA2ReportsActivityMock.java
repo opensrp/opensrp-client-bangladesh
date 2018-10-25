@@ -1,4 +1,4 @@
-package org.smartregister.path.fragment.mocks;
+package org.smartregister.growplus.fragment.mocks;
 
 /**
  * Created by kaderchowdhury on 12/12/17.

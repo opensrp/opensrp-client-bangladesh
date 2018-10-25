@@ -1,4 +1,4 @@
-package org.smartregister.path.sync;
+package org.smartregister.growplus.sync;
 
 
 import android.content.ContentValues;
@@ -26,6 +26,7 @@ import org.smartregister.immunization.repository.VaccineRepository;
 import org.smartregister.immunization.service.intent.RecurringIntentService;
 import org.smartregister.immunization.service.intent.VaccineIntentService;
 import org.smartregister.growplus.application.VaccinatorApplication;
+import org.smartregister.path.sync.*;
 import org.smartregister.repository.AllSharedPreferences;
 import org.smartregister.repository.DetailsRepository;
 import org.smartregister.sync.ClientProcessor;
@@ -509,7 +510,7 @@ public class PathClientProcessor extends ClientProcessor {
             JSONArray bindObjects = clientClassificationJson.getJSONArray("bindobjects");
 
             DetailsRepository detailsRepository = VaccinatorApplication.getInstance().context().detailsRepository();
-            ECSyncUpdater ecUpdater = ECSyncUpdater.getInstance(getContext());
+            org.smartregister.path.sync.ECSyncUpdater ecUpdater = org.smartregister.path.sync.ECSyncUpdater.getInstance(getContext());
 
             for (JSONObject event : events) {
                 unSync(ecUpdater, detailsRepository, bindObjects, event, registeredAnm);
@@ -524,7 +525,7 @@ public class PathClientProcessor extends ClientProcessor {
         return false;
     }
 
-    private boolean unSync(ECSyncUpdater ecUpdater, DetailsRepository detailsRepository, JSONArray bindObjects, JSONObject event, String registeredAnm) {
+    private boolean unSync(org.smartregister.path.sync.ECSyncUpdater ecUpdater, DetailsRepository detailsRepository, JSONArray bindObjects, JSONObject event, String registeredAnm) {
         try {
             String baseEntityId = event.getString(baseEntityIdJSONKey);
             String providerId = event.getString(providerIdJSONKey);

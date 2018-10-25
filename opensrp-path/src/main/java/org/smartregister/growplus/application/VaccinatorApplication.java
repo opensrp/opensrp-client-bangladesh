@@ -1,4 +1,4 @@
-package org.smartregister.path.application;
+package org.smartregister.growplus.application;
 
 import android.content.Intent;
 import android.content.res.Configuration;

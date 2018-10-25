@@ -1,4 +1,4 @@
-package org.smartregister.path.fragment.mocks;
+package org.smartregister.growplus.fragment.mocks;
 
 import android.database.Cursor;
 import android.os.Bundle;

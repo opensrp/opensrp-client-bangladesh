@@ -1,4 +1,4 @@
-package org.smartregister.path.repository;
+package org.smartregister.growplus.repository;
 
 import android.content.Context;
 import android.util.Log;
@@ -16,6 +16,7 @@ import org.smartregister.immunization.repository.VaccineRepository;
 import org.smartregister.immunization.repository.VaccineTypeRepository;
 import org.smartregister.immunization.util.IMDatabaseUtils;
 import org.smartregister.growplus.application.VaccinatorApplication;
+import org.smartregister.path.repository.UniqueIdRepository;
 import org.smartregister.repository.AlertRepository;
 import org.smartregister.repository.EventClientRepository;
 import org.smartregister.repository.Repository;

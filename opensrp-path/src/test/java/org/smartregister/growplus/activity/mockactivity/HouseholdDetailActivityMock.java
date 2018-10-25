@@ -1,4 +1,4 @@
-package org.smartregister.path.activity.mockactivity;
+package org.smartregister.growplus.activity.mockactivity;
 
 import android.os.Bundle;
 import android.view.Menu;

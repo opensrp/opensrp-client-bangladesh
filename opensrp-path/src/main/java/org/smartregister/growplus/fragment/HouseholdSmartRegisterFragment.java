@@ -1,4 +1,4 @@
-package org.smartregister.path.fragment;
+package org.smartregister.growplus.fragment;
 
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
@@ -40,6 +40,8 @@ import org.smartregister.growplus.option.StatusSort;
 import org.smartregister.growplus.provider.HouseholdSmartClientsProvider;
 import org.smartregister.growplus.servicemode.VaccinationServiceModeOption;
 import org.smartregister.growplus.view.LocationPickerView;
+import org.smartregister.path.fragment.*;
+import org.smartregister.path.fragment.NotInCatchmentDialogFragment;
 import org.smartregister.provider.SmartRegisterClientsProvider;
 import org.smartregister.repository.AllSharedPreferences;
 import org.smartregister.view.activity.SecuredNativeSmartRegisterActivity;
@@ -55,7 +57,7 @@ import java.util.List;
 
 import static android.view.View.INVISIBLE;
 
-public class HouseholdSmartRegisterFragment extends BaseSmartRegisterFragment {
+public class HouseholdSmartRegisterFragment extends org.smartregister.path.fragment.BaseSmartRegisterFragment {
     private final ClientActionHandler clientActionHandler = new ClientActionHandler();
     private static final String EXTRA_HOUSEHOLD_DETAILS = "household_details";
     private LocationPickerView clinicSelection;

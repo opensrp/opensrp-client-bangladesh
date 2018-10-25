@@ -1,4 +1,4 @@
-package org.smartregister.path.activity;
+package org.smartregister.growplus.activity;
 
 import android.app.Activity;
 import android.app.ProgressDialog;
@@ -50,6 +50,10 @@ import org.smartregister.growplus.sync.PathAfterFetchListener;
 import org.smartregister.growplus.sync.PathUpdateActionsTask;
 import org.smartregister.growplus.toolbar.BaseToolbar;
 import org.smartregister.growplus.toolbar.LocationSwitcherToolbar;
+import org.smartregister.path.activity.BaseRegisterActivity;
+import org.smartregister.path.activity.ChildSmartRegisterActivity;
+import org.smartregister.path.activity.HouseholdSmartRegisterActivity;
+import org.smartregister.path.activity.WomanSmartRegisterActivity;
 import org.smartregister.repository.AllSharedPreferences;
 import org.smartregister.sync.SyncProgressIndicator;
 import org.smartregister.view.activity.DrishtiApplication;

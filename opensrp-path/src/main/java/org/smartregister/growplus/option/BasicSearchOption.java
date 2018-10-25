@@ -1,4 +1,4 @@
-package org.smartregister.path.option;
+package org.smartregister.growplus.option;
 
 import org.smartregister.commonregistry.CommonPersonObjectClient;
 import org.smartregister.growplus.R;
