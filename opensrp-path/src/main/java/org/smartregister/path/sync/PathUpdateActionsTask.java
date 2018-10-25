@@ -19,7 +19,6 @@ import org.smartregister.path.receiver.SyncStatusBroadcastReceiver;
 import org.smartregister.path.receiver.VaccinatorAlarmReceiver;
 import org.smartregister.path.service.intent.PullUniqueIdsIntentService;
 import org.smartregister.repository.AllSharedPreferences;
-import org.smartregister.repository.BaseRepository;
 import org.smartregister.repository.EventClientRepository;
 import org.smartregister.service.ActionService;
 import org.smartregister.service.AllFormVersionSyncService;
@@ -33,13 +32,12 @@ import org.smartregister.view.ProgressIndicator;
 import java.io.UnsupportedEncodingException;
 import java.text.MessageFormat;
 import java.text.ParseException;
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 import java.util.Map;
 
-import util.NetworkUtils;
-import util.PathConstants;
+import org.smartregister.cbhc.util.NetworkUtils;
+import org.smartregister.cbhc.util.PathConstants;
 
 import static java.text.MessageFormat.format;
 import static org.smartregister.domain.FetchStatus.fetched;

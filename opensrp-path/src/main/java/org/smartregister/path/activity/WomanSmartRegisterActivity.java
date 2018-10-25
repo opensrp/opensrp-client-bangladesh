@@ -47,7 +47,7 @@ import org.json.JSONObject;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
-import util.JsonFormUtils;
+import org.smartregister.cbhc.util.JsonFormUtils;
 
 import static android.view.inputmethod.InputMethodManager.HIDE_NOT_ALWAYS;
 

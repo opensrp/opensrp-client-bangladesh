@@ -49,7 +49,7 @@ import java.util.Locale;
 import java.util.Map;
 
 import io.fabric.sdk.android.Fabric;
-import util.PathConstants;
+import org.smartregister.cbhc.util.PathConstants;
 
 import static org.smartregister.util.Log.logError;
 import static org.smartregister.util.Log.logInfo;

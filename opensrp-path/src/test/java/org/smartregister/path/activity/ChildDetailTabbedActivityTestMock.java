@@ -47,7 +47,7 @@ import shared.BaseUnitTest;
 import shared.customshadows.FontTextViewShadow;
 import shared.customshadows.ImmunizationRowAdapterShadow;
 import shared.customshadows.ImmunizationRowCardShadow;
-import util.JsonFormUtils;
+import org.smartregister.cbhc.util.JsonFormUtils;
 
 /**
  * Created by kaderchowdhury on 03/12/17.

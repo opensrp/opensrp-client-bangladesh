@@ -1,6 +1,5 @@
 package org.smartregister.path.fragment;
 
-import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.Nullable;
@@ -28,13 +27,11 @@ import com.vijay.jsonwizard.widgets.DatePickerFactory;
 
 import org.apache.commons.lang3.StringUtils;
 import org.joda.time.DateTime;
-import org.json.JSONObject;
 import org.smartregister.Context;
 import org.smartregister.commonregistry.CommonPersonObject;
 import org.smartregister.commonregistry.CommonPersonObjectClient;
 import org.smartregister.event.Listener;
 import org.smartregister.path.R;
-import org.smartregister.path.activity.PathJsonFormActivity;
 import org.smartregister.path.application.VaccinatorApplication;
 import org.smartregister.path.interactors.PathJsonFormInteractor;
 import org.smartregister.path.provider.MotherLookUpSmartClientsProvider;
@@ -46,8 +43,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import util.MotherLookUpUtils;
-import util.PathConstants;
+import org.smartregister.cbhc.util.MotherLookUpUtils;
+import org.smartregister.cbhc.util.PathConstants;
 
 import static org.smartregister.util.Utils.getValue;
 
@@ -193,7 +190,7 @@ public class PathJsonFormFragment extends JsonFormFragment {
     private void tapToView(final HashMap<CommonPersonObject, List<CommonPersonObject>> map) {
         snackbar = Snackbar
                 .make(getMainView(), map.size() + " mother/guardian match(es).", Snackbar.LENGTH_INDEFINITE);
-        snackbar.setAction("Tap to view", new View.OnClickListener() {
+        snackbar.setAction("Tap to org.smartregister.cbhc.view", new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 updateResults(map);
@@ -378,8 +375,8 @@ public class PathJsonFormFragment extends JsonFormFragment {
                         textView.setText(textstring);
                     }
                 }
-//            else if(view instanceof  ViewGroup){
-//                updateRelevantTextView((ViewGroup) view,textstring,currentKey);
+//            else if(org.smartregister.cbhc.view instanceof  ViewGroup){
+//                updateRelevantTextView((ViewGroup) org.smartregister.cbhc.view,textstring,currentKey);
 //            }
             }
         }
@@ -398,8 +395,8 @@ public class PathJsonFormFragment extends JsonFormFragment {
                         toreturn = textView.getText().toString();
                     }
                 }
-//            else if(view instanceof  ViewGroup){
-//                updateRelevantTextView((ViewGroup) view,textstring,currentKey);
+//            else if(org.smartregister.cbhc.view instanceof  ViewGroup){
+//                updateRelevantTextView((ViewGroup) org.smartregister.cbhc.view,textstring,currentKey);
 //            }
             }
         }

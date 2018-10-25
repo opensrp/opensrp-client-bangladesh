@@ -1,0 +1,381 @@
+{
+  "bindobjects": [
+    {
+      "name": "ec_household",
+      "columns": [
+        {
+          "column_name": "base_entity_id",
+          "type": "Client",
+          "json_mapping": {
+            "field": "baseEntityId"
+          }
+        },
+        {
+          "column_name": "Patient_Identifier",
+          "type": "Client",
+          "json_mapping": {
+            "field": "identifiers.Patient_Identifier"
+          }
+        },
+        {
+          "column_name": "first_name",
+          "type": "Client",
+          "json_mapping": {
+            "field": "firstName"
+          }
+        },
+        {
+          "column_name": "last_name",
+          "type": "Client",
+          "json_mapping": {
+            "field": "lastName"
+          }
+        },
+        {
+          "column_name": "dob",
+          "type": "Client",
+          "json_mapping": {
+            "field": "birthdate"
+          }
+        },
+        {
+          "column_name": "dob_unknown",
+          "type": "Client",
+          "json_mapping": {
+            "field": "birthdateApprox"
+          }
+        },
+        {
+          "column_name": "last_interacted_with",
+          "type": "Event",
+          "json_mapping": {
+            "field": "version"
+          }
+        },
+        {
+          "column_name": "date_removed",
+          "type": "Client",
+          "json_mapping": {
+            "field": "attributes.dateRemoved"
+          }
+        },
+        {
+          "column_name": "phone_number",
+          "type": "Client",
+          "json_mapping": {
+            "field": "attributes.phone_number"
+          }
+        },
+        {
+          "column_name": "alt_name",
+          "type": "Client",
+          "json_mapping": {
+            "field": "attributes.alt_name"
+          }
+        },
+        {
+          "column_name": "alt_phone_number",
+          "type": "Client",
+          "json_mapping": {
+            "field": "attributes.alt_phone_number"
+          }
+        },
+        {
+          "column_name": "reminders",
+          "type": "Client",
+          "json_mapping": {
+            "field": "attributes.reminders"
+          }
+        }
+      ]
+    },
+    {
+      "name": "ec_woman",
+      "columns": [
+        {
+          "column_name": "base_entity_id",
+          "type": "Client",
+          "json_mapping": {
+            "field": "baseEntityId"
+          }
+        },
+        {
+          "column_name": "Patient_Identifier",
+          "type": "Client",
+          "json_mapping": {
+            "field": "identifiers.Patient_Identifier"
+          }
+        },
+        {
+          "column_name": "first_name",
+          "type": "Client",
+          "json_mapping": {
+            "field": "firstName"
+          }
+        },
+        {
+          "column_name": "last_name",
+          "type": "Client",
+          "json_mapping": {
+            "field": "lastName"
+          }
+        },
+        {
+          "column_name": "relational_id",
+          "type": "Client",
+          "json_mapping": {
+            "field": "relationships.household"
+          }
+        },
+        {
+          "column_name": "dob",
+          "type": "Client",
+          "json_mapping": {
+            "field": "birthdate"
+          }
+        },
+        {
+          "column_name": "dob_unknown",
+          "type": "Client",
+          "json_mapping": {
+            "field": "birthdateApprox"
+          }
+        },
+        {
+          "column_name": "last_interacted_with",
+          "type": "Event",
+          "json_mapping": {
+            "field": "version"
+          }
+        },
+        {
+          "column_name": "date_removed",
+          "type": "Client",
+          "json_mapping": {
+            "field": "attributes.dateRemoved"
+          }
+        },
+        {
+          "column_name": "phone_number",
+          "type": "Client",
+          "json_mapping": {
+            "field": "attributes.phone_number"
+          }
+        },
+        {
+          "column_name": "alt_name",
+          "type": "Client",
+          "json_mapping": {
+            "field": "attributes.alt_name"
+          }
+        },
+        {
+          "column_name": "alt_phone_number",
+          "type": "Client",
+          "json_mapping": {
+            "field": "attributes.alt_phone_number"
+          }
+        },
+        {
+          "column_name": "reminders",
+          "type": "Client",
+          "json_mapping": {
+            "field": "attributes.reminders"
+          }
+        }
+      ]
+    },
+    {
+      "name": "ec_child",
+      "columns": [
+        {
+          "column_name": "base_entity_id",
+          "type": "Client",
+          "json_mapping": {
+            "field": "baseEntityId"
+          }
+        },
+        {
+          "column_name": "Patient_Identifier",
+          "type": "Client",
+          "json_mapping": {
+            "field": "identifiers.Patient_Identifier"
+          }
+        },
+        {
+          "column_name": "first_name",
+          "type": "Client",
+          "json_mapping": {
+            "field": "firstName"
+          }
+        },
+        {
+          "column_name": "last_name",
+          "type": "Client",
+          "json_mapping": {
+            "field": "lastName"
+          }
+        },
+        {
+          "column_name": "relational_id",
+          "type": "Client",
+          "json_mapping": {
+            "field": "relationships.household"
+          }
+        },
+        {
+          "column_name": "dob",
+          "type": "Client",
+          "json_mapping": {
+            "field": "birthdate"
+          }
+        },
+        {
+          "column_name": "dob_unknown",
+          "type": "Client",
+          "json_mapping": {
+            "field": "birthdateApprox"
+          }
+        },
+        {
+          "column_name": "last_interacted_with",
+          "type": "Event",
+          "json_mapping": {
+            "field": "version"
+          }
+        },
+        {
+          "column_name": "date_removed",
+          "type": "Client",
+          "json_mapping": {
+            "field": "attributes.dateRemoved"
+          }
+        },
+        {
+          "column_name": "phone_number",
+          "type": "Client",
+          "json_mapping": {
+            "field": "attributes.phone_number"
+          }
+        },
+        {
+          "column_name": "alt_name",
+          "type": "Client",
+          "json_mapping": {
+            "field": "attributes.alt_name"
+          }
+        },
+        {
+          "column_name": "alt_phone_number",
+          "type": "Client",
+          "json_mapping": {
+            "field": "attributes.alt_phone_number"
+          }
+        },
+        {
+          "column_name": "reminders",
+          "type": "Client",
+          "json_mapping": {
+            "field": "attributes.reminders"
+          }
+        }
+      ]
+    },
+    {
+      "name": "ec_member",
+      "columns": [
+        {
+          "column_name": "base_entity_id",
+          "type": "Client",
+          "json_mapping": {
+            "field": "baseEntityId"
+          }
+        },
+        {
+          "column_name": "Patient_Identifier",
+          "type": "Client",
+          "json_mapping": {
+            "field": "identifiers.Patient_Identifier"
+          }
+        },
+        {
+          "column_name": "first_name",
+          "type": "Client",
+          "json_mapping": {
+            "field": "firstName"
+          }
+        },
+        {
+          "column_name": "last_name",
+          "type": "Client",
+          "json_mapping": {
+            "field": "lastName"
+          }
+        },
+        {
+          "column_name": "relational_id",
+          "type": "Client",
+          "json_mapping": {
+            "field": "relationships.household"
+          }
+        },
+        {
+          "column_name": "dob",
+          "type": "Client",
+          "json_mapping": {
+            "field": "birthdate"
+          }
+        },
+        {
+          "column_name": "dob_unknown",
+          "type": "Client",
+          "json_mapping": {
+            "field": "birthdateApprox"
+          }
+        },
+        {
+          "column_name": "last_interacted_with",
+          "type": "Event",
+          "json_mapping": {
+            "field": "version"
+          }
+        },
+        {
+          "column_name": "date_removed",
+          "type": "Client",
+          "json_mapping": {
+            "field": "attributes.dateRemoved"
+          }
+        },
+        {
+          "column_name": "phone_number",
+          "type": "Client",
+          "json_mapping": {
+            "field": "attributes.phone_number"
+          }
+        },
+        {
+          "column_name": "alt_name",
+          "type": "Client",
+          "json_mapping": {
+            "field": "attributes.alt_name"
+          }
+        },
+        {
+          "column_name": "alt_phone_number",
+          "type": "Client",
+          "json_mapping": {
+            "field": "attributes.alt_phone_number"
+          }
+        },
+        {
+          "column_name": "reminders",
+          "type": "Client",
+          "json_mapping": {
+            "field": "attributes.reminders"
+          }
+        }
+      ]
+    }
+  ]
+}

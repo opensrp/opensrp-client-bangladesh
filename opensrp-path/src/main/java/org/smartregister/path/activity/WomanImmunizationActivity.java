@@ -20,7 +20,6 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import org.apache.commons.lang3.StringUtils;
-import org.apache.commons.lang3.tuple.Triple;
 import org.smartregister.commonregistry.AllCommonsRepository;
 import org.smartregister.commonregistry.CommonPersonObject;
 import org.smartregister.commonregistry.CommonPersonObjectClient;
@@ -32,9 +31,7 @@ import org.smartregister.growthmonitoring.fragment.GrowthDialogFragment;
 import org.smartregister.growthmonitoring.fragment.RecordWeightDialogFragment;
 import org.smartregister.growthmonitoring.listener.WeightActionListener;
 import org.smartregister.growthmonitoring.repository.WeightRepository;
-import org.smartregister.immunization.db.VaccineRepo;
 import org.smartregister.immunization.domain.ServiceRecord;
-import org.smartregister.immunization.domain.ServiceSchedule;
 import org.smartregister.immunization.domain.ServiceType;
 import org.smartregister.immunization.domain.ServiceWrapper;
 import org.smartregister.immunization.domain.Vaccine;
@@ -44,12 +41,10 @@ import org.smartregister.immunization.fragment.ServiceDialogFragment;
 import org.smartregister.immunization.fragment.UndoServiceDialogFragment;
 import org.smartregister.immunization.fragment.UndoVaccinationDialogFragment;
 import org.smartregister.immunization.fragment.VaccinationDialogFragment;
-import org.smartregister.immunization.listener.ServiceActionListener;
 import org.smartregister.immunization.listener.VaccinationActionListener;
 import org.smartregister.immunization.repository.RecurringServiceRecordRepository;
 import org.smartregister.immunization.repository.RecurringServiceTypeRepository;
 import org.smartregister.immunization.repository.VaccineRepository;
-import org.smartregister.immunization.util.RecurringServiceUtils;
 import org.smartregister.immunization.util.VaccinateActionUtils;
 import org.smartregister.immunization.util.VaccinatorUtils;
 import org.smartregister.immunization.view.ServiceGroup;
@@ -87,13 +82,10 @@ import java.util.Random;
 import java.util.concurrent.TimeUnit;
 import java.util.regex.Pattern;
 
-import util.ImageUtils;
-import util.JsonFormUtils;
-import util.PathConstants;
+import org.smartregister.cbhc.util.ImageUtils;
+import org.smartregister.cbhc.util.JsonFormUtils;
+import org.smartregister.cbhc.util.PathConstants;
 
-import util.Utils;
-
-import static org.smartregister.util.Utils.dobToDateTime;
 import static org.smartregister.util.Utils.getName;
 import static org.smartregister.util.Utils.getValue;
 import static org.smartregister.util.Utils.kgStringSuffix;
@@ -159,8 +151,8 @@ public class WomanImmunizationActivity extends BaseActivity
             }
         });
         toolbar.setOnLocationChangeListener(this);
-//       View view= toolbar.findViewById(R.id.immunization_separator);
-//        view.setBackground(R.drawable.vertical_seperator_female);
+//       View org.smartregister.cbhc.view= toolbar.findViewById(R.id.immunization_separator);
+//        org.smartregister.cbhc.view.setBackground(R.drawable.vertical_seperator_female);
 
         // Get child details from bundled data
         Bundle extras = this.getIntent().getExtras();
@@ -259,7 +251,7 @@ public class WomanImmunizationActivity extends BaseActivity
             ImageView profileImageIV = (ImageView) findViewById(R.id.profile_image_iv);
 
             if (childDetails.entityId() != null) {//image already in local storage most likey ):
-                //set profile image by passing the client id.If the image doesn't exist in the image repository then download and save locally
+                //set profile image by passing the client id.If the image doesn't exist in the image org.smartregister.cbhc.repository then download and save locally
                 profileImageIV.setTag(org.smartregister.R.id.entity_id, childDetails.entityId());
                 DrishtiApplication.getCachedImageLoaderInstance().getImageByClientId(childDetails.entityId(), OpenSRPImageLoader.getStaticImageListener((ImageView) profileImageIV, R.drawable.woman_path_register_logo, R.drawable.woman_path_register_logo));
 

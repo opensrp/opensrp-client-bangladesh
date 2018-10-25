@@ -7,7 +7,6 @@ import android.view.View;
 import org.smartregister.growthmonitoring.repository.WeightRepository;
 import org.smartregister.immunization.repository.VaccineRepository;
 import org.smartregister.path.R;
-import org.smartregister.path.activity.ChildImmunizationActivity;
 import org.smartregister.path.activity.WomanImmunizationActivity;
 import org.smartregister.path.application.VaccinatorApplication;
 import org.smartregister.service.AlertService;
@@ -40,7 +39,7 @@ public class WomanImmunizationActivityMock extends WomanImmunizationActivity {
         // TODO: update all views using child data
         Map<String, String> details = detailsRepository.getAllDetailsForClient(childDetails.entityId());
 
-        util.Utils.putAll(childDetails.getColumnmaps(), details);
+        org.smartregister.cbhc.util.Utils.putAll(childDetails.getColumnmaps(), details);
 
         updateGenderViews();
         toolbar.setTitle(updateActivityTitle());

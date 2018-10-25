@@ -1,25 +1,16 @@
 package org.smartregister.path.view;
 
-import android.content.Intent;
-import android.util.Log;
-
-import org.junit.After;
 import org.junit.Before;
-import org.junit.Rule;
 import org.junit.Test;
-import org.mockito.Mock;
-import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
-import org.powermock.api.mockito.PowerMockito;
 import org.powermock.core.classloader.annotations.PrepareForTest;
-import org.powermock.modules.junit4.rule.PowerMockRule;
 import org.robolectric.RuntimeEnvironment;
 import org.robolectric.annotation.Config;
 import org.smartregister.path.application.VaccinatorApplication;
 import shared.BaseUnitTest;
 import shared.customshadows.FontTextViewShadow;
 import shared.customshadows.LocationPickerViewShadow;
-import util.JsonFormUtils;
+import org.smartregister.cbhc.util.JsonFormUtils;
 
 /**
  * Created by kaderchowdhury on 10/12/17.

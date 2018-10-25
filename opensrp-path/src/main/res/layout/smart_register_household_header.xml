@@ -14,7 +14,7 @@
         android:layout_weight="3.2"
         android:orientation="horizontal">
 
-        <org.smartregister.view.customcontrols.CustomFontTextView
+        <org.smartregister.org.smartregister.cbhc.view.customcontrols.CustomFontTextView
             android:id="@+id/child_header"
             style="@style/CustomFontTextViewStyle.ClientList.Medium"
             android:layout_width="wrap_content"
@@ -33,7 +33,7 @@
         android:layout_marginRight="1dp"
         android:layout_weight="1.5">
 
-        <org.smartregister.view.customcontrols.CustomFontTextView
+        <org.smartregister.org.smartregister.cbhc.view.customcontrols.CustomFontTextView
             android:id="@+id/child_zeir_id_header"
             style="@style/CustomFontTextViewStyle.ClientList.Medium"
             android:layout_width="wrap_content"
@@ -52,7 +52,7 @@
         android:layout_marginRight="1dp"
         android:layout_weight="1.9">
 
-        <org.smartregister.view.customcontrols.CustomFontTextView
+        <org.smartregister.org.smartregister.cbhc.view.customcontrols.CustomFontTextView
             android:id="@+id/child_weight_header"
             style="@style/CustomFontTextViewStyle.ClientList.Medium"
             android:layout_width="wrap_content"
@@ -70,7 +70,7 @@
         android:layout_height="match_parent"
         android:layout_weight="2">
 
-        <org.smartregister.view.customcontrols.CustomFontTextView
+        <org.smartregister.org.smartregister.cbhc.view.customcontrols.CustomFontTextView
             android:id="@+id/child_due_header"
             style="@style/CustomFontTextViewStyle.ClientList.Medium"
             android:layout_width="wrap_content"
@@ -88,7 +88,7 @@
         android:layout_marginRight="1dp"
         android:layout_weight="1.5">
 
-        <org.smartregister.view.customcontrols.CustomFontTextView
+        <org.smartregister.org.smartregister.cbhc.view.customcontrols.CustomFontTextView
             android:id="@+id/add_member"
             style="@style/CustomFontTextViewStyle.ClientList.Medium"
             android:layout_width="wrap_content"

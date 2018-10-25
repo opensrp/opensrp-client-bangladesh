@@ -16,7 +16,7 @@
         android:paddingLeft="@dimen/activity_horizontal_margin"
         android:paddingRight="@dimen/activity_horizontal_margin">
 
-        <android.support.v7.widget.CardView
+        <android.support.v7.org.smartregister.cbhc.widget.CardView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:clickable="true"
@@ -48,7 +48,7 @@
                     android:paddingLeft="10dp"
                     android:paddingRight="20dp">
 
-                    <org.smartregister.view.customcontrols.CustomFontTextView
+                    <org.smartregister.org.smartregister.cbhc.view.customcontrols.CustomFontTextView
                         android:id="@+id/name_tv"
                         style="@style/CustomFontTextViewStyle.ClientList.Medium"
                         android:layout_width="wrap_content"
@@ -63,7 +63,7 @@
                         android:layout_height="wrap_content"
                         android:orientation="horizontal">
 
-                        <org.smartregister.view.customcontrols.CustomFontTextView
+                        <org.smartregister.org.smartregister.cbhc.view.customcontrols.CustomFontTextView
                             android:id="@+id/child_id_tv"
                             style="@style/CustomFontTextViewStyle.ClientList.Light"
                             android:layout_width="wrap_content"
@@ -72,7 +72,7 @@
                             android:textColor="@color/dark_grey"
                             android:textSize="@dimen/activity_sub_title_size" />
 
-                        <org.smartregister.view.customcontrols.CustomFontTextView
+                        <org.smartregister.org.smartregister.cbhc.view.customcontrols.CustomFontTextView
                             android:id="@+id/age_tv"
                             style="@style/CustomFontTextViewStyle.ClientList.Light"
                             android:layout_width="wrap_content"
@@ -91,9 +91,9 @@
                 android:layout_gravity="right"
                 android:layout_marginRight="12.5dp"
                 android:src="@drawable/ic_more_vert" />
-        </android.support.v7.widget.CardView>
+        </android.support.v7.org.smartregister.cbhc.widget.CardView>
     </LinearLayout>
-    <android.support.v7.widget.CardView
+    <android.support.v7.org.smartregister.cbhc.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/card_category_horizontal_margin"
@@ -108,7 +108,7 @@
         android:paddingLeft="10dp"
         android:paddingRight="20dp">
 
-        <org.smartregister.view.customcontrols.CustomFontTextView
+        <org.smartregister.org.smartregister.cbhc.view.customcontrols.CustomFontTextView
             style="@style/CustomFontTextViewStyle.ClientList"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -118,7 +118,7 @@
             android:textColor="@color/text_black"
             android:textSize="20sp" />
 
-        <org.smartregister.view.customcontrols.CustomFontTextView
+        <org.smartregister.org.smartregister.cbhc.view.customcontrols.CustomFontTextView
             android:id="@+id/dob_tv"
             style="@style/CustomFontTextViewStyle.ClientList"
             android:layout_width="wrap_content"
@@ -130,7 +130,7 @@
             android:textColor="@color/text_black"
             android:textSize="@dimen/activity_sub_title_size" />
     </RelativeLayout>
-    </android.support.v7.widget.CardView>
+    </android.support.v7.org.smartregister.cbhc.widget.CardView>
 
     <ListView
         android:id="@+id/household_list"

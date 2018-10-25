@@ -16,11 +16,7 @@ import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
-import com.github.ybq.android.spinkit.style.ChasingDots;
 import com.github.ybq.android.spinkit.style.Circle;
-import com.github.ybq.android.spinkit.style.DoubleBounce;
-import com.github.ybq.android.spinkit.style.RotatingCircle;
-import com.github.ybq.android.spinkit.style.WanderingCubes;
 
 import org.smartregister.Context;
 import org.smartregister.commonregistry.CommonPersonObjectClient;
@@ -59,7 +55,7 @@ import org.smartregister.view.dialog.SortOption;
 import java.util.ArrayList;
 import java.util.List;
 
-import util.PathConstants;
+import org.smartregister.cbhc.util.PathConstants;
 
 
 import static android.view.View.INVISIBLE;

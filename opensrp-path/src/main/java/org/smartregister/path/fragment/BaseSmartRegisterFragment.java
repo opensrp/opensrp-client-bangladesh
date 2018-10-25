@@ -21,8 +21,8 @@ import org.smartregister.path.view.LocationPickerView;
 import org.smartregister.provider.SmartRegisterClientsProvider;
 import org.smartregister.view.activity.SecuredNativeSmartRegisterActivity;
 
-import util.JsonFormUtils;
-import util.PathConstants;
+import org.smartregister.cbhc.util.JsonFormUtils;
+import org.smartregister.cbhc.util.PathConstants;
 
 import static android.view.View.INVISIBLE;
 import static android.view.View.VISIBLE;

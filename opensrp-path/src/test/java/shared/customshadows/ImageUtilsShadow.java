@@ -8,7 +8,7 @@ import org.smartregister.commonregistry.CommonPersonObjectClient;
 import org.smartregister.domain.Photo;
 import org.smartregister.path.R;
 
-import util.ImageUtils;
+import org.smartregister.cbhc.util.ImageUtils;
 
 /**
  * Created by onadev on 15/06/2017.

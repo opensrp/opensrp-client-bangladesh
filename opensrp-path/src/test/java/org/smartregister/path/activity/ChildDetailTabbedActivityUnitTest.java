@@ -468,7 +468,7 @@ public class ChildDetailTabbedActivityUnitTest extends BaseUnitTest {
         menuItem.setItemId(R.id.immunization_data);
         activity.onOptionsItemSelected(menuItem);
         ArrayList<View> outViews_IMMUNIZATIONS = new ArrayList<>();
-        //Validate correct form view loaded by validating various fields
+        //Validate correct form org.smartregister.cbhc.view loaded by validating various fields
         activity.findViewById(R.id.immunizations).findViewsWithText(outViews_IMMUNIZATIONS, "IMMUNIZATIONS",
                 View.FIND_VIEWS_WITH_TEXT);
         assertFalse(outViews_IMMUNIZATIONS.isEmpty());
@@ -594,7 +594,7 @@ public class ChildDetailTabbedActivityUnitTest extends BaseUnitTest {
 
         ArrayList<View> outViews = new ArrayList<>();
         View view = activity.getFragmentManager().findFragmentByTag(ChildDetailTabbedActivityTestVersion.DIALOG_TAG).getView();
-        assertNotNull(view); //make sure view exists
+        assertNotNull(view); //make sure org.smartregister.cbhc.view exists
         view.findViewsWithText(outViews, "Child Status",
                 View.FIND_VIEWS_WITH_TEXT);
 
@@ -758,10 +758,10 @@ public class ChildDetailTabbedActivityUnitTest extends BaseUnitTest {
 ////    @Ignore@Test
 //    public void onGiveTodayCallsSaveServiceMethodWithCorrectParameters() throws Exception {
 //        ChildDetailTabbedActivity spy = PowerMockito.spy(activity);
-//        spy.onGiveToday(serviceWrapper, view);
+//        spy.onGiveToday(serviceWrapper, org.smartregister.cbhc.view);
 //        String privateMethodName = "saveService";
-//        PowerMockito.doNothing().when(spy, method(ChildDetailTabbedActivity.class, privateMethodName, ServiceWrapper.class, View.class)).withArguments(serviceWrapper, view);
-//        PowerMockito.verifyPrivate(spy, times(1)).invoke(privateMethodName, serviceWrapper, view);
+//        PowerMockito.doNothing().when(spy, method(ChildDetailTabbedActivity.class, privateMethodName, ServiceWrapper.class, View.class)).withArguments(serviceWrapper, org.smartregister.cbhc.view);
+//        PowerMockito.verifyPrivate(spy, times(1)).invoke(privateMethodName, serviceWrapper, org.smartregister.cbhc.view);
 //    }
 
     private DetailsRepository getDetailsRepository() {

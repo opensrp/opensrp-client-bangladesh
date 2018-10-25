@@ -34,7 +34,7 @@ import org.smartregister.view.viewholder.OnClickFormLauncher;
 
 import java.util.Map;
 
-import util.JsonFormUtils;
+import org.smartregister.cbhc.util.JsonFormUtils;
 
 import static android.view.ViewGroup.LayoutParams.MATCH_PARENT;
 import static android.view.ViewGroup.LayoutParams.WRAP_CONTENT;
@@ -103,7 +103,7 @@ public class HouseholdSmartClientsProvider implements SmartRegisterCLientsProvid
 
         ImageView profileImageIV = (ImageView) convertView.findViewById(R.id.profilepic);
         if (pc.entityId() != null) {//image already in local storage most likey ):
-            //set profile image by passing the client id.If the image doesn't exist in the image repository then download and save locally
+            //set profile image by passing the client id.If the image doesn't exist in the image org.smartregister.cbhc.repository then download and save locally
             profileImageIV.setTag(org.smartregister.R.id.entity_id, pc.entityId());
             DrishtiApplication.getCachedImageLoaderInstance().getImageByClientId(pc.entityId(), OpenSRPImageLoader.getStaticImageListener((ImageView) profileImageIV, R.drawable.houshold_register_placeholder, R.drawable.houshold_register_placeholder));
 

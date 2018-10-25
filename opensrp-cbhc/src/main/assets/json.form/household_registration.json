@@ -1,0 +1,550 @@
+{
+  "count": "1",
+  "encounter_type": "Household Registration",
+  "entity_id": "",
+  "relational_id": "",
+  "metadata": {
+    "start": {
+      "openmrs_entity_parent": "",
+      "openmrs_entity": "concept",
+      "openmrs_data_type": "start",
+      "openmrs_entity_id": "163137AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
+    },
+    "end": {
+      "openmrs_entity_parent": "",
+      "openmrs_entity": "concept",
+      "openmrs_data_type": "end",
+      "openmrs_entity_id": "163138AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
+    },
+    "today": {
+      "openmrs_entity_parent": "",
+      "openmrs_entity": "encounter",
+      "openmrs_entity_id": "encounter_date"
+    },
+    "deviceid": {
+      "openmrs_entity_parent": "",
+      "openmrs_entity": "concept",
+      "openmrs_data_type": "deviceid",
+      "openmrs_entity_id": "163149AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
+    },
+    "subscriberid": {
+      "openmrs_entity_parent": "",
+      "openmrs_entity": "concept",
+      "openmrs_data_type": "subscriberid",
+      "openmrs_entity_id": "163150AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
+    },
+    "simserial": {
+      "openmrs_entity_parent": "",
+      "openmrs_entity": "concept",
+      "openmrs_data_type": "simserial",
+      "openmrs_entity_id": "163151AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
+    },
+    "phonenumber": {
+      "openmrs_entity_parent": "",
+      "openmrs_entity": "concept",
+      "openmrs_data_type": "phonenumber",
+      "openmrs_entity_id": "163152AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
+    },
+    "encounter_location": "",
+    "look_up": {
+      "entity_id":"",
+      "value":""
+    }
+  },
+  "step1": {
+    "title": "Household Registration",
+    "fields": [
+      {
+        "key": "gps",
+        "openmrs_entity_parent": "usual_residence",
+        "openmrs_entity": "person_address",
+        "openmrs_entity_id": "geopoint",
+        "openmrs_data_type": "text",
+        "type": "gps"
+      },
+      {
+        "key": "HIE_FACILITIES",
+        "openmrs_entity_parent": "",
+        "openmrs_entity": "",
+        "openmrs_entity_id": "",
+        "openmrs_data_type": "text",
+        "type": "tree",
+        "hint": "খানার ঠিকানা(ওয়ার্ড,ইউনিয়ন)",
+        "tree": [],
+        "v_required": {
+          "value": true,
+          "err": "Please enter the Household head's home facility"
+        }
+      },
+      {
+        "key": "ADDRESS_LINE",
+        "openmrs_entity_parent": "usual_residence",
+        "openmrs_entity": "person_address",
+        "openmrs_entity_id": "address7",
+        "openmrs_data_type": "text",
+        "type": "edit_text",
+        "hint": "গ্রাম/মহল্লা/বাড়ি/সড়ক নম্বর"
+      },
+      {
+        "key": "HHID",
+        "openmrs_entity_parent": "",
+        "openmrs_entity": "person_attribute",
+        "openmrs_entity_id": "householdCode",
+        "type": "edit_text",
+        "hint": "খানার আইডি"
+      },
+      {
+        "key": "First_Name",
+        "openmrs_entity_parent": "",
+        "openmrs_entity": "person",
+        "openmrs_entity_id": "first_name",
+        "type": "edit_text",
+        "hint": "পরিবারের প্রধানের নাম এর প্রথম অংশ",
+        "edit_type": "name",
+        "v_regex": {
+          "value": "[A-Za-z\\s\.\-]*",
+          "err": "Please enter a valid name"
+        },
+        "v_required": {
+          "value": "true",
+          "err": "Please enter the Name correctly"
+        }
+      },
+      {
+        "key": "last_name",
+        "openmrs_entity_parent": "",
+        "openmrs_entity": "person",
+        "openmrs_entity_id": "last_name",
+        "type": "edit_text",
+        "hint": "পরিবারের প্রধানের নাম এর শেষ অংশ",
+        "edit_type": "name",
+        "v_required": {
+          "value": "true",
+          "err": "Please enter the last name"
+        },
+        "v_regex": {
+          "value": "[A-Za-z\\s\.\-]*",
+          "err": "Please enter a valid name"
+        }
+      },
+      {
+        "key": "Patient_Identifier",
+        "openmrs_entity_parent": "",
+        "openmrs_entity": "person_identifier",
+        "openmrs_entity_id": "Patient_Identifier",
+        "type": "edit_text",
+        "hint": "খানার নিবন্ধন আইডি",
+        "read_only":"true",
+        "value": "0",
+        "v_numeric": {
+          "value": "true",
+          "err": "Please enter a valid ID"
+        },
+        "v_required": {
+          "value": "true",
+          "err": "Please enter the valid ID"
+        }
+      },
+      {
+        "key": "dob",
+        "openmrs_entity_parent": "",
+        "openmrs_entity": "person",
+        "openmrs_entity_id": "birthdate",
+        "type": "date_picker",
+        "hint": "Date of birth(DOB) *",
+        "expanded": false,
+        "duration": {
+          "label": "Age"
+        },
+        "min_date": "today-49y",
+        "max_date": "today-15y",
+        "v_required": {
+          "value": "true",
+          "err": "Please enter the date of birth"
+        },
+        "relevance": {
+          "step1:dob_unknown": {
+            "type": "string",
+            "ex": "equalTo(., \"false\")"
+          }
+        }
+      },
+      {
+        "key": "dob_unknown",
+        "openmrs_entity_parent": "",
+        "openmrs_entity": "person",
+        "openmrs_entity_id": "birthdateApprox",
+        "type": "check_box",
+        "label": "",
+        "options": [
+          {
+            "key": "dob_unknown",
+            "text": "DOB unknown?",
+            "value": "false"
+          }
+        ]
+      },
+      {
+        "key": "age",
+        "openmrs_entity_parent": "",
+        "openmrs_entity": "",
+        "openmrs_entity_id": "age",
+        "type": "edit_text",
+        "hint": "বয়স *",
+        "v_numeric": {
+          "value": "true",
+          "err": "Number must begin with 0 and must be a total of 10 digits in length"
+        },
+        "v_regex": {
+          "value": "([1][5-9])|([2-9][0-9])|\s*",
+          "err": "Number must in the range 15 to 99"
+        },
+        "v_required": {
+          "value": false
+        },
+        "relevance": {
+          "step1:dob_unknown": {
+            "type": "string",
+            "ex": "equalTo(., \"true\")"
+          }
+        },
+        "v_required": {
+          "value": "true",
+          "err": "Please enter the woman's age"
+        }
+      },
+      {
+        "key": "Date_Of_Reg",
+        "openmrs_entity_parent": "",
+        "openmrs_entity": "",
+        "openmrs_entity_id": "",
+        "type": "date_picker",
+        "hint": "রেজিস্ট্রেশন তারিখ",
+        "expanded": false,
+        "min_date": "today-5y",
+        "max_date": "today",
+        "v_required": {
+          "value": "true",
+          "err": "Please enter the date of Registration"
+        }
+      },
+      {
+        "key": "contact_phone_number",
+        "openmrs_entity_parent": "",
+        "openmrs_entity": "person_attribute",
+        "openmrs_entity_id": "phoneNumber",
+        "openmrs_data_type": "text",
+        "type": "edit_text",
+        "hint": "পরিবারের গুরুত্বপূর্ণ মোবাইল নম্বর ",
+        "v_numeric": {
+          "value": "true",
+          "err": "Number must begin with 095, 096, or 097 and must be a total of 11 digits in length"
+        },
+        "v_regex": {
+          "value": "(01[5-9][0-9]{8})|\s*",
+          "err": "Number must begin with 015, 016,017,018 or 019 and must be a total of 11 digits in length"
+        }
+      },
+      {
+        "key": "Household_type",
+        "openmrs_entity_parent": "",
+        "openmrs_entity": "concept",
+        "openmrs_entity_id": "58a86736-033b-4866-af0c-bc1960a79cfd",
+        "openmrs_data_type": "Coded",
+        "type": "spinner",
+        "hint": "আপনার বাসস্থানের ধরণ কি?",
+        "values": [
+          "কাচা",
+          "সেমি পাকা",
+          "পাকা"
+        ],
+        "openmrs_choice_ids": {
+          "কাচা": "Raw",
+          "সেমি পাকা" : "Semi_concrete",
+          "পাকা" : "Concrete"
+        },
+        "v_required": {
+          "value": "true",
+          "err": "Please answer the question"
+        }
+      },
+      {
+        "key": "latrine_structure",
+        "openmrs_entity_parent": "",
+        "openmrs_entity": "concept",
+        "openmrs_entity_id": "bd437fcc-f42f-40a6-8baf-b3d3af725ad4",
+        "openmrs_data_type": "Coded",
+        "type": "spinner",
+        "hint": "খানার সদস্যগন কি ধরনের ল্যাট্রিন ব্যবহার করেন?",
+        "values": [
+          "স্যানিটারী",
+          "পাকা",
+          "কাচা",
+          "খােলা জায়গা",
+          "ঝোপ জংগল",
+          "অন্যান্য"
+        ],
+        "openmrs_choice_ids": {
+          "স্যানিটারী": "Sanitary",
+          "পাকা": "Construction",
+          "কাচা": "UnderConstruction",
+          "খােলা জায়গা": "OpenArea",
+          "ঝোপ জংগল" : "Bush",
+          "অন্যান্য": "Latrine_others"
+        },
+        "v_required": {
+          "value": "true",
+          "err": "Please answer the question"
+        }
+      },
+      {
+        "key": "water_source",
+        "openmrs_entity_parent": "",
+        "openmrs_entity": "concept",
+        "openmrs_entity_id": "3a46b207-dc8b-4e5b-8b1f-162fca3905ca",
+        "openmrs_data_type": "Coded",
+        "type": "spinner",
+        "hint": "পরিবারের খাবার পানির উৎস",
+        "values": [
+          "টিউবওয়েল (লাল)",
+          "টিউবওয়েল (সবুজ)",
+          "টিউবওয়েল (আর্সেনিক পরিক্ষা করা হয়নি)",
+          "বৃষ্টির পানি",
+          "নদা/খাল",
+          "ট্যাপ",
+          "কুয়া/ইন্দারা",
+          "পুকুর/ভোৰা",
+          "অন্যান্য"
+        ],
+        "openmrs_choice_ids": {
+          "টিউবওয়েল (লাল)": "red_tube_well",
+          "টিউবওয়েল (সবুজ)" : "Green_tube_well",
+          "টিউবওয়েল (আর্সেনিক পরিক্ষা করা হয়নি)" : "NO_arsenic_test_tube_well",
+          "বৃষ্টির পানি" : "Rain_water",
+          "নদা/খাল" : "River_or_canal",
+          "ট্যাপ" : "Tap",
+          "কুয়া/ইন্দারা" : "Well_or_indira",
+          "পুকুর/ভোৰা" : "Pond",
+          "অন্যান্য" : "Others_water_source"
+        },
+        "v_required": {
+          "value": "true",
+          "err": "Please answer the question"
+        }
+      },
+      {
+        "key": "financial_status",
+        "openmrs_entity_parent": "",
+        "openmrs_entity": "concept",
+        "openmrs_entity_id": "95066bce-55eb-405e-9664-9be70e5c17b2",
+        "openmrs_data_type": "Coded",
+        "type": "spinner",
+        "hint": "আপনার পরিবারের আর্থিক অবস্থা কি?",
+        "values": [
+          "সর্বদা অভাব অনটন",
+          "সাময়িক অভাব অনটন",
+          "আয়-ব্যয় সমান",
+          "সচ্ছল",
+          "সঞ্চয় হয়",
+          "অন্যান্য"
+        ],
+        "openmrs_choice_ids": {
+          "সর্বদা অভাব অনটন": "always_hand_to_mouth",
+          "সাময়িক অভাব অনটন" : "Somtimes_hand_to_mouth",
+          "আয়-ব্যয় সমান" : "Income_and_expenditure_equal",
+          "সচ্ছল" : "Solvent",
+          "সঞ্চয় হয়" : "Can_save",
+          "অন্যান্য" : "Others_financial_status"
+
+        },
+        "v_required": {
+          "value": "true",
+          "err": "Please answer the question"
+        }
+      },
+      {
+        "key": "Monthly_Expenditure",
+        "openmrs_entity_parent": "",
+        "openmrs_entity": "concept",
+        "openmrs_entity_id": "66d3c926-8145-4b94-987b-11f250cc6e6f",
+        "openmrs_data_type": "Numeric",
+        "type": "edit_text",
+        "hint": "পরিবারের আনুমানিক মাসিক ব্যয়",
+        "v_required": {
+          "value": "true",
+          "err": "Please enter the amount"
+        },
+        "v_regex": {
+          "value": "^\\d{1,6}$",
+          "err": "must be greater than 0 and less than 9999999"
+        },
+        "v_numeric": {
+          "value": "true",
+          "err": "Enter a valid amount"
+        }
+      },
+      {
+        "key": "Nearby_Health_Facility",
+        "openmrs_entity_parent": "",
+        "openmrs_entity": "concept",
+        "openmrs_entity_id": "b624e55b-8144-4623-ba94-4973e9a28ba4",
+        "openmrs_data_type": "Coded",
+        "type": "spinner",
+        "hint": "নিকটবর্তী স্বাস্থ্য সেবা কেন্দ্র কোনটি?",
+        "values": [
+          "কমিউনিটি ক্লিনিক",
+          "ইউনিয়ন উপস্বাস্থ্য কেন্দ্র",
+          "ইউনিয়ন পরিবার কল্যাণ কেন্দ্র",
+          "ইউনিয়ন স্বাস্থ্য ও পরিবার কল্যাণ কেন্দ্র",
+          "মা ও শিশু কল্যাণ কেন্দ্র",
+          "১০ শয্যা বিশিষ্ট হাসপাতাল",
+          "২০ শয্যা বিশিষ্ট হাসপাতাল",
+          "উপজেলা স্বাস্থ্য কমপ্লেক্স",
+          "বেসরকারী ক্লিনিক/হাসপাতাল",
+          "এনজিও",
+          "অন্যান্য"
+        ],
+        "openmrs_choice_ids": {
+          "কমিউনিটি ক্লিনিক": "Community_Clinic",
+          "ইউনিয়ন উপস্বাস্থ্য কেন্দ্র": "Union_Sub_Center",
+          "ইউনিয়ন পরিবার কল্যাণ কেন্দ্র":"Union_Family_Welfare_Center",
+          "ইউনিয়ন স্বাস্থ্য ও পরিবার কল্যাণ কেন্দ্র":"Union_Health_and_Family_Welfare_Center",
+          "মা ও শিশু কল্যাণ কেন্দ্র":"Metarnal_and_Child_Wellfare_Center",
+          "১০ শয্যা বিশিষ্ট হাসপাতাল":"10_Bed_Hospital",
+          "২০ শয্যা বিশিষ্ট হাসপাতাল":"20_Beds_Hospital",
+          "উপজেলা স্বাস্থ্য কমপ্লেক্স":"Upazila_Health_Complex",
+          "বেসরকারী ক্লিনিক/হাসপাতাল":"Private_Clinic_and_Hospital",
+          "এনজিও":"Non-governmental_Organization",
+          "অন্যান্য":"Others_Health_Facility"
+        },
+        "v_required": {
+          "value": "true",
+          "err": "Please answer the question"
+        }
+      },
+      {
+        "key": "Health_Facility_Distance",
+        "openmrs_entity_parent": "",
+        "openmrs_entity": "concept",
+        "openmrs_entity_id": "f41a8533-f195-4efd-b019-c4f722c7ed74",
+        "openmrs_data_type": "Coded",
+        "type": "spinner",
+        "hint": "নিকটবর্তী স্বাস্থ্য সেবা কেন্দ্রের আনুমানিক দুরত্ব",
+        "values": [
+          "৫০০ মিটারের কম",
+          "৫০০ মিটার থেকে ১ কিলোমিটার",
+          "১ কিলোমিটার থেকে ২ কিলোমিটার",
+          "২ কিলোমিটার থেকে ৩ কিলোমিটার",
+          "৩ কিলোমিটারের বেশী"
+        ],
+        "openmrs_choice_ids": {
+          "৫০০ মিটারের কম":"Less_Than_500_Meters",
+          "৫০০ মিটার থেকে ১ কিলোমিটার":"500_Meters_to_1_KM",
+          "১ কিলোমিটার থেকে ২ কিলোমিটার":"1_KM_to_2_KM",
+          "২ কিলোমিটার থেকে ৩ কিলোমিটার":"2_KM_to_3_KM",
+          "৩ কিলোমিটারের বেশী":"More_Than_3_KM"
+        },
+        "v_required": {
+          "value": "true",
+          "err": "Please answer the question"
+        }
+      },
+      {
+        "key": "Family_Members_Health_Services_From_Health_Care_Center",
+        "openmrs_entity_parent": "",
+        "openmrs_entity": "concept",
+        "openmrs_entity_id": "",
+        "openmrs_data_type": "Coded",
+        "type": "spinner",
+        "hint": "পরিবারের সদস্যগন সাধারনত কোন স্বাস্থ্য সেবা কেন্দ্র থেকে স্বাস্থ্য সেবা নিয়ে থাকেন?",
+        "values": [
+          "কমিউনিটি ক্লিনিক",
+          "ইউনিয়ন উপস্বাস্থ্য কেন্দ্র",
+          "ইউনিয়ন পরিবার কল্যাণ কেন্দ্র",
+          "ইউনিয়ন স্বাস্থ্য ও পরিবার কল্যাণ কেন্দ্র",
+          "মা ও শিশু কল্যাণ কেন্দ্র",
+          "১০ শয্যা বিশিষ্ট হাসপাতাল",
+          "২০ শয্যা বিশিষ্ট হাসপাতাল",
+          "উপজেলা স্বাস্থ্য কমপ্লেক্স",
+          "সদর হাসপাতাল",
+          "মেডিকেল কলেজ হাসপাতাল",
+          "বেসরকারী ক্লিনিক/হাসপাতাল",
+          "এনজিও",
+          "বিশেষায়িত হাসপাতাল",
+          "অন্যান্য"
+        ],
+        "openmrs_choice_ids": {
+          "কমিউনিটি ক্লিনিক":"Community_Clinic",
+          "ইউনিয়ন উপস্বাস্থ্য কেন্দ্র":"Union_Sub_Center",
+          "ইউনিয়ন পরিবার কল্যাণ কেন্দ্র":"Union_Family_Welfare_Center",
+          "ইউনিয়ন স্বাস্থ্য ও পরিবার কল্যাণ কেন্দ্র":"Union_Health_and_Family_Welfare_Center",
+          "মা ও শিশু কল্যাণ কেন্দ্র":"Metarnal_and_Child_Wellfare_Center",
+          "১০ শয্যা বিশিষ্ট হাসপাতাল":"10_Bed_Hospital",
+          "২০ শয্যা বিশিষ্ট হাসপাতাল":"20_Beds_Hospital",
+          "উপজেলা স্বাস্থ্য কমপ্লেক্স":"Upazila_Health_Complex",
+          "সদর হাসপাতাল":"District_Hospital",
+          "মেডিকেল কলেজ হাসপাতাল":"Medical_College_and_Hospital",
+          "বেসরকারী ক্লিনিক/হাসপাতাল":"Private_Clinic_and_Hospital",
+          "এনজিও":"Non-governmental_Organization",
+          "বিশেষায়িত হাসপাতাল":"Specialized_Hospital",
+          "অন্যান্য":"thers_Family_Health_Center"
+        },
+        "v_required": {
+          "value": "true",
+          "err": "Please answer the question"
+        }
+      },
+      {
+        "key": "Near_By_Community_Clinic",
+        "openmrs_entity_parent": "",
+        "openmrs_entity": "",
+        "openmrs_entity_id": "",
+        "type": "edit_text",
+        "hint": "নিকটবর্তী কমিউনিটি ক্লিনিকটির নাম কি?",
+        "v_required": {
+          "value": "true",
+          "err": "Please enter the value"
+        }
+      },
+      {
+        "key": "Community_Clinic_Distance",
+        "openmrs_entity_parent": "",
+        "openmrs_entity": "concept",
+        "openmrs_entity_id": "",
+        "openmrs_data_type": "Coded",
+        "type": "spinner",
+        "hint": "নিকটবর্তী কমিউনিটি ক্লিনিকের আনুমানিক দুরত্ব কত কিঃ মিঃ",
+        "values": [
+          "৫০০ মিটারের কম",
+          "৫০০ মিটার থেকে ১ কিলোমিটার",
+          "১ কিলোমিটার থেকে ২ কিলোমিটার",
+          "২ কিলোমিটার থেকে ৩ কিলোমিটার",
+          "৩ কিলোমিটারের বেশী"
+        ],
+        "openmrs_choice_ids": {
+          "৫০০ মিটারের কম":"Less_Than_500_Meters",
+          "৫০০ মিটার থেকে ১ কিলোমিটার":"500_Meters_to_1_KM",
+          "১ কিলোমিটার থেকে ২ কিলোমিটার":"1_KM_to_2_KM",
+          "২ কিলোমিটার থেকে ৩ কিলোমিটার":"2_KM_to_3_KM",
+          "৩ কিলোমিটারের বেশী":"More_Than_3_KM"
+        },
+        "v_required": {
+          "value": "true",
+          "err": "Please answer the question"
+        }
+      },
+      {
+        "key": "information_provider_name",
+        "openmrs_entity_parent": "",
+        "openmrs_entity": "",
+        "openmrs_entity_id": "",
+        "type": "edit_text",
+        "hint": "তথ্য প্রদানকারীর নামঃ",
+        "v_required": {
+          "value": "true",
+          "err": "Please enter the value"
+        }
+      }
+    ]
+  }
+}

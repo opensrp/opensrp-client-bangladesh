@@ -53,7 +53,7 @@ import org.smartregister.view.dialog.SortOption;
 import java.util.ArrayList;
 import java.util.List;
 
-import util.PathConstants;
+import org.smartregister.cbhc.util.PathConstants;
 
 import static android.view.View.INVISIBLE;
 

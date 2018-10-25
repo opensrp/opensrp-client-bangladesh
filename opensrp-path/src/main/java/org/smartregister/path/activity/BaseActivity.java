@@ -57,7 +57,7 @@ import org.smartregister.view.activity.DrishtiApplication;
 import java.util.ArrayList;
 import java.util.Calendar;
 
-import util.JsonFormUtils;
+import org.smartregister.cbhc.util.JsonFormUtils;
 
 import static org.smartregister.util.Log.logError;
 
@@ -66,8 +66,8 @@ import static org.smartregister.util.Log.logError;
  * - A uniform navigation bar that is launched by swiping from the left
  * - Support for specifying which {@link BaseToolbar} to use
  * <p/>
- * This activity requires that the base view for any child activity be {@link DrawerLayout}
- * Make sure include the navigation view as the last element in the activity's root DrawerLayout
+ * This activity requires that the base org.smartregister.cbhc.view for any child activity be {@link DrawerLayout}
+ * Make sure include the navigation org.smartregister.cbhc.view as the last element in the activity's root DrawerLayout
  * like this:
  * <p/>
  * <include layout="@layout/nav_view_base"/>
@@ -524,7 +524,7 @@ public abstract class BaseActivity extends AppCompatActivity
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
-        // Handle navigation view item clicks here.
+        // Handle navigation org.smartregister.cbhc.view item clicks here.
         int id = item.getItemId();
 
         if (id == R.id.nav_register) {

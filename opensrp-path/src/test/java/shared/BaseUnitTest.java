@@ -40,7 +40,7 @@ public abstract class BaseUnitTest {
                 ReflectionHelpers.setStaticField(btclass, "sHandler", null);
             }
 
-            Class clazz = ReflectionHelpers.loadClass(getClass().getClassLoader(), "android.view.WindowManagerGlobal");
+            Class clazz = ReflectionHelpers.loadClass(getClass().getClassLoader(), "android.org.smartregister.cbhc.view.WindowManagerGlobal");
             Object instance = ReflectionHelpers.callStaticMethod(clazz, "getInstance");
 
             Object lock = ReflectionHelpers.getField(instance, "mLock");

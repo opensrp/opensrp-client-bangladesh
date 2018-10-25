@@ -13,7 +13,7 @@
             android:layout_margin="5dp"
             android:id="@+id/tablerowcontainer">
 
-            <org.smartregister.view.customcontrols.CustomFontTextView
+            <org.smartregister.org.smartregister.cbhc.view.customcontrols.CustomFontTextView
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:textAppearance="?android:attr/textAppearanceMedium"
@@ -23,7 +23,7 @@
                 android:id="@+id/label"
                 android:layout_weight="1"/>
 
-            <org.smartregister.view.customcontrols.CustomFontTextView
+            <org.smartregister.org.smartregister.cbhc.view.customcontrols.CustomFontTextView
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:textAppearance="?android:attr/textAppearanceMedium"
