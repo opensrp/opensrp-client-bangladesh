@@ -1,4 +1,4 @@
-package org.smartregister.growplus.view;
+package org.smartregister.path.view;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -7,8 +7,6 @@ import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.robolectric.RuntimeEnvironment;
 import org.robolectric.annotation.Config;
 import org.smartregister.growplus.application.VaccinatorApplication;
-import org.smartregister.path.view.*;
-
 import shared.BaseUnitTest;
 import shared.customshadows.FontTextViewShadow;
 import shared.customshadows.LocationPickerViewShadow;
@@ -24,7 +22,7 @@ public class LocationActionViewTest extends BaseUnitTest {
 //    @Rule
 //    public PowerMockRule rule = new PowerMockRule();
 
-    org.smartregister.path.view.LocationActionView locationActionView;
+    LocationActionView locationActionView;
 
     android.content.Context context;
 

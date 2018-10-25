@@ -1,4 +1,4 @@
-package org.smartregister.growplus.activity;//package org.smartregister.path.activity;
+//package org.smartregister.path.activity;
 //
 //
 //import android.content.Intent;

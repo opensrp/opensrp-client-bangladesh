@@ -16,22 +16,22 @@ import java.util.Date;
 @Implements(VaccinateActionUtils.class)
 public class VaccinateActionUtilsShadow extends Shadow {
     @Implementation
-    public static void addBcg2SpecialVaccine(android.content.Context context, org.json.JSONObject vaccineGroupObject, java.util.List<Vaccine> vaccineList) {
+    public static void addBcg2SpecialVaccine(android.content.Context context, org.json.JSONObject vaccineGroupObject, java.util.List<org.smartregister.immunization.domain.Vaccine> vaccineList) {
 
     }
 
     @Implementation
-    public static boolean hasVaccine(java.util.List<Vaccine> vaccineList, org.smartregister.immunization.db.VaccineRepo.Vaccine v) {
+    public static boolean hasVaccine(java.util.List<org.smartregister.immunization.domain.Vaccine> vaccineList, org.smartregister.immunization.db.VaccineRepo.Vaccine v) {
         return false;
     }
 
     @Implementation
-    public static Vaccine getVaccine(java.util.List<Vaccine> vaccineList, org.smartregister.immunization.db.VaccineRepo.Vaccine v) {
+    public static org.smartregister.immunization.domain.Vaccine getVaccine(java.util.List<org.smartregister.immunization.domain.Vaccine> vaccineList, org.smartregister.immunization.db.VaccineRepo.Vaccine v) {
         return new Vaccine(1l, "1", "BCG", 1, new Date(0l), "1", "1", "1", "1", 1l, "1", "1", 1);
     }
 
     @Implementation
-    public static Alert getAlert(java.util.List<Alert> alerts, org.smartregister.immunization.db.VaccineRepo.Vaccine vaccine) {
+    public static org.smartregister.domain.Alert getAlert(java.util.List<org.smartregister.domain.Alert> alerts, org.smartregister.immunization.db.VaccineRepo.Vaccine vaccine) {
         return new Alert("","","", AlertStatus.normal,"","");
     }
 }

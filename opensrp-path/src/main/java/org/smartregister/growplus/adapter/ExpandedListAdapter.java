@@ -1,4 +1,4 @@
-package org.smartregister.growplus.adapter;
+package org.smartregister.path.adapter;
 
 import android.content.Context;
 import android.util.Pair;

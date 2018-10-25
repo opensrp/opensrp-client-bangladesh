@@ -1,4 +1,4 @@
-package org.smartregister.growplus.viewComponents;
+package org.smartregister.path.viewComponents;
 
 import android.util.Pair;
 import android.view.LayoutInflater;

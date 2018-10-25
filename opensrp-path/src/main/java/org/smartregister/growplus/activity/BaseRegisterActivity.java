@@ -1,4 +1,4 @@
-package org.smartregister.growplus.activity;
+package org.smartregister.path.activity;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -31,9 +31,6 @@ import org.smartregister.growplus.receiver.SyncStatusBroadcastReceiver;
 import org.smartregister.growplus.sync.ECSyncUpdater;
 import org.smartregister.growplus.sync.PathAfterFetchListener;
 import org.smartregister.growplus.sync.PathUpdateActionsTask;
-import org.smartregister.path.activity.ChildSmartRegisterActivity;
-import org.smartregister.path.activity.HouseholdSmartRegisterActivity;
-import org.smartregister.path.activity.WomanSmartRegisterActivity;
 import org.smartregister.sync.SyncProgressIndicator;
 import org.smartregister.view.activity.DrishtiApplication;
 import org.smartregister.view.activity.SecuredNativeSmartRegisterActivity;

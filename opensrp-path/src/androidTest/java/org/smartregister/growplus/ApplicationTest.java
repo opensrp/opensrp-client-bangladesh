@@ -1,4 +1,4 @@
-package org.smartregister.growplus;
+package org.smartregister.path;
 
 import android.app.Application;
 import android.test.ApplicationTestCase;

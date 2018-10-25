@@ -371,7 +371,7 @@ public class AdvancedSearchFragment extends BaseSmartRegisterFragment {
     }
 
     public void search(final View view) {
-        Log.i(getClass().getName(), "Hiding Keyboard " + DateTime.now().toString());
+        android.util.Log.i(getClass().getName(), "Hiding Keyboard " + DateTime.now().toString());
         ((ChildSmartRegisterActivity) getActivity()).hideKeyboard();
         view.setClickable(false);
 

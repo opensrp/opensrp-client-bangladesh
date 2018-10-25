@@ -1,4 +1,4 @@
-package org.smartregister.growplus.interactors;
+package org.smartregister.path.interactors;
 
 import com.vijay.jsonwizard.constants.JsonFormConstants;
 import com.vijay.jsonwizard.interactors.JsonFormInteractor;
@@ -7,7 +7,6 @@ import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
-import org.smartregister.path.interactors.*;
 
 import shared.BaseUnitTest;
 
@@ -17,12 +16,12 @@ import shared.BaseUnitTest;
 
 public class PathJsonFormInteractorTest extends BaseUnitTest {
     @Mock
-    org.smartregister.path.interactors.PathJsonFormInteractor pathJsonFormInteractor;
+    PathJsonFormInteractor pathJsonFormInteractor;
 
     @Before
     public void setUp() {
         MockitoAnnotations.initMocks(this);
-        JsonFormInteractor jsonFormInteractor = org.smartregister.path.interactors.PathJsonFormInteractor.getInstance();
+        JsonFormInteractor jsonFormInteractor = PathJsonFormInteractor.getInstance();
         pathJsonFormInteractor.registerWidgets();
 
     }

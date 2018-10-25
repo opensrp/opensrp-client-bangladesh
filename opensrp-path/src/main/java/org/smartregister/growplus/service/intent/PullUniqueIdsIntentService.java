@@ -1,4 +1,4 @@
-package org.smartregister.growplus.service.intent;
+package org.smartregister.path.service.intent;
 
 import android.app.IntentService;
 import android.content.Intent;

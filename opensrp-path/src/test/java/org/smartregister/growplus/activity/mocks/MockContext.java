@@ -1,4 +1,4 @@
-package org.smartregister.growplus.activity.mocks;
+package org.smartregister.path.activity.mocks;
 import android.content.BroadcastReceiver;
 import android.content.ComponentName;
 import android.content.ContentResolver;
@@ -26,8 +26,6 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.annotation.StyleRes;
 import android.view.Display;
-
-import org.smartregister.path.activity.mocks.MockResources;
 
 import java.io.File;
 import java.io.FileInputStream;

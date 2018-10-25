@@ -1,4 +1,4 @@
-package org.smartregister.growplus.activity.mocks;
+package org.smartregister.path.activity.mocks;
 
 import org.smartregister.domain.ProfileImage;
 import org.smartregister.repository.ImageRepository;

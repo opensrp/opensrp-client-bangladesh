@@ -1,4 +1,4 @@
-package org.smartregister.growplus.activity.mocks;
+package org.smartregister.path.activity.mocks;
 
 import android.content.res.AssetFileDescriptor;
 import android.content.res.AssetManager;

@@ -1,4 +1,4 @@
-package org.smartregister.growplus.fragment.mocks;
+package org.smartregister.path.fragment.mocks;
 
 import org.apache.http.conn.scheme.HostNameResolver;
 import org.apache.http.conn.ssl.SSLSocketFactory;

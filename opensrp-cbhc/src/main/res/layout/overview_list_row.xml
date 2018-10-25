@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:padding="@dimen/default_padding_top"
+    >
+    <org.smartregister.view.customcontrols.CustomFontTextView
+        android:id="@+id/label"
+        style="@style/CustomFontTextViewStyle.ClientList.Medium"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:gravity="center_vertical"
+        android:text=""
+        android:textColor="#737373"
+        android:textSize="@dimen/activity_title_size"
+        android:singleLine="false"
+        />
+    <org.smartregister.view.customcontrols.CustomFontTextView
+        android:id="@+id/value"
+        style="@style/CustomFontTextViewStyle.ClientList.Medium"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:gravity="right"
+        android:text=""
+        android:textColor="#737373"
+        android:textSize="@dimen/activity_title_size"
+        android:singleLine="false"
+        />
+
+</LinearLayout>

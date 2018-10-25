@@ -1,4 +1,4 @@
-package org.smartregister.growplus.activity.mocks;
+package org.smartregister.path.activity.mocks;
 
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
@@ -153,7 +153,7 @@ public class MenuItemTestVersion implements MenuItem {
     }
 
     @Override
-    public MenuItem setOnMenuItemClickListener(OnMenuItemClickListener var1) {
+    public MenuItem setOnMenuItemClickListener(MenuItem.OnMenuItemClickListener var1) {
         return null;
     }
 

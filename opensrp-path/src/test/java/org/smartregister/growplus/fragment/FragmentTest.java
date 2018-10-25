@@ -1,4 +1,4 @@
-package org.smartregister.growplus.fragment;
+package org.smartregister.path.fragment;
 
 import android.content.Intent;
 import android.util.Log;
@@ -18,7 +18,6 @@ import org.smartregister.growplus.customshadow.MyShadowAsyncTask;
 import org.smartregister.growplus.fragment.mocks.FragmentMockActivity;
 import org.smartregister.growplus.fragment.mocks.ShadowBaseRegisterActivity;
 import org.smartregister.growplus.fragment.mocks.ShadowOpensrpSSLHelper;
-import org.smartregister.path.fragment.*;
 import org.smartregister.ssl.OpensrpSSLHelper;
 
 import shared.BaseUnitTest;
@@ -28,7 +27,7 @@ import shared.customshadows.FontTextViewShadow;
  * Created by kaderchowdhury on 06/12/17.
  */
 @PowerMockIgnore({"javax.xml.*", "org.xml.sax.*", "org.w3c.dom.*", "org.springframework.context.*", "org.apache.log4j.*"})
-@PrepareForTest({CoreLibrary.class, OpensrpSSLHelper.class, org.smartregister.path.fragment.AdvancedSearchFragment.class})
+@PrepareForTest({CoreLibrary.class, OpensrpSSLHelper.class,AdvancedSearchFragment.class})
 @Config(shadows = {FontTextViewShadow.class, ShadowOpensrpSSLHelper.class, MyShadowAsyncTask.class})
 public class FragmentTest extends BaseUnitTest {
     @Mock

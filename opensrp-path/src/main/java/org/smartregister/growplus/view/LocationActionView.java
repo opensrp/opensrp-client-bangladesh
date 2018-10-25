@@ -1,4 +1,4 @@
-package org.smartregister.growplus.view;
+package org.smartregister.path.view;
 
 import android.annotation.TargetApi;
 import android.content.Context;
@@ -9,7 +9,6 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 
 import org.smartregister.growplus.R;
-import org.smartregister.path.view.LocationPickerView;
 
 /**
  * Created by Jason Rogena - jrogena@ona.io on 23/02/2017.

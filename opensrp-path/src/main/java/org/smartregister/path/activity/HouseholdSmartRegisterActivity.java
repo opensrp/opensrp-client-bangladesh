@@ -232,7 +232,7 @@ public class HouseholdSmartRegisterActivity extends BaseRegisterActivity {
                         }
                         String locationid = "";
                         DetailsRepository detailsRepository;
-                        detailsRepository = Context.getInstance().detailsRepository();
+                        detailsRepository = org.smartregister.Context.getInstance().detailsRepository();
                         Map<String, String> details = detailsRepository.getAllDetailsForClient(householdid);
                         locationid = JsonFormUtils.getOpenMrsLocationId(context(),getValue(details, "address4", false) );
 

@@ -1,4 +1,4 @@
-package org.smartregister.growplus.watchers;
+package org.smartregister.path.watchers;
 
 import android.text.Editable;
 import android.text.TextWatcher;

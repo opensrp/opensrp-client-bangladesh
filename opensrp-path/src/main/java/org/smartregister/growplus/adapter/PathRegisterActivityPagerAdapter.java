@@ -1,4 +1,4 @@
-package org.smartregister.growplus.adapter;
+package org.smartregister.path.adapter;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;

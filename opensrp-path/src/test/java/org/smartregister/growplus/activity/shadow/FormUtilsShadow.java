@@ -1,4 +1,4 @@
-package org.smartregister.growplus.activity.shadow;
+package org.smartregister.path.activity.shadow;
 
 import android.support.annotation.Nullable;
 
@@ -24,7 +24,7 @@ import java.net.URL;
 public class FormUtilsShadow extends Shadow {
 
     @Implementation
-    public static FormUtils getInstance(@Nullable  android.content.Context ctx) throws Exception {
+    public static org.smartregister.util.FormUtils getInstance(@Nullable  android.content.Context ctx) throws java.lang.Exception {
         FormUtils formUtils = Mockito.mock(FormUtils.class);
         JSONObject object = new JSONObject();
         try {

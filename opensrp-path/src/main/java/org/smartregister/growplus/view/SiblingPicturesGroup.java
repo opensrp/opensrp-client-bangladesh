@@ -1,4 +1,4 @@
-package org.smartregister.growplus.view;
+package org.smartregister.path.view;
 
 import android.annotation.TargetApi;
 import android.content.Context;

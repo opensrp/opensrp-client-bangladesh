@@ -1,4 +1,4 @@
-package org.smartregister.growplus.activity.shadow;
+package org.smartregister.path.activity.shadow;
 
 import org.mockito.Mockito;
 import org.robolectric.annotation.Implementation;

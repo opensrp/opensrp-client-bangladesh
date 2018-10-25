@@ -1,4 +1,4 @@
-package org.smartregister.growplus.provider;
+package org.smartregister.path.provider;
 
 import android.app.FragmentTransaction;
 import android.content.Context;

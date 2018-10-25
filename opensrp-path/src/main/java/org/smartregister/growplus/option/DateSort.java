@@ -1,4 +1,4 @@
-package org.smartregister.growplus.option;
+package org.smartregister.path.option;
 
 import org.smartregister.cursoradapter.CursorSortOption;
 import org.smartregister.view.contract.SmartRegisterClients;

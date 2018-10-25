@@ -1,4 +1,4 @@
-package org.smartregister.growplus.viewstates;
+package org.smartregister.path.viewstates;
 
 import android.os.Parcel;
 

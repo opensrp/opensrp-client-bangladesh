@@ -1,4 +1,4 @@
-package org.smartregister.growplus.activity.shadow;
+package org.smartregister.path.activity.shadow;
 
 import org.robolectric.annotation.Implementation;
 import org.robolectric.annotation.Implements;
@@ -10,7 +10,7 @@ import org.smartregister.immunization.view.VaccineGroup;
 @Implements(VaccineGroup.class)
 public class VaccineGroupShadow extends ShadowViewGroup {
     @Implementation
-    public void updateWrapperStatus(java.util.ArrayList<org.smartregister.immunization.domain.VaccineWrapper> tags, String type) {
+    public void updateWrapperStatus(java.util.ArrayList<org.smartregister.immunization.domain.VaccineWrapper> tags, java.lang.String type) {
 
     }
 }

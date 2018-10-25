@@ -415,7 +415,7 @@ public class LoginActivity extends AppCompatActivity {
             Resources res = getOpenSRPContext().applicationContext().getResources();
             // Change locale settings in the app.
             DisplayMetrics dm = res.getDisplayMetrics();
-            Configuration conf = res.getConfiguration();
+            android.content.res.Configuration conf = res.getConfiguration();
             conf.locale = new Locale(URDU_LOCALE);
             res.updateConfiguration(conf, dm);
             return URDU_LANGUAGE;
@@ -424,7 +424,7 @@ public class LoginActivity extends AppCompatActivity {
             Resources res = getOpenSRPContext().applicationContext().getResources();
             // Change locale settings in the app.
             DisplayMetrics dm = res.getDisplayMetrics();
-            Configuration conf = res.getConfiguration();
+            android.content.res.Configuration conf = res.getConfiguration();
             conf.locale = new Locale(ENGLISH_LOCALE);
             res.updateConfiguration(conf, dm);
             return ENGLISH_LANGUAGE;

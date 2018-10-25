@@ -1,4 +1,4 @@
-package org.smartregister.growplus.activity;
+package org.smartregister.path.activity;
 
 import android.app.Fragment;
 import android.app.FragmentTransaction;
@@ -55,8 +55,6 @@ import org.smartregister.growplus.application.VaccinatorApplication;
 import org.smartregister.growplus.domain.RegisterClickables;
 import org.smartregister.growplus.toolbar.LocationSwitcherToolbar;
 import org.smartregister.growplus.view.SiblingPicturesGroup;
-import org.smartregister.path.activity.*;
-import org.smartregister.path.activity.ChildDetailTabbedActivity;
 import org.smartregister.repository.DetailsRepository;
 import org.smartregister.service.AlertService;
 import org.smartregister.util.DateUtil;
@@ -88,7 +86,7 @@ import util.PathConstants;
  * Created by Jason Rogena - jrogena@ona.io on 16/02/2017.
  */
 
-public class ChildImmunizationActivity extends org.smartregister.path.activity.BaseActivity
+public class ChildImmunizationActivity extends BaseActivity
         implements LocationSwitcherToolbar.OnLocationChangeListener, WeightActionListener, VaccinationActionListener {
 
     private static final String TAG = "ChildImmunoActivity";

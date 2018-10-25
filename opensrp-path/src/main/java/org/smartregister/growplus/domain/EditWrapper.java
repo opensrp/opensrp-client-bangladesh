@@ -1,4 +1,4 @@
-package org.smartregister.growplus.domain;
+package org.smartregister.path.domain;
 
 /**
  * Created by keyman on 16/11/2016.

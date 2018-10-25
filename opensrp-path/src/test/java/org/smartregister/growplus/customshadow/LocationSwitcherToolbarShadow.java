@@ -1,4 +1,4 @@
-package org.smartregister.growplus.customshadow;
+package org.smartregister.path.customshadow;
 
 import android.content.Context;
 import android.support.annotation.Nullable;

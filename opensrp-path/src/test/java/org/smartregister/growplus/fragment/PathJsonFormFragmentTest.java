@@ -1,8 +1,7 @@
-package org.smartregister.growplus.fragment;
+package org.smartregister.path.fragment;
 
 import org.junit.Before;
 import org.junit.Test;
-import org.smartregister.path.fragment.*;
 
 import shared.BaseUnitTest;
 
@@ -13,11 +12,11 @@ import junit.framework.Assert;
  */
 public class PathJsonFormFragmentTest extends BaseUnitTest {
 
-    protected org.smartregister.path.fragment.PathJsonFormFragment pathJsonFormFragment;
+    protected PathJsonFormFragment pathJsonFormFragment;
 
     @Before
     public void setUp() {
-        pathJsonFormFragment = org.smartregister.path.fragment.PathJsonFormFragment.getFormFragment("testStep");
+        pathJsonFormFragment = PathJsonFormFragment.getFormFragment("testStep");
     }
 
     @Test

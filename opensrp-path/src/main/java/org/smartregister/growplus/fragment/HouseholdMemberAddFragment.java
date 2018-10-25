@@ -1,4 +1,4 @@
-package org.smartregister.growplus.fragment;
+package org.smartregister.path.fragment;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;

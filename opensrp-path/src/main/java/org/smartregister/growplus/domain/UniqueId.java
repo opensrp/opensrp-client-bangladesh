@@ -1,4 +1,4 @@
-package org.smartregister.growplus.domain;
+package org.smartregister.path.domain;
 
 import java.util.Date;
 

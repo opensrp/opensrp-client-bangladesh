@@ -1,4 +1,4 @@
-package org.smartregister.growplus.activity.shadow;
+package org.smartregister.path.activity.shadow;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -81,7 +81,7 @@ public class SecuredActivityShadow extends ShadowActivity {
 
     @Implementation
     protected Context context() {
-        return Mockito.mock(Context.class);
+        return Mockito.mock(org.smartregister.Context.class);
     }
 
     @Implementation

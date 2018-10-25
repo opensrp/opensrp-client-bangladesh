@@ -1,4 +1,4 @@
-package org.smartregister.growplus.customshadow;
+package org.smartregister.path.customshadow;
 
 /**
  * Created by kaderchowdhury on 03/12/17.

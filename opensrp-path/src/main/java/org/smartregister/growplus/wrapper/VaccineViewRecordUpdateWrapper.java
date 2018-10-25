@@ -1,8 +1,7 @@
-package org.smartregister.growplus.wrapper;
+package org.smartregister.path.wrapper;
 
 import org.smartregister.domain.Alert;
 import org.smartregister.immunization.domain.Vaccine;
-import org.smartregister.path.wrapper.*;
 
 import java.util.List;
 
@@ -10,7 +9,7 @@ import java.util.List;
  * Created by onaio on 14/09/2017.
  */
 
-public class VaccineViewRecordUpdateWrapper extends org.smartregister.path.wrapper.BaseViewRecordUpdateWrapper {
+public class VaccineViewRecordUpdateWrapper extends BaseViewRecordUpdateWrapper {
 
     private List<Vaccine> vaccines;
     private List<Alert> alertList;

@@ -81,7 +81,7 @@ public class SecuredActivityShadow extends ShadowActivity {
 
     @Implementation
     protected Context context() {
-        return Mockito.mock(Context.class);
+        return Mockito.mock(org.smartregister.Context.class);
     }
 
     @Implementation

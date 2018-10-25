@@ -1,4 +1,4 @@
-package org.smartregister.growplus.wrapper;
+package org.smartregister.path.wrapper;
 
 import org.junit.Before;
 import org.junit.Ignore;
@@ -6,7 +6,6 @@ import org.junit.Test;
 import org.mockito.MockitoAnnotations;
 import org.smartregister.domain.Alert;
 import org.smartregister.immunization.domain.Vaccine;
-import org.smartregister.path.wrapper.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -19,14 +18,14 @@ import shared.BaseUnitTest;
 @Ignore
 public class VaccineViewRecordUpdateWrapperTest extends BaseUnitTest {
 
-    org.smartregister.path.wrapper.VaccineViewRecordUpdateWrapper vaccineViewRecordUpdateWrapper;
+    VaccineViewRecordUpdateWrapper vaccineViewRecordUpdateWrapper;
     String dobString = "";
     List<Vaccine> vaccines = new ArrayList<>();
     List<Alert> alertList = new ArrayList<>();
     @Before
     public void setUp() {
         MockitoAnnotations.initMocks(this);
-        vaccineViewRecordUpdateWrapper = new org.smartregister.path.wrapper.VaccineViewRecordUpdateWrapper();
+        vaccineViewRecordUpdateWrapper = new VaccineViewRecordUpdateWrapper();
     }
 
     @Test

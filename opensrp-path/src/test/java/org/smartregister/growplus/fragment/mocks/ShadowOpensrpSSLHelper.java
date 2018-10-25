@@ -1,4 +1,4 @@
-package org.smartregister.growplus.fragment.mocks;
+package org.smartregister.path.fragment.mocks;
 
 import android.content.Context;
 

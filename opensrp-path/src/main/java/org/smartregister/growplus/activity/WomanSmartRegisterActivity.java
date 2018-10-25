@@ -1,4 +1,4 @@
-package org.smartregister.growplus.activity;
+package org.smartregister.path.activity;
 
 import android.app.AlertDialog;
 import android.app.FragmentTransaction;
@@ -35,9 +35,6 @@ import org.smartregister.growplus.fragment.HouseholdSmartRegisterFragment;
 import org.smartregister.growplus.fragment.WomanSmartRegisterFragment;
 import org.smartregister.growplus.repository.PathRepository;
 import org.smartregister.growplus.view.LocationPickerView;
-import org.smartregister.path.activity.*;
-import org.smartregister.path.activity.LoginActivity;
-import org.smartregister.path.activity.PathJsonFormActivity;
 import org.smartregister.provider.SmartRegisterClientsProvider;
 import org.smartregister.repository.AllSharedPreferences;
 import org.smartregister.service.FormSubmissionService;
@@ -57,7 +54,7 @@ import static android.view.inputmethod.InputMethodManager.HIDE_NOT_ALWAYS;
 /**
  * Created by Raihan Ahmed on 13-July-17.
  */
-public class WomanSmartRegisterActivity extends org.smartregister.path.activity.BaseRegisterActivity {
+public class WomanSmartRegisterActivity extends BaseRegisterActivity {
     private static String TAG = HouseholdSmartRegisterActivity.class.getCanonicalName();
 
     @Bind(R.id.view_pager)

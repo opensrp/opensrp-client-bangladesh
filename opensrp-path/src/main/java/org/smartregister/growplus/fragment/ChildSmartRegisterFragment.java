@@ -1,4 +1,4 @@
-package org.smartregister.growplus.fragment;
+package org.smartregister.path.fragment;
 
 import android.content.pm.ActivityInfo;
 import android.database.Cursor;
@@ -42,7 +42,6 @@ import org.smartregister.growplus.provider.ChildSmartClientsProvider;
 import org.smartregister.growplus.receiver.SyncStatusBroadcastReceiver;
 import org.smartregister.growplus.servicemode.VaccinationServiceModeOption;
 import org.smartregister.growplus.view.LocationPickerView;
-import org.smartregister.path.fragment.*;
 import org.smartregister.provider.SmartRegisterClientsProvider;
 import org.smartregister.repository.AllSharedPreferences;
 import org.smartregister.view.activity.SecuredNativeSmartRegisterActivity;
@@ -58,7 +57,7 @@ import util.PathConstants;
 
 import static android.view.View.INVISIBLE;
 
-public class ChildSmartRegisterFragment extends org.smartregister.path.fragment.BaseSmartRegisterFragment implements SyncStatusBroadcastReceiver.SyncStatusListener {
+public class ChildSmartRegisterFragment extends BaseSmartRegisterFragment implements SyncStatusBroadcastReceiver.SyncStatusListener {
     private final ClientActionHandler clientActionHandler = new ClientActionHandler();
     private LocationPickerView clinicSelection;
     private static final long NO_RESULT_SHOW_DIALOG_DELAY = 1000l;

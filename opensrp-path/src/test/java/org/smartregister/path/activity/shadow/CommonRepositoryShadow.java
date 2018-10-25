@@ -12,7 +12,7 @@ import org.smartregister.commonregistry.CommonRepository;
 @Implements(CommonRepository.class)
 public class CommonRepositoryShadow extends Shadow {
     @Implementation
-    public android.database.Cursor rawCustomQueryForAdapter(String query) {
+    public android.database.Cursor rawCustomQueryForAdapter(java.lang.String query) {
         return Mockito.mock(android.database.Cursor.class);
     }
 }

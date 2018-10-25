@@ -1,4 +1,4 @@
-package org.smartregister.growplus.fragment;
+package org.smartregister.path.fragment;
 
 import android.database.Cursor;
 import android.os.AsyncTask;
@@ -18,7 +18,6 @@ import org.smartregister.growplus.R;
 import org.smartregister.growplus.activity.BaseRegisterActivity;
 import org.smartregister.growplus.activity.ChildImmunizationActivity;
 import org.smartregister.growplus.view.LocationPickerView;
-import org.smartregister.path.fragment.NotInCatchmentDialogFragment;
 import org.smartregister.provider.SmartRegisterClientsProvider;
 import org.smartregister.view.activity.SecuredNativeSmartRegisterActivity;
 

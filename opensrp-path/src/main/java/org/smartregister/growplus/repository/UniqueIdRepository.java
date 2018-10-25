@@ -1,4 +1,4 @@
-package org.smartregister.growplus.repository;
+package org.smartregister.path.repository;
 
 import android.content.ContentValues;
 import android.database.Cursor;
@@ -9,7 +9,6 @@ import net.sqlcipher.database.SQLiteDatabase;
 
 import org.smartregister.growplus.application.VaccinatorApplication;
 import org.smartregister.growplus.domain.UniqueId;
-import org.smartregister.path.repository.*;
 import org.smartregister.repository.BaseRepository;
 
 import java.text.SimpleDateFormat;
@@ -35,7 +34,7 @@ public class UniqueIdRepository extends BaseRepository {
     private final SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
 
-    public UniqueIdRepository(org.smartregister.path.repository.PathRepository pathRepository) {
+    public UniqueIdRepository(PathRepository pathRepository) {
         super(pathRepository);
     }
 

@@ -1,4 +1,4 @@
-package org.smartregister.growplus.receiver;
+package org.smartregister.path.receiver;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;

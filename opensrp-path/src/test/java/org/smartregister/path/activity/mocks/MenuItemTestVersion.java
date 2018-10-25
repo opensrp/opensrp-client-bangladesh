@@ -153,7 +153,7 @@ public class MenuItemTestVersion implements MenuItem {
     }
 
     @Override
-    public MenuItem setOnMenuItemClickListener(OnMenuItemClickListener var1) {
+    public MenuItem setOnMenuItemClickListener(MenuItem.OnMenuItemClickListener var1) {
         return null;
     }
 

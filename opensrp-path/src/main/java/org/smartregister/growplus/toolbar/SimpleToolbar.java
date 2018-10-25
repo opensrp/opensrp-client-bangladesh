@@ -1,4 +1,4 @@
-package org.smartregister.growplus.toolbar;
+package org.smartregister.path.toolbar;
 
 import android.content.Context;
 import android.support.annotation.Nullable;
@@ -7,14 +7,13 @@ import android.util.Log;
 import android.view.MenuItem;
 
 import org.smartregister.growplus.R;
-import org.smartregister.path.toolbar.*;
 import org.smartregister.view.customcontrols.CustomFontTextView;
 
 /**
  * Created by Jason Rogena - jrogena@ona.io on 12/06/2017.
  */
 
-public class SimpleToolbar extends org.smartregister.path.toolbar.BaseToolbar {
+public class SimpleToolbar extends BaseToolbar {
     private static final String TAG = SimpleToolbar.class.getName();
     public static final int TOOLBAR_ID = R.id.simple_toolbar;
     private final Context context;

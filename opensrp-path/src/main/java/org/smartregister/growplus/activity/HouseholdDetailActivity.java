@@ -1,4 +1,4 @@
-package org.smartregister.growplus.activity;
+package org.smartregister.path.activity;
 
 import android.content.Context;
 import android.content.Intent;
@@ -27,7 +27,6 @@ import org.smartregister.growplus.R;
 import org.smartregister.growplus.application.VaccinatorApplication;
 import org.smartregister.growplus.repository.PathRepository;
 import org.smartregister.growplus.toolbar.LocationSwitcherToolbar;
-import org.smartregister.path.activity.*;
 import org.smartregister.repository.AllSharedPreferences;
 import org.smartregister.util.DateUtil;
 import org.smartregister.util.OpenSRPImageLoader;
@@ -48,7 +47,7 @@ import static org.smartregister.util.Utils.getValue;
 /**
  * Created by habib on 25/07/17.
  */
-public class HouseholdDetailActivity extends org.smartregister.path.activity.BaseActivity {
+public class HouseholdDetailActivity extends BaseActivity {
     public static boolean isLaunched = false;
     ListView householdList;
     private LocationSwitcherToolbar toolbar;

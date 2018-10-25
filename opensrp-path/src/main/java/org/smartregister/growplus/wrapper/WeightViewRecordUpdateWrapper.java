@@ -1,13 +1,12 @@
-package org.smartregister.growplus.wrapper;
+package org.smartregister.path.wrapper;
 
 import org.smartregister.growthmonitoring.domain.Weight;
-import org.smartregister.path.wrapper.*;
 
 /**
  * Created by onaio on 14/09/2017.
  */
 
-public class WeightViewRecordUpdateWrapper extends org.smartregister.path.wrapper.BaseViewRecordUpdateWrapper {
+public class WeightViewRecordUpdateWrapper extends BaseViewRecordUpdateWrapper {
 
     private Weight weight;
 

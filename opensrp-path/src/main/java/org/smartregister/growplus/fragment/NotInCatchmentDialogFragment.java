@@ -1,4 +1,4 @@
-package org.smartregister.growplus.fragment;
+package org.smartregister.path.fragment;
 
 import android.annotation.SuppressLint;
 import android.app.DialogFragment;
@@ -14,7 +14,6 @@ import android.widget.Button;
 import org.smartregister.growplus.R;
 import org.smartregister.growplus.activity.BaseRegisterActivity;
 import org.smartregister.growplus.activity.ChildSmartRegisterActivity;
-import org.smartregister.path.fragment.*;
 
 /**
  * Created by Jason Rogena - jrogena@ona.io on 14/03/2017.
@@ -76,7 +75,7 @@ public class NotInCatchmentDialogFragment extends DialogFragment implements View
                         ((ChildSmartRegisterActivity) parentActivity).
                                 findFragmentByPosition(ChildSmartRegisterActivity
                                         .ADVANCED_SEARCH_POSITION);
-                ((org.smartregister.path.fragment.AdvancedSearchFragment) currentFragment).getZeirId().setText(zeirId);
+                ((AdvancedSearchFragment) currentFragment).getZeirId().setText(zeirId);
             }
         } else if (v.getId() == R.id.record_b) {
             parentActivity.startFormActivity("out_of_catchment_service", zeirId, "");

@@ -1,4 +1,4 @@
-package org.smartregister.growplus.sync;
+package org.smartregister.path.sync;
 
 import org.smartregister.domain.FetchStatus;
 import org.smartregister.sync.AfterFetchListener;

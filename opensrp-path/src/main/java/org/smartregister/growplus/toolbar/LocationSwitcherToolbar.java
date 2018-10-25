@@ -1,4 +1,4 @@
-package org.smartregister.growplus.toolbar;
+package org.smartregister.path.toolbar;
 
 import android.content.Context;
 import android.support.annotation.Nullable;
@@ -10,7 +10,6 @@ import org.smartregister.growplus.R;
 import org.smartregister.growplus.activity.BaseActivity;
 import org.smartregister.growplus.view.LocationActionView;
 import org.smartregister.growplus.view.LocationPickerView;
-import org.smartregister.path.toolbar.*;
 import org.smartregister.view.customcontrols.CustomFontTextView;
 
 /**
@@ -22,7 +21,7 @@ import org.smartregister.view.customcontrols.CustomFontTextView;
  * Created by Jason Rogena - jrogena@ona.io on 17/02/2017.
  */
 
-public class LocationSwitcherToolbar extends org.smartregister.path.toolbar.BaseToolbar {
+public class LocationSwitcherToolbar extends BaseToolbar {
     public static final int TOOLBAR_ID = R.id.location_switching_toolbar;
     private BaseActivity baseActivity;
     private OnLocationChangeListener onLocationChangeListener;
