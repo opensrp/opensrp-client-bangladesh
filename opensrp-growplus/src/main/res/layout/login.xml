@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/canvasSV"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fillViewport="true">
+
+    <LinearLayout
+        android:id="@+id/canvasRL"
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="1.0"
+        android:gravity="bottom"
+        android:background="@drawable/splash">
+
+        <!-- Most important group of views goes in last to avoid being overlapped by other less important views -->
+
+        <!-- Bottom section -->
+        <LinearLayout
+            android:id="@+id/logoCanvasLL"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_above="@+id/credentialsCanvasLL"
+            android:layout_alignParentBottom="false"
+            android:orientation="vertical">
+
+            <ImageView
+                android:id="@+id/logoImage"
+                android:layout_width="wrap_content"
+                android:layout_height="@dimen/login_logo_height"
+                android:layout_gravity="center"
+                android:layout_marginTop="30dp"
+                android:scaleType="centerInside"
+                android:src="@drawable/growplus_icon_login_screen" />
+
+            <TextView
+                android:id="@+id/login_build"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:layout_marginBottom="10dp"
+                android:gravity="center_horizontal"
+                android:textColor="#bfe7f3" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/credentialsCanvasLL"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_above="@+id/poweredbyholder"
+            android:layout_alignParentBottom="true"
+            android:orientation="vertical"
+            android:layout_margin="5dp"
+            android:paddingLeft="@dimen/login_horizontal_margin"
+            android:paddingRight="@dimen/login_horizontal_margin">
+
+            <EditText
+                android:id="@+id/login_userNameText"
+                android:layout_width="match_parent"
+                android:layout_height="45dp"
+                android:layout_gravity="center_vertical"
+                android:layout_weight="8"
+                android:background="@drawable/rounded_corner_edittext_growplus"
+                android:ems="10"
+                android:hint="@string/userNameEditText"
+                android:inputType="textNoSuggestions|textFilter|textVisiblePassword"
+                android:paddingLeft="5dp"
+                android:singleLine="true"
+                android:textColor="#666666"
+                android:textColorHint="#bfbfbf"
+                android:typeface="sans" />
+
+            <EditText
+                android:id="@+id/login_passwordText"
+                android:layout_width="match_parent"
+                android:layout_height="45dp"
+                android:layout_gravity="center"
+                android:layout_marginTop="10dp"
+                android:layout_weight="8"
+                android:background="@drawable/rounded_corner_edittext_growplus"
+                android:ems="10"
+                android:hint="@string/passwordEditText"
+                android:inputType="textPassword"
+
+                android:paddingLeft="5dp"
+                android:singleLine="true"
+                android:textColor="#666666"
+                android:textColorHint="#bfbfbf"
+                android:typeface="sans" />
+
+            <Button
+                android:id="@+id/login_loginButton"
+                android:layout_width="match_parent"
+                android:layout_height="45dp"
+                android:layout_gravity="right|top"
+                android:layout_marginTop="20dp"
+                android:layout_weight="8"
+                android:background="@drawable/login_blue"
+                android:ems="10"
+                android:onClick="login"
+                android:shadowColor="#ffffff"
+                android:shadowDx="0"
+                android:shadowDy="1"
+                android:shadowRadius="0.5"
+                android:text="@string/login_text"
+                android:textColor="#666666"
+                android:textSize="20sp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/poweredbyholder"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_marginBottom="5dp"
+            android:layout_marginTop="20dp"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_horizontal"
+                android:text="Powered by"
+                android:textColor="#bfe7f3" />
+
+            <ImageView
+                android:layout_width="@dimen/login_opensrp_logo_width"
+                android:layout_height="@dimen/login_opensrp_logo_height"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginBottom="20dp"
+                android:layout_marginTop="5dp"
+                android:scaleType="centerCrop"
+                android:src="@drawable/ic_opensrp_logo" />
+        </LinearLayout>
+
+
+
+        <!-- Top section -->
+
+        <!-- Middle section -->
+    </LinearLayout>
+</ScrollView>

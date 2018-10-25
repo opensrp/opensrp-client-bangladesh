@@ -1,0 +1,202 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <FrameLayout
+        android:layout_marginTop="?attr/actionBarSize"
+        android:layout_weight="1"
+        android:layout_width="match_parent"
+        android:layout_height="0dp">
+
+        <ImageView
+            android:id="@+id/dashboardimage"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:scaleType="fitXY"
+            app:srcCompat="@drawable/dashboardhead" />
+        <TextView
+            android:id="@+id/name_inits"
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:layout_marginTop="50dp"
+            android:layout_marginLeft="25dp"
+            android:layout_gravity="top"
+            android:background="@drawable/name_inits_bg"
+            android:gravity="center"
+            android:text="RW"
+            android:textAllCaps="true"
+            android:textColor="@color/actionbar"
+            android:textSize="40sp" />
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_marginTop="70dp"
+            android:layout_gravity="top"
+            android:layout_marginLeft="110dp"
+            >
+            <org.smartregister.view.customcontrols.CustomFontTextView
+                android:id="@+id/provider_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:inputType="textCapWords"
+                style="@style/CustomFontTextViewStyle.ClientList.Light"
+                android:text="ron ward"
+                android:layout_weight="1"
+                android:textSize="18sp"
+                android:textColor="#E9E8E8" />
+            <org.smartregister.view.customcontrols.CustomFontTextView
+                android:id="@+id/phone_number"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                style="@style/CustomFontTextViewStyle.ClientList.Light"
+                android:text=" "
+                android:layout_weight="1"
+                android:textSize="15sp"
+                android:textAllCaps="true"
+                android:textColor="#E9E8E8" />
+
+        </LinearLayout>
+
+    </FrameLayout>
+    <android.support.v7.widget.GridLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:grid="http://schemas.android.com/apk/res-auto"
+        android:background="#EFEFEF"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_centerHorizontal="true"
+        android:layout_weight="1.5"
+        grid:alignmentMode="alignBounds"
+        grid:columnCount="2">
+
+        <LinearLayout
+            android:id="@+id/household_dashboard_button"
+            style="?buttonStyle"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_margin="5dp"
+            android:background="@color/status_bar_text_almost_white"
+            android:gravity="center"
+            android:orientation="vertical"
+            grid:layout_columnWeight="1"
+            grid:layout_gravity="fill"
+            grid:layout_rowWeight="1">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="60dp"
+                android:scaleType="fitCenter"
+                android:src="@drawable/household_dashboard" />
+
+            <org.smartregister.view.customcontrols.CustomFontTextView
+                android:id="@+id/householdtitle"
+                style="@style/CustomFontTextViewStyle.ListView.Normal"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:background="@android:color/transparent"
+                android:padding="0dp"
+                android:text="Household"
+                android:textColor="@color/opensrp_text_color_primary" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/woman_dashboard_button"
+            style="?buttonStyle"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_margin="5dp"
+            android:background="@color/status_bar_text_almost_white"
+            android:gravity="center"
+            android:orientation="vertical"
+            grid:layout_columnWeight="1"
+            grid:layout_gravity="fill"
+            grid:layout_rowWeight="1">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="60dp"
+                android:scaleType="fitCenter"
+                android:src="@drawable/pregnant_woman_dashboard" />
+
+            <org.smartregister.view.customcontrols.CustomFontTextView
+                android:id="@+id/womantitle"
+                style="@style/CustomFontTextViewStyle.ListView.Normal"
+                android:padding="0dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:background="@android:color/transparent"
+                android:textColor="@color/opensrp_text_color_primary"
+                android:text="Mother" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/child_dashboard_button"
+            style="?buttonStyle"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_margin="5dp"
+            android:background="@color/status_bar_text_almost_white"
+            android:gravity="center"
+            android:orientation="vertical"
+            grid:layout_columnWeight="1"
+            grid:layout_gravity="fill"
+            grid:layout_rowWeight="1">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="60dp"
+                android:scaleType="fitCenter"
+                android:src="@drawable/child_boy_infant_dashboard" />
+
+            <org.smartregister.view.customcontrols.CustomFontTextView
+                android:id="@+id/childtitle"
+                style="@style/CustomFontTextViewStyle.ListView.Normal"
+                android:padding="0dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:background="@android:color/transparent"
+                android:textColor="@color/opensrp_text_color_primary"
+                android:text="Child" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/report_dashboard_button"
+            style="?buttonStyle"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_margin="5dp"
+            android:background="@color/status_bar_text_almost_white"
+            android:gravity="center"
+            android:orientation="vertical"
+            grid:layout_columnWeight="1"
+            grid:layout_gravity="fill"
+            grid:layout_rowWeight="1">
+
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="60dp"
+                android:scaleType="fitCenter"
+                android:src="@drawable/report_dashboard" />
+
+            <org.smartregister.view.customcontrols.CustomFontTextView
+                android:id="@+id/reporttitle"
+                style="@style/CustomFontTextViewStyle.ListView.Normal"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:background="@android:color/transparent"
+                android:padding="0dp"
+                android:textColor="@color/opensrp_text_color_primary"
+                android:text="Reports" />
+        </LinearLayout>
+    </android.support.v7.widget.GridLayout>
+</LinearLayout>
