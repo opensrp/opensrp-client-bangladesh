@@ -56,13 +56,11 @@
         "openmrs_entity_id": "",
         "openmrs_data_type": "",
         "type": "spinner",
-        "hint": "স্ট্যাটাস",
+        "hint": "status",
         "values": [
-          "গর্ভবতী",
-          "প্রসব",
-          "ডিভোর্স",
-          "মৃত্যু",
-          "স্থানান্তরিত"
+          "lmp_date",
+          "delivery_date",
+          "death_date"
         ],
         "v_required": {
           "value": "true",
@@ -88,7 +86,7 @@
         "relevance": {
           "step1:status": {
             "type": "string",
-            "ex": "regex(., \"(গর্ভবতী)\")"
+            "ex": "regex(., \"(lmp_date)\")"
           }
         }
       },
@@ -98,7 +96,7 @@
         "openmrs_entity": "",
         "openmrs_entity_id": "",
         "type": "date_picker",
-        "hint": "প্রসবের তারিখ",
+        "hint": "delivery_date",
         "expanded": false,
         "duration": {
           "label": "Yrs"
@@ -111,7 +109,7 @@
         "relevance": {
           "step1:status": {
             "type": "string",
-            "ex": "regex(., \"(প্রসব)\")"
+            "ex": "regex(., \"(delivery_date)\")"
           }
         }
       },
@@ -121,7 +119,7 @@
         "openmrs_entity": "",
         "openmrs_entity_id": "",
         "type": "date_picker",
-        "hint": "মৃত্যু তারিখ",
+        "hint": "death_date",
         "expanded": false,
         "duration": {
           "label": "Yrs"
@@ -134,7 +132,7 @@
         "relevance": {
           "step1:status": {
             "type": "string",
-            "ex": "regex(., \"(মৃত্যু)\")"
+            "ex": "regex(., \"(death_date)\")"
           }
         }
       }

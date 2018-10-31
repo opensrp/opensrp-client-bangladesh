@@ -69,7 +69,7 @@
         "openmrs_entity_id": "",
         "openmrs_data_type": "text",
         "type": "tree",
-        "hint": "খানার ঠিকানা(ওয়ার্ড,ইউনিয়ন)",
+        "hint": "House head's home facility",
         "tree": [],
         "v_required": {
           "value": true,
@@ -83,7 +83,7 @@
         "openmrs_entity_id": "address7",
         "openmrs_data_type": "text",
         "type": "edit_text",
-        "hint": "গ্রাম/মহল্লা/বাড়ি/সড়ক নম্বর"
+        "hint": "Personal address"
       },
       {
         "key": "HHID",
@@ -91,7 +91,7 @@
         "openmrs_entity": "person_attribute",
         "openmrs_entity_id": "householdCode",
         "type": "edit_text",
-        "hint": "খানার আইডি"
+        "hint": "house hold code"
       },
       {
         "key": "First_Name",
@@ -99,7 +99,7 @@
         "openmrs_entity": "person",
         "openmrs_entity_id": "first_name",
         "type": "edit_text",
-        "hint": "পরিবারের প্রধানের নাম এর প্রথম অংশ",
+        "hint": "First name",
         "edit_type": "name",
         "v_regex": {
           "value": "[A-Za-z\\s\.\-]*",
@@ -116,7 +116,7 @@
         "openmrs_entity": "person",
         "openmrs_entity_id": "last_name",
         "type": "edit_text",
-        "hint": "পরিবারের প্রধানের নাম এর শেষ অংশ",
+        "hint": "Last name",
         "edit_type": "name",
         "v_required": {
           "value": "true",
@@ -133,7 +133,7 @@
         "openmrs_entity": "person_identifier",
         "openmrs_entity_id": "Patient_Identifier",
         "type": "edit_text",
-        "hint": "খানার নিবন্ধন আইডি",
+        "hint": "Patient Identifier",
         "read_only":"true",
         "value": "0",
         "v_numeric": {
@@ -190,7 +190,7 @@
         "openmrs_entity": "",
         "openmrs_entity_id": "age",
         "type": "edit_text",
-        "hint": "বয়স *",
+        "hint": "Age *",
         "v_numeric": {
           "value": "true",
           "err": "Number must begin with 0 and must be a total of 10 digits in length"
@@ -219,7 +219,7 @@
         "openmrs_entity": "",
         "openmrs_entity_id": "",
         "type": "date_picker",
-        "hint": "রেজিস্ট্রেশন তারিখ",
+        "hint": "Date of Registration",
         "expanded": false,
         "min_date": "today-5y",
         "max_date": "today",
@@ -235,7 +235,7 @@
         "openmrs_entity_id": "phoneNumber",
         "openmrs_data_type": "text",
         "type": "edit_text",
-        "hint": "পরিবারের গুরুত্বপূর্ণ মোবাইল নম্বর ",
+        "hint": "Contact phone number",
         "v_numeric": {
           "value": "true",
           "err": "Number must begin with 095, 096, or 097 and must be a total of 11 digits in length"
@@ -252,16 +252,16 @@
         "openmrs_entity_id": "58a86736-033b-4866-af0c-bc1960a79cfd",
         "openmrs_data_type": "Coded",
         "type": "spinner",
-        "hint": "আপনার বাসস্থানের ধরণ কি?",
+        "hint": "Household type?",
         "values": [
-          "কাচা",
-          "সেমি পাকা",
-          "পাকা"
+          "Raw",
+          "Semi_concrete",
+          "Concrete"
         ],
         "openmrs_choice_ids": {
-          "কাচা": "Raw",
-          "সেমি পাকা" : "Semi_concrete",
-          "পাকা" : "Concrete"
+          "Raw": "Raw",
+          "Semi_concrete" : "Semi_concrete",
+          "Concrete" : "Concrete"
         },
         "v_required": {
           "value": "true",
@@ -275,22 +275,22 @@
         "openmrs_entity_id": "bd437fcc-f42f-40a6-8baf-b3d3af725ad4",
         "openmrs_data_type": "Coded",
         "type": "spinner",
-        "hint": "খানার সদস্যগন কি ধরনের ল্যাট্রিন ব্যবহার করেন?",
+        "hint": "Latrine Structures?",
         "values": [
-          "স্যানিটারী",
-          "পাকা",
-          "কাচা",
-          "খােলা জায়গা",
-          "ঝোপ জংগল",
-          "অন্যান্য"
+          "Sanitary",
+          "Construction",
+          "UnderConstruction",
+          "OpenArea",
+          "Bush",
+          "Latrine_others"
         ],
         "openmrs_choice_ids": {
-          "স্যানিটারী": "Sanitary",
-          "পাকা": "Construction",
-          "কাচা": "UnderConstruction",
-          "খােলা জায়গা": "OpenArea",
-          "ঝোপ জংগল" : "Bush",
-          "অন্যান্য": "Latrine_others"
+          "Sanitary": "Sanitary",
+          "Construction": "Construction",
+          "UnderConstruction": "UnderConstruction",
+          "OpenArea": "OpenArea",
+          "Bush" : "Bush",
+          "Latrine_others": "Latrine_others"
         },
         "v_required": {
           "value": "true",
@@ -304,29 +304,18 @@
         "openmrs_entity_id": "3a46b207-dc8b-4e5b-8b1f-162fca3905ca",
         "openmrs_data_type": "Coded",
         "type": "spinner",
-        "hint": "পরিবারের খাবার পানির উৎস",
+        "hint": "water source",
         "values": [
-          "টিউবওয়েল (লাল)",
-          "টিউবওয়েল (সবুজ)",
-          "টিউবওয়েল (আর্সেনিক পরিক্ষা করা হয়নি)",
-          "বৃষ্টির পানি",
-          "নদা/খাল",
-          "ট্যাপ",
-          "কুয়া/ইন্দারা",
-          "পুকুর/ভোৰা",
-          "অন্যান্য"
+          "red_tube_well",
+          "Green_tube_well",
+          "NO_arsenic_test_tube_well",
+          "Rain_water",
+          "River_or_canal",
+          "Tap",
+          "Well_or_indira",
+          "Pond",
+          "Others_water_source"
         ],
-        "openmrs_choice_ids": {
-          "টিউবওয়েল (লাল)": "red_tube_well",
-          "টিউবওয়েল (সবুজ)" : "Green_tube_well",
-          "টিউবওয়েল (আর্সেনিক পরিক্ষা করা হয়নি)" : "NO_arsenic_test_tube_well",
-          "বৃষ্টির পানি" : "Rain_water",
-          "নদা/খাল" : "River_or_canal",
-          "ট্যাপ" : "Tap",
-          "কুয়া/ইন্দারা" : "Well_or_indira",
-          "পুকুর/ভোৰা" : "Pond",
-          "অন্যান্য" : "Others_water_source"
-        },
         "v_required": {
           "value": "true",
           "err": "Please answer the question"
@@ -339,24 +328,15 @@
         "openmrs_entity_id": "95066bce-55eb-405e-9664-9be70e5c17b2",
         "openmrs_data_type": "Coded",
         "type": "spinner",
-        "hint": "আপনার পরিবারের আর্থিক অবস্থা কি?",
+        "hint": "financial status?",
         "values": [
-          "সর্বদা অভাব অনটন",
-          "সাময়িক অভাব অনটন",
-          "আয়-ব্যয় সমান",
-          "সচ্ছল",
-          "সঞ্চয় হয়",
-          "অন্যান্য"
+          "always_hand_to_mouth",
+          "Somtimes_hand_to_mouth",
+          "Income_and_expenditure_equal",
+          "Solvent",
+          "Can_save",
+          "Others_financial_status"
         ],
-        "openmrs_choice_ids": {
-          "সর্বদা অভাব অনটন": "always_hand_to_mouth",
-          "সাময়িক অভাব অনটন" : "Somtimes_hand_to_mouth",
-          "আয়-ব্যয় সমান" : "Income_and_expenditure_equal",
-          "সচ্ছল" : "Solvent",
-          "সঞ্চয় হয়" : "Can_save",
-          "অন্যান্য" : "Others_financial_status"
-
-        },
         "v_required": {
           "value": "true",
           "err": "Please answer the question"
@@ -369,7 +349,7 @@
         "openmrs_entity_id": "66d3c926-8145-4b94-987b-11f250cc6e6f",
         "openmrs_data_type": "Numeric",
         "type": "edit_text",
-        "hint": "পরিবারের আনুমানিক মাসিক ব্যয়",
+        "hint": "Monthly_Expenditure",
         "v_required": {
           "value": "true",
           "err": "Please enter the amount"
@@ -392,31 +372,18 @@
         "type": "spinner",
         "hint": "নিকটবর্তী স্বাস্থ্য সেবা কেন্দ্র কোনটি?",
         "values": [
-          "কমিউনিটি ক্লিনিক",
-          "ইউনিয়ন উপস্বাস্থ্য কেন্দ্র",
-          "ইউনিয়ন পরিবার কল্যাণ কেন্দ্র",
-          "ইউনিয়ন স্বাস্থ্য ও পরিবার কল্যাণ কেন্দ্র",
-          "মা ও শিশু কল্যাণ কেন্দ্র",
-          "১০ শয্যা বিশিষ্ট হাসপাতাল",
-          "২০ শয্যা বিশিষ্ট হাসপাতাল",
-          "উপজেলা স্বাস্থ্য কমপ্লেক্স",
-          "বেসরকারী ক্লিনিক/হাসপাতাল",
-          "এনজিও",
-          "অন্যান্য"
+          "Community_Clinic",
+          "Union_Sub_Center",
+          "Union_Family_Welfare_Center",
+          "Union_Health_and_Family_Welfare_Center",
+          "Metarnal_and_Child_Wellfare_Center",
+          "10_Bed_Hospital",
+          "20_Beds_Hospital",
+          "Upazila_Health_Complex",
+          "Private_Clinic_and_Hospital",
+          "Non-governmental_Organization",
+          "Others_Health_Facility"
         ],
-        "openmrs_choice_ids": {
-          "কমিউনিটি ক্লিনিক": "Community_Clinic",
-          "ইউনিয়ন উপস্বাস্থ্য কেন্দ্র": "Union_Sub_Center",
-          "ইউনিয়ন পরিবার কল্যাণ কেন্দ্র":"Union_Family_Welfare_Center",
-          "ইউনিয়ন স্বাস্থ্য ও পরিবার কল্যাণ কেন্দ্র":"Union_Health_and_Family_Welfare_Center",
-          "মা ও শিশু কল্যাণ কেন্দ্র":"Metarnal_and_Child_Wellfare_Center",
-          "১০ শয্যা বিশিষ্ট হাসপাতাল":"10_Bed_Hospital",
-          "২০ শয্যা বিশিষ্ট হাসপাতাল":"20_Beds_Hospital",
-          "উপজেলা স্বাস্থ্য কমপ্লেক্স":"Upazila_Health_Complex",
-          "বেসরকারী ক্লিনিক/হাসপাতাল":"Private_Clinic_and_Hospital",
-          "এনজিও":"Non-governmental_Organization",
-          "অন্যান্য":"Others_Health_Facility"
-        },
         "v_required": {
           "value": "true",
           "err": "Please answer the question"
@@ -429,21 +396,14 @@
         "openmrs_entity_id": "f41a8533-f195-4efd-b019-c4f722c7ed74",
         "openmrs_data_type": "Coded",
         "type": "spinner",
-        "hint": "নিকটবর্তী স্বাস্থ্য সেবা কেন্দ্রের আনুমানিক দুরত্ব",
+        "hint": "Health_Facility_Distance",
         "values": [
-          "৫০০ মিটারের কম",
-          "৫০০ মিটার থেকে ১ কিলোমিটার",
-          "১ কিলোমিটার থেকে ২ কিলোমিটার",
-          "২ কিলোমিটার থেকে ৩ কিলোমিটার",
-          "৩ কিলোমিটারের বেশী"
+          "Less_Than_500_Meters",
+          "500_Meters_to_1_KM",
+          "1_KM_to_2_KM",
+          "2_KM_to_3_KM",
+          "More_Than_3_KM"
         ],
-        "openmrs_choice_ids": {
-          "৫০০ মিটারের কম":"Less_Than_500_Meters",
-          "৫০০ মিটার থেকে ১ কিলোমিটার":"500_Meters_to_1_KM",
-          "১ কিলোমিটার থেকে ২ কিলোমিটার":"1_KM_to_2_KM",
-          "২ কিলোমিটার থেকে ৩ কিলোমিটার":"2_KM_to_3_KM",
-          "৩ কিলোমিটারের বেশী":"More_Than_3_KM"
-        },
         "v_required": {
           "value": "true",
           "err": "Please answer the question"
@@ -456,39 +416,23 @@
         "openmrs_entity_id": "",
         "openmrs_data_type": "Coded",
         "type": "spinner",
-        "hint": "পরিবারের সদস্যগন সাধারনত কোন স্বাস্থ্য সেবা কেন্দ্র থেকে স্বাস্থ্য সেবা নিয়ে থাকেন?",
+        "hint": "Family_Members_Health_Services_From_Health_Care_Center?",
         "values": [
-          "কমিউনিটি ক্লিনিক",
-          "ইউনিয়ন উপস্বাস্থ্য কেন্দ্র",
-          "ইউনিয়ন পরিবার কল্যাণ কেন্দ্র",
-          "ইউনিয়ন স্বাস্থ্য ও পরিবার কল্যাণ কেন্দ্র",
-          "মা ও শিশু কল্যাণ কেন্দ্র",
-          "১০ শয্যা বিশিষ্ট হাসপাতাল",
-          "২০ শয্যা বিশিষ্ট হাসপাতাল",
-          "উপজেলা স্বাস্থ্য কমপ্লেক্স",
-          "সদর হাসপাতাল",
-          "মেডিকেল কলেজ হাসপাতাল",
-          "বেসরকারী ক্লিনিক/হাসপাতাল",
-          "এনজিও",
-          "বিশেষায়িত হাসপাতাল",
-          "অন্যান্য"
+          "Community_Clinic",
+          "Union_Sub_Center",
+          "Union_Family_Welfare_Center",
+          "Union_Health_and_Family_Welfare_Center",
+          "Metarnal_and_Child_Wellfare_Center",
+          "10_Bed_Hospital",
+          "20_Beds_Hospital",
+          "Upazila_Health_Complex",
+          "District_Hospital",
+          "Medical_College_and_Hospital",
+          "Private_Clinic_and_Hospital",
+          "Non-governmental_Organization",
+          "Specialized_Hospital",
+          "thers_Family_Health_Center"
         ],
-        "openmrs_choice_ids": {
-          "কমিউনিটি ক্লিনিক":"Community_Clinic",
-          "ইউনিয়ন উপস্বাস্থ্য কেন্দ্র":"Union_Sub_Center",
-          "ইউনিয়ন পরিবার কল্যাণ কেন্দ্র":"Union_Family_Welfare_Center",
-          "ইউনিয়ন স্বাস্থ্য ও পরিবার কল্যাণ কেন্দ্র":"Union_Health_and_Family_Welfare_Center",
-          "মা ও শিশু কল্যাণ কেন্দ্র":"Metarnal_and_Child_Wellfare_Center",
-          "১০ শয্যা বিশিষ্ট হাসপাতাল":"10_Bed_Hospital",
-          "২০ শয্যা বিশিষ্ট হাসপাতাল":"20_Beds_Hospital",
-          "উপজেলা স্বাস্থ্য কমপ্লেক্স":"Upazila_Health_Complex",
-          "সদর হাসপাতাল":"District_Hospital",
-          "মেডিকেল কলেজ হাসপাতাল":"Medical_College_and_Hospital",
-          "বেসরকারী ক্লিনিক/হাসপাতাল":"Private_Clinic_and_Hospital",
-          "এনজিও":"Non-governmental_Organization",
-          "বিশেষায়িত হাসপাতাল":"Specialized_Hospital",
-          "অন্যান্য":"thers_Family_Health_Center"
-        },
         "v_required": {
           "value": "true",
           "err": "Please answer the question"
@@ -500,7 +444,7 @@
         "openmrs_entity": "",
         "openmrs_entity_id": "",
         "type": "edit_text",
-        "hint": "নিকটবর্তী কমিউনিটি ক্লিনিকটির নাম কি?",
+        "hint": "Near_By_Community_Clinic?",
         "v_required": {
           "value": "true",
           "err": "Please enter the value"
@@ -513,21 +457,14 @@
         "openmrs_entity_id": "",
         "openmrs_data_type": "Coded",
         "type": "spinner",
-        "hint": "নিকটবর্তী কমিউনিটি ক্লিনিকের আনুমানিক দুরত্ব কত কিঃ মিঃ",
+        "hint": "Community_Clinic_Distance",
         "values": [
-          "৫০০ মিটারের কম",
-          "৫০০ মিটার থেকে ১ কিলোমিটার",
-          "১ কিলোমিটার থেকে ২ কিলোমিটার",
-          "২ কিলোমিটার থেকে ৩ কিলোমিটার",
-          "৩ কিলোমিটারের বেশী"
+          "Less_Than_500_Meters",
+          "500_Meters_to_1_KM",
+          "1_KM_to_2_KM",
+          "2_KM_to_3_KM",
+          "More_Than_3_KM"
         ],
-        "openmrs_choice_ids": {
-          "৫০০ মিটারের কম":"Less_Than_500_Meters",
-          "৫০০ মিটার থেকে ১ কিলোমিটার":"500_Meters_to_1_KM",
-          "১ কিলোমিটার থেকে ২ কিলোমিটার":"1_KM_to_2_KM",
-          "২ কিলোমিটার থেকে ৩ কিলোমিটার":"2_KM_to_3_KM",
-          "৩ কিলোমিটারের বেশী":"More_Than_3_KM"
-        },
         "v_required": {
           "value": "true",
           "err": "Please answer the question"
@@ -539,7 +476,7 @@
         "openmrs_entity": "",
         "openmrs_entity_id": "",
         "type": "edit_text",
-        "hint": "তথ্য প্রদানকারীর নামঃ",
+        "hint": "information_provider_name",
         "v_required": {
           "value": "true",
           "err": "Please enter the value"
