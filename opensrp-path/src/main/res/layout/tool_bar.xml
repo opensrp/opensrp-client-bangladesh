@@ -37,7 +37,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:gravity="center"
-                android:src="@drawable/abc_ic_ab_back_mtrl_am_alpha"
+                android:src="@drawable/abc_ic_ab_back_material"
                 android:visibility="gone" />
         </LinearLayout>
 
@@ -60,7 +60,7 @@
         android:paddingLeft="2.5dp"
         android:visibility="visible">
 
-        <org.smartregister.org.smartregister.cbhc.view.customcontrols.CustomFontTextView
+        <org.smartregister.view.customcontrols.CustomFontTextView
             android:id="@+id/txt_title_label"
             style="@style/CustomFontTextViewStyle.NavBar.Black"
             android:layout_width="wrap_content"
@@ -71,7 +71,7 @@
             android:maxWidth="@dimen/title_label_text_max_width"
             android:text="ZEIR"/>
 
-        <org.smartregister.org.smartregister.cbhc.view.customcontrols.CustomFontTextView
+        <org.smartregister.view.customcontrols.CustomFontTextView
             android:id="@+id/btn_report_month"
             style="@style/CustomFontTextViewStyle.NavBar.Black"
             android:layout_width="wrap_content"
@@ -163,7 +163,7 @@
         android:src="@drawable/separator"
         android:visibility="gone" />
 
-    <org.smartregister.path.org.smartregister.cbhc.view.LocationPickerView
+    <org.smartregister.growplus.view.LocationPickerView
         android:id="@+id/clinic_selection"
         style="@style/CustomFontTextViewStyle.NavBar.Bold"
         android:layout_width="wrap_content"
@@ -192,7 +192,7 @@
         android:scaleType="fitXY"
         android:src="@drawable/separator" />
 
-    <org.smartregister.org.smartregister.cbhc.view.customcontrols.CustomFontTextView
+    <org.smartregister.view.customcontrols.CustomFontTextView
         android:id="@+id/service_mode_selection"
         style="@style/CustomFontTextViewStyle.NavBar.Bold"
         android:layout_width="wrap_content"

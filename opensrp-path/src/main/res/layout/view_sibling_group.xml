@@ -3,7 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
-    <android.support.v17.leanback.org.smartregister.cbhc.widget.HorizontalGridView
+    <android.support.v17.leanback.widget.HorizontalGridView
         android:id="@+id/siblings_gv"
         android:layout_width="match_parent"
         android:layout_height="match_parent"

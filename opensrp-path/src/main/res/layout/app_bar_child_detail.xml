@@ -1,9 +1,9 @@
-<android.support.design.org.smartregister.cbhc.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <android.support.design.org.smartregister.cbhc.widget.AppBarLayout
+    <android.support.design.widget.AppBarLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
@@ -51,7 +51,7 @@
                     android:layout_gravity="center_vertical"
                     android:layout_marginLeft="5dp">
 
-                    <org.smartregister.org.smartregister.cbhc.view.customcontrols.CustomFontTextView
+                    <org.smartregister.view.customcontrols.CustomFontTextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         style="@style/CustomFontTextViewStyle.ClientList.Medium"
@@ -66,7 +66,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="match_parent">
 
-                        <org.smartregister.org.smartregister.cbhc.view.customcontrols.CustomFontTextView
+                        <org.smartregister.view.customcontrols.CustomFontTextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             style="@style/CustomFontTextViewStyle.ClientList.Light"
@@ -75,7 +75,7 @@
                             android:textSize="@dimen/activity_sub_title_size"
                             android:text="ZEIR: 5425428" />
 
-                        <org.smartregister.org.smartregister.cbhc.view.customcontrols.CustomFontTextView
+                        <org.smartregister.view.customcontrols.CustomFontTextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             style="@style/CustomFontTextViewStyle.ClientList.Light"
@@ -128,7 +128,7 @@
             </LinearLayout>
         </LinearLayout>
 
-        <android.support.design.org.smartregister.cbhc.widget.TabLayout
+        <android.support.design.widget.TabLayout
             android:id="@+id/tabs"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
@@ -139,9 +139,9 @@
             app:tabIndicatorHeight="4dp"
             app:tabMaxWidth="0dp"
             app:tabGravity="fill"/>
-    </android.support.design.org.smartregister.cbhc.widget.AppBarLayout>
+    </android.support.design.widget.AppBarLayout>
 
-    <android.support.v4.org.smartregister.cbhc.view.ViewPager
+    <android.support.v4.view.ViewPager
         android:id="@+id/viewpager"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -150,4 +150,4 @@
 
     <include layout="@layout/notification_base" />
 
-</android.support.design.org.smartregister.cbhc.widget.CoordinatorLayout>
+</android.support.design.widget.CoordinatorLayout>

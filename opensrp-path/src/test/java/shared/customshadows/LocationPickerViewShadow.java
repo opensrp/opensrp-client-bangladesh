@@ -4,7 +4,7 @@ import android.content.Context;
 import android.util.AttributeSet;
 
 import org.robolectric.annotation.Implements;
-import org.smartregister.path.view.LocationPickerView;
+import org.smartregister.growplus.view.LocationPickerView;
 
 /**
  * Created by kaderchowdhury on 10/12/17.

@@ -7,7 +7,7 @@
     android:layout_height="match_parent"
     android:fillViewport="true"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
-    tools:context="org.smartregister.path.activity.WomanImmunizationActivity"
+    tools:context="org.smartregister.growplus.activity.WomanImmunizationActivity"
     tools:showIn="@layout/app_bar_child_immunization">
 
     <LinearLayout
@@ -19,7 +19,7 @@
         android:paddingRight="@dimen/activity_horizontal_margin"
         android:paddingTop="@dimen/activity_vertical_margin">
 
-        <android.support.v7.org.smartregister.cbhc.widget.CardView
+        <android.support.v7.widget.CardView
             android:layout_width="match_parent"
             android:layout_height="@dimen/immun_child_card_height"
             android:clickable="true"
@@ -51,7 +51,7 @@
                     android:paddingLeft="10dp"
                     android:paddingRight="20dp">
 
-                    <org.smartregister.org.smartregister.cbhc.view.customcontrols.CustomFontTextView
+                    <org.smartregister.view.customcontrols.CustomFontTextView
                         android:id="@+id/name_tv"
                         style="@style/CustomFontTextViewStyle.ClientList.Medium"
                         android:layout_width="wrap_content"
@@ -66,7 +66,7 @@
                         android:layout_height="wrap_content"
                         android:orientation="horizontal">
 
-                        <org.smartregister.org.smartregister.cbhc.view.customcontrols.CustomFontTextView
+                        <org.smartregister.view.customcontrols.CustomFontTextView
                             android:id="@+id/child_id_tv"
                             style="@style/CustomFontTextViewStyle.ClientList.Light"
                             android:layout_width="wrap_content"
@@ -75,7 +75,7 @@
                             android:textColor="@color/dark_grey"
                             android:textSize="@dimen/activity_sub_title_size" />
 
-                        <org.smartregister.org.smartregister.cbhc.view.customcontrols.CustomFontTextView
+                        <org.smartregister.view.customcontrols.CustomFontTextView
                             android:id="@+id/age_tv"
                             style="@style/CustomFontTextViewStyle.ClientList.Light"
                             android:layout_width="wrap_content"
@@ -94,7 +94,7 @@
                 android:layout_gravity="right"
                 android:layout_marginRight="12.5dp"
                 android:src="@drawable/ic_more_vert" />
-        </android.support.v7.org.smartregister.cbhc.widget.CardView>
+        </android.support.v7.widget.CardView>
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -103,7 +103,7 @@
             android:orientation="horizontal"
             android:weightSum="2">
 
-            <android.support.v7.org.smartregister.cbhc.widget.CardView
+            <android.support.v7.widget.CardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
@@ -124,7 +124,7 @@
                     android:paddingRight="20dp"
                     android:paddingTop="10dp">
 
-                    <org.smartregister.org.smartregister.cbhc.view.customcontrols.CustomFontTextView
+                    <org.smartregister.view.customcontrols.CustomFontTextView
                         style="@style/CustomFontTextViewStyle.ClientList"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -181,9 +181,9 @@
                             android:layout_weight="0.5" />
                     </LinearLayout>
                 </LinearLayout>
-            </android.support.v7.org.smartregister.cbhc.widget.CardView>
+            </android.support.v7.widget.CardView>
 
-            <android.support.v7.org.smartregister.cbhc.widget.CardView
+            <android.support.v7.widget.CardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
@@ -203,7 +203,7 @@
                     android:paddingRight="10dp"
                     android:paddingTop="10dp">
 
-                    <org.smartregister.org.smartregister.cbhc.view.customcontrols.CustomFontTextView
+                    <org.smartregister.view.customcontrols.CustomFontTextView
                         android:id="@+id/child_siblings_tv"
                         style="@style/CustomFontTextViewStyle.ClientList"
                         android:layout_width="wrap_content"
@@ -212,17 +212,17 @@
                         android:textColor="@color/text_black"
                         android:textSize="@dimen/activity_sub_title_size" />
 
-                    <org.smartregister.path.org.smartregister.cbhc.view.SiblingPicturesGroup
+                    <org.smartregister.growplus.view.SiblingPicturesGroup
                         android:id="@+id/sibling_pictures"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="10dp" />
 
                 </LinearLayout>
-            </android.support.v7.org.smartregister.cbhc.widget.CardView>
+            </android.support.v7.widget.CardView>
         </LinearLayout>
 
-        <android.support.v7.org.smartregister.cbhc.widget.CardView
+        <android.support.v7.widget.CardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/card_category_horizontal_margin"
@@ -245,7 +245,7 @@
                     android:paddingRight="20dp"
                     android:paddingTop="10dp">
 
-                    <org.smartregister.org.smartregister.cbhc.view.customcontrols.CustomFontTextView
+                    <org.smartregister.view.customcontrols.CustomFontTextView
                         style="@style/CustomFontTextViewStyle.ClientList"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -255,7 +255,7 @@
                         android:textColor="@color/text_black"
                         android:textSize="@dimen/activity_sub_title_size" />
 
-                    <org.smartregister.org.smartregister.cbhc.view.customcontrols.CustomFontTextView
+                    <org.smartregister.view.customcontrols.CustomFontTextView
                         android:id="@+id/dob_tv"
                         style="@style/CustomFontTextViewStyle.ClientList"
                         android:layout_width="wrap_content"
@@ -284,7 +284,7 @@
 
                 </LinearLayout>
             </LinearLayout>
-        </android.support.v7.org.smartregister.cbhc.widget.CardView>
+        </android.support.v7.widget.CardView>
     </LinearLayout>
 
 </ScrollView>

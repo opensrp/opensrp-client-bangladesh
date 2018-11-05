@@ -32,7 +32,7 @@
             android:layout_marginLeft="5dp"
             android:layout_weight="1">
 
-            <org.smartregister.org.smartregister.cbhc.view.customcontrols.CustomFontTextView
+            <org.smartregister.view.customcontrols.CustomFontTextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textAppearance="?android:attr/textAppearanceMedium"
@@ -41,7 +41,7 @@
                 android:layout_weight="1"
                 android:id="@+id/name" />
 
-            <org.smartregister.org.smartregister.cbhc.view.customcontrols.CustomFontTextView
+            <org.smartregister.view.customcontrols.CustomFontTextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textAppearance="?android:attr/textAppearanceSmall"
@@ -57,7 +57,7 @@
                 android:layout_height="wrap_content"
                 >
 
-                <org.smartregister.org.smartregister.cbhc.view.customcontrols.CustomFontTextView
+                <org.smartregister.view.customcontrols.CustomFontTextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textAppearance="?android:attr/textAppearanceSmall"
@@ -67,7 +67,7 @@
                     android:layout_weight="1"
                     android:id="@+id/address" />
 
-                <org.smartregister.org.smartregister.cbhc.view.customcontrols.CustomFontTextView
+                <org.smartregister.view.customcontrols.CustomFontTextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     style="@style/CustomFontTextViewStyle.noPadding"
@@ -94,20 +94,20 @@
         android:layout_weight="2.5"
         android:layout_gravity="center">
 
-        <org.smartregister.org.smartregister.cbhc.view.customcontrols.CustomFontTextView
+        <org.smartregister.view.customcontrols.CustomFontTextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             style="@style/CustomFontTextViewStyle"
             android:id="@+id/nid"
             android:layout_marginTop="3dp" />
 
-        <org.smartregister.org.smartregister.cbhc.view.customcontrols.CustomFontTextView
+        <org.smartregister.view.customcontrols.CustomFontTextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             style="@style/CustomFontTextViewStyle"
             android:id="@+id/zeir_id" />
 
-        <org.smartregister.org.smartregister.cbhc.view.customcontrols.CustomFontTextView
+        <org.smartregister.view.customcontrols.CustomFontTextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             style="@style/CustomFontTextViewStyle"
