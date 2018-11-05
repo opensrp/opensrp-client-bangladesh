@@ -13,7 +13,7 @@ import org.smartregister.immunization.domain.Vaccine;
 import org.smartregister.immunization.repository.RecurringServiceRecordRepository;
 import org.smartregister.immunization.repository.RecurringServiceTypeRepository;
 import org.smartregister.immunization.repository.VaccineRepository;
-import org.smartregister.path.application.VaccinatorApplication;
+import org.smartregister.growplus.application.VaccinatorApplication;
 import org.smartregister.service.AlertService;
 
 import java.lang.reflect.Field;

@@ -9,7 +9,7 @@ import org.powermock.modules.junit4.PowerMockRunnerDelegate;
 import org.robolectric.RobolectricTestRunner;
 import org.robolectric.annotation.Config;
 import org.robolectric.util.ReflectionHelpers;
-import org.smartregister.path.BuildConfig;
+import org.smartregister.growplus.BuildConfig;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -40,7 +40,7 @@ public abstract class BaseUnitTest {
                 ReflectionHelpers.setStaticField(btclass, "sHandler", null);
             }
 
-            Class clazz = ReflectionHelpers.loadClass(getClass().getClassLoader(), "android.org.smartregister.cbhc.view.WindowManagerGlobal");
+            Class clazz = ReflectionHelpers.loadClass(getClass().getClassLoader(), "android.view.WindowManagerGlobal");
             Object instance = ReflectionHelpers.callStaticMethod(clazz, "getInstance");
 
             Object lock = ReflectionHelpers.getField(instance, "mLock");

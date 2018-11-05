@@ -6,9 +6,9 @@ import org.robolectric.annotation.Implements;
 import org.robolectric.shadow.api.Shadow;
 import org.smartregister.commonregistry.CommonPersonObjectClient;
 import org.smartregister.domain.Photo;
-import org.smartregister.path.R;
+import org.smartregister.growplus.R;
 
-import org.smartregister.cbhc.util.ImageUtils;
+import util.ImageUtils;
 
 /**
  * Created by onadev on 15/06/2017.
