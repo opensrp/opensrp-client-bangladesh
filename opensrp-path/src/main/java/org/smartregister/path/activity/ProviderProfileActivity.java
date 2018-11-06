@@ -19,7 +19,7 @@ import java.util.HashMap;
 import static org.smartregister.util.Utils.convertDateFormat;
 import static org.smartregister.util.Utils.getValue;
 import static org.smartregister.util.Utils.nonEmptyValue;
-import static org.smartregister.cbhc.util.Utils.getDataRow;
+import static util.Utils.getDataRow;
 
 public class ProviderProfileActivity extends Activity {
 

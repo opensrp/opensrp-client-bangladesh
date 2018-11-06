@@ -13,7 +13,7 @@ import org.smartregister.path.R;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-import org.smartregister.cbhc.util.JsonFormUtils;
+import util.JsonFormUtils;
 
 /**
  * @author Jason Rogena - jrogena@ona.io
@@ -80,11 +80,11 @@ public class ServiceLocationsAdapter extends BaseAdapter {
 
     private void refreshView(View view, boolean selected) {
         if (selected) {
-            //org.smartregister.cbhc.view.setBackgroundColor(context.getResources().getColor(R.color.primary_background));
+            //view.setBackgroundColor(context.getResources().getColor(R.color.primary_background));
             ImageView checkbox = (ImageView) view.findViewById(R.id.checkbox);
             checkbox.setVisibility(View.VISIBLE);
         } else {
-            //org.smartregister.cbhc.view.setBackgroundColor(context.getResources().getColor(android.R.color.transparent));
+            //view.setBackgroundColor(context.getResources().getColor(android.R.color.transparent));
             ImageView checkbox = (ImageView) view.findViewById(R.id.checkbox);
             checkbox.setVisibility(View.INVISIBLE);
         }

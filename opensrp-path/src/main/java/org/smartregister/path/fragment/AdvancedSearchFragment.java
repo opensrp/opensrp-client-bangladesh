@@ -55,10 +55,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.smartregister.cbhc.util.GlobalSearchUtils;
-import org.smartregister.cbhc.util.JsonFormUtils;
-import org.smartregister.cbhc.util.MoveToMyCatchmentUtils;
-import org.smartregister.cbhc.util.PathConstants;
+import util.GlobalSearchUtils;
+import util.JsonFormUtils;
+import util.MoveToMyCatchmentUtils;
+import util.PathConstants;
 
 import static org.smartregister.util.Utils.isConnectedToNetwork;
 

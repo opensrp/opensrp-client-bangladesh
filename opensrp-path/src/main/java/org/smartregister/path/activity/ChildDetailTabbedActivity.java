@@ -83,9 +83,9 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
-import org.smartregister.cbhc.util.ImageUtils;
-import org.smartregister.cbhc.util.JsonFormUtils;
-import org.smartregister.cbhc.util.PathConstants;
+import util.ImageUtils;
+import util.JsonFormUtils;
+import util.PathConstants;
 
 import static org.smartregister.util.DateUtil.getDuration;
 import static org.smartregister.util.Utils.dobToDateTime;
@@ -773,7 +773,7 @@ public class ChildDetailTabbedActivity extends BaseActivity implements Vaccinati
             ImageView profileImageIV = (ImageView) findViewById(R.id.profile_image_iv);
 
             if (childDetails.entityId() != null) {//image already in local storage most likey ):
-                //set profile image by passing the client id.If the image doesn't exist in the image org.smartregister.cbhc.repository then download and save locally
+                //set profile image by passing the client id.If the image doesn't exist in the image repository then download and save locally
                 profileImageIV.setTag(org.smartregister.R.id.entity_id, childDetails.entityId());
                 DrishtiApplication.getCachedImageLoaderInstance().getImageByClientId(childDetails.entityId(), OpenSRPImageLoader.getStaticImageListener((ImageView) profileImageIV, ImageUtils.profileImageResourceByGender(gender), ImageUtils.profileImageResourceByGender(gender)));
 
@@ -1005,6 +1005,9 @@ public class ChildDetailTabbedActivity extends BaseActivity implements Vaccinati
         weightWrapper.setPatientAge(duration);
         weightWrapper.setPhoto(photo);
         weightWrapper.setPmtctStatus(getValue(childDetails.getColumnmaps(), "pmtct_status", false));
+
+        DateTime dateTime = new DateTime(getValue(childDetails.getColumnmaps(), "dob", false));
+
 
         EditWeightDialogFragment editWeightDialogFragment = EditWeightDialogFragment.newInstance(this, weightWrapper);
         editWeightDialogFragment.show(ft, DIALOG_TAG);

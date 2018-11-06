@@ -27,7 +27,7 @@ import android.widget.TableRow;
 import android.widget.TextView;
 
 import org.apache.commons.lang3.StringUtils;
-import org.smartregister.growplus.domain.EditWrapper;
+import org.smartregister.path.domain.EditWrapper;
 
 import java.util.Collection;
 import java.util.Map;
@@ -119,6 +119,13 @@ public class Utils {
             i += ignoreEmpty && StringUtils.isBlank(v) ? 0 : Integer.parseInt(v);
         }
         return i;
+    }
+    public static boolean isEmptyMap(Map map) {
+        return map == null || map.isEmpty();
+    }
+
+    public static boolean isEmptyCollection(Collection collection) {
+        return collection == null || collection.isEmpty();
     }
 
     public static TableRow addToRow(Context context, String value, TableRow row) {

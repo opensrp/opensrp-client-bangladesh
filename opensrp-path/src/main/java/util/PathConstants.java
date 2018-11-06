@@ -1,7 +1,7 @@
 package util;
 
 import org.smartregister.AllConstants;
-import org.smartregister.growplus.BuildConfig;
+import org.smartregister.path.BuildConfig;
 
 /**
  * Created by coder on 2/14/17.
@@ -27,7 +27,7 @@ PathConstants extends AllConstants {
     public static final String OPENMRS_IDGEN_URL =  BuildConfig.OPENMRS_IDGEN_URL;
 
     public static final class ServiceType {
-
+        public static final int AUTO_SYNC = 1;
         public static final int DATA_SYNCHRONIZATION = 1;
         public static final int DAILY_TALLIES_GENERATION = 2;
         public static final int MONTHLY_TALLIES_GENERATION = 3;
@@ -36,6 +36,7 @@ PathConstants extends AllConstants {
         public static final int WEIGHT_SYNC_PROCESSING = 6;
         public static final int RECURRING_SERVICES_SYNC_PROCESSING = 7;
     }
+
 
     public static final class EventType {
 

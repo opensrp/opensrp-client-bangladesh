@@ -10,8 +10,8 @@ import org.smartregister.Context;
 import org.smartregister.DristhiConfiguration;
 import org.smartregister.domain.Response;
 import org.smartregister.event.Listener;
-import org.smartregister.growplus.application.VaccinatorApplication;
-import org.smartregister.growplus.fragment.AdvancedSearchFragment;
+import org.smartregister.path.application.VaccinatorApplication;
+import org.smartregister.path.fragment.AdvancedSearchFragment;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;

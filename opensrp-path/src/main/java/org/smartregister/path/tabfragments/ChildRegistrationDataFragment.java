@@ -21,7 +21,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.Map;
 
-import org.smartregister.cbhc.util.JsonFormUtils;
+import util.JsonFormUtils;
 
 import static org.smartregister.util.DateUtil.getDuration;
 import static org.smartregister.util.Utils.getValue;

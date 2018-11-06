@@ -16,7 +16,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.concurrent.TimeUnit;
 
-import org.smartregister.cbhc.util.PathConstants;
+import util.PathConstants;
 
 public class VaccinatorAlarmReceiver extends BroadcastReceiver {
 
@@ -34,27 +34,27 @@ public class VaccinatorAlarmReceiver extends BroadcastReceiver {
             switch (serviceType) {
                 case PathConstants.ServiceType.DATA_SYNCHRONIZATION:
                     //handled by pathupdateactionstask
-                    android.util.Log.i(TAG, "Started data synchronization org.smartregister.cbhc.service at: " + dateFormatter.format(new Date()));
+                    android.util.Log.i(TAG, "Started data synchronization service at: " + dateFormatter.format(new Date()));
                     break;
                 case PathConstants.ServiceType.MONTHLY_TALLIES_GENERATION:
-                    android.util.Log.i(TAG, "Started MONTHLY_TALLIES_GENERATION org.smartregister.cbhc.service at: " + dateFormatter.format(new Date()));
+                    android.util.Log.i(TAG, "Started MONTHLY_TALLIES_GENERATION service at: " + dateFormatter.format(new Date()));
                     break;
                 case PathConstants.ServiceType.PULL_UNIQUE_IDS:
                     //happens at pathupdateactionstask
                     //serviceIntent = new Intent(context, PullUniqueIdsIntentService.class);
-                    android.util.Log.i(TAG, "Started PULL_UNIQUE_IDS org.smartregister.cbhc.service at: " + dateFormatter.format(new Date()));
+                    android.util.Log.i(TAG, "Started PULL_UNIQUE_IDS service at: " + dateFormatter.format(new Date()));
                     break;
                 case PathConstants.ServiceType.WEIGHT_SYNC_PROCESSING:
                     serviceIntent = new Intent(context, WeightIntentService.class);
-                    android.util.Log.i(TAG, "Started WEIGHT_SYNC_PROCESSING org.smartregister.cbhc.service at: " + dateFormatter.format(new Date()));
+                    android.util.Log.i(TAG, "Started WEIGHT_SYNC_PROCESSING service at: " + dateFormatter.format(new Date()));
                     break;
                 case PathConstants.ServiceType.VACCINE_SYNC_PROCESSING:
                     serviceIntent = new Intent(context, VaccineIntentService.class);
-                    android.util.Log.i(TAG, "Started VACCINE_SYNC_PROCESSING org.smartregister.cbhc.service at: " + dateFormatter.format(new Date()));
+                    android.util.Log.i(TAG, "Started VACCINE_SYNC_PROCESSING service at: " + dateFormatter.format(new Date()));
                     break;
                 case PathConstants.ServiceType.RECURRING_SERVICES_SYNC_PROCESSING:
                     serviceIntent = new Intent(context, RecurringIntentService.class);
-                    android.util.Log.i(TAG, "Started RECURRING_SERVICES_SYNC_PROCESSING org.smartregister.cbhc.service at: " + dateFormatter.format(new Date()));
+                    android.util.Log.i(TAG, "Started RECURRING_SERVICES_SYNC_PROCESSING service at: " + dateFormatter.format(new Date()));
                     break;
             }
 
@@ -71,7 +71,7 @@ public class VaccinatorAlarmReceiver extends BroadcastReceiver {
     /**
      * @param context
      * @param triggerIteration in minutes
-     * @param taskType         a constant from pathconstants denoting the org.smartregister.cbhc.service type
+     * @param taskType         a constant from pathconstants denoting the service type
      */
     public static void setAlarm(Context context, long triggerIteration, int taskType) {
         try {
@@ -81,7 +81,7 @@ public class VaccinatorAlarmReceiver extends BroadcastReceiver {
             long triggerAt;
             long triggerInterval;
             if (context == null) {
-                throw new Exception("Unable to schedule org.smartregister.cbhc.service without app context");
+                throw new Exception("Unable to schedule service without app context");
             }
 
             // Otherwise schedule based on normal interval
@@ -103,7 +103,7 @@ public class VaccinatorAlarmReceiver extends BroadcastReceiver {
             //Elapsed real time uses the "time since system boot" as a reference, and real time clock uses UTC (wall clock) time
             alarmManager.setRepeating(AlarmManager.RTC, triggerAt, triggerInterval, alarmIntent);
         } catch (Exception e) {
-            Log.logError(TAG, "Error in setting org.smartregister.cbhc.service Alarm " + e.getMessage());
+            Log.logError(TAG, "Error in setting service Alarm " + e.getMessage());
         }
 
     }

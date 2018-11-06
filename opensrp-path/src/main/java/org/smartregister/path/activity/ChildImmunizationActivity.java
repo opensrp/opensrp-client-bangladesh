@@ -77,9 +77,9 @@ import java.util.Random;
 import java.util.concurrent.TimeUnit;
 import java.util.regex.Pattern;
 
-import org.smartregister.cbhc.util.ImageUtils;
-import org.smartregister.cbhc.util.JsonFormUtils;
-import org.smartregister.cbhc.util.PathConstants;
+import util.ImageUtils;
+import util.JsonFormUtils;
+import util.PathConstants;
 
 
 /**
@@ -143,8 +143,8 @@ public class ChildImmunizationActivity extends BaseActivity
             }
         });
         toolbar.setOnLocationChangeListener(this);
-//       View org.smartregister.cbhc.view= toolbar.findViewById(R.id.immunization_separator);
-//        org.smartregister.cbhc.view.setBackground(R.drawable.vertical_seperator_female);
+//       View view= toolbar.findViewById(R.id.immunization_separator);
+//        view.setBackground(R.drawable.vertical_seperator_female);
 
         // Get child details from bundled data
         Bundle extras = this.getIntent().getExtras();
@@ -213,7 +213,7 @@ public class ChildImmunizationActivity extends BaseActivity
         // TODO: update all views using child data
         Map<String, String> details = detailsRepository.getAllDetailsForClient(childDetails.entityId());
 
-        org.smartregister.cbhc.util.Utils.putAll(childDetails.getColumnmaps(), details);
+        util.Utils.putAll(childDetails.getColumnmaps(), details);
 
         updateGenderViews();
         toolbar.setTitle(updateActivityTitle());
@@ -239,7 +239,7 @@ public class ChildImmunizationActivity extends BaseActivity
             ImageView profileImageIV = (ImageView) findViewById(R.id.profile_image_iv);
 
             if (childDetails.entityId() != null) { //image already in local storage most likey ):
-                //set profile image by passing the client id.If the image doesn't exist in the image org.smartregister.cbhc.repository then download and save locally
+                //set profile image by passing the client id.If the image doesn't exist in the image repository then download and save locally
                 profileImageIV.setTag(org.smartregister.R.id.entity_id, childDetails.entityId());
                 DrishtiApplication.getCachedImageLoaderInstance().getImageByClientId(childDetails.entityId(), OpenSRPImageLoader.getStaticImageListener(profileImageIV, ImageUtils.profileImageResourceByGender(gender), ImageUtils.profileImageResourceByGender(gender)));
 

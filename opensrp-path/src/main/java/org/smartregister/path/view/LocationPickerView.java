@@ -25,7 +25,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Iterator;
 
-import org.smartregister.cbhc.util.JsonFormUtils;
+import util.JsonFormUtils;
 
 /**
  * @author Jason Rogena - jrogena@ona.io

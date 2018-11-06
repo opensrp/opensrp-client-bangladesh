@@ -38,8 +38,8 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import org.smartregister.cbhc.util.MoveToMyCatchmentUtils;
-import org.smartregister.cbhc.util.PathConstants;
+import util.MoveToMyCatchmentUtils;
+import util.PathConstants;
 
 public class PathClientProcessor extends ClientProcessor {
 

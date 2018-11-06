@@ -14,9 +14,9 @@ import org.smartregister.domain.ResponseStatus;
 import org.smartregister.domain.db.Event;
 import org.smartregister.domain.db.Obs;
 import org.smartregister.event.Listener;
-import org.smartregister.growplus.application.VaccinatorApplication;
-import org.smartregister.growplus.sync.ECSyncUpdater;
-import org.smartregister.growplus.sync.PathClientProcessor;
+import org.smartregister.path.application.VaccinatorApplication;
+import org.smartregister.path.sync.ECSyncUpdater;
+import org.smartregister.path.sync.PathClientProcessor;
 import org.smartregister.repository.AllSharedPreferences;
 import org.smartregister.repository.BaseRepository;
 

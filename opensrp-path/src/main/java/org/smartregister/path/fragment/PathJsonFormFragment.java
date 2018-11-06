@@ -43,8 +43,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.smartregister.cbhc.util.MotherLookUpUtils;
-import org.smartregister.cbhc.util.PathConstants;
+import util.MotherLookUpUtils;
+import util.PathConstants;
 
 import static org.smartregister.util.Utils.getValue;
 
@@ -190,7 +190,7 @@ public class PathJsonFormFragment extends JsonFormFragment {
     private void tapToView(final HashMap<CommonPersonObject, List<CommonPersonObject>> map) {
         snackbar = Snackbar
                 .make(getMainView(), map.size() + " mother/guardian match(es).", Snackbar.LENGTH_INDEFINITE);
-        snackbar.setAction("Tap to org.smartregister.cbhc.view", new View.OnClickListener() {
+        snackbar.setAction("Tap to view", new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 updateResults(map);
@@ -375,8 +375,8 @@ public class PathJsonFormFragment extends JsonFormFragment {
                         textView.setText(textstring);
                     }
                 }
-//            else if(org.smartregister.cbhc.view instanceof  ViewGroup){
-//                updateRelevantTextView((ViewGroup) org.smartregister.cbhc.view,textstring,currentKey);
+//            else if(view instanceof  ViewGroup){
+//                updateRelevantTextView((ViewGroup) view,textstring,currentKey);
 //            }
             }
         }
@@ -395,8 +395,8 @@ public class PathJsonFormFragment extends JsonFormFragment {
                         toreturn = textView.getText().toString();
                     }
                 }
-//            else if(org.smartregister.cbhc.view instanceof  ViewGroup){
-//                updateRelevantTextView((ViewGroup) org.smartregister.cbhc.view,textstring,currentKey);
+//            else if(view instanceof  ViewGroup){
+//                updateRelevantTextView((ViewGroup) view,textstring,currentKey);
 //            }
             }
         }
