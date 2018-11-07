@@ -1,4 +1,4 @@
-package org.smartregister.cbhc.activity;
+package org.smartregister.cbhc.fragment;
 
 import android.app.Fragment;
 import android.app.FragmentTransaction;
@@ -8,16 +8,13 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
+
 import android.text.TextUtils;
 import android.util.Log;
 import android.util.Pair;
-import android.view.Menu;
-import android.view.MenuItem;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -25,6 +22,8 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.tuple.Triple;
 import org.joda.time.DateTime;
 import org.smartregister.cbhc.R;
+import org.smartregister.cbhc.activity.DetailActivity;
+
 import org.smartregister.cbhc.util.Utils;
 import org.smartregister.commonregistry.CommonPersonObjectClient;
 import org.smartregister.domain.Alert;
@@ -55,7 +54,6 @@ import org.smartregister.immunization.view.VaccineGroup;
 import org.smartregister.service.AlertService;
 import org.smartregister.util.DateUtil;
 
-
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -67,13 +65,65 @@ import java.util.Random;
 
 import static org.smartregister.util.Utils.getName;
 
-public class ImmunizationActivity extends AppCompatActivity implements VaccinationActionListener, ServiceActionListener {
+public class ChildImmunizationFragment extends BaseProfileFragment {
+    public void setChildDetails(CommonPersonObjectClient childDetails){
+        this.childDetails = childDetails;
+    }
+    public static ChildImmunizationFragment newInstance(Bundle bundle) {
+        Bundle args = bundle;
 
+        ChildImmunizationFragment fragment = new ChildImmunizationFragment();
+        if (args == null) {
+            args = new Bundle();
+        }
+        fragment.setArguments(args);
+        return fragment;
+    }
 
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+    }
+
+    @Override
+    protected void onCreation() {
+        //Overriden
+    }
+
+    @Override
+    protected void onResumption() {
+        //Overriden
+        if (vaccineGroups != null) {
+            LinearLayout vaccineGroupCanvasLL = (LinearLayout) view.findViewById(R.id.vaccine_group_canvas_ll);
+            vaccineGroupCanvasLL.removeAllViews();
+            vaccineGroups = null;
+        }
+
+        if (serviceGroups != null) {
+            LinearLayout serviceGroupCanvasLL = (LinearLayout) view.findViewById(R.id.service_group_canvas_ll);
+            serviceGroupCanvasLL.removeAllViews();
+            serviceGroups = null;
+        }
+
+        updateViews();
+
+        startServices();
+    }
+
+//    ChildChildImmunizationFragment cia;
+
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+
+        View fragmentView = inflater.inflate(R.layout.immunization_activity_main, container, false);
+        this.view = fragmentView;
+//        cia = new ChildImmunizationFragment(fragmentView,getActivity());
+        return fragmentView;
+    }
     // Data
-    private CommonPersonObjectClient childDetails;// = Utils.dummyDetatils();
-
-    private static final String TAG = ImmunizationActivity.class.getCanonicalName();
+//    private CommonPersonObjectClient childDetails = Utils.dummyDetatils();
+    private CommonPersonObjectClient childDetails;
+    private static final String TAG = ChildImmunizationFragment.class.getCanonicalName();
     private static final String DIALOG_TAG = "DIALOG_TAAAGGG";
     private static final String EXTRA_CHILD_DETAILS = "child_details";
 
@@ -99,74 +149,17 @@ public class ImmunizationActivity extends AppCompatActivity implements Vaccinati
     }
 
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
-//        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-//        setSupportActionBar(toolbar);
-
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_main, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
-        }
-
-        return super.onOptionsItemSelected(item);
-    }
-
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-        if (vaccineGroups != null) {
-            LinearLayout vaccineGroupCanvasLL = (LinearLayout) findViewById(R.id.vaccine_group_canvas_ll);
-            vaccineGroupCanvasLL.removeAllViews();
-            vaccineGroups = null;
-        }
-
-        if (serviceGroups != null) {
-            LinearLayout serviceGroupCanvasLL = (LinearLayout) findViewById(R.id.service_group_canvas_ll);
-            serviceGroupCanvasLL.removeAllViews();
-            serviceGroups = null;
-        }
-        updateViews();
-
-        startServices();
-    }
+    View view;
 
     private boolean isDataOk() {
         return childDetails != null && childDetails.getDetails() != null;
     }
 
-    private void updateViews() {
-        findViewById(R.id.profile_name_layout).setOnClickListener(new View.OnClickListener() {
+    public void updateViews() {
+        view.findViewById(R.id.profile_name_layout).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                launchDetailActivity(ImmunizationActivity.this, childDetails);
+                launchDetailActivity(getActivity(), childDetails);
             }
         });
 
@@ -181,7 +174,7 @@ public class ImmunizationActivity extends AppCompatActivity implements Vaccinati
 
         AlertService alertService = ImmunizationLibrary.getInstance().context().alertService();
 
-        UpdateViewTask updateViewTask = new UpdateViewTask();
+        ChildImmunizationFragment.UpdateViewTask updateViewTask = new ChildImmunizationFragment.UpdateViewTask();
         updateViewTask.setVaccineRepository(vaccineRepository);
         updateViewTask.setRecurringServiceTypeRepository(recurringServiceTypeRepository);
         updateViewTask.setRecurringServiceRecordRepository(recurringServiceRecordRepository);
@@ -197,9 +190,9 @@ public class ImmunizationActivity extends AppCompatActivity implements Vaccinati
             childId = org.smartregister.util.Utils.getValue(childDetails.getColumnmaps(), "zeir_id", false);
         }
 
-        TextView nameTV = (TextView) findViewById(R.id.name_tv);
+        TextView nameTV = (TextView) view.findViewById(R.id.name_tv);
         nameTV.setText(name);
-        TextView childIdTV = (TextView) findViewById(R.id.child_id_tv);
+        TextView childIdTV = (TextView) view.findViewById(R.id.child_id_tv);
         childIdTV.setText(String.format("%s: %s", "ID", childId));
     }
 
@@ -219,9 +212,9 @@ public class ImmunizationActivity extends AppCompatActivity implements Vaccinati
                 }
             }
         }
-        TextView dobTV = (TextView) findViewById(R.id.dob_tv);
+        TextView dobTV = (TextView) view.findViewById(R.id.dob_tv);
         dobTV.setText(String.format("%s: %s", "Birth Date", formattedDob));
-        TextView ageTV = (TextView) findViewById(R.id.age_tv);
+        TextView ageTV = (TextView) view.findViewById(R.id.age_tv);
         ageTV.setText(String.format("%s: %s", "Age", formattedAge));
     }
 
@@ -263,9 +256,9 @@ public class ImmunizationActivity extends AppCompatActivity implements Vaccinati
 
 
             serviceGroups = new ArrayList<>();
-            LinearLayout serviceGroupCanvasLL = (LinearLayout) findViewById(R.id.service_group_canvas_ll);
+            LinearLayout serviceGroupCanvasLL = (LinearLayout) view.findViewById(R.id.service_group_canvas_ll);
 
-            ServiceGroup curGroup = new ServiceGroup(this);
+            ServiceGroup curGroup = new ServiceGroup(getActivity());
             curGroup.setChildActive(isChildActive);
             curGroup.setData(childDetails, foundServiceTypeMap, serviceRecordList, alerts);
             curGroup.setOnServiceClickedListener(new ServiceGroup.OnServiceClickedListener() {
@@ -292,11 +285,11 @@ public class ImmunizationActivity extends AppCompatActivity implements Vaccinati
         if (vaccineGroups == null) {
             vaccineGroups = new ArrayList<>();
             List<org.smartregister.immunization.domain.jsonmapping.VaccineGroup> supportedVaccines =
-                    VaccinatorUtils.getSupportedVaccines(this);
+                    VaccinatorUtils.getSupportedVaccines(getActivity());
 
             for (org.smartregister.immunization.domain.jsonmapping.VaccineGroup vaccineGroupObject : supportedVaccines) {
                 //Add BCG2 special vaccine to birth vaccine group
-                VaccinateActionUtils.addBcg2SpecialVaccine(this, vaccineGroupObject, vaccineList);
+                VaccinateActionUtils.addBcg2SpecialVaccine(getActivity(), vaccineGroupObject, vaccineList);
 
                 addVaccineGroup(-1, vaccineGroupObject, vaccineList, alerts);
             }
@@ -305,8 +298,8 @@ public class ImmunizationActivity extends AppCompatActivity implements Vaccinati
 
 
     private void addVaccineGroup(int canvasId, org.smartregister.immunization.domain.jsonmapping.VaccineGroup vaccineGroupData, List<Vaccine> vaccineList, List<Alert> alerts) {
-        LinearLayout vaccineGroupCanvasLL = (LinearLayout) findViewById(R.id.vaccine_group_canvas_ll);
-        VaccineGroup curGroup = new VaccineGroup(this);
+        LinearLayout vaccineGroupCanvasLL = (LinearLayout) view.findViewById(R.id.vaccine_group_canvas_ll);
+        VaccineGroup curGroup = new VaccineGroup(getActivity());
         curGroup.setChildActive(isChildActive);
         curGroup.setData(vaccineGroupData, childDetails, vaccineList, alerts, "child");
         curGroup.setOnRecordAllClickListener(new VaccineGroup.OnRecordAllClickListener() {
@@ -334,11 +327,11 @@ public class ImmunizationActivity extends AppCompatActivity implements Vaccinati
         if (canvasId == -1) {
             Random r = new Random();
             canvasId = r.nextInt(4232 - 213) + 213;
-            parent = new LinearLayout(this);
+            parent = new LinearLayout(getActivity());
             parent.setId(canvasId);
             vaccineGroupCanvasLL.addView(parent);
         } else {
-            parent = (LinearLayout) findViewById(canvasId);
+            parent = (LinearLayout) view.findViewById(canvasId);
             parent.removeAllViews();
         }
         parent.addView(curGroup);
@@ -348,8 +341,8 @@ public class ImmunizationActivity extends AppCompatActivity implements Vaccinati
     }
 
     private void addVaccineUndoDialogFragment(VaccineGroup vaccineGroup, VaccineWrapper vaccineWrapper) {
-        FragmentTransaction ft = getFragmentManager().beginTransaction();
-        Fragment prev = getFragmentManager().findFragmentByTag(DIALOG_TAG);
+        FragmentTransaction ft = getActivity().getFragmentManager().beginTransaction();
+        Fragment prev = getActivity().getFragmentManager().findFragmentByTag(DIALOG_TAG);
         if (prev != null) {
             ft.remove(prev);
         }
@@ -362,8 +355,8 @@ public class ImmunizationActivity extends AppCompatActivity implements Vaccinati
     }
 
     private void addServiceUndoDialogFragment(ServiceGroup serviceGroup, ServiceWrapper serviceWrapper) {
-        FragmentTransaction ft = getFragmentManager().beginTransaction();
-        Fragment prev = getFragmentManager().findFragmentByTag(DIALOG_TAG);
+        FragmentTransaction ft = getActivity().getFragmentManager().beginTransaction();
+        Fragment prev = getActivity().getFragmentManager().findFragmentByTag(DIALOG_TAG);
         if (prev != null) {
             ft.remove(prev);
         }
@@ -385,7 +378,7 @@ public class ImmunizationActivity extends AppCompatActivity implements Vaccinati
         fromContext.startActivity(intent);
     }
 
-    @Override
+
     public void onVaccinateToday(ArrayList<VaccineWrapper> tags, View v) {
         if (tags != null && !tags.isEmpty()) {
             View view = getLastOpenedView();
@@ -393,7 +386,7 @@ public class ImmunizationActivity extends AppCompatActivity implements Vaccinati
         }
     }
 
-    @Override
+
     public void onVaccinateEarlier(ArrayList<VaccineWrapper> tags, View v) {
         if (tags != null && !tags.isEmpty()) {
             View view = getLastOpenedView();
@@ -401,15 +394,15 @@ public class ImmunizationActivity extends AppCompatActivity implements Vaccinati
         }
     }
 
-    @Override
+
     public void onUndoVaccination(VaccineWrapper tag, View v) {
-        org.smartregister.util.Utils.startAsyncTask(new UndoVaccineTask(tag, v), null);
+        org.smartregister.util.Utils.startAsyncTask(new ChildImmunizationFragment.UndoVaccineTask(tag, v), null);
     }
 
     public void addVaccinationDialogFragment(ArrayList<VaccineWrapper> vaccineWrappers, VaccineGroup vaccineGroup) {
 
-        FragmentTransaction ft = this.getFragmentManager().beginTransaction();
-        Fragment prev = this.getFragmentManager().findFragmentByTag(DIALOG_TAG);
+        FragmentTransaction ft = getActivity().getFragmentManager().beginTransaction();
+        Fragment prev = getActivity().getFragmentManager().findFragmentByTag(DIALOG_TAG);
         if (prev != null) {
             ft.remove(prev);
         }
@@ -433,8 +426,8 @@ public class ImmunizationActivity extends AppCompatActivity implements Vaccinati
 
     public void addServiceDialogFragment(ServiceWrapper serviceWrapper, ServiceGroup serviceGroup) {
 
-        FragmentTransaction ft = this.getFragmentManager().beginTransaction();
-        Fragment prev = this.getFragmentManager().findFragmentByTag(DIALOG_TAG);
+        FragmentTransaction ft = getActivity().getFragmentManager().beginTransaction();
+        Fragment prev = getActivity().getFragmentManager().findFragmentByTag(DIALOG_TAG);
         if (prev != null) {
             ft.remove(prev);
         }
@@ -462,7 +455,7 @@ public class ImmunizationActivity extends AppCompatActivity implements Vaccinati
         VaccineRepository vaccineRepository = ImmunizationLibrary.getInstance().vaccineRepository();
 
         VaccineWrapper[] arrayTags = tags.toArray(new VaccineWrapper[tags.size()]);
-        SaveVaccinesTask backgroundTask = new SaveVaccinesTask();
+        ChildImmunizationFragment.SaveVaccinesTask backgroundTask = new ChildImmunizationFragment.SaveVaccinesTask();
         backgroundTask.setVaccineRepository(vaccineRepository);
         backgroundTask.setView(view);
         org.smartregister.util.Utils.startAsyncTask(backgroundTask, arrayTags);
@@ -532,11 +525,11 @@ public class ImmunizationActivity extends AppCompatActivity implements Vaccinati
     }
 
     public void startServices() {
-        Intent vaccineIntent = new Intent(this, VaccineIntentService.class);
-        startService(vaccineIntent);
+        Intent vaccineIntent = new Intent(getActivity(), VaccineIntentService.class);
+        getActivity().startService(vaccineIntent);
 
-        Intent serviceIntent = new Intent(this, RecurringIntentService.class);
-        startService(serviceIntent);
+        Intent serviceIntent = new Intent(getActivity(), RecurringIntentService.class);
+        getActivity().startService(serviceIntent);
 
     }
 
@@ -612,7 +605,7 @@ public class ImmunizationActivity extends AppCompatActivity implements Vaccinati
         return null;
     }
 
-    private class UpdateViewTask extends AsyncTask<Void, Void, Map<String, NamedObject<?>>> {
+    private class UpdateViewTask extends AsyncTask<Void, Void, Map<String, ChildImmunizationFragment.NamedObject<?>>> {
 
         private VaccineRepository vaccineRepository;
         private RecurringServiceTypeRepository recurringServiceTypeRepository;
@@ -638,7 +631,7 @@ public class ImmunizationActivity extends AppCompatActivity implements Vaccinati
 
         @SuppressWarnings("unchecked")
         @Override
-        protected void onPostExecute(Map<String, NamedObject<?>> map) {
+        protected void onPostExecute(Map<String, ChildImmunizationFragment.NamedObject<?>> map) {
 
             List<Vaccine> vaccineList = new ArrayList<>();
 
@@ -648,7 +641,7 @@ public class ImmunizationActivity extends AppCompatActivity implements Vaccinati
             List<Alert> alertList = new ArrayList<>();
 
             if (map.containsKey(Vaccine.class.getName())) {
-                NamedObject<?> namedObject = map.get(Vaccine.class.getName());
+                ChildImmunizationFragment.NamedObject<?> namedObject = map.get(Vaccine.class.getName());
                 if (namedObject != null) {
                     vaccineList = (List<Vaccine>) namedObject.object;
                 }
@@ -656,7 +649,7 @@ public class ImmunizationActivity extends AppCompatActivity implements Vaccinati
             }
 
             if (map.containsKey(ServiceType.class.getName())) {
-                NamedObject<?> namedObject = map.get(ServiceType.class.getName());
+                ChildImmunizationFragment.NamedObject<?> namedObject = map.get(ServiceType.class.getName());
                 if (namedObject != null) {
                     serviceTypeMap = (Map<String, List<ServiceType>>) namedObject.object;
                 }
@@ -664,7 +657,7 @@ public class ImmunizationActivity extends AppCompatActivity implements Vaccinati
             }
 
             if (map.containsKey(ServiceRecord.class.getName())) {
-                NamedObject<?> namedObject = map.get(ServiceRecord.class.getName());
+                ChildImmunizationFragment.NamedObject<?> namedObject = map.get(ServiceRecord.class.getName());
                 if (namedObject != null) {
                     serviceRecords = (List<ServiceRecord>) namedObject.object;
                 }
@@ -672,7 +665,7 @@ public class ImmunizationActivity extends AppCompatActivity implements Vaccinati
             }
 
             if (map.containsKey(Alert.class.getName())) {
-                NamedObject<?> namedObject = map.get(Alert.class.getName());
+                ChildImmunizationFragment.NamedObject<?> namedObject = map.get(Alert.class.getName());
                 if (namedObject != null) {
                     alertList = (List<Alert>) namedObject.object;
                 }
@@ -684,7 +677,7 @@ public class ImmunizationActivity extends AppCompatActivity implements Vaccinati
         }
 
         @Override
-        protected Map<String, NamedObject<?>> doInBackground(Void... voids) {
+        protected Map<String, ChildImmunizationFragment.NamedObject<?>> doInBackground(Void... voids) {
             String dobString = org.smartregister.util.Utils.getValue(childDetails.getColumnmaps(), "dob", false);
             if (!TextUtils.isEmpty(dobString)) {
                 DateTime dateTime = new DateTime(dobString);
@@ -724,18 +717,18 @@ public class ImmunizationActivity extends AppCompatActivity implements Vaccinati
                 alertList = alertService.findByEntityId(childDetails.entityId());
             }
 
-            Map<String, NamedObject<?>> map = new HashMap<>();
+            Map<String, ChildImmunizationFragment.NamedObject<?>> map = new HashMap<>();
 
-            NamedObject<List<Vaccine>> vaccineNamedObject = new NamedObject<>(Vaccine.class.getName(), vaccineList);
+            ChildImmunizationFragment.NamedObject<List<Vaccine>> vaccineNamedObject = new ChildImmunizationFragment.NamedObject<>(Vaccine.class.getName(), vaccineList);
             map.put(vaccineNamedObject.name, vaccineNamedObject);
 
-            NamedObject<Map<String, List<ServiceType>>> serviceTypeNamedObject = new NamedObject<>(ServiceType.class.getName(), serviceTypeMap);
+            ChildImmunizationFragment.NamedObject<Map<String, List<ServiceType>>> serviceTypeNamedObject = new ChildImmunizationFragment.NamedObject<>(ServiceType.class.getName(), serviceTypeMap);
             map.put(serviceTypeNamedObject.name, serviceTypeNamedObject);
 
-            NamedObject<List<ServiceRecord>> serviceRecordNamedObject = new NamedObject<>(ServiceRecord.class.getName(), serviceRecords);
+            ChildImmunizationFragment.NamedObject<List<ServiceRecord>> serviceRecordNamedObject = new ChildImmunizationFragment.NamedObject<>(ServiceRecord.class.getName(), serviceRecords);
             map.put(serviceRecordNamedObject.name, serviceRecordNamedObject);
 
-            NamedObject<List<Alert>> alertsNamedObject = new NamedObject<>(Alert.class.getName(), alertList);
+            ChildImmunizationFragment.NamedObject<List<Alert>> alertsNamedObject = new ChildImmunizationFragment.NamedObject<>(Alert.class.getName(), alertList);
             map.put(alertsNamedObject.name, alertsNamedObject);
 
             return map;
@@ -869,7 +862,7 @@ public class ImmunizationActivity extends AppCompatActivity implements Vaccinati
     }
 
     //Recurring Service
-    @Override
+
     public void onGiveToday(ServiceWrapper tag, View v) {
         if (tag != null) {
             View view = RecurringServiceUtils.getLastOpenedServiceView(serviceGroups);
@@ -877,7 +870,7 @@ public class ImmunizationActivity extends AppCompatActivity implements Vaccinati
         }
     }
 
-    @Override
+
     public void onGiveEarlier(ServiceWrapper tag, View v) {
         if (tag != null) {
             View view = RecurringServiceUtils.getLastOpenedServiceView(serviceGroups);
@@ -885,9 +878,9 @@ public class ImmunizationActivity extends AppCompatActivity implements Vaccinati
         }
     }
 
-    @Override
+
     public void onUndoService(ServiceWrapper tag, View v) {
-        org.smartregister.util.Utils.startAsyncTask(new UndoServiceTask(tag), null);
+        org.smartregister.util.Utils.startAsyncTask(new ChildImmunizationFragment.UndoServiceTask(tag), null);
     }
 
     public void saveService(ServiceWrapper tag, final View view) {
@@ -896,7 +889,7 @@ public class ImmunizationActivity extends AppCompatActivity implements Vaccinati
         }
 
         ServiceWrapper[] arrayTags = {tag};
-        SaveServiceTask backgroundTask = new SaveServiceTask();
+        ChildImmunizationFragment.SaveServiceTask backgroundTask = new ChildImmunizationFragment.SaveServiceTask();
         String providerId = ImmunizationLibrary.getInstance().context().allSharedPreferences().fetchRegisteredANM();
 
         backgroundTask.setProviderId(providerId);

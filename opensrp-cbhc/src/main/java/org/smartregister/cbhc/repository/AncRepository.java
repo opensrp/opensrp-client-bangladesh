@@ -8,6 +8,15 @@ import net.sqlcipher.database.SQLiteDatabase;
 import org.smartregister.AllConstants;
 import org.smartregister.cbhc.application.AncApplication;
 import org.smartregister.configurableviews.repository.ConfigurableViewsRepository;
+import org.smartregister.domain.db.Column;
+import org.smartregister.immunization.ImmunizationLibrary;
+import org.smartregister.immunization.repository.RecurringServiceRecordRepository;
+import org.smartregister.immunization.repository.RecurringServiceTypeRepository;
+import org.smartregister.immunization.repository.VaccineNameRepository;
+import org.smartregister.immunization.repository.VaccineRepository;
+import org.smartregister.immunization.repository.VaccineTypeRepository;
+import org.smartregister.immunization.util.IMDatabaseUtils;
+import org.smartregister.repository.AlertRepository;
 import org.smartregister.repository.EventClientRepository;
 import org.smartregister.repository.Repository;
 
@@ -20,9 +29,10 @@ public class AncRepository extends Repository {
     private static final String TAG = AncRepository.class.getCanonicalName();
     protected SQLiteDatabase readableDatabase;
     protected SQLiteDatabase writableDatabase;
-
+    private Context context;
     public AncRepository(Context context, org.smartregister.Context openSRPContext) {
         super(context, AllConstants.DATABASE_NAME, AllConstants.DATABASE_VERSION, openSRPContext.session(), AncApplication.createCommonFtsObject(), openSRPContext.sharedRepositoriesArray());
+        this.context = context;
     }
 
     @Override
@@ -31,10 +41,20 @@ public class AncRepository extends Repository {
         ConfigurableViewsRepository.createTable(database);
         EventClientRepository.createTable(database, EventClientRepository.Table.client, EventClientRepository.client_column.values());
         EventClientRepository.createTable(database, EventClientRepository.Table.event, EventClientRepository.event_column.values());
+        VaccineRepository.createTable(database);
+        VaccineNameRepository.createTable(database);
+        VaccineTypeRepository.createTable(database);
+
+        database.execSQL(AlertRepository.ALTER_ADD_OFFLINE_COLUMN);
+        database.execSQL(AlertRepository.OFFLINE_INDEX);
 
         UniqueIdRepository.createTable(database);
-
+        RecurringServiceTypeRepository.createTable(database);
+        RecurringServiceRecordRepository.createTable(database);
         //onUpgrade(database, 1, 2);
+        RecurringServiceTypeRepository recurringServiceTypeRepository = ImmunizationLibrary.getInstance().recurringServiceTypeRepository();
+        IMDatabaseUtils.populateRecurringServices(context, database, recurringServiceTypeRepository);
+        onUpgrade(database, 1, 5);
     }
 
     @Override
@@ -42,12 +62,20 @@ public class AncRepository extends Repository {
         Log.w(AncRepository.class.getName(),
                 "Upgrading database from version " + oldVersion + " to "
                         + newVersion + ", which will destroy all old data");
-
         int upgradeTo = oldVersion + 1;
         while (upgradeTo <= newVersion) {
             switch (upgradeTo) {
                 case 2:
-                    // upgradeToVersion2(db);
+                    upgradeToVersion2(db);
+                    break;
+                case 3:
+                    upgradeToVersion3(db);
+                    break;
+                case 4:
+                    upgradeToVersion4(db);
+                    break;
+                case 5:
+                    upgradeToVersion5(db);
                     break;
                 default:
                     break;
@@ -105,6 +133,59 @@ public class AncRepository extends Repository {
         }
         super.close();
     }
+    private void upgradeToVersion2(SQLiteDatabase db) {
+        try {
+            db.execSQL(VaccineRepository.UPDATE_TABLE_ADD_EVENT_ID_COL);
+            db.execSQL(VaccineRepository.EVENT_ID_INDEX);
+            db.execSQL(VaccineRepository.UPDATE_TABLE_ADD_FORMSUBMISSION_ID_COL);
+            db.execSQL(VaccineRepository.FORMSUBMISSION_INDEX);
 
+            db.execSQL(VaccineRepository.UPDATE_TABLE_ADD_OUT_OF_AREA_COL);
+            db.execSQL(VaccineRepository.UPDATE_TABLE_ADD_OUT_OF_AREA_COL_INDEX);
+
+//            EventClientRepository.createTable(db, EventClientRepository.Table.path_reports, EventClientRepository.report_column.values());
+            db.execSQL(VaccineRepository.UPDATE_TABLE_ADD_HIA2_STATUS_COL);
+
+            IMDatabaseUtils.accessAssetsAndFillDataBaseForVaccineTypes(context, db);
+
+        } catch (Exception e) {
+            Log.e(TAG, "upgradeToVersion2 " + Log.getStackTraceString(e));
+        }
+    }
+
+    private void upgradeToVersion3(SQLiteDatabase db) {
+        try {
+            Column[] columns = {EventClientRepository.event_column.formSubmissionId};
+            EventClientRepository.createIndex(db, EventClientRepository.Table.event, columns);
+
+            db.execSQL(VaccineRepository.ALTER_ADD_CREATED_AT_COLUMN);
+            VaccineRepository.migrateCreatedAt(db);
+
+            db.execSQL(RecurringServiceRecordRepository.ALTER_ADD_CREATED_AT_COLUMN);
+            RecurringServiceRecordRepository.migrateCreatedAt(db);
+        } catch (Exception e) {
+            Log.e(TAG, "upgradeToVersion3 " + Log.getStackTraceString(e));
+        }
+    }
+
+    private void upgradeToVersion4(SQLiteDatabase db) {
+        try {
+            db.execSQL(VaccineRepository.UPDATE_TABLE_ADD_TEAM_COL);
+            db.execSQL(VaccineRepository.UPDATE_TABLE_ADD_TEAM_ID_COL);
+            db.execSQL(RecurringServiceRecordRepository.UPDATE_TABLE_ADD_TEAM_COL);
+            db.execSQL(RecurringServiceRecordRepository.UPDATE_TABLE_ADD_TEAM_ID_COL);
+        } catch (Exception e) {
+            Log.e(TAG, "upgradeToVersion4 " + Log.getStackTraceString(e));
+        }
+    }
+
+    private void upgradeToVersion5(SQLiteDatabase db) {
+        try {
+            db.execSQL(VaccineRepository.UPDATE_TABLE_ADD_CHILD_LOCATION_ID_COL);
+            db.execSQL(RecurringServiceRecordRepository.UPDATE_TABLE_ADD_CHILD_LOCATION_ID_COL);
+        } catch (Exception e) {
+            Log.e(TAG, "upgradeToVersion5 " + Log.getStackTraceString(e));
+        }
+    }
 }
 

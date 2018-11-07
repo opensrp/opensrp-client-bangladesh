@@ -25,6 +25,7 @@ import org.smartregister.cbhc.R;
 import org.smartregister.cbhc.adapter.ViewPagerAdapter;
 import org.smartregister.cbhc.application.AncApplication;
 import org.smartregister.cbhc.contract.ProfileContract;
+import org.smartregister.cbhc.fragment.ChildImmunizationFragment;
 import org.smartregister.cbhc.fragment.MemberProfileContactsFragment;
 import org.smartregister.cbhc.fragment.ProfileContactsFragment;
 import org.smartregister.cbhc.fragment.ProfileOverviewFragment;
@@ -39,10 +40,15 @@ import org.smartregister.cbhc.util.Utils;
 import org.smartregister.cbhc.view.CopyToClipboardDialog;
 import org.smartregister.commonregistry.CommonPersonObject;
 import org.smartregister.commonregistry.CommonPersonObjectClient;
+import org.smartregister.immunization.domain.ServiceWrapper;
+import org.smartregister.immunization.domain.VaccineWrapper;
+import org.smartregister.immunization.listener.ServiceActionListener;
+import org.smartregister.immunization.listener.VaccinationActionListener;
 import org.smartregister.util.DateUtil;
 import org.smartregister.util.PermissionUtils;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 
 import static org.smartregister.cbhc.fragment.ProfileOverviewFragment.EXTRA_HOUSEHOLD_DETAILS;
 import static org.smartregister.util.Utils.getName;
@@ -51,7 +57,7 @@ import static org.smartregister.util.Utils.getValue;
 /**
  * Created by ndegwamartin on 10/07/2018.
  */
-public class MemberProfileActivity extends BaseProfileActivity implements ProfileContract.View {
+public class MemberProfileActivity extends BaseProfileActivity implements ProfileContract.View, VaccinationActionListener, ServiceActionListener {
 
     private TextView nameView;
     private TextView ageView;
@@ -91,6 +97,7 @@ public class MemberProfileActivity extends BaseProfileActivity implements Profil
 
     private void setUpViews() {
         ImageView circleprofile = (ImageView)findViewById(R.id.imageview_profile);
+
         if(typeofMember.equalsIgnoreCase("malechild")){
             circleprofile.setImageDrawable(getResources().getDrawable(R.drawable.child_boy_infant));
         }else if(typeofMember.equalsIgnoreCase("femalechild")){
@@ -201,17 +208,21 @@ public class MemberProfileActivity extends BaseProfileActivity implements Profil
         }
     }
 
-
+    ChildImmunizationFragment childImmunizationFragment;
     private ViewPager setupViewPager(ViewPager viewPager) {
         ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
 
         ProfileOverviewFragment profileOverviewFragment = ProfileOverviewFragment.newInstance(this.getIntent().getExtras());
         MemberProfileContactsFragment profileContactsFragment = MemberProfileContactsFragment.newInstance(this.getIntent().getExtras());
         ProfileTasksFragment profileTasksFragment = ProfileTasksFragment.newInstance(this.getIntent().getExtras());
-
+        childImmunizationFragment = ChildImmunizationFragment.newInstance(this.getIntent().getExtras());
+        childImmunizationFragment.setChildDetails(householdDetails);
 //        adapter.addFragment(profileOverviewFragment, this.getString(R.string.members));
         adapter.addFragment(profileContactsFragment, this.getString(R.string.household_overview));
-//        adapter.addFragment(profileTasksFragment, this.getString(R.string.tasks));
+        if(typeofMember.equalsIgnoreCase("malechild")||(typeofMember.equalsIgnoreCase("femalechild"))){
+            adapter.addFragment(childImmunizationFragment, "IMMUNIZATION");
+        }
+
 
         viewPager.setAdapter(adapter);
 
@@ -349,6 +360,36 @@ public class MemberProfileActivity extends BaseProfileActivity implements Profil
                 copyToClipboardDialog.show();
             }
         }
+    }
+
+    @Override
+    public void onGiveToday(ServiceWrapper serviceWrapper, View view) {
+        childImmunizationFragment.onGiveToday(serviceWrapper,view);
+    }
+
+    @Override
+    public void onGiveEarlier(ServiceWrapper serviceWrapper, View view) {
+        childImmunizationFragment.onGiveEarlier(serviceWrapper,view);
+    }
+
+    @Override
+    public void onUndoService(ServiceWrapper serviceWrapper, View view) {
+        childImmunizationFragment.onUndoService(serviceWrapper,view);
+    }
+
+    @Override
+    public void onVaccinateToday(ArrayList<VaccineWrapper> arrayList, View view) {
+        childImmunizationFragment.onVaccinateToday(arrayList,view);
+    }
+
+    @Override
+    public void onVaccinateEarlier(ArrayList<VaccineWrapper> arrayList, View view) {
+        childImmunizationFragment.onVaccinateEarlier(arrayList,view);
+    }
+
+    @Override
+    public void onUndoVaccination(VaccineWrapper vaccineWrapper, View view) {
+        childImmunizationFragment.onUndoVaccination(vaccineWrapper,view);
     }
 }
 

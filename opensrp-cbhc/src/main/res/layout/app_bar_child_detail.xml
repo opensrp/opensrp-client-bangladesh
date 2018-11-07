@@ -16,7 +16,7 @@
             android:background="#218CC5"
             android:id="@+id/profile_name_layout">
 
-            <org.smartregister.immunization.sample.view.RoundedImageView
+            <org.smartregister.cbhc.view.RoundedImageView
                 android:id="@+id/profile_image_iv"
                 android:layout_height="100dp"
                 android:layout_width="100dp"
