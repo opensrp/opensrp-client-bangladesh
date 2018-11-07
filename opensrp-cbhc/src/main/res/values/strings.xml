@@ -20,7 +20,7 @@
     <string name="service_location">Service Location</string>
     <string name="patient_location">Location: %1$s</string>
     <string name="dose_given_date">Dose %1$s given %2$s</string>
-
+    <string name="label_immunization_records">IMMUNISATION &amp; SERVICES</string>
 
     <string name="unauthorized">Please check the credentials</string>
     <string name="unauthorized_group">Your user group is not allowed to access this device</string>

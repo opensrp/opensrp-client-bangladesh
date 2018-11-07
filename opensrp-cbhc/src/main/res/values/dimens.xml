@@ -6,7 +6,8 @@
 
     <!-- used to programatically tell if device is tab-->
     <bool name="isTablet">false</bool>
-
+    <dimen name="card_category_horizontal_margin">0dp</dimen>
+    <dimen name="card_view_corner_radius">3dp</dimen>
     <!-- Login-->
     <dimen name="login_horizontal_margin">30dp</dimen>
     <dimen name="login_bottom_margin">15dp</dimen>

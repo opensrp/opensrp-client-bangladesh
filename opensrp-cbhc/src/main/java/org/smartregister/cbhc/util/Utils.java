@@ -27,6 +27,7 @@ import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
 import org.smartregister.cbhc.application.AncApplication;
 import org.smartregister.cbhc.event.BaseEvent;
+import org.smartregister.commonregistry.CommonPersonObjectClient;
 import org.smartregister.repository.AllSharedPreferences;
 import org.smartregister.util.DateUtil;
 
@@ -34,8 +35,10 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Collection;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
+import java.util.Random;
 
 import static android.content.Context.INPUT_METHOD_SERVICE;
 import static org.smartregister.util.Log.logError;
@@ -219,5 +222,26 @@ public class Utils {
         LocalDate date = SQLITE_DATE_DF.withOffsetParsed().parseLocalDate(expectedDeliveryDate);
         Weeks weeks = Weeks.weeksBetween(LocalDate.now(), date);
         return weeks.getWeeks();
+    }
+
+    public static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("dd/MM/yyyy");
+
+    public static final String ENTITY_ID = "1";
+    public static final String DOB_STRING = "2017-01-01T00:00:00.000Z";
+    public static final String GENDER = (new Random()).nextBoolean() ? "male" : "female";
+
+    public static CommonPersonObjectClient dummyDetatils() {
+        HashMap<String, String> columnMap = new HashMap<String, String>();
+        columnMap.put("first_name", "Test");
+        columnMap.put("last_name", "Doe");
+        columnMap.put("zeir_id", "1");
+        columnMap.put("dob", DOB_STRING);
+        columnMap.put("gender", GENDER);
+
+
+        CommonPersonObjectClient personDetails = new CommonPersonObjectClient(ENTITY_ID, columnMap, "Test");
+        personDetails.setColumnmaps(columnMap);
+
+        return personDetails;
     }
 }

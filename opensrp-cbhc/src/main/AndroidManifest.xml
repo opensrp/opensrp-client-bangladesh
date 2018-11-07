@@ -90,6 +90,11 @@
         <service android:name=".service.intent.ValidateIntentService" />
         <service android:name=".service.intent.ExtendedSyncIntentService" />
 
+        <activity android:name=".activity.DetailActivity" />
+        <activity android:name=".activity.ImmunizationActivity" />
+        <service android:name="org.smartregister.immunization.service.intent.VaccineIntentService" />
+        <service android:name="org.smartregister.immunization.service.intent.RecurringIntentService" />
+
     </application>
 
 </manifest>

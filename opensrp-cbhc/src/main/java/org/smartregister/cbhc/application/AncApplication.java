@@ -37,6 +37,11 @@ import org.smartregister.configurableviews.helper.ConfigurableViewsHelper;
 import org.smartregister.configurableviews.helper.JsonSpecHelper;
 import org.smartregister.configurableviews.repository.ConfigurableViewsRepository;
 import org.smartregister.configurableviews.service.PullConfigurableViewsIntentService;
+import org.smartregister.immunization.ImmunizationLibrary;
+import org.smartregister.immunization.domain.VaccineSchedule;
+import org.smartregister.immunization.domain.jsonmapping.Vaccine;
+import org.smartregister.immunization.domain.jsonmapping.VaccineGroup;
+import org.smartregister.immunization.util.VaccinatorUtils;
 import org.smartregister.repository.EventClientRepository;
 import org.smartregister.repository.Repository;
 import org.smartregister.sync.ClientProcessorForJava;
@@ -44,6 +49,7 @@ import org.smartregister.sync.DrishtiSyncScheduler;
 import org.smartregister.view.activity.DrishtiApplication;
 import org.smartregister.view.receiver.TimeChangedBroadcastReceiver;
 
+import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 import id.zelory.compressor.Compressor;
@@ -104,6 +110,20 @@ public class AncApplication extends DrishtiApplication implements TimeChangedBro
         setUpEventHandling();
 
         scheduleJobs();
+
+        ImmunizationLibrary.init(context, getRepository(), null, BuildConfig.VERSION_CODE, BuildConfig.DATABASE_VERSION);
+
+        initOfflineSchedules();
+    }
+
+    private void initOfflineSchedules() {
+        try {
+            List<VaccineGroup> childVaccines = VaccinatorUtils.getSupportedVaccines(this);
+            List<Vaccine> specialVaccines = VaccinatorUtils.getSpecialVaccines(this);
+            VaccineSchedule.init(childVaccines, specialVaccines, "child");
+        } catch (Exception e) {
+            Log.e(TAG, Log.getStackTraceString(e));
+        }
     }
 
     public static synchronized AncApplication getInstance() {
