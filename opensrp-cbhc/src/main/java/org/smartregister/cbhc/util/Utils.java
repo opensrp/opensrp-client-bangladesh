@@ -201,7 +201,14 @@ public class Utils {
 
     public static int getAgeFromDate(String dateOfBirth) {
         DateTime date = DateTime.parse(dateOfBirth);
-        Years age = Years.yearsBetween(date.toLocalDate(), LocalDate.now());
+
+        Years age;
+        if(date==null){
+            age = Years.yearsBetween(LocalDate.now(), LocalDate.now());
+        }else{
+            age = Years.yearsBetween(date.toLocalDate(), LocalDate.now());
+        }
+
         return age.getYears();
     }
 
@@ -230,18 +237,5 @@ public class Utils {
     public static final String DOB_STRING = "2017-01-01T00:00:00.000Z";
     public static final String GENDER = (new Random()).nextBoolean() ? "male" : "female";
 
-//    public static CommonPersonObjectClient dummyDetatils() {
-//        HashMap<String, String> columnMap = new HashMap<String, String>();
-//        columnMap.put("first_name", "Test");
-//        columnMap.put("last_name", "Doe");
-//        columnMap.put("zeir_id", "1");
-//        columnMap.put("dob", DOB_STRING);
-//        columnMap.put("gender", GENDER);
-//
-//
-//        CommonPersonObjectClient personDetails = new CommonPersonObjectClient(ENTITY_ID, columnMap, "Test");
-//        personDetails.setColumnmaps(columnMap);
-//
-//        return personDetails;
-//    }
+
 }

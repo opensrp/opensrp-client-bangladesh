@@ -26,6 +26,7 @@ import org.smartregister.cbhc.adapter.ViewPagerAdapter;
 import org.smartregister.cbhc.application.AncApplication;
 import org.smartregister.cbhc.contract.ProfileContract;
 import org.smartregister.cbhc.fragment.ChildImmunizationFragment;
+import org.smartregister.cbhc.fragment.GrowthFragment;
 import org.smartregister.cbhc.fragment.MemberProfileContactsFragment;
 import org.smartregister.cbhc.fragment.ProfileContactsFragment;
 import org.smartregister.cbhc.fragment.ProfileOverviewFragment;
@@ -215,12 +216,14 @@ public class MemberProfileActivity extends BaseProfileActivity implements Profil
         ProfileOverviewFragment profileOverviewFragment = ProfileOverviewFragment.newInstance(this.getIntent().getExtras());
         MemberProfileContactsFragment profileContactsFragment = MemberProfileContactsFragment.newInstance(this.getIntent().getExtras());
         ProfileTasksFragment profileTasksFragment = ProfileTasksFragment.newInstance(this.getIntent().getExtras());
+        GrowthFragment growthFragment = GrowthFragment.newInstance(this.getIntent().getExtras());
         childImmunizationFragment = ChildImmunizationFragment.newInstance(this.getIntent().getExtras());
         childImmunizationFragment.setChildDetails(householdDetails);
 //        adapter.addFragment(profileOverviewFragment, this.getString(R.string.members));
         adapter.addFragment(profileContactsFragment, this.getString(R.string.household_overview));
         if(typeofMember.equalsIgnoreCase("malechild")||(typeofMember.equalsIgnoreCase("femalechild"))){
             adapter.addFragment(childImmunizationFragment, "IMMUNIZATION");
+            adapter.addFragment(growthFragment, "GROWTH");
         }
 
 

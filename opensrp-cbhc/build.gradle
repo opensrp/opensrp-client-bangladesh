@@ -127,6 +127,14 @@ tasks.withType(Test) {
 }
 
 dependencies {
+
+    implementation('org.smartregister:opensrp-client-growth-monitoring:1.1.1-SNAPSHOT@aar') {
+        transitive = true
+        exclude group: 'org.smartregister', module: 'opensrp-client-core'
+        exclude group: 'com.android.support', module: 'design'
+        exclude group: 'com.android.support', module: 'appcompat-v7'
+    }
+
     implementation('org.smartregister:opensrp-client-immunization:1.4.2-SNAPSHOT@aar') {
         transitive = true
         exclude group: 'org.smartregister', module: 'opensrp-client-core'
