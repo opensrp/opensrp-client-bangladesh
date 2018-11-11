@@ -21,6 +21,8 @@ import org.smartregister.growthmonitoring.repository.ZScoreRepository;
 import org.smartregister.immunization.ImmunizationLibrary;
 import org.smartregister.immunization.db.VaccineRepo;
 import org.smartregister.immunization.domain.VaccineSchedule;
+import org.smartregister.immunization.domain.jsonmapping.Vaccine;
+import org.smartregister.immunization.domain.jsonmapping.VaccineGroup;
 import org.smartregister.immunization.repository.RecurringServiceRecordRepository;
 import org.smartregister.immunization.repository.RecurringServiceTypeRepository;
 import org.smartregister.immunization.repository.VaccineNameRepository;
@@ -93,8 +95,8 @@ public class VaccinatorApplication extends DrishtiApplication
 
         //Initialize Modules
         CoreLibrary.init(context());
-        GrowthMonitoringLibrary.init(context(), getRepository());
-        ImmunizationLibrary.init(context(), getRepository(), createCommonFtsObject());
+        GrowthMonitoringLibrary.init(context(), getRepository(), BuildConfig.VERSION_CODE, BuildConfig.DATABASE_VERSION);
+        ImmunizationLibrary.init(context(), getRepository(), createCommonFtsObject(), BuildConfig.VERSION_CODE, BuildConfig.DATABASE_VERSION);
 
     }
 
@@ -316,9 +318,9 @@ public class VaccinatorApplication extends DrishtiApplication
 
     private void initOfflineSchedules() {
         try {
-            JSONArray childVaccines = new JSONArray(VaccinatorUtils.getSupportedVaccines(this));
-            JSONArray specialVaccines = new JSONArray(VaccinatorUtils.getSpecialVaccines(this));
-            JSONArray womanVaccines = new JSONArray(VaccinatorUtils.getSupportedWomanVaccines(this));
+            List<VaccineGroup>  childVaccines = VaccinatorUtils.getSupportedVaccines(this);
+            List<Vaccine> specialVaccines = VaccinatorUtils.getSpecialVaccines(this);
+            List<VaccineGroup>  womanVaccines = VaccinatorUtils.getSupportedWomanVaccines(this);
             VaccineSchedule.init(childVaccines, specialVaccines, "child");
             VaccineSchedule.init(womanVaccines, null, "woman");
         } catch (Exception e) {

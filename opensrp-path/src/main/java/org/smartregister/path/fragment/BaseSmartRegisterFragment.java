@@ -89,7 +89,7 @@ public class BaseSmartRegisterFragment extends SecuredNativeSmartRegisterCursorA
         viewParent.setVisibility(View.GONE);
 
         clinicSelection = (LocationPickerView) view.findViewById(R.id.clinic_selection);
-        clinicSelection.init(context());
+        clinicSelection.init();
 
     }
 

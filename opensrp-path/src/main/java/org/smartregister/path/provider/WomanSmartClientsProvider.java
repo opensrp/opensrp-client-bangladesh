@@ -681,7 +681,7 @@ public class WomanSmartClientsProvider implements SmartRegisterCLientsProviderFo
         try {
             JSONObject form = FormUtils.getInstance(this.context).getFormJson("child_enrollment");
             LocationPickerView lpv = new LocationPickerView(this.context);
-            lpv.init(context);
+            lpv.init();
             JsonFormUtils.addHouseholdRegLocHierarchyQuestions(form, context);
             Log.d("add child form", "Form is " + form.toString());
             if (form != null) {

@@ -28,7 +28,6 @@ import org.smartregister.domain.Photo;
 import org.smartregister.growthmonitoring.domain.Weight;
 import org.smartregister.growthmonitoring.domain.WeightWrapper;
 import org.smartregister.growthmonitoring.fragment.GrowthDialogFragment;
-import org.smartregister.growthmonitoring.fragment.RecordWeightDialogFragment;
 import org.smartregister.growthmonitoring.listener.WeightActionListener;
 import org.smartregister.growthmonitoring.repository.WeightRepository;
 import org.smartregister.immunization.domain.ServiceRecord;
@@ -399,15 +398,14 @@ public class WomanImmunizationActivity extends BaseActivity
 
         if (vaccineGroups == null) {
             vaccineGroups = new ArrayList<>();
-            String supportedVaccinesString = VaccinatorUtils.getSupportedWomanVaccines(this);
+            List<org.smartregister.immunization.domain.jsonmapping.VaccineGroup> supportedWomanVaccines = VaccinatorUtils.getSupportedWomanVaccines(this);
 
             try {
-                JSONArray supportedVaccines = new JSONArray(supportedVaccinesString);
 
-                for (int i = 0; i < supportedVaccines.length(); i++) {
-                    addVaccineGroup(-1, supportedVaccines.getJSONObject(i), vaccineList, alerts);
+                for (int i = 0; i < supportedWomanVaccines.size(); i++) {
+                    addVaccineGroup(-1, supportedWomanVaccines.get(i), vaccineList, alerts);
                 }
-            } catch (JSONException e) {
+            } catch (Exception e) {
                 Log.e(TAG, Log.getStackTraceString(e));
             }
         }
@@ -416,7 +414,7 @@ public class WomanImmunizationActivity extends BaseActivity
 
 
 
-    private void addVaccineGroup(int canvasId, JSONObject vaccineGroupData, List<Vaccine> vaccineList, List<Alert> alerts) {
+    private void addVaccineGroup(int canvasId, org.smartregister.immunization.domain.jsonmapping.VaccineGroup vaccineGroupData, List<Vaccine> vaccineList, List<Alert> alerts) {
         LinearLayout vaccineGroupCanvasLL = (LinearLayout) findViewById(R.id.vaccine_group_canvas_ll);
         VaccineGroup curGroup = new VaccineGroup(this);
         curGroup.setData(vaccineGroupData, childDetails, vaccineList, alerts,"woman");
@@ -573,9 +571,9 @@ public class WomanImmunizationActivity extends BaseActivity
             ft.remove(prev);
         }
         ft.addToBackStack(null);
-        WeightWrapper weightWrapper = (WeightWrapper) view.getTag();
-        RecordWeightDialogFragment recordWeightDialogFragment = RecordWeightDialogFragment.newInstance(weightWrapper);
-        recordWeightDialogFragment.show(ft, DIALOG_TAG);
+//        WeightWrapper weightWrapper = (WeightWrapper) view.getTag();
+//        RecordWeightDialogFragment recordWeightDialogFragment = RecordWeightDialogFragment.newInstance(weightWrapper);
+//        recordWeightDialogFragment.show(ft, DIALOG_TAG);
 
     }
 
@@ -1324,7 +1322,7 @@ public class WomanImmunizationActivity extends BaseActivity
                 try {
                     vaccineGroups.remove(curGroup);
                     addVaccineGroup(Integer.valueOf((String) curGroup.getTag(R.id.vaccine_group_parent_id)),
-                            new JSONObject((String) curGroup.getTag(R.id.vaccine_group_vaccine_data)),
+                            ((org.smartregister.immunization.domain.jsonmapping.VaccineGroup) curGroup.getTag(R.id.vaccine_group_vaccine_data)),
                             vaccineList, alerts);
                 } catch (Exception e) {
                     Log.e(TAG, Log.getStackTraceString(e));

@@ -37,7 +37,7 @@ public class LocationHelper {
     private static final String TAG = "LocationHelper";
 
     public static final ArrayList<String> ALLOWED_LEVELS;
-    private static final String DEFAULT_LOCATION_LEVEL = "Health Facility";
+    private static final String DEFAULT_LOCATION_LEVEL = "Country";
     private static LocationHelper instance;
 
     private ArrayList<String> locationIds;
@@ -46,8 +46,8 @@ public class LocationHelper {
 
     static {
         ALLOWED_LEVELS = new ArrayList<>();
-        ALLOWED_LEVELS.add("Health Facility");
-        ALLOWED_LEVELS.add("Zone");
+        ALLOWED_LEVELS.add("Upazilla");
+        ALLOWED_LEVELS.add("Country");
     }
 
     public static LocationHelper getInstance() {

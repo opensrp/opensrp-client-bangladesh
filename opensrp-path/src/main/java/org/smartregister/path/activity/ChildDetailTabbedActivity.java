@@ -117,6 +117,7 @@ public class ChildDetailTabbedActivity extends BaseActivity implements Vaccinati
     private ChildRegistrationDataFragment childDataFragment;
     private ChildUnderFiveFragment childUnderFiveFragment;
     public static final String DIALOG_TAG = "ChildDetailActivity_DIALOG_TAG";
+    public static final String PMTCT_STATUS_LOWER_CASE = "pmtct_status";
 
     private File currentfile;
     public String location_name = "";
@@ -1009,7 +1010,7 @@ public class ChildDetailTabbedActivity extends BaseActivity implements Vaccinati
         DateTime dateTime = new DateTime(getValue(childDetails.getColumnmaps(), "dob", false));
 
 
-        EditWeightDialogFragment editWeightDialogFragment = EditWeightDialogFragment.newInstance(this, weightWrapper);
+        EditWeightDialogFragment editWeightDialogFragment = EditWeightDialogFragment.newInstance(this,dateTime.toDate(), weightWrapper);
         editWeightDialogFragment.show(ft, DIALOG_TAG);
 
     }
