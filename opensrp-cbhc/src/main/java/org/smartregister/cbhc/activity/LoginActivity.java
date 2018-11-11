@@ -212,7 +212,6 @@ public class LoginActivity extends AppCompatActivity implements LoginContract.Vi
 //                String password = passwordEditText.getText().toString();
                 String username = "ftp";
                 String password = "Ftp@1234";
-//                startActivity(new Intent(LoginActivity.this,ImmunizationActivity.class));
                 mLoginPresenter.attemptLogin(username, password);
                 break;
             default:

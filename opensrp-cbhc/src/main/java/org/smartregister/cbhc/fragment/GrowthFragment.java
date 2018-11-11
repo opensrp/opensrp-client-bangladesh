@@ -15,7 +15,10 @@ import android.widget.Toast;
 import org.joda.time.DateTime;
 import org.opensrp.api.constants.Gender;
 import org.smartregister.cbhc.R;
+import org.smartregister.cbhc.application.AncApplication;
+import org.smartregister.cbhc.helper.LocationHelper;
 import org.smartregister.cbhc.util.GrowthUtil;
+import org.smartregister.commonregistry.CommonPersonObjectClient;
 import org.smartregister.growthmonitoring.GrowthMonitoringLibrary;
 import org.smartregister.growthmonitoring.domain.Weight;
 import org.smartregister.growthmonitoring.domain.WeightWrapper;
@@ -33,7 +36,9 @@ import java.util.Date;
 import java.util.LinkedHashMap;
 import java.util.List;
 
-public class GrowthFragment extends BaseProfileFragment implements WeightActionListener {
+import static org.smartregister.cbhc.task.RemoteLoginTask.getOpenSRPContext;
+
+public class GrowthFragment extends BaseProfileFragment {
 
     public static GrowthFragment newInstance(Bundle bundle) {
         Bundle args = bundle;
@@ -126,14 +131,18 @@ public class GrowthFragment extends BaseProfileFragment implements WeightActionL
             if (allWeights == null || allWeights.isEmpty()) {
                 Toast.makeText(getActivity(), "Record atleast one weight", Toast.LENGTH_LONG).show();
             } else {
-                GrowthDialogFragment growthDialogFragment = GrowthDialogFragment.newInstance(GrowthUtil.dummyDetatils(), allWeights);
+                GrowthDialogFragment growthDialogFragment = GrowthDialogFragment.newInstance(childDetails, allWeights);
                 growthDialogFragment.show(GrowthUtil.initFragmentTransaction(getActivity(), DIALOG_TAG), DIALOG_TAG);
             }
         }
     }
+    CommonPersonObjectClient childDetails;
+    public void setChildDetails(CommonPersonObjectClient childDetails){
+        this.childDetails = childDetails;
+        GrowthUtil.childDetails = childDetails;
+        GrowthUtil.ENTITY_ID = childDetails.entityId();
 
-
-    @Override
+    }
     public void onWeightTaken(WeightWrapper tag) {
         if (tag != null) {
             final WeightRepository weightRepository = GrowthMonitoringLibrary.getInstance().weightRepository();
@@ -141,14 +150,16 @@ public class GrowthFragment extends BaseProfileFragment implements WeightActionL
             if (tag.getDbKey() != null) {
                 weight = weightRepository.find(tag.getDbKey());
             }
-            weight.setBaseEntityId(GrowthUtil.ENTITY_ID);
+            weight.setBaseEntityId(childDetails.entityId());
             weight.setKg(tag.getWeight());
             weight.setDate(tag.getUpdatedWeightDate().toDate());
-            weight.setAnmId("sample");
-            weight.setLocationId("Kenya");
-            weight.setTeam("testTeam");
-            weight.setTeamId("testTeamId");
-            weight.setChildLocationId("testChildLocationId");
+            String anm = getOpenSRPContext().allSharedPreferences().fetchRegisteredANM();
+            weight.setAnmId(getOpenSRPContext().allSharedPreferences().fetchRegisteredANM());
+            weight.setLocationId(getOpenSRPContext().allSharedPreferences().fetchDefaultLocalityId(anm));
+            weight.setTeam(getOpenSRPContext().allSharedPreferences().fetchDefaultTeam(anm));
+            weight.setTeamId(getOpenSRPContext().allSharedPreferences().fetchDefaultTeamId(anm));
+
+//            weight.setChildLocationId(getOpenSRPContext().allSharedPreferences().fetch);
 
             Gender gender = Gender.UNKNOWN;
 

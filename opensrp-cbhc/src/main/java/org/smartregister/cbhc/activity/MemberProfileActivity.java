@@ -41,6 +41,8 @@ import org.smartregister.cbhc.util.Utils;
 import org.smartregister.cbhc.view.CopyToClipboardDialog;
 import org.smartregister.commonregistry.CommonPersonObject;
 import org.smartregister.commonregistry.CommonPersonObjectClient;
+import org.smartregister.growthmonitoring.domain.WeightWrapper;
+import org.smartregister.growthmonitoring.listener.WeightActionListener;
 import org.smartregister.immunization.domain.ServiceWrapper;
 import org.smartregister.immunization.domain.VaccineWrapper;
 import org.smartregister.immunization.listener.ServiceActionListener;
@@ -58,7 +60,7 @@ import static org.smartregister.util.Utils.getValue;
 /**
  * Created by ndegwamartin on 10/07/2018.
  */
-public class MemberProfileActivity extends BaseProfileActivity implements ProfileContract.View, VaccinationActionListener, ServiceActionListener {
+public class MemberProfileActivity extends BaseProfileActivity implements ProfileContract.View, VaccinationActionListener, ServiceActionListener, WeightActionListener {
 
     private TextView nameView;
     private TextView ageView;
@@ -210,15 +212,18 @@ public class MemberProfileActivity extends BaseProfileActivity implements Profil
     }
 
     ChildImmunizationFragment childImmunizationFragment;
+    GrowthFragment growthFragment;
     private ViewPager setupViewPager(ViewPager viewPager) {
         ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
 
         ProfileOverviewFragment profileOverviewFragment = ProfileOverviewFragment.newInstance(this.getIntent().getExtras());
         MemberProfileContactsFragment profileContactsFragment = MemberProfileContactsFragment.newInstance(this.getIntent().getExtras());
         ProfileTasksFragment profileTasksFragment = ProfileTasksFragment.newInstance(this.getIntent().getExtras());
-        GrowthFragment growthFragment = GrowthFragment.newInstance(this.getIntent().getExtras());
+        growthFragment = GrowthFragment.newInstance(this.getIntent().getExtras());
+        growthFragment.setChildDetails(householdDetails);
         childImmunizationFragment = ChildImmunizationFragment.newInstance(this.getIntent().getExtras());
         childImmunizationFragment.setChildDetails(householdDetails);
+
 //        adapter.addFragment(profileOverviewFragment, this.getString(R.string.members));
         adapter.addFragment(profileContactsFragment, this.getString(R.string.household_overview));
         if(typeofMember.equalsIgnoreCase("malechild")||(typeofMember.equalsIgnoreCase("femalechild"))){
@@ -393,6 +398,11 @@ public class MemberProfileActivity extends BaseProfileActivity implements Profil
     @Override
     public void onUndoVaccination(VaccineWrapper vaccineWrapper, View view) {
         childImmunizationFragment.onUndoVaccination(vaccineWrapper,view);
+    }
+
+    @Override
+    public void onWeightTaken(WeightWrapper weightWrapper) {
+        growthFragment.onWeightTaken(weightWrapper);
     }
 }
 

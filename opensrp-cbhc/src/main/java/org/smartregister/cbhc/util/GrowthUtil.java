@@ -40,10 +40,11 @@ import static org.smartregister.util.Utils.getValue;
 
 public class GrowthUtil {
     // Dummpy values, Can be changed manually
-    public static final String ENTITY_ID = "1";
-    public static final double BIRTH_WEIGHT = 3.8d;
-    public static final String DOB_STRING = "2012-01-01T00:00:00.000Z";
-    public static final String GENDER = (new Random()).nextBoolean() ? "male" : "female";
+    public static String ENTITY_ID = "1";
+    public static double BIRTH_WEIGHT = 3.8d;
+    public static String DOB_STRING = "2012-01-01T00:00:00.000Z";
+    public static String GENDER = (new Random()).nextBoolean() ? "male" : "female";
+    public static CommonPersonObjectClient childDetails;
 
     public static void showWeightDialog(Activity context, View view, String tag) {
         WeightWrapper weightWrapper = view.getTag() != null ? (WeightWrapper) view.getTag() : new WeightWrapper();
@@ -52,7 +53,7 @@ public class GrowthUtil {
     }
 
     public static void showEditWeightDialog(Activity context, int i, String tag) {
-        CommonPersonObjectClient childDetails = dummyDetatils();
+
 
         String firstName = org.smartregister.util.Utils.getValue(childDetails.getColumnmaps(), "first_name", true);
         String lastName = Utils.getValue(childDetails.getColumnmaps(), "last_name", true);
@@ -61,6 +62,7 @@ public class GrowthUtil {
         String gender = getValue(childDetails.getColumnmaps(), "gender", true);
 
         String zeirId = getValue(childDetails.getColumnmaps(), "zeir_id", false);
+
         String duration = "";
         String dobString = getValue(childDetails.getColumnmaps(), "dob", false);
         if (StringUtils.isNotBlank(dobString)) {
@@ -133,20 +135,6 @@ public class GrowthUtil {
         return rows;
     }
 
-    public static CommonPersonObjectClient dummyDetatils() {
-        HashMap<String, String> columnMap = new HashMap<String, String>();
-        columnMap.put("first_name", "Test");
-        columnMap.put("last_name", "Doe");
-        columnMap.put("zeir_id", "1");
-        columnMap.put("dob", DOB_STRING);
-        columnMap.put("gender", GENDER);
-
-
-        CommonPersonObjectClient personDetails = new CommonPersonObjectClient(ENTITY_ID, columnMap, "Test");
-        personDetails.setColumnmaps(columnMap);
-
-        return personDetails;
-    }
 
     private static Date dateOfBirth() {
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd\'T\'HH:mm:ss.SSS\'Z\'");

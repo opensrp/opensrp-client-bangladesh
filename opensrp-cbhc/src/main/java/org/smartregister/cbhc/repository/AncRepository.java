@@ -9,6 +9,8 @@ import org.smartregister.AllConstants;
 import org.smartregister.cbhc.application.AncApplication;
 import org.smartregister.configurableviews.repository.ConfigurableViewsRepository;
 import org.smartregister.domain.db.Column;
+import org.smartregister.growthmonitoring.repository.WeightRepository;
+import org.smartregister.growthmonitoring.repository.ZScoreRepository;
 import org.smartregister.immunization.ImmunizationLibrary;
 import org.smartregister.immunization.repository.RecurringServiceRecordRepository;
 import org.smartregister.immunization.repository.RecurringServiceTypeRepository;
@@ -44,9 +46,18 @@ public class AncRepository extends Repository {
         VaccineRepository.createTable(database);
         VaccineNameRepository.createTable(database);
         VaccineTypeRepository.createTable(database);
+        WeightRepository.createTable(database);
 
         database.execSQL(AlertRepository.ALTER_ADD_OFFLINE_COLUMN);
         database.execSQL(AlertRepository.OFFLINE_INDEX);
+
+        database.execSQL(WeightRepository.UPDATE_TABLE_ADD_EVENT_ID_COL);
+        database.execSQL(WeightRepository.EVENT_ID_INDEX);
+        database.execSQL(WeightRepository.UPDATE_TABLE_ADD_FORMSUBMISSION_ID_COL);
+        database.execSQL(WeightRepository.FORMSUBMISSION_INDEX);
+
+        database.execSQL(WeightRepository.UPDATE_TABLE_ADD_OUT_OF_AREA_COL);
+        database.execSQL(WeightRepository.UPDATE_TABLE_ADD_OUT_OF_AREA_COL_INDEX);
 
         UniqueIdRepository.createTable(database);
         RecurringServiceTypeRepository.createTable(database);
@@ -151,6 +162,12 @@ public class AncRepository extends Repository {
         } catch (Exception e) {
             Log.e(TAG, "upgradeToVersion2 " + Log.getStackTraceString(e));
         }
+        try {
+            ZScoreRepository.createTable(db);
+            db.execSQL(WeightRepository.ALTER_ADD_Z_SCORE_COLUMN);
+        } catch (Exception e) {
+            Log.e(TAG, "upgradeToVersion2 " + e.getMessage());
+        }
     }
 
     private void upgradeToVersion3(SQLiteDatabase db) {
@@ -166,6 +183,15 @@ public class AncRepository extends Repository {
         } catch (Exception e) {
             Log.e(TAG, "upgradeToVersion3 " + Log.getStackTraceString(e));
         }
+        try {
+            Column[] columns = {EventClientRepository.event_column.formSubmissionId};
+            EventClientRepository.createIndex(db, EventClientRepository.Table.event, columns);
+
+            db.execSQL(WeightRepository.ALTER_ADD_CREATED_AT_COLUMN);
+            WeightRepository.migrateCreatedAt(db);
+        } catch (Exception e) {
+            Log.e(TAG, "upgradeToVersion3 " + e.getMessage());
+        }
     }
 
     private void upgradeToVersion4(SQLiteDatabase db) {
@@ -174,6 +200,13 @@ public class AncRepository extends Repository {
             db.execSQL(VaccineRepository.UPDATE_TABLE_ADD_TEAM_ID_COL);
             db.execSQL(RecurringServiceRecordRepository.UPDATE_TABLE_ADD_TEAM_COL);
             db.execSQL(RecurringServiceRecordRepository.UPDATE_TABLE_ADD_TEAM_ID_COL);
+        } catch (Exception e) {
+            Log.e(TAG, "upgradeToVersion4 " + Log.getStackTraceString(e));
+        }
+        try {
+            db.execSQL(WeightRepository.UPDATE_TABLE_ADD_TEAM_COL);
+            db.execSQL(WeightRepository.UPDATE_TABLE_ADD_TEAM_ID_COL);
+            db.execSQL(WeightRepository.UPDATE_TABLE_ADD_CHILD_LOCATION_ID_COL);
         } catch (Exception e) {
             Log.e(TAG, "upgradeToVersion4 " + Log.getStackTraceString(e));
         }

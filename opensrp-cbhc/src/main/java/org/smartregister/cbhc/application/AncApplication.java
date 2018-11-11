@@ -97,7 +97,7 @@ public class AncApplication extends DrishtiApplication implements TimeChangedBro
         ConfigurableViewsLibrary.init(context, getRepository());
 
         GrowthMonitoringLibrary.init(context, getRepository(), BuildConfig.VERSION_CODE, BuildConfig.DATABASE_VERSION);
-
+//
         startZscoreRefreshService();
 
         SyncStatusBroadcastReceiver.init(this);
