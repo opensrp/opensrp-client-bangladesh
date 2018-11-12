@@ -43,6 +43,7 @@ public class AncRepository extends Repository {
         ConfigurableViewsRepository.createTable(database);
         EventClientRepository.createTable(database, EventClientRepository.Table.client, EventClientRepository.client_column.values());
         EventClientRepository.createTable(database, EventClientRepository.Table.event, EventClientRepository.event_column.values());
+//        EventClientRepository.createTable(database, EventClientRepository.Table.path_reports, EventClientRepository.report_column.values());
         VaccineRepository.createTable(database);
         VaccineNameRepository.createTable(database);
         VaccineTypeRepository.createTable(database);
@@ -125,14 +126,18 @@ public class AncRepository extends Repository {
 
     @Override
     public synchronized SQLiteDatabase getWritableDatabase(String password) {
-
-        if (writableDatabase == null || !writableDatabase.isOpen()) {
-            if (writableDatabase != null) {
-                writableDatabase.close();
+        try{
+            if (writableDatabase == null || !writableDatabase.isOpen()) {
+                if (writableDatabase != null) {
+                    writableDatabase.close();
+                }
+                writableDatabase = super.getWritableDatabase(password);
             }
-            writableDatabase = super.getWritableDatabase(password);
+            return writableDatabase;
+        } catch (Exception e) {
+            Log.e(TAG, "Database Error. " + e.getMessage());
+            return null;
         }
-        return writableDatabase;
     }
 
     @Override

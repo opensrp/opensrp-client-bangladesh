@@ -99,7 +99,7 @@ public class AncApplication extends DrishtiApplication implements TimeChangedBro
 
         GrowthMonitoringLibrary.init(context, getRepository(), BuildConfig.VERSION_CODE, BuildConfig.DATABASE_VERSION);
 //
-        startZscoreRefreshService();
+//        startZscoreRefreshService();
 
         SyncStatusBroadcastReceiver.init(this);
         TimeChangedBroadcastReceiver.init(this);
@@ -350,7 +350,7 @@ public class AncApplication extends DrishtiApplication implements TimeChangedBro
         PullUniqueIdsServiceJob.scheduleJob(SyncServiceJob.TAG, TimeUnit.MINUTES.toMillis(BuildConfig.PULL_UNIQUE_IDS_MINUTES), getFlexValue(BuildConfig.PULL_UNIQUE_IDS_MINUTES));
         ImageUploadServiceJob.scheduleJob(SyncServiceJob.TAG, TimeUnit.MINUTES.toMillis(BuildConfig.IMAGE_UPLOAD_MINUTES), getFlexValue(BuildConfig.IMAGE_UPLOAD_MINUTES));
         ViewConfigurationsServiceJob.scheduleJob(SyncServiceJob.TAG, TimeUnit.MINUTES.toMillis(BuildConfig.VIEW_SYNC_CONFIGURATIONS_MINUTES), getFlexValue(BuildConfig.VIEW_SYNC_CONFIGURATIONS_MINUTES));
-        ZJob.scheduleJob(SyncServiceJob.TAG, TimeUnit.MINUTES.toMillis(BuildConfig.VIEW_SYNC_CONFIGURATIONS_MINUTES), getFlexValue(BuildConfig.VIEW_SYNC_CONFIGURATIONS_MINUTES));
+//        ZJob.scheduleJob(SyncServiceJob.TAG, TimeUnit.MINUTES.toMillis(BuildConfig.VIEW_SYNC_CONFIGURATIONS_MINUTES), getFlexValue(BuildConfig.VIEW_SYNC_CONFIGURATIONS_MINUTES));
     }
 
     private long getFlexValue(int value) {
