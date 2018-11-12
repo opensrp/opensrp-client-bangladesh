@@ -131,6 +131,13 @@ public class GrowthFragment extends BaseProfileFragment {
             if (allWeights == null || allWeights.isEmpty()) {
                 Toast.makeText(getActivity(), "Record atleast one weight", Toast.LENGTH_LONG).show();
             } else {
+                if(childDetails.getColumnmaps().get("gender").equals("M")){
+                    childDetails.getDetails().put("gender","male");
+//                    childDetails.getColumnmaps().put("gender","male");
+                }else if(childDetails.getColumnmaps().get("gender").equals("F")){
+                    childDetails.getDetails().put("gender","female");
+                }
+
                 GrowthDialogFragment growthDialogFragment = GrowthDialogFragment.newInstance(childDetails, allWeights);
                 growthDialogFragment.show(GrowthUtil.initFragmentTransaction(getActivity(), DIALOG_TAG), DIALOG_TAG);
             }
