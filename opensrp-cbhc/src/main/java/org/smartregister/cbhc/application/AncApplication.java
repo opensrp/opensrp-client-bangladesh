@@ -25,6 +25,7 @@ import org.smartregister.cbhc.job.ImageUploadServiceJob;
 import org.smartregister.cbhc.job.PullUniqueIdsServiceJob;
 import org.smartregister.cbhc.job.SyncServiceJob;
 import org.smartregister.cbhc.job.ViewConfigurationsServiceJob;
+import org.smartregister.cbhc.job.ZJob;
 import org.smartregister.cbhc.receiver.SyncStatusBroadcastReceiver;
 import org.smartregister.cbhc.repository.AncRepository;
 import org.smartregister.cbhc.repository.UniqueIdRepository;
@@ -349,7 +350,7 @@ public class AncApplication extends DrishtiApplication implements TimeChangedBro
         PullUniqueIdsServiceJob.scheduleJob(SyncServiceJob.TAG, TimeUnit.MINUTES.toMillis(BuildConfig.PULL_UNIQUE_IDS_MINUTES), getFlexValue(BuildConfig.PULL_UNIQUE_IDS_MINUTES));
         ImageUploadServiceJob.scheduleJob(SyncServiceJob.TAG, TimeUnit.MINUTES.toMillis(BuildConfig.IMAGE_UPLOAD_MINUTES), getFlexValue(BuildConfig.IMAGE_UPLOAD_MINUTES));
         ViewConfigurationsServiceJob.scheduleJob(SyncServiceJob.TAG, TimeUnit.MINUTES.toMillis(BuildConfig.VIEW_SYNC_CONFIGURATIONS_MINUTES), getFlexValue(BuildConfig.VIEW_SYNC_CONFIGURATIONS_MINUTES));
-
+        ZJob.scheduleJob(SyncServiceJob.TAG, TimeUnit.MINUTES.toMillis(BuildConfig.VIEW_SYNC_CONFIGURATIONS_MINUTES), getFlexValue(BuildConfig.VIEW_SYNC_CONFIGURATIONS_MINUTES));
     }
 
     private long getFlexValue(int value) {

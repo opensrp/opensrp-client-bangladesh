@@ -142,6 +142,16 @@ public class GrowthFragment extends BaseProfileFragment {
         GrowthUtil.childDetails = childDetails;
         GrowthUtil.ENTITY_ID = childDetails.entityId();
 
+        String g = childDetails.getColumnmaps().get("gender");
+        String dobstring = childDetails.getColumnmaps().get("dob");
+        GrowthUtil.DOB_STRING = dobstring;
+        String genderString = g;
+
+        if (genderString != null && genderString.toLowerCase().equals("F")) {
+            GrowthUtil.GENDER = Gender.FEMALE.name().toLowerCase();
+        } else if (genderString != null && genderString.toLowerCase().equals("M")) {
+            GrowthUtil.GENDER = Gender.MALE.name().toLowerCase();
+        }
     }
     public void onWeightTaken(WeightWrapper tag) {
         if (tag != null) {
@@ -160,14 +170,20 @@ public class GrowthFragment extends BaseProfileFragment {
             weight.setTeamId(getOpenSRPContext().allSharedPreferences().fetchDefaultTeamId(anm));
 
 //            weight.setChildLocationId(getOpenSRPContext().allSharedPreferences().fetch);
-
+            String g = childDetails.getColumnmaps().get("gender");
+            String dobstring = childDetails.getColumnmaps().get("dob");
+            GrowthUtil.DOB_STRING = dobstring;
             Gender gender = Gender.UNKNOWN;
 
-            String genderString = GrowthUtil.GENDER;
 
-            if (genderString != null && genderString.toLowerCase().equals("female")) {
+
+            String genderString = g;
+
+
+
+            if (genderString != null && genderString.toLowerCase().equals("F")) {
                 gender = Gender.FEMALE;
-            } else if (genderString != null && genderString.toLowerCase().equals("male")) {
+            } else if (genderString != null && genderString.toLowerCase().equals("M")) {
                 gender = Gender.MALE;
             }
 
