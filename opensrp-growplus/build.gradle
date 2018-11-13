@@ -180,7 +180,7 @@ compile('org.smartregister:opensrp-client-native-form:1.2.4-SNAPSHOT@aar') {
         exclude group: 'com.google.guava', module: 'guava'
     }
 
-    androidTestCompile('com.android.support.test.espresso:espresso-core:2.+') {
+    androidTestImplementation('com.android.support.test.espresso:espresso-core:2.+') {
 
         exclude group: 'com.android.support', module: 'support-annotations'
         exclude group: 'junit', module: 'junit'
