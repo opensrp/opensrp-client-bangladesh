@@ -46,8 +46,9 @@ import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
 import util.PathConstants;
+import util.Utils;
 
-import static com.vijay.jsonwizard.utils.FormUtils.DATE_FORMAT;
+//import static com.vijay.jsonwizard.utils.FormUtils.DATE_FORMAT;
 import static org.smartregister.growplus.provider.ChildSmartClientsProvider.checkWeighGainVelocity;
 import static org.smartregister.growthmonitoring.repository.WeightRepository.ANMID;
 import static org.smartregister.growthmonitoring.repository.WeightRepository.BASE_ENTITY_ID;
@@ -287,7 +288,7 @@ public class KeyAchievementFragment extends Fragment {
         Gender gender =   Gender.valueOf(getValue(childDetails.getColumnmaps(), PathConstants.KEY.GENDER, true).toUpperCase());
 
 
-        formattedDob = DATE_FORMAT.format(dob);
+        formattedDob = Utils.DATE_FORMAT.format(dob);
         long timeDiff = Calendar.getInstance().getTimeInMillis() - dob.getTime();
 
         int age_in_months = (int) Math.floor((float) timeDiff /

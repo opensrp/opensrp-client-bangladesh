@@ -56,7 +56,7 @@ import util.ImageUtils;
 import util.PathConstants;
 
 import static android.view.ViewGroup.LayoutParams.MATCH_PARENT;
-import static com.vijay.jsonwizard.utils.FormUtils.DATE_FORMAT;
+//import static com.vijay.jsonwizard.utils.FormUtils.DATE_FORMAT;
 import static org.smartregister.growplus.activity.LoginActivity.getOpenSRPContext;
 import static org.smartregister.growplus.fragment.GrowthFalteringTrendReportFragment.readAllWeights;
 import static org.smartregister.immunization.util.VaccinatorUtils.generateScheduleList;
@@ -600,7 +600,7 @@ public class ChildSmartClientsProvider implements SmartRegisterCLientsProviderFo
 
 
 
-        formattedDob = DATE_FORMAT.format(dob);
+        formattedDob = util.Utils.DATE_FORMAT.format(dob);
         long timeDiff = Calendar.getInstance().getTimeInMillis() - dob.getTime();
 
         int age_in_months = (int) Math.floor((float) timeDiff /

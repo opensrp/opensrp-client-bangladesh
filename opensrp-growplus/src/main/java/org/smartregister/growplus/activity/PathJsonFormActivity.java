@@ -2,7 +2,9 @@ package org.smartregister.growplus.activity;
 
 import android.graphics.Color;
 import android.os.Bundle;
+import android.os.CountDownTimer;
 import android.util.TypedValue;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
@@ -32,7 +34,7 @@ public class PathJsonFormActivity extends JsonFormActivity {
     private MaterialEditText balancetextview;
     private PathJsonFormFragment pathJsonFormFragment;
     public static boolean isLaunched = false;
-
+    private boolean isSaved = false;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -55,6 +57,13 @@ public class PathJsonFormActivity extends JsonFormActivity {
         super.writeValue(stepName, key, value, openMrsEntityParent, openMrsEntity, openMrsEntityId);
         refreshCalculateLogic(stepName,key, value);
 
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        isSaved = true;
+        startTimer();
+        return super.onOptionsItemSelected(item);
     }
 
     @Override
@@ -86,7 +95,7 @@ public class PathJsonFormActivity extends JsonFormActivity {
                 }
             } else if (v instanceof TextView) {
                 //do whatever you want ...
-               float dimension =  getResources().getDimensionPixelSize(com.vijay.jsonwizard.R.dimen.default_text_size);
+                float dimension =  getResources().getDimensionPixelSize(com.vijay.jsonwizard.R.dimen.default_text_size);
                 if(((TextView)v).getTextSize()!=dimension){
                     ((TextView)v).setTextSize(TypedValue.COMPLEX_UNIT_PX,dimension);
                 }
@@ -171,14 +180,25 @@ public class PathJsonFormActivity extends JsonFormActivity {
                 String mediatype = media.getString("media_type");
                 String medialink = media.getString("media_link");
                 String mediatext = media.getString("media_text");
-
+                if(!isSaved)
                 infodialog(value,mediatype,medialink,mediatext);
             }
         }catch (Exception e){
 
         }
     }
+    public void startTimer(){
+        new CountDownTimer(3000, 1000) {
 
+            public void onTick(long millisUntilFinished) {
+
+            }
+
+            public void onFinish() {
+                isSaved = false;
+            }
+        }.start();
+    }
     private void infodialog(String value, String mediatype, String medialink, String mediatext) {
 //        MediaDialogFragment.launchDialog(this,"mediaDialog",mediatype,medialink);
         FancyAlertDialog.Builder builder = new FancyAlertDialog.Builder(this);
