@@ -145,6 +145,7 @@ public class PathJsonFormActivity extends JsonFormActivity {
         }catch (Exception e){
 
         }
+
     }
 
     private void refreshCalculateLogic(String stepName,String key, String value) {
@@ -171,7 +172,6 @@ public class PathJsonFormActivity extends JsonFormActivity {
 
         }
 
-
     }
 
     public void mediadialog(JSONObject media, String value){
@@ -187,18 +187,35 @@ public class PathJsonFormActivity extends JsonFormActivity {
 
         }
     }
+    CountDownTimer countDownTimer;
     public void startTimer(){
-        new CountDownTimer(3000, 1000) {
+        if(countDownTimer==null) {
+            countDownTimer = new CountDownTimer(3000, 1000) {
 
-            public void onTick(long millisUntilFinished) {
+                public void onTick(long millisUntilFinished) {
 
-            }
+                }
 
-            public void onFinish() {
-                isSaved = false;
-            }
-        }.start();
+                public void onFinish() {
+                    isSaved = false;
+                }
+            };
+        }
+        countDownTimer.start();
     }
+
+    public void stopTimer(){
+        if(countDownTimer!=null){
+            countDownTimer.cancel();
+        }
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        stopTimer();
+    }
+
     private void infodialog(String value, String mediatype, String medialink, String mediatext) {
 //        MediaDialogFragment.launchDialog(this,"mediaDialog",mediatype,medialink);
         FancyAlertDialog.Builder builder = new FancyAlertDialog.Builder(this);
@@ -207,9 +224,16 @@ public class PathJsonFormActivity extends JsonFormActivity {
                 .setPositiveBtnText("OK").setAnimation(Animation.SLIDE)
                 .isCancellable(true)
                 .setIcon(com.shashank.sony.fancydialoglib.R.drawable.ic_person_black_24dp, Icon.Visible)
+                .OnNegativeClicked(new FancyAlertDialogListener() {
+                    @Override
+                    public void OnClick() {
+
+                    }
+                })
                 .OnPositiveClicked(new FancyAlertDialogListener() {
                     @Override
                     public void OnClick() {
+
                     }
                 });
         builder.setMessage(mediatext);
