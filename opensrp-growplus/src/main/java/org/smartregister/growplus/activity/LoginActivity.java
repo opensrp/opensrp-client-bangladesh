@@ -200,10 +200,9 @@ public class LoginActivity extends AppCompatActivity {
         hideKeyboard();
         view.setClickable(false);
 
-//        final String userName = userNameEditText.getText().toString().trim();
-//        final String password = passwordEditText.getText().toString().trim();
-        final String userName = "tanzim";
-        final String password = "Tanzim@123";
+        final String userName = userNameEditText.getText().toString().trim();
+        final String password = passwordEditText.getText().toString().trim();
+
 
         if (!TextUtils.isEmpty(userName) && !TextUtils.isEmpty(password)) {
             if (localLogin) {
