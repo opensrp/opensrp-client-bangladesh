@@ -1,5 +1,6 @@
 package org.smartregister.growplus.activity;
 
+import android.app.FragmentTransaction;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -24,15 +25,19 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import org.apache.commons.lang3.StringUtils;
+import org.json.JSONException;
+import org.json.JSONObject;
 import org.smartregister.commonregistry.CommonPersonObject;
 import org.smartregister.commonregistry.CommonPersonObjectClient;
 import org.smartregister.commonregistry.CommonRepository;
 import org.smartregister.cursoradapter.SmartRegisterQueryBuilder;
 import org.smartregister.growplus.R;
 import org.smartregister.growplus.application.VaccinatorApplication;
+import org.smartregister.growplus.fragment.HouseholdMemberAddFragment;
 import org.smartregister.growplus.repository.PathRepository;
 import org.smartregister.growplus.toolbar.LocationSwitcherToolbar;
 import org.smartregister.repository.AllSharedPreferences;
+import org.smartregister.repository.DetailsRepository;
 import org.smartregister.util.DateUtil;
 import org.smartregister.util.OpenSRPImageLoader;
 import org.smartregister.util.Utils;
@@ -46,6 +51,7 @@ import java.io.IOException;
 import java.io.Serializable;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Map;
 
 
 import util.ImageUtils;
@@ -64,7 +70,7 @@ public class HouseholdDetailActivity extends BaseActivity {
     private LocationSwitcherToolbar toolbar;
     public org.smartregister.Context context;
 
-
+    private static final int REQUEST_CODE_GET_JSON = 3432;
     private CommonPersonObjectClient householdDetails;
     private static final String EXTRA_HOUSEHOLD_DETAILS = "household_details";
 
@@ -72,13 +78,12 @@ public class HouseholdDetailActivity extends BaseActivity {
     static final int REQUEST_TAKE_PHOTO = 1;
     public static Gender gender;
     private File currentfile;
-
-
+    private HouseholdMemberAddFragment addmemberFragment;
+    boolean isMotherExist=false;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(getContentView());
-
         isLaunched = true;
         toolbar = (LocationSwitcherToolbar) getToolbar();
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
@@ -131,7 +136,7 @@ public class HouseholdDetailActivity extends BaseActivity {
         }
         ((TextView) findViewById(R.id.age_tv)).setText("Age : " + durationString);
         ImageView profileImageIV = (ImageView)findViewById(R.id.profile_image_iv);
-        String entityid = householdDetails.getDetails().get("_id");
+        final String entityid = householdDetails.getDetails().get("_id");
         if(entityid!=null) {
             profileImageIV.setTag(org.smartregister.R.id.entity_id, entityid);
             DrishtiApplication.getCachedImageLoaderInstance().getImageByClientId(entityid, OpenSRPImageLoader.getStaticImageListener((ImageView) profileImageIV, R.drawable.houshold_register_placeholder, R.drawable.houshold_register_placeholder));
@@ -175,12 +180,35 @@ public class HouseholdDetailActivity extends BaseActivity {
 //
 
         initQueries();
-
+        ((ImageView)findViewById(R.id.add_household_img)).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                FragmentTransaction ft = getFragmentManager().beginTransaction();
+                android.app.Fragment prev = getFragmentManager().findFragmentByTag(HouseholdMemberAddFragment.DIALOG_TAG);
+                if (prev != null) {
+                    ft.remove(prev);
+                }
+                ft.addToBackStack(null);
+                String locationid = "";
+                DetailsRepository detailsRepository;
+                detailsRepository = org.smartregister.Context.getInstance().detailsRepository();
+                Map<String, String> details = detailsRepository.getAllDetailsForClient(entityid);
+                try {
+                    locationid = JsonFormUtils.getOpenMrsLocationId(context(),getValue(details, "address4", false) );
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+                addmemberFragment= HouseholdMemberAddFragment.newInstance(HouseholdDetailActivity.this,locationid,entityid,context,isMotherExist);
+                addmemberFragment.show(ft, HouseholdMemberAddFragment.DIALOG_TAG);
+            }
+        });
 
         context = org.smartregister.Context.getInstance().updateApplicationContext(this.getApplicationContext());
         //get Household members repository
     }
-
+    protected org.smartregister.Context context() {
+        return VaccinatorApplication.getInstance().context();
+    }
     private void dispatchTakePictureIntent() {
         Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         // Ensure that there's a camera activity to handle the intent
@@ -222,6 +250,15 @@ public class HouseholdDetailActivity extends BaseActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         refreshadapter();
+        if (requestCode == REQUEST_CODE_GET_JSON) {
+            if (resultCode == RESULT_OK) {
+                String jsonString = data.getStringExtra("json");
+                SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
+                AllSharedPreferences allSharedPreferences = new AllSharedPreferences(preferences);
+                JsonFormUtils.saveForm(this, context(), jsonString, allSharedPreferences.fetchRegisteredANM());
+
+            }
+        }
 //        if (requestCode == REQUEST_CODE_GET_JSON) {
 //            if (resultCode == RESULT_OK) {
 //                try {
@@ -247,7 +284,7 @@ public class HouseholdDetailActivity extends BaseActivity {
 //                }
 //            }
 //        } else
-        if (requestCode == REQUEST_TAKE_PHOTO) {
+        else if (requestCode == REQUEST_TAKE_PHOTO) {
             if (resultCode == RESULT_OK) {
                 String imageLocation = currentfile.getAbsolutePath();
                 SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
@@ -297,7 +334,10 @@ public class HouseholdDetailActivity extends BaseActivity {
         });
 
         Cursor cursor = db.rawQuery(queryBUilder.mainCondition("relational_id = ?"),new String[]{mother_id});
-
+        if(cursor!=null && cursor.getCount()>0){
+            isMotherExist=true;
+        }
+        if(addmemberFragment!=null)addmemberFragment.updateIsMotherExit(isMotherExist);
 
         householdList = (ListView) findViewById(R.id.household_list);
 

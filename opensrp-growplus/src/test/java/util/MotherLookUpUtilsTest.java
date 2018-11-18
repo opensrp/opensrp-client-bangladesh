@@ -52,8 +52,8 @@ public class MotherLookUpUtilsTest extends BaseUnitTest {
         };
         progressBar = new ProgressBar(RuntimeEnvironment.application);
         //context = RuntimeEnvironment.application;
-        motherLookUpUtils.motherLookUp(context,entityLookUp,listener,progressBar);//returns result
-        motherLookUpUtils.motherLookUp(null,entityLookUp,listener,progressBar);//returns result
+        motherLookUpUtils.motherLookUp(context,entityLookUp,listener,progressBar,"");//returns result
+        motherLookUpUtils.motherLookUp(null,entityLookUp,listener,progressBar,"");//returns result
         entityLookUp.put(firstName,firstName);
         entityLookUp.put(lastName,lastName);
         entityLookUp.put(birthDate,"10-10-2010");
@@ -67,7 +67,7 @@ public class MotherLookUpUtilsTest extends BaseUnitTest {
         ArrayList<CommonPersonObject>list = new ArrayList<CommonPersonObject>();
         list.add(commonPersonObject);
         Mockito.doReturn(list).when(commonRepository).findByRelational_IDs(Mockito.any(String[].class));
-        motherLookUpUtils.motherLookUp(context,entityLookUp,listener,progressBar);//returns result
+        motherLookUpUtils.motherLookUp(context,entityLookUp,listener,progressBar,"");//returns result
     }
     public static final String firstName = "first_name";
     public static final String lastName = "last_name";
