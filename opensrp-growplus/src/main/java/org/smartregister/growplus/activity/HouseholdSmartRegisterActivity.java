@@ -309,7 +309,7 @@ public class HouseholdSmartRegisterActivity extends BaseRegisterActivity {
         if (registerFragment.onBackPressed()) {
             return;
         }
-        if (currentPage != 0) {
+        if (currentPage == 1) {
             new AlertDialog.Builder(this)
                     .setMessage(R.string.form_back_confirm_dialog_message)
                     .setTitle(R.string.form_back_confirm_dialog_title)
@@ -328,6 +328,8 @@ public class HouseholdSmartRegisterActivity extends BaseRegisterActivity {
                     .show();
         } else if (currentPage == 0) {
             super.onBackPressed(); // allow back key only if we are
+        }else{
+            switchToBaseFragment();
         }
     }
 
