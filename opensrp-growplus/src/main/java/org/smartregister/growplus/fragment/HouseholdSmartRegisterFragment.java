@@ -161,6 +161,7 @@ public class HouseholdSmartRegisterFragment extends BaseSmartRegisterFragment {
     }
     public void requestUpdateView(){
         Sortqueries = SortFilterUtil.getSortQuery();
+        filters = SortFilterUtil.getFilterQuery();
         super.filterandSortExecute();
     }
     @Override
@@ -316,6 +317,7 @@ public class HouseholdSmartRegisterFragment extends BaseSmartRegisterFragment {
                 tableName + ".Date_Of_Reg",
                 tableName + ".address1",
                 tableName+".last_interacted_with",
+                "(select ec_details.value from ec_details where ec_details.key='address2' and ec_details.base_entity_id=ec_household.id) as ward",
                 "(select sum(count) from(select count(*) as count from ec_mother where ec_mother.relational_id=ec_household.id union select count(*) as count from ec_child where ec_child.relational_id in ( select ec_mother.id from ec_mother where ec_mother.relational_id=ec_household.id)))as member_count"
         });
         mainSelect = queryBUilder.mainCondition("");

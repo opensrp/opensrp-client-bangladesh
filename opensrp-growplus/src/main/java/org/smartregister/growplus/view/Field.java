@@ -17,7 +17,7 @@ public class Field {
     }
 
     public String getFilterQuery(){
-        return " address2 = '"+display_name+"' ";
+        return " ward = '"+display_name+"' ";
     }
 
     public String getSort_query() {

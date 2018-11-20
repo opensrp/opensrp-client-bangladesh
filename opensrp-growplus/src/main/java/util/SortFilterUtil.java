@@ -40,9 +40,9 @@ public class SortFilterUtil {
     }
 
     public static void initFilterFields(String[] filters){
-    for(String filter:filters){
-        filterFields.add(new Field(filter));
-    }
+        for(String filter:filters){
+            filterFields.add(new Field(filter));
+        }
     }
     public static boolean isChecked(FieldType ft,int position){
         switch(ft){
@@ -98,7 +98,17 @@ public class SortFilterUtil {
         }
         return deafult_sort_query;
     }
-
+    public static String getFilterQuery(){
+        String query = "";
+        for (Field fd : filterFields){
+            if(fd.isSelected()){
+                query += fd.getFilterQuery() + " OR ";
+            }
+        }
+        if(!query.isEmpty())
+            query = " WHERE ( "+query.substring(0,query.lastIndexOf("OR"))+" ) ";
+        return query;
+    }
     public static int[] currentCheckedList(FieldType ft){
         int[]checked_list = new int[10];
 
