@@ -170,6 +170,7 @@
         "openmrs_entity_parent": "",
         "openmrs_entity": "person",
         "openmrs_entity_id": "first_name",
+        "household_id":"",
         "entity_id": "mother",
         "type": "edit_text",
         "hint": "Mother's Name*",

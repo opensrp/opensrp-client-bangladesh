@@ -40,8 +40,9 @@ public class HouseholdMemberAddFragment extends DialogFragment {
     private static final SimpleDateFormat DATE_TIME_FORMAT = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
     String HouseholdEnitityID  = "";
     String locationId;
+    private boolean isMotherExist=true;
     org.smartregister.Context opensrpcontext;
-
+    Button addChild;
     private HouseholdMemberAddFragment(Context context) {
         this.context = context;
 
@@ -55,7 +56,17 @@ public class HouseholdMemberAddFragment extends DialogFragment {
         householdMemberAddFragment.opensrpcontext = context1;
         return householdMemberAddFragment;
     }
-
+    //using to remove "add child" button if any mother not found by this house hold
+    public static HouseholdMemberAddFragment newInstance(
+            Context context, String locationId, String householdid, org.smartregister.Context context1,boolean isMotherExist) {
+        HouseholdMemberAddFragment householdMemberAddFragment = new HouseholdMemberAddFragment(context);
+        householdMemberAddFragment.HouseholdEnitityID = householdid;
+        householdMemberAddFragment.locationId = locationId;
+        householdMemberAddFragment.opensrpcontext = context1;
+        householdMemberAddFragment.isMotherExist=isMotherExist;
+        Log.d("House_hold_fragment","isMotherExist:"+isMotherExist);
+        return householdMemberAddFragment;
+    }
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -68,10 +79,10 @@ public class HouseholdMemberAddFragment extends DialogFragment {
 
         ViewGroup dialogView = (ViewGroup) inflater.inflate(R.layout.household_add_member_dialog_view, container, false);
 
-        Button addChild = (Button) dialogView.findViewById(R.id.add_child);
+        addChild= (Button) dialogView.findViewById(R.id.add_child);
         Button addWoman = (Button) dialogView.findViewById(R.id.add_woman);
         Button cancel = (Button) dialogView.findViewById(R.id.cancel);
-
+        updateIsMotherExit(isMotherExist);
         addChild.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -132,6 +143,15 @@ public class HouseholdMemberAddFragment extends DialogFragment {
 //                    + " must implement WeightActionListener");
 //        }
     }
+    public void updateIsMotherExit(boolean isMotherExist){
+        this.isMotherExist=isMotherExist;
+        if(addChild==null)return;
+        if(isMotherExist){
+            addChild.setVisibility(View.VISIBLE);
+        }else{
+            addChild.setVisibility(View.GONE);
+        }
+    }
 
 
 
@@ -176,6 +196,14 @@ public class HouseholdMemberAddFragment extends DialogFragment {
                             .equalsIgnoreCase(JsonFormUtils.OpenMRS_ID)) {
                         jsonObject.remove(JsonFormUtils.VALUE);
                         jsonObject.put(JsonFormUtils.VALUE, entityId);
+                        continue;
+                    }
+                }
+                for (int i = 0; i < jsonArray.length(); i++) {
+                    JSONObject jsonObject = jsonArray.getJSONObject(i);
+                    if (jsonObject.getString(JsonFormUtils.KEY)
+                            .equalsIgnoreCase("Mother_Guardian_First_Name")) {
+                        jsonObject.put("household_id", HouseholdEnitityID);
                         continue;
                     }
                 }
