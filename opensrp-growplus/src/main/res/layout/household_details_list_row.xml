@@ -58,22 +58,29 @@
                         android:text="Joyce Mwansa"
                         android:textColor="@android:color/black"
                         android:textSize="@dimen/activity_title_size" />
-
-                    <LinearLayout
+                    <org.smartregister.view.customcontrols.CustomFontTextView
+                        android:id="@+id/unique_id_tv"
+                        style="@style/CustomFontTextViewStyle.ClientList.Light"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:orientation="horizontal">
+                        android:text="Unique id:"
+                        android:textColor="@color/dark_grey"
+                        android:textSize="@dimen/activity_sub_title_size" />
+
+                    <!--<LinearLayout-->
+                        <!--android:layout_width="wrap_content"-->
+                        <!--android:layout_height="wrap_content"-->
+                        <!--android:orientation="horizontal">-->
 
                         <org.smartregister.view.customcontrols.CustomFontTextView
                             android:id="@+id/age_tv"
                             style="@style/CustomFontTextViewStyle.ClientList.Light"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginLeft="10dp"
                             android:text="Age"
                             android:textColor="@color/dark_grey"
                             android:textSize="@dimen/activity_sub_title_size" />
-                    </LinearLayout>
+                    <!--</LinearLayout>-->
                 </LinearLayout>
             </LinearLayout>
 
@@ -88,8 +95,9 @@
         <LinearLayout
             android:orientation="vertical"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:id="@+id/children_added"></LinearLayout>
+            android:layout_height="wrap_content"
+            android:id="@+id/children_added">
+        </LinearLayout>
 
 
     </LinearLayout>
