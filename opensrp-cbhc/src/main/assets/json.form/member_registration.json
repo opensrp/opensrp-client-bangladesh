@@ -266,7 +266,6 @@
         "openmrs_data_type": "text",
         "type": "edit_text",
         "hint": "মাতার নাম (বাংলায়)",
-        "edit_type": "name",
         "v_required": {
           "value": "false",
           "err": "Please enter the mother/guardian's first name"
@@ -299,7 +298,6 @@
         "openmrs_data_type": "text",
         "type": "edit_text",
         "hint": "পিতার নাম (বাংলায়)",
-        "edit_type": "name",
         "v_required": {
           "value": "false",
           "err": "Please enter the mother/guardian's first name"

@@ -146,6 +146,21 @@
         }
       },
       {
+        "key": "dob_unknown",
+        "openmrs_entity_parent": "",
+        "openmrs_entity": "person",
+        "openmrs_entity_id": "birthdateApprox",
+        "type": "check_box",
+        "label": "",
+        "options": [
+          {
+            "key": "dob_unknown",
+            "text": "DOB unknown?",
+            "value": "false"
+          }
+        ]
+      },
+      {
         "key": "dob",
         "openmrs_entity_parent": "",
         "openmrs_entity": "person",
@@ -168,21 +183,6 @@
             "ex": "equalTo(., \"false\")"
           }
         }
-      },
-      {
-        "key": "dob_unknown",
-        "openmrs_entity_parent": "",
-        "openmrs_entity": "person",
-        "openmrs_entity_id": "birthdateApprox",
-        "type": "check_box",
-        "label": "",
-        "options": [
-          {
-            "key": "dob_unknown",
-            "text": "DOB unknown?",
-            "value": "false"
-          }
-        ]
       },
       {
         "key": "age",
