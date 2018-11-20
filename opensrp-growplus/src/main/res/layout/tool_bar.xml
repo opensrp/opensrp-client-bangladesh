@@ -87,6 +87,18 @@
             android:paddingLeft="10dp"
             android:paddingRight="10dp"
             android:src="@drawable/ic_icon_add" />
+        <ImageButton
+            android:id="@+id/filter_selection"
+            android:layout_width="wrap_content"
+            android:layout_height="fill_parent"
+            android:layout_toLeftOf="@id/global_search"
+            android:background="@drawable/transparent_gray_background"
+            android:gravity="center"
+            android:paddingLeft="22dp"
+            android:paddingRight="22dp"
+            android:src="@drawable/ic_icon_bell"
+            android:visibility="gone" />
+
     </LinearLayout>
 
 
@@ -98,7 +110,7 @@
         android:visibility="gone" />
 
     <ImageButton
-        android:id="@+id/filter_selection"
+        android:id="@+id/filter_selection2"
         android:layout_width="wrap_content"
         android:layout_height="fill_parent"
         android:layout_toLeftOf="@id/global_search"
@@ -114,8 +126,8 @@
         style="@style/CustomFontTextViewStyle.Badge"
         android:layout_width="@dimen/client_profile_badge_width"
         android:layout_height="@dimen/client_profile_badge_height"
-        android:layout_alignRight="@id/filter_selection"
-        android:layout_alignTop="@id/filter_selection"
+        android:layout_alignRight="@id/filter_selection2"
+        android:layout_alignTop="@id/filter_selection2"
         android:layout_marginRight="2dp"
         android:layout_marginTop="0dp"
         android:gravity="center"
@@ -127,7 +139,7 @@
         android:id="@+id/sort_selection"
         android:layout_width="wrap_content"
         android:layout_height="fill_parent"
-        android:layout_toLeftOf="@id/filter_selection"
+        android:layout_toLeftOf="@id/filter_selection2"
         android:background="@drawable/transparent_gray_background"
         android:gravity="center"
         android:paddingLeft="22dp"

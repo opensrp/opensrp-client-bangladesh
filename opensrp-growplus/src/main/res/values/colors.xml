@@ -7,10 +7,11 @@
     <color name="dark_grey">#999999</color>
     <color name="transparent_dark_grey">#EE999999</color>
     <color name="inactive_grey">#B5B5B5</color>
-
+    <color name="customAppThemeBlue">#218CC5</color>
     <color name="actionbar">#208CC5</color>
     <color name="client_list_grey">#737373</color>
     <color name="transparent_dark_blue">#ff196d99</color>
+    <color name="vaccine_yellow">#F0AB41</color>
 
     <!-- Gender identity colors -->
     <color name="gender_neutral_dark_green">#219e05</color>
