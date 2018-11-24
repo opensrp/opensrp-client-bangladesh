@@ -117,6 +117,13 @@
           }
         },
         {
+          "column_name": "ethnicity",
+          "type": "Client",
+          "json_mapping": {
+            "field": "ethnicity"
+          }
+        },
+        {
           "column_name": "husband_name",
           "type": "Event",
           "json_mapping": {

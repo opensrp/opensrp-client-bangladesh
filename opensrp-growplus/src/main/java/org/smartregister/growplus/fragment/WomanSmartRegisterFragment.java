@@ -59,6 +59,7 @@ import util.PathConstants;
 
 
 import static android.view.View.INVISIBLE;
+import static android.view.View.VISIBLE;
 
 public class WomanSmartRegisterFragment extends BaseSmartRegisterFragment implements SyncStatusBroadcastReceiver.SyncStatusListener {
     private final ClientActionHandler clientActionHandler = new ClientActionHandler();
@@ -212,7 +213,7 @@ public class WomanSmartRegisterFragment extends BaseSmartRegisterFragment implem
         view.findViewById(R.id.service_mode_selection).setVisibility(INVISIBLE);
         view.findViewById(R.id.register_client).setVisibility(INVISIBLE);
         view.findViewById(R.id.global_search).setVisibility(INVISIBLE);
-        view.findViewById(R.id.filter_selection).setVisibility(INVISIBLE);
+        view.findViewById(R.id.filter_selection).setVisibility(VISIBLE);
         filterSection = view.findViewById(R.id.filter_selection);
         filterSection.setOnClickListener(clientActionHandler);
 
@@ -228,7 +229,7 @@ public class WomanSmartRegisterFragment extends BaseSmartRegisterFragment implem
             }
         });
 
-        clientsView.setVisibility(View.VISIBLE);
+        clientsView.setVisibility(VISIBLE);
         clientsProgressView.setVisibility(View.INVISIBLE);
         setServiceModeViewDrawableRight(null);
         initializeQueries();
@@ -334,11 +335,11 @@ public class WomanSmartRegisterFragment extends BaseSmartRegisterFragment implem
 
     private void refreshSyncStatusViews() {
         if (SyncStatusBroadcastReceiver.getInstance().isSyncing()) {
-            syncProgressBar.setVisibility(View.VISIBLE);
+            syncProgressBar.setVisibility(VISIBLE);
             btnBackToHome.setVisibility(View.GONE);
         } else {
             syncProgressBar.setVisibility(View.GONE);
-            btnBackToHome.setVisibility(View.VISIBLE);
+            btnBackToHome.setVisibility(VISIBLE);
         }
     }
 
@@ -488,7 +489,7 @@ public class WomanSmartRegisterFragment extends BaseSmartRegisterFragment implem
         if (filterCount != null) {
             if (count > 0) {
                 filterCount.setText(String.valueOf(count));
-                filterCount.setVisibility(View.VISIBLE);
+                filterCount.setVisibility(VISIBLE);
                 filterCount.setClickable(true);
             } else {
                 filterCount.setVisibility(View.GONE);
@@ -548,12 +549,12 @@ public class WomanSmartRegisterFragment extends BaseSmartRegisterFragment implem
                 titleLabelView.setText(String.format(getString(R.string.overdue_due), dueOverdueCount));
             }
             nameInitials.setVisibility(View.GONE);
-            backButton.setVisibility(View.VISIBLE);
+            backButton.setVisibility(VISIBLE);
         } else {
             if (titleLabelView != null) {
                 titleLabelView.setText(getString(R.string.zeir));
             }
-            nameInitials.setVisibility(View.VISIBLE);
+            nameInitials.setVisibility(VISIBLE);
             backButton.setVisibility(View.GONE);
         }
     }
