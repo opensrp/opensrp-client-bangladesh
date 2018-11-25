@@ -315,8 +315,8 @@ public class WomanSmartRegisterFragment extends BaseSmartRegisterFragment implem
         countSelect = countqueryBUilder.mainCondition("");
         mainCondition = "";
         super.CountExecute();
-        countOverDue();
-        countDueOverDue();
+//        countOverDue();
+//        countDueOverDue();
 
         SmartRegisterQueryBuilder queryBUilder = new SmartRegisterQueryBuilder();
         queryBUilder.SelectInitiateMainTable(tableName, new String[]{
@@ -334,8 +334,13 @@ public class WomanSmartRegisterFragment extends BaseSmartRegisterFragment implem
                 tableName + ".client_reg_date",
                 tableName + ".last_interacted_with"
 
+
         });
+        //queryBUilder.addCondition()
         mainSelect = queryBUilder.mainCondition("");
+//        queryBUilder.setSelectquery(mainSelect);
+//        mainCondition = " where ec_details.base_entity_id=ec_mother.id and ec_details.key='address2'";
+//        mainSelect = queryBUilder.mainCondition("ec_details.base_entity_id=ec_mother.id and ec_details.key='address2'");//
         Sortqueries = ((CursorSortOption) getDefaultOptionsProvider().sortOption()).sort();
 
         currentlimit = 20;
@@ -496,29 +501,7 @@ public class WomanSmartRegisterFragment extends BaseSmartRegisterFragment implem
     }
 
 
-    public void countOverDue() {
-        String mainCondition = filterSelectionCondition(true);
-        int count = count(mainCondition);
 
-        if (filterCount != null) {
-            if (count > 0) {
-                filterCount.setText(String.valueOf(count));
-                filterCount.setVisibility(VISIBLE);
-                filterCount.setClickable(true);
-            } else {
-                filterCount.setVisibility(View.GONE);
-                filterCount.setClickable(false);
-            }
-        }
-
-        ((WomanSmartRegisterActivity) getActivity()).updateAdvancedSearchFilterCount(count);
-    }
-
-    public void countDueOverDue() {
-        String mainCondition = filterSelectionCondition(false);
-        int count = count(mainCondition);
-        dueOverdueCount = count;
-    }
 
     private int count(String mainConditionString) {
 

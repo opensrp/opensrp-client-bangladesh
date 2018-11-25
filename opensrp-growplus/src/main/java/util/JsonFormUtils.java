@@ -971,6 +971,8 @@ public class JsonFormUtils extends org.smartregister.util.JsonFormUtils {
                 }
             }
 
+            e.addObs((new Obs()).withFormSubmissionField("address4").withValue(c.getAddresses().get(0).getAddressField("address4")));
+
 
             if (c != null) {
                 JSONObject clientJson = new JSONObject(gson.toJson(c));

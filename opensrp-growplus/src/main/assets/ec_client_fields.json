@@ -444,6 +444,13 @@
           }
         },
         {
+          "column_name": "address4",
+          "type": "Event",
+          "json_mapping": {
+            "field": "address4"
+          }
+        },
+        {
           "column_name": "address",
           "type": "Client",
           "json_mapping": {
