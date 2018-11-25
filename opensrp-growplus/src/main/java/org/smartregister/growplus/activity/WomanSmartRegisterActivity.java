@@ -69,7 +69,7 @@ public class WomanSmartRegisterActivity extends BaseRegisterActivity {
     private static final int REQUEST_CODE_RECORD_OUT_OF_CATCHMENT = 1131;
     private int currentPage;
     public static final int ADVANCED_SEARCH_POSITION = 1;
-
+    public Fragment sortFilterFragment;
     public Fragment mBaseFragment = null;
     private AdvancedSearchFragment advancedSearchFragment;
 
@@ -85,7 +85,8 @@ public class WomanSmartRegisterActivity extends BaseRegisterActivity {
 
         mBaseFragment = new WomanSmartRegisterFragment();
         advancedSearchFragment = new AdvancedSearchFragment();
-        Fragment[] otherFragments = {new AdvancedSearchFragment()};
+        sortFilterFragment = new org.smartregister.growplus.fragment.SortFilterFragment();
+        Fragment[] otherFragments = {advancedSearchFragment,sortFilterFragment};
 
         // Instantiate a ViewPager and a PagerAdapter.
         mPagerAdapter = new PathRegisterActivityPagerAdapter(getSupportFragmentManager(), mBaseFragment, otherFragments);
@@ -101,7 +102,18 @@ public class WomanSmartRegisterActivity extends BaseRegisterActivity {
         Event.ON_DATA_FETCHED.addListener(onDataFetchedListener);
 
     }
+    public void switchToSortFilterFragment(){
+        mPager.setCurrentItem(2);
+    }
 
+    public void switchToBaseFragment() {
+        mPager.setCurrentItem(0);
+    }
+
+    public void applySortAndFilter(){
+        switchToBaseFragment();
+        ((WomanSmartRegisterFragment)mBaseFragment).requestUpdateView();
+    }
     @Override
     protected void onDestroy() {
         super.onDestroy();

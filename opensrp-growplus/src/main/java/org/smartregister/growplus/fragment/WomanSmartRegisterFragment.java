@@ -27,6 +27,7 @@ import org.smartregister.cursoradapter.CursorSortOption;
 import org.smartregister.cursoradapter.SmartRegisterPaginatedCursorAdapter;
 import org.smartregister.cursoradapter.SmartRegisterQueryBuilder;
 import org.smartregister.domain.FetchStatus;
+import org.smartregister.growplus.activity.HouseholdSmartRegisterActivity;
 import org.smartregister.immunization.db.VaccineRepo;
 import org.smartregister.immunization.util.VaccinateActionUtils;
 import org.smartregister.growplus.R;
@@ -56,6 +57,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import util.PathConstants;
+import util.SortFilterUtil;
 
 
 import static android.view.View.INVISIBLE;
@@ -215,8 +217,15 @@ public class WomanSmartRegisterFragment extends BaseSmartRegisterFragment implem
         view.findViewById(R.id.global_search).setVisibility(INVISIBLE);
         view.findViewById(R.id.filter_selection).setVisibility(VISIBLE);
         filterSection = view.findViewById(R.id.filter_selection);
-        filterSection.setOnClickListener(clientActionHandler);
+//        filterSection.setOnClickListener(clientActionHandler);
+        filterSection.setOnClickListener(new View.OnClickListener(){
 
+            @Override
+            public void onClick(View view){
+                //show filterandsortfragment action trigger
+                ((WomanSmartRegisterActivity) getActivity()).switchToSortFilterFragment();
+            }
+        });
         filterCount = (TextView) view.findViewById(R.id.filter_count);
         filterCount.setVisibility(View.GONE);
         filterCount.setClickable(false);
@@ -283,7 +292,11 @@ public class WomanSmartRegisterFragment extends BaseSmartRegisterFragment implem
         }
         return false;
     }
-
+    public void requestUpdateView(){
+        Sortqueries = SortFilterUtil.getSortQuery();
+//        filters = SortFilterUtil.getFilterQuery();
+        super.filterandSortExecute();
+    }
     public LocationPickerView getLocationPickerView() {
         return getClinicSelection();
     }

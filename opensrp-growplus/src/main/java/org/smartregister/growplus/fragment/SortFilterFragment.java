@@ -24,7 +24,9 @@ import android.widget.TextView;
 import org.apache.commons.lang3.StringUtils;
 
 import org.smartregister.growplus.R;
+import org.smartregister.growplus.activity.ChildSmartRegisterActivity;
 import org.smartregister.growplus.activity.HouseholdSmartRegisterActivity;
+import org.smartregister.growplus.activity.WomanSmartRegisterActivity;
 import org.smartregister.growplus.view.Field;
 
 import java.util.ArrayList;
@@ -37,6 +39,7 @@ import util.SortFilterUtil;
 public class SortFilterFragment extends BaseSmartRegisterFragment {
 
     private FilterDialogClickListener actionHandler = new FilterDialogClickListener();
+
 
 
     private FilterAdapter filterAdapter;
@@ -96,7 +99,16 @@ public class SortFilterFragment extends BaseSmartRegisterFragment {
 
     private void switchToRegister() {
         if (getActivity() != null) {
-            ((HouseholdSmartRegisterActivity) getActivity()).switchToBaseFragment();
+            if(getActivity() instanceof HouseholdSmartRegisterActivity){
+                ((HouseholdSmartRegisterActivity) getActivity()).switchToBaseFragment();
+            }
+            if(getActivity() instanceof WomanSmartRegisterActivity){
+                ((WomanSmartRegisterActivity) getActivity()).switchToBaseFragment();
+            }
+            if(getActivity() instanceof ChildSmartRegisterActivity){
+                ((ChildSmartRegisterActivity) getActivity()).switchToBaseFragment();
+            }
+
         }
     }
 
@@ -198,7 +210,16 @@ public class SortFilterFragment extends BaseSmartRegisterFragment {
     }
 
     public void applySortAndFilter(){
-        ((HouseholdSmartRegisterActivity) getActivity()).applySortAndFilter();
+        if (getActivity() instanceof HouseholdSmartRegisterActivity){
+            ((HouseholdSmartRegisterActivity) getActivity()).applySortAndFilter();
+        }
+        if (getActivity() instanceof WomanSmartRegisterActivity){
+            ((WomanSmartRegisterActivity) getActivity()).applySortAndFilter();
+        }
+        if (getActivity() instanceof ChildSmartRegisterActivity){
+            ((ChildSmartRegisterActivity) getActivity()).applySortAndFilter();
+        }
+
     }
 
     private class FilterAdapter extends RecyclerView.Adapter<FilterAdapter.ViewHolder> {

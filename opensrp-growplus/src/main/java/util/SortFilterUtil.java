@@ -25,8 +25,8 @@ public class SortFilterUtil {
         filterFields.clear();
         
         //adding sort fields
-        sortFields.add(new Field("Household Name(A-Z)","first_name asc"));
-        sortFields.add(new Field("Household Name(Z-A)","first_name desc"));
+        sortFields.add(new Field("First Name(A-Z)","first_name COLLATE NOCASE asc"));
+        sortFields.add(new Field("First Name(Z-A)","first_name COLLATE NOCASE desc"));
         sortFields.add(new Field("Last Visit Date(ASC)","last_interacted_with asc"));
         sortFields.add(new Field("Last Visit Date(DESC)","last_interacted_with desc"));
         sortFields.add(new Field("Member Number(ASC)","member_count asc"));
