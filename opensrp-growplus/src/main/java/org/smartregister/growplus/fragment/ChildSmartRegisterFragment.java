@@ -27,6 +27,7 @@ import org.smartregister.cursoradapter.CursorSortOption;
 import org.smartregister.cursoradapter.SmartRegisterPaginatedCursorAdapter;
 import org.smartregister.cursoradapter.SmartRegisterQueryBuilder;
 import org.smartregister.domain.FetchStatus;
+import org.smartregister.growplus.activity.HouseholdSmartRegisterActivity;
 import org.smartregister.immunization.db.VaccineRepo;
 import org.smartregister.immunization.util.VaccinateActionUtils;
 import org.smartregister.growplus.R;
@@ -54,6 +55,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import util.PathConstants;
+import util.SortFilterUtil;
 
 import static android.view.View.INVISIBLE;
 
@@ -160,7 +162,11 @@ public class ChildSmartRegisterFragment extends BaseSmartRegisterFragment implem
     @Override
     protected void onCreation() {
     }
-
+    public void requestUpdateView(){
+        Sortqueries = SortFilterUtil.getSortQuery();
+        filters = SortFilterUtil.getFilterQuery();
+        super.filterandSortExecute();
+    }
     @Override
     protected void onResumption() {
         super.onResumption();
@@ -210,8 +216,15 @@ public class ChildSmartRegisterFragment extends BaseSmartRegisterFragment implem
         view.findViewById(R.id.service_mode_selection).setVisibility(INVISIBLE);
         view.findViewById(R.id.register_client).setVisibility(INVISIBLE);
         filterSection = view.findViewById(R.id.filter_selection);
-        filterSection.setOnClickListener(clientActionHandler);
+//        filterSection.setOnClickListener(clientActionHandler);
+        filterSection.setOnClickListener(new View.OnClickListener(){
 
+            @Override
+            public void onClick(View view){
+                //show filterandsortfragment action trigger
+                ((ChildSmartRegisterActivity) getActivity()).switchToSortFilterFragment();
+            }
+        });
         filterCount = (TextView) view.findViewById(R.id.filter_count);
         filterCount.setVisibility(View.GONE);
         filterCount.setClickable(false);

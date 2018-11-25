@@ -25,17 +25,24 @@ public class SortFilterUtil {
         filterFields.clear();
         
         //adding sort fields
-        sortFields.add(new Field("First Name(A-Z)","first_name COLLATE NOCASE asc"));
-        sortFields.add(new Field("First Name(Z-A)","first_name COLLATE NOCASE desc"));
-        sortFields.add(new Field("Last Visit Date(ASC)","last_interacted_with asc"));
-        sortFields.add(new Field("Last Visit Date(DESC)","last_interacted_with desc"));
-        sortFields.add(new Field("Member Number(ASC)","member_count asc"));
-        sortFields.add(new Field("Member Number(DESC)","member_count desc"));
+
         
         //adding filterfields
 //        filterFields.add(new Field("Gender"));
 //        filterFields.add(new Field("Ward"));
 //        filterFields.add(new Field("Block"));
+
+    }
+
+    public static void initSortFields(boolean household){
+        sortFields.add(new Field("First Name(A-Z)","first_name COLLATE NOCASE asc"));
+        sortFields.add(new Field("First Name(Z-A)","first_name COLLATE NOCASE desc"));
+        sortFields.add(new Field("Last Visit Date(ASC)","last_interacted_with asc"));
+        sortFields.add(new Field("Last Visit Date(DESC)","last_interacted_with desc"));
+        if(household){
+            sortFields.add(new Field("Member Number(ASC)","member_count asc"));
+            sortFields.add(new Field("Member Number(DESC)","member_count desc"));
+        }
 
     }
 

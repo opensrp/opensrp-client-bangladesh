@@ -294,7 +294,7 @@ public class WomanSmartRegisterFragment extends BaseSmartRegisterFragment implem
     }
     public void requestUpdateView(){
         Sortqueries = SortFilterUtil.getSortQuery();
-//        filters = SortFilterUtil.getFilterQuery();
+        filters = SortFilterUtil.getFilterQuery();
         super.filterandSortExecute();
     }
     public LocationPickerView getLocationPickerView() {
@@ -333,6 +333,8 @@ public class WomanSmartRegisterFragment extends BaseSmartRegisterFragment implem
                 tableName + ".contact_phone_number",
                 tableName + ".client_reg_date",
                 tableName + ".last_interacted_with"
+
+
         });
         mainSelect = queryBUilder.mainCondition("");
         Sortqueries = ((CursorSortOption) getDefaultOptionsProvider().sortOption()).sort();

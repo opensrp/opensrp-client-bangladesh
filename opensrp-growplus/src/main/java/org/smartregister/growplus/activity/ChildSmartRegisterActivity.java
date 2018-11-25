@@ -96,7 +96,7 @@ public class ChildSmartRegisterActivity extends BaseRegisterActivity {
 
     public void applySortAndFilter(){
         switchToBaseFragment();
-        ((WomanSmartRegisterFragment)mBaseFragment).requestUpdateView();
+        ((ChildSmartRegisterFragment)mBaseFragment).requestUpdateView();
     }
     @Override
     protected void onDestroy() {

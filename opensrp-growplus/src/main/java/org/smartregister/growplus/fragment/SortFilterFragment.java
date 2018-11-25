@@ -95,6 +95,8 @@ public class SortFilterFragment extends BaseSmartRegisterFragment {
                 wards[wardlist.indexOf(ward)] = ward.get("value");
         }
         SortFilterUtil.initFilterFields(wards);
+        boolean household = getActivity() instanceof HouseholdSmartRegisterActivity;
+        SortFilterUtil.initSortFields(household);
     }
 
     private void switchToRegister() {
