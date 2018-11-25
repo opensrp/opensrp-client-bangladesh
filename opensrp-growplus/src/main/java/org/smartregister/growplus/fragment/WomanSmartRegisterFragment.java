@@ -334,7 +334,6 @@ public class WomanSmartRegisterFragment extends BaseSmartRegisterFragment implem
                 tableName + ".client_reg_date",
                 tableName + ".last_interacted_with"
 
-
         });
         mainSelect = queryBUilder.mainCondition("");
         Sortqueries = ((CursorSortOption) getDefaultOptionsProvider().sortOption()).sort();
