@@ -13,8 +13,9 @@ import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 import org.smartregister.Context;
 import org.smartregister.CoreLibrary;
-import org.smartregister.anc.ANCEventBusIndex;
+
 import org.smartregister.cbhc.BuildConfig;
+import org.smartregister.cbhc.CBHCEventBusIndex;
 import org.smartregister.cbhc.R;
 import org.smartregister.cbhc.activity.LoginActivity;
 import org.smartregister.cbhc.event.TriggerSyncEvent;
@@ -250,7 +251,7 @@ public class AncApplication extends DrishtiApplication implements TimeChangedBro
 
         try {
 
-            EventBus.builder().addIndex(new ANCEventBusIndex()).installDefaultEventBus();
+            EventBus.builder().addIndex(new CBHCEventBusIndex()).installDefaultEventBus();
             LocalBroadcastManager.getInstance(this).registerReceiver(syncCompleteMessageReceiver, new IntentFilter(PullConfigurableViewsIntentService.EVENT_SYNC_COMPLETE));
 
         } catch

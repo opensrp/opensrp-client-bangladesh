@@ -4,6 +4,7 @@ import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.graphics.Color;
 import android.graphics.drawable.GradientDrawable;
+import android.preference.PreferenceManager;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.View;
@@ -222,6 +223,6 @@ public class LoginPresenter implements LoginContract.Presenter {
     }
 
     protected String getJsonViewFromPreference(String viewKey) {
-        return Utils.getPreference(getLoginView().getActivityContext(), viewKey, null);
+        return PreferenceManager.getDefaultSharedPreferences(getLoginView().getActivityContext()).getString(viewKey, null);
     }
 }
