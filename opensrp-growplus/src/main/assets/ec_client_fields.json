@@ -117,13 +117,6 @@
           }
         },
         {
-          "column_name": "ethnicity",
-          "type": "Client",
-          "json_mapping": {
-            "field": "ethnicity"
-          }
-        },
-        {
           "column_name": "husband_name",
           "type": "Event",
           "json_mapping": {
@@ -242,6 +235,14 @@
           "type": "Client",
           "json_mapping": {
             "field": "addresses.addressFields.address1"
+          }
+        },
+        {
+          "column_name": "block",
+          "type": "Event",
+          "json_mapping": {
+            "field": "obs.fieldCode",
+            "formSubmissionField": "block"
           }
         },
         {
@@ -444,10 +445,11 @@
           }
         },
         {
-          "column_name": "address4",
+          "column_name": "block",
           "type": "Event",
           "json_mapping": {
-            "field": "address4"
+            "field": "obs.fieldCode",
+            "formSubmissionField": "block"
           }
         },
         {

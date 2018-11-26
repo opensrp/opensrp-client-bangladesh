@@ -164,7 +164,10 @@ public class ChildSmartRegisterFragment extends BaseSmartRegisterFragment implem
     }
     public void requestUpdateView(){
         Sortqueries = SortFilterUtil.getSortQuery();
-        filters = SortFilterUtil.getFilterQuery();
+//        filters = SortFilterUtil.getFilterQuery();
+//        super.filterandSortExecute();
+        filter(SortFilterUtil.getBlockFilterQuery(), "", mainCondition);
+
         super.filterandSortExecute();
     }
     @Override
@@ -308,7 +311,7 @@ public class ChildSmartRegisterFragment extends BaseSmartRegisterFragment implem
         setTablename(tableName);
         SmartRegisterQueryBuilder countqueryBUilder = new SmartRegisterQueryBuilder();
         countqueryBUilder.SelectInitiateMainTableCounts(tableName);
-        mainCondition = " dod is NULL OR dod = '' ";
+        mainCondition = " (dod is NULL OR dod = '') ";
         countSelect = countqueryBUilder.mainCondition(mainCondition);
         super.CountExecute();
         countOverDue();
@@ -339,7 +342,8 @@ public class ChildSmartRegisterFragment extends BaseSmartRegisterFragment implem
                 tableName + ".client_reg_date",
                 tableName + ".last_interacted_with",
                 tableName + ".inactive",
-                tableName + ".lost_to_follow_up"
+                tableName + ".lost_to_follow_up",
+                tableName + ".block",
         });
         queryBUilder.customJoin("LEFT JOIN " + parentTableName + " ON  " + tableName + ".relational_id =  " + parentTableName + ".id");
         mainSelect = queryBUilder.mainCondition(mainCondition);

@@ -294,7 +294,8 @@ public class WomanSmartRegisterFragment extends BaseSmartRegisterFragment implem
     }
     public void requestUpdateView(){
         Sortqueries = SortFilterUtil.getSortQuery();
-        filters = SortFilterUtil.getFilterQuery();
+//        filters = SortFilterUtil.getBlockFilterQuery();
+        filter(SortFilterUtil.getBlockFilterQuery(), "", mainCondition);
         super.filterandSortExecute();
     }
     public LocationPickerView getLocationPickerView() {

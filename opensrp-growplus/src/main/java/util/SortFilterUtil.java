@@ -18,7 +18,7 @@ public class SortFilterUtil {
     private static List<Field> sortFields = new ArrayList<Field>();
     private static List<Field> filterFields = new ArrayList<Field>();
     private static SelectType sortFieldType = SelectType.SINGLE_SELECT;
-    private static SelectType filterFieldType = SelectType.MULTI_SELECT;
+    private static SelectType filterFieldType = SelectType.SINGLE_SELECT;
 
     public static void init(){
         sortFields.clear();
@@ -96,7 +96,7 @@ public class SortFilterUtil {
         }
         return -1;
     }
-    private static final String deafult_sort_query = "HHID desc";
+    private static final String deafult_sort_query = "last_interacted_with desc";
     public static String getSortQuery() {
         for (Field fd : sortFields) {
             if(fd.isSelected()){
@@ -114,6 +114,18 @@ public class SortFilterUtil {
         }
         if(!query.isEmpty())
             query = " WHERE ( "+query.substring(0,query.lastIndexOf("OR"))+" ) ";
+        return query;
+    }
+    public static String getBlockFilterQuery(){
+        String query = "";
+        for (Field fd : filterFields){
+            if(fd.isSelected()){
+                return fd.getDisplayName().split(":")[0];
+//                query += fd.getFilterQuery() + " OR ";
+            }
+        }
+//        if(!query.isEmpty())
+//            query = query.substring(0,query.lastIndexOf("OR"));
         return query;
     }
     public static int[] currentCheckedList(FieldType ft){

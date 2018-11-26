@@ -22,6 +22,7 @@ import java.util.List;
 import java.util.Map;
 
 import static android.view.View.VISIBLE;
+import static org.apache.commons.lang3.StringUtils.isBlank;
 import static org.smartregister.util.Utils.getValue;
 
 /**
@@ -36,13 +37,13 @@ public class MotherLookUpUtils {
     public static final String dob = "dob";
     public static final String baseEntityId = "base_entity_id";
 
-    public static void motherLookUp(final Context context, final EntityLookUp entityLookUp, final Listener<HashMap<CommonPersonObject, List<CommonPersonObject>>> listener, final ProgressBar progressBar) {
+    public static void motherLookUp(final Context context, final EntityLookUp entityLookUp, final Listener<HashMap<CommonPersonObject, List<CommonPersonObject>>> listener, final ProgressBar progressBar, final String householdID) {
 
-        org.smartregister.util.Utils.startAsyncTask(new AsyncTask<Void, Void, HashMap<CommonPersonObject, List<CommonPersonObject>>>() {
+      org.smartregister.util.Utils.startAsyncTask(new AsyncTask<Void, Void, HashMap<CommonPersonObject, List<CommonPersonObject>>>() {
             @Override
             protected HashMap<CommonPersonObject, List<CommonPersonObject>> doInBackground(Void... params) {
                 publishProgress();
-                return lookUp(context, entityLookUp);
+                return lookUp(context, entityLookUp,householdID);
             }
 
             @Override
@@ -61,8 +62,7 @@ public class MotherLookUpUtils {
             }
         }, null);
     }
-
-    private static HashMap<CommonPersonObject, List<CommonPersonObject>> lookUp(Context context, EntityLookUp entityLookUp) {
+    private static HashMap<CommonPersonObject, List<CommonPersonObject>> lookUp(Context context, EntityLookUp entityLookUp,String householdid) {
         HashMap<CommonPersonObject, List<CommonPersonObject>> results = new HashMap<>();
         if (context == null) {
             return results;
@@ -78,10 +78,10 @@ public class MotherLookUpUtils {
 
 
         List<String> ids = new ArrayList<>();
-        List<CommonPersonObject> motherList = new ArrayList<>();
+        List<CommonPersonObject> motherList = new ArrayList<CommonPersonObject>();
 
         CommonRepository commonRepository = context.commonrepository(tableName);
-        String query = lookUpQuery(entityLookUp.getMap(), tableName);
+        String query = lookUpQuery(entityLookUp.getMap(), tableName,householdid);
 
         Cursor cursor = null;
         try {
@@ -122,6 +122,33 @@ public class MotherLookUpUtils {
         return results;
 
     }
+    private static String lookUpQuery(Map<String, String> entityMap, String tableName , String relationalid) {
+
+        SmartRegisterQueryBuilder queryBUilder = new SmartRegisterQueryBuilder();
+        queryBUilder.SelectInitiateMainTable(tableName, new String[]
+
+                {
+                        "relationalid",
+                        "details",
+                        "openmrs_id",
+                        "first_name",
+                        "last_name",
+                        "gender",
+                        "dob",
+                        "nrc_number",
+                        "relational_id",
+                        "contact_phone_number",
+                        "base_entity_id"
+                }
+
+        );
+        queryBUilder.mainCondition(getMainConditionString(entityMap));
+        if(!isBlank(relationalid)){
+            queryBUilder.addCondition("and relational_id = '"+relationalid+"'");
+        }
+        String query = queryBUilder.getSelectquery();
+        return queryBUilder.Endquery(query);
+    }
 
     private static List<CommonPersonObject> findChildren(List<CommonPersonObject> childList, String motherBaseEnityId) {
         List<CommonPersonObject> foundChildren = new ArrayList<>();
@@ -134,26 +161,6 @@ public class MotherLookUpUtils {
 
         return foundChildren;
 
-    }
-
-    private static String lookUpQuery(Map<String, String> entityMap, String tableName) {
-
-        SmartRegisterQueryBuilder queryBUilder = new SmartRegisterQueryBuilder();
-        queryBUilder.SelectInitiateMainTable(tableName, new String[]{
-                "relationalid",
-                "details",
-                "openmrs_id",
-                "first_name",
-                "last_name",
-                "gender",
-                "dob",
-                "nrc_number",
-                "contact_phone_number",
-                "base_entity_id"}
-
-        );
-        String query = queryBUilder.mainCondition(getMainConditionString(entityMap));
-        return queryBUilder.Endquery(query);
     }
 
 

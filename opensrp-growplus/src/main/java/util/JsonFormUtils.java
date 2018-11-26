@@ -452,7 +452,7 @@ public class JsonFormUtils extends org.smartregister.util.JsonFormUtils {
                 c.setAddresses(getAddressFromClientJson(clientjson));
             }
 
-
+            e.addObs((new Obs()).withFormSubmissionField("block").withValue(c.getAddresses().get(0).getAddressField("address4")).withFieldCode("block").withFieldType("formsubmissionField").withFieldDataType("text").withParentCode("").withHumanReadableValues(new ArrayList<Object>()));
             if (c != null) {
                 JSONObject clientJson = new JSONObject(gson.toJson(c));
 
@@ -971,7 +971,7 @@ public class JsonFormUtils extends org.smartregister.util.JsonFormUtils {
                 }
             }
 
-            e.addObs((new Obs()).withFormSubmissionField("address4").withValue(c.getAddresses().get(0).getAddressField("address4")));
+            e.addObs((new Obs()).withFormSubmissionField("block").withValue(c.getAddresses().get(0).getAddressField("address4")).withFieldCode("block").withFieldType("formsubmissionField").withFieldDataType("text").withParentCode("").withHumanReadableValues(new ArrayList<Object>()));
 
 
             if (c != null) {

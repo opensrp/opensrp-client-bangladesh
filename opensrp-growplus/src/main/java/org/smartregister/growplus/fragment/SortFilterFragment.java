@@ -96,7 +96,7 @@ public class SortFilterFragment extends BaseSmartRegisterFragment {
         }
 
         boolean household = getActivity() instanceof HouseholdSmartRegisterActivity;
-        if(household)
+
         SortFilterUtil.initFilterFields(wards);
         SortFilterUtil.initSortFields(household);
     }
@@ -267,9 +267,11 @@ public class SortFilterFragment extends BaseSmartRegisterFragment {
                     if (tag != null && tag instanceof Field) {
                         Field currentField = (Field) tag;
                         SortFilterUtil.setChecked(SortFilterUtil.FieldType.FILTER,position);
+                        notifyDataSetChanged();
                     }
                 }
             });
+//            SortFilterUtil.setChecked(SortFilterUtil.FieldType.FILTER,position);
             holder.checkedTextView.setChecked(SortFilterUtil.isChecked(SortFilterUtil.FieldType.FILTER,position));
 
         }

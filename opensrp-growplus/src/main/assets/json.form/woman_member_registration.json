@@ -208,48 +208,6 @@
         "max_date": "today"
       },
       {
-        "key": "ethnicity",
-        "openmrs_entity_parent": "",
-        "openmrs_entity": "person_attribute",
-        "openmrs_entity_id": "ethnicity",
-        "openmrs_data_type": "select one",
-        "type": "spinner",
-        "hint": "জাতিসত্তা",
-        "values": [
-          "বাঙ্গালী",
-          "চাকমা",
-          "মারমা",
-          "ত্রিপুরা",
-          "সাঁওতাল",
-          "গারো",
-          "মণিপুরী",
-          "ওঁরাও",
-          "তঞ্চ্যঙ্গা",
-          "বর্ম্মন",
-          "খাসিয়া বা খাসি",
-          "ম্রো",
-          "মুন্ডা",
-          "অন্যান্য"
-        ],
-        "openmrs_choice_ids": {
-          "বাঙ্গালী": "Bengali",
-          "চাকমা": "Chakma",
-          "মারমা": "Marma",
-          "ত্রিপুরা": "Tripura",
-          "সাঁওতাল": "Santal",
-          "গারো": "Garo",
-          "মণিপুরী": "Manipuri",
-          "ওঁরাও": "Onrao",
-          "তঞ্চ্যঙ্গা": "Tanchanga",
-          "বর্ম্মন": "Barman",
-          "খাসিয়া বা খাসি": "Khasia",
-          "ম্রো": "Mro",
-          "মুন্ডা": "Munda",
-          "অন্যান্য": "Others (Ethnicity)"
-
-        }
-      },
-      {
         "key": "age",
         "openmrs_entity_parent": "",
         "openmrs_entity": "",

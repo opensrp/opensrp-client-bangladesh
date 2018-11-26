@@ -20,6 +20,9 @@ public class Field {
         return " ward = '"+display_name+"' ";
     }
 
+    public String getBlockFilterQuery(){
+        return " block like '%"+display_name+"%' ";
+    }
     public String getSort_query() {
         return sort_query;
     }

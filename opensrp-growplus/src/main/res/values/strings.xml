@@ -24,6 +24,12 @@
     <string name="uc">UC</string>
     <string name="town">Town</string>
     <string name="address">Address</string>
+    <string name="address_format">Address : %1$S</string>
+    <string name="age_format">Age : %1$S</string>
+    <string name="name_format">Name : %1$S</string>
+    <string name="hhid_format">HHID : %1$S</string>
+    <string name="unique_id_format">%1$S</string>
+    <string name="gender_format">Gender : %1$S</string>
     <string name="birthdate_age">AGE</string>
     <string name="epi_number">ID</string>
     <string name="child_contact_number">WEIGHT</string>

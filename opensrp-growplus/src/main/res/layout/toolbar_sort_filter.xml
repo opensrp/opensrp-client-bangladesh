@@ -46,6 +46,7 @@
                     android:paddingLeft="@dimen/sort_filter_padding"
                     android:paddingRight="@dimen/sort_filter_padding"
                     android:text="@string/clear_filters"
+                    android:visibility="invisible"
                     android:textColor="@color/white"
                     android:textSize="@dimen/sort_filter_text_size" />
 

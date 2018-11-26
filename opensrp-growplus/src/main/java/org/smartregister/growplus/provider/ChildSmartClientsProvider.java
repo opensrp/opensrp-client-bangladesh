@@ -165,8 +165,15 @@ public class ChildSmartClientsProvider implements SmartRegisterCLientsProviderFo
         } catch (Exception e) {
             Log.e(getClass().getName(), e.getMessage(), e);
         }
+        convertView.findViewById(R.id.weightbox).setBackgroundColor(getOpenSRPContext().getColorResource(R.color.status_bar_text_almost_white));
+        ((TextView) convertView.findViewById(R.id.weightcaptured)).setTextColor(getOpenSRPContext().getColorResource(R.color.client_list_grey));
+        ((TextView) convertView.findViewById(R.id.weightcaptureddate)).setTextColor(getOpenSRPContext().getColorResource(R.color.client_list_grey));
+
         List<Weight> weightlist = weightRepository.findLast5(pc.entityId());
         if(weightlist.size() >= 1) {
+
+           Double Zscore = weightlist.get(0).getZScore();
+
             boolean adequate = checkForWeightGainCalc(birthDateTime.toDate(), Gender.valueOf(gender.toUpperCase()), weightlist.get(0), pc, getOpenSRPContext().detailsRepository());
             if (!adequate) {
                 convertView.findViewById(R.id.weightbox).setBackgroundColor(getOpenSRPContext().getColorResource(R.color.weightred));
@@ -179,6 +186,16 @@ public class ChildSmartClientsProvider implements SmartRegisterCLientsProviderFo
                 ((TextView)convertView.findViewById(R.id.weightcaptureddate)).setTextColor(getOpenSRPContext().getColorResource(R.color.status_bar_text_almost_white));
 
             }
+
+            if(Zscore != null) {
+                if (Zscore <= -3.0) {
+                    convertView.findViewById(R.id.weightbox).setBackgroundColor(getOpenSRPContext().getColorResource(R.color.alert_urgent_red));
+                    ((TextView) convertView.findViewById(R.id.weightcaptured)).setTextColor(getOpenSRPContext().getColorResource(R.color.status_bar_text_almost_white));
+                    ((TextView) convertView.findViewById(R.id.weightcaptureddate)).setTextColor(getOpenSRPContext().getColorResource(R.color.status_bar_text_almost_white));
+
+                }
+            }
+
             ((TextView)convertView.findViewById(R.id.weightcaptured)).setText(weightlist.get(0).getKg()+"Kg");
             ((TextView)convertView.findViewById(R.id.weightcaptureddate)).setText(Utils.convertDateFormat(new DateTime(weightlist.get(0).getDate().getTime())));
 
