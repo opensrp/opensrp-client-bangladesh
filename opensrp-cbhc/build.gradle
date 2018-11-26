@@ -53,21 +53,21 @@ android {
     }
 
     buildTypes {
-//        release {
-//            resValue "string", 'opensrp_url', '"http://27.147.129.52:8080/opensrp/"'
-//            buildConfigField "int", "OPENMRS_UNIQUE_ID_INITIAL_BATCH_SIZE", '250'
-//            buildConfigField "int", "OPENMRS_UNIQUE_ID_BATCH_SIZE", '100'
-//            buildConfigField "int", "OPENMRS_UNIQUE_ID_SOURCE", '2'
-//            buildConfigField "int", "DATABASE_VERSION", '1'
-//            buildConfigField "long", "MAX_SERVER_TIME_DIFFERENCE", "1800000l"
-//            buildConfigField "boolean", "TIME_CHECK", "false"
-//            buildConfigField "int", "DATA_SYNC_DURATION_MINUTES", '2'
-//            buildConfigField "int", "VACCINE_SYNC_PROCESSING_MINUTES", '2'
-//            buildConfigField "int", "IMAGE_UPLOAD_MINUTES", '7'
-//            buildConfigField "int", "PULL_UNIQUE_IDS_MINUTES", '10'
-//            buildConfigField "int", "VIEW_SYNC_CONFIGURATIONS_MINUTES", '2'
-//            testCoverageEnabled true
-//        }
+        release {
+            resValue "string", 'opensrp_url', '"http://27.147.129.52:8080/opensrp/"'
+            buildConfigField "int", "OPENMRS_UNIQUE_ID_INITIAL_BATCH_SIZE", '250'
+            buildConfigField "int", "OPENMRS_UNIQUE_ID_BATCH_SIZE", '100'
+            buildConfigField "int", "OPENMRS_UNIQUE_ID_SOURCE", '2'
+            buildConfigField "int", "DATABASE_VERSION", '1'
+            buildConfigField "long", "MAX_SERVER_TIME_DIFFERENCE", "1800000l"
+            buildConfigField "boolean", "TIME_CHECK", "false"
+            buildConfigField "int", "DATA_SYNC_DURATION_MINUTES", '2'
+            buildConfigField "int", "VACCINE_SYNC_PROCESSING_MINUTES", '2'
+            buildConfigField "int", "IMAGE_UPLOAD_MINUTES", '7'
+            buildConfigField "int", "PULL_UNIQUE_IDS_MINUTES", '10'
+            buildConfigField "int", "VIEW_SYNC_CONFIGURATIONS_MINUTES", '2'
+            testCoverageEnabled true
+        }
 
         debug {
             resValue "string", 'opensrp_url', '"http://192.168.22.152:8080/opensrp/"'
