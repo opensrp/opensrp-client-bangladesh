@@ -181,60 +181,67 @@ public class ReportGeoMapFragment extends Fragment implements
 
     @Override
     public void onMapReady(final GoogleMap map) {
-        (new AsyncTask(){
-            ProgressDialog dialog;
-            List <geoChildWeightHolder> geoChildWeightHolders;
-            @Override
-            protected void onPreExecute() {
-                super.onPreExecute();
-                dialog = ProgressDialog.show(getActivity(),"processing", "please Wait");
-                dialog.show();
-            }
+        try {
+            (new AsyncTask() {
+                ProgressDialog dialog;
+                List<geoChildWeightHolder> geoChildWeightHolders;
 
-            @Override
-            protected Object doInBackground(Object[] objects) {
+                @Override
+                protected void onPreExecute() {
+                    super.onPreExecute();
+                    dialog = ProgressDialog.show(getActivity(), "processing", "please Wait");
+                    dialog.show();
+                }
 
-                geoChildWeightHolders = generateMarkersToMap();
+                @Override
+                protected Object doInBackground(Object[] objects) {
+
+                    geoChildWeightHolders = generateMarkersToMap();
 
 
-                return null;
-            }
+                    return null;
+                }
 
-            @Override
-            protected void onPostExecute(Object o) {
-                super.onPostExecute(o);
-                mMap = map;
+                @Override
+                protected void onPostExecute(Object o) {
+                    super.onPostExecute(o);
+                    mMap = map;
 
-                // Hide the zoom controls as the button panel will cover it.
-                mMap.getUiSettings().setZoomControlsEnabled(false);
+                    // Hide the zoom controls as the button panel will cover it.
+                    mMap.getUiSettings().setZoomControlsEnabled(false);
 
-                // Add lots of markers to the map.
-                addMarkersToMap(geoChildWeightHolders);
-                // Setting an info window adapter allows us to change the both the contents and look of the
-                // info window.
+                    // Add lots of markers to the map.
+                    addMarkersToMap(geoChildWeightHolders);
+                    // Setting an info window adapter allows us to change the both the contents and look of the
+                    // info window.
 //        mMap.setInfoWindowAdapter(new CustomInfoWindowAdapter());
 
-                // Set listeners for marker events.  See the bottom of this class for their behavior.
-                mMap.setOnMarkerClickListener(ReportGeoMapFragment.this);
-                mMap.setOnInfoWindowClickListener(ReportGeoMapFragment.this);
-                mMap.setOnMarkerDragListener(ReportGeoMapFragment.this);
-                mMap.setOnInfoWindowCloseListener(ReportGeoMapFragment.this);
-                mMap.setOnInfoWindowLongClickListener(ReportGeoMapFragment.this);
+                    // Set listeners for marker events.  See the bottom of this class for their behavior.
+                    mMap.setOnMarkerClickListener(ReportGeoMapFragment.this);
+                    mMap.setOnInfoWindowClickListener(ReportGeoMapFragment.this);
+                    mMap.setOnMarkerDragListener(ReportGeoMapFragment.this);
+                    mMap.setOnInfoWindowCloseListener(ReportGeoMapFragment.this);
+                    mMap.setOnInfoWindowLongClickListener(ReportGeoMapFragment.this);
 
-                // Override the default content description on the view, for accessibility mode.
-                // Ideally this string would be localised.
-                mMap.setContentDescription("Map with lots of markers.");
+                    // Override the default content description on the view, for accessibility mode.
+                    // Ideally this string would be localised.
+                    if(geoChildWeightHolders.size()>0) {
+                        mMap.setContentDescription("Map with lots of markers.");
 
-                LatLngBounds.Builder builder = new LatLngBounds.Builder();
-                for(int i =0;i<geoChildWeightHolders.size();i++){
-                    builder.include(geoChildWeightHolders.get(i).position);
+                        LatLngBounds.Builder builder = new LatLngBounds.Builder();
+                        for (int i = 0; i < geoChildWeightHolders.size(); i++) {
+                            builder.include(geoChildWeightHolders.get(i).position);
+                        }
+                        LatLngBounds bounds = builder.build();
+                        mMap.moveCamera(CameraUpdateFactory.newLatLngBounds(bounds, 50));
+                    }
+                    dialog.dismiss();
                 }
-                LatLngBounds bounds = builder.build();
-                mMap.moveCamera(CameraUpdateFactory.newLatLngBounds(bounds, 50));
+            }).execute();
 
-                dialog.dismiss();
-            }
-        }).execute();
+        }catch (Exception e){
+
+        }
 
             }
 

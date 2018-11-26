@@ -26,13 +26,14 @@ public class LookUpTextWatcher implements TextWatcher {
     private final View mView;
     private final JsonFormFragment formFragment;
     private final String mEntityId;
+    public String relationalid;
 
-
-    public LookUpTextWatcher(JsonFormFragment formFragment, View view, String entityId) {
+    public LookUpTextWatcher(JsonFormFragment formFragment, View view, String entityId,String relationalid) {
         this.formFragment = formFragment;
         mView = view;
         mEntityId = entityId;
         lookUpMap = new HashMap<>();
+        this.relationalid=relationalid;
 
     }
 
@@ -82,7 +83,7 @@ public class LookUpTextWatcher implements TextWatcher {
         }
 
         if (mEntityId.equalsIgnoreCase("mother")) {
-            MotherLookUpUtils.motherLookUp(context, lookUpMap.get(mEntityId), listener, null);
+            MotherLookUpUtils.motherLookUp(context, lookUpMap.get(mEntityId), listener, null,relationalid);
         }
 
     }

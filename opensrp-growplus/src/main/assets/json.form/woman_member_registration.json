@@ -303,7 +303,7 @@
           "Yes"
         ],
         "relevance": {
-          "step1:is_pregnant": {
+          "step1:pregnant": {
             "type": "string",
             "ex": "equalTo(., \"No\")"
           }

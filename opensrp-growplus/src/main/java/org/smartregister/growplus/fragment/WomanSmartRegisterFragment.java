@@ -27,6 +27,7 @@ import org.smartregister.cursoradapter.CursorSortOption;
 import org.smartregister.cursoradapter.SmartRegisterPaginatedCursorAdapter;
 import org.smartregister.cursoradapter.SmartRegisterQueryBuilder;
 import org.smartregister.domain.FetchStatus;
+import org.smartregister.growplus.activity.HouseholdSmartRegisterActivity;
 import org.smartregister.immunization.db.VaccineRepo;
 import org.smartregister.immunization.util.VaccinateActionUtils;
 import org.smartregister.growplus.R;
@@ -56,9 +57,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 import util.PathConstants;
+import util.SortFilterUtil;
 
 
 import static android.view.View.INVISIBLE;
+import static android.view.View.VISIBLE;
 
 public class WomanSmartRegisterFragment extends BaseSmartRegisterFragment implements SyncStatusBroadcastReceiver.SyncStatusListener {
     private final ClientActionHandler clientActionHandler = new ClientActionHandler();
@@ -212,10 +215,17 @@ public class WomanSmartRegisterFragment extends BaseSmartRegisterFragment implem
         view.findViewById(R.id.service_mode_selection).setVisibility(INVISIBLE);
         view.findViewById(R.id.register_client).setVisibility(INVISIBLE);
         view.findViewById(R.id.global_search).setVisibility(INVISIBLE);
-        view.findViewById(R.id.filter_selection).setVisibility(INVISIBLE);
+        view.findViewById(R.id.filter_selection).setVisibility(VISIBLE);
         filterSection = view.findViewById(R.id.filter_selection);
-        filterSection.setOnClickListener(clientActionHandler);
+//        filterSection.setOnClickListener(clientActionHandler);
+        filterSection.setOnClickListener(new View.OnClickListener(){
 
+            @Override
+            public void onClick(View view){
+                //show filterandsortfragment action trigger
+                ((WomanSmartRegisterActivity) getActivity()).switchToSortFilterFragment();
+            }
+        });
         filterCount = (TextView) view.findViewById(R.id.filter_count);
         filterCount.setVisibility(View.GONE);
         filterCount.setClickable(false);
@@ -228,7 +238,7 @@ public class WomanSmartRegisterFragment extends BaseSmartRegisterFragment implem
             }
         });
 
-        clientsView.setVisibility(View.VISIBLE);
+        clientsView.setVisibility(VISIBLE);
         clientsProgressView.setVisibility(View.INVISIBLE);
         setServiceModeViewDrawableRight(null);
         initializeQueries();
@@ -282,7 +292,12 @@ public class WomanSmartRegisterFragment extends BaseSmartRegisterFragment implem
         }
         return false;
     }
-
+    public void requestUpdateView(){
+        Sortqueries = SortFilterUtil.getSortQuery();
+//        filters = SortFilterUtil.getBlockFilterQuery();
+        filter(SortFilterUtil.getBlockFilterQuery(), "", mainCondition);
+        super.filterandSortExecute();
+    }
     public LocationPickerView getLocationPickerView() {
         return getClinicSelection();
     }
@@ -301,8 +316,8 @@ public class WomanSmartRegisterFragment extends BaseSmartRegisterFragment implem
         countSelect = countqueryBUilder.mainCondition("");
         mainCondition = "";
         super.CountExecute();
-        countOverDue();
-        countDueOverDue();
+//        countOverDue();
+//        countDueOverDue();
 
         SmartRegisterQueryBuilder queryBUilder = new SmartRegisterQueryBuilder();
         queryBUilder.SelectInitiateMainTable(tableName, new String[]{
@@ -319,8 +334,14 @@ public class WomanSmartRegisterFragment extends BaseSmartRegisterFragment implem
                 tableName + ".contact_phone_number",
                 tableName + ".client_reg_date",
                 tableName + ".last_interacted_with"
+
+
         });
+        //queryBUilder.addCondition()
         mainSelect = queryBUilder.mainCondition("");
+//        queryBUilder.setSelectquery(mainSelect);
+//        mainCondition = " where ec_details.base_entity_id=ec_mother.id and ec_details.key='address2'";
+//        mainSelect = queryBUilder.mainCondition("ec_details.base_entity_id=ec_mother.id and ec_details.key='address2'");//
         Sortqueries = ((CursorSortOption) getDefaultOptionsProvider().sortOption()).sort();
 
         currentlimit = 20;
@@ -334,11 +355,11 @@ public class WomanSmartRegisterFragment extends BaseSmartRegisterFragment implem
 
     private void refreshSyncStatusViews() {
         if (SyncStatusBroadcastReceiver.getInstance().isSyncing()) {
-            syncProgressBar.setVisibility(View.VISIBLE);
+            syncProgressBar.setVisibility(VISIBLE);
             btnBackToHome.setVisibility(View.GONE);
         } else {
             syncProgressBar.setVisibility(View.GONE);
-            btnBackToHome.setVisibility(View.VISIBLE);
+            btnBackToHome.setVisibility(VISIBLE);
         }
     }
 
@@ -481,29 +502,7 @@ public class WomanSmartRegisterFragment extends BaseSmartRegisterFragment implem
     }
 
 
-    public void countOverDue() {
-        String mainCondition = filterSelectionCondition(true);
-        int count = count(mainCondition);
 
-        if (filterCount != null) {
-            if (count > 0) {
-                filterCount.setText(String.valueOf(count));
-                filterCount.setVisibility(View.VISIBLE);
-                filterCount.setClickable(true);
-            } else {
-                filterCount.setVisibility(View.GONE);
-                filterCount.setClickable(false);
-            }
-        }
-
-        ((WomanSmartRegisterActivity) getActivity()).updateAdvancedSearchFilterCount(count);
-    }
-
-    public void countDueOverDue() {
-        String mainCondition = filterSelectionCondition(false);
-        int count = count(mainCondition);
-        dueOverdueCount = count;
-    }
 
     private int count(String mainConditionString) {
 
@@ -548,12 +547,12 @@ public class WomanSmartRegisterFragment extends BaseSmartRegisterFragment implem
                 titleLabelView.setText(String.format(getString(R.string.overdue_due), dueOverdueCount));
             }
             nameInitials.setVisibility(View.GONE);
-            backButton.setVisibility(View.VISIBLE);
+            backButton.setVisibility(VISIBLE);
         } else {
             if (titleLabelView != null) {
                 titleLabelView.setText(getString(R.string.zeir));
             }
-            nameInitials.setVisibility(View.VISIBLE);
+            nameInitials.setVisibility(VISIBLE);
             backButton.setVisibility(View.GONE);
         }
     }

@@ -18,6 +18,8 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import net.sqlcipher.database.SQLiteDatabase;
+
 import org.smartregister.Context;
 import org.smartregister.commonregistry.CommonPersonObjectClient;
 import org.smartregister.commonregistry.CommonRepository;
@@ -49,11 +51,14 @@ import org.smartregister.view.dialog.ServiceModeOption;
 import org.smartregister.view.dialog.SortOption;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 
+import util.SortFilterUtil;
 
 import static android.view.View.INVISIBLE;
+import static android.view.View.VISIBLE;
 
 public class HouseholdSmartRegisterFragment extends BaseSmartRegisterFragment {
     private final ClientActionHandler clientActionHandler = new ClientActionHandler();
@@ -72,7 +77,7 @@ public class HouseholdSmartRegisterFragment extends BaseSmartRegisterFragment {
     protected SecuredNativeSmartRegisterActivity.DefaultOptionsProvider getDefaultOptionsProvider() {
         return new SecuredNativeSmartRegisterActivity.DefaultOptionsProvider() {
             // FIXME path_conflict
-            //@Override
+//            @Override
             public FilterOption searchFilterOption() {
                 return new BasicSearchOption(getDefaultOptionsProvider().nameInShortFormForTitle());
             }
@@ -154,7 +159,11 @@ public class HouseholdSmartRegisterFragment extends BaseSmartRegisterFragment {
 
 
     }
-
+    public void requestUpdateView(){
+        Sortqueries = SortFilterUtil.getSortQuery();
+        filters = SortFilterUtil.getFilterQuery();
+        super.filterandSortExecute();
+    }
     @Override
     protected void onCreation() {
     }
@@ -199,11 +208,18 @@ public class HouseholdSmartRegisterFragment extends BaseSmartRegisterFragment {
         view.findViewById(R.id.btn_report_month).setVisibility(INVISIBLE);
         view.findViewById(R.id.service_mode_selection).setVisibility(INVISIBLE);
         view.findViewById(R.id.global_search).setVisibility(INVISIBLE);
-        view.findViewById(R.id.filter_selection).setVisibility(INVISIBLE);
+        view.findViewById(R.id.filter_selection).setVisibility(VISIBLE);
         view.findViewById(R.id.filter_count).setVisibility(INVISIBLE);
 
         filterSection = view.findViewById(R.id.filter_selection);
-        filterSection.setOnClickListener(clientActionHandler);
+        filterSection.setOnClickListener(new View.OnClickListener(){
+
+            @Override
+            public void onClick(View view){
+                //show filterandsortfragment action trigger
+                ((HouseholdSmartRegisterActivity) getActivity()).switchToSortFilterFragment();
+            }
+        });
 
         filterCount = (TextView) view.findViewById(R.id.filter_count);
         filterCount.setVisibility(View.GONE);
@@ -217,7 +233,7 @@ public class HouseholdSmartRegisterFragment extends BaseSmartRegisterFragment {
             }
         });
 
-        clientsView.setVisibility(View.VISIBLE);
+        clientsView.setVisibility(VISIBLE);
         clientsProgressView.setVisibility(View.INVISIBLE);
         setServiceModeViewDrawableRight(null);
         initializeQueries();
@@ -299,7 +315,10 @@ public class HouseholdSmartRegisterFragment extends BaseSmartRegisterFragment {
                 tableName + ".details",
                 tableName + ".HHID",
                 tableName + ".Date_Of_Reg",
-                tableName + ".address1"
+                tableName + ".address1",
+                tableName+".last_interacted_with",
+                "(select ec_details.value from ec_details where ec_details.key='address2' and ec_details.base_entity_id=ec_household.id) as ward",
+                "(select sum(count) from(select count(*) as count from ec_mother where ec_mother.relational_id=ec_household.id union select count(*) as count from ec_child where ec_child.relational_id in ( select ec_mother.id from ec_mother where ec_mother.relational_id=ec_household.id)))as member_count"
         });
         mainSelect = queryBUilder.mainCondition("");
         Sortqueries = ((CursorSortOption) getDefaultOptionsProvider().sortOption()).sort();
@@ -347,8 +366,8 @@ public class HouseholdSmartRegisterFragment extends BaseSmartRegisterFragment {
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
 
-                filter("Where ((first_name Like '%"+s.toString()+"%' or HHID Like '%"+s.toString()+"%')" +
-                        " or ec_household.id in (select ec_mother.relational_id from ec_mother where ec_mother.first_name like '%" +s.toString()+"%')" +
+                filter("Where ((first_name Like '%"+s.toString()+"%' or HHID Like '%"+s.toString()+"%' or contact_phone_number LIKE '%"+s.toString()+"%' )" +
+                        " or ec_household.id in (select ec_mother.relational_id from ec_mother where ec_mother.first_name like '%" +s.toString()+"%'"+" or contact_phone_number LIKE '%"+s.toString()+"%')" +
                         "or ec_household.id in (select ec_mother.relational_id from ec_mother where ec_mother.id in (select ec_child.relational_id from ec_child where ec_child.first_name like '%" +s.toString()+"%')))"
                         ,"","");
             }
@@ -455,7 +474,7 @@ public class HouseholdSmartRegisterFragment extends BaseSmartRegisterFragment {
         if (filterCount != null) {
             if (count > 0) {
                 filterCount.setText(String.valueOf(count));
-                filterCount.setVisibility(View.VISIBLE);
+                filterCount.setVisibility(VISIBLE);
                 filterCount.setClickable(true);
             } else {
                 filterCount.setVisibility(View.GONE);
@@ -515,12 +534,12 @@ public class HouseholdSmartRegisterFragment extends BaseSmartRegisterFragment {
                 titleLabelView.setText(String.format(getString(R.string.overdue_due), dueOverdueCount));
             }
             nameInitials.setVisibility(View.GONE);
-            backButton.setVisibility(View.VISIBLE);
+            backButton.setVisibility(VISIBLE);
         } else {
             if (titleLabelView != null) {
                 titleLabelView.setText(getString(R.string.zeir));
             }
-            nameInitials.setVisibility(View.VISIBLE);
+            nameInitials.setVisibility(VISIBLE);
             backButton.setVisibility(View.GONE);
         }
     }
