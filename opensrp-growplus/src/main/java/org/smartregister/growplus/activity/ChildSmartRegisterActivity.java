@@ -29,6 +29,7 @@ import org.smartregister.growplus.adapter.PathRegisterActivityPagerAdapter;
 import org.smartregister.growplus.fragment.AdvancedSearchFragment;
 import org.smartregister.growplus.fragment.BaseSmartRegisterFragment;
 import org.smartregister.growplus.fragment.ChildSmartRegisterFragment;
+import org.smartregister.growplus.fragment.WomanSmartRegisterFragment;
 import org.smartregister.growplus.view.LocationPickerView;
 import org.smartregister.provider.SmartRegisterClientsProvider;
 import org.smartregister.repository.AllSharedPreferences;
@@ -56,7 +57,7 @@ public class ChildSmartRegisterActivity extends BaseRegisterActivity {
     private static final int REQUEST_CODE_GET_JSON = 3432;
     private int currentPage;
     public static final int ADVANCED_SEARCH_POSITION = 1;
-
+    public Fragment sortFilterFragment;
     public android.support.v4.app.Fragment mBaseFragment = null;
 
 
@@ -67,9 +68,9 @@ public class ChildSmartRegisterActivity extends BaseRegisterActivity {
         ButterKnife.bind(this);
 
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
-
+        sortFilterFragment = new org.smartregister.growplus.fragment.SortFilterFragment();
         mBaseFragment = new ChildSmartRegisterFragment();
-        Fragment[] otherFragments = {new AdvancedSearchFragment()};
+        Fragment[] otherFragments = {new AdvancedSearchFragment(),sortFilterFragment};
 
         // Instantiate a ViewPager and a PagerAdapter.
         mPagerAdapter = new PathRegisterActivityPagerAdapter(getSupportFragmentManager(), mBaseFragment, otherFragments);
@@ -85,7 +86,18 @@ public class ChildSmartRegisterActivity extends BaseRegisterActivity {
         Event.ON_DATA_FETCHED.addListener(onDataFetchedListener);
 
     }
+    public void switchToSortFilterFragment(){
+        mPager.setCurrentItem(2);
+    }
 
+    public void switchToBaseFragment() {
+        mPager.setCurrentItem(0);
+    }
+
+    public void applySortAndFilter(){
+        switchToBaseFragment();
+        ((ChildSmartRegisterFragment)mBaseFragment).requestUpdateView();
+    }
     @Override
     protected void onDestroy() {
         super.onDestroy();

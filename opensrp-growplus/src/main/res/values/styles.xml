@@ -11,6 +11,9 @@
         <item name="colorAccent">@color/accent</item>
     </style>
 
+    <style name="AncAppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
+    <style name="AncAppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
+
     <style name="AppThemeNoTitle" parent="AppTheme">
         <!-- Customize your theme here. -->
         <item name="android:windowNoTitle">true</item>
@@ -19,7 +22,11 @@
         <!-- this is useful to prevent the keyboard from covering up the input fields -->
         <item name="android:windowContentOverlay">@null</item>
     </style>
-
+    <style name="AncAlertDialog" parent="Theme.AppCompat.Light.Dialog.Alert">
+        <item name="colorPrimary">@color/primary</item>
+        <item name="colorPrimaryDark">@color/primary_dark</item>
+        <item name="colorAccent">@color/accent</item>
+    </style>
     <style name="CustomFontTextViewStyle.Home.RegisterLabelCustom">
         <item name="fontVariant">regular</item>
         <item name="android:textSize">14sp</item>

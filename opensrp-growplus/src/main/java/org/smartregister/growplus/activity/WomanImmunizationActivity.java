@@ -32,6 +32,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.smartregister.commonregistry.AllCommonsRepository;
 import org.smartregister.commonregistry.CommonPersonObject;
 import org.smartregister.commonregistry.CommonPersonObjectClient;
+import org.smartregister.commonregistry.CommonRepository;
 import org.smartregister.domain.Alert;
 import org.smartregister.domain.Photo;
 import org.smartregister.growplus.adapter.CounsellingCardAdapter;
@@ -155,6 +156,7 @@ public class WomanImmunizationActivity extends BaseActivity
     public CommonPersonObjectClient childDetails;
     private RegisterClickables registerClickables;
     public DetailsRepository detailsRepository;
+    public org.smartregister.Context context;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -196,7 +198,10 @@ public class WomanImmunizationActivity extends BaseActivity
 
         toolbar.init(this);
         setLastModified(false);
+
     }
+
+
 
     @Override
     protected void onSaveInstanceState(Bundle outState) {
@@ -1365,6 +1370,12 @@ public class WomanImmunizationActivity extends BaseActivity
             allCommonsRepository.update(tableName, contentValues, childDetails.entityId());
             allCommonsRepository.updateSearch(childDetails.entityId());
         }
+        //mother last visit update
+        ContentValues cv = new ContentValues();
+        cv.put("last_interacted_with",""+((new DateTime()).getMillis()));
+        context = org.smartregister.Context.getInstance().updateApplicationContext(this.getApplicationContext());
+        CommonRepository commonRepository = context.commonrepository("ec_household");
+        commonRepository.updateColumn("ec_mother",cv,childDetails.entityId());
         super.finish();
     }
 

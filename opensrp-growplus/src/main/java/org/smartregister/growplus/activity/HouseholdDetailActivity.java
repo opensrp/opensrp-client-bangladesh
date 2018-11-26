@@ -1,6 +1,10 @@
 package org.smartregister.growplus.activity;
 
+
+import android.content.ContentValues;
+
 import android.app.FragmentTransaction;
+
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -359,6 +363,18 @@ public class HouseholdDetailActivity extends BaseActivity {
         HouseholdCursorAdpater cursorAdpater = new HouseholdCursorAdpater(getApplicationContext(),cursor);
 
         householdList.setAdapter(cursorAdpater);
+    }
+
+    @Override
+    public void finish() {
+
+        ContentValues cv = new ContentValues();
+        cv.put("last_interacted_with",""+((new DateTime()).getMillis()));
+
+        CommonRepository commonRepository = context.commonrepository("ec_household");
+        commonRepository.updateColumn("ec_household",cv,householdDetails.entityId());
+
+        super.finish();
     }
 
     @Override

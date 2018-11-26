@@ -150,9 +150,9 @@ public class VaccinatorApplication extends DrishtiApplication
 
     private static String[] getFtsSearchFields(String tableName) {
         if (tableName.equals(PathConstants.CHILD_TABLE_NAME)) {
-            return new String[]{"zeir_id", "epi_card_number", "first_name", "last_name"};
+            return new String[]{"zeir_id", "epi_card_number", "first_name", "last_name","block"};
         } else if (tableName.equals(PathConstants.MOTHER_TABLE_NAME)) {
-            return new String[]{"zeir_id", "epi_card_number", "first_name", "last_name", "father_name", "husband_name", "contact_phone_number"};
+            return new String[]{"zeir_id", "epi_card_number", "first_name", "last_name", "father_name", "husband_name", "contact_phone_number","block"};
         }
         return null;
     }
@@ -169,6 +169,7 @@ public class VaccinatorApplication extends DrishtiApplication
             names.add("last_interacted_with");
             names.add("inactive");
             names.add("lost_to_follow_up");
+            names.add("block");
             names.add(PathConstants.EC_CHILD_TABLE.DOD);
 
             for (VaccineRepo.Vaccine vaccine : vaccines) {
@@ -177,7 +178,7 @@ public class VaccinatorApplication extends DrishtiApplication
 
             return names.toArray(new String[names.size()]);
         } else if (tableName.equals(PathConstants.MOTHER_TABLE_NAME)) {
-            return new String[]{"first_name", "dob", "zeir_id", "last_interacted_with"};
+            return new String[]{"first_name", "dob", "zeir_id", "last_interacted_with","block"};
         }
         return null;
     }
