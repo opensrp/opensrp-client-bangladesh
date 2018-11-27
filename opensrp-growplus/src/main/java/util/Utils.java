@@ -29,6 +29,7 @@ import android.widget.TextView;
 import org.apache.commons.lang3.StringUtils;
 import org.smartregister.growplus.domain.EditWrapper;
 
+import java.text.SimpleDateFormat;
 import java.util.Collection;
 import java.util.Map;
 
@@ -38,7 +39,7 @@ import java.util.Map;
  *         Class containing some static utility methods.
  */
 public class Utils {
-
+    public static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("dd-MM-yyyy");
     private Utils() {
     }
 
