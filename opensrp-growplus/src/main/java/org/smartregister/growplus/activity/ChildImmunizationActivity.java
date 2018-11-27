@@ -985,7 +985,7 @@ public class ChildImmunizationActivity extends BaseActivity
             if (weightWrapper.getUpdatedWeightDate() != null) {
                 long timeDiff = Calendar.getInstance().getTimeInMillis() - weightWrapper.getUpdatedWeightDate().getMillis();
 
-                if (timeDiff <= TimeUnit.MILLISECONDS.convert(RECORD_WEIGHT_BUTTON_ACTIVE_MIN, TimeUnit.HOURS)) {
+                if (timeDiff <= TimeUnit.MILLISECONDS.convert(RECORD_WEIGHT_BUTTON_ACTIVE_MIN, TimeUnit.MINUTES)) {
                     //disable the button
                     recordWeight.setClickable(false);
                     recordWeight.setBackground(new ColorDrawable(getResources()
@@ -1014,13 +1014,35 @@ public class ChildImmunizationActivity extends BaseActivity
         Date dob = null;
         String formattedDob = "";
         if (isDataOk()) {
-            String dobString = Utils.getValue(childDetails.getColumnmaps(), PathConstants.KEY.DOB, false);
-            if (!TextUtils.isEmpty(dobString)) {
-                DateTime dateTime = new DateTime(dobString);
-                dob = dateTime.toDate();
-                formattedDob = DATE_FORMAT.format(dob);
+            String entity_id = Utils.getValue(childDetails.getColumnmaps(), "base_entity_id", false);
+            WeightRepository wp = VaccinatorApplication.getInstance().weightRepository();
+            List<Weight> weights = wp.findByEntityId(entity_id);
+            if(weights.size()==0){
+                String dobString = Utils.getValue(childDetails.getColumnmaps(), PathConstants.KEY.DOB, false);
+                if (!TextUtils.isEmpty(dobString)) {
+                    DateTime dateTime = new DateTime(dobString);
+                    dob = dateTime.toDate();
+                    formattedDob = DATE_FORMAT.format(dob);
+
+                }
+            }else{
+                Date date = weights.get(0).getDate();
+                Weight weight = weights.get(0);
+                dob = weight.getDate();
+
+                for(int i=1;i<weights.size();i++){
+                    weight = weights.get(i);
+                    if(weight.getDate().after(date)){
+
+                        date = weight.getDate();
+                        dob = weight.getDate();
+                    }
+                }
+
 
             }
+
+
         }
         WeightWrapper weightWrapper = (WeightWrapper) view.getTag();
         RecordWeightDialogFragment recordWeightDialogFragment = RecordWeightDialogFragment.newInstance(dob,weightWrapper);
