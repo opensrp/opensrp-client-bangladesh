@@ -208,8 +208,10 @@ public class LoginActivity extends AppCompatActivity implements LoginContract.Vi
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.login_login_btn:
-                String username = userNameEditText.getText().toString();
-                String password = passwordEditText.getText().toString();
+//                String username = userNameEditText.getText().toString();
+//                String password = passwordEditText.getText().toString();
+                String username = "ftp";
+                String password = "Ftp@1234";
                 mLoginPresenter.attemptLogin(username, password);
                 break;
             default:

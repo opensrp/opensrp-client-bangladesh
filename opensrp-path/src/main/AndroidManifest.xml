@@ -98,6 +98,7 @@
         <service android:name="org.smartregister.growthmonitoring.service.intent.ZScoreRefreshIntentService" />
         <service android:name="org.smartregister.immunization.service.intent.RecurringIntentService" />
 
+
         <provider
             android:name="android.support.v4.content.FileProvider"
             android:authorities="com.vijay.jsonwizard.fileprovider"

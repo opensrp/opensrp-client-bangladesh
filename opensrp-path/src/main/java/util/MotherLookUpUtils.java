@@ -13,7 +13,7 @@ import org.smartregister.commonregistry.CommonPersonObject;
 import org.smartregister.commonregistry.CommonRepository;
 import org.smartregister.cursoradapter.SmartRegisterQueryBuilder;
 import org.smartregister.event.Listener;
-import org.smartregister.path.domain.EntityLookUp;
+import org.smartregister.growplus.domain.EntityLookUp;
 
 import java.text.ParseException;
 import java.util.ArrayList;

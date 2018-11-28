@@ -34,14 +34,14 @@ public class ConfigHelper {
         config.setFilterFields(filers);
 
         List<Field> sortFields = new ArrayList<>();
-        sortFields.add(new Field(context.getString(R.string.updated_recent_first), "updated_at desc"));
-        sortFields.add(new Field(context.getString(R.string.ga_older_first), "ga asc"));
-        sortFields.add(new Field(context.getString(R.string.ga_younger_first), "ga desc"));
-        sortFields.add(new Field(context.getString(R.string.id), "id"));
-        sortFields.add(new Field(context.getString(R.string.first_name_a_to_z), "first_name asc"));
-        sortFields.add(new Field(context.getString(R.string.first_name_z_to_a), "first_name desc"));
-        sortFields.add(new Field(context.getString(R.string.last_name_a_to_z), "last_name asc"));
-        sortFields.add(new Field(context.getString(R.string.last_name_z_to_a), "last_name desc"));
+//        sortFields.add(new Field(context.getString(R.string.updated_recent_first), "updated_at desc"));
+//        sortFields.add(new Field(context.getString(R.string.ga_older_first), "ga asc"));
+//        sortFields.add(new Field(context.getString(R.string.ga_younger_first), "ga desc"));
+//        sortFields.add(new Field(context.getString(R.string.id), "id"));
+        sortFields.add(new Field(context.getString(R.string.first_name_a_to_z), "first_name COLLATE NOCASE asc"));
+        sortFields.add(new Field(context.getString(R.string.first_name_z_to_a), "first_name COLLATE NOCASE desc"));
+        sortFields.add(new Field(context.getString(R.string.last_name_a_to_z), "last_name COLLATE NOCASE asc"));
+        sortFields.add(new Field(context.getString(R.string.last_name_z_to_a), "last_name COLLATE NOCASE desc"));
         config.setSortFields(sortFields);
 
         return config;

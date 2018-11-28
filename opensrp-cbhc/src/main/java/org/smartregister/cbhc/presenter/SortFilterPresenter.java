@@ -37,6 +37,11 @@ public class SortFilterPresenter implements SortFilterContract.Presenter {
     }
 
     @Override
+    public void clearSortAndFilter() {
+        getView().clearFilter();
+    }
+
+    @Override
     public RegisterConfiguration getConfig() {
         return config;
     }
