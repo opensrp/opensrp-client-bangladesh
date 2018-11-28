@@ -91,10 +91,10 @@ import java.util.Map;
 import java.util.Random;
 
 import util.PathConstants;
+import util.WeightVelocityUtils;
 
 import static android.view.View.INVISIBLE;
 import static org.smartregister.growplus.activity.LoginActivity.getOpenSRPContext;
-import static org.smartregister.growplus.provider.ChildSmartClientsProvider.checkForWeightGainCalc;
 import static org.smartregister.util.Utils.getValue;
 
 public class ReportGeoMapFragment extends Fragment implements
@@ -247,7 +247,14 @@ public class ReportGeoMapFragment extends Fragment implements
 
     private void addMarkersToMap(List<geoChildWeightHolder> allgeoChildWeightHolders) {
         for (int i = 0; i < allgeoChildWeightHolders.size(); i++) {
-            if(allgeoChildWeightHolders.get(i).isChild_growth_rate()) {
+            if(allgeoChildWeightHolders.get(i).isChild_growth_rate()==null){
+                        Marker marker = mMap.addMarker(new MarkerOptions()
+                                .position(allgeoChildWeightHolders.get(i).position)
+                                .title(allgeoChildWeightHolders.get(i).childname)
+                                .icon(vectorToBitmap(R.drawable.mapmarker, getResources().getColor(R.color.status_bar_text_almost_white))));
+
+             }
+            else if(allgeoChildWeightHolders.get(i).isChild_growth_rate()) {
                 Marker marker = mMap.addMarker(new MarkerOptions()
                         .position(allgeoChildWeightHolders.get(i).position)
                         .title(allgeoChildWeightHolders.get(i).childname)
@@ -276,17 +283,19 @@ public class ReportGeoMapFragment extends Fragment implements
             if(geopoint!=null){
                 geoChildWeightHolder geoChildWeightHolder =
                         new geoChildWeightHolder(pc.getCaseId(),pc.getColumnmaps().get("first_name"));
-                geoChildWeightHolder.setPosition(new LatLng(Double.parseDouble(geopoint.split(" ")[0]),Double.parseDouble(geopoint.split(" ")[1])));
+                String[] str=geopoint.split(" ");
+                if(str.length>0){
+                    geoChildWeightHolder.setPosition(new LatLng(Double.parseDouble(geopoint.split(" ")[0]),Double.parseDouble(geopoint.split(" ")[1])));
+                }else{
+                    //allcommonschild.remove(i);
+                    geoChildWeightHolder.setPosition(new LatLng(0.0,0.0));
+                }
                 DateTime birthDateTime = null;
                 String dobString = getValue(pc.getColumnmaps(), PathConstants.KEY.DOB, false);
-                String durationString = "";
                 if (StringUtils.isNotBlank(dobString)) {
                     try {
                         birthDateTime = new DateTime(dobString);
-                        String duration = DateUtil.getDuration(birthDateTime);
-                        if (duration != null) {
-                            durationString = duration;
-                        }
+
                     } catch (Exception e) {
                         Log.e(getClass().getName(), e.toString(), e);
                     }
@@ -295,7 +304,7 @@ public class ReportGeoMapFragment extends Fragment implements
 
                 List<Weight> weightlist = weightRepository.findLast5(pc.getCaseId());
                 if(weightlist.size() >= 1) {
-                    boolean adequate = checkForWeightGainCalc(birthDateTime.toDate(), Gender.valueOf(gender.toUpperCase()), weightlist.get(0), pc, getOpenSRPContext().detailsRepository());
+                    Boolean adequate = WeightVelocityUtils.checkForWeightGainCalc(birthDateTime.toDate(), Gender.valueOf(gender.toUpperCase()), weightlist.get(0), pc.entityId(), getOpenSRPContext().detailsRepository());
                     geoChildWeightHolder.setChild_growth_rate(adequate);
                 }
                 allgeoChildWeightHolders.add(geoChildWeightHolder);
@@ -439,14 +448,14 @@ public class ReportGeoMapFragment extends Fragment implements
     class geoChildWeightHolder{
         String childcaseID;
         String childname;
-        boolean child_growth_rate;
+        Boolean child_growth_rate;
         LatLng position;
 
-        public boolean isChild_growth_rate() {
+        public Boolean isChild_growth_rate() {
             return child_growth_rate;
         }
 
-        public void setChild_growth_rate(boolean child_growth_rate) {
+        public void setChild_growth_rate(Boolean child_growth_rate) {
             this.child_growth_rate = child_growth_rate;
         }
 
