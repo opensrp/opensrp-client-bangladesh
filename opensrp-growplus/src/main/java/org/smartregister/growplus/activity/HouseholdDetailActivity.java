@@ -366,7 +366,7 @@ public class HouseholdDetailActivity extends BaseActivity {
     }
 
     @Override
-    public void onBackPressed() {
+    public void finish() {
 
         ContentValues cv = new ContentValues();
         cv.put("last_interacted_with",""+((new DateTime()).getMillis()));
@@ -374,7 +374,7 @@ public class HouseholdDetailActivity extends BaseActivity {
         CommonRepository commonRepository = context.commonrepository("ec_household");
         commonRepository.updateColumn("ec_household",cv,householdDetails.entityId());
 
-        super.onBackPressed();
+        super.finish();
     }
 
     @Override
