@@ -2,6 +2,7 @@ package org.smartregister.growplus.widgets;
 
 import android.content.Context;
 import android.text.InputType;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
@@ -36,6 +37,10 @@ public class PathEditTextFactory extends EditTextFactory {
         if (jsonObject.has("look_up") && jsonObject.get("look_up").toString().equalsIgnoreCase(Boolean.TRUE.toString())) {
 
             String entityId = jsonObject.getString("entity_id");
+            String household_id = "";
+            if (jsonObject.has("household_id")){
+                household_id = jsonObject.getString("household_id");
+            }
 
             Map<String, List<View>> lookupMap = formFragment.getLookUpMap();
             List<View> lookUpViews = new ArrayList<>();
@@ -48,7 +53,7 @@ public class PathEditTextFactory extends EditTextFactory {
             }
             lookupMap.put(entityId, lookUpViews);
 
-            editText.addTextChangedListener(new LookUpTextWatcher(formFragment, editText, entityId));
+            editText.addTextChangedListener(new LookUpTextWatcher(formFragment, editText, entityId,household_id));
             editText.setTag(com.vijay.jsonwizard.R.id.after_look_up, false);
         }
 

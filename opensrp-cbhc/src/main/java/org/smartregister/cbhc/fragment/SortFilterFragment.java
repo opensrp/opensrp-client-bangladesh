@@ -54,7 +54,7 @@ public class SortFilterFragment extends Fragment implements SortFilterContract.V
                 R.layout.fragment_sort_filter,
                 container, false);
 
-        updateFilterList(view, presenter.getConfig().getFilterFields());
+//        updateFilterList(view, presenter.getConfig().getFilterFields());
 
         View sortLayout = view.findViewById(R.id.sort_layout);
         sortLayout.setOnClickListener(actionHandler);
@@ -93,6 +93,13 @@ public class SortFilterFragment extends Fragment implements SortFilterContract.V
     private void switchToRegister() {
         if (getActivity() != null) {
             ((HomeRegisterActivity) getActivity()).switchToBaseFragment();
+        }
+    }
+
+    @Override
+    public void clearFilter() {
+        if (getActivity() != null) {
+            ((HomeRegisterActivity) getActivity()).clearFilter();
         }
     }
 
@@ -175,7 +182,8 @@ public class SortFilterFragment extends Fragment implements SortFilterContract.V
                     presenter.updateSortAndFilter();
                     break;
                 case R.id.clear_filter:
-                    filterAdapter.clear();
+                    presenter.clearSortAndFilter();
+//                    filterAdapter.clear();
                     break;
                 case R.id.sort_layout:
                     updateSortList(presenter.getConfig().getSortFields());

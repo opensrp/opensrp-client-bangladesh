@@ -7,10 +7,11 @@
     <color name="dark_grey">#999999</color>
     <color name="transparent_dark_grey">#EE999999</color>
     <color name="inactive_grey">#B5B5B5</color>
-
+    <color name="customAppThemeBlue">#218CC5</color>
     <color name="actionbar">#208CC5</color>
     <color name="client_list_grey">#737373</color>
     <color name="transparent_dark_blue">#ff196d99</color>
+    <color name="vaccine_yellow">#F0AB41</color>
 
     <!-- Gender identity colors -->
     <color name="gender_neutral_dark_green">#219e05</color>
@@ -42,7 +43,7 @@
     <color name="translucent_client_list_grey">#aa737373</color>
     <color name="toolbar_grey">#494949</color>
     <color name="snackbar_action_color">#eeff1c</color>
-    <color name="weightred">#e7685f</color>
+    <color name="weightred">#e9996f</color>
     <color name="weightgreen">#4da300</color>
 
 </resources>

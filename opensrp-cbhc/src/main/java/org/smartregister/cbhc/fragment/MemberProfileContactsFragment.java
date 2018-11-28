@@ -99,6 +99,7 @@ public class MemberProfileContactsFragment extends BaseProfileFragment {
                         textValue.setText(field.getJSONObject(i).getString(JsonFormUtils.VALUE));
                     }
                     textValue.setSingleLine(false);
+
 //                    LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
 //                    params.weight = 1;
 //                    params.setMargins(5, 5, 5, 5);

@@ -203,6 +203,7 @@ public class LoginActivity extends AppCompatActivity {
         final String userName = userNameEditText.getText().toString().trim();
         final String password = passwordEditText.getText().toString().trim();
 
+
         if (!TextUtils.isEmpty(userName) && !TextUtils.isEmpty(password)) {
             if (localLogin) {
                 localLogin(view, userName, password);

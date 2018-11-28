@@ -5,8 +5,8 @@ import org.opensrp.api.constants.Gender;
 import org.smartregister.commonregistry.CommonPersonObjectClient;
 import org.smartregister.domain.Photo;
 import org.smartregister.domain.ProfileImage;
-import org.smartregister.path.R;
-import org.smartregister.path.application.VaccinatorApplication;
+import org.smartregister.growplus.R;
+import org.smartregister.growplus.application.VaccinatorApplication;
 
 import static org.smartregister.util.Utils.getValue;
 

@@ -70,6 +70,13 @@
           }
         },
         {
+          "column_name": "contact_phone_number",
+          "type": "Client",
+          "json_mapping": {
+            "field": "attributes.phoneNumber"
+          }
+        },
+        {
           "column_name": "last_interacted_with",
           "type": "Event",
           "json_mapping": {
@@ -141,10 +148,9 @@
         },
         {
           "column_name": "contact_phone_number",
-          "type": "Event",
+          "type": "Client",
           "json_mapping": {
-            "field": "obs.fieldCode",
-            "concept": "159635AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
+            "field": "attributes.phoneNumber"
           }
         },
         {
@@ -229,6 +235,14 @@
           "type": "Client",
           "json_mapping": {
             "field": "addresses.addressFields.address1"
+          }
+        },
+        {
+          "column_name": "block",
+          "type": "Event",
+          "json_mapping": {
+            "field": "obs.fieldCode",
+            "formSubmissionField": "block"
           }
         },
         {
@@ -428,6 +442,14 @@
           "type": "Client",
           "json_mapping": {
             "field": "addresses.addressFields.address1"
+          }
+        },
+        {
+          "column_name": "block",
+          "type": "Event",
+          "json_mapping": {
+            "field": "obs.fieldCode",
+            "formSubmissionField": "block"
           }
         },
         {

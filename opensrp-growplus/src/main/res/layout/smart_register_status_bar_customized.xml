@@ -38,6 +38,7 @@
             android:background="@color/transparent"
             android:src="@drawable/ic_cross"
             android:visibility="visible" />
+
     </RelativeLayout>
 
 
@@ -71,6 +72,12 @@
             android:textSize="18sp"
             android:visibility="gone" />
     </FrameLayout>
-
+    <!--<ImageButton-->
+        <!--android:id="@+id/filter_selection"-->
+        <!--android:layout_width="@dimen/ec_main_header_search_cancel_button_width"-->
+        <!--android:layout_height="match_parent"-->
+        <!--android:background="@color/transparent"-->
+        <!--android:src="@drawable/ic_icon_filter"-->
+        <!--android:visibility="visible" />-->
 
 </LinearLayout>

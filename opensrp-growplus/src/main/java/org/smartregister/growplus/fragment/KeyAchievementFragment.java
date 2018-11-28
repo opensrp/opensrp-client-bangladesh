@@ -133,6 +133,15 @@ public class KeyAchievementFragment extends Fragment {
             e.printStackTrace();
         }
 
+        titleList.add("% of children who are being reached");
+        iconList.add(getResources().getDrawable(R.drawable.child_boy_infant_key_achievement));
+        try {
+            counts.add(totalChildrenCovered());
+        } catch (Exception e) {
+            counts.add("N/A");
+            e.printStackTrace();
+        }
+
         titleList.add("% of children who are growth faltering");
         iconList.add(getResources().getDrawable(R.drawable.child_boy_infant_key_achievement));
         try {
@@ -303,9 +312,6 @@ public class KeyAchievementFragment extends Fragment {
 
         boolean check = checkWeighGainVelocity(weight,previousWeight,age_when_weight_taken,monthLastWeightTaken,gender);
         return check;
-//        net.sqlcipher.database.SQLiteDatabase db = wp.getPathRepository().getReadableDatabase();
-
-
     }
 
     public String totalchildregister(String date){
@@ -339,6 +345,28 @@ public class KeyAchievementFragment extends Fragment {
             int totalwomanreached = Integer.parseInt(totalWomanReached);
             int totalwoman = Integer.parseInt(totalWoman);
             int percentagereached = (int)Math.round(((double)totalwomanreached/totalwoman)*100);
+            return ""+percentagereached;
+
+        }catch (Exception e){
+            return "";
+        }
+    }
+
+    public String totalChildrenCovered(){
+        Cursor cursor =  commonRepository.rawCustomQueryForAdapter("select count(distinct(base_entity_id)) from weights");
+        cursor.moveToFirst();
+        String totalWomanReached = cursor.getString(0);
+        cursor.close();
+
+        Cursor cursor2 =  commonRepository.rawCustomQueryForAdapter("Select count(*) from ec_child");
+        cursor2.moveToFirst();
+        String totalWoman = cursor2.getString(0);
+        cursor2.close();
+
+        try{
+            int totalChildrenreached = Integer.parseInt(totalWomanReached);
+            int totalChild = Integer.parseInt(totalWoman);
+            int percentagereached = (int)Math.round(((double)totalChildrenreached/totalChild)*100);
             return ""+percentagereached;
 
         }catch (Exception e){

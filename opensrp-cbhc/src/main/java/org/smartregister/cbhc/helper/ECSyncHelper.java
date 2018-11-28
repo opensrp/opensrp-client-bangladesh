@@ -1,6 +1,7 @@
 package org.smartregister.cbhc.helper;
 
 import android.content.Context;
+import android.preference.PreferenceManager;
 import android.util.Log;
 import android.util.Pair;
 
@@ -24,7 +25,6 @@ import java.util.List;
 import static org.smartregister.configurableviews.util.Constants.CONFIGURATION.LOGIN;
 import static org.smartregister.configurableviews.util.Constants.LAST_VIEWS_SYNC_TIMESTAMP;
 import static org.smartregister.configurableviews.util.Constants.VIEW_CONFIGURATION_PREFIX;
-import static org.smartregister.util.Utils.getPreference;
 
 /**
  * Created by ndegwamartin on 15/03/2018.
@@ -188,32 +188,34 @@ public class ECSyncHelper implements PrefsHelper {
     }
 
     public long getLastSyncTimeStamp() {
-        return Long.parseLong(getPreference(context, Constants.LAST_SYNC_TIMESTAMP, "0"));
+        return PreferenceManager.getDefaultSharedPreferences(context).getLong( Constants.LAST_SYNC_TIMESTAMP, 0);
     }
 
     public void updateLastSyncTimeStamp(long lastSyncTimeStamp) {
-        Utils.writePreference(context, Constants.LAST_SYNC_TIMESTAMP, lastSyncTimeStamp + "");
-    }
-
-    public long getLastViewsSyncTimeStamp() {
-        return Long.parseLong(getPreference(context, LAST_VIEWS_SYNC_TIMESTAMP, "0"));
+        PreferenceManager.getDefaultSharedPreferences(context).edit().putString(Constants.LAST_SYNC_TIMESTAMP, lastSyncTimeStamp + "").commit();
     }
 
     public void updateLastViewsSyncTimeStamp(long lastSyncTimeStamp) {
-        Utils.writePreference(context, LAST_VIEWS_SYNC_TIMESTAMP, lastSyncTimeStamp + "");
+        PreferenceManager.getDefaultSharedPreferences(context).edit().putString( LAST_VIEWS_SYNC_TIMESTAMP, lastSyncTimeStamp + "").commit();
     }
 
     public long getLastCheckTimeStamp() {
-        return Long.parseLong(getPreference(context, Constants.LAST_CHECK_TIMESTAMP, "0"));
+        return PreferenceManager.getDefaultSharedPreferences(context).getLong(Constants.LAST_CHECK_TIMESTAMP, 0);
     }
 
-    public void updateLastCheckTimeStamp(long lastSyncTimeStamp) {
-        Utils.writePreference(context, Constants.LAST_CHECK_TIMESTAMP, lastSyncTimeStamp + "");
+    public long getLastViewsSyncTimeStamp() {
+        return PreferenceManager.getDefaultSharedPreferences(context).getLong(LAST_VIEWS_SYNC_TIMESTAMP, 0);
     }
 
     public void updateLoginConfigurableViewPreference(String loginJson) {
-        Utils.writePreference(context, VIEW_CONFIGURATION_PREFIX + LOGIN, loginJson);
+        PreferenceManager.getDefaultSharedPreferences(context).edit().putString(VIEW_CONFIGURATION_PREFIX + LOGIN, loginJson).commit();
     }
+
+    public void updateLastCheckTimeStamp(long lastSyncTimeStamp) {
+        PreferenceManager.getDefaultSharedPreferences(context).edit().putString(Constants.LAST_CHECK_TIMESTAMP, lastSyncTimeStamp + "").commit();
+    }
+
+
 
     public void batchSave(JSONArray events, JSONArray clients) throws Exception {
         eventClientRepository.batchInsertClients(clients);
