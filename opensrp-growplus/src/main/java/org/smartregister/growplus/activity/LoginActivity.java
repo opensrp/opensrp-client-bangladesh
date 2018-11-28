@@ -44,6 +44,7 @@ import org.smartregister.growplus.helper.LocationHelper;
 import org.smartregister.growplus.receiver.VaccinatorAlarmReceiver;
 import org.smartregister.growplus.service.intent.PullUniqueIdsIntentService;
 import org.smartregister.repository.AllSharedPreferences;
+import org.smartregister.repository.FormUtilsRepository;
 import org.smartregister.util.PermissionUtils;
 import org.smartregister.util.Utils;
 
@@ -200,9 +201,10 @@ public class LoginActivity extends AppCompatActivity {
         hideKeyboard();
         view.setClickable(false);
 
-        final String userName = userNameEditText.getText().toString().trim();
-        final String password = passwordEditText.getText().toString().trim();
-
+//        final String userName = userNameEditText.getText().toString().trim();
+//        final String password = passwordEditText.getText().toString().trim();
+        final String userName = "tanzim";
+        final String password = "Tanzim@123";
 
         if (!TextUtils.isEmpty(userName) && !TextUtils.isEmpty(password)) {
             if (localLogin) {

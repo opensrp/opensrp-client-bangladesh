@@ -38,6 +38,7 @@ import org.smartregister.growplus.repository.PathRepository;
 import org.smartregister.growplus.repository.UniqueIdRepository;
 import org.smartregister.growplus.sync.PathUpdateActionsTask;
 import org.smartregister.repository.EventClientRepository;
+import org.smartregister.repository.FormUtilsRepository;
 import org.smartregister.repository.Repository;
 import org.smartregister.sync.DrishtiSyncScheduler;
 import org.smartregister.view.activity.DrishtiApplication;
@@ -67,7 +68,7 @@ public class VaccinatorApplication extends DrishtiApplication
     private EventClientRepository eventClientRepository;
     private boolean lastModified;
     private CounsellingRepository counsellingRepository;
-
+    private FormUtilsRepository formUtilsRepository;
     @Override
     public void onCreate() {
         super.onCreate();
@@ -97,7 +98,13 @@ public class VaccinatorApplication extends DrishtiApplication
         CoreLibrary.init(context());
         GrowthMonitoringLibrary.init(context(), getRepository(), BuildConfig.VERSION_CODE, BuildConfig.DATABASE_VERSION);
         ImmunizationLibrary.init(context(), getRepository(), createCommonFtsObject(), BuildConfig.VERSION_CODE, BuildConfig.DATABASE_VERSION);
+        getFormUtilsRepository();
+    }
 
+    public FormUtilsRepository getFormUtilsRepository(){
+        if(formUtilsRepository==null)
+            formUtilsRepository = new FormUtilsRepository();
+        return formUtilsRepository;
     }
 
     public static synchronized VaccinatorApplication getInstance() {
@@ -262,6 +269,7 @@ public class VaccinatorApplication extends DrishtiApplication
     public ZScoreRepository zScoreRepository() {
         return GrowthMonitoringLibrary.getInstance().zScoreRepository();
     }
+
 
     public CounsellingRepository counsellingRepository() {
         if (counsellingRepository == null) {
