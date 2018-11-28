@@ -2,11 +2,8 @@ package org.smartregister.path.view;
 
 import android.app.Dialog;
 import android.content.Context;
-import android.content.res.Resources;
 import android.text.TextUtils;
 import android.util.AttributeSet;
-import android.util.Log;
-import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.View;
 import android.view.Window;
@@ -14,40 +11,27 @@ import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.ListView;
 
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
 import org.smartregister.path.R;
 import org.smartregister.path.adapter.ServiceLocationsAdapter;
+import org.smartregister.path.application.VaccinatorApplication;
+import org.smartregister.path.helper.LocationHelper;
 import org.smartregister.view.customcontrols.CustomFontTextView;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Iterator;
 
-import org.smartregister.cbhc.util.JsonFormUtils;
+import util.Utils;
 
 /**
  * @author Jason Rogena - jrogena@ona.io
  * @since 03/03/2017
  */
 public class LocationPickerView extends CustomFontTextView implements View.OnClickListener {
-    private static final String TAG = "LocationPickerView";
 
     private final Context context;
-    private org.smartregister.Context openSrpContext;
     private Dialog locationPickerDialog;
     private ServiceLocationsAdapter serviceLocationsAdapter;
     private OnLocationChangeListener onLocationChangeListener;
-
-    private static final ArrayList<String> ALLOWED_LEVELS;
-    private static final String DEFAULT_LOCATION_LEVEL = "Union";
-
-    static {
-        ALLOWED_LEVELS = new ArrayList<>();
-        ALLOWED_LEVELS.add("Upazilla");
-        ALLOWED_LEVELS.add("Union");
-    }
 
     public LocationPickerView(Context context) {
         super(context);
@@ -64,21 +48,22 @@ public class LocationPickerView extends CustomFontTextView implements View.OnCli
         this.context = context;
     }
 
-    public void init(final org.smartregister.Context openSrpContext) {
-        this.openSrpContext = openSrpContext;
+    public void init() {
         locationPickerDialog = new Dialog(context);
         locationPickerDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         locationPickerDialog.setContentView(R.layout.dialog_location_picker);
 
         ListView locationsLV = (ListView) locationPickerDialog.findViewById(R.id.locations_lv);
-        serviceLocationsAdapter = new ServiceLocationsAdapter(context, getLocations(), getSelectedItem());
+
+        String defaultLocation = LocationHelper.getInstance().getDefaultLocation();
+        serviceLocationsAdapter = new ServiceLocationsAdapter(context, getLocations(defaultLocation));
         locationsLV.setAdapter(serviceLocationsAdapter);
         locationsLV.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                openSrpContext.allSharedPreferences().saveCurrentLocality(serviceLocationsAdapter
+                VaccinatorApplication.getInstance().context().allSharedPreferences().saveCurrentLocality(serviceLocationsAdapter
                         .getLocationAt(position));
-                LocationPickerView.this.setText(JsonFormUtils.getOpenMrsReadableName(
+                LocationPickerView.this.setText(LocationHelper.getInstance().getOpenMrsReadableName(
                         serviceLocationsAdapter.getLocationAt(position)));
                 if (onLocationChangeListener != null) {
                     onLocationChangeListener.onLocationChange(serviceLocationsAdapter
@@ -87,16 +72,17 @@ public class LocationPickerView extends CustomFontTextView implements View.OnCli
                 locationPickerDialog.dismiss();
             }
         });
-        this.setText(JsonFormUtils.getOpenMrsReadableName(getSelectedItem()));
+        this.setText(LocationHelper.getInstance().getOpenMrsReadableName(getSelectedItem()));
 
         setClickable(true);
         setOnClickListener(this);
     }
 
     public String getSelectedItem() {
-        String selectedLocation = openSrpContext.allSharedPreferences().fetchCurrentLocality();
-        if (TextUtils.isEmpty(selectedLocation) || !getLocations().contains(selectedLocation)) {
-            selectedLocation = getDefaultLocation();
+        String selectedLocation = VaccinatorApplication.getInstance().context().allSharedPreferences().fetchCurrentLocality();
+        if (TextUtils.isEmpty(selectedLocation) || !serviceLocationsAdapter.getLocationNames().contains(selectedLocation)) {
+            selectedLocation = LocationHelper.getInstance().getDefaultLocation();
+            VaccinatorApplication.getInstance().context().allSharedPreferences().saveCurrentLocality(selectedLocation);
         }
         return selectedLocation;
     }
@@ -105,24 +91,8 @@ public class LocationPickerView extends CustomFontTextView implements View.OnCli
         this.onLocationChangeListener = onLocationChangeListener;
     }
 
-    private ArrayList<String> getLocations() {
-        ArrayList<String> locations = new ArrayList<>();
-        String defaultLocation = getDefaultLocation();
-        try {
-            JSONObject locationData = new JSONObject(openSrpContext.anmLocationController().get());
-            if (locationData.has("locationsHierarchy")
-                    && locationData.getJSONObject("loc" +
-                    "ationsHierarchy").has("map")) {
-                JSONObject map = locationData.getJSONObject("locationsHierarchy").getJSONObject("map");
-                Iterator<String> keys = map.keys();
-                while (keys.hasNext()) {
-                    String curKey = keys.next();
-                    extractLocations(locations, map.getJSONObject(curKey), defaultLocation);
-                }
-            }
-        } catch (JSONException e) {
-            Log.e(TAG, Log.getStackTraceString(e));
-        }
+    private ArrayList<String> getLocations(String defaultLocation) {
+        ArrayList<String> locations = LocationHelper.getInstance().locationNamesFromHierarchy(defaultLocation);
 
         if (locations.contains(defaultLocation)) {
             locations.remove(defaultLocation);
@@ -133,44 +103,6 @@ public class LocationPickerView extends CustomFontTextView implements View.OnCli
         return locations;
     }
 
-    private void extractLocations(ArrayList<String> locationList, JSONObject rawLocationData,
-                                  String defaultLocation)
-            throws JSONException {
-        String name = rawLocationData.getJSONObject("node").getString("name");
-        String level = rawLocationData.getJSONObject("node").getJSONArray("tags").getString(0);
-
-        if (ALLOWED_LEVELS.contains(level)) {
-            if (level.equals(DEFAULT_LOCATION_LEVEL) && !name.equals(defaultLocation)) {
-                return;
-            }
-
-            locationList.add(name);
-        }
-
-        if (rawLocationData.has("children")) {
-            Iterator<String> childIterator = rawLocationData.getJSONObject("children").keys();
-            while (childIterator.hasNext()) {
-                String curChildKey = childIterator.next();
-                extractLocations(locationList,
-                        rawLocationData.getJSONObject("children").getJSONObject(curChildKey), defaultLocation);
-            }
-        }
-    }
-
-    private String getDefaultLocation() {
-        JSONArray rawDefaultLocation = JsonFormUtils
-                .generateDefaultLocationHierarchy(openSrpContext, ALLOWED_LEVELS);
-
-        if (rawDefaultLocation != null && rawDefaultLocation.length() > 0) {
-            try {
-                return rawDefaultLocation.getString(rawDefaultLocation.length() - 1);
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
-        }
-
-        return null;
-    }
 
     @Override
     public void onClick(View v) {
@@ -188,15 +120,9 @@ public class LocationPickerView extends CustomFontTextView implements View.OnCli
         LocationPickerView.this.getLocationInWindow(coords);
         wlp.x = coords[0]
                 + (int) (LocationPickerView.this.getWidth() * 0.5)
-                - (int) (convertDpToPx(780) * 0.5);
+                - (int) (Utils.convertDpToPx(context, 780) * 0.5);
 
         locationPickerDialog.show();
-    }
-
-    private int convertDpToPx(int dp) {
-        Resources r = context.getResources();
-        float px = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dp, r.getDisplayMetrics());
-        return Math.round(px);
     }
 
     public interface OnLocationChangeListener {

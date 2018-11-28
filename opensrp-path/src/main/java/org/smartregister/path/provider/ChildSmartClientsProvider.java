@@ -49,8 +49,8 @@ import java.util.Map;
 import java.util.concurrent.TimeUnit;
 import java.util.regex.Pattern;
 
-import org.smartregister.cbhc.util.ImageUtils;
-import org.smartregister.cbhc.util.PathConstants;
+import util.ImageUtils;
+import util.PathConstants;
 
 import static android.view.ViewGroup.LayoutParams.MATCH_PARENT;
 import static org.smartregister.immunization.util.VaccinatorUtils.generateScheduleList;
@@ -132,7 +132,7 @@ public class ChildSmartClientsProvider implements SmartRegisterCLientsProviderFo
         int defaultImageResId = ImageUtils.profileImageResourceByGender(gender);
         profilePic.setImageResource(defaultImageResId);
         if (pc.entityId() != null) { //image already in local storage most likely ):
-            //set profile image by passing the client id.If the image doesn't exist in the image org.smartregister.cbhc.repository then download and save locally
+            //set profile image by passing the client id.If the image doesn't exist in the image repository then download and save locally
             profilePic.setTag(org.smartregister.R.id.entity_id, pc.entityId());
             DrishtiApplication.getCachedImageLoaderInstance().getImageByClientId(pc.entityId(), OpenSRPImageLoader.getStaticImageListener(profilePic, 0, 0));
         }
@@ -412,7 +412,7 @@ public class ChildSmartClientsProvider implements SmartRegisterCLientsProviderFo
             if (commonPersonObject == null) { //Out of area -- doesn't exist in local database
                 if (isWeightRecord) {
                     TextView recordWeightText = (TextView) convertView.findViewById(R.id.record_weight_text);
-                    recordWeightText.setText("Record\norg.smartregister.cbhc.service");
+                    recordWeightText.setText("Record\nservice");
 
                     String zeirId = getValue(pc.getColumnmaps(), PathConstants.KEY.ZEIR_ID, false);
 

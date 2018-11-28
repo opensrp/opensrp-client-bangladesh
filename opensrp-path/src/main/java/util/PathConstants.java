@@ -27,7 +27,7 @@ PathConstants extends AllConstants {
     public static final String OPENMRS_IDGEN_URL =  BuildConfig.OPENMRS_IDGEN_URL;
 
     public static final class ServiceType {
-
+        public static final int AUTO_SYNC = 1;
         public static final int DATA_SYNCHRONIZATION = 1;
         public static final int DAILY_TALLIES_GENERATION = 2;
         public static final int MONTHLY_TALLIES_GENERATION = 3;
@@ -36,6 +36,7 @@ PathConstants extends AllConstants {
         public static final int WEIGHT_SYNC_PROCESSING = 6;
         public static final int RECURRING_SERVICES_SYNC_PROCESSING = 7;
     }
+
 
     public static final class EventType {
 
@@ -49,8 +50,12 @@ PathConstants extends AllConstants {
 
     public static final class EC_CHILD_TABLE {
 
+        public static final String BASE_ENTITY_ID = "base_entity_id";
+        public static final String DOB = "dob";
         public static final String DOD = "dod";
-    }
+        public static final String REG_DATE = "client_reg_date";
+        public static final String INACTIVE = "inactive";
+        public static final String LOST_TO_FOLLOW_UP = "lost_to_follow_up";    }
 
     public static final class GENDER {
 

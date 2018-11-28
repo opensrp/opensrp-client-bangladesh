@@ -4,12 +4,14 @@ import android.app.Fragment;
 import android.app.FragmentTransaction;
 import android.content.ContentValues;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.drawable.ColorDrawable;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
+import android.support.annotation.NonNull;
 import android.text.TextUtils;
 import android.util.Log;
 import android.util.Pair;
@@ -19,13 +21,18 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+
 import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.text.WordUtils;
 import org.apache.commons.lang3.time.DateUtils;
 import org.joda.time.DateTime;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.opensrp.api.constants.Gender;
+import org.pcollections.TreePVector;
 import org.smartregister.commonregistry.AllCommonsRepository;
 import org.smartregister.commonregistry.CommonPersonObject;
 import org.smartregister.commonregistry.CommonPersonObjectClient;
@@ -37,10 +44,12 @@ import org.smartregister.growthmonitoring.fragment.GrowthDialogFragment;
 import org.smartregister.growthmonitoring.fragment.RecordWeightDialogFragment;
 import org.smartregister.growthmonitoring.listener.WeightActionListener;
 import org.smartregister.growthmonitoring.repository.WeightRepository;
+import org.smartregister.immunization.ImmunizationLibrary;
 import org.smartregister.immunization.db.VaccineRepo;
 import org.smartregister.immunization.domain.Vaccine;
 import org.smartregister.immunization.domain.VaccineSchedule;
 import org.smartregister.immunization.domain.VaccineWrapper;
+import org.smartregister.immunization.fragment.ActivateChildStatusDialogFragment;
 import org.smartregister.immunization.fragment.UndoVaccinationDialogFragment;
 import org.smartregister.immunization.fragment.VaccinationDialogFragment;
 import org.smartregister.immunization.listener.VaccinationActionListener;
@@ -53,6 +62,7 @@ import org.smartregister.immunization.view.VaccineGroup;
 import org.smartregister.path.R;
 import org.smartregister.path.application.VaccinatorApplication;
 import org.smartregister.path.domain.RegisterClickables;
+import org.smartregister.path.helper.LocationHelper;
 import org.smartregister.path.toolbar.LocationSwitcherToolbar;
 import org.smartregister.path.view.SiblingPicturesGroup;
 import org.smartregister.repository.DetailsRepository;
@@ -65,6 +75,7 @@ import org.smartregister.view.activity.DrishtiApplication;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.Serializable;
+import java.lang.reflect.Type;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -77,9 +88,12 @@ import java.util.Random;
 import java.util.concurrent.TimeUnit;
 import java.util.regex.Pattern;
 
-import org.smartregister.cbhc.util.ImageUtils;
-import org.smartregister.cbhc.util.JsonFormUtils;
-import org.smartregister.cbhc.util.PathConstants;
+import util.ImageUtils;
+import util.JsonFormUtils;
+import util.PathConstants;
+
+import static org.smartregister.path.activity.ChildDetailTabbedActivity.inactive;
+import static org.smartregister.path.activity.ChildDetailTabbedActivity.lostToFollowUp;
 
 
 /**
@@ -103,6 +117,8 @@ public class ChildImmunizationActivity extends BaseActivity
     private static final int RANDOM_MAX_RANGE = 4232;
     private static final int RANDOM_MIN_RANGE = 213;
     private static final int RECORD_WEIGHT_BUTTON_ACTIVE_MIN = 12;
+    private final String SHOW_BCG2_REMINDER = "show_bcg2_reminder";
+    public static final String SHOW_BCG_SCAR = "show_bcg_scar";
 
     static {
         COMBINED_VACCINES = new ArrayList<>();
@@ -124,6 +140,8 @@ public class ChildImmunizationActivity extends BaseActivity
     public CommonPersonObjectClient childDetails;
     private RegisterClickables registerClickables;
     public DetailsRepository detailsRepository;
+    private boolean dialogOpen = false;
+    private boolean isChildActive = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -143,8 +161,8 @@ public class ChildImmunizationActivity extends BaseActivity
             }
         });
         toolbar.setOnLocationChangeListener(this);
-//       View org.smartregister.cbhc.view= toolbar.findViewById(R.id.immunization_separator);
-//        org.smartregister.cbhc.view.setBackground(R.drawable.vertical_seperator_female);
+//       View view= toolbar.findViewById(R.id.immunization_separator);
+//        view.setBackground(R.drawable.vertical_seperator_female);
 
         // Get child details from bundled data
         Bundle extras = this.getIntent().getExtras();
@@ -213,7 +231,7 @@ public class ChildImmunizationActivity extends BaseActivity
         // TODO: update all views using child data
         Map<String, String> details = detailsRepository.getAllDetailsForClient(childDetails.entityId());
 
-        org.smartregister.cbhc.util.Utils.putAll(childDetails.getColumnmaps(), details);
+        util.Utils.putAll(childDetails.getColumnmaps(), details);
 
         updateGenderViews();
         toolbar.setTitle(updateActivityTitle());
@@ -239,7 +257,7 @@ public class ChildImmunizationActivity extends BaseActivity
             ImageView profileImageIV = (ImageView) findViewById(R.id.profile_image_iv);
 
             if (childDetails.entityId() != null) { //image already in local storage most likey ):
-                //set profile image by passing the client id.If the image doesn't exist in the image org.smartregister.cbhc.repository then download and save locally
+                //set profile image by passing the client id.If the image doesn't exist in the image repository then download and save locally
                 profileImageIV.setTag(org.smartregister.R.id.entity_id, childDetails.entityId());
                 DrishtiApplication.getCachedImageLoaderInstance().getImageByClientId(childDetails.entityId(), OpenSRPImageLoader.getStaticImageListener(profileImageIV, ImageUtils.profileImageResourceByGender(gender), ImageUtils.profileImageResourceByGender(gender)));
 
@@ -326,27 +344,139 @@ public class ChildImmunizationActivity extends BaseActivity
     private void updateVaccinationViews(List<Vaccine> vaccineList, List<Alert> alerts) {
 
         if (vaccineGroups == null) {
+
+            final String BCG_NAME = "BCG";
+            final String BCG2_NAME = "BCG 2";
+            final String BCG_NO_SCAR_NAME = "BCG: no scar";
+            final String BCG_SCAR_NAME = "BCG: scar";
+            final String VACCINE_GROUP_BIRTH_NAME = "Birth";
+            final int BIRTH_VACCINE_GROUP_INDEX = 0;
+            List<org.smartregister.immunization.domain.jsonmapping.VaccineGroup> compiledVaccineGroups;
+
             vaccineGroups = new ArrayList<>();
-            String supportedVaccinesString = VaccinatorUtils.getSupportedVaccines(this);
+            List<org.smartregister.immunization.domain.jsonmapping.VaccineGroup> supportedVaccines = VaccinatorUtils.getSupportedVaccines(this);
 
-            try {
-                JSONArray supportedVaccines = new JSONArray(supportedVaccinesString);
+            boolean showBcg2Reminder = ((childDetails.getColumnmaps().containsKey(SHOW_BCG2_REMINDER)) && Boolean.parseBoolean(childDetails.getColumnmaps().get(SHOW_BCG2_REMINDER)));
+            boolean showBcgScar = (childDetails.getColumnmaps().containsKey(SHOW_BCG_SCAR));
 
-                for (int i = 0; i < supportedVaccines.length(); i++) {
-                    JSONObject vaccineGroupObject = supportedVaccines.getJSONObject(i);
+            org.smartregister.immunization.domain.jsonmapping.VaccineGroup birthVaccineGroup = (org.smartregister.immunization.domain.jsonmapping.VaccineGroup)
+                    clone(getVaccineGroupByName(supportedVaccines, VACCINE_GROUP_BIRTH_NAME));
 
-                    //Add BCG2 special vaccine to birth vaccine group
-                    VaccinateActionUtils.addBcg2SpecialVaccine(this, vaccineGroupObject, vaccineList);
+            if (showBcg2Reminder) {
 
-                    addVaccineGroup(-1, vaccineGroupObject, vaccineList, alerts);
+                compiledVaccineGroups = TreePVector.from(supportedVaccines).minus(BIRTH_VACCINE_GROUP_INDEX).plus(BIRTH_VACCINE_GROUP_INDEX, birthVaccineGroup);
+
+                updateVaccineName(getVaccineByName(birthVaccineGroup.vaccines, BCG_NAME), BCG_NO_SCAR_NAME);
+
+                List<org.smartregister.immunization.domain.jsonmapping.Vaccine> specialVaccines = getJsonVaccineGroup("special_vaccines.json");
+                if (specialVaccines != null && !specialVaccines.isEmpty()) {
+                    for (org.smartregister.immunization.domain.jsonmapping.Vaccine vaccine : specialVaccines) {
+                        if (vaccine.name.contains(BCG_NAME) && BCG_NAME.equals(vaccine.type)) {
+                            vaccine.name = BCG2_NAME;
+                            birthVaccineGroup.vaccines.add(vaccine);
+                            break;
+                        }
+                    }
+
                 }
-            } catch (JSONException e) {
-                Log.e(TAG, Log.getStackTraceString(e));
+            } else if (showBcgScar) {
+
+                compiledVaccineGroups = TreePVector.from(supportedVaccines).minus(BIRTH_VACCINE_GROUP_INDEX).plus(BIRTH_VACCINE_GROUP_INDEX, birthVaccineGroup);
+
+                final long DATE = Long.valueOf(childDetails.getColumnmaps().get(SHOW_BCG_SCAR));
+
+                List<org.smartregister.immunization.domain.jsonmapping.Vaccine> specialVaccines = getJsonVaccineGroup("special_vaccines.json");
+                if (specialVaccines != null && !specialVaccines.isEmpty()) {
+                    for (org.smartregister.immunization.domain.jsonmapping.Vaccine vaccine : specialVaccines) {
+                        if (vaccine.name.contains(BCG_NAME) && BCG_NAME.equals(vaccine.type)) {
+                            vaccine.name = BCG_SCAR_NAME;
+                            birthVaccineGroup.vaccines.add(vaccine);
+                            vaccineList.add(createDummyVaccine(BCG_SCAR_NAME, new Date(DATE), VaccineRepository.TYPE_Synced));
+                            break;
+                        }
+                    }
+
+                }
+            } else {
+                compiledVaccineGroups = supportedVaccines;
+            }
+
+            for (org.smartregister.immunization.domain.jsonmapping.VaccineGroup vaccineGroup : compiledVaccineGroups) {
+                addVaccineGroup(-1, vaccineGroup, vaccineList, alerts);
+            }
+        } else {
+            for (VaccineGroup vaccineGroup : vaccineGroups) {
+                vaccineGroup.setChildActive(isChildActive);
+                vaccineGroup.updateChildsActiveStatus();
             }
         }
 
         showVaccineNotifications(vaccineList, alerts);
     }
+    public static Object clone(@NonNull Object object) {
+
+        Gson gson = new Gson();
+        String serializedOject = gson.toJson(object);
+
+        return gson.fromJson(serializedOject, object.getClass());
+    }
+
+
+    public List<org.smartregister.immunization.domain.jsonmapping.Vaccine> getJsonVaccineGroup(@NonNull String filename) {
+
+        Class<List<org.smartregister.immunization.domain.jsonmapping.Vaccine>> classType = (Class) List.class;
+        Type listType = new TypeToken<List<org.smartregister.immunization.domain.jsonmapping.Vaccine>>() {
+        }.getType();
+        return ImmunizationLibrary.getInstance().assetJsonToJava(filename, classType, listType);
+    }
+
+
+    private Vaccine createDummyVaccine(String name, Date date, String syncStatus) {
+        Vaccine vaccine = new Vaccine();
+        vaccine.setId(-1l);
+        vaccine.setBaseEntityId(childDetails.entityId());
+        vaccine.setName(name);
+        vaccine.setDate(date);
+        vaccine.setAnmId(getOpenSRPContext().allSharedPreferences().fetchRegisteredANM());
+        vaccine.setLocationId(LocationHelper.getInstance().getOpenMrsLocationId(toolbar.getCurrentLocation()));
+        vaccine.setSyncStatus(syncStatus);
+        vaccine.setFormSubmissionId(JsonFormUtils.generateRandomUUIDString());
+        vaccine.setUpdatedAt(new Date().getTime());
+
+        String lastChar = vaccine.getName().substring(vaccine.getName().length() - 1);
+        if (StringUtils.isNumeric(lastChar)) {
+            vaccine.setCalculation(Integer.valueOf(lastChar));
+        } else {
+            vaccine.setCalculation(-1);
+        }
+        return vaccine;
+    }
+
+
+    public void updateVaccineName(org.smartregister.immunization.domain.jsonmapping.Vaccine vaccine, @NonNull String newName) {
+
+        if (vaccine != null)
+            vaccine.name = newName;
+    }
+
+    public org.smartregister.immunization.domain.jsonmapping.VaccineGroup getVaccineGroupByName(@NonNull List<org.smartregister.immunization.domain.jsonmapping.VaccineGroup> vaccineGroupList, @NonNull String name) {
+
+        for (org.smartregister.immunization.domain.jsonmapping.VaccineGroup vaccineGroup : vaccineGroupList) {
+            if (vaccineGroup.name.equals(name))
+                return vaccineGroup;
+        }
+        return null;
+    }
+
+    public org.smartregister.immunization.domain.jsonmapping.Vaccine getVaccineByName(@NonNull List<org.smartregister.immunization.domain.jsonmapping.Vaccine> vaccineList, @NonNull String name) {
+
+        for (org.smartregister.immunization.domain.jsonmapping.Vaccine vaccine : vaccineList) {
+            if (vaccine.name.equals(name))
+                return vaccine;
+        }
+        return null;
+    }
+
 
     private void showVaccineNotifications(List<Vaccine> vaccineList, List<Alert> alerts) {
 
@@ -383,28 +513,56 @@ public class ChildImmunizationActivity extends BaseActivity
         }
     }
 
-    public void addVaccineGroup(int canvasId, JSONObject vaccineGroupData, List<Vaccine> vaccineList, List<Alert> alerts) {
+    private void addVaccineGroup(int canvasId, org.smartregister.immunization.domain.jsonmapping.VaccineGroup vaccineGroupData, List<Vaccine> vaccineList, List<Alert> alerts) {
         LinearLayout vaccineGroupCanvasLL = (LinearLayout) findViewById(R.id.vaccine_group_canvas_ll);
         VaccineGroup curGroup = new VaccineGroup(this);
-        curGroup.setData(vaccineGroupData, childDetails, vaccineList, alerts, "child");
+        curGroup.setChildActive(isChildActive);
+        curGroup.setData(vaccineGroupData, childDetails, vaccineList, alerts, PathConstants.KEY.CHILD);
         curGroup.setOnRecordAllClickListener(new VaccineGroup.OnRecordAllClickListener() {
             @Override
             public void onClick(VaccineGroup vaccineGroup, ArrayList<VaccineWrapper> dueVaccines) {
-                addVaccinationDialogFragment(dueVaccines, vaccineGroup);
+                if (dialogOpen) {
+                    return;
+                }
+
+                dialogOpen = true;
+                if (isChildActive) {
+                    addVaccinationDialogFragment(dueVaccines, vaccineGroup);
+                } else {
+                    showActivateChildStatusDialogBox();
+                }
             }
         });
         curGroup.setOnVaccineClickedListener(new VaccineGroup.OnVaccineClickedListener() {
             @Override
             public void onClick(VaccineGroup vaccineGroup, VaccineWrapper vaccine) {
-                ArrayList<VaccineWrapper> vaccineWrappers = new ArrayList<>();
-                vaccineWrappers.add(vaccine);
-                addVaccinationDialogFragment(vaccineWrappers, vaccineGroup);
+                if (dialogOpen) {
+                    return;
+                }
+
+                dialogOpen = true;
+                if (isChildActive) {
+                    ArrayList<VaccineWrapper> vaccineWrappers = new ArrayList<>();
+                    vaccineWrappers.add(vaccine);
+                    addVaccinationDialogFragment(vaccineWrappers, vaccineGroup);
+                } else {
+                    showActivateChildStatusDialogBox();
+                }
             }
         });
         curGroup.setOnVaccineUndoClickListener(new VaccineGroup.OnVaccineUndoClickListener() {
             @Override
             public void onUndoClick(VaccineGroup vaccineGroup, VaccineWrapper vaccine) {
-                addVaccineUndoDialogFragment(vaccineGroup, vaccine);
+                if (dialogOpen) {
+                    return;
+                }
+
+                dialogOpen = true;
+                if (isChildActive) {
+                    addVaccineUndoDialogFragment(vaccineGroup, vaccine);
+                } else {
+                    showActivateChildStatusDialogBox();
+                }
             }
         });
 
@@ -425,6 +583,37 @@ public class ChildImmunizationActivity extends BaseActivity
         curGroup.setTag(R.id.vaccine_group_parent_id, String.valueOf(groupParentId));
         vaccineGroups.add(curGroup);
     }
+
+    private void showActivateChildStatusDialogBox() {
+        String thirdPersonPronoun = getChildsThirdPersonPronoun(childDetails);
+        String childsCurrentStatus = WordUtils.uncapitalize(getHumanFriendlyChildsStatus(childDetails), '-', ' ');
+        FragmentTransaction ft = this.getFragmentManager().beginTransaction();
+        Fragment prev = this.getFragmentManager().findFragmentByTag(DIALOG_TAG);
+        if (prev != null) {
+            ft.remove(prev);
+        }
+        ft.addToBackStack(null);
+
+        ActivateChildStatusDialogFragment activateChildStatusFragmentDialog = ActivateChildStatusDialogFragment.newInstance(thirdPersonPronoun, childsCurrentStatus, R.style.PathAlertDialog);
+        activateChildStatusFragmentDialog.setOnClickListener(new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                if (which == DialogInterface.BUTTON_POSITIVE) {
+                    SaveChildsStatusTask saveChildsStatusTask = new SaveChildsStatusTask();
+                    Utils.startAsyncTask(saveChildsStatusTask, null);
+                }
+            }
+        });
+        activateChildStatusFragmentDialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
+            @Override
+            public void onDismiss(DialogInterface dialog) {
+                dialogOpen = false;
+            }
+        });
+        activateChildStatusFragmentDialog.show(ft, DIALOG_TAG);
+    }
+
+
 
     private void addVaccineUndoDialogFragment(VaccineGroup vaccineGroup, VaccineWrapper vaccineWrapper) {
         FragmentTransaction ft = getFragmentManager().beginTransaction();
@@ -468,7 +657,6 @@ public class ChildImmunizationActivity extends BaseActivity
         weightWrapper.setPatientAge(duration);
         weightWrapper.setPhoto(photo);
         weightWrapper.setPmtctStatus(Utils.getValue(childDetails.getColumnmaps(), PathConstants.KEY.PMTCT_STATUS, false));
-        weightWrapper.setDateOfBirth(dobString);
 
         if (lastUnsyncedWeight != null) {
             weightWrapper.setWeight(lastUnsyncedWeight.getKg());
@@ -537,8 +725,15 @@ public class ChildImmunizationActivity extends BaseActivity
             ft.remove(prev);
         }
         ft.addToBackStack(null);
+
+        String dobString = Utils.getValue(childDetails.getColumnmaps(), PathConstants.EC_CHILD_TABLE.DOB, false);
+        Date dob = util.Utils.dobStringToDate(dobString);
+        if (dob == null) {
+            dob = Calendar.getInstance().getTime();
+        }
+
         WeightWrapper weightWrapper = (WeightWrapper) view.getTag();
-        RecordWeightDialogFragment recordWeightDialogFragment = RecordWeightDialogFragment.newInstance(weightWrapper);
+        RecordWeightDialogFragment recordWeightDialogFragment = RecordWeightDialogFragment.newInstance(dob, weightWrapper);
         recordWeightDialogFragment.show(ft, DIALOG_TAG);
 
     }
@@ -657,7 +852,6 @@ public class ChildImmunizationActivity extends BaseActivity
             }
 
             tag.setDbKey(weight.getId());
-            tag.setDateOfBirth(dobString);
             updateRecordWeightViews(tag);
             setLastModified(true);
         }
@@ -831,6 +1025,70 @@ public class ChildImmunizationActivity extends BaseActivity
             });
         }
     }
+    private void activateChildsStatus() {
+        try {
+            Map<String, String> details = childDetails.getColumnmaps();
+            if (details.containsKey(inactive) && details.get(inactive) != null && details.get(inactive).equalsIgnoreCase(Boolean.TRUE.toString())) {
+                childDetails.setColumnmaps(util.Utils.updateClientAttribute(this, childDetails, inactive, false));
+            }
+
+            if (details.containsKey(ChildDetailTabbedActivity.lostToFollowUp) && details.get(ChildDetailTabbedActivity.lostToFollowUp) != null && details.get(ChildDetailTabbedActivity.lostToFollowUp).equalsIgnoreCase(Boolean.TRUE.toString())) {
+                childDetails.setColumnmaps(util.Utils.updateClientAttribute(this, childDetails, ChildDetailTabbedActivity.lostToFollowUp, false));
+            }
+        } catch (Exception e) {
+            Log.e(TAG, Log.getStackTraceString(e));
+        }
+    }
+
+    protected String getHumanFriendlyChildsStatus(CommonPersonObjectClient child) {
+        Map<String, String> detailsMap = child.getColumnmaps();
+        return getHumanFriendlyChildsStatus(detailsMap);
+    }
+
+    protected String getHumanFriendlyChildsStatus(Map<String, String> detailsColumnMap) {
+        String status = getString(R.string.active);
+        if (detailsColumnMap.containsKey(inactive) && detailsColumnMap.get(inactive) != null && detailsColumnMap.get(inactive).equalsIgnoreCase(Boolean.TRUE.toString())) {
+            status = getString(R.string.inactive);
+        } else if (detailsColumnMap.containsKey(lostToFollowUp) && detailsColumnMap.get(lostToFollowUp) != null && detailsColumnMap.get(lostToFollowUp).equalsIgnoreCase(Boolean.TRUE.toString())) {
+            status = getString(R.string.lost_to_follow_up);
+        }
+
+        return status;
+    }
+
+    private String getChildsThirdPersonPronoun(CommonPersonObjectClient childDetails) {
+        String genderString = Utils.getValue(childDetails, PathConstants.KEY.GENDER, false);
+        if (genderString != null && genderString.toLowerCase().equals(PathConstants.GENDER.FEMALE)) {
+            return getString(R.string.her);
+        } else if (genderString != null && genderString.toLowerCase().equals(PathConstants.GENDER.MALE)) {
+            return getString(R.string.him);
+        }
+
+        return getString(R.string.her) + "/" + getString(R.string.him);
+    }
+
+    private class SaveChildsStatusTask extends AsyncTask<Void, Void, Void> {
+
+        @Override
+        protected void onPreExecute() {
+            showProgressDialog("Updating Child's Status", "");
+        }
+
+        @Override
+        protected Void doInBackground(Void... params) {
+            activateChildsStatus();
+
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Void aVoid) {
+            hideProgressDialog();
+            super.onPostExecute(aVoid);
+            updateViews();
+        }
+    }
+
 
     private void showRecordWeightNotification() {
         if (!weightNotificationShown) {
@@ -961,7 +1219,7 @@ public class ChildImmunizationActivity extends BaseActivity
                 try {
                     vaccineGroups.remove(curGroup);
                     addVaccineGroup(Integer.valueOf((String) curGroup.getTag(R.id.vaccine_group_parent_id)),
-                            new JSONObject((String) curGroup.getTag(R.id.vaccine_group_vaccine_data)),
+                            curGroup.getVaccineData(),
                             vaccineList, alerts);
                 } catch (Exception e) {
                     Log.e(TAG, Log.getStackTraceString(e));

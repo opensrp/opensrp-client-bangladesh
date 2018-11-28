@@ -25,8 +25,8 @@ import org.smartregister.view.activity.DrishtiApplication;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.smartregister.cbhc.util.ImageUtils;
-import org.smartregister.cbhc.util.PathConstants;
+import util.ImageUtils;
+import util.PathConstants;
 
 import static org.smartregister.util.Utils.getValue;
 
@@ -155,7 +155,7 @@ public class SiblingPicture extends RecyclerView.ViewHolder {
             if (rawDetails != null) {
                 // Get extra child details
                 CommonPersonObjectClient childDetails = Utils.convert(rawDetails);
-                org.smartregister.cbhc.util.Utils.putAll(childDetails.getColumnmaps(), detailsRepository.getAllDetailsForClient(baseEntityId));
+                util.Utils.putAll(childDetails.getColumnmaps(), detailsRepository.getAllDetailsForClient(baseEntityId));
 
                 // Check if child has a profile pic
                 ProfileImage profileImage = baseActivity.getOpenSRPContext()
@@ -189,7 +189,7 @@ public class SiblingPicture extends RecyclerView.ViewHolder {
                                 getValue(rawMotherDetails.getColumnmaps(), "nrc_number", false));
                     }
                 }
-                org.smartregister.cbhc.util.Utils.putAll(childDetails.getColumnmaps(), motherDetails);
+                util.Utils.putAll(childDetails.getColumnmaps(), motherDetails);
                 childDetails.setDetails(childDetails.getColumnmaps());
 
                 return childDetails;

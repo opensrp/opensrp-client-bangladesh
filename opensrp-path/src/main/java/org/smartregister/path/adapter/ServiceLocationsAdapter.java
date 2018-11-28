@@ -9,11 +9,10 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import org.smartregister.path.R;
+import org.smartregister.path.helper.LocationHelper;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-
-import org.smartregister.cbhc.util.JsonFormUtils;
 
 /**
  * @author Jason Rogena - jrogena@ona.io
@@ -25,7 +24,7 @@ public class ServiceLocationsAdapter extends BaseAdapter {
     private final HashMap<String, View> views;
     private final Context context;
 
-    public ServiceLocationsAdapter(Context context, ArrayList<String> locationNames, String selectedLocation) {
+    public ServiceLocationsAdapter(Context context, ArrayList<String> locationNames) {
         this.context = context;
         this.locationNames = locationNames == null ? new ArrayList<String>() : locationNames;
         this.views = new HashMap<>();
@@ -56,7 +55,7 @@ public class ServiceLocationsAdapter extends BaseAdapter {
             view.setId(position + 2321);
 
             TextView text1 = (TextView) view.findViewById(android.R.id.text1);
-            text1.setText(JsonFormUtils.getOpenMrsReadableName(locationNames.get(position)));
+            text1.setText(LocationHelper.getInstance().getOpenMrsReadableName(locationNames.get(position)));
             views.put(locationNames.get(position), view);
         }
 
@@ -80,11 +79,11 @@ public class ServiceLocationsAdapter extends BaseAdapter {
 
     private void refreshView(View view, boolean selected) {
         if (selected) {
-            //org.smartregister.cbhc.view.setBackgroundColor(context.getResources().getColor(R.color.primary_background));
+            //view.setBackgroundColor(context.getResources().getColor(R.color.primary_background));
             ImageView checkbox = (ImageView) view.findViewById(R.id.checkbox);
             checkbox.setVisibility(View.VISIBLE);
         } else {
-            //org.smartregister.cbhc.view.setBackgroundColor(context.getResources().getColor(android.R.color.transparent));
+            //view.setBackgroundColor(context.getResources().getColor(android.R.color.transparent));
             ImageView checkbox = (ImageView) view.findViewById(R.id.checkbox);
             checkbox.setVisibility(View.INVISIBLE);
         }
@@ -92,5 +91,9 @@ public class ServiceLocationsAdapter extends BaseAdapter {
 
     public String getLocationAt(int position) {
         return locationNames.get(position);
+    }
+
+    public ArrayList<String> getLocationNames() {
+        return locationNames;
     }
 }

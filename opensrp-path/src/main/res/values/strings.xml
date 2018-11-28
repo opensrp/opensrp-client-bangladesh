@@ -235,5 +235,10 @@
     <string name="lost_to_follow_up_with_nl">Lost to\nFollow-Up</string>
     <string name="status">status</string>
     <string name="label_openmrsid">OpenMRS ID</string>
+    <string name="permissions_required">Permissions Required</string>
+    <string name="read_write_permissions_required">Read and write external storage permissions are required when saving and accessing profile images.</string>
+    <string name="status_text">Status: %1$s</string>
+    <string name="him">him</string>
+    <string name="her">her</string>
 
 </resources>

@@ -38,8 +38,8 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import org.smartregister.cbhc.util.MoveToMyCatchmentUtils;
-import org.smartregister.cbhc.util.PathConstants;
+import util.MoveToMyCatchmentUtils;
+import util.PathConstants;
 
 public class PathClientProcessor extends ClientProcessor {
 
@@ -212,7 +212,7 @@ public class PathClientProcessor extends ClientProcessor {
                 }
                 vaccineObj.setDate(date);
                 vaccineObj.setAnmId(contentValues.getAsString(VaccineRepository.ANMID));
-                vaccineObj.setLocationId(contentValues.getAsString(VaccineRepository.LOCATIONID));
+                vaccineObj.setLocationId(contentValues.getAsString(VaccineRepository.LOCATION_ID));
                 vaccineObj.setSyncStatus(VaccineRepository.TYPE_Synced);
                 vaccineObj.setFormSubmissionId(vaccine.has(VaccineRepository.FORMSUBMISSION_ID) ? vaccine.getString(VaccineRepository.FORMSUBMISSION_ID) : null);
                 vaccineObj.setEventId(vaccine.getString("id")); //FIXME hard coded id
@@ -348,7 +348,7 @@ public class PathClientProcessor extends ClientProcessor {
                 serviceObj.setName(name);
                 serviceObj.setDate(date);
                 serviceObj.setAnmId(contentValues.getAsString(RecurringServiceRecordRepository.ANMID));
-                serviceObj.setLocationId(contentValues.getAsString(RecurringServiceRecordRepository.LOCATIONID));
+                serviceObj.setLocationId(contentValues.getAsString(RecurringServiceRecordRepository.LOCATION_ID));
                 serviceObj.setSyncStatus(RecurringServiceRecordRepository.TYPE_Synced);
                 serviceObj.setFormSubmissionId(service.has(RecurringServiceRecordRepository.FORMSUBMISSION_ID) ? service.getString(RecurringServiceRecordRepository.FORMSUBMISSION_ID) : null);
                 serviceObj.setEventId(service.getString("id")); //FIXME hard coded id

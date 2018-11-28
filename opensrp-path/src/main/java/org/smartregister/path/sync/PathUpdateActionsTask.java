@@ -36,8 +36,8 @@ import java.util.Calendar;
 import java.util.List;
 import java.util.Map;
 
-import org.smartregister.cbhc.util.NetworkUtils;
-import org.smartregister.cbhc.util.PathConstants;
+import util.NetworkUtils;
+import util.PathConstants;
 
 import static java.text.MessageFormat.format;
 import static org.smartregister.domain.FetchStatus.fetched;
@@ -220,10 +220,6 @@ public class PathUpdateActionsTask {
             }
         } catch (JSONException e) {
             Log.e(getClass().getName(), e.getMessage());
-        } catch (ParseException e) {
-            Log.e(getClass().getName(), e.getMessage());
-        } catch (UnsupportedEncodingException e) {
-            Log.e(getClass().getName(), e.getMessage());
         }
 
     }
@@ -289,10 +285,6 @@ public class PathUpdateActionsTask {
                 Log.i(getClass().getName(), "Reports synced successfully.");
             }
         } catch (JSONException e) {
-            Log.e(getClass().getName(), e.getMessage());
-        } catch (ParseException e) {
-            Log.e(getClass().getName(), e.getMessage());
-        } catch (UnsupportedEncodingException e) {
             Log.e(getClass().getName(), e.getMessage());
         }
     }

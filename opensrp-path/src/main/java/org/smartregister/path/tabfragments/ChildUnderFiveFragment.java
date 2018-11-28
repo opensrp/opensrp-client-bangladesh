@@ -24,12 +24,14 @@ import org.smartregister.immunization.domain.ServiceType;
 import org.smartregister.immunization.domain.ServiceWrapper;
 import org.smartregister.immunization.domain.Vaccine;
 import org.smartregister.immunization.domain.VaccineWrapper;
+import org.smartregister.immunization.domain.jsonmapping.VaccineGroup;
 import org.smartregister.immunization.fragment.ServiceEditDialogFragment;
 import org.smartregister.immunization.fragment.VaccinationEditDialogFragment;
 import org.smartregister.immunization.repository.RecurringServiceRecordRepository;
 import org.smartregister.immunization.repository.RecurringServiceTypeRepository;
 import org.smartregister.immunization.repository.VaccineRepository;
 import org.smartregister.immunization.util.VaccinateActionUtils;
+import org.smartregister.immunization.util.VaccinatorUtils;
 import org.smartregister.immunization.view.ImmunizationRowGroup;
 import org.smartregister.immunization.view.ServiceRowGroup;
 
@@ -228,13 +230,11 @@ public class ChildUnderFiveFragment extends Fragment {
             alertList = alertService.findByEntityIdAndAlertNames(childDetails.entityId(),
                     VaccinateActionUtils.allAlertNames("child"));
         }
-
-        String supportedVaccinesString = readAssetContents(VACCINES_FILE);
+        List<VaccineGroup> supportedVaccines = VaccinatorUtils.getSupportedVaccines(getContext());
         try {
-            JSONArray supportedVaccines = new JSONArray(supportedVaccinesString);
-            for (int i = 0; i < supportedVaccines.length(); i++) {
+            for (int i = 0; i < supportedVaccines.size(); i++) {
                 ImmunizationRowGroup curGroup = new ImmunizationRowGroup(getActivity(), editmode);
-                curGroup.setData(supportedVaccines.getJSONObject(i), childDetails, vaccineList, alertList);
+                curGroup.setData(supportedVaccines.get(i), childDetails, vaccineList, alertList);
                 curGroup.setOnVaccineUndoClickListener(new ImmunizationRowGroup.OnVaccineUndoClickListener() {
                     @Override
                     public void onUndoClick(ImmunizationRowGroup vaccineGroup, VaccineWrapper vaccine) {
@@ -246,7 +246,7 @@ public class ChildUnderFiveFragment extends Fragment {
                 vaccineGroupCanvasLL.addView(curGroup);
                 vaccineGroups.add(curGroup);
             }
-        } catch (JSONException e) {
+        } catch (Exception e) {
             Log.e(getClass().getName(), Log.getStackTraceString(e));
         }
 

@@ -40,7 +40,7 @@ import org.smartregister.view.viewpager.OpenSRPViewPager;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
-import org.smartregister.cbhc.util.JsonFormUtils;
+import util.JsonFormUtils;
 
 import static android.view.inputmethod.InputMethodManager.HIDE_NOT_ALWAYS;
 

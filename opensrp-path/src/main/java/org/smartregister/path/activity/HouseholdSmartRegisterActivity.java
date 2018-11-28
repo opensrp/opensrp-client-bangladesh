@@ -49,7 +49,7 @@ import java.util.Map;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
-import org.smartregister.cbhc.util.JsonFormUtils;
+import util.JsonFormUtils;
 
 import static android.view.inputmethod.InputMethodManager.HIDE_NOT_ALWAYS;
 import static org.smartregister.util.Utils.getValue;
@@ -62,6 +62,7 @@ public class HouseholdSmartRegisterActivity extends BaseRegisterActivity {
 
     @Bind(R.id.view_pager)
     OpenSRPViewPager mPager;
+
     private FragmentPagerAdapter mPagerAdapter;
     private static final int REQUEST_CODE_GET_JSON = 3432;
     private static final int REQUEST_CODE_RECORD_OUT_OF_CATCHMENT = 1131;

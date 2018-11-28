@@ -97,7 +97,7 @@
         <service android:name="org.smartregister.immunization.service.intent.VaccineIntentService" />
         <service android:name="org.smartregister.growthmonitoring.service.intent.ZScoreRefreshIntentService" />
         <service android:name="org.smartregister.immunization.service.intent.RecurringIntentService" />
-        <service android:name=".service.intent.HIA2IntentService" />
+
 
         <provider
             android:name="android.support.v4.content.FileProvider"

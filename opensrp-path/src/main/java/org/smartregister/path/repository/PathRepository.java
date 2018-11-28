@@ -7,6 +7,7 @@ import net.sqlcipher.database.SQLiteDatabase;
 
 import org.apache.commons.lang3.StringUtils;
 import org.smartregister.commonregistry.CommonFtsObject;
+import org.smartregister.domain.db.Column;
 import org.smartregister.growthmonitoring.repository.WeightRepository;
 import org.smartregister.growthmonitoring.repository.ZScoreRepository;
 import org.smartregister.immunization.repository.RecurringServiceRecordRepository;
@@ -19,13 +20,19 @@ import org.smartregister.path.application.VaccinatorApplication;
 import org.smartregister.repository.AlertRepository;
 import org.smartregister.repository.EventClientRepository;
 import org.smartregister.repository.Repository;
+import org.smartregister.stock.StockLibrary;
+import org.smartregister.stock.repository.StockRepository;
+import org.smartregister.stock.repository.StockTypeRepository;
+import org.smartregister.stock.util.StockUtils;
+import org.smartregister.util.Utils;
 
 import java.util.ArrayList;
 import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
-import org.smartregister.cbhc.util.PathConstants;
+import util.PathConstants;
 
 public class PathRepository extends Repository {
 
@@ -158,6 +165,11 @@ public class PathRepository extends Repository {
      *
      * @param database
      */
+    /**
+     * Version 2 added some columns to the ec_child table
+     *
+     * @param database
+     */
     private void upgradeToVersion2(SQLiteDatabase database) {
         try {
             // Run insert query
@@ -166,7 +178,7 @@ public class PathRepository extends Repository {
             newlyAddedFields.add("inactive");
             newlyAddedFields.add("lost_to_follow_up");
 
-            addFieldsToFTSTable(database, PathConstants.CHILD_TABLE_NAME, newlyAddedFields);
+//            DatabaseMigrationUtils.addFieldsToFTSTable(database, commonFtsObject, PathConstants.CHILD_TABLE_NAME, newlyAddedFields);
         } catch (Exception e) {
             Log.e(TAG, "upgradeToVersion2 " + Log.getStackTraceString(e));
         }
@@ -223,7 +235,10 @@ public class PathRepository extends Repository {
             db.execSQL(VaccineRepository.UPDATE_TABLE_ADD_OUT_OF_AREA_COL_INDEX);
             db.execSQL(WeightRepository.UPDATE_TABLE_ADD_OUT_OF_AREA_COL);
             db.execSQL(WeightRepository.UPDATE_TABLE_ADD_OUT_OF_AREA_COL_INDEX);
-            EventClientRepository.createTable(db, EventClientRepository.Table.path_reports, EventClientRepository.report_column.values());
+//            DailyTalliesRepository.createTable(db);
+//            MonthlyTalliesRepository.createTable(db);
+//            EventClientRepository.createTable(db, Hia2ReportRepository.Table.hia2_report, Hia2ReportRepository.report_column.values());
+//            HIA2IndicatorsRepository.createTable(db);
             db.execSQL(VaccineRepository.UPDATE_TABLE_ADD_HIA2_STATUS_COL);
 
             dumpHIA2IndicatorsCSV(db);
@@ -234,10 +249,10 @@ public class PathRepository extends Repository {
 
     private void upgradeToVersion8RecurringServiceUpdate(SQLiteDatabase db) {
         try {
+//            db.execSQL(MonthlyTalliesRepository.INDEX_UNIQUE);
+//            dumpHIA2IndicatorsCSV(db);
 
-            dumpHIA2IndicatorsCSV(db);
-
-            // Recurring org.smartregister.cbhc.service json changed. update
+            // Recurring service json changed. update
             RecurringServiceTypeRepository recurringServiceTypeRepository = VaccinatorApplication.getInstance().recurringServiceTypeRepository();
             IMDatabaseUtils.populateRecurringServices(context, db, recurringServiceTypeRepository);
 
@@ -255,11 +270,108 @@ public class PathRepository extends Repository {
             ArrayList<String> newlyAddedFields = new ArrayList<>();
             newlyAddedFields.add(PathConstants.EC_CHILD_TABLE.DOD);
 
-            addFieldsToFTSTable(database, PathConstants.CHILD_TABLE_NAME, newlyAddedFields);
+//            DatabaseMigrationUtils.addFieldsToFTSTable(database, commonFtsObject, PathConstants.CHILD_TABLE_NAME, newlyAddedFields);
         } catch (Exception e) {
             Log.e(TAG, "upgradeToVersion8ReportDeceased " + e.getMessage());
         }
     }
+
+    private void upgradeToVersion9(SQLiteDatabase database) {
+        try {
+            String ALTER_EVENT_TABLE_VALIDATE_COLUMN = "ALTER TABLE " + EventClientRepository.Table.event + " ADD COLUMN " + EventClientRepository.event_column.validationStatus + " VARCHAR";
+            database.execSQL(ALTER_EVENT_TABLE_VALIDATE_COLUMN);
+
+            String ALTER_CLIENT_TABLE_VALIDATE_COLUMN = "ALTER TABLE " + EventClientRepository.Table.client + " ADD COLUMN " + EventClientRepository.client_column.validationStatus + " VARCHAR";
+            database.execSQL(ALTER_CLIENT_TABLE_VALIDATE_COLUMN);
+
+//            String ALTER_REPORT_TABLE_VALIDATE_COLUMN = "ALTER TABLE " + Hia2ReportRepository.Table.hia2_report + " ADD COLUMN " + Hia2ReportRepository.report_column.validationStatus + " VARCHAR";
+//            database.execSQL(ALTER_REPORT_TABLE_VALIDATE_COLUMN);
+
+            EventClientRepository.createIndex(database, EventClientRepository.Table.event, EventClientRepository.event_column.values());
+            EventClientRepository.createIndex(database, EventClientRepository.Table.client, EventClientRepository.client_column.values());
+//            EventClientRepository.createIndex(database, Hia2ReportRepository.Table.hia2_report, Hia2ReportRepository.report_column.values());
+
+        } catch (Exception e) {
+            Log.e(TAG, "upgradeToVersion9 " + e.getMessage());
+        }
+    }
+
+    private void upgradeToVersion10(SQLiteDatabase database) {
+        try {
+
+         ;
+
+//            dumpHIA2IndicatorsCSV(database);
+
+        } catch (Exception e) {
+            Log.e(TAG, "upgradeToVersion10 " + e.getMessage());
+        }
+    }
+
+    private void upgradeToVersion11Stock(SQLiteDatabase db) {
+        try {
+            db.execSQL("DROP TABLE IF EXISTS " + VaccineTypeRepository.VACCINE_Types_TABLE_NAME);
+            StockTypeRepository.createTable(db);
+            StockUtils.populateStockTypesFromAssets(context, StockLibrary.getInstance().getStockTypeRepository(), db);
+            StockRepository.migrateFromOldStockRepository(db, "Stocks");
+
+        } catch (Exception e) {
+            Log.e(TAG, "upgradeToVersion11Stock " + e.getMessage());
+        }
+    }
+
+    private void upgradeToVersion12(SQLiteDatabase db) {
+        try {
+            Column[] columns = {EventClientRepository.event_column.formSubmissionId};
+            EventClientRepository.createIndex(db, EventClientRepository.Table.event, columns);
+
+            db.execSQL(WeightRepository.ALTER_ADD_CREATED_AT_COLUMN);
+            WeightRepository.migrateCreatedAt(db);
+
+            db.execSQL(VaccineRepository.ALTER_ADD_CREATED_AT_COLUMN);
+            VaccineRepository.migrateCreatedAt(db);
+
+            db.execSQL(RecurringServiceRecordRepository.ALTER_ADD_CREATED_AT_COLUMN);
+            RecurringServiceRecordRepository.migrateCreatedAt(db);
+
+        } catch (Exception e) {
+            Log.e(TAG, "upgradeToVersion12 " + e.getMessage());
+        }
+    }
+
+    private void upgradeToVersion13(SQLiteDatabase db) {
+        try {
+            db.execSQL(VaccineRepository.UPDATE_TABLE_ADD_TEAM_ID_COL);
+            db.execSQL(VaccineRepository.UPDATE_TABLE_ADD_TEAM_COL);
+
+            db.execSQL(RecurringServiceRecordRepository.UPDATE_TABLE_ADD_TEAM_ID_COL);
+            db.execSQL(RecurringServiceRecordRepository.UPDATE_TABLE_ADD_TEAM_COL);
+        } catch (Exception e) {
+            Log.e(TAG, "upgradeToVersion13 " + e.getMessage());
+        }
+    }
+
+    private void upgradeToVersion14(SQLiteDatabase db) {
+        try {
+
+            db.execSQL(WeightRepository.UPDATE_TABLE_ADD_TEAM_ID_COL);
+            db.execSQL(WeightRepository.UPDATE_TABLE_ADD_TEAM_COL);
+
+            db.execSQL(VaccineRepository.UPDATE_TABLE_ADD_CHILD_LOCATION_ID_COL);
+
+            db.execSQL(WeightRepository.UPDATE_TABLE_ADD_CHILD_LOCATION_ID_COL);
+
+            db.execSQL(RecurringServiceRecordRepository.UPDATE_TABLE_ADD_CHILD_LOCATION_ID_COL);
+        } catch (Exception e) {
+            Log.e(TAG, "upgradeToVersion14 " + e.getMessage());
+        }
+    }
+
+    private void upgradeToVersion15RemoveUnnecessaryTables(SQLiteDatabase db) {
+
+    }
+
+
 
     private void addFieldsToFTSTable(SQLiteDatabase database, String originalTableName, List<String> newlyAddedFields) {
 

@@ -34,13 +34,14 @@ import org.smartregister.growthmonitoring.repository.WeightRepository;
 import org.smartregister.immunization.domain.Vaccine;
 import org.smartregister.immunization.repository.VaccineRepository;
 import org.smartregister.immunization.util.VaccinatorUtils;
-import org.smartregister.growplus.R;
-import org.smartregister.growplus.activity.PathJsonFormActivity;
-import org.smartregister.growplus.application.VaccinatorApplication;
-import org.smartregister.growplus.repository.PathRepository;
-import org.smartregister.growplus.repository.UniqueIdRepository;
-import org.smartregister.growplus.sync.ECSyncUpdater;
-import org.smartregister.growplus.sync.PathClientProcessor;
+import org.smartregister.immunization.view.VaccineGroup;
+import org.smartregister.path.R;
+import org.smartregister.path.activity.PathJsonFormActivity;
+import org.smartregister.path.application.VaccinatorApplication;
+import org.smartregister.path.repository.PathRepository;
+import org.smartregister.path.repository.UniqueIdRepository;
+import org.smartregister.path.sync.ECSyncUpdater;
+import org.smartregister.path.sync.PathClientProcessor;
 import org.smartregister.repository.AllSharedPreferences;
 import org.smartregister.repository.BaseRepository;
 import org.smartregister.repository.EventClientRepository;
@@ -1358,7 +1359,9 @@ public class JsonFormUtils extends org.smartregister.util.JsonFormUtils {
         try {
             String defaultLocationUuid = context.allSharedPreferences()
                     .fetchDefaultLocalityId(context.allSharedPreferences().fetchRegisteredANM());
-            JSONObject locationData = new JSONObject(context.anmLocationController().get());
+            String locationString = context.allSettings().fetchANMLocation();
+            String locationPayload =context.userService().getLocationInformation().payload();
+            JSONObject locationData = new JSONObject(locationString);
             if (locationData.has(LOCATION_HIERARCHY)
                     && locationData.getJSONObject(LOCATION_HIERARCHY).has(MAP)) {
                 JSONObject map = locationData.getJSONObject(LOCATION_HIERARCHY).getJSONObject(MAP);
@@ -1546,9 +1549,9 @@ public class JsonFormUtils extends org.smartregister.util.JsonFormUtils {
     }
 
 
-    public static void addAddAvailableVaccines(Context context, JSONObject form) {
-        String supportedVaccinesString = VaccinatorUtils.getSupportedVaccines(context);
-        if (StringUtils.isNotEmpty(supportedVaccinesString) && form != null) {
+    private static void addAddAvailableVaccines(Context context, JSONObject form) {
+        List<org.smartregister.immunization.domain.jsonmapping.VaccineGroup> supportedVaccines = VaccinatorUtils.getSupportedVaccines(context);
+        if (supportedVaccines != null && !supportedVaccines.isEmpty() && form != null) {
             // For each of the vaccine groups, create a checkbox question
             try {
                 JSONArray questionList = form.getJSONObject("step1").getJSONArray("fields");
@@ -1560,28 +1563,24 @@ public class JsonFormUtils extends org.smartregister.util.JsonFormUtils {
                 vaccinationLabel.put("openmrs_entity", "-");
                 vaccinationLabel.put("openmrs_entity_id", "-");
                 questionList.put(vaccinationLabel);
-                JSONArray supportedVaccines = new JSONArray(supportedVaccinesString);
 
                 HashMap<String, ArrayList<JSONObject>> vaccineTypeConstraints = new HashMap<>();
-                for (int i = 0; i < supportedVaccines.length(); i++) {
-                    JSONObject curVaccineGroup = supportedVaccines.getJSONObject(i);
-                    JSONArray vaccines = curVaccineGroup.getJSONArray("vaccines");
-                    for (int j = 0; j < vaccines.length(); j++) {
-                        JSONObject curVaccine = vaccines.getJSONObject(j);
-                        if (!vaccineTypeConstraints.containsKey(curVaccine.getString("type"))) {
-                            vaccineTypeConstraints.put(curVaccine.getString("type"),
+                for (org.smartregister.immunization.domain.jsonmapping.VaccineGroup curVaccineGroup : supportedVaccines) {
+                    for (org.smartregister.immunization.domain.jsonmapping.Vaccine curVaccine : curVaccineGroup.vaccines) {
+                        if (!vaccineTypeConstraints.containsKey(curVaccine.type)) {
+                            vaccineTypeConstraints.put(curVaccine.type,
                                     new ArrayList<JSONObject>());
                         }
                         ArrayList<String> vaccineNamesDefined = new ArrayList<>();
-                        if (curVaccine.has("vaccine_separator")) {
-                            String unsplitNames = curVaccine.getString("name");
-                            String separator = curVaccine.getString("vaccine_separator");
+                        if (curVaccine.vaccine_separator != null) {
+                            String unsplitNames = curVaccine.name;
+                            String separator = curVaccine.vaccine_separator;
                             String[] splitValues = unsplitNames.split(separator);
                             for (String splitValue : splitValues) {
                                 vaccineNamesDefined.add(splitValue);
                             }
                         } else {
-                            vaccineNamesDefined.add(curVaccine.getString("name"));
+                            vaccineNamesDefined.add(curVaccine.name);
                         }
 
                         for (String curVaccineName : vaccineNamesDefined) {
@@ -1589,37 +1588,35 @@ public class JsonFormUtils extends org.smartregister.util.JsonFormUtils {
                             curConstraint.put("vaccine", curVaccineName);
                             curConstraint.put("type", "array");
                             curConstraint.put("ex",
-                                    "notEqualTo(step1:" + curVaccineGroup.getString("id") + ", \"[\"" + curVaccineName + "\"]\")");
-                            curConstraint.put("err", "Cannot be given with the other " + curVaccine.getString("type") + " dose");
-                            vaccineTypeConstraints.get(curVaccine.getString("type")).add(curConstraint);
+                                    "notEqualTo(step1:" + curVaccineGroup.id + ", \"[\"" + curVaccineName + "\"]\")");
+                            curConstraint.put("err", "Cannot be given with the other " + curVaccine.type + " dose");
+                            vaccineTypeConstraints.get(curVaccine.type).add(curConstraint);
                         }
                     }
                 }
 
-                for (int i = 0; i < supportedVaccines.length(); i++) {
-                    JSONObject curVaccineGroup = supportedVaccines.getJSONObject(i);
+                for (org.smartregister.immunization.domain.jsonmapping.VaccineGroup curVaccineGroup : supportedVaccines) {
                     JSONObject curQuestion = new JSONObject();
-                    curQuestion.put("key", curVaccineGroup.getString("id"));
+                    curQuestion.put("key", curVaccineGroup.id);
                     curQuestion.put("type", "check_box");
                     curQuestion.put("is_vaccine_group", true);
-                    curQuestion.put("label", curVaccineGroup.getString("name"));
+                    curQuestion.put("label", curVaccineGroup.name);
                     curQuestion.put("openmrs_entity_parent", "-");
                     curQuestion.put("openmrs_entity", "-");
                     curQuestion.put("openmrs_entity_id", "-");
 
-                    JSONArray vaccines = curVaccineGroup.getJSONArray("vaccines");
                     JSONArray options = new JSONArray();
-                    for (int j = 0; j < vaccines.length(); j++) {
+                    for (org.smartregister.immunization.domain.jsonmapping.Vaccine curVaccine : curVaccineGroup.vaccines) {
                         ArrayList<String> definedVaccineNames = new ArrayList<>();
-                        if (vaccines.getJSONObject(j).has("vaccine_separator")) {
-                            String rawNames = vaccines.getJSONObject(j).getString("name");
-                            String separator = vaccines.getJSONObject(j).getString("vaccine_separator");
+                        if (curVaccine.vaccine_separator != null) {
+                            String rawNames = curVaccine.name;
+                            String separator = curVaccine.vaccine_separator;
                             String[] split = rawNames.split(separator);
                             for (String aSplit : split) {
                                 definedVaccineNames.add(aSplit);
                             }
                         } else {
-                            definedVaccineNames.add(vaccines.getJSONObject(j).getString("name"));
+                            definedVaccineNames.add(curVaccine.name);
                         }
 
                         for (String curVaccineName : definedVaccineNames) {
@@ -1630,8 +1627,8 @@ public class JsonFormUtils extends org.smartregister.util.JsonFormUtils {
                             JSONArray constraints = new JSONArray();
 
                             // Add the constraints
-                            if (vaccineTypeConstraints.containsKey(vaccines.getJSONObject(j).getString("type"))) {
-                                for (JSONObject curConstraint : vaccineTypeConstraints.get(vaccines.getJSONObject(j).getString("type"))) {
+                            if (vaccineTypeConstraints.containsKey(curVaccine.type)) {
+                                for (JSONObject curConstraint : vaccineTypeConstraints.get(curVaccine.type)) {
                                     if (!curConstraint.getString("vaccine")
                                             .equals(curVaccineName)) {
                                         JSONObject constraintClone = new JSONObject(curConstraint.toString());

@@ -59,8 +59,8 @@ import java.util.regex.Pattern;
 
 import org.smartregister.view.viewholder.OnClickFormLauncher;
 
-import org.smartregister.cbhc.util.JsonFormUtils;
-import org.smartregister.cbhc.util.PathConstants;
+import util.JsonFormUtils;
+import util.PathConstants;
 
 import static android.view.ViewGroup.LayoutParams.MATCH_PARENT;
 import static android.view.ViewGroup.LayoutParams.WRAP_CONTENT;
@@ -111,7 +111,7 @@ public class WomanSmartClientsProvider implements SmartRegisterCLientsProviderFo
 
         ImageView profileImageIV = (ImageView) convertView.findViewById(R.id.profilepic);
         if (pc.entityId() != null) {//image already in local storage most likey ):
-            //set profile image by passing the client id.If the image doesn't exist in the image org.smartregister.cbhc.repository then download and save locally
+            //set profile image by passing the client id.If the image doesn't exist in the image repository then download and save locally
             profileImageIV.setTag(org.smartregister.R.id.entity_id, pc.entityId());
             DrishtiApplication.getCachedImageLoaderInstance().getImageByClientId(pc.entityId(), OpenSRPImageLoader.getStaticImageListener((ImageView) profileImageIV, R.drawable.woman_path_register_logo, R.drawable.woman_path_register_logo));
 
@@ -681,7 +681,7 @@ public class WomanSmartClientsProvider implements SmartRegisterCLientsProviderFo
         try {
             JSONObject form = FormUtils.getInstance(this.context).getFormJson("child_enrollment");
             LocationPickerView lpv = new LocationPickerView(this.context);
-            lpv.init(context);
+            lpv.init();
             JsonFormUtils.addHouseholdRegLocHierarchyQuestions(form, context);
             Log.d("add child form", "Form is " + form.toString());
             if (form != null) {
