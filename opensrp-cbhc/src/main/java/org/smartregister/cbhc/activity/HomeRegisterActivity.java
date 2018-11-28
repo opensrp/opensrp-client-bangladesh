@@ -70,7 +70,10 @@ public class HomeRegisterActivity extends BaseRegisterActivity {
         mBaseFragment.updateSortAndFilter(filterList, sortField);
         switchToBaseFragment();
     }
-	
+	public void clearFilter(){
+        mBaseFragment.clearSortAndFilter();
+        switchToBaseFragment();
+    }
 	public void startAdvancedSearch() {
 		try {
 			mPager.setCurrentItem(ADVANCED_SEARCH_POSITION, false);

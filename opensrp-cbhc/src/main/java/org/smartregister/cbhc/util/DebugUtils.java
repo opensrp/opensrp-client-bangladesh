@@ -2,6 +2,7 @@ package org.smartregister.cbhc.util;
 
 import android.content.Context;
 import android.os.Environment;
+import android.preference.PreferenceManager;
 
 import net.sqlcipher.database.SQLiteDatabase;
 
@@ -15,7 +16,6 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.nio.channels.FileChannel;
 
-import static org.smartregister.util.Utils.writePreference;
 
 /*
     puzz ~/projects/10000sentences (master *=) $ adb pull /sdcard/debug_info.puzz.a10000sentences.sqlite
@@ -82,7 +82,7 @@ public final class DebugUtils {
 //                }
             }
 
-            writePreference(context, "LAST_SYNC_TIMESTAMP", System.currentTimeMillis() + "");
+            PreferenceManager.getDefaultSharedPreferences(context).edit().putString("LAST_SYNC_TIMESTAMP", System.currentTimeMillis() + "").commit();
 
         } catch (Exception e) {
             throw new Error(e);

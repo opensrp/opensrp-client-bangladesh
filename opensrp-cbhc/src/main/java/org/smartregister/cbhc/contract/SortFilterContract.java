@@ -16,6 +16,8 @@ public interface SortFilterContract {
         void updateSortAndFilter(List<Field> filterList, Field sortField);
 
         void updateSortLabel(String sortText);
+
+        void clearFilter();
     }
 
     interface Presenter {
@@ -31,5 +33,7 @@ public interface SortFilterContract {
         Field getSortField();
 
         void setSortField(Field sortField);
+
+        void clearSortAndFilter();
     }
 }

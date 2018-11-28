@@ -1,7 +1,7 @@
 package util;
 
 import org.smartregister.AllConstants;
-import org.smartregister.path.BuildConfig;
+import org.smartregister.growplus.BuildConfig;
 
 /**
  * Created by coder on 2/14/17.

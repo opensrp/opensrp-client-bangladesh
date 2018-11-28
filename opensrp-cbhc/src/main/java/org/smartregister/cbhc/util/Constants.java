@@ -105,5 +105,6 @@ public abstract class Constants {
 
         public static final String FILTER_TEAM_ID = "teamId";
         public static final String PROVIDER_ID = "providerId";
+        public static final String LOCATION_ID = "locationId";
     }
 }

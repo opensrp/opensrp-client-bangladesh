@@ -33,6 +33,7 @@ import org.smartregister.view.dialog.SortOption;
 import org.json.JSONException;
 import org.smartregister.view.viewholder.OnClickFormLauncher;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -80,7 +81,10 @@ public class HouseholdSmartClientsProvider implements SmartRegisterCLientsProvid
         fillValue((TextView) convertView.findViewById(R.id.householdheadname), getValue(pc.getColumnmaps(), "first_name", false));
 
         fillValue((TextView) convertView.findViewById(R.id.id),findmemberDetails(pc));
-        fillValue((TextView) convertView.findViewById(R.id.registrationdate), getValue(pc.getColumnmaps(), "Date_Of_Reg", false));
+        Date date = new Date(Long.parseLong(getValue(pc.getColumnmaps(), "last_interacted_with", false)));
+        String d[] = date.toString().split(" ");
+        String date_string = d[1]+" "+d[2]+" "+d[d.length-1];
+        fillValue((TextView) convertView.findViewById(R.id.registrationdate), date_string);
 //        fillValue((TextView) convertView.findViewById(R.id.address), getValue(pc.getColumnmaps(), "address1", false));
 //        fillValue((TextView) convertView.findViewById(R.id.householdprimarytext), getValue(pc.getColumnmaps(), "block", false));
 

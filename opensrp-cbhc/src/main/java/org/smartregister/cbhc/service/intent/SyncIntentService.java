@@ -15,6 +15,7 @@ import org.smartregister.cbhc.BuildConfig;
 import org.smartregister.cbhc.R;
 import org.smartregister.cbhc.application.AncApplication;
 import org.smartregister.cbhc.helper.ECSyncHelper;
+import org.smartregister.cbhc.helper.LocationHelper;
 import org.smartregister.cbhc.receiver.SyncStatusBroadcastReceiver;
 import org.smartregister.cbhc.sync.AncClientProcessorForJava;
 import org.smartregister.cbhc.util.Constants;
@@ -90,6 +91,8 @@ public class SyncIntentService extends IntentService {
             AllSharedPreferences sharedPreferences = AncApplication.getInstance().getContext().userService().getAllSharedPreferences();
             String teamId = sharedPreferences.fetchDefaultTeamId(sharedPreferences.fetchRegisteredANM());
             String providerID = sharedPreferences.fetchRegisteredANM();
+//            String locationid = AncApplication.getInstance().getContext().userService().getAllSharedPreferences().fetchDefaultLocalityId(providerID);
+            String locationid =LocationHelper.getInstance().getDefaultLocation();
             if (StringUtils.isBlank(teamId)) {
                 complete(FetchStatus.fetchedFailed);
                 return;
@@ -107,6 +110,8 @@ public class SyncIntentService extends IntentService {
             lastSyncDatetime = lastSyncDatetime;
 //            String url = baseUrl + SYNC_URL + "?" + Constants.SyncFilters.FILTER_TEAM_ID + "=" + teamId + "&serverVersion=" + lastSyncDatetime + "&limit=" + SyncIntentService.EVENT_PULL_LIMIT;
             String url = baseUrl + SYNC_URL + "?" + Constants.SyncFilters.PROVIDER_ID + "=" + providerID + "&serverVersion=" + lastSyncDatetime + "&limit=" + SyncIntentService.EVENT_PULL_LIMIT;
+//            String url = baseUrl + SYNC_URL + "?" + Constants.SyncFilters.LOCATION_ID + "=" + locationid + "&serverVersion=" + lastSyncDatetime + "&limit=" + SyncIntentService.EVENT_PULL_LIMIT;
+
             Log.i(SyncIntentService.class.getName(), "URL: " + url);
 
             if (httpAgent == null) {

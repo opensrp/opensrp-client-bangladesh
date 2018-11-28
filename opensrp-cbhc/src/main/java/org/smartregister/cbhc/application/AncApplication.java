@@ -13,8 +13,9 @@ import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 import org.smartregister.Context;
 import org.smartregister.CoreLibrary;
-import org.smartregister.anc.ANCEventBusIndex;
+
 import org.smartregister.cbhc.BuildConfig;
+import org.smartregister.cbhc.CBHCEventBusIndex;
 import org.smartregister.cbhc.R;
 import org.smartregister.cbhc.activity.LoginActivity;
 import org.smartregister.cbhc.event.TriggerSyncEvent;
@@ -25,6 +26,7 @@ import org.smartregister.cbhc.job.ImageUploadServiceJob;
 import org.smartregister.cbhc.job.PullUniqueIdsServiceJob;
 import org.smartregister.cbhc.job.SyncServiceJob;
 import org.smartregister.cbhc.job.ViewConfigurationsServiceJob;
+import org.smartregister.cbhc.job.ZJob;
 import org.smartregister.cbhc.receiver.SyncStatusBroadcastReceiver;
 import org.smartregister.cbhc.repository.AncRepository;
 import org.smartregister.cbhc.repository.UniqueIdRepository;
@@ -37,6 +39,13 @@ import org.smartregister.configurableviews.helper.ConfigurableViewsHelper;
 import org.smartregister.configurableviews.helper.JsonSpecHelper;
 import org.smartregister.configurableviews.repository.ConfigurableViewsRepository;
 import org.smartregister.configurableviews.service.PullConfigurableViewsIntentService;
+import org.smartregister.growthmonitoring.GrowthMonitoringLibrary;
+import org.smartregister.growthmonitoring.service.intent.ZScoreRefreshIntentService;
+import org.smartregister.immunization.ImmunizationLibrary;
+import org.smartregister.immunization.domain.VaccineSchedule;
+import org.smartregister.immunization.domain.jsonmapping.Vaccine;
+import org.smartregister.immunization.domain.jsonmapping.VaccineGroup;
+import org.smartregister.immunization.util.VaccinatorUtils;
 import org.smartregister.repository.EventClientRepository;
 import org.smartregister.repository.Repository;
 import org.smartregister.sync.ClientProcessorForJava;
@@ -44,6 +53,7 @@ import org.smartregister.sync.DrishtiSyncScheduler;
 import org.smartregister.view.activity.DrishtiApplication;
 import org.smartregister.view.receiver.TimeChangedBroadcastReceiver;
 
+import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 import id.zelory.compressor.Compressor;
@@ -85,7 +95,12 @@ public class AncApplication extends DrishtiApplication implements TimeChangedBro
 
         //Initialize Modules
         CoreLibrary.init(context);
+        ImmunizationLibrary.init(context, getRepository(), null, BuildConfig.VERSION_CODE, BuildConfig.DATABASE_VERSION);
         ConfigurableViewsLibrary.init(context, getRepository());
+
+        GrowthMonitoringLibrary.init(context, getRepository(), BuildConfig.VERSION_CODE, BuildConfig.DATABASE_VERSION);
+//
+
 
         SyncStatusBroadcastReceiver.init(this);
         TimeChangedBroadcastReceiver.init(this);
@@ -104,6 +119,20 @@ public class AncApplication extends DrishtiApplication implements TimeChangedBro
         setUpEventHandling();
 
         scheduleJobs();
+
+
+        initOfflineSchedules();
+        startZscoreRefreshService();
+    }
+
+    private void initOfflineSchedules() {
+        try {
+            List<VaccineGroup> childVaccines = VaccinatorUtils.getSupportedVaccines(this);
+            List<Vaccine> specialVaccines = VaccinatorUtils.getSpecialVaccines(this);
+            VaccineSchedule.init(childVaccines, specialVaccines, "child");
+        } catch (Exception e) {
+            Log.e(TAG, Log.getStackTraceString(e));
+        }
     }
 
     public static synchronized AncApplication getInstance() {
@@ -185,7 +214,7 @@ public class AncApplication extends DrishtiApplication implements TimeChangedBro
     }
 
     private static String[] getFtsTables() {
-        return new String[]{DBConstants.HOUSEHOLD_TABLE_NAME,DBConstants.WOMAN_TABLE_NAME};
+        return new String[]{DBConstants.HOUSEHOLD_TABLE_NAME,DBConstants.WOMAN_TABLE_NAME,DBConstants.MEMBER_TABLE_NAME,DBConstants.CHILD_TABLE_NAME};
     }
 
     private static String[] getFtsSearchFields() {
@@ -250,7 +279,7 @@ public class AncApplication extends DrishtiApplication implements TimeChangedBro
 
         try {
 
-            EventBus.builder().addIndex(new ANCEventBusIndex()).installDefaultEventBus();
+            EventBus.builder().addIndex(new CBHCEventBusIndex()).installDefaultEventBus();
             LocalBroadcastManager.getInstance(this).registerReceiver(syncCompleteMessageReceiver, new IntentFilter(PullConfigurableViewsIntentService.EVENT_SYNC_COMPLETE));
 
         } catch
@@ -323,7 +352,7 @@ public class AncApplication extends DrishtiApplication implements TimeChangedBro
         PullUniqueIdsServiceJob.scheduleJob(SyncServiceJob.TAG, TimeUnit.MINUTES.toMillis(BuildConfig.PULL_UNIQUE_IDS_MINUTES), getFlexValue(BuildConfig.PULL_UNIQUE_IDS_MINUTES));
         ImageUploadServiceJob.scheduleJob(SyncServiceJob.TAG, TimeUnit.MINUTES.toMillis(BuildConfig.IMAGE_UPLOAD_MINUTES), getFlexValue(BuildConfig.IMAGE_UPLOAD_MINUTES));
         ViewConfigurationsServiceJob.scheduleJob(SyncServiceJob.TAG, TimeUnit.MINUTES.toMillis(BuildConfig.VIEW_SYNC_CONFIGURATIONS_MINUTES), getFlexValue(BuildConfig.VIEW_SYNC_CONFIGURATIONS_MINUTES));
-
+//        ZJob.scheduleJob(SyncServiceJob.TAG, TimeUnit.MINUTES.toMillis(BuildConfig.VIEW_SYNC_CONFIGURATIONS_MINUTES), getFlexValue(BuildConfig.VIEW_SYNC_CONFIGURATIONS_MINUTES));
     }
 
     private long getFlexValue(int value) {
@@ -336,5 +365,8 @@ public class AncApplication extends DrishtiApplication implements TimeChangedBro
 
         return TimeUnit.MINUTES.toMillis(minutes);
     }
-
+    public void startZscoreRefreshService() {
+        Intent intent = new Intent(this.getApplicationContext(), ZScoreRefreshIntentService.class);
+        this.getApplicationContext().startService(intent);
+    }
 }

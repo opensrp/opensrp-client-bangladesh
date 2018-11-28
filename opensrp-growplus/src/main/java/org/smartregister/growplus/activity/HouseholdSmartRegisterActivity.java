@@ -33,6 +33,7 @@ import org.smartregister.growplus.fragment.BaseSmartRegisterFragment;
 import org.smartregister.growplus.fragment.ChildSmartRegisterFragment;
 import org.smartregister.growplus.fragment.HouseholdMemberAddFragment;
 import org.smartregister.growplus.fragment.HouseholdSmartRegisterFragment;
+import org.smartregister.growplus.fragment.SortFilterFragment;
 import org.smartregister.growplus.repository.PathRepository;
 import org.smartregister.growplus.view.LocationPickerView;
 import org.smartregister.provider.SmartRegisterClientsProvider;
@@ -70,6 +71,7 @@ public class HouseholdSmartRegisterActivity extends BaseRegisterActivity {
     public static final int ADVANCED_SEARCH_POSITION = 1;
 
     public Fragment mBaseFragment = null;
+    public Fragment sortFilterFragment;
     private AdvancedSearchFragment advancedSearchFragment;
 
 
@@ -86,7 +88,8 @@ public class HouseholdSmartRegisterActivity extends BaseRegisterActivity {
 
         mBaseFragment = new HouseholdSmartRegisterFragment();
         advancedSearchFragment = new AdvancedSearchFragment();
-        Fragment[] otherFragments = {new AdvancedSearchFragment()};
+        sortFilterFragment = new org.smartregister.growplus.fragment.SortFilterFragment();
+        Fragment[] otherFragments = {advancedSearchFragment,sortFilterFragment};
 
         // Instantiate a ViewPager and a PagerAdapter.
         mPagerAdapter = new PathRegisterActivityPagerAdapter(getSupportFragmentManager(), mBaseFragment, otherFragments);
@@ -101,6 +104,19 @@ public class HouseholdSmartRegisterActivity extends BaseRegisterActivity {
 
         Event.ON_DATA_FETCHED.addListener(onDataFetchedListener);
 
+    }
+
+    public void switchToSortFilterFragment(){
+        mPager.setCurrentItem(2);
+    }
+
+    public void switchToBaseFragment() {
+        mPager.setCurrentItem(0);
+    }
+
+    public void applySortAndFilter(){
+        switchToBaseFragment();
+        ((HouseholdSmartRegisterFragment)mBaseFragment).requestUpdateView();
     }
 
     @Override
@@ -293,7 +309,7 @@ public class HouseholdSmartRegisterActivity extends BaseRegisterActivity {
         if (registerFragment.onBackPressed()) {
             return;
         }
-        if (currentPage != 0) {
+        if (currentPage == 1) {
             new AlertDialog.Builder(this)
                     .setMessage(R.string.form_back_confirm_dialog_message)
                     .setTitle(R.string.form_back_confirm_dialog_title)
@@ -312,6 +328,8 @@ public class HouseholdSmartRegisterActivity extends BaseRegisterActivity {
                     .show();
         } else if (currentPage == 0) {
             super.onBackPressed(); // allow back key only if we are
+        }else{
+            switchToBaseFragment();
         }
     }
 
