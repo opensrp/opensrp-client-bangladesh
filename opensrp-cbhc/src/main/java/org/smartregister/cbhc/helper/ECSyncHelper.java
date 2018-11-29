@@ -192,11 +192,11 @@ public class ECSyncHelper implements PrefsHelper {
     }
 
     public void updateLastSyncTimeStamp(long lastSyncTimeStamp) {
-        PreferenceManager.getDefaultSharedPreferences(context).edit().putString(Constants.LAST_SYNC_TIMESTAMP, lastSyncTimeStamp + "").commit();
+        PreferenceManager.getDefaultSharedPreferences(context).edit().putLong(Constants.LAST_SYNC_TIMESTAMP, lastSyncTimeStamp).commit();
     }
 
     public void updateLastViewsSyncTimeStamp(long lastSyncTimeStamp) {
-        PreferenceManager.getDefaultSharedPreferences(context).edit().putString( LAST_VIEWS_SYNC_TIMESTAMP, lastSyncTimeStamp + "").commit();
+        PreferenceManager.getDefaultSharedPreferences(context).edit().putLong( LAST_VIEWS_SYNC_TIMESTAMP, lastSyncTimeStamp).commit();
     }
 
     public long getLastCheckTimeStamp() {
@@ -212,7 +212,7 @@ public class ECSyncHelper implements PrefsHelper {
     }
 
     public void updateLastCheckTimeStamp(long lastSyncTimeStamp) {
-        PreferenceManager.getDefaultSharedPreferences(context).edit().putString(Constants.LAST_CHECK_TIMESTAMP, lastSyncTimeStamp + "").commit();
+        PreferenceManager.getDefaultSharedPreferences(context).edit().putLong(Constants.LAST_CHECK_TIMESTAMP, lastSyncTimeStamp).commit();
     }
 
 
