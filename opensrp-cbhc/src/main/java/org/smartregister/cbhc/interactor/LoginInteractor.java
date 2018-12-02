@@ -4,6 +4,7 @@ import android.content.Context;
 import android.util.Log;
 
 import org.joda.time.DateTime;
+import org.smartregister.cbhc.BuildConfig;
 import org.smartregister.cbhc.R;
 import org.smartregister.cbhc.application.AncApplication;
 import org.smartregister.cbhc.contract.LoginContract;
@@ -38,6 +39,8 @@ public class LoginInteractor implements LoginContract.Interactor {
 
     public LoginInteractor(LoginContract.Presenter loginPresenter) {
         this.mLoginPresenter = loginPresenter;
+
+
     }
 
     @Override

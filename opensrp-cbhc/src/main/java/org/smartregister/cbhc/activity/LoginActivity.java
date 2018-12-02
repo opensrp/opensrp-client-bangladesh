@@ -6,10 +6,12 @@ import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.text.method.HideReturnsTransformationMethod;
 import android.text.method.PasswordTransformationMethod;
@@ -34,7 +36,11 @@ import org.smartregister.cbhc.event.ViewConfigurationSyncCompleteEvent;
 import org.smartregister.cbhc.presenter.LoginPresenter;
 import org.smartregister.cbhc.task.SaveTeamLocationsTask;
 import org.smartregister.cbhc.util.Constants;
+import org.smartregister.repository.AllSharedPreferences;
 import org.smartregister.util.Utils;
+
+import java.net.MalformedURLException;
+import java.net.URL;
 
 import static org.smartregister.util.Log.logError;
 import static org.smartregister.util.Log.logInfo;
@@ -64,6 +70,9 @@ public class LoginActivity extends AppCompatActivity implements LoginContract.Vi
         mLoginPresenter = new LoginPresenter(this);
         mLoginPresenter.setLanguage();
         setupViews(mLoginPresenter);
+
+
+
 
     }
 
@@ -260,4 +269,6 @@ public class LoginActivity extends AppCompatActivity implements LoginContract.Vi
         return this;
 
     }
+
+
 }
