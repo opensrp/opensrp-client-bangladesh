@@ -60,20 +60,36 @@
         "openmrs_entity": "person_attribute",
         "openmrs_entity_id": "idtype",
         "openmrs_data_type": "text",
-        "type": "spinner",
+        "type": "check_box",
+        "label": "কোন পরিচয় পত্রটি আছে?",
         "hint": "কোন পরিচয় পত্রটি আছে?",
-        "values": [
-          "জাতীয় পরিচয় পত্র",
-          "জন্মনিবন্ধন",
-          "ইপিআই কার্ড নাম্বার",
-          "আইডি কার্ড নেই"
-        ],
-        "openmrs_choice_ids": {
-          "জাতীয় পরিচয় পত্র":"NID",
-          "জন্মনিবন্ধন":"BRID",
-          "ইপিআই কার্ড নাম্বার":"EPI",
-          "আইডি কার্ড নেই":"noIdentifier"
-        }
+        "exclusive": ["none"],
+        "options": [
+          {
+            "key": "NID",
+            "text": "জাতীয় পরিচয় পত্র",
+            "value": false,
+            "openmrs_choice_id": "NID"
+          },
+          {
+            "key": "BRID",
+            "text": "জন্মনিবন্ধন",
+            "value": false,
+            "openmrs_choice_id": "BRID"
+          },
+          {
+            "key": "EPI",
+            "text": "ইপিআই কার্ড নাম্বার",
+            "value": false,
+            "openmrs_choice_id": "EPI"
+          },
+          {
+            "key": "noIdentifier",
+            "text": "আইডি কার্ড নেই",
+            "value": false,
+            "openmrs_choice_id": "noIdentifier"
+          }
+          ]
       },
       {
         "key": "member_NID",
@@ -97,8 +113,13 @@
         },
         "relevance": {
           "step1:member_unique_ID": {
-            "type": "string",
-            "ex": "equalTo(., \"জাতীয় পরিচয় পত্র\")"
+            "ex-checkbox": [
+              {
+                "or": [
+                  "NID"
+                ]
+              }
+            ]
           }
         }
       },
