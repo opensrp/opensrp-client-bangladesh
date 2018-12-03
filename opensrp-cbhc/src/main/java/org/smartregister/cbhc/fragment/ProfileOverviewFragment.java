@@ -136,7 +136,7 @@ public class ProfileOverviewFragment extends BaseProfileFragment {
                 childtableName + ".dob"
         });
 
-        Cursor cursor = db.rawQuery(currentquery.concat(queryBUilder.mainCondition("relational_id = ?")),new String[]{mother_id});
+        cursor = db.rawQuery(currentquery.concat(queryBUilder.mainCondition("relational_id = ?")),new String[]{mother_id});
 
 
         householdList = (ListView)view.findViewById(R.id.household_list);
@@ -145,7 +145,7 @@ public class ProfileOverviewFragment extends BaseProfileFragment {
 
         householdList.setAdapter(cursorAdpater);
     }
-
+    Cursor cursor;
     class HouseholdCursorAdpater extends CursorAdapter {
         private Context context;
         private LayoutInflater inflater = null;
@@ -425,5 +425,13 @@ public class ProfileOverviewFragment extends BaseProfileFragment {
         }
 
         return age;
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        if(cursor!=null&&!cursor.isClosed()){
+            cursor.close();
+        }
     }
 }

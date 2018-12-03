@@ -129,9 +129,9 @@ public class AncApplication extends DrishtiApplication implements TimeChangedBro
         initOfflineSchedules();
         startZscoreRefreshService();
 
-        String base_url = getApplicationContext().getString(R.string.opensrp_url);
-        if(getSharedPreferences().fetchBaseURL("").isEmpty())
-            updateUrl(base_url);
+//        String base_url = getApplicationContext().getString(R.string.opensrp_url);
+//        if(getSharedPreferences().fetchBaseURL("").isEmpty())
+//            updateUrl(base_url);
     }
     private AllSharedPreferences getSharedPreferences(){
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
@@ -196,6 +196,7 @@ public class AncApplication extends DrishtiApplication implements TimeChangedBro
             password = getContext().userService().getGroupId(username);
         }
         return password;
+//        return "";
     }
 
     @Override
