@@ -119,8 +119,8 @@ public class AncApplication extends DrishtiApplication implements TimeChangedBro
         this.jsonSpecHelper = new JsonSpecHelper(this);
 
         setUpEventHandling();
-        AncApplication.getInstance().initOfflineSchedules();
-        AncApplication.getInstance().scheduleJobs();
+        initOfflineSchedules();
+
 
     }
     public void initLibraries() {
@@ -179,6 +179,7 @@ public class AncApplication extends DrishtiApplication implements TimeChangedBro
             if (repository == null) {
                 repository = new AncRepository(getInstance().getApplicationContext(), context);
                 getConfigurableViewsRepository();
+                scheduleJobs();
             }
         } catch (UnsatisfiedLinkError e) {
             logError("Error on getRepository: " + e);
