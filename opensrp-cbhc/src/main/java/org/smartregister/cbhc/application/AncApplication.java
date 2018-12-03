@@ -100,10 +100,7 @@ public class AncApplication extends DrishtiApplication implements TimeChangedBro
 
         //Initialize Modules
         CoreLibrary.init(context);
-        ImmunizationLibrary.init(context, getRepository(), null, BuildConfig.VERSION_CODE, BuildConfig.DATABASE_VERSION);
-        ConfigurableViewsLibrary.init(context, getRepository());
 
-        GrowthMonitoringLibrary.init(context, getRepository(), BuildConfig.VERSION_CODE, BuildConfig.DATABASE_VERSION);
 //
 
 
@@ -111,7 +108,7 @@ public class AncApplication extends DrishtiApplication implements TimeChangedBro
         TimeChangedBroadcastReceiver.init(this);
         TimeChangedBroadcastReceiver.getInstance().addOnTimeChangedListener(this);
 
-        startPullConfigurableViewsIntentService(getApplicationContext());
+
         try {
             Utils.saveLanguage("en");
         } catch (Exception e) {
@@ -122,16 +119,16 @@ public class AncApplication extends DrishtiApplication implements TimeChangedBro
         this.jsonSpecHelper = new JsonSpecHelper(this);
 
         setUpEventHandling();
+        AncApplication.getInstance().initOfflineSchedules();
+        AncApplication.getInstance().scheduleJobs();
 
-        scheduleJobs();
-
-
-        initOfflineSchedules();
+    }
+    public void initLibraries() {
+        ImmunizationLibrary.init(context, getRepository(), null, BuildConfig.VERSION_CODE, BuildConfig.DATABASE_VERSION);
+        ConfigurableViewsLibrary.init(context, getRepository());
+        GrowthMonitoringLibrary.init(context, getRepository(), BuildConfig.VERSION_CODE, BuildConfig.DATABASE_VERSION);
         startZscoreRefreshService();
-
-//        String base_url = getApplicationContext().getString(R.string.opensrp_url);
-//        if(getSharedPreferences().fetchBaseURL("").isEmpty())
-//            updateUrl(base_url);
+        startPullConfigurableViewsIntentService(getApplicationContext());
     }
     private AllSharedPreferences getSharedPreferences(){
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
@@ -162,7 +159,7 @@ public class AncApplication extends DrishtiApplication implements TimeChangedBro
             logError("Malformed Url: " + baseUrl);
         }
     }
-    private void initOfflineSchedules() {
+    public void initOfflineSchedules() {
         try {
             List<VaccineGroup> childVaccines = VaccinatorUtils.getSupportedVaccines(this);
             List<Vaccine> specialVaccines = VaccinatorUtils.getSpecialVaccines(this);
@@ -380,9 +377,9 @@ public class AncApplication extends DrishtiApplication implements TimeChangedBro
 //        logoutCurrentUser();
     }
 
-    private void scheduleJobs() {
+    public void scheduleJobs() {
         //init Job Manager
-
+        initLibraries();
         JobManager.create(this).addJobCreator(new AncJobCreator());
 
         //schedule jobs
@@ -391,6 +388,7 @@ public class AncApplication extends DrishtiApplication implements TimeChangedBro
         ImageUploadServiceJob.scheduleJob(SyncServiceJob.TAG, TimeUnit.MINUTES.toMillis(BuildConfig.IMAGE_UPLOAD_MINUTES), getFlexValue(BuildConfig.IMAGE_UPLOAD_MINUTES));
         ViewConfigurationsServiceJob.scheduleJob(SyncServiceJob.TAG, TimeUnit.MINUTES.toMillis(BuildConfig.VIEW_SYNC_CONFIGURATIONS_MINUTES), getFlexValue(BuildConfig.VIEW_SYNC_CONFIGURATIONS_MINUTES));
 //        ZJob.scheduleJob(SyncServiceJob.TAG, TimeUnit.MINUTES.toMillis(BuildConfig.VIEW_SYNC_CONFIGURATIONS_MINUTES), getFlexValue(BuildConfig.VIEW_SYNC_CONFIGURATIONS_MINUTES));
+
     }
 
     private long getFlexValue(int value) {

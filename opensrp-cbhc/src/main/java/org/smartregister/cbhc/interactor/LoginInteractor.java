@@ -110,7 +110,9 @@ public class LoginInteractor implements LoginContract.Interactor {
                                 if (!Constants.TIME_CHECK || timeStatus.equals(TimeStatus.OK)) {
                                     remoteLoginWith(userName, password,
                                             loginResponse.payload());
+
                                     AncApplication.getInstance().startPullUniqueIdsService();
+
                                 } else {
                                     if (timeStatus.equals(TimeStatus.TIMEZONE_MISMATCH)) {
                                         TimeZone serverTimeZone = mLoginPresenter.getOpenSRPContext().userService()

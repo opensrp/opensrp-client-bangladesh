@@ -373,6 +373,10 @@
         "openmrs_data_type": "text",
         "type": "spinner",
         "hint": "লিঙ্গ",
+        "v_required": {
+          "value": true,
+          "err": "Please select gender"
+        },
         "values": [
           "পুরুষ",
           "মহিলা",
