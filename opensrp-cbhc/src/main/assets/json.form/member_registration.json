@@ -456,6 +456,42 @@
         }
       },
       {
+        "key": "relation_other_1",
+        "openmrs_entity_parent": "",
+        "openmrs_entity": "",
+        "openmrs_entity_id": "",
+        "type": "edit_text",
+        "hint": "অন্যান্য আত্মীয়",
+        "v_required": {
+          "value": true,
+          "err": "Please Type Other Relation"
+        },
+        "relevance": {
+          "step1:relation_with_household_head": {
+            "type": "string",
+            "ex": "equalTo(., \"অন্যান্য আত্মীয়\")"
+          }
+        }
+      },
+      {
+        "key": "relation_other_2",
+        "openmrs_entity_parent": "",
+        "openmrs_entity": "",
+        "openmrs_entity_id": "",
+        "type": "edit_text",
+        "hint": "অন্যান্য অনাত্মীয়",
+        "v_required": {
+          "value": true,
+          "err": "Please Type Other Relation"
+        },
+        "relevance": {
+          "step1:relation_with_household_head": {
+            "type": "string",
+            "ex": "equalTo(., \"অন্যান্য অনাত্মীয়\")"
+          }
+        }
+      },
+      {
         "key": "marital_status",
         "openmrs_entity_parent": "",
         "openmrs_entity": "person_attribute",
@@ -626,6 +662,24 @@
         }
       },
       {
+        "key": "disability_other",
+        "openmrs_entity_parent": "",
+        "openmrs_entity": "",
+        "openmrs_entity_id": "",
+        "type": "edit_text",
+        "hint": "অন্যান্য প্রতিবন্ধিতা",
+        "v_required": {
+          "value": true,
+          "err": "Please Type Other Relation"
+        },
+        "relevance": {
+          "step1:disability_type": {
+            "type": "string",
+            "ex": "equalTo(., \"অন্যান্য\")"
+          }
+        }
+      },
+      {
         "key": "ethnicity",
         "openmrs_entity_parent": "",
         "openmrs_entity": "person_attribute",
@@ -665,6 +719,24 @@
           "মুন্ডা": "Munda",
           "অন্যান্য": "Others (Ethnicity)"
 
+        }
+      },
+      {
+        "key": "ethnicity_other",
+        "openmrs_entity_parent": "",
+        "openmrs_entity": "",
+        "openmrs_entity_id": "",
+        "type": "edit_text",
+        "hint": "অন্যান্য জাতিসত্তা",
+        "v_required": {
+          "value": true,
+          "err": "Please Type Other Ethnicity"
+        },
+        "relevance": {
+          "step1:ethnicity": {
+            "type": "string",
+            "ex": "equalTo(., \"অন্যান্য\")"
+          }
         }
       },
       {
@@ -720,6 +792,24 @@
           "কারিগরি": "Technical",
           "ধাত্রীবিদ্যা/নার্সিং": "Midwife/Nursing",
           "অন্যান্য": "Others (Education)"
+        }
+      },
+      {
+        "key": "education_other",
+        "openmrs_entity_parent": "",
+        "openmrs_entity": "",
+        "openmrs_entity_id": "",
+        "type": "edit_text",
+        "hint": "অন্যান্য শিক্ষাগত যোগ্যতা",
+        "v_required": {
+          "value": true,
+          "err": "Please Type Other Qualification"
+        },
+        "relevance": {
+          "step1:educational_qualification": {
+            "type": "string",
+            "ex": "equalTo(., \"অন্যান্য\")"
+          }
         }
       },
       {
@@ -886,6 +976,24 @@
         }
       },
       {
+        "key": "occupation_other",
+        "openmrs_entity_parent": "",
+        "openmrs_entity": "",
+        "openmrs_entity_id": "",
+        "type": "edit_text",
+        "hint": "অন্যান্য পেশা",
+        "v_required": {
+          "value": true,
+          "err": "Please Type Other Work"
+        },
+        "relevance": {
+          "step1:occupation": {
+            "type": "string",
+            "ex": "equalTo(., \"অন্যান্য\")"
+          }
+        }
+      },
+      {
         "key": "religion",
         "openmrs_entity_parent": "",
         "openmrs_entity": "person_attribute",
@@ -906,6 +1014,24 @@
           "বৌদ্ধ": "Buddhist",
           "খ্রিস্টান": "Christian",
           "অন্যান্য": "Others (Religion)"
+        }
+      },
+      {
+        "key": "religion_other",
+        "openmrs_entity_parent": "",
+        "openmrs_entity": "",
+        "openmrs_entity_id": "",
+        "type": "edit_text",
+        "hint": "অন্যান্য ধর্ম",
+        "v_required": {
+          "value": true,
+          "err": "Please Type Other Religion"
+        },
+        "relevance": {
+          "step1:religion": {
+            "type": "string",
+            "ex": "equalTo(., \"অন্যান্য\")"
+          }
         }
       },
       {
@@ -1014,6 +1140,24 @@
         }
       },
       {
+        "key": "disease_other",
+        "openmrs_entity_parent": "",
+        "openmrs_entity": "",
+        "openmrs_entity_id": "",
+        "type": "edit_text",
+        "hint": "অন্যান্য রোগ বা অবস্থা",
+        "v_required": {
+          "value": true,
+          "err": "Please Type Other disease"
+        },
+        "relevance": {
+          "step1:Disease_status": {
+            "type": "string",
+            "ex": "equalTo(., \"অন্যান্য\")"
+          }
+        }
+      },
+      {
         "key": "illness_information",
         "openmrs_entity_parent": "",
         "openmrs_entity": "person_attribute",
@@ -1036,6 +1180,24 @@
           "প্রতিবন্ধিতা": "Disability",
           "মানসিক অসুখ":"Psychological Disease",
           "অন্যান্য": "Others (Family Disease)"
+        }
+      },
+      {
+        "key": "illness_other",
+        "openmrs_entity_parent": "",
+        "openmrs_entity": "",
+        "openmrs_entity_id": "",
+        "type": "edit_text",
+        "hint": "অন্যান্য রোগ  সম্পর্কিত পারিবারিক তথ্য",
+        "v_required": {
+          "value": true,
+          "err": "Please Type Other Conditions"
+        },
+        "relevance": {
+          "step1:illness_information": {
+            "type": "string",
+            "ex": "equalTo(., \"অন্যান্য\")"
+          }
         }
       },
       {
@@ -1063,6 +1225,24 @@
           "স্থুলকায়": "Obesity",
           "অতিরিক্ত লবন": "High Salt Intake",
           "অন্যান্য": "Others (Risky Habit)"
+        }
+      },
+      {
+        "key": "habits_other",
+        "openmrs_entity_parent": "",
+        "openmrs_entity": "",
+        "openmrs_entity_id": "",
+        "type": "edit_text",
+        "hint": "অন্যান্য ঝুকিপূর্ন অভ্যাস",
+        "v_required": {
+          "value": true,
+          "err": "Please Type Other Habits"
+        },
+        "relevance": {
+          "step1:risky_habits": {
+            "type": "string",
+            "ex": "equalTo(., \"অন্যান্য\")"
+          }
         }
       },
       {

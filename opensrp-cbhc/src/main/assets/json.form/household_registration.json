@@ -298,6 +298,24 @@
         }
       },
       {
+        "key": "latrine_other",
+        "openmrs_entity_parent": "",
+        "openmrs_entity": "",
+        "openmrs_entity_id": "",
+        "type": "edit_text",
+        "hint": "অন্যান্য ধরনের ল্যাট্রিন",
+        "v_required": {
+          "value": true,
+          "err": "Please Type Latrin Type"
+        },
+        "relevance": {
+          "step1:latrine_structure": {
+            "type": "string",
+            "ex": "equalTo(., \"অন্যান্য\")"
+          }
+        }
+      },
+      {
         "key": "water_source",
         "openmrs_entity_parent": "",
         "openmrs_entity": "concept",
@@ -333,6 +351,24 @@
         }
       },
       {
+        "key": "water_other",
+        "openmrs_entity_parent": "",
+        "openmrs_entity": "",
+        "openmrs_entity_id": "",
+        "type": "edit_text",
+        "hint": "অন্যান্য পানির উৎস",
+        "v_required": {
+          "value": true,
+          "err": "Please Type Water Source"
+        },
+        "relevance": {
+          "step1:water_source": {
+            "type": "string",
+            "ex": "equalTo(., \"অন্যান্য\")"
+          }
+        }
+      },
+      {
         "key": "financial_status",
         "openmrs_entity_parent": "",
         "openmrs_entity": "concept",
@@ -360,6 +396,24 @@
         "v_required": {
           "value": "true",
           "err": "Please answer the question"
+        }
+      },
+      {
+        "key": "finance_other",
+        "openmrs_entity_parent": "",
+        "openmrs_entity": "",
+        "openmrs_entity_id": "",
+        "type": "edit_text",
+        "hint": "আর্থিক অবস্থা অন্যান্য",
+        "v_required": {
+          "value": true,
+          "err": "Please Type Financial Status"
+        },
+        "relevance": {
+          "step1:financial_status": {
+            "type": "string",
+            "ex": "equalTo(., \"অন্যান্য\")"
+          }
         }
       },
       {
@@ -420,6 +474,24 @@
         "v_required": {
           "value": "true",
           "err": "Please answer the question"
+        }
+      },
+      {
+        "key": "facility_other",
+        "openmrs_entity_parent": "",
+        "openmrs_entity": "",
+        "openmrs_entity_id": "",
+        "type": "edit_text",
+        "hint": "অন্যান্য স্বাস্থ্য সেবা কেন্দ্র",
+        "v_required": {
+          "value": true,
+          "err": "Please Type Facility Name"
+        },
+        "relevance": {
+          "step1:Nearby_Health_Facility": {
+            "type": "string",
+            "ex": "equalTo(., \"অন্যান্য\")"
+          }
         }
       },
       {
@@ -492,6 +564,24 @@
         "v_required": {
           "value": "true",
           "err": "Please answer the question"
+        }
+      },
+      {
+        "key": "health_care_center_other",
+        "openmrs_entity_parent": "",
+        "openmrs_entity": "",
+        "openmrs_entity_id": "",
+        "type": "edit_text",
+        "hint": "অন্যান্য স্বাস্থ্য সেবা কেন্দ্র",
+        "v_required": {
+          "value": true,
+          "err": "Please Type Facility Name"
+        },
+        "relevance": {
+          "step1:Family_Members_Health_Services_From_Health_Care_Center": {
+            "type": "string",
+            "ex": "equalTo(., \"অন্যান্য\")"
+          }
         }
       },
       {
