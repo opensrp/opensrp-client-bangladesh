@@ -403,6 +403,10 @@
         "openmrs_data_type": "text",
         "type": "spinner",
         "hint": "লিঙ্গ",
+        "v_required": {
+          "value": true,
+          "err": "Please select gender"
+        },
         "values": [
           "পুরুষ",
           "মহিলা",
@@ -479,6 +483,42 @@
           "জামাতা": "Son_in_Law",
           "অন্যান্য আত্মীয়": "Others_Relative",
           "অন্যান্য অনাত্মীয়": "Others_Non_Relative"
+        }
+      },
+      {
+        "key": "relation_other_1",
+        "openmrs_entity_parent": "",
+        "openmrs_entity": "",
+        "openmrs_entity_id": "",
+        "type": "edit_text",
+        "hint": "অন্যান্য আত্মীয়",
+        "v_required": {
+          "value": true,
+          "err": "Please Type Other Relation"
+        },
+        "relevance": {
+          "step1:relation_with_household_head": {
+            "type": "string",
+            "ex": "equalTo(., \"অন্যান্য আত্মীয়\")"
+          }
+        }
+      },
+      {
+        "key": "relation_other_2",
+        "openmrs_entity_parent": "",
+        "openmrs_entity": "",
+        "openmrs_entity_id": "",
+        "type": "edit_text",
+        "hint": "অন্যান্য অনাত্মীয়",
+        "v_required": {
+          "value": true,
+          "err": "Please Type Other Relation"
+        },
+        "relevance": {
+          "step1:relation_with_household_head": {
+            "type": "string",
+            "ex": "equalTo(., \"অন্যান্য অনাত্মীয়\")"
+          }
         }
       },
       {
@@ -652,6 +692,24 @@
         }
       },
       {
+        "key": "disability_other",
+        "openmrs_entity_parent": "",
+        "openmrs_entity": "",
+        "openmrs_entity_id": "",
+        "type": "edit_text",
+        "hint": "অন্যান্য প্রতিবন্ধিতা",
+        "v_required": {
+          "value": true,
+          "err": "Please Type Other Relation"
+        },
+        "relevance": {
+          "step1:disability_type": {
+            "type": "string",
+            "ex": "equalTo(., \"অন্যান্য\")"
+          }
+        }
+      },
+      {
         "key": "ethnicity",
         "openmrs_entity_parent": "",
         "openmrs_entity": "person_attribute",
@@ -691,6 +749,24 @@
           "মুন্ডা": "Munda",
           "অন্যান্য": "Others (Ethnicity)"
 
+        }
+      },
+      {
+        "key": "ethnicity_other",
+        "openmrs_entity_parent": "",
+        "openmrs_entity": "",
+        "openmrs_entity_id": "",
+        "type": "edit_text",
+        "hint": "অন্যান্য জাতিসত্তা",
+        "v_required": {
+          "value": true,
+          "err": "Please Type Other Ethnicity"
+        },
+        "relevance": {
+          "step1:ethnicity": {
+            "type": "string",
+            "ex": "equalTo(., \"অন্যান্য\")"
+          }
         }
       },
       {
@@ -746,6 +822,24 @@
           "কারিগরি": "Technical",
           "ধাত্রীবিদ্যা/নার্সিং": "Midwife/Nursing",
           "অন্যান্য": "Others (Education)"
+        }
+      },
+      {
+        "key": "education_other",
+        "openmrs_entity_parent": "",
+        "openmrs_entity": "",
+        "openmrs_entity_id": "",
+        "type": "edit_text",
+        "hint": "অন্যান্য শিক্ষাগত যোগ্যতা",
+        "v_required": {
+          "value": true,
+          "err": "Please Type Other Qualification"
+        },
+        "relevance": {
+          "step1:educational_qualification": {
+            "type": "string",
+            "ex": "equalTo(., \"অন্যান্য\")"
+          }
         }
       },
       {
@@ -912,6 +1006,24 @@
         }
       },
       {
+        "key": "occupation_other",
+        "openmrs_entity_parent": "",
+        "openmrs_entity": "",
+        "openmrs_entity_id": "",
+        "type": "edit_text",
+        "hint": "অন্যান্য পেশা",
+        "v_required": {
+          "value": true,
+          "err": "Please Type Other Work"
+        },
+        "relevance": {
+          "step1:occupation": {
+            "type": "string",
+            "ex": "equalTo(., \"অন্যান্য\")"
+          }
+        }
+      },
+      {
         "key": "religion",
         "openmrs_entity_parent": "",
         "openmrs_entity": "person_attribute",
@@ -932,6 +1044,24 @@
           "বৌদ্ধ": "Buddhist",
           "খ্রিস্টান": "Christian",
           "অন্যান্য": "Others (Religion)"
+        }
+      },
+      {
+        "key": "religion_other",
+        "openmrs_entity_parent": "",
+        "openmrs_entity": "",
+        "openmrs_entity_id": "",
+        "type": "edit_text",
+        "hint": "অন্যান্য ধর্ম",
+        "v_required": {
+          "value": true,
+          "err": "Please Type Other Religion"
+        },
+        "relevance": {
+          "step1:religion": {
+            "type": "string",
+            "ex": "equalTo(., \"অন্যান্য\")"
+          }
         }
       },
       {
@@ -988,54 +1118,147 @@
         "openmrs_entity": "person_attribute",
         "openmrs_entity_id": "Disease_status",
         "openmrs_data_type": "text",
-        "type": "spinner",
-        "hint": "রোগ বা অবস্থা",
-        "values": [
-          "উচ্চ রক্তচাপ",
-          "ডায়াবেটিস",
-          "সম্ভাব্য যক্ষ্মা",
-          "খুব মারাত্বক রোগ",
-          "নিউমোনিয়া",
-          "নিউমোনিয়া নয় সর্দি, কাশী",
-          "ডায়ারিয়া ও আমাশয়",
-          "জ্বর",
-          "জ্বর, (ম্যালারিয়া)" ,
-          "কানের সমস্যা",
-          "হাম",
-          "নাভিতে সংক্রামন",
-          "চোখ উঠা",
-          "আঘাত",
-          "প্রসব পূর্ব",
-          "প্রসবোত্তর",
-          "পরিবার পরিকল্পনা",
-          "স্বাভাবিক প্রসব",
-          "অন্যান্য"
+        "type": "check_box",
+        "label": "রোগ বা অবস্থা",
+        "exclusive": ["none"],
+        "options": [
+          {
+            "key": "High Blood Pressure",
+            "text": "উচ্চ রক্তচাপ",
+            "value": false,
+            "openmrs_choice_id": "High Blood Pressure"
+          },
+          {
+            "key": "Diabetes",
+            "text": "ডায়াবেটিস",
+            "value": false,
+            "openmrs_choice_id": "Diabetes"
+          },
+          {
+            "key": "Tuberculosis",
+            "text": "সম্ভাব্য যক্ষ্মা",
+            "value": false,
+            "openmrs_choice_id": "Tuberculosis"
+          },
+          {
+            "key": "Very_severe_disease",
+            "text": "খুব মারাত্বক রোগ",
+            "value": false,
+            "openmrs_choice_id": "Very_severe_disease"
+          },
+          {
+            "key": "Pneumonia",
+            "text": "নিউমোনিয়া",
+            "value": false,
+            "openmrs_choice_id": "Pneumonia"
+          },
+          {
+            "key": "Pneumonia, unspec.",
+            "text": "নিউমোনিয়া নয় সর্দি, কাশী",
+            "value": false,
+            "openmrs_choice_id": "Pneumonia, unspec"
+          },
+          {
+            "key": "dieriaanddysentry",
+            "text": "ডায়ারিয়া ও আমাশয়",
+            "value": false,
+            "openmrs_choice_id": "dieriaanddysentry"
+          },
+          {
+            "key": "Fever",
+            "text": "জ্বর",
+            "value": false,
+            "openmrs_choice_id": "Fever"
+          },
+          {
+            "key": "maleria",
+            "text": "জ্বর, (ম্যালারিয়া)",
+            "value": false,
+            "openmrs_choice_id": "maleria"
+          },
+          {
+            "key": "Hearing loss, unspec.",
+            "text": "কানের সমস্যা",
+            "value": false,
+            "openmrs_choice_id": "Hearing loss, unspec."
+          },
+          {
+            "key": "Measles",
+            "text": "হাম",
+            "value": false,
+            "openmrs_choice_id": "Measles"
+          },
+          {
+            "key": "nevalinfection",
+            "text": "নাভিতে সংক্রামন",
+            "value": false,
+            "openmrs_choice_id": "nevalinfection"
+          },
+          {
+            "key": "Conjunctivitis, unspec.",
+            "text": "চোখ উঠা",
+            "value": false,
+            "openmrs_choice_id": "Conjunctivitis, unspec."
+          },
+          {
+            "key": "Injury",
+            "text": "আঘাত",
+            "value": false,
+            "openmrs_choice_id": "Injury"
+          },
+          {
+            "key": "Antenatal Period",
+            "text": "প্রসব পূর্ব",
+            "value": false,
+            "openmrs_choice_id": "Antenatal Period"
+          },
+          {
+            "key": "Postnatal",
+            "text": "প্রসবোত্তর",
+            "value": false,
+            "openmrs_choice_id": "Postnatal"
+          },
+          {
+            "key": "familyplanning",
+            "text": "পরিবার পরিকল্পনা",
+            "value": false,
+            "openmrs_choice_id": "familyplanning"
+          },
+          {
+            "key": "regulardelivery",
+            "text": "স্বাভাবিক প্রসব",
+            "value": false,
+            "openmrs_choice_id": "regulardelivery"
+          },
+          {
+            "key": "Others_member_disease",
+            "text": "অন্যান্য",
+            "value": false,
+            "openmrs_choice_id": "Others_member_disease"
+          }
         ],
-        "openmrs_choice_ids": {
-          "উচ্চ রক্তচাপ":"High Blood Pressure",
-          "ডায়াবেটিস":"Diabetes",
-          "সম্ভাব্য যক্ষ্মা":"Tuberculosis",
-          "খুব মারাত্বক রোগ":"Very_severe_disease",
-          "নিউমোনিয়া":"Pneumonia",
-          "নিউমোনিয়া নয় সর্দি, কাশী":"Pneumonia, unspec.",
-          "ডায়ারিয়া ও আমাশয়":"dieriaanddysentry",
-          "জ্বর":"Fever",
-          "জ্বর, (ম্যালারিয়া)":"maleria",
-          "কানের সমস্যা":"Hearing loss, unspec.",
-          "হাম":"Measles",
-          "নাভিতে সংক্রামন":"nevalinfection",
-          "চোখ উঠা":"Conjunctivitis, unspec.",
-          "আঘাত":"Injury",
-          "প্রসব পূর্ব":"Antenatal Period",
-          "প্রসবোত্তর":"Postnatal",
-          "পরিবার পরিকল্পনা":"familyplanning",
-          "স্বাভাবিক প্রসব":"regulardelivery",
-          "অন্যান্য":"Others_member_disease"
-        },
         "relevance": {
           "step1:has_disease": {
             "type": "string",
             "ex": "equalTo(., \"হ্যাঁ\")"
+          }
+        }
+      },
+      {
+        "key": "disease_other",
+        "openmrs_entity_parent": "",
+        "openmrs_entity": "",
+        "openmrs_entity_id": "",
+        "type": "edit_text",
+        "hint": "অন্যান্য রোগ বা অবস্থা",
+        "v_required": {
+          "value": true,
+          "err": "Please Type Other disease"
+        },
+        "relevance": {
+          "step1:Disease_status": {
+            "type": "string",
+            "ex": "equalTo(., \"অন্যান্য\")"
           }
         }
       },
@@ -1065,6 +1288,24 @@
         }
       },
       {
+        "key": "illness_other",
+        "openmrs_entity_parent": "",
+        "openmrs_entity": "",
+        "openmrs_entity_id": "",
+        "type": "edit_text",
+        "hint": "অন্যান্য রোগ  সম্পর্কিত পারিবারিক তথ্য",
+        "v_required": {
+          "value": true,
+          "err": "Please Type Other Conditions"
+        },
+        "relevance": {
+          "step1:illness_information": {
+            "type": "string",
+            "ex": "equalTo(., \"অন্যান্য\")"
+          }
+        }
+      },
+      {
         "key": "risky_habits",
         "openmrs_entity_parent": "",
         "openmrs_entity": "person_attribute",
@@ -1089,6 +1330,24 @@
           "স্থুলকায়": "Obesity",
           "অতিরিক্ত লবন": "High Salt Intake",
           "অন্যান্য": "Others (Risky Habit)"
+        }
+      },
+      {
+        "key": "habits_other",
+        "openmrs_entity_parent": "",
+        "openmrs_entity": "",
+        "openmrs_entity_id": "",
+        "type": "edit_text",
+        "hint": "অন্যান্য ঝুকিপূর্ন অভ্যাস",
+        "v_required": {
+          "value": true,
+          "err": "Please Type Other Habits"
+        },
+        "relevance": {
+          "step1:risky_habits": {
+            "type": "string",
+            "ex": "equalTo(., \"অন্যান্য\")"
+          }
         }
       },
       {
