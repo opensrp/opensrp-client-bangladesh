@@ -1257,8 +1257,13 @@
         },
         "relevance": {
           "step1:Disease_status": {
-            "type": "string",
-            "ex": "equalTo(., \"অন্যান্য\")"
+            "ex-checkbox": [
+              {
+                "or": [
+                  "Others_member_disease"
+                ]
+              }
+            ]
           }
         }
       },
@@ -1268,24 +1273,47 @@
         "openmrs_entity": "person_attribute",
         "openmrs_entity_id": "family_diseases_details",
         "openmrs_data_type": "text",
-        "type": "spinner",
-        "hint": "রোগ  সম্পর্কিত পারিবারিক তথ্য",
-        "values": [
-          "উচ্চ রক্তচাপ",
-          "ডায়াবেটিস",
-          "যক্ষ্মা",
-          "প্রতিবন্ধিতা",
-          "মানসিক অসুখ",
-          "অন্যান্য"
-        ],
-        "openmrs_choice_ids": {
-          "উচ্চ রক্তচাপ": "High Blood Pressure",
-          "ডায়াবেটিস": "Diabetes",
-          "যক্ষ্মা": "Tuberculosis",
-          "প্রতিবন্ধিতা": "Disability",
-          "মানসিক অসুখ":"Psychological Disease",
-          "অন্যান্য": "Others (Family Disease)"
-        }
+        "type": "check_box",
+        "label": "রোগ  সম্পর্কিত পারিবারিক তথ্য",
+        "exclusive": ["noIdentifier"],
+        "options": [
+          {
+            "key": "High Blood Pressure",
+            "text": "উচ্চ রক্তচাপ",
+            "value": false,
+            "openmrs_choice_id": "High Blood Pressure"
+          },
+          {
+            "key": "Diabetes",
+            "text": "ডায়াবেটিস",
+            "value": false,
+            "openmrs_choice_id": "Diabetes"
+          },
+          {
+            "key": "Tuberculosis",
+            "text": "যক্ষ্মা",
+            "value": false,
+            "openmrs_choice_id": "Tuberculosis"
+          },
+          {
+            "key": "Disability",
+            "text": "প্রতিবন্ধিতা",
+            "value": false,
+            "openmrs_choice_id": "Disability"
+          },
+          {
+            "key": "Psychological Disease",
+            "text": "মানসিক অসুখ",
+            "value": false,
+            "openmrs_choice_id": "Psychological Disease"
+          },
+          {
+            "key": "Others (Family Disease)",
+            "text": "অন্যান্য",
+            "value": false,
+            "openmrs_choice_id": "Others (Family Disease)"
+          }
+        ]
       },
       {
         "key": "illness_other",
@@ -1300,8 +1328,13 @@
         },
         "relevance": {
           "step1:illness_information": {
-            "type": "string",
-            "ex": "equalTo(., \"অন্যান্য\")"
+            "ex-checkbox": [
+              {
+                "or": [
+                  "Others (Family Disease)"
+                ]
+              }
+            ]
           }
         }
       },
@@ -1311,26 +1344,53 @@
         "openmrs_entity": "person_attribute",
         "openmrs_entity_id": "RiskyHabit",
         "openmrs_data_type": "text",
-        "type": "spinner",
-        "hint": "ঝুকিপূর্ন অভ্যাস",
-        "values": [
-          "বিড়ি/সিগারেট",
-          "তামাক/সাদা পাতা",
-          "অন্যান্য তামাক",
-          "মাদকাসক্ত",
-          "স্থুলকায়",
-          "অতিরিক্ত লবন",
-          "অন্যান্য"
-        ],
-        "openmrs_choice_ids": {
-          "বিড়ি/সিগারেট": "Cigarette",
-          "তামাক/সাদা পাতা": "Tobacco / White Leaf",
-          "অন্যান্য তামাক": "Others (Tobacco)",
-          "মাদকাসক্ত": "Drug Addiction",
-          "স্থুলকায়": "Obesity",
-          "অতিরিক্ত লবন": "High Salt Intake",
-          "অন্যান্য": "Others (Risky Habit)"
-        }
+        "type": "check_box",
+        "label": "ঝুকিপূর্ন অভ্যাস",
+        "exclusive": ["noIdentifier"],
+        "options": [
+          {
+            "key": "Cigarette",
+            "text": "বিড়ি/সিগারেট",
+            "value": false,
+            "openmrs_choice_id": "Cigarette"
+          },
+          {
+            "key": "Tobacco / White Leaf",
+            "text": "তামাক/সাদা পাতা",
+            "value": false,
+            "openmrs_choice_id": "Tobacco / White Leaf"
+          },
+          {
+            "key": "Others (Tobacco)",
+            "text": "অন্যান্য তামাক",
+            "value": false,
+            "openmrs_choice_id": "Others (Tobacco)"
+          },
+          {
+            "key": "Drug Addiction",
+            "text": "মাদকাসক্ত",
+            "value": false,
+            "openmrs_choice_id": "Drug Addiction"
+          },
+          {
+            "key": "Obesity",
+            "text": "স্থুলকায়",
+            "value": false,
+            "openmrs_choice_id": "Obesity"
+          },
+          {
+            "key": "High Salt Intake",
+            "text": "অতিরিক্ত লবন",
+            "value": false,
+            "openmrs_choice_id": "High Salt Intake"
+          },
+          {
+            "key": "Others (Risky Habit)",
+            "text": "অন্যান্য",
+            "value": false,
+            "openmrs_choice_id": "Others (Risky Habit)"
+          }
+        ]
       },
       {
         "key": "habits_other",
@@ -1345,8 +1405,13 @@
         },
         "relevance": {
           "step1:risky_habits": {
-            "type": "string",
-            "ex": "equalTo(., \"অন্যান্য\")"
+            "ex-checkbox": [
+              {
+                "or": [
+                  "Others (Risky Habit)"
+                ]
+              }
+            ]
           }
         }
       },
