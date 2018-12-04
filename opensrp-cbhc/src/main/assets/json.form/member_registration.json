@@ -62,8 +62,7 @@
         "openmrs_data_type": "text",
         "type": "check_box",
         "label": "কোন পরিচয় পত্রটি আছে?",
-        "hint": "কোন পরিচয় পত্রটি আছে?",
-        "exclusive": ["none"],
+        "exclusive": ["noIdentifier"],
         "options": [
           {
             "key": "NID",
@@ -145,8 +144,13 @@
         },
         "relevance": {
           "step1:member_unique_ID": {
-            "type": "string",
-            "ex": "equalTo(., \"জন্মনিবন্ধন\")"
+            "ex-checkbox": [
+              {
+                "or": [
+                  "BRID"
+                ]
+              }
+            ]
           }
         }
       },
@@ -160,7 +164,7 @@
         "hint": "ইপিআই কার্ড নাম্বার",
         "v_numeric": {
           "value": "true",
-          "err": "Enter a valid BRID"
+          "err": "Enter a valid EPI Card Number"
         },
         "v_regex": {
           "value": "^(?=[0-9]*$)(?:.{17})$",
@@ -168,12 +172,17 @@
         },
         "v_required": {
           "value": true,
-          "err": "Please Type BRID"
+          "err": "Please Type EPI Card Number"
         },
         "relevance": {
           "step1:member_unique_ID": {
-            "type": "string",
-            "ex": "equalTo(., \"ইপিআই কার্ড নাম্বার\")"
+            "ex-checkbox": [
+              {
+                "or": [
+                  "EPI"
+                ]
+              }
+            ]
           }
         }
       },
