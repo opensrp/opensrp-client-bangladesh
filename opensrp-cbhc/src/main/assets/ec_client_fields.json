@@ -81,6 +81,47 @@
           }
         },
         {
+          "column_name": "latrine_structure",
+          "type": "Event",
+          "json_mapping": {
+            "field": "obs.fieldCode",
+            "concept": "bd437fcc-f42f-40a6-8baf-b3d3af725ad4"
+          }
+        },
+        {
+          "column_name": "household_type",
+          "type": "Event",
+          "json_mapping": {
+            "field": "obs.fieldCode",
+            "concept": "58a86736-033b-4866-af0c-bc1960a79cfd"
+          }
+        },
+        {
+          "column_name": "water_source",
+          "type": "Event",
+          "json_mapping": {
+            "field": "obs.fieldCode",
+            "concept": "3a46b207-dc8b-4e5b-8b1f-162fca3905ca"
+          }
+        },
+        {
+          "column_name": "latrine_other",
+          "type": "Client",
+          "json_mapping": {
+            "field": "attributes.latrine_other"
+
+          }
+        },
+        {
+          "column_name": "water_other",
+          "type": "Client",
+          "json_mapping": {
+            "field": "attributes.water_other"
+
+          }
+        },
+
+        {
           "column_name": "reminders",
           "type": "Client",
           "json_mapping": {

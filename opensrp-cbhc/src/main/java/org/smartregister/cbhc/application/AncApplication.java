@@ -100,7 +100,7 @@ public class AncApplication extends DrishtiApplication implements TimeChangedBro
 
         //Initialize Modules
         CoreLibrary.init(context);
-
+        initLibraries();
 //
 
 
@@ -120,7 +120,7 @@ public class AncApplication extends DrishtiApplication implements TimeChangedBro
 
         setUpEventHandling();
         initOfflineSchedules();
-
+        scheduleJobs();
 
     }
     public void initLibraries() {
@@ -179,7 +179,7 @@ public class AncApplication extends DrishtiApplication implements TimeChangedBro
             if (repository == null) {
                 repository = new AncRepository(getInstance().getApplicationContext(), context);
                 getConfigurableViewsRepository();
-                scheduleJobs();
+
             }
         } catch (UnsatisfiedLinkError e) {
             logError("Error on getRepository: " + e);
@@ -381,7 +381,7 @@ public class AncApplication extends DrishtiApplication implements TimeChangedBro
 
     public void scheduleJobs() {
         //init Job Manager
-        initLibraries();
+
         JobManager.create(this).addJobCreator(new AncJobCreator());
 
         //schedule jobs

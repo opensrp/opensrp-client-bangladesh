@@ -146,6 +146,22 @@
         }
       },
       {
+        "key": "dob_unknown",
+        "openmrs_entity_parent": "",
+        "openmrs_entity": "person",
+        "openmrs_entity_id": "birthdateApprox",
+        "type": "check_box",
+        "label": "",
+        "exclusive": ["none"],
+        "options": [
+          {
+            "key": "dob_unknown",
+            "text": "DOB unknown?",
+            "value": "true"
+          }
+        ]
+      },
+      {
         "key": "dob",
         "openmrs_entity_parent": "",
         "openmrs_entity": "person",
@@ -164,25 +180,15 @@
         },
         "relevance": {
           "step1:dob_unknown": {
-            "type": "string",
-            "ex": "equalTo(., \"false\")"
+            "ex-checkbox": [
+              {
+                "not": [
+                  "dob_unknown"
+                ]
+              }
+            ]
           }
         }
-      },
-      {
-        "key": "dob_unknown",
-        "openmrs_entity_parent": "",
-        "openmrs_entity": "person",
-        "openmrs_entity_id": "birthdateApprox",
-        "type": "check_box",
-        "label": "",
-        "options": [
-          {
-            "key": "dob_unknown",
-            "text": "DOB unknown?",
-            "value": "false"
-          }
-        ]
       },
       {
         "key": "age",
@@ -204,8 +210,13 @@
         },
         "relevance": {
           "step1:dob_unknown": {
-            "type": "string",
-            "ex": "equalTo(., \"true\")"
+            "ex-checkbox": [
+              {
+                "or": [
+                  "dob_unknown"
+                ]
+              }
+            ]
           }
         },
         "v_required": {
@@ -246,7 +257,7 @@
         }
       },
       {
-        "key": "Household_type",
+        "key": "household_type",
         "openmrs_entity_parent": "",
         "openmrs_entity": "concept",
         "openmrs_entity_id": "58a86736-033b-4866-af0c-bc1960a79cfd",

@@ -172,7 +172,7 @@ public class JsonFormUtils extends org.smartregister.util.JsonFormUtils {
 
             JSONObject jsonForm = registrationFormParams.getMiddle();
             JSONArray fields = registrationFormParams.getRight();
-            fields = processAttributesWithChoiceIDs(fields);
+//            fields = processAttributesWithChoiceIDs(fields);
 
             String entityId = getString(jsonForm, ENTITY_ID);
             if (isBlank(entityId)) {
@@ -779,7 +779,7 @@ public class JsonFormUtils extends org.smartregister.util.JsonFormUtils {
 
 
         }
-        } catch (JSONException e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
         return value;
