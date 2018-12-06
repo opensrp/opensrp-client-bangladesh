@@ -223,24 +223,30 @@ public class JsonFormUtils extends org.smartregister.util.JsonFormUtils {
                 String dobstring = "";
                 JSONObject dobknownObject = getFieldJSONObject(fields, "member_birth_date_known");
                 String dobknownObjectvalue = dobknownObject.getString("value");
-                if(dobknownObjectvalue.equalsIgnoreCase("Yes")){
+                if(dobknownObjectvalue.equalsIgnoreCase("হ্যাঁ")){
                     dobstring = getFieldJSONObject(fields, "member_birth_date").getString("value");
                     DATE_FORMAT.parse(dobstring);
                     agestring = ""+Utils.getAgeFromDate((new DateTime(DATE_FORMAT.parse(dobstring)).toString()));
                     JSONObject ageJsonObject = getFieldJSONObject(fields,"age");
                     ageJsonObject.put("value",agestring);
-                }else if(dobknownObjectvalue.equalsIgnoreCase("No")){
+                }else if(dobknownObjectvalue.equalsIgnoreCase("না")){
                     agestring = getFieldJSONObject(fields, "age").getString("value");
                     dobstring = ""+Utils.getDob(Integer.parseInt(agestring));
                     JSONObject dobJsonObject = getFieldJSONObject(fields,"member_birth_date");
                     dobJsonObject.put("value",dobstring);
                 }
-                int age = Integer.parseInt(agestring);
+                int age = 0;
+                try{
+                    age = Integer.parseInt(agestring);
+                }catch(Exception e){
+
+                }
+
 
                 String genderString = getFieldJSONObject(fields,"gender").getString("value");
-                if(genderString.equalsIgnoreCase("M")){
+                if(genderString.equalsIgnoreCase("পুরুষ")){
                     gender = Gender.MALE;
-                }else if(genderString.equalsIgnoreCase("F")){
+                }else if(genderString.equalsIgnoreCase("মহিলা")){
                     gender = Gender.FEMALE;
                 }else{
                     gender = Gender.UNKNOWN;
