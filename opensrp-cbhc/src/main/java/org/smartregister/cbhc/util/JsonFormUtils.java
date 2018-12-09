@@ -819,6 +819,7 @@ public class JsonFormUtils extends org.smartregister.util.JsonFormUtils {
 
     private static String processValueWithChoiceIds(JSONObject jsonObject,String value) {
         try {
+            //spinner
         if(jsonObject.has("openmrs_choice_ids")){
             JSONObject choiceObject = jsonObject.getJSONObject("openmrs_choice_ids");
 
@@ -829,7 +830,17 @@ public class JsonFormUtils extends org.smartregister.util.JsonFormUtils {
                 }
 
 
+        }//checkbox
+        else if(jsonObject.has("options")){
+            JSONArray option_array = jsonObject.getJSONArray("options");
+            for(int i=0;i<option_array.length();i++){
+                JSONObject option = option_array.getJSONObject(i);
+                if(value.contains(option.getString("key"))){
+                    option.put("value","true");
+                }
+            }
         }
+
         } catch (Exception e) {
             e.printStackTrace();
         }
