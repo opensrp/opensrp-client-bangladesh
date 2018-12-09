@@ -100,6 +100,7 @@ public class RegisterProvider implements RecyclerViewProvider<RegisterProvider.R
 
         String firstName = org.smartregister.util.Utils.getValue(pc.getColumnmaps(), DBConstants.KEY.FIRST_NAME, true);
         String lastName = org.smartregister.util.Utils.getValue(pc.getColumnmaps(), DBConstants.KEY.LAST_NAME, true);
+        String phoneNumber = org.smartregister.util.Utils.getValue(pc.getColumnmaps(), DBConstants.KEY.PHONE_NUMBER, true);
         if(lastName.equalsIgnoreCase("null")||lastName==null){
             lastName = "";
         }
@@ -114,7 +115,7 @@ public class RegisterProvider implements RecyclerViewProvider<RegisterProvider.R
 
         View patient = viewHolder.patientColumn;
         attachPatientOnclickListener(patient, client);
-
+        fillValue(viewHolder.ancId,phoneNumber);
 
         View dueButton = viewHolder.dueButton;
         attachDosageOnclickListener(dueButton, client);
@@ -136,7 +137,7 @@ public class RegisterProvider implements RecyclerViewProvider<RegisterProvider.R
 
     private void populateIdentifierColumn(CommonPersonObjectClient pc, RegisterViewHolder viewHolder) {
         String ancId = org.smartregister.util.Utils.getValue(pc.getColumnmaps(), DBConstants.KEY.ANC_ID, false);
-        fillValue(viewHolder.ancId, String.format(context.getString(R.string.anc_id_text), ancId));
+        //fillValue(viewHolder.ancId, String.format(context.getString(R.string.anc_id_text), ancId));
     }
 
 

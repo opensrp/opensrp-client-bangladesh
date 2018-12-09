@@ -63,7 +63,7 @@
           "column_name": "phone_number",
           "type": "Client",
           "json_mapping": {
-            "field": "attributes.phone_number"
+            "field": "attributes.phoneNumber"
           }
         },
         {

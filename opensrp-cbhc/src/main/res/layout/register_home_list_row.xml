@@ -83,7 +83,7 @@
 				android:layout_width="match_parent"
 				android:layout_height="wrap_content"
 				android:paddingLeft="0dp"
-				android:text="ID: 3034503"
+				android:text=""
 				android:textColor="#9d9d9d"
 				android:textSize="12sp" />
 
