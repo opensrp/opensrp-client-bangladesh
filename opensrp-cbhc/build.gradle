@@ -127,6 +127,8 @@ tasks.withType(Test) {
 }
 
 dependencies {
+    implementation 'com.github.bumptech.glide:glide:3.8.0'
+
 
     implementation('org.smartregister:opensrp-client-growth-monitoring:1.1.1-SNAPSHOT@aar') {
         transitive = true

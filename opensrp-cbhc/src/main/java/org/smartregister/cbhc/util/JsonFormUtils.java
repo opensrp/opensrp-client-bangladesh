@@ -244,8 +244,7 @@ public class JsonFormUtils extends org.smartregister.util.JsonFormUtils {
 
 
                 String genderString = getFieldJSONObject(fields,"gender").getString("value");
-                if(genderString.equals
-                IgnoreCase("পুরুষ")){
+                if(genderString.equalsIgnoreCase("পুরুষ")){
                     gender = Gender.MALE;
                 }else if(genderString.equalsIgnoreCase("মহিলা")){
                     gender = Gender.FEMALE;
