@@ -13,7 +13,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import org.apache.commons.lang3.text.WordUtils;
-import org.mozilla.javascript.EcmaError;
 import org.smartregister.cbhc.R;
 import org.smartregister.cbhc.application.AncApplication;
 import org.smartregister.cbhc.fragment.BaseRegisterFragment;
@@ -23,6 +22,8 @@ import org.smartregister.commonregistry.CommonPersonObject;
 import org.smartregister.commonregistry.CommonPersonObjectClient;
 import org.smartregister.commonregistry.CommonRepository;
 import org.smartregister.cursoradapter.RecyclerViewProvider;
+import org.smartregister.util.OpenSRPImageLoader;
+import org.smartregister.view.activity.DrishtiApplication;
 import org.smartregister.view.contract.SmartRegisterClient;
 import org.smartregister.view.contract.SmartRegisterClients;
 import org.smartregister.view.dialog.FilterOption;
@@ -121,6 +122,11 @@ public class RegisterProvider implements RecyclerViewProvider<RegisterProvider.R
 
         View riskLayout = viewHolder.risk;
         attachRiskLayoutOnclickListener(riskLayout, client);
+        if (pc.entityId() != null) { //image already in local storage most likely ):
+            //set profile image by passing the client id.If the image doesn't exist in the image repository then download and save locally
+            viewHolder.registericon.setTag(org.smartregister.R.id.entity_id, pc.entityId());
+            DrishtiApplication.getCachedImageLoaderInstance().getImageByClientId(pc.entityId(), OpenSRPImageLoader.getStaticImageListener(viewHolder.registericon, 0, 0));
+        }
 
     }
 

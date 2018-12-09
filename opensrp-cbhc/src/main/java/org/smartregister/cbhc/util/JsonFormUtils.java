@@ -321,7 +321,8 @@ public class JsonFormUtils extends org.smartregister.util.JsonFormUtils {
             }catch (Exception e){
 
             }
-
+            String imageLocation = getFieldValue(fields, "household_photo");
+            saveImage(formTag.providerId, entityId, imageLocation);
 
 
             Client baseClient = org.smartregister.util.JsonFormUtils.createBaseClient(fields, formTag, entityId);
