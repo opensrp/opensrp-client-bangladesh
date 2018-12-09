@@ -101,6 +101,7 @@ public class RegisterProvider implements RecyclerViewProvider<RegisterProvider.R
         String firstName = org.smartregister.util.Utils.getValue(pc.getColumnmaps(), DBConstants.KEY.FIRST_NAME, true);
         String lastName = org.smartregister.util.Utils.getValue(pc.getColumnmaps(), DBConstants.KEY.LAST_NAME, true);
         String phoneNumber = org.smartregister.util.Utils.getValue(pc.getColumnmaps(), DBConstants.KEY.PHONE_NUMBER, true);
+        String para = org.smartregister.util.Utils.getValue(pc.getColumnmaps(), "para", true);
         if(lastName.equalsIgnoreCase("null")||lastName==null){
             lastName = "";
         }
@@ -110,12 +111,13 @@ public class RegisterProvider implements RecyclerViewProvider<RegisterProvider.R
 
         String dobString = Utils.getDuration(org.smartregister.util.Utils.getValue(pc.getColumnmaps(), DBConstants.KEY.DOB, false));
         dobString = dobString.contains("y") ? dobString.substring(0, dobString.indexOf("y")) : dobString;
-        fillValue((viewHolder.age), String.format(context.getString(R.string.age_text), dobString));
+//        fillValue((viewHolder.age), String.format(context.getString(R.string.age_text), dobString));
+        fillValue(viewHolder.age,phoneNumber);
         attachPatientOnclickListener(viewHolder.registericon,client);
-
+        fillValue(viewHolder.last_interacted_with,org.smartregister.util.Utils.getValue(pc.getColumnmaps(), DBConstants.KEY.LAST_INTERACTED_WITH, true));
         View patient = viewHolder.patientColumn;
         attachPatientOnclickListener(patient, client);
-        fillValue(viewHolder.ancId,phoneNumber);
+        fillValue(viewHolder.ancId,para);
 
         View dueButton = viewHolder.dueButton;
         attachDosageOnclickListener(dueButton, client);
@@ -411,7 +413,7 @@ public class RegisterProvider implements RecyclerViewProvider<RegisterProvider.R
         public ImageView femalepresent;
         public ImageView malepresent;
         public ImageView pregnantpresent;
-
+        public TextView last_interacted_with;
         public TextView risk;
         public Button dueButton;
         public Button sync;
@@ -437,6 +439,7 @@ public class RegisterProvider implements RecyclerViewProvider<RegisterProvider.R
             pregnantpresent = itemView.findViewById(R.id.pregnant_woman_present);
 
             patientColumn = itemView.findViewById(R.id.patient_column);
+            last_interacted_with = itemView.findViewById(R.id.last_interacted_with);
         }
     }
 
