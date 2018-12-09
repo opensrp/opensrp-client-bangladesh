@@ -118,11 +118,11 @@ public class MemberProfileActivity extends BaseProfileActivity implements Profil
         }else if(typeofMember.equalsIgnoreCase("member")){
             circleprofile.setImageDrawable(getResources().getDrawable(R.drawable.male_register_placeholder_profile));
         }
-        ImageRepository imageRepo = CoreLibrary.getInstance().context().imageRepository();
-        ProfileImage imageRecord = imageRepo.findByEntityId(householdDetails.entityId());
-
-        if(imageRecord!=null)
-            ImageLoaderByGlide.setImageAsTarget(imageRecord.getFilepath(),imageView,0);
+//        ImageRepository imageRepo = CoreLibrary.getInstance().context().imageRepository();
+//        ProfileImage imageRecord = imageRepo.findByEntityId(householdDetails.entityId());
+//
+//        if(imageRecord!=null)
+//            ImageLoaderByGlide.setImageAsTarget(imageRecord.getFilepath(),circleprofile,0);
 
         TabLayout tabLayout = findViewById(R.id.tabs);
         ViewPager viewPager = findViewById(R.id.viewpager);
@@ -134,7 +134,7 @@ public class MemberProfileActivity extends BaseProfileActivity implements Profil
         nameView = findViewById(R.id.textview_name);
         imageView = findViewById(R.id.imageview_profile);
 
-
+//setProfileImage(householdDetails.entityId());
         String firstName = org.smartregister.util.Utils.getValue(householdDetails.getColumnmaps(), DBConstants.KEY.FIRST_NAME, true);
         String lastName = org.smartregister.util.Utils.getValue(householdDetails.getColumnmaps(), DBConstants.KEY.LAST_NAME, true);
         if(lastName.equalsIgnoreCase("null")||lastName==null){
@@ -205,6 +205,7 @@ public class MemberProfileActivity extends BaseProfileActivity implements Profil
         switch (view.getId()) {
             case R.id.btn_profile_registration_info:
                 householdDetails.getColumnmaps().putAll(AncApplication.getInstance().getContext().detailsRepository().getAllDetailsForClient(householdDetails.entityId()));
+                householdDetails.getColumnmaps().put("NID","true");
                 String formMetadataformembers = JsonFormUtils.getMemberJsonEditFormString(this, householdDetails.getColumnmaps());
                 try {
                     JsonFormUtils.startFormForEdit(this, JsonFormUtils.REQUEST_CODE_GET_JSON, formMetadataformembers);

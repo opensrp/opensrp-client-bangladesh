@@ -122,10 +122,13 @@ public class RegisterProvider implements RecyclerViewProvider<RegisterProvider.R
 
         View riskLayout = viewHolder.risk;
         attachRiskLayoutOnclickListener(riskLayout, client);
+        viewHolder.registericon.setTag(org.smartregister.R.id.entity_id, pc.entityId());
         if (pc.entityId() != null) { //image already in local storage most likely ):
             //set profile image by passing the client id.If the image doesn't exist in the image repository then download and save locally
-            viewHolder.registericon.setTag(org.smartregister.R.id.entity_id, pc.entityId());
             DrishtiApplication.getCachedImageLoaderInstance().getImageByClientId(pc.entityId(), OpenSRPImageLoader.getStaticImageListener(viewHolder.registericon, 0, 0));
+//            DrishtiApplication.getCachedImageLoaderInstance().getImageByClientId((String)viewHolder.registericon.getTag(), OpenSRPImageLoader.getStaticImageListener(viewHolder.registericon, 0, 0));
+        }else{
+            viewHolder.registericon.setImageResource(R.drawable.household_cbhc_placeholder);
         }
 
     }

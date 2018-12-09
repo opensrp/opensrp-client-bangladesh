@@ -208,6 +208,7 @@ public class LoginActivity extends AppCompatActivity implements LoginContract.Vi
             String username = userNameEditText.getText().toString();
             String password = passwordEditText.getText().toString();
             mLoginPresenter.attemptLogin(username, password);
+
             return true;
         }
         return false;

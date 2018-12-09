@@ -55,6 +55,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -339,7 +340,11 @@ public class JsonFormUtils extends org.smartregister.util.JsonFormUtils {
             }
 
             adresses.add(address1);
+            HashMap<String,String> check_box_in_forms = processCheckBoxForAttributes(fields);
             baseClient.setAddresses(adresses);
+            Map<String, Object> attributes_Temp = baseClient.getAttributes();
+            attributes_Temp.putAll(check_box_in_forms);
+            baseClient.setAttributes(attributes_Temp);
 
 
             JSONObject lookUpJSONObject = getJSONObject(metadata, "look_up");
@@ -412,6 +417,44 @@ public class JsonFormUtils extends org.smartregister.util.JsonFormUtils {
             Log.e(TAG, Log.getStackTraceString(e));
             return null;
         }
+    }
+
+    private static HashMap<String,String> processCheckBoxForAttributes(JSONArray fields) {
+        HashMap<String,String> toReturn = new HashMap<String, String>();
+        try {
+
+            for (int i = 0; i < fields.length(); i++) {
+                JSONObject questionGroup = fields.getJSONObject(i);
+                String keyname = "";
+                if(questionGroup.has("openmrs_entity") && questionGroup.getString("openmrs_entity").equalsIgnoreCase("person_attribute")){
+                    keyname = questionGroup.getString("openmrs_entity_id");
+                }else {
+                    keyname = questionGroup.getString("key");
+                }
+                if (questionGroup.has("type") && questionGroup.getString("type").equalsIgnoreCase("check_box")) {
+                    JSONArray checkBoxArray = questionGroup.getJSONArray("options");
+                    ArrayList<String> selectedbox = new ArrayList<String>();
+                    for (int j = 0; j < checkBoxArray.length(); j++) {
+                        if (checkBoxArray.getJSONObject(j).getString("value").equalsIgnoreCase("true")) {
+                            String valueOFCheckbox = checkBoxArray.getJSONObject(j).getString("key");
+                            selectedbox.add(valueOFCheckbox);
+                        }
+                    }
+                    String value = "";
+                    for(int j = 0;j<selectedbox.size();j++){
+                        if(j != 0){
+                            value = value+","+selectedbox.get(j);
+                        }else{
+                            value = value+selectedbox.get(j);
+                        }
+                    }
+                    toReturn.put(keyname,value);
+                }
+            }
+        }catch (Exception e){
+
+        }
+        return toReturn;
     }
 
     private static JSONArray processAttributesWithChoiceIDs(JSONArray fields) {
@@ -626,6 +669,7 @@ public class JsonFormUtils extends org.smartregister.util.JsonFormUtils {
 
     public static String getMemberJsonEditFormString(Context context, Map<String, String> womanClient) {
         try {
+
             JSONObject form = FormUtils.getInstance(context).getFormJson(Constants.JSON_FORM.MEMBER_REGISTER);
             LocationPickerView lpv = new LocationPickerView(context);
             lpv.init();

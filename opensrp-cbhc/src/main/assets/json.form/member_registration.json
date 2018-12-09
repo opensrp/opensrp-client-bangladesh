@@ -1423,6 +1423,14 @@
         "openmrs_data_type": "",
         "type": "edit_text",
         "hint": "মন্তব্য"
+      },
+      {
+        "key": "household_photo",
+        "openmrs_entity_parent": "",
+        "openmrs_entity": "",
+        "openmrs_entity_id": "",
+        "type": "choose_image",
+        "uploadButtonText": "পরিবারের প্রধানের ছবি তুলুন "
       }
     ]
   }
