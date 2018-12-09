@@ -79,7 +79,7 @@ android {
             buildConfigField "boolean", "TIME_CHECK", "false"
             buildConfigField "int", "DATA_SYNC_DURATION_MINUTES", '2'
             buildConfigField "int", "VACCINE_SYNC_PROCESSING_MINUTES", '2'
-            buildConfigField "int", "IMAGE_UPLOAD_MINUTES", '7'
+            buildConfigField "int", "IMAGE_UPLOAD_MINUTES", '1'
             buildConfigField "int", "PULL_UNIQUE_IDS_MINUTES", '10'
             buildConfigField "int", "VIEW_SYNC_CONFIGURATIONS_MINUTES", '2'
             testCoverageEnabled true

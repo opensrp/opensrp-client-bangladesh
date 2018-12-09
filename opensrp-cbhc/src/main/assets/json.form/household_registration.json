@@ -55,6 +55,14 @@
     "title": "Household Registration",
     "fields": [
       {
+        "key": "household_photo",
+        "openmrs_entity_parent": "",
+        "openmrs_entity": "",
+        "openmrs_entity_id": "",
+        "type": "choose_image",
+        "uploadButtonText": "পরিবারের প্রধানের ছবি তুলুন "
+      },
+      {
         "key": "gps",
         "openmrs_entity_parent": "usual_residence",
         "openmrs_entity": "person_address",
