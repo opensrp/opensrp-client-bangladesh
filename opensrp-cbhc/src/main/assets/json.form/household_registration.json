@@ -235,6 +235,8 @@
         "expanded": false,
         "min_date": "today-5y",
         "max_date": "today",
+        "read_only":"true",
+        "value":"today",
         "v_required": {
           "value": "true",
           "err": "Please enter the date of Registration"

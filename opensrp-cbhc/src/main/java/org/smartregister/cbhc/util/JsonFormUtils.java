@@ -133,7 +133,7 @@ public class JsonFormUtils extends org.smartregister.util.JsonFormUtils {
             lookup.put("entity_id", "household");
             lookup.put("value", HouseholdEnitityID);
 
-        } else {
+        }else {
             Log.w(TAG, "Unsupported form requested for launch " + formName);
             if (StringUtils.isNotBlank(entityId)) {
                 entityId = entityId.replace("-", "");
@@ -148,6 +148,14 @@ public class JsonFormUtils extends org.smartregister.util.JsonFormUtils {
             }
             JsonFormUtils.addWomanRegisterHierarchyQuestions(form);
 
+        }
+        if(Constants.JSON_FORM.Household_REGISTER.equals(formName)){
+            android.text.format.DateFormat df = new android.text.format.DateFormat();
+
+            JSONArray field = fields(form);
+            JSONObject date_of_registration = getFieldJSONObject(field,"Date_Of_Reg");
+            date_of_registration.remove(JsonFormUtils.VALUE);
+            date_of_registration.put(JsonFormUtils.VALUE,df.format("dd-MM-yyyy", new java.util.Date()));
         }
         Log.d(TAG, "form is " + form.toString());
         return form;
