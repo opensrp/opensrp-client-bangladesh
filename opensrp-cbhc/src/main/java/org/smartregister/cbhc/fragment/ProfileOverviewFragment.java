@@ -233,6 +233,7 @@ public class ProfileOverviewFragment extends BaseProfileFragment {
                         profileImageIV.setTag(org.smartregister.R.id.entity_id, pClient.entityId());
 //                        DrishtiApplication.getCachedImageLoaderInstance().getImageByClientId(pClient.entityId(), OpenSRPImageLoader.getStaticImageListener((ImageView) profileImageIV, R.drawable.child_boy_infant, R.drawable.child_boy_infant));
                         profileImageIV.setImageDrawable(getResources().getDrawable(R.drawable.child_boy_infant));
+                        DrishtiApplication.getCachedImageLoaderInstance().getImageByClientId(pClient.entityId(), OpenSRPImageLoader.getStaticImageListener(profileImageIV, R.drawable.child_boy_infant, R.drawable.child_boy_infant));
                         clientype = "malechild";
                     }
                 }else if(gender.equalsIgnoreCase("f")){
@@ -240,7 +241,8 @@ public class ProfileOverviewFragment extends BaseProfileFragment {
                         //set profile image by passing the client id.If the image doesn't exist in the image org.smartregister.cbhc.repository then download and save locally
                         profileImageIV.setTag(org.smartregister.R.id.entity_id, pClient.entityId());
 //                        DrishtiApplication.getCachedImageLoaderInstance().getImageByClientId(pClient.entityId(), OpenSRPImageLoader.getStaticImageListener((ImageView) profileImageIV, R.drawable.child_girl_infant, R.drawable.child_girl_infant));
-                        profileImageIV.setImageDrawable(getResources().getDrawable(R.drawable.child_girl_infant));
+//                        profileImageIV.setImageDrawable(getResources().getDrawable(R.drawable.child_girl_infant));
+                        DrishtiApplication.getCachedImageLoaderInstance().getImageByClientId(pClient.entityId(), OpenSRPImageLoader.getStaticImageListener(profileImageIV, R.drawable.child_girl_infant, R.drawable.child_girl_infant));
                         clientype = "femalechild";
                     }
                 }
@@ -250,8 +252,8 @@ public class ProfileOverviewFragment extends BaseProfileFragment {
                         //set profile image by passing the client id.If the image doesn't exist in the image org.smartregister.cbhc.repository then download and save locally
                         profileImageIV.setTag(org.smartregister.R.id.entity_id, pClient.entityId());
 //                        DrishtiApplication.getCachedImageLoaderInstance().getImageByClientId(pClient.entityId(), OpenSRPImageLoader.getStaticImageListener((ImageView) profileImageIV, R.drawable.man_cbhc_member_logo, R.drawable.man_cbhc_member_logo));
-                        profileImageIV.setImageDrawable(getResources().getDrawable(R.drawable.male_cbhc_placeholder));
-
+//                        profileImageIV.setImageDrawable(getResources().getDrawable(R.drawable.male_cbhc_placeholder));
+                        DrishtiApplication.getCachedImageLoaderInstance().getImageByClientId(pClient.entityId(), OpenSRPImageLoader.getStaticImageListener(profileImageIV, R.drawable.male_cbhc_placeholder, R.drawable.male_cbhc_placeholder));
                         clientype = "member";
                     }
                 }else if(gender.equalsIgnoreCase("f")){
@@ -259,16 +261,13 @@ public class ProfileOverviewFragment extends BaseProfileFragment {
                         //set profile image by passing the client id.If the image doesn't exist in the image org.smartregister.cbhc.repository then download and save locally
                         profileImageIV.setTag(org.smartregister.R.id.entity_id, pClient.entityId());
 //                        DrishtiApplication.getCachedImageLoaderInstance().getImageByClientId(pClient.entityId(), OpenSRPImageLoader.getStaticImageListener((ImageView) profileImageIV, R.drawable.woman_cbhc_member_logo, R.drawable.woman_cbhc_member_logo));
-                        profileImageIV.setImageDrawable(getResources().getDrawable(R.drawable.women_cbhc_placeholder));
+                        //profileImageIV.setImageDrawable(getResources().getDrawable(R.drawable.women_cbhc_placeholder));
+                        DrishtiApplication.getCachedImageLoaderInstance().getImageByClientId(pClient.entityId(), OpenSRPImageLoader.getStaticImageListener(profileImageIV, R.drawable.women_cbhc_placeholder, R.drawable.women_cbhc_placeholder));
                         clientype = "woman";
                     }
                 }
             }
-            if (pClient.entityId() != null) { //image already in local storage most likely ):
-                //set profile image by passing the client id.If the image doesn't exist in the image repository then download and save locally
-                DrishtiApplication.getCachedImageLoaderInstance().getImageByClientId(pClient.entityId(), OpenSRPImageLoader.getStaticImageListener(profileImageIV, 0, 0));
-//            DrishtiApplication.getCachedImageLoaderInstance().getImageByClientId((String)viewHolder.registericon.getTag(), OpenSRPImageLoader.getStaticImageListener(viewHolder.registericon, 0, 0));
-            }
+
             profileImageIV.setTag(R.id.clientformemberprofile,pClient);
             profileImageIV.setTag(R.id.typeofclientformemberprofile,clientype);
             profileImageIV.setOnClickListener((ProfileActivity)getActivity());
