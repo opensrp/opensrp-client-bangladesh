@@ -32,6 +32,7 @@ import org.smartregister.view.dialog.SortOption;
 import org.smartregister.view.viewholder.OnClickFormLauncher;
 
 import java.text.MessageFormat;
+import java.util.Date;
 import java.util.Set;
 
 import static org.smartregister.util.Utils.getName;
@@ -114,7 +115,19 @@ public class RegisterProvider implements RecyclerViewProvider<RegisterProvider.R
 //        fillValue((viewHolder.age), String.format(context.getString(R.string.age_text), dobString));
         fillValue(viewHolder.age,phoneNumber);
         attachPatientOnclickListener(viewHolder.registericon,client);
-        fillValue(viewHolder.last_interacted_with,org.smartregister.util.Utils.getValue(pc.getColumnmaps(), DBConstants.KEY.LAST_INTERACTED_WITH, true));
+        String last_interacted_with = org.smartregister.util.Utils.getValue(pc.getColumnmaps(), DBConstants.KEY.LAST_INTERACTED_WITH, true);
+        try{
+            Date last_interacted_date = new Date(Long.parseLong(last_interacted_with));
+
+            last_interacted_with = last_interacted_date.toString();
+            String d[] = last_interacted_with.split(" ");
+            last_interacted_with = d[1] + " "+d[2]+" "+d[5];
+
+        }catch(Exception e){
+
+        }
+
+        fillValue(viewHolder.last_interacted_with,last_interacted_with);
         View patient = viewHolder.patientColumn;
         attachPatientOnclickListener(patient, client);
         fillValue(viewHolder.ancId,para);
@@ -126,6 +139,7 @@ public class RegisterProvider implements RecyclerViewProvider<RegisterProvider.R
         View riskLayout = viewHolder.risk;
         attachRiskLayoutOnclickListener(riskLayout, client);
         viewHolder.registericon.setTag(org.smartregister.R.id.entity_id, pc.entityId());
+        viewHolder.registericon.setImageDrawable(context.getResources().getDrawable(R.drawable.household_cbhc_placeholder));
         if (pc.entityId() != null) { //image already in local storage most likely ):
             //set profile image by passing the client id.If the image doesn't exist in the image repository then download and save locally
             DrishtiApplication.getCachedImageLoaderInstance().getImageByClientId(pc.entityId(), OpenSRPImageLoader.getStaticImageListener(viewHolder.registericon, 0, 0));

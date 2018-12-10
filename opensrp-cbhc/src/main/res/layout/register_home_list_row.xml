@@ -228,7 +228,7 @@
 
 		<Button
 			android:id="@+id/due_button"
-			android:layout_width="90dp"
+			android:layout_width="75dp"
 			android:layout_height="@dimen/register_list_item_height_cbhc_button"
 			android:layout_gravity="center"
 			android:layout_margin="5dp"
@@ -244,7 +244,7 @@
 			android:textAllCaps="false"
 			android:textAppearance="?android:textAppearanceSmall"
 			android:textColor="#ffffff"
-			android:textSize="14sp"
+			android:textSize="12sp"
 			android:typeface="normal" />
 
 		<Button

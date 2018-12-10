@@ -158,6 +158,10 @@ public class MemberProfileActivity extends BaseProfileActivity implements Profil
                 Log.e(getClass().getName(), e.toString(), e);
             }
         }
+        ImageRepository imageRepo = CoreLibrary.getInstance().context().imageRepository();
+        ProfileImage imageRecord = imageRepo.findByEntityId(householdDetails.entityId());
+        if(imageRecord!=null)
+            ImageLoaderByGlide.setImageAsTarget(imageRecord.getFilepath(),imageView,0);
         setProfileAge(durationString);
         setProfileID(getValue(householdDetails.getColumnmaps(),"Patient_Identifier",true));
         gestationAgeView.setVisibility(View.GONE);

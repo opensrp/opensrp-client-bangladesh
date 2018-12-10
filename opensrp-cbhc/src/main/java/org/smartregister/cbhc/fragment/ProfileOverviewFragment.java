@@ -264,7 +264,11 @@ public class ProfileOverviewFragment extends BaseProfileFragment {
                     }
                 }
             }
-
+            if (pClient.entityId() != null) { //image already in local storage most likely ):
+                //set profile image by passing the client id.If the image doesn't exist in the image repository then download and save locally
+                DrishtiApplication.getCachedImageLoaderInstance().getImageByClientId(pClient.entityId(), OpenSRPImageLoader.getStaticImageListener(profileImageIV, 0, 0));
+//            DrishtiApplication.getCachedImageLoaderInstance().getImageByClientId((String)viewHolder.registericon.getTag(), OpenSRPImageLoader.getStaticImageListener(viewHolder.registericon, 0, 0));
+            }
             profileImageIV.setTag(R.id.clientformemberprofile,pClient);
             profileImageIV.setTag(R.id.typeofclientformemberprofile,clientype);
             profileImageIV.setOnClickListener((ProfileActivity)getActivity());

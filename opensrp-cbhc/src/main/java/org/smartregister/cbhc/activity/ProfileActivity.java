@@ -134,7 +134,6 @@ public class ProfileActivity extends BaseProfileActivity implements ProfileContr
         }
         ImageRepository imageRepo = CoreLibrary.getInstance().context().imageRepository();
         ProfileImage imageRecord = imageRepo.findByEntityId(householdDetails.entityId());
-
         if(imageRecord!=null)
             ImageLoaderByGlide.setImageAsTarget(imageRecord.getFilepath(),imageView,0);
        // DrishtiApplication.getCachedImageLoaderInstance().getImageByClientId(householdDetails.entityId(), OpenSRPImageLoader.getStaticImageListener((ImageView)findViewById(R.id.imageview_profile), 0, 0));
