@@ -151,12 +151,13 @@ public class ProfilePresenter implements ProfileContract.Presenter, RegisterCont
         ////////////////////////////////////////////////////////////////
 
         this.refreshProfileView(getProfileView().getIntentString(Constants.INTENT_KEY.BASE_ENTITY_ID));
-        profileActivity.refreshProfileViews();
+        if(profileActivity!=null)
+            profileActivity.refreshProfileViews();
         getProfileView().hideProgressDialog();
 
         getProfileView().displayToast(isEdit ? R.string.registration_info_updated : R.string.new_registration_saved);
-
-        profileActivity.profileOverviewFragment.refreshadapter(profileActivity.profileOverviewFragment.getFragmentView());
+        if(profileActivity!=null)
+            profileActivity.profileOverviewFragment.refreshadapter(profileActivity.profileOverviewFragment.getFragmentView());
 
     }
 

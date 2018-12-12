@@ -97,7 +97,7 @@ public class MemberProfileActivity extends BaseProfileActivity implements Profil
         setUpViews();
 
         mProfilePresenter = new ProfilePresenter(this);
-//        mProfilePresenter.setProfileActivity(this);
+        mProfilePresenter.setProfileActivity(this);
 
         imageRenderHelper = new ImageRenderHelper(this);
 
@@ -209,7 +209,6 @@ public class MemberProfileActivity extends BaseProfileActivity implements Profil
         switch (view.getId()) {
             case R.id.btn_profile_registration_info:
                 householdDetails.getColumnmaps().putAll(AncApplication.getInstance().getContext().detailsRepository().getAllDetailsForClient(householdDetails.entityId()));
-                householdDetails.getColumnmaps().put("NID","true");
                 String formMetadataformembers = JsonFormUtils.getMemberJsonEditFormString(this, householdDetails.getColumnmaps());
                 try {
                     JsonFormUtils.startFormForEdit(this, JsonFormUtils.REQUEST_CODE_GET_JSON, formMetadataformembers);
@@ -311,6 +310,7 @@ public class MemberProfileActivity extends BaseProfileActivity implements Profil
         super.onResume();
         String baseEntityId = getIntent().getStringExtra(Constants.INTENT_KEY.BASE_ENTITY_ID);
         mProfilePresenter.refreshProfileView(baseEntityId);
+//        refreshProfileViews();
     }
 
     @Override

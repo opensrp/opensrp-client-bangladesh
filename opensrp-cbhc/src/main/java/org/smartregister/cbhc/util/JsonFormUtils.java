@@ -420,10 +420,11 @@ public class JsonFormUtils extends org.smartregister.util.JsonFormUtils {
                     if(key.equalsIgnoreCase("Patient_Identifier")){
                         String identifier = fields.getJSONObject(i).getString("value");
                         AncApplication.getInstance().getUniqueIdRepository().close(identifier);
+
                     }
                 }
             }catch (Exception e){
-
+                Log.e(TAG, Log.getStackTraceString(e));
             }
 
 
@@ -760,10 +761,10 @@ public class JsonFormUtils extends org.smartregister.util.JsonFormUtils {
 
         return "";
     }
-    public static void processPopulatableFieldsForHouseholds(Map<String, String> womanClient, JSONObject jsonObject) throws JSONException {
+    public static void  processPopulatableFieldsForHouseholds(Map<String, String> womanClient, JSONObject jsonObject) throws JSONException {
 
 
-        if (jsonObject.getString(JsonFormUtils.KEY).equalsIgnoreCase(DBConstants.KEY.DOB) && !Boolean.valueOf(womanClient.get(DBConstants.KEY.DOB_UNKNOWN))) {
+        if ((jsonObject.getString(JsonFormUtils.KEY).equalsIgnoreCase(DBConstants.KEY.DOB)||jsonObject.getString(JsonFormUtils.KEY).equalsIgnoreCase(DBConstants.KEY.MEMBER_DOB)) && !Boolean.valueOf(womanClient.get(DBConstants.KEY.DOB_UNKNOWN))) {
 
             String dobString = womanClient.get(DBConstants.KEY.DOB);
             Date dob = Utils.dobStringToDate(dobString);
@@ -771,7 +772,13 @@ public class JsonFormUtils extends org.smartregister.util.JsonFormUtils {
                 jsonObject.put(JsonFormUtils.VALUE, DATE_FORMAT.format(dob));
             }
 
-        } else if (jsonObject.getString(JsonFormUtils.KEY).equalsIgnoreCase(DBConstants.KEY.HOME_ADDRESS)) {
+        }else if(jsonObject.getString(JsonFormUtils.KEY).equalsIgnoreCase(DBConstants.KEY.CONTACT_PHONE_NUMBER)){
+            String phone_number = womanClient.get(DBConstants.KEY.PHONENUMBER);
+//            if(phone_number!=null&&phone_number.length()>11){
+//                phone_number = phone_number.substring(phone_number.length()-11);
+//            }
+            jsonObject.put(JsonFormUtils.VALUE,phone_number);
+        }else if (jsonObject.getString(JsonFormUtils.KEY).equalsIgnoreCase(DBConstants.KEY.HOME_ADDRESS)) {
 
             String homeAddress = womanClient.get(DBConstants.KEY.HOME_ADDRESS);
             jsonObject.put(JsonFormUtils.VALUE, homeAddress);
