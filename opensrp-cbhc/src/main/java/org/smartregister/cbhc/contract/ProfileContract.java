@@ -25,7 +25,7 @@ public interface ProfileContract {
 
         void refreshProfileTopSection(Map<String, String> client);
 
-        void setProfileActivity(BaseProfileActivity profileActivity);
+        void setProfileActivity(ProfileActivity profileActivity);
     }
 
     interface View {

@@ -97,7 +97,7 @@ public class MemberProfileActivity extends BaseProfileActivity implements Profil
         setUpViews();
 
         mProfilePresenter = new ProfilePresenter(this);
-        mProfilePresenter.setProfileActivity(this);
+//        mProfilePresenter.setProfileActivity(this);
 
         imageRenderHelper = new ImageRenderHelper(this);
 
