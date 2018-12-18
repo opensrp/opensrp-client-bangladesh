@@ -9,6 +9,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -429,7 +430,7 @@ public class RegisterProvider implements RecyclerViewProvider<RegisterProvider.R
         public ImageView pregnantpresent;
         public TextView last_interacted_with;
         public TextView risk;
-        public Button dueButton;
+        public ImageView dueButton;
         public Button sync;
         public View patientColumn;
 

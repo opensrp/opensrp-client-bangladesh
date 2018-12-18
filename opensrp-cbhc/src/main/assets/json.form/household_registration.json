@@ -56,14 +56,6 @@
     "fields": [
 
       {
-        "key": "gps",
-        "openmrs_entity_parent": "usual_residence",
-        "openmrs_entity": "person_address",
-        "openmrs_entity_id": "geopoint",
-        "openmrs_data_type": "text",
-        "type": "gps"
-      },
-      {
         "key": "HIE_FACILITIES",
         "openmrs_entity_parent": "",
         "openmrs_entity": "",
@@ -100,7 +92,7 @@
         "openmrs_entity": "person",
         "openmrs_entity_id": "first_name",
         "type": "edit_text",
-        "hint": "পরিবারের প্রধানের নাম এর প্রথম অংশ",
+        "hint": "*পরিবারের প্রধানের নাম এর \nপ্রথম অংশ",
         "edit_type": "name",
         "v_regex": {
           "value": "[A-Za-z\\s\.\-]*",
@@ -117,7 +109,7 @@
         "openmrs_entity": "person",
         "openmrs_entity_id": "last_name",
         "type": "edit_text",
-        "hint": "পরিবারের প্রধানের নাম এর শেষ অংশ",
+        "hint": "*পরিবারের প্রধানের নাম এর \nশেষ অংশ",
         "edit_type": "name",
         "v_required": {
           "value": "true",
@@ -136,6 +128,7 @@
         "type": "edit_text",
         "hint": "খানার নিবন্ধন আইডি",
         "read_only":"true",
+        "hidden":"true",
         "value": "0",
         "v_numeric": {
           "value": "true",
@@ -197,7 +190,7 @@
         "openmrs_entity": "",
         "openmrs_entity_id": "age",
         "type": "edit_text",
-        "hint": "বয়স *",
+        "hint": "*বয়স",
         "v_numeric": {
           "value": "true",
           "err": "Number must begin with 0 and must be a total of 10 digits in length"
@@ -249,14 +242,26 @@
         "openmrs_entity_id": "phoneNumber",
         "openmrs_data_type": "text",
         "type": "edit_text",
-        "hint": "পরিবারের গুরুত্বপূর্ণ মোবাইল নম্বর ",
+        "hint": "*পরিবারের গুরুত্বপূর্ণ মোবাইল নম্বর ",
+        "v_required": {
+          "value": true,
+          "err": "Enter 11 digits Mobile Number."
+        },
         "v_numeric": {
           "value": "true",
           "err": "Number must begin with 095, 096, or 097 and must be a total of 11 digits in length"
         },
         "v_regex": {
-          "value": "(01[5-9][0-9]{8})|\s*",
-          "err": "Number must begin with 015, 016,017,018 or 019 and must be a total of 11 digits in length"
+          "value": "0|(01[3-9][0-9]{8})|\s*",
+          "err": "Number must begin with 013, 015, 016,017,018 or 019 and must be a total of 11 digits in length"
+        },
+        "v_max_length": {
+          "value": "11",
+          "err": "Please Enter 11 digit Mobile number"
+        },
+        "v_min_length": {
+          "value": "1",
+          "err": "Please Enter 11 digit Mobile number"
         }
       },
       {
@@ -266,7 +271,7 @@
         "openmrs_entity_id": "58a86736-033b-4866-af0c-bc1960a79cfd",
         "openmrs_data_type": "Coded",
         "type": "spinner",
-        "hint": "আপনার বাসস্থানের ধরণ কি?",
+        "hint": "*আপনার বাসস্থানের ধরণ কি?",
         "values": [
           "কাচা",
           "সেমি পাকা",
@@ -289,7 +294,7 @@
         "openmrs_entity_id": "bd437fcc-f42f-40a6-8baf-b3d3af725ad4",
         "openmrs_data_type": "Coded",
         "type": "spinner",
-        "hint": "খানার সদস্যগন কি ধরনের ল্যাট্রিন ব্যবহার করেন?",
+        "hint": "*খানার সদস্যগন কি ধরনের ল্যাট্রিন ব্যবহার করেন?",
         "values": [
           "স্যানিটারী",
           "পাকা",
@@ -336,7 +341,7 @@
         "openmrs_entity_id": "3a46b207-dc8b-4e5b-8b1f-162fca3905ca",
         "openmrs_data_type": "Coded",
         "type": "spinner",
-        "hint": "পরিবারের খাবার পানির উৎস",
+        "hint": "*আপনার পরিবারের প্রধান খাবার পানির উৎস কি?",
         "values": [
           "টিউবওয়েল (লাল)",
           "টিউবওয়েল (সবুজ)",
@@ -389,7 +394,7 @@
         "openmrs_entity_id": "95066bce-55eb-405e-9664-9be70e5c17b2",
         "openmrs_data_type": "Coded",
         "type": "spinner",
-        "hint": "আপনার পরিবারের আর্থিক অবস্থা কি?",
+        "hint": "*আপনার পরিবারের আর্থিক অবস্থা কি?",
         "values": [
           "সর্বদা অভাব অনটন",
           "সাময়িক অভাব অনটন",
@@ -437,7 +442,7 @@
         "openmrs_entity_id": "66d3c926-8145-4b94-987b-11f250cc6e6f",
         "openmrs_data_type": "Numeric",
         "type": "edit_text",
-        "hint": "পরিবারের আনুমানিক মাসিক ব্যয়",
+        "hint": "*পরিবারের আনুমানিক মাসিক \nব্যয় কত? (টাকা) ",
         "v_required": {
           "value": "true",
           "err": "Please enter the amount"
@@ -458,7 +463,7 @@
         "openmrs_entity_id": "b624e55b-8144-4623-ba94-4973e9a28ba4",
         "openmrs_data_type": "Coded",
         "type": "spinner",
-        "hint": "নিকটবর্তী স্বাস্থ্য সেবা কেন্দ্র কোনটি?",
+        "hint": "*নিকটবর্তী স্বাস্থ্য সেবা কেন্দ্র কোনটি?",
         "values": [
           "কমিউনিটি ক্লিনিক",
           "ইউনিয়ন উপস্বাস্থ্য কেন্দ্র",
@@ -515,7 +520,7 @@
         "openmrs_entity_id": "f41a8533-f195-4efd-b019-c4f722c7ed74",
         "openmrs_data_type": "Coded",
         "type": "spinner",
-        "hint": "নিকটবর্তী স্বাস্থ্য সেবা কেন্দ্রের আনুমানিক দুরত্ব",
+        "hint": "*নিকটবর্তী স্বাস্থ্য সেবা কেন্দ্রের আনুমানিক দুরত্ব কত কিঃ মিঃ",
         "values": [
           "৫০০ মিটারের কম",
           "৫০০ মিটার থেকে ১ কিলোমিটার",
@@ -542,7 +547,7 @@
         "openmrs_entity_id": "",
         "openmrs_data_type": "Coded",
         "type": "spinner",
-        "hint": "পরিবারের সদস্যগন সাধারনত কোন স্বাস্থ্য সেবা কেন্দ্র থেকে স্বাস্থ্য সেবা নিয়ে থাকেন?",
+        "hint": "*পরিবারের সদস্যগন সাধারনত কোন স্বাস্থ্য সেবা কেন্দ্র থেকে স্বাস্থ্য সেবা নিয়ে থাকেন?",
         "values": [
           "কমিউনিটি ক্লিনিক",
           "ইউনিয়ন উপস্বাস্থ্য কেন্দ্র",
@@ -604,7 +609,7 @@
         "openmrs_entity": "",
         "openmrs_entity_id": "",
         "type": "edit_text",
-        "hint": "নিকটবর্তী কমিউনিটি ক্লিনিকটির নাম কি?",
+        "hint": "*আপনার নিকটবর্তী কমিউনিটি \nক্লিনিকটির নাম কি?",
         "v_required": {
           "value": "true",
           "err": "Please enter the value"
@@ -617,7 +622,7 @@
         "openmrs_entity_id": "",
         "openmrs_data_type": "Coded",
         "type": "spinner",
-        "hint": "নিকটবর্তী কমিউনিটি ক্লিনিকের আনুমানিক দুরত্ব কত কিঃ মিঃ",
+        "hint": "*নিকটবর্তী কমিউনিটি ক্লিনিকের আনুমানিক দুরত্ব কত কিঃ মিঃ",
         "values": [
           "৫০০ মিটারের কম",
           "৫০০ মিটার থেকে ১ কিলোমিটার",
@@ -643,7 +648,7 @@
         "openmrs_entity": "",
         "openmrs_entity_id": "",
         "type": "edit_text",
-        "hint": "তথ্য প্রদানকারীর নামঃ",
+        "hint": "*তথ্য প্রদানকারীর নামঃ",
         "v_required": {
           "value": "true",
           "err": "Please enter the value"
@@ -656,6 +661,14 @@
         "openmrs_entity_id": "",
         "type": "choose_image",
         "uploadButtonText": "পরিবারের প্রধানের ছবি তুলুন "
+      },
+      {
+        "key": "gps",
+        "openmrs_entity_parent": "usual_residence",
+        "openmrs_entity": "person_address",
+        "openmrs_entity_id": "geopoint",
+        "openmrs_data_type": "text",
+        "type": "gps"
       }
     ]
   }

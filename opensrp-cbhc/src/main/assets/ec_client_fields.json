@@ -127,6 +127,34 @@
           "json_mapping": {
             "field": "attributes.reminders"
           }
+        },
+        {
+          "column_name": "person_nid",
+          "type": "Client",
+          "json_mapping": {
+            "field": "attributes.nationalId"
+          }
+        },
+        {
+          "column_name": "person_brid",
+          "type": "Client",
+          "json_mapping": {
+            "field": "attributes.birthRegistrationID"
+          }
+        },
+        {
+          "column_name": "person_epi",
+          "type": "Client",
+          "json_mapping": {
+            "field": "attributes.epicardnumber"
+          }
+        },
+        {
+          "column_name": "person_address",
+          "type": "Client",
+          "json_mapping": {
+            "field": "address7"
+          }
         }
       ]
     },
@@ -201,6 +229,34 @@
           "type": "Client",
           "json_mapping": {
             "field": "attributes.phoneNumber"
+          }
+        },
+        {
+          "column_name": "person_nid",
+          "type": "Client",
+          "json_mapping": {
+            "field": "attributes.nationalId"
+          }
+        },
+        {
+          "column_name": "person_brid",
+          "type": "Client",
+          "json_mapping": {
+            "field": "attributes.birthRegistrationID"
+          }
+        },
+        {
+          "column_name": "person_epi",
+          "type": "Client",
+          "json_mapping": {
+            "field": "attributes.epicardnumber"
+          }
+        },
+        {
+          "column_name": "person_address",
+          "type": "Client",
+          "json_mapping": {
+            "field": "address7"
           }
         },
         {
@@ -300,6 +356,34 @@
           }
         },
         {
+          "column_name": "person_nid",
+          "type": "Client",
+          "json_mapping": {
+            "field": "attributes.nationalId"
+          }
+        },
+        {
+          "column_name": "person_brid",
+          "type": "Client",
+          "json_mapping": {
+            "field": "attributes.birthRegistrationID"
+          }
+        },
+        {
+          "column_name": "person_epi",
+          "type": "Client",
+          "json_mapping": {
+            "field": "attributes.epicardnumber"
+          }
+        },
+        {
+          "column_name": "person_address",
+          "type": "Client",
+          "json_mapping": {
+            "field": "address7"
+          }
+        },
+        {
           "column_name": "alt_name",
           "type": "Client",
           "json_mapping": {
@@ -393,6 +477,34 @@
           "type": "Client",
           "json_mapping": {
             "field": "attributes.phoneNumber"
+          }
+        },
+        {
+          "column_name": "person_nid",
+          "type": "Client",
+          "json_mapping": {
+            "field": "attributes.nationalId"
+          }
+        },
+        {
+          "column_name": "person_brid",
+          "type": "Client",
+          "json_mapping": {
+            "field": "attributes.birthRegistrationID"
+          }
+        },
+        {
+          "column_name": "person_epi",
+          "type": "Client",
+          "json_mapping": {
+            "field": "attributes.epicardnumber"
+          }
+        },
+        {
+          "column_name": "person_address",
+          "type": "Client",
+          "json_mapping": {
+            "field": "address7"
           }
         },
         {

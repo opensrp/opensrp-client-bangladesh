@@ -226,25 +226,22 @@
 		android:layout_marginRight="10dp"
 		android:gravity="center">
 
-		<Button
+		<ImageView
 			android:id="@+id/due_button"
-			android:layout_width="75dp"
-			android:layout_height="@dimen/register_list_item_height_cbhc_button"
+			android:layout_width="48dp"
+			android:layout_height="48dp"
 			android:layout_gravity="center"
 			android:layout_margin="5dp"
 			android:adjustViewBounds="true"
-			android:background="@drawable/due_contact_blue"
+			android:tint="@color/bottom_bar_text_focused_background"
+			android:src="@android:drawable/ic_menu_add"
+			android:background="@android:color/transparent"
 			android:elevation="3dp"
 			android:gravity="center"
 			android:hapticFeedbackEnabled="true"
 			android:paddingLeft="5dp"
 			android:paddingRight="5dp"
 			android:stateListAnimator="@drawable/button"
-			android:text="@string/add_member"
-			android:textAllCaps="false"
-			android:textAppearance="?android:textAppearanceSmall"
-			android:textColor="#ffffff"
-			android:textSize="12sp"
 			android:typeface="normal" />
 
 		<Button
