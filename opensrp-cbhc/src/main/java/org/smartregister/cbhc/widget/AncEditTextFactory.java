@@ -30,7 +30,7 @@ import java.util.Map;
  * Created by ndegwamartin on 30/06/2018.
  */
 public class AncEditTextFactory extends EditTextFactory {
-
+    
     @Override
     protected void attachLayout(String stepName, Context context, JsonFormFragment formFragment, JSONObject jsonObject, MaterialEditText editText, ImageView editButton) throws Exception {
         super.attachLayout(stepName, context, formFragment, jsonObject, editText, editButton);
