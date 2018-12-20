@@ -51,8 +51,11 @@ public class AncEditTextFactory extends EditTextFactory {
                 lookUpViews.add(editText);
             }
             lookupMap.put(entityId, lookUpViews);
-
-            editText.addTextChangedListener(new LookUpTextWatcher(formFragment, editText, entityId,""));
+            String household_id = "";
+            if (jsonObject.has("relational_id")){
+                household_id = jsonObject.getString("relational_id");
+            }
+            editText.addTextChangedListener(new LookUpTextWatcher(formFragment, editText, entityId,household_id));
             editText.setTag(com.vijay.jsonwizard.R.id.after_look_up, false);
         }
     }

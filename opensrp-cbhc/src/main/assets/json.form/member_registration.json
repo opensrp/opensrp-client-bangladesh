@@ -146,6 +146,14 @@
           "value": "^(?=[0-9]*$)(?:.{17})$",
           "err": "Number must be a total of 17 digits in length"
         },
+        "v_max_length": {
+          "value": "17",
+          "err": "Number must be a total of 17 digits in length"
+        },
+        "v_min_length": {
+          "value": "17",
+          "err": "Number must be a total of 17 digits in length"
+        },
         "v_required": {
           "value": true,
           "err": "Please Type BRID"
@@ -181,6 +189,14 @@
         "v_required": {
           "value": true,
           "err": "Please Type EPI Card Number"
+        },
+        "v_max_length": {
+          "value": "17",
+          "err": "Number must be a total of 17 digits in length"
+        },
+        "v_min_length": {
+          "value": "17",
+          "err": "Number must be a total of 17 digits in length"
         },
         "relevance": {
           "step1:member_unique_ID": {
@@ -636,6 +652,7 @@
         "openmrs_entity_id": "birthPlace",
         "openmrs_data_type": "text",
         "type": "edit_text",
+        "look_up": "true",
         "hint": "জন্মস্থান (জেলা)"
       },
       {
