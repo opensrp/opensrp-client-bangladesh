@@ -406,7 +406,7 @@
         "openmrs_entity_id": "",
         "openmrs_data_type": "text",
         "type": "edit_text",
-        "hint": "*‘না জানলে বয়স লিখুন (বছর)",
+        "hint": "*না জানলে বয়স লিখুন (বছর)",
         "v_numeric": {
           "value": "true",
           "err": "Enter age"
