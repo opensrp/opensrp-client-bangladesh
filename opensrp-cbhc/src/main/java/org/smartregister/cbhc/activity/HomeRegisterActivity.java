@@ -5,6 +5,10 @@ import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.MenuItem;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+import org.smartregister.cbhc.application.AncApplication;
+import org.smartregister.cbhc.domain.draft_form_object;
 import org.smartregister.cbhc.fragment.AdvancedSearchFragment;
 import org.smartregister.cbhc.fragment.BaseRegisterFragment;
 import org.smartregister.cbhc.fragment.HomeRegisterFragment;
@@ -12,6 +16,7 @@ import org.smartregister.cbhc.fragment.LibraryFragment;
 import org.smartregister.cbhc.fragment.MeFragment;
 import org.smartregister.cbhc.fragment.SortFilterFragment;
 import org.smartregister.cbhc.presenter.RegisterPresenter;
+import org.smartregister.cbhc.repository.DraftFormRepository;
 import org.smartregister.cbhc.util.Constants;
 import org.smartregister.configurableviews.model.Field;
 
@@ -81,5 +86,27 @@ public class HomeRegisterActivity extends BaseRegisterActivity {
 			e.printStackTrace();
 		}
 		
+	}
+
+    @Override
+    public void startRegistration() {
+        List<draft_form_object> draftFormObjects = checkForDraft();
+        if(draftFormObjects.size()>0){
+            try {
+                JSONObject form = new JSONObject(draftFormObjects.get(0).getDraftFormJson());
+                startFormActivity(form);
+
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }else {
+            startFormActivity(Constants.JSON_FORM.Household_REGISTER, null, null);
+        }
+    }
+
+    private List<draft_form_object> checkForDraft() {
+        DraftFormRepository draftFormRepository = new DraftFormRepository(AncApplication.getInstance().getRepository());
+        List<draft_form_object> draftFormObjects = draftFormRepository.findUnusedDraftWithoutEntityID(0);
+        return draftFormObjects;
 	}
 }

@@ -370,7 +370,6 @@ public abstract class BaseRegisterActivity extends SecuredNativeSmartRegisterAct
             try {
                 String jsonString = data.getStringExtra("json");
                 Log.d("JSONResult", jsonString);
-
                 JSONObject form = new JSONObject(jsonString);
                 if (form.getString(JsonFormUtils.ENCOUNTER_TYPE).equals(Constants.EventType.REGISTRATION)) {
                     presenter.saveForm(jsonString, false);
