@@ -60,20 +60,35 @@
         "openmrs_entity": "person_attribute",
         "openmrs_entity_id": "idtype",
         "openmrs_data_type": "text",
-        "type": "spinner",
-        "hint": "কোন পরিচয় পত্রটি আছে?",
-        "values": [
-          "জাতীয় পরিচয় পত্র",
-          "জন্মনিবন্ধন",
-          "ইপিআই কার্ড নাম্বার",
-          "আইডি কার্ড নেই"
-        ],
-        "openmrs_choice_ids": {
-          "জাতীয় পরিচয় পত্র":"NID",
-          "জন্মনিবন্ধন":"BRID",
-          "ইপিআই কার্ড নাম্বার":"EPI",
-          "আইডি কার্ড নেই":"noIdentifier"
-        }
+        "type": "check_box",
+        "label": "কোন পরিচয় পত্রটি আছে?",
+        "exclusive": ["noIdentifier"],
+        "options": [
+          {
+            "key": "NID",
+            "text": "জাতীয় পরিচয় পত্র",
+            "value": false,
+            "openmrs_choice_id": "NID"
+          },
+          {
+            "key": "BRID",
+            "text": "জন্মনিবন্ধন",
+            "value": false,
+            "openmrs_choice_id": "BRID"
+          },
+          {
+            "key": "EPI",
+            "text": "ইপিআই কার্ড নাম্বার",
+            "value": false,
+            "openmrs_choice_id": "EPI"
+          },
+          {
+            "key": "noIdentifier",
+            "text": "আইডি কার্ড নেই",
+            "value": false,
+            "openmrs_choice_id": "noIdentifier"
+          }
+          ]
       },
       {
         "key": "member_NID",
@@ -91,14 +106,27 @@
           "value": "^(?=[0-9]*$)(?:.{10}|.{13}|.{17})$",
           "err": "Number must be a total of 10,13 or 17 digits in length"
         },
+        "v_max_length": {
+          "value": "17",
+          "err": "Number must be a total of 10,13 or 17 digits in length"
+        },
+        "v_min_length": {
+          "value": "10",
+          "err": "Number must be a total of 10,13 or 17 digits in length"
+        },
         "v_required": {
           "value": true,
           "err": "Please Type NID"
         },
         "relevance": {
           "step1:member_unique_ID": {
-            "type": "string",
-            "ex": "equalTo(., \"জাতীয় পরিচয় পত্র\")"
+            "ex-checkbox": [
+              {
+                "or": [
+                  "NID"
+                ]
+              }
+            ]
           }
         }
       },
@@ -118,14 +146,27 @@
           "value": "^(?=[0-9]*$)(?:.{17})$",
           "err": "Number must be a total of 17 digits in length"
         },
+        "v_max_length": {
+          "value": "17",
+          "err": "Number must be a total of 17 digits in length"
+        },
+        "v_min_length": {
+          "value": "17",
+          "err": "Number must be a total of 17 digits in length"
+        },
         "v_required": {
           "value": true,
           "err": "Please Type BRID"
         },
         "relevance": {
           "step1:member_unique_ID": {
-            "type": "string",
-            "ex": "equalTo(., \"জন্মনিবন্ধন\")"
+            "ex-checkbox": [
+              {
+                "or": [
+                  "BRID"
+                ]
+              }
+            ]
           }
         }
       },
@@ -139,7 +180,7 @@
         "hint": "ইপিআই কার্ড নাম্বার",
         "v_numeric": {
           "value": "true",
-          "err": "Enter a valid BRID"
+          "err": "Enter a valid EPI Card Number"
         },
         "v_regex": {
           "value": "^(?=[0-9]*$)(?:.{17})$",
@@ -147,12 +188,25 @@
         },
         "v_required": {
           "value": true,
-          "err": "Please Type BRID"
+          "err": "Please Type EPI Card Number"
+        },
+        "v_max_length": {
+          "value": "17",
+          "err": "Number must be a total of 17 digits in length"
+        },
+        "v_min_length": {
+          "value": "17",
+          "err": "Number must be a total of 17 digits in length"
         },
         "relevance": {
           "step1:member_unique_ID": {
-            "type": "string",
-            "ex": "equalTo(., \"ইপিআই কার্ড নাম্বার\")"
+            "ex-checkbox": [
+              {
+                "or": [
+                  "EPI"
+                ]
+              }
+            ]
           }
         }
       },
@@ -167,6 +221,8 @@
         "expanded": false,
         "min_date": "today-5y",
         "max_date": "today",
+        "read_only":"true",
+        "value":"today",
         "v_required": {
           "value": "false",
           "err": "Please enter the date of Registration."
@@ -181,6 +237,7 @@
         "hint": "নিবন্ধন নম্বর *",
         "read_only": "true",
         "value": "0",
+        "hidden":"true",
         "v_numeric": {
           "value": "true",
           "err": "Please enter a valid ID"
@@ -197,7 +254,7 @@
         "openmrs_entity_id": "first_name",
         "openmrs_data_type": "text",
         "type": "edit_text",
-        "hint": "নাম এর প্রথম অংশ(ইংরেজীতে)",
+        "hint": "*নাম এর প্রথম অংশ(ইংরেজীতে)",
         "expanded": false,
         "v_required": {
           "value": "true",
@@ -214,7 +271,7 @@
         "openmrs_entity": "person",
         "openmrs_entity_id": "last_name",
         "type": "edit_text",
-        "hint": "নাম এর শেষ অংশ(ইংরেজীতে)",
+        "hint": "*নাম এর শেষ অংশ(ইংরেজীতে)",
         "edit_type": "name",
         "v_required": {
           "value": "true",
@@ -247,7 +304,7 @@
         "openmrs_data_type": "text",
         "type": "edit_text",
         "look_up": "true",
-        "hint": "মাতার নাম (ইংরেজীতে)",
+        "hint": "*মাতার নাম (ইংরেজীতে)",
         "edit_type": "name",
         "v_required": {
           "value": "true",
@@ -280,7 +337,7 @@
         "openmrs_data_type": "text",
         "type": "edit_text",
         "look_up": "true",
-        "hint": "পিতার নাম (ইংরেজীতে)",
+        "hint": "*পিতার নাম (ইংরেজীতে)",
         "edit_type": "name",
         "v_required": {
           "value": "true",
@@ -329,7 +386,7 @@
         "openmrs_entity_id": "birthdate",
         "openmrs_data_type": "text",
         "type": "date_picker",
-        "hint": "‘হ্যাঁ’ হলে জন্ম তারিখ",
+        "hint": "*‘হ্যাঁ’ হলে জন্ম তারিখ",
         "v_required": {
           "value": true,
           "err": "Please Enter birth date"
@@ -349,7 +406,7 @@
         "openmrs_entity_id": "",
         "openmrs_data_type": "text",
         "type": "edit_text",
-        "hint": "‘না জানলে বয়স লিখুন (বছর)",
+        "hint": "*‘না জানলে বয়স লিখুন (বছর)",
         "v_numeric": {
           "value": "true",
           "err": "Enter age"
@@ -372,7 +429,11 @@
         "openmrs_entity_id": "gender",
         "openmrs_data_type": "text",
         "type": "spinner",
-        "hint": "লিঙ্গ",
+        "hint": "*লিঙ্গ",
+        "v_required": {
+          "value": true,
+          "err": "Please select gender"
+        },
         "values": [
           "পুরুষ",
           "মহিলা",
@@ -452,6 +513,42 @@
         }
       },
       {
+        "key": "relation_other_1",
+        "openmrs_entity_parent": "",
+        "openmrs_entity": "",
+        "openmrs_entity_id": "",
+        "type": "edit_text",
+        "hint": "অন্যান্য আত্মীয়",
+        "v_required": {
+          "value": true,
+          "err": "Please Type Other Relation"
+        },
+        "relevance": {
+          "step1:relation_with_household_head": {
+            "type": "string",
+            "ex": "equalTo(., \"অন্যান্য আত্মীয়\")"
+          }
+        }
+      },
+      {
+        "key": "relation_other_2",
+        "openmrs_entity_parent": "",
+        "openmrs_entity": "",
+        "openmrs_entity_id": "",
+        "type": "edit_text",
+        "hint": "অন্যান্য অনাত্মীয়",
+        "v_required": {
+          "value": true,
+          "err": "Please Type Other Relation"
+        },
+        "relevance": {
+          "step1:relation_with_household_head": {
+            "type": "string",
+            "ex": "equalTo(., \"অন্যান্য অনাত্মীয়\")"
+          }
+        }
+      },
+      {
         "key": "marital_status",
         "openmrs_entity_parent": "",
         "openmrs_entity": "person_attribute",
@@ -509,12 +606,8 @@
         "type": "edit_text",
         "hint": "স্বামী/স্ত্রীর নাম (বাংলায়)",
         "v_required": {
-          "value": false,
-          "err": "Please Type Husband Name."
-        },
-        "v_regex": {
-          "value": "[A-Za-z\\s\.\-]*",
-          "err": "Please Enter a Valid Name"
+          "value": "false",
+          "err": "Please enter the mother/guardian's first name"
         },
         "relevance": {
           "step1:marital_status": {
@@ -530,7 +623,7 @@
         "openmrs_entity_id": "phoneNumber",
         "openmrs_data_type": "text",
         "type": "edit_text",
-        "hint": "মোবাইল নম্বর (ইংরেজীতে)",
+        "hint": "*মোবাইল নম্বর (ইংরেজীতে)",
         "v_required": {
           "value": true,
           "err": "Enter 11 digits Mobile Number."
@@ -540,7 +633,7 @@
           "err": "Number must begin with 095, 096, or 097 and must be a total of 11 digits in length"
         },
         "v_regex": {
-          "value": "(01[3-9][0-9]{8})|\s*",
+          "value": "0|(01[3-9][0-9]{8})|\s*",
           "err": "Number must begin with 013, 015, 016,017,018 or 019 and must be a total of 11 digits in length"
         },
         "v_max_length": {
@@ -548,7 +641,7 @@
           "err": "Please Enter 11 digit Mobile number"
         },
         "v_min_length": {
-          "value": "11",
+          "value": "1",
           "err": "Please Enter 11 digit Mobile number"
         }
       },
@@ -559,6 +652,7 @@
         "openmrs_entity_id": "birthPlace",
         "openmrs_data_type": "text",
         "type": "edit_text",
+        "look_up": "true",
         "hint": "জন্মস্থান (জেলা)"
       },
       {
@@ -622,6 +716,24 @@
         }
       },
       {
+        "key": "disability_other",
+        "openmrs_entity_parent": "",
+        "openmrs_entity": "",
+        "openmrs_entity_id": "",
+        "type": "edit_text",
+        "hint": "অন্যান্য প্রতিবন্ধিতা",
+        "v_required": {
+          "value": true,
+          "err": "Please Type Other Relation"
+        },
+        "relevance": {
+          "step1:disability_type": {
+            "type": "string",
+            "ex": "equalTo(., \"অন্যান্য\")"
+          }
+        }
+      },
+      {
         "key": "ethnicity",
         "openmrs_entity_parent": "",
         "openmrs_entity": "person_attribute",
@@ -661,6 +773,24 @@
           "মুন্ডা": "Munda",
           "অন্যান্য": "Others (Ethnicity)"
 
+        }
+      },
+      {
+        "key": "ethnicity_other",
+        "openmrs_entity_parent": "",
+        "openmrs_entity": "",
+        "openmrs_entity_id": "",
+        "type": "edit_text",
+        "hint": "অন্যান্য জাতিসত্তা",
+        "v_required": {
+          "value": true,
+          "err": "Please Type Other Ethnicity"
+        },
+        "relevance": {
+          "step1:ethnicity": {
+            "type": "string",
+            "ex": "equalTo(., \"অন্যান্য\")"
+          }
         }
       },
       {
@@ -719,6 +849,24 @@
         }
       },
       {
+        "key": "education_other",
+        "openmrs_entity_parent": "",
+        "openmrs_entity": "",
+        "openmrs_entity_id": "",
+        "type": "edit_text",
+        "hint": "অন্যান্য শিক্ষাগত যোগ্যতা",
+        "v_required": {
+          "value": true,
+          "err": "Please Type Other Qualification"
+        },
+        "relevance": {
+          "step1:educational_qualification": {
+            "type": "string",
+            "ex": "equalTo(., \"অন্যান্য\")"
+          }
+        }
+      },
+      {
         "key": "occupation",
         "openmrs_entity_parent": "",
         "openmrs_entity": "person_attribute",
@@ -727,56 +875,56 @@
         "type": "spinner",
         "hint": "পেশা",
         "values": [
-          "ভৌত বিজ্ঞানী এবং এতদসম্পর্কিত টেকনিশিয়ান",
+          "ভৌত বিজ্ঞানী এবং \nএতদসম্পর্কিত টেকনিশিয়ান",
           "ইঞ্জিনিয়ারিং ও স্থপতি",
-          "ইঞ্জিনিয়ারিং ও স্থপতি সম্পর্কিত টেকনিশিয়ান",
+          "ইঞ্জিনিয়ারিং ও স্থপতি \nসম্পর্কিত টেকনিশিয়ান",
           "বিমান এবং জাহাজের কর্মকর্তা",
-          "জীব বিজ্ঞান এবং এতদসম্পর্কিত টেকনিশিয়ান",
-          "চিকিৎসক, দন্ত চিকিৎসক ও প্রাণী চিকিৎসক",
-          "নার্স এবং চিকিৎসা-সংক্রান্ত অন্যান্য কর্মী",
-          "পরিসংখ্যানবিদ, গণিতবিদ সিস্টেম, এনালিস্ট এবং এতদসম্পকিত কর্মী",
+          "জীব বিজ্ঞান এবং এতদসম্পর্কিত \nটেকনিশিয়ান",
+          "চিকিৎসক, দন্ত চিকিৎসক \nও প্রাণী চিকিৎসক",
+          "নার্স এবং চিকিৎসা-সংক্রান্ত \nঅন্যান্য কর্মী",
+          "পরিসংখ্যানবিদ, গণিতবিদ, সিস্টেম \nএনালিস্ট এবং এতদসম্পকিত কর্মী",
           "অর্থনীতিবিদ",
           "হিসাব রক্ষক",
           "বিচারক",
           "শিক্ষক",
           "ধর্মীয় কর্মী",
-          "লেখক, সাংবাদিক এবং এতদসম্পর্কিত কর্মী",
-          "চিত্রশিল্পী, ফটোগ্রাফার এবং এতদসম্পর্কিত সৃজনশীল শিল্পী",
+          "লেখক, সাংবাদিক এবং \nএতদসম্পর্কিত কর্মী",
+          "চিত্রশিল্পী, ফটোগ্রাফার এবং \nএতদসম্পর্কিত সৃজনশীল শিল্পী",
           "অভিনয়, কণ্ঠশিল্পী এবং নৃত্য শিল্পী",
-          "খেলোয়াড় এবং এতদসম্পর্কিত কর্মী",
-          "পেশাগত, কারিগরি এবং অন্যান্য অশ্রেণীভুক্ত এতদসম্পর্কিত কর্মী",
+          "খেলোয়াড় এবং এতদসম্পর্কিত \nকর্মী",
+          "পেশাগত, কারিগরি এবং অন্যান্য \nঅশ্রেণীভুক্ত এতদসম্পর্কিত কর্মী",
           "আইনজীবী",
           "ম্যানেজার",
           "সরকারী নির্বাহী কর্মকর্তা",
           "করণীক (কেরাণী)",
-          "টাইপিস্ট/স্টেনোগ্রাফার/কম্পিউটার অপারেটর",
-          "রেকর্ড কিপার,ক্যাশিয়ার এবং এতদসম্পর্কিত কর্মী",
+          "টাইপিস্ট/স্টেনোগ্রাফার/কম্পিউটার \nঅপারেটর",
+          "রেকর্ড কিপার,ক্যাশিয়ার এবং \nএতদসম্পর্কিত কর্মী",
           "কম্পিউটার সম্পর্কিত কর্মী",
           "যানবাহন ও যোগাযোগ তত্ত্বাবধায়ক",
           "গাড়ির চালক, কন্ডাক্টর",
           "চিঠিপত্র বিলিকারী (ডাক পিয়ন)",
           "টেলিফোন ও টেলিগ্রাফ অপারেটর",
           "অশ্রেণীভুক্ত দাপ্তরিক কাজ।",
-          "ম্যানেজার (পাইকারী ও খুচরা ব্যবসা)",
+          "ম্যানেজার \n(পাইকারী ও খুচরা ব্যবসা)",
           "বিক্রয় তত্বাবধায়ক",
-          "ভ্রমণ সংক্রান্ত কাজে নিয়োজিত কর্মী",
-          "বীমা, রিয়েল এস্টেট, ব্যবসা এবং এতদসম্পর্কিত সেবা বিক্রেতা",
+          "ভ্রমণ সংক্রান্ত কাজে \nনিয়োজিত কর্মী",
+          "বীমা, রিয়েল এস্টেট, ব্যবসা এবং \nএতদসম্পর্কিত সেবা বিক্রেতা",
           "ফেরিওয়ালা",
           "অশ্রেণীভুক্ত বিক্রয় কর্মী",
           "আবাসিক হোটেল ম্যানেজার",
           "হোটেল মালিক",
           "আবাসিক হোটেল তত্ত্বাবধায়ক",
-          "বাবুর্চি, হোটেল বয় এবং এতদসম্পর্কিত সম্পর্কিত কর্মী,",
+          "বাবুর্চি, হোটেল বয় এবং \nএতদসম্পর্কিত সম্পর্কিত কর্মী,",
           "অশ্রেণীভুক্ত গৃহপরিচারিকা",
-          "বাড়ির কেয়ারটেকার, ঝাড়ুদার এবং এতদসম্পর্কিত কর্মী",
+          "বাড়ির কেয়ারটেকার, ঝাড়ুদার এবং \nএতদসম্পর্কিত কর্মী",
           "ধোপার কাজ",
           "নিরাপত্তা কর্মী",
           "অশ্রেণীভুক্ত সেবা কর্মী",
-          "কৃষি খামার ব্যবস্থাপক ও তত্বাবধায়ক",
+          "কৃষি খামার ব্যবস্থাপক \nও তত্বাবধায়ক",
           "কৃষি কাজ",
           "বনকর্মী",
-          "জেলে, শিকারী এবং এতদসম্পর্কিত কর্মী",
-          "উৎপাদন তত্ত্বাবধায়ক এবং ফোরম্যান",
+          "জেলে, শিকারী এবং \nএতদসম্পর্কিত কর্মী",
+          "উৎপাদন তত্ত্বাবধায়ক \nএবং ফোরম্যান",
           "খনন কর্মী ও খননকারী",
           "ধাতু প্রক্রিয়াকারী",
           "রাসায়নিক দ্রব্য প্রক্রিয়াকারী",
@@ -788,15 +936,15 @@
           "জুতা ও চামড়াজাত দ্রব্য প্রস্তুতকারী",
           "কাঠ মিস্ত্রি",
           "পাথর কাটা ও প্রক্রিয়কারী",
-          "কর্মকার, ঢালাই কর্মী ও যন্ত্রাংশ প্রস্তুতকারী",
-          "বৈদ্যুতিক ব্যতীত অন্যান্য মেশিন কর্মী",
+          "কর্মকার, ঢালাই কর্মী ও \nযন্ত্রাংশ প্রস্তুতকারী",
+          "বৈদ্যুতিক ব্যতীত অন্যান্য \nমেশিন কর্মী",
           "বৈদ্যুতিক কর্মী",
           "শব্দ প্রচারকর্মী ও চলচ্চিত্র প্রদর্শনকারী",
-          "পানি ও পয়ঃনিষ্কাশন কাঠামো নির্মাণকারী ও ধাতু ঝালাইকারী",
+          "পানি ও পয়ঃনিষ্কাশন কাঠামো \nনির্মাণকারী ও ধাতু ঝালাইকারী",
           "স্বর্ণকার",
-          "গ্লাস ও মাটির জিনিস প্রস্তুতকারী",
-          "রাবার ও প্লাস্টিক দ্রব্য প্রস্তুতকারী",
-          "কাগজ ও কাগজের বোর্ড প্রস্তুতকারী",
+          "গ্লাস ও মাটির জিনিস \nপ্রস্তুতকারী",
+          "রাবার ও প্লাস্টিক দ্রব্য \nপ্রস্তুতকারী",
+          "কাগজ ও কাগজের বোর্ড \nপ্রস্তুতকারী",
           "মুদ্রণ কাজ",
           "অকৃষি শ্রমিক",
           "গৃহকর্ম",
@@ -882,6 +1030,24 @@
         }
       },
       {
+        "key": "occupation_other",
+        "openmrs_entity_parent": "",
+        "openmrs_entity": "",
+        "openmrs_entity_id": "",
+        "type": "edit_text",
+        "hint": "অন্যান্য পেশা",
+        "v_required": {
+          "value": true,
+          "err": "Please Type Other Work"
+        },
+        "relevance": {
+          "step1:occupation": {
+            "type": "string",
+            "ex": "equalTo(., \"অন্যান্য\")"
+          }
+        }
+      },
+      {
         "key": "religion",
         "openmrs_entity_parent": "",
         "openmrs_entity": "person_attribute",
@@ -902,6 +1068,24 @@
           "বৌদ্ধ": "Buddhist",
           "খ্রিস্টান": "Christian",
           "অন্যান্য": "Others (Religion)"
+        }
+      },
+      {
+        "key": "religion_other",
+        "openmrs_entity_parent": "",
+        "openmrs_entity": "",
+        "openmrs_entity_id": "",
+        "type": "edit_text",
+        "hint": "অন্যান্য ধর্ম",
+        "v_required": {
+          "value": true,
+          "err": "Please Type Other Religion"
+        },
+        "relevance": {
+          "step1:religion": {
+            "type": "string",
+            "ex": "equalTo(., \"অন্যান্য\")"
+          }
         }
       },
       {
@@ -958,54 +1142,152 @@
         "openmrs_entity": "person_attribute",
         "openmrs_entity_id": "Disease_status",
         "openmrs_data_type": "text",
-        "type": "spinner",
-        "hint": "রোগ বা অবস্থা",
-        "values": [
-          "উচ্চ রক্তচাপ",
-          "ডায়াবেটিস",
-          "সম্ভাব্য যক্ষ্মা",
-          "খুব মারাত্বক রোগ",
-          "নিউমোনিয়া",
-          "নিউমোনিয়া নয় সর্দি, কাশী",
-          "ডায়ারিয়া ও আমাশয়",
-          "জ্বর",
-          "জ্বর, (ম্যালারিয়া)" ,
-          "কানের সমস্যা",
-          "হাম",
-          "নাভিতে সংক্রামন",
-          "চোখ উঠা",
-          "আঘাত",
-          "প্রসব পূর্ব",
-          "প্রসবোত্তর",
-          "পরিবার পরিকল্পনা",
-          "স্বাভাবিক প্রসব",
-          "অন্যান্য"
+        "type": "check_box",
+        "label": "রোগ বা অবস্থা",
+        "exclusive": ["none"],
+        "options": [
+          {
+            "key": "High Blood Pressure",
+            "text": "উচ্চ রক্তচাপ",
+            "value": false,
+            "openmrs_choice_id": "High Blood Pressure"
+          },
+          {
+            "key": "Diabetes",
+            "text": "ডায়াবেটিস",
+            "value": false,
+            "openmrs_choice_id": "Diabetes"
+          },
+          {
+            "key": "Tuberculosis",
+            "text": "সম্ভাব্য যক্ষ্মা",
+            "value": false,
+            "openmrs_choice_id": "Tuberculosis"
+          },
+          {
+            "key": "Very_severe_disease",
+            "text": "খুব মারাত্বক রোগ",
+            "value": false,
+            "openmrs_choice_id": "Very_severe_disease"
+          },
+          {
+            "key": "Pneumonia",
+            "text": "নিউমোনিয়া",
+            "value": false,
+            "openmrs_choice_id": "Pneumonia"
+          },
+          {
+            "key": "Pneumonia, unspec.",
+            "text": "নিউমোনিয়া নয় সর্দি, কাশী",
+            "value": false,
+            "openmrs_choice_id": "Pneumonia, unspec"
+          },
+          {
+            "key": "dieriaanddysentry",
+            "text": "ডায়ারিয়া ও আমাশয়",
+            "value": false,
+            "openmrs_choice_id": "dieriaanddysentry"
+          },
+          {
+            "key": "Fever",
+            "text": "জ্বর",
+            "value": false,
+            "openmrs_choice_id": "Fever"
+          },
+          {
+            "key": "maleria",
+            "text": "জ্বর, (ম্যালারিয়া)",
+            "value": false,
+            "openmrs_choice_id": "maleria"
+          },
+          {
+            "key": "Hearing loss, unspec.",
+            "text": "কানের সমস্যা",
+            "value": false,
+            "openmrs_choice_id": "Hearing loss, unspec."
+          },
+          {
+            "key": "Measles",
+            "text": "হাম",
+            "value": false,
+            "openmrs_choice_id": "Measles"
+          },
+          {
+            "key": "nevalinfection",
+            "text": "নাভিতে সংক্রামন",
+            "value": false,
+            "openmrs_choice_id": "nevalinfection"
+          },
+          {
+            "key": "Conjunctivitis, unspec.",
+            "text": "চোখ উঠা",
+            "value": false,
+            "openmrs_choice_id": "Conjunctivitis, unspec."
+          },
+          {
+            "key": "Injury",
+            "text": "আঘাত",
+            "value": false,
+            "openmrs_choice_id": "Injury"
+          },
+          {
+            "key": "Antenatal Period",
+            "text": "প্রসব পূর্ব",
+            "value": false,
+            "openmrs_choice_id": "Antenatal Period"
+          },
+          {
+            "key": "Postnatal",
+            "text": "প্রসবোত্তর",
+            "value": false,
+            "openmrs_choice_id": "Postnatal"
+          },
+          {
+            "key": "familyplanning",
+            "text": "পরিবার পরিকল্পনা",
+            "value": false,
+            "openmrs_choice_id": "familyplanning"
+          },
+          {
+            "key": "regulardelivery",
+            "text": "স্বাভাবিক প্রসব",
+            "value": false,
+            "openmrs_choice_id": "regulardelivery"
+          },
+          {
+            "key": "Others_member_disease",
+            "text": "অন্যান্য",
+            "value": false,
+            "openmrs_choice_id": "Others_member_disease"
+          }
         ],
-        "openmrs_choice_ids": {
-          "উচ্চ রক্তচাপ":"High Blood Pressure",
-          "ডায়াবেটিস":"Diabetes",
-          "সম্ভাব্য যক্ষ্মা":"Tuberculosis",
-          "খুব মারাত্বক রোগ":"Very_severe_disease",
-          "নিউমোনিয়া":"Pneumonia",
-          "নিউমোনিয়া নয় সর্দি, কাশী":"Pneumonia, unspec.",
-          "ডায়ারিয়া ও আমাশয়":"dieriaanddysentry",
-          "জ্বর":"Fever",
-          "জ্বর, (ম্যালারিয়া)":"maleria",
-          "কানের সমস্যা":"Hearing loss, unspec.",
-          "হাম":"Measles",
-          "নাভিতে সংক্রামন":"nevalinfection",
-          "চোখ উঠা":"Conjunctivitis, unspec.",
-          "আঘাত":"Injury",
-          "প্রসব পূর্ব":"Antenatal Period",
-          "প্রসবোত্তর":"Postnatal",
-          "পরিবার পরিকল্পনা":"familyplanning",
-          "স্বাভাবিক প্রসব":"regulardelivery",
-          "অন্যান্য":"Others_member_disease"
-        },
         "relevance": {
           "step1:has_disease": {
             "type": "string",
             "ex": "equalTo(., \"হ্যাঁ\")"
+          }
+        }
+      },
+      {
+        "key": "disease_other",
+        "openmrs_entity_parent": "",
+        "openmrs_entity": "",
+        "openmrs_entity_id": "",
+        "type": "edit_text",
+        "hint": "অন্যান্য রোগ বা অবস্থা",
+        "v_required": {
+          "value": true,
+          "err": "Please Type Other disease"
+        },
+        "relevance": {
+          "step1:Disease_status": {
+            "ex-checkbox": [
+              {
+                "or": [
+                  "Others_member_disease"
+                ]
+              }
+            ]
           }
         }
       },
@@ -1015,23 +1297,69 @@
         "openmrs_entity": "person_attribute",
         "openmrs_entity_id": "family_diseases_details",
         "openmrs_data_type": "text",
-        "type": "spinner",
-        "hint": "রোগ  সম্পর্কিত পারিবারিক তথ্য",
-        "values": [
-          "উচ্চ রক্তচাপ",
-          "ডায়াবেটিস",
-          "যক্ষ্মা",
-          "প্রতিবন্ধিতা",
-          "মানসিক অসুখ",
-          "অন্যান্য"
-        ],
-        "openmrs_choice_ids": {
-          "উচ্চ রক্তচাপ": "High Blood Pressure",
-          "ডায়াবেটিস": "Diabetes",
-          "যক্ষ্মা": "Tuberculosis",
-          "প্রতিবন্ধিতা": "Disability",
-          "মানসিক অসুখ":"Psychological Disease",
-          "অন্যান্য": "Others (Family Disease)"
+        "type": "check_box",
+        "label": "রোগ  সম্পর্কিত পারিবারিক তথ্য",
+        "exclusive": ["noIdentifier"],
+        "options": [
+          {
+            "key": "High Blood Pressure",
+            "text": "উচ্চ রক্তচাপ",
+            "value": false,
+            "openmrs_choice_id": "High Blood Pressure"
+          },
+          {
+            "key": "Diabetes",
+            "text": "ডায়াবেটিস",
+            "value": false,
+            "openmrs_choice_id": "Diabetes"
+          },
+          {
+            "key": "Tuberculosis",
+            "text": "যক্ষ্মা",
+            "value": false,
+            "openmrs_choice_id": "Tuberculosis"
+          },
+          {
+            "key": "Disability",
+            "text": "প্রতিবন্ধিতা",
+            "value": false,
+            "openmrs_choice_id": "Disability"
+          },
+          {
+            "key": "Psychological Disease",
+            "text": "মানসিক অসুখ",
+            "value": false,
+            "openmrs_choice_id": "Psychological Disease"
+          },
+          {
+            "key": "Others (Family Disease)",
+            "text": "অন্যান্য",
+            "value": false,
+            "openmrs_choice_id": "Others (Family Disease)"
+          }
+        ]
+      },
+      {
+        "key": "illness_other",
+        "openmrs_entity_parent": "",
+        "openmrs_entity": "",
+        "openmrs_entity_id": "",
+        "type": "edit_text",
+        "hint": "অন্যান্য রোগ  সম্পর্কিত পারিবারিক তথ্য",
+        "v_required": {
+          "value": true,
+          "err": "Please Type Other Conditions"
+        },
+        "relevance": {
+          "step1:illness_information": {
+            "ex-checkbox": [
+              {
+                "or": [
+                  "Others (Family Disease)"
+                ]
+              }
+            ]
+          }
         }
       },
       {
@@ -1040,25 +1368,75 @@
         "openmrs_entity": "person_attribute",
         "openmrs_entity_id": "RiskyHabit",
         "openmrs_data_type": "text",
-        "type": "spinner",
-        "hint": "ঝুকিপূর্ন অভ্যাস",
-        "values": [
-          "বিড়ি/সিগারেট",
-          "তামাক/সাদা পাতা",
-          "অন্যান্য তামাক",
-          "মাদকাসক্ত",
-          "স্থুলকায়",
-          "অতিরিক্ত লবন",
-          "অন্যান্য"
-        ],
-        "openmrs_choice_ids": {
-          "বিড়ি/সিগারেট": "Cigarette",
-          "তামাক/সাদা পাতা": "Tobacco / White Leaf",
-          "অন্যান্য তামাক": "Others (Tobacco)",
-          "মাদকাসক্ত": "Drug Addiction",
-          "স্থুলকায়": "Obesity",
-          "অতিরিক্ত লবন": "High Salt Intake",
-          "অন্যান্য": "Others (Risky Habit)"
+        "type": "check_box",
+        "label": "ঝুকিপূর্ন অভ্যাস",
+        "exclusive": ["noIdentifier"],
+        "options": [
+          {
+            "key": "Cigarette",
+            "text": "বিড়ি/সিগারেট",
+            "value": false,
+            "openmrs_choice_id": "Cigarette"
+          },
+          {
+            "key": "Tobacco / White Leaf",
+            "text": "তামাক/সাদা পাতা",
+            "value": false,
+            "openmrs_choice_id": "Tobacco / White Leaf"
+          },
+          {
+            "key": "Others (Tobacco)",
+            "text": "অন্যান্য তামাক",
+            "value": false,
+            "openmrs_choice_id": "Others (Tobacco)"
+          },
+          {
+            "key": "Drug Addiction",
+            "text": "মাদকাসক্ত",
+            "value": false,
+            "openmrs_choice_id": "Drug Addiction"
+          },
+          {
+            "key": "Obesity",
+            "text": "স্থুলকায়",
+            "value": false,
+            "openmrs_choice_id": "Obesity"
+          },
+          {
+            "key": "High Salt Intake",
+            "text": "অতিরিক্ত লবন",
+            "value": false,
+            "openmrs_choice_id": "High Salt Intake"
+          },
+          {
+            "key": "Others (Risky Habit)",
+            "text": "অন্যান্য",
+            "value": false,
+            "openmrs_choice_id": "Others (Risky Habit)"
+          }
+        ]
+      },
+      {
+        "key": "habits_other",
+        "openmrs_entity_parent": "",
+        "openmrs_entity": "",
+        "openmrs_entity_id": "",
+        "type": "edit_text",
+        "hint": "অন্যান্য ঝুকিপূর্ন অভ্যাস",
+        "v_required": {
+          "value": true,
+          "err": "Please Type Other Habits"
+        },
+        "relevance": {
+          "step1:risky_habits": {
+            "ex-checkbox": [
+              {
+                "or": [
+                  "Others (Risky Habit)"
+                ]
+              }
+            ]
+          }
         }
       },
       {
@@ -1069,6 +1447,14 @@
         "openmrs_data_type": "",
         "type": "edit_text",
         "hint": "মন্তব্য"
+      },
+      {
+        "key": "household_photo",
+        "openmrs_entity_parent": "",
+        "openmrs_entity": "",
+        "openmrs_entity_id": "",
+        "type": "choose_image",
+        "uploadButtonText": "ছবি তুলুন "
       }
     ]
   }

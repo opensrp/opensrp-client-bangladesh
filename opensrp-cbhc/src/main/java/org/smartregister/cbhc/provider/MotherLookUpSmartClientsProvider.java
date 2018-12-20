@@ -12,6 +12,7 @@ import org.smartregister.cbhc.R;
 import org.smartregister.commonregistry.CommonPersonObject;
 import org.smartregister.commonregistry.CommonPersonObjectClient;
 
+import org.smartregister.util.StringUtil;
 import org.smartregister.util.Utils;
 
 import java.text.DateFormat;
@@ -73,8 +74,9 @@ public class MotherLookUpSmartClientsProvider {
             }
 
         }
-
-        fillValue((TextView) convertView.findViewById(R.id.details), birthDateString + " - " + childListString);
+        if(pc.getColumnmaps().get("dtype")!=null&&pc.getColumnmaps().get("dtype").equals("loc"))
+            convertView.findViewById(R.id.details).setVisibility(View.GONE);
+            fillValue((TextView) convertView.findViewById(R.id.details), birthDateString + " - " + childListString);
     }
 
 
@@ -128,6 +130,12 @@ public class MotherLookUpSmartClientsProvider {
     private String name(CommonPersonObjectClient pc) {
         String firstName = getValue(pc.getColumnmaps(), "first_name", true);
         String lastName = getValue(pc.getColumnmaps(), "last_name", true);
+        if(firstName!=null&&firstName.trim().equalsIgnoreCase("NULL")){
+            firstName = "";
+        }
+        if(lastName!=null&&lastName.trim().equalsIgnoreCase("NULL")){
+            lastName = "";
+        }
         return getName(firstName, lastName);
     }
 

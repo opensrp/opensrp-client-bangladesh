@@ -20,8 +20,8 @@ jacoco {
 
 
 android {
-    compileSdkVersion androidCompileSdkVersion
-    buildToolsVersion androidBuildToolsVersion
+    compileSdkVersion 28
+    buildToolsVersion '28.0.3'
 
     defaultConfig {
         applicationId "org.smartregister.cbhc"
@@ -70,7 +70,7 @@ android {
         }
 
         debug {
-            resValue "string", 'opensrp_url', '"http://192.168.22.152:8080/opensrp/"'
+            resValue "string", 'opensrp_url', '"http://192.168.19.152:8080/opensrp/"'
             buildConfigField "int", "OPENMRS_UNIQUE_ID_INITIAL_BATCH_SIZE", '250'
             buildConfigField "int", "OPENMRS_UNIQUE_ID_BATCH_SIZE", '100'
             buildConfigField "int", "OPENMRS_UNIQUE_ID_SOURCE", '2'
@@ -79,7 +79,7 @@ android {
             buildConfigField "boolean", "TIME_CHECK", "false"
             buildConfigField "int", "DATA_SYNC_DURATION_MINUTES", '2'
             buildConfigField "int", "VACCINE_SYNC_PROCESSING_MINUTES", '2'
-            buildConfigField "int", "IMAGE_UPLOAD_MINUTES", '7'
+            buildConfigField "int", "IMAGE_UPLOAD_MINUTES", '1'
             buildConfigField "int", "PULL_UNIQUE_IDS_MINUTES", '10'
             buildConfigField "int", "VIEW_SYNC_CONFIGURATIONS_MINUTES", '2'
             testCoverageEnabled true
@@ -127,6 +127,8 @@ tasks.withType(Test) {
 }
 
 dependencies {
+    implementation 'com.github.bumptech.glide:glide:3.8.0'
+
 
     implementation('org.smartregister:opensrp-client-growth-monitoring:1.1.1-SNAPSHOT@aar') {
         transitive = true
@@ -142,7 +144,7 @@ dependencies {
         exclude group: 'com.android.support', module: 'appcompat-v7'
     }
 
-    implementation('org.smartregister:opensrp-client-native-form:1.2.5-SNAPSHOT@aar') {
+    implementation('org.smartregister:opensrp-client-native-form:1.2.20-SNAPSHOT@aar') {
         transitive = true
         exclude group: 'com.android.support', module: 'recyclerview-v7'
         exclude group: 'com.android.support', module: 'appcompat-v7'
@@ -193,8 +195,8 @@ dependencies {
         exclude group: 'com.android.support', module: 'cardview-v7'
 
     }
-    implementation 'com.android.support:recyclerview-v7:27.1.1'
-    implementation 'com.android.support:cardview-v7:27.1.1'
+    implementation 'com.android.support:recyclerview-v7:28+'
+    implementation 'com.android.support:cardview-v7:28+'
 
 
     implementation group: 'com.crashlytics.sdk.android', name: 'crashlytics', version: '2.6.8'

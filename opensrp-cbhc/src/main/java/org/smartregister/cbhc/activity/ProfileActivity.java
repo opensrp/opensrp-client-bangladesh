@@ -21,6 +21,7 @@ import android.widget.TextView;
 
 import org.apache.commons.lang3.StringUtils;
 import org.joda.time.DateTime;
+import org.smartregister.CoreLibrary;
 import org.smartregister.cbhc.R;
 import org.smartregister.cbhc.adapter.ViewPagerAdapter;
 import org.smartregister.cbhc.application.AncApplication;
@@ -34,15 +35,22 @@ import org.smartregister.cbhc.presenter.ProfilePresenter;
 import org.smartregister.cbhc.task.FetchProfileDataTask;
 import org.smartregister.cbhc.util.Constants;
 import org.smartregister.cbhc.util.DBConstants;
+import org.smartregister.cbhc.util.ImageLoaderByGlide;
 import org.smartregister.cbhc.util.JsonFormUtils;
 import org.smartregister.cbhc.util.Utils;
 import org.smartregister.cbhc.view.CopyToClipboardDialog;
 import org.smartregister.commonregistry.CommonPersonObject;
 import org.smartregister.commonregistry.CommonPersonObjectClient;
+import org.smartregister.domain.ProfileImage;
 import org.smartregister.repository.DetailsRepository;
+import org.smartregister.repository.ImageRepository;
 import org.smartregister.util.DateUtil;
+import org.smartregister.util.FileUtilities;
+import org.smartregister.util.OpenSRPImageLoader;
 import org.smartregister.util.PermissionUtils;
+import org.smartregister.view.activity.DrishtiApplication;
 
+import java.io.File;
 import java.io.Serializable;
 
 import static org.smartregister.cbhc.fragment.ProfileOverviewFragment.EXTRA_HOUSEHOLD_DETAILS;
@@ -124,6 +132,11 @@ public class ProfileActivity extends BaseProfileActivity implements ProfileContr
                 Log.e(getClass().getName(), e.toString(), e);
             }
         }
+        ImageRepository imageRepo = CoreLibrary.getInstance().context().imageRepository();
+        ProfileImage imageRecord = imageRepo.findByEntityId(householdDetails.entityId());
+        if(imageRecord!=null)
+            ImageLoaderByGlide.setImageAsTarget(imageRecord.getFilepath(),imageView,0);
+       // DrishtiApplication.getCachedImageLoaderInstance().getImageByClientId(householdDetails.entityId(), OpenSRPImageLoader.getStaticImageListener((ImageView)findViewById(R.id.imageview_profile), 0, 0));
         setProfileAge(durationString);
         setProfileID(getValue(householdDetails.getColumnmaps(),"Patient_Identifier",true));
         gestationAgeView.setVisibility(View.GONE);

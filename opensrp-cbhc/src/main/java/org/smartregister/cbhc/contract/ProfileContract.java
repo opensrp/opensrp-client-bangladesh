@@ -2,6 +2,7 @@ package org.smartregister.cbhc.contract;
 
 import android.content.Intent;
 
+import org.smartregister.cbhc.activity.BaseProfileActivity;
 import org.smartregister.cbhc.activity.ProfileActivity;
 import org.smartregister.repository.AllSharedPreferences;
 

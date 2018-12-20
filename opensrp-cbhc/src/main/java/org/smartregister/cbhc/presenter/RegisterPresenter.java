@@ -5,8 +5,12 @@ import android.preference.PreferenceManager;
 import android.util.Log;
 import android.util.Pair;
 
+import com.google.gson.JsonArray;
+import com.google.gson.JsonObject;
+
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.tuple.Triple;
+import org.json.JSONArray;
 import org.json.JSONObject;
 import org.smartregister.cbhc.R;
 import org.smartregister.cbhc.application.AncApplication;
@@ -104,10 +108,32 @@ public class RegisterPresenter implements RegisterContract.Presenter, RegisterCo
         JSONObject form = FormUtils.getInstance(AncApplication.getInstance().getApplicationContext()).getFormJson(Constants.JSON_FORM.MEMBER_REGISTER);
 
         form = JsonFormUtils.getFormAsJson(form,formName, entityId, currentLocationId,householdID);
+        form.put("relational_id",householdID);
+        putRelationalIdInLookupObjects(form,householdID);
+
         getView().startFormActivity(form);
 
     }
 
+    public void putRelationalIdInLookupObjects(JSONObject form,String relational_id){
+        try {
+            if (form.has("step1")) {
+                JSONObject step1 = form.getJSONObject("step1");
+                if (step1.has("fields")) {
+                    JSONArray fields = step1.getJSONArray("fields");
+                    for (int i = 0; i < fields.length(); i++) {
+                        JSONObject field_object = fields.getJSONObject(i);
+                        if(field_object.has("look_up")){
+                            field_object.put("relational_id",relational_id);
+                        }
+                    }
+                }
+            }
+        }catch(Exception e){
+
+        }
+
+    }
 
 
     @Override

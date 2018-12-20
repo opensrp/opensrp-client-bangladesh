@@ -11,6 +11,7 @@ import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.GradientDrawable;
 import android.support.annotation.DrawableRes;
+import android.support.design.bottomnavigation.LabelVisibilityMode;
 import android.support.design.internal.BottomNavigationItemView;
 import android.support.design.internal.BottomNavigationMenuView;
 import android.support.design.widget.BottomNavigationView;
@@ -40,7 +41,8 @@ public class BottomNavigationHelper {
 			shiftingMode.setAccessible(false);
 			for (int i = 0; i < menuView.getChildCount(); i++) {
 				BottomNavigationItemView item = (BottomNavigationItemView) menuView.getChildAt(i);
-				item.setShiftingMode(false);
+				item.setLabelVisibilityMode(LabelVisibilityMode.LABEL_VISIBILITY_LABELED);
+
 				// set once again checked value, so view will be updated
 				item.setChecked(item.getItemData().isChecked());
 			}

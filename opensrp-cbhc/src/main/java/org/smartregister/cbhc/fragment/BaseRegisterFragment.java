@@ -48,6 +48,7 @@ import org.smartregister.cursoradapter.RecyclerViewPaginatedAdapter;
 import org.smartregister.cursoradapter.SmartRegisterQueryBuilder;
 import org.smartregister.domain.FetchStatus;
 import org.smartregister.provider.SmartRegisterClientsProvider;
+import org.smartregister.service.ImageUploadSyncService;
 import org.smartregister.view.activity.SecuredNativeSmartRegisterActivity;
 import org.smartregister.view.dialog.DialogOption;
 
@@ -243,6 +244,8 @@ public abstract class BaseRegisterFragment extends RecyclerViewFragment implemen
                     //Todo implement sync
                     Intent intent = new Intent(getActivity().getApplicationContext(), SyncIntentService.class);
                     getActivity().getApplicationContext().startService(intent);
+                    Intent intent1= new Intent(getActivity().getApplicationContext(), ImageUploadSyncService.class);
+                    getActivity().getApplicationContext().startService(intent1);
                 }
             });
         }

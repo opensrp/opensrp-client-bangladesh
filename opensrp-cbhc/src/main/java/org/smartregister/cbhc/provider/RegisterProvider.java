@@ -9,11 +9,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import org.apache.commons.lang3.text.WordUtils;
-import org.mozilla.javascript.EcmaError;
 import org.smartregister.cbhc.R;
 import org.smartregister.cbhc.application.AncApplication;
 import org.smartregister.cbhc.fragment.BaseRegisterFragment;
@@ -23,6 +23,8 @@ import org.smartregister.commonregistry.CommonPersonObject;
 import org.smartregister.commonregistry.CommonPersonObjectClient;
 import org.smartregister.commonregistry.CommonRepository;
 import org.smartregister.cursoradapter.RecyclerViewProvider;
+import org.smartregister.util.OpenSRPImageLoader;
+import org.smartregister.view.activity.DrishtiApplication;
 import org.smartregister.view.contract.SmartRegisterClient;
 import org.smartregister.view.contract.SmartRegisterClients;
 import org.smartregister.view.dialog.FilterOption;
@@ -31,6 +33,7 @@ import org.smartregister.view.dialog.SortOption;
 import org.smartregister.view.viewholder.OnClickFormLauncher;
 
 import java.text.MessageFormat;
+import java.util.Date;
 import java.util.Set;
 
 import static org.smartregister.util.Utils.getName;
@@ -99,6 +102,8 @@ public class RegisterProvider implements RecyclerViewProvider<RegisterProvider.R
 
         String firstName = org.smartregister.util.Utils.getValue(pc.getColumnmaps(), DBConstants.KEY.FIRST_NAME, true);
         String lastName = org.smartregister.util.Utils.getValue(pc.getColumnmaps(), DBConstants.KEY.LAST_NAME, true);
+        String phoneNumber = org.smartregister.util.Utils.getValue(pc.getColumnmaps(), DBConstants.KEY.PHONE_NUMBER, true);
+        String para = org.smartregister.util.Utils.getValue(pc.getColumnmaps(), "para", true);
         if(lastName.equalsIgnoreCase("null")||lastName==null){
             lastName = "";
         }
@@ -108,12 +113,25 @@ public class RegisterProvider implements RecyclerViewProvider<RegisterProvider.R
 
         String dobString = Utils.getDuration(org.smartregister.util.Utils.getValue(pc.getColumnmaps(), DBConstants.KEY.DOB, false));
         dobString = dobString.contains("y") ? dobString.substring(0, dobString.indexOf("y")) : dobString;
-        fillValue((viewHolder.age), String.format(context.getString(R.string.age_text), dobString));
+//        fillValue((viewHolder.age), String.format(context.getString(R.string.age_text), dobString));
+        fillValue(viewHolder.age,phoneNumber);
         attachPatientOnclickListener(viewHolder.registericon,client);
+        String last_interacted_with = org.smartregister.util.Utils.getValue(pc.getColumnmaps(), DBConstants.KEY.LAST_INTERACTED_WITH, true);
+        try{
+            Date last_interacted_date = new Date(Long.parseLong(last_interacted_with));
 
+            last_interacted_with = last_interacted_date.toString();
+            String d[] = last_interacted_with.split(" ");
+            last_interacted_with = d[1] + " "+d[2]+" "+d[5];
+
+        }catch(Exception e){
+
+        }
+
+        fillValue(viewHolder.last_interacted_with,last_interacted_with);
         View patient = viewHolder.patientColumn;
         attachPatientOnclickListener(patient, client);
-
+        fillValue(viewHolder.ancId,para);
 
         View dueButton = viewHolder.dueButton;
         attachDosageOnclickListener(dueButton, client);
@@ -121,13 +139,22 @@ public class RegisterProvider implements RecyclerViewProvider<RegisterProvider.R
 
         View riskLayout = viewHolder.risk;
         attachRiskLayoutOnclickListener(riskLayout, client);
+        viewHolder.registericon.setTag(org.smartregister.R.id.entity_id, pc.entityId());
+        //viewHolder.registericon.setImageDrawable(context.getResources().getDrawable(R.drawable.household_cbhc_placeholder));
+        if (pc.entityId() != null) { //image already in local storage most likely ):
+            //set profile image by passing the client id.If the image doesn't exist in the image repository then download and save locally
+            DrishtiApplication.getCachedImageLoaderInstance().getImageByClientId(pc.entityId(), OpenSRPImageLoader.getStaticImageListener(viewHolder.registericon, R.drawable.household_cbhc_placeholder, R.drawable.household_cbhc_placeholder));
+//            DrishtiApplication.getCachedImageLoaderInstance().getImageByClientId((String)viewHolder.registericon.getTag(), OpenSRPImageLoader.getStaticImageListener(viewHolder.registericon, 0, 0));
+        }else{
+            viewHolder.registericon.setImageResource(R.drawable.household_cbhc_placeholder);
+        }
 
     }
 
 
     private void populateIdentifierColumn(CommonPersonObjectClient pc, RegisterViewHolder viewHolder) {
         String ancId = org.smartregister.util.Utils.getValue(pc.getColumnmaps(), DBConstants.KEY.ANC_ID, false);
-        fillValue(viewHolder.ancId, String.format(context.getString(R.string.anc_id_text), ancId));
+        //fillValue(viewHolder.ancId, String.format(context.getString(R.string.anc_id_text), ancId));
     }
 
 
@@ -401,9 +428,9 @@ public class RegisterProvider implements RecyclerViewProvider<RegisterProvider.R
         public ImageView femalepresent;
         public ImageView malepresent;
         public ImageView pregnantpresent;
-
+        public TextView last_interacted_with;
         public TextView risk;
-        public Button dueButton;
+        public ImageView dueButton;
         public Button sync;
         public View patientColumn;
 
@@ -427,6 +454,7 @@ public class RegisterProvider implements RecyclerViewProvider<RegisterProvider.R
             pregnantpresent = itemView.findViewById(R.id.pregnant_woman_present);
 
             patientColumn = itemView.findViewById(R.id.patient_column);
+            last_interacted_with = itemView.findViewById(R.id.last_interacted_with);
         }
     }
 

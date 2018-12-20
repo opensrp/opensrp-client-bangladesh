@@ -46,7 +46,7 @@
 				android:paddingLeft="0dp"
 				android:text="Patient Name"
 				android:textColor="@color/text_black"
-				android:textSize="14sp" />
+				android:textSize="12sp" />
 
 			<LinearLayout
 				android:id="@+id/age_ga_layout"
@@ -60,9 +60,9 @@
 					android:layout_width="wrap_content"
 					android:layout_height="wrap_content"
 					android:paddingLeft="0dp"
-					android:text="Age: 33"
+					android:text=""
 					android:textColor="#9d9d9d"
-					android:textSize="12sp" />
+					android:textSize="10sp" />
 
 				<org.smartregister.view.customcontrols.CustomFontTextView
 					android:id="@+id/ga"
@@ -83,9 +83,9 @@
 				android:layout_width="match_parent"
 				android:layout_height="wrap_content"
 				android:paddingLeft="0dp"
-				android:text="ID: 3034503"
+				android:text=""
 				android:textColor="#9d9d9d"
-				android:textSize="12sp" />
+				android:textSize="10sp" />
 
 			<org.smartregister.view.customcontrols.CustomFontTextView
 				android:id="@+id/member_count"
@@ -93,9 +93,18 @@
 				android:layout_width="match_parent"
 				android:layout_height="wrap_content"
 				android:paddingLeft="0dp"
-				android:text="ID: 3034503"
+				android:text=""
 				android:textColor="#9d9d9d"
-				android:textSize="12sp" />
+				android:textSize="10sp" />
+			<org.smartregister.view.customcontrols.CustomFontTextView
+				android:id="@+id/last_interacted_with"
+				style="@style/CustomFontTextViewStyle.ClientList.Light"
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:paddingLeft="0dp"
+				android:text=""
+				android:textColor="#9d9d9d"
+				android:textSize="10sp" />
 
 		</LinearLayout>
 
@@ -217,25 +226,22 @@
 		android:layout_marginRight="10dp"
 		android:gravity="center">
 
-		<Button
+		<ImageView
 			android:id="@+id/due_button"
-			android:layout_width="100dp"
-			android:layout_height="@dimen/register_list_item_height_cbhc_button"
+			android:layout_width="48dp"
+			android:layout_height="48dp"
 			android:layout_gravity="center"
 			android:layout_margin="5dp"
 			android:adjustViewBounds="true"
-			android:background="@drawable/due_contact_blue"
+			android:tint="@color/bottom_bar_text_focused_background"
+			android:src="@android:drawable/ic_menu_add"
+			android:background="@android:color/transparent"
 			android:elevation="3dp"
 			android:gravity="center"
 			android:hapticFeedbackEnabled="true"
-			android:paddingLeft="20dp"
-			android:paddingRight="20dp"
+			android:paddingLeft="5dp"
+			android:paddingRight="5dp"
 			android:stateListAnimator="@drawable/button"
-			android:text="@string/add_member"
-			android:textAllCaps="false"
-			android:textAppearance="?android:textAppearanceSmall"
-			android:textColor="#ffffff"
-			android:textSize="14sp"
 			android:typeface="normal" />
 
 		<Button

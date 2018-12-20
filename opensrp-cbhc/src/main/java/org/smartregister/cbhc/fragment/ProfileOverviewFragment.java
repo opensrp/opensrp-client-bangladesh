@@ -2,6 +2,7 @@ package org.smartregister.cbhc.fragment;
 
 import android.content.Context;
 import android.database.Cursor;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v4.widget.CursorAdapter;
 import android.util.Log;
@@ -17,6 +18,7 @@ import android.widget.TextView;
 import org.apache.commons.lang3.StringUtils;
 import org.joda.time.DateTime;
 import org.opensrp.api.constants.Gender;
+import org.smartregister.CoreLibrary;
 import org.smartregister.cbhc.R;
 import org.smartregister.cbhc.activity.ProfileActivity;
 import org.smartregister.cbhc.application.AncApplication;
@@ -30,7 +32,9 @@ import org.smartregister.commonregistry.CommonPersonObject;
 import org.smartregister.commonregistry.CommonPersonObjectClient;
 import org.smartregister.commonregistry.CommonRepository;
 import org.smartregister.cursoradapter.SmartRegisterQueryBuilder;
+import org.smartregister.domain.ProfileImage;
 import org.smartregister.repository.DetailsRepository;
+import org.smartregister.repository.ImageRepository;
 import org.smartregister.util.DateUtil;
 import org.smartregister.util.OpenSRPImageLoader;
 import org.smartregister.view.activity.DrishtiApplication;
@@ -55,7 +59,7 @@ public class ProfileOverviewFragment extends BaseProfileFragment {
     private ListView householdList;
     public static final String EXTRA_HOUSEHOLD_DETAILS = "household_details";
     public View fragmentView;
-
+    HashMap<String,Drawable>profile_photo = new HashMap<String,Drawable>();
     public View getFragmentView() {
         return fragmentView;
     }
@@ -136,7 +140,7 @@ public class ProfileOverviewFragment extends BaseProfileFragment {
                 childtableName + ".dob"
         });
 
-        Cursor cursor = db.rawQuery(currentquery.concat(queryBUilder.mainCondition("relational_id = ?")),new String[]{mother_id});
+        cursor = db.rawQuery(currentquery.concat(queryBUilder.mainCondition("relational_id = ?")),new String[]{mother_id});
 
 
         householdList = (ListView)view.findViewById(R.id.household_list);
@@ -145,7 +149,7 @@ public class ProfileOverviewFragment extends BaseProfileFragment {
 
         householdList.setAdapter(cursorAdpater);
     }
-
+    Cursor cursor;
     class HouseholdCursorAdpater extends CursorAdapter {
         private Context context;
         private LayoutInflater inflater = null;
@@ -172,6 +176,14 @@ public class ProfileOverviewFragment extends BaseProfileFragment {
                 lastName = "";
             }
             String patientName = getName(firstName, lastName);
+
+            if(profile_photo.get(pClient.entityId())==null){
+                ImageRepository imageRepo = CoreLibrary.getInstance().context().imageRepository();
+                ProfileImage imageRecord = imageRepo.findByEntityId(pClient.entityId());
+                if(imageRecord!=null){
+                    profile_photo.put(pClient.entityId(),Drawable.createFromPath(imageRecord.getFilepath()));
+                }
+            }
 
             ;
 //            int nameColumnIndex = cursor.getColumnIndex("first_name");
@@ -226,21 +238,34 @@ public class ProfileOverviewFragment extends BaseProfileFragment {
 //                DrishtiApplication.getCachedImageLoaderInstance().getImageByClientId(pClient.entityId(), OpenSRPImageLoader.getStaticImageListener((ImageView) profileImageIV, R.drawable.woman_placeholder, R.drawable.woman_placeholder));
 //
 //            }
+            Drawable d = null;
             if(age<5){
                 if(gender.equalsIgnoreCase("m")){
                     if (pClient.entityId() != null) {//image already in local storage most likey ):
                         //set profile image by passing the client id.If the image doesn't exist in the image org.smartregister.cbhc.repository then download and save locally
                         profileImageIV.setTag(org.smartregister.R.id.entity_id, pClient.entityId());
-//                        DrishtiApplication.getCachedImageLoaderInstance().getImageByClientId(pClient.entityId(), OpenSRPImageLoader.getStaticImageListener((ImageView) profileImageIV, R.drawable.child_boy_infant, R.drawable.child_boy_infant));
-                        profileImageIV.setImageDrawable(getResources().getDrawable(R.drawable.child_boy_infant));
+                        if(profile_photo.get(pClient.entityId())==null){
+                            d = getResources().getDrawable(R.drawable.child_boy_infant);
+                            profile_photo.put(pClient.entityId(),d);
+                        }
+
+
+//                        profileImageIV.setImageDrawable(getResources().getDrawable(R.drawable.child_boy_infant));
+//                        DrishtiApplication.getCachedImageLoaderInstance().getImageByClientId(pClient.entityId(), OpenSRPImageLoader.getStaticImageListener(profileImageIV, R.drawable.child_boy_infant, R.drawable.child_boy_infant));
                         clientype = "malechild";
                     }
                 }else if(gender.equalsIgnoreCase("f")){
                     if (pClient.entityId() != null) {//image already in local storage most likey ):
                         //set profile image by passing the client id.If the image doesn't exist in the image org.smartregister.cbhc.repository then download and save locally
                         profileImageIV.setTag(org.smartregister.R.id.entity_id, pClient.entityId());
-//                        DrishtiApplication.getCachedImageLoaderInstance().getImageByClientId(pClient.entityId(), OpenSRPImageLoader.getStaticImageListener((ImageView) profileImageIV, R.drawable.child_girl_infant, R.drawable.child_girl_infant));
-                        profileImageIV.setImageDrawable(getResources().getDrawable(R.drawable.child_girl_infant));
+                        if(profile_photo.get(pClient.entityId())==null){
+                            d = getResources().getDrawable(R.drawable.child_girl_infant);
+                            profile_photo.put(pClient.entityId(),d);
+                        }
+
+
+//                        profileImageIV.setImageDrawable(getResources().getDrawable(R.drawable.child_girl_infant));
+//                        DrishtiApplication.getCachedImageLoaderInstance().getImageByClientId(pClient.entityId(), OpenSRPImageLoader.getStaticImageListener(profileImageIV, R.drawable.child_girl_infant, R.drawable.child_girl_infant));
                         clientype = "femalechild";
                     }
                 }
@@ -249,22 +274,35 @@ public class ProfileOverviewFragment extends BaseProfileFragment {
                     if (pClient.entityId() != null) {//image already in local storage most likey ):
                         //set profile image by passing the client id.If the image doesn't exist in the image org.smartregister.cbhc.repository then download and save locally
                         profileImageIV.setTag(org.smartregister.R.id.entity_id, pClient.entityId());
-//                        DrishtiApplication.getCachedImageLoaderInstance().getImageByClientId(pClient.entityId(), OpenSRPImageLoader.getStaticImageListener((ImageView) profileImageIV, R.drawable.man_cbhc_member_logo, R.drawable.man_cbhc_member_logo));
-                        profileImageIV.setImageDrawable(getResources().getDrawable(R.drawable.male_cbhc_placeholder));
+                        if(profile_photo.get(pClient.entityId())==null){
+                            d = getResources().getDrawable(R.drawable.male_cbhc_placeholder);
+                            profile_photo.put(pClient.entityId(),d);
+                        }
 
+
+//                        profileImageIV.setImageDrawable(getResources().getDrawable(R.drawable.male_cbhc_placeholder));
+//                        DrishtiApplication.getCachedImageLoaderInstance().getImageByClientId(pClient.entityId(), OpenSRPImageLoader.getStaticImageListener(profileImageIV, R.drawable.male_cbhc_placeholder, R.drawable.male_cbhc_placeholder));
                         clientype = "member";
                     }
                 }else if(gender.equalsIgnoreCase("f")){
                     if (pClient.entityId() != null) {//image already in local storage most likey ):
                         //set profile image by passing the client id.If the image doesn't exist in the image org.smartregister.cbhc.repository then download and save locally
                         profileImageIV.setTag(org.smartregister.R.id.entity_id, pClient.entityId());
-//                        DrishtiApplication.getCachedImageLoaderInstance().getImageByClientId(pClient.entityId(), OpenSRPImageLoader.getStaticImageListener((ImageView) profileImageIV, R.drawable.woman_cbhc_member_logo, R.drawable.woman_cbhc_member_logo));
-                        profileImageIV.setImageDrawable(getResources().getDrawable(R.drawable.women_cbhc_placeholder));
+                        if(profile_photo.get(pClient.entityId())==null){
+                            d = getResources().getDrawable(R.drawable.women_cbhc_placeholder);
+                            profile_photo.put(pClient.entityId(),d);
+                        }
+
+
+//                        profileImageIV.setImageDrawable(getResources().getDrawable(R.drawable.women_cbhc_placeholder));
+//                        DrishtiApplication.getCachedImageLoaderInstance().getImageByClientId(pClient.entityId(), OpenSRPImageLoader.getStaticImageListener(profileImageIV, R.drawable.women_cbhc_placeholder, R.drawable.women_cbhc_placeholder));
                         clientype = "woman";
                     }
                 }
             }
-
+            if(profile_photo.get(pClient.entityId())!=null){
+                profileImageIV.setImageDrawable(profile_photo.get(pClient.entityId()));
+            }
             profileImageIV.setTag(R.id.clientformemberprofile,pClient);
             profileImageIV.setTag(R.id.typeofclientformemberprofile,clientype);
             profileImageIV.setOnClickListener((ProfileActivity)getActivity());
@@ -425,5 +463,14 @@ public class ProfileOverviewFragment extends BaseProfileFragment {
         }
 
         return age;
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        if(cursor!=null&&!cursor.isClosed()){
+            cursor.close();
+        }
+        profile_photo.clear();
     }
 }
