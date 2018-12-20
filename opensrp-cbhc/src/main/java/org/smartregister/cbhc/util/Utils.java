@@ -200,16 +200,21 @@ public class Utils {
     }
 
     public static int getAgeFromDate(String dateOfBirth) {
-        DateTime date = DateTime.parse(dateOfBirth);
+        try {
+            DateTime date = DateTime.parse(dateOfBirth);
 
-        Years age;
-        if(date==null){
-            age = Years.yearsBetween(LocalDate.now(), LocalDate.now());
-        }else{
-            age = Years.yearsBetween(date.toLocalDate(), LocalDate.now());
+            Years age;
+            if (date == null) {
+                age = Years.yearsBetween(LocalDate.now(), LocalDate.now());
+            } else {
+                age = Years.yearsBetween(date.toLocalDate(), LocalDate.now());
+            }
+
+            return age.getYears();
+        }catch(Exception e){
+
         }
-
-        return age.getYears();
+        return 0;
     }
 
     public static String getTodaysDate() {

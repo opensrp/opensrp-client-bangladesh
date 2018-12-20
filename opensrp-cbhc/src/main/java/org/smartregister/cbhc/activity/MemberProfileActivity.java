@@ -21,6 +21,7 @@ import android.widget.TextView;
 
 import org.apache.commons.lang3.StringUtils;
 import org.joda.time.DateTime;
+import org.smartregister.CoreLibrary;
 import org.smartregister.cbhc.R;
 import org.smartregister.cbhc.adapter.ViewPagerAdapter;
 import org.smartregister.cbhc.application.AncApplication;
@@ -36,19 +37,24 @@ import org.smartregister.cbhc.helper.ImageRenderHelper;
 import org.smartregister.cbhc.presenter.ProfilePresenter;
 import org.smartregister.cbhc.util.Constants;
 import org.smartregister.cbhc.util.DBConstants;
+import org.smartregister.cbhc.util.ImageLoaderByGlide;
 import org.smartregister.cbhc.util.JsonFormUtils;
 import org.smartregister.cbhc.util.Utils;
 import org.smartregister.cbhc.view.CopyToClipboardDialog;
 import org.smartregister.commonregistry.CommonPersonObject;
 import org.smartregister.commonregistry.CommonPersonObjectClient;
+import org.smartregister.domain.ProfileImage;
 import org.smartregister.growthmonitoring.domain.WeightWrapper;
 import org.smartregister.growthmonitoring.listener.WeightActionListener;
 import org.smartregister.immunization.domain.ServiceWrapper;
 import org.smartregister.immunization.domain.VaccineWrapper;
 import org.smartregister.immunization.listener.ServiceActionListener;
 import org.smartregister.immunization.listener.VaccinationActionListener;
+import org.smartregister.repository.ImageRepository;
 import org.smartregister.util.DateUtil;
+import org.smartregister.util.OpenSRPImageLoader;
 import org.smartregister.util.PermissionUtils;
+import org.smartregister.view.activity.DrishtiApplication;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -101,6 +107,8 @@ public class MemberProfileActivity extends BaseProfileActivity implements Profil
     private void setUpViews() {
         ImageView circleprofile = (ImageView)findViewById(R.id.imageview_profile);
 
+
+
         if(typeofMember.equalsIgnoreCase("malechild")){
             circleprofile.setImageDrawable(getResources().getDrawable(R.drawable.child_boy_infant));
         }else if(typeofMember.equalsIgnoreCase("femalechild")){
@@ -110,6 +118,11 @@ public class MemberProfileActivity extends BaseProfileActivity implements Profil
         }else if(typeofMember.equalsIgnoreCase("member")){
             circleprofile.setImageDrawable(getResources().getDrawable(R.drawable.male_register_placeholder_profile));
         }
+//        ImageRepository imageRepo = CoreLibrary.getInstance().context().imageRepository();
+//        ProfileImage imageRecord = imageRepo.findByEntityId(householdDetails.entityId());
+//
+//        if(imageRecord!=null)
+//            ImageLoaderByGlide.setImageAsTarget(imageRecord.getFilepath(),circleprofile,0);
 
         TabLayout tabLayout = findViewById(R.id.tabs);
         ViewPager viewPager = findViewById(R.id.viewpager);
@@ -121,7 +134,7 @@ public class MemberProfileActivity extends BaseProfileActivity implements Profil
         nameView = findViewById(R.id.textview_name);
         imageView = findViewById(R.id.imageview_profile);
 
-
+//setProfileImage(householdDetails.entityId());
         String firstName = org.smartregister.util.Utils.getValue(householdDetails.getColumnmaps(), DBConstants.KEY.FIRST_NAME, true);
         String lastName = org.smartregister.util.Utils.getValue(householdDetails.getColumnmaps(), DBConstants.KEY.LAST_NAME, true);
         if(lastName.equalsIgnoreCase("null")||lastName==null){
@@ -145,6 +158,10 @@ public class MemberProfileActivity extends BaseProfileActivity implements Profil
                 Log.e(getClass().getName(), e.toString(), e);
             }
         }
+        ImageRepository imageRepo = CoreLibrary.getInstance().context().imageRepository();
+        ProfileImage imageRecord = imageRepo.findByEntityId(householdDetails.entityId());
+        if(imageRecord!=null)
+            ImageLoaderByGlide.setImageAsTarget(imageRecord.getFilepath(),imageView,0);
         setProfileAge(durationString);
         setProfileID(getValue(householdDetails.getColumnmaps(),"Patient_Identifier",true));
         gestationAgeView.setVisibility(View.GONE);
@@ -293,6 +310,7 @@ public class MemberProfileActivity extends BaseProfileActivity implements Profil
         super.onResume();
         String baseEntityId = getIntent().getStringExtra(Constants.INTENT_KEY.BASE_ENTITY_ID);
         mProfilePresenter.refreshProfileView(baseEntityId);
+//        refreshProfileViews();
     }
 
     @Override

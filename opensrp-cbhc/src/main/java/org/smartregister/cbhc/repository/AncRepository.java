@@ -126,6 +126,7 @@ public class AncRepository extends Repository {
 
     @Override
     public synchronized SQLiteDatabase getWritableDatabase(String password) {
+//        password = "";
         try{
             if (writableDatabase == null || !writableDatabase.isOpen()) {
                 if (writableDatabase != null) {

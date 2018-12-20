@@ -90,6 +90,7 @@ public class ProfileContactsFragment extends BaseProfileFragment {
         try {
             JSONObject form = FormUtils.getInstance(AncApplication.getInstance().getApplicationContext()).getFormJson(Constants.JSON_FORM.Household_REGISTER);
             JSONArray field = fields(form);
+            JSONObject i9 = field.getJSONObject(9);
             for(int i=0;i<field.length();i++){
                 processPopulatableFieldsForHouseholds(householdDetails.getColumnmaps(),field.getJSONObject(i));
             }
@@ -220,6 +221,9 @@ public class ProfileContactsFragment extends BaseProfileFragment {
         if (jsonObject.getString(JsonFormUtils.KEY).equalsIgnoreCase(DBConstants.KEY.DOB) && !Boolean.valueOf(womanClient.get(DBConstants.KEY.DOB_UNKNOWN))) {
 
             String dobString = womanClient.get(DBConstants.KEY.DOB);
+            if(dobString==null||dobString.isEmpty()){
+                dobString = "1919-01-01T05:53:20.000+05:53:20";
+            }
             Date dob = Utils.dobStringToDate(dobString);
             if (dob != null) {
                 jsonObject.put(JsonFormUtils.VALUE, DATE_FORMAT.format(dob));

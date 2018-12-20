@@ -4,6 +4,7 @@ import android.content.Context;
 import android.util.Log;
 
 import org.joda.time.DateTime;
+import org.smartregister.cbhc.BuildConfig;
 import org.smartregister.cbhc.R;
 import org.smartregister.cbhc.application.AncApplication;
 import org.smartregister.cbhc.contract.LoginContract;
@@ -38,6 +39,8 @@ public class LoginInteractor implements LoginContract.Interactor {
 
     public LoginInteractor(LoginContract.Presenter loginPresenter) {
         this.mLoginPresenter = loginPresenter;
+
+
     }
 
     @Override
@@ -107,7 +110,9 @@ public class LoginInteractor implements LoginContract.Interactor {
                                 if (!Constants.TIME_CHECK || timeStatus.equals(TimeStatus.OK)) {
                                     remoteLoginWith(userName, password,
                                             loginResponse.payload());
+
                                     AncApplication.getInstance().startPullUniqueIdsService();
+
                                 } else {
                                     if (timeStatus.equals(TimeStatus.TIMEZONE_MISMATCH)) {
                                         TimeZone serverTimeZone = mLoginPresenter.getOpenSRPContext().userService()

@@ -42,6 +42,7 @@
 				android:textColor="@color/accent"
 				android:textAppearance="@style/TextAppearance.AppCompat.Medium"
 				android:background="@null"
+				android:visibility="gone"
 				android:id="@+id/go_to_advanced_search"
 				android:layout_alignParentEnd="true"
 				android:layout_alignParentBottom="true"/>

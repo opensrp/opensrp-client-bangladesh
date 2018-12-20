@@ -3,6 +3,8 @@ package org.smartregister.cbhc.application;
 import android.content.BroadcastReceiver;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
 import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
 
@@ -46,6 +48,7 @@ import org.smartregister.immunization.domain.VaccineSchedule;
 import org.smartregister.immunization.domain.jsonmapping.Vaccine;
 import org.smartregister.immunization.domain.jsonmapping.VaccineGroup;
 import org.smartregister.immunization.util.VaccinatorUtils;
+import org.smartregister.repository.AllSharedPreferences;
 import org.smartregister.repository.EventClientRepository;
 import org.smartregister.repository.Repository;
 import org.smartregister.sync.ClientProcessorForJava;
@@ -53,6 +56,8 @@ import org.smartregister.sync.DrishtiSyncScheduler;
 import org.smartregister.view.activity.DrishtiApplication;
 import org.smartregister.view.receiver.TimeChangedBroadcastReceiver;
 
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
@@ -95,10 +100,7 @@ public class AncApplication extends DrishtiApplication implements TimeChangedBro
 
         //Initialize Modules
         CoreLibrary.init(context);
-        ImmunizationLibrary.init(context, getRepository(), null, BuildConfig.VERSION_CODE, BuildConfig.DATABASE_VERSION);
-        ConfigurableViewsLibrary.init(context, getRepository());
-
-        GrowthMonitoringLibrary.init(context, getRepository(), BuildConfig.VERSION_CODE, BuildConfig.DATABASE_VERSION);
+        initLibraries();
 //
 
 
@@ -106,7 +108,7 @@ public class AncApplication extends DrishtiApplication implements TimeChangedBro
         TimeChangedBroadcastReceiver.init(this);
         TimeChangedBroadcastReceiver.getInstance().addOnTimeChangedListener(this);
 
-        startPullConfigurableViewsIntentService(getApplicationContext());
+
         try {
             Utils.saveLanguage("en");
         } catch (Exception e) {
@@ -117,15 +119,47 @@ public class AncApplication extends DrishtiApplication implements TimeChangedBro
         this.jsonSpecHelper = new JsonSpecHelper(this);
 
         setUpEventHandling();
-
+        initOfflineSchedules();
         scheduleJobs();
 
-
-        initOfflineSchedules();
+    }
+    public void initLibraries() {
+        ImmunizationLibrary.init(context, getRepository(), null, BuildConfig.VERSION_CODE, BuildConfig.DATABASE_VERSION);
+        ConfigurableViewsLibrary.init(context, getRepository());
+        GrowthMonitoringLibrary.init(context, getRepository(), BuildConfig.VERSION_CODE, BuildConfig.DATABASE_VERSION);
         startZscoreRefreshService();
+        startPullConfigurableViewsIntentService(getApplicationContext());
+    }
+    private AllSharedPreferences getSharedPreferences(){
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
+        AllSharedPreferences allSharedPreferences = new AllSharedPreferences(preferences);
+        return allSharedPreferences;
     }
 
-    private void initOfflineSchedules() {
+    private void updateUrl(String baseUrl) {
+        try {
+            SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
+            AllSharedPreferences allSharedPreferences = new AllSharedPreferences(preferences);
+
+            URL url = new URL(baseUrl);
+
+            String base = url.getProtocol() + "://" + url.getHost();
+            int port = url.getPort();
+
+            logInfo("Base URL: " + base);
+            logInfo("Port: " + port);
+
+            allSharedPreferences.saveHost(base);
+            allSharedPreferences.savePort(port);
+
+            logInfo("Saved URL: " + allSharedPreferences.fetchHost(""));
+            logInfo("Port: " + allSharedPreferences.fetchPort(0));
+
+        } catch (MalformedURLException e) {
+            logError("Malformed Url: " + baseUrl);
+        }
+    }
+    public void initOfflineSchedules() {
         try {
             List<VaccineGroup> childVaccines = VaccinatorUtils.getSupportedVaccines(this);
             List<Vaccine> specialVaccines = VaccinatorUtils.getSpecialVaccines(this);
@@ -145,6 +179,7 @@ public class AncApplication extends DrishtiApplication implements TimeChangedBro
             if (repository == null) {
                 repository = new AncRepository(getInstance().getApplicationContext(), context);
                 getConfigurableViewsRepository();
+
             }
         } catch (UnsatisfiedLinkError e) {
             logError("Error on getRepository: " + e);
@@ -158,7 +193,9 @@ public class AncApplication extends DrishtiApplication implements TimeChangedBro
             String username = getContext().userService().getAllSharedPreferences().fetchRegisteredANM();
             password = getContext().userService().getGroupId(username);
         }
-        return password;
+
+        return "";
+
     }
 
     @Override
@@ -218,12 +255,14 @@ public class AncApplication extends DrishtiApplication implements TimeChangedBro
     }
 
     private static String[] getFtsSearchFields() {
-        return new String[]{DBConstants.KEY.BASE_ENTITY_ID, DBConstants.KEY.FIRST_NAME, DBConstants.KEY.LAST_NAME, DBConstants.KEY.ANC_ID, DBConstants.KEY.DATE_REMOVED, DBConstants.KEY.PHONE_NUMBER};
+//        return new String[]{DBConstants.KEY.BASE_ENTITY_ID, DBConstants.KEY.FIRST_NAME, DBConstants.KEY.LAST_NAME, DBConstants.KEY.ANC_ID, DBConstants.KEY.DATE_REMOVED, DBConstants.KEY.PHONE_NUMBER};
+        return new String[]{DBConstants.KEY.FIRST_NAME, DBConstants.KEY.LAST_NAME, DBConstants.KEY.PHONE_NUMBER, DBConstants.KEY.DATE_REMOVED, "person_nid","person_brid","person_epi","person_address"};
 
     }
 
     private static String[] getFtsSortFields() {
         return new String[]{DBConstants.KEY.BASE_ENTITY_ID, DBConstants.KEY.FIRST_NAME, DBConstants.KEY.LAST_NAME, DBConstants.KEY.LAST_INTERACTED_WITH, DBConstants.KEY.DATE_REMOVED};
+//        return new String[]{DBConstants.KEY.FIRST_NAME, DBConstants.KEY.LAST_NAME, DBConstants.KEY.PHONE_NUMBER,"person_nid","person_brid","person_epi","person_address",DBConstants.KEY.LAST_INTERACTED_WITH};
     }
 
     public ConfigurableViewsRepository getConfigurableViewsRepository() {
@@ -342,7 +381,7 @@ public class AncApplication extends DrishtiApplication implements TimeChangedBro
 //        logoutCurrentUser();
     }
 
-    private void scheduleJobs() {
+    public void scheduleJobs() {
         //init Job Manager
 
         JobManager.create(this).addJobCreator(new AncJobCreator());
@@ -353,6 +392,7 @@ public class AncApplication extends DrishtiApplication implements TimeChangedBro
         ImageUploadServiceJob.scheduleJob(SyncServiceJob.TAG, TimeUnit.MINUTES.toMillis(BuildConfig.IMAGE_UPLOAD_MINUTES), getFlexValue(BuildConfig.IMAGE_UPLOAD_MINUTES));
         ViewConfigurationsServiceJob.scheduleJob(SyncServiceJob.TAG, TimeUnit.MINUTES.toMillis(BuildConfig.VIEW_SYNC_CONFIGURATIONS_MINUTES), getFlexValue(BuildConfig.VIEW_SYNC_CONFIGURATIONS_MINUTES));
 //        ZJob.scheduleJob(SyncServiceJob.TAG, TimeUnit.MINUTES.toMillis(BuildConfig.VIEW_SYNC_CONFIGURATIONS_MINUTES), getFlexValue(BuildConfig.VIEW_SYNC_CONFIGURATIONS_MINUTES));
+
     }
 
     private long getFlexValue(int value) {
