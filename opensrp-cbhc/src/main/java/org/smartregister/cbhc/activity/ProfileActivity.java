@@ -192,6 +192,7 @@ public class ProfileActivity extends BaseProfileActivity implements ProfileContr
                 break;
             case R.id.edit_member:
                 CommonPersonObjectClient pclient  = (CommonPersonObjectClient) view.getTag();
+                pclient.getColumnmaps().put("relational_id",householdDetails.getCaseId());
                 String formMetadataformembers = JsonFormUtils.getMemberJsonEditFormString(this, pclient.getColumnmaps());
                 try {
                     JsonFormUtils.startFormForEdit(this, JsonFormUtils.REQUEST_CODE_GET_JSON, formMetadataformembers);
@@ -201,6 +202,7 @@ public class ProfileActivity extends BaseProfileActivity implements ProfileContr
                 break;
             case R.id.profile_image_iv:
                 CommonPersonObjectClient memberclient  = (CommonPersonObjectClient) view.getTag(R.id.clientformemberprofile);
+                memberclient.getColumnmaps().put("relational_id",householdDetails.getCaseId());
                 String clienttype = (String)view.getTag(R.id.typeofclientformemberprofile);
                 Intent intent = new Intent(this, MemberProfileActivity.class);
                 intent.putExtra(Constants.INTENT_KEY.BASE_ENTITY_ID, memberclient.getCaseId());
