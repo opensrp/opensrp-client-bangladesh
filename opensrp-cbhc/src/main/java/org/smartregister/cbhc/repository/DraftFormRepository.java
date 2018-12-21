@@ -82,7 +82,7 @@ public class DraftFormRepository extends BaseRepository {
         List<draft_form_object> draftFormObjects = new ArrayList<draft_form_object>();
         Cursor cursor = null;
         try {
-            cursor = getReadableDatabase().query(DraftForm_TABLE_NAME, DraftForm_TABLE_COLUMNS, draft_STATUS + " = ? ", new String[]{TYPE_draft_open}, null, null, null, null);
+            cursor = getReadableDatabase().query(DraftForm_TABLE_NAME, DraftForm_TABLE_COLUMNS, household_BASE_ENTITY_ID +" = ?  AND "+ draft_STATUS + " = ? ", new String[]{"",TYPE_draft_open}, null, null, null, null);
             draftFormObjects = readAllDraftForms(cursor);
         } catch (Exception e) {
             Log.e(TAG, Log.getStackTraceString(e));
@@ -101,7 +101,7 @@ public class DraftFormRepository extends BaseRepository {
         return readAllDraftForms(cursor);
     }
 
-    public draft_form_object find(Long caseId) {
+    public draft_form_object find(String caseId) {
         draft_form_object draftFormObject = null;
         Cursor cursor = null;
         try {
@@ -120,9 +120,28 @@ public class DraftFormRepository extends BaseRepository {
         return draftFormObject;
     }
 
-    public void deleteDraftForms(Long caseId) {
+    public draft_form_object findById(String caseId) {
+        draft_form_object draftFormObject = null;
+        Cursor cursor = null;
         try {
-            draft_form_object draftFormObject = find(caseId);
+            cursor = getReadableDatabase().query(DraftForm_TABLE_NAME, DraftForm_TABLE_COLUMNS, ID_COLUMN + " = ?", new String[]{caseId.toString()}, null, null, null, null);
+            List<draft_form_object> draft_form_objects = readAllDraftForms(cursor);
+            if (!draft_form_objects.isEmpty()) {
+                draftFormObject = draft_form_objects.get(0);
+            }
+        } catch (Exception e) {
+            Log.e(TAG, e.getMessage(), e);
+        } finally {
+            if (cursor != null) {
+                cursor.close();
+            }
+        }
+        return draftFormObject;
+    }
+
+    public void deleteDraftForms(String caseId) {
+        try {
+            draft_form_object draftFormObject = findById(caseId);
             if (draftFormObject != null) {
                 getWritableDatabase().delete(DraftForm_TABLE_NAME, ID_COLUMN + "= ?", new String[]{caseId.toString()});
             }
@@ -131,7 +150,7 @@ public class DraftFormRepository extends BaseRepository {
         }
     }
 
-    public void close(Long caseId) {
+    public void close(String caseId) {
         try {
             ContentValues values = new ContentValues();
             values.put(draft_STATUS, TYPE_draft_closed);
