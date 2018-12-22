@@ -282,6 +282,8 @@ public class JsonFormUtils extends org.smartregister.util.JsonFormUtils {
 
             }
 
+            getFieldJSONObject(fields,"Patient_Identifier").remove("hidden");
+
 
             FormTag formTag = new FormTag();
             formTag.providerId = allSharedPreferences.fetchRegisteredANM();

@@ -230,10 +230,9 @@
         "openmrs_entity": "person_identifier",
         "openmrs_entity_id": "Patient_Identifier",
         "type": "edit_text",
-        "hint": "নিবন্ধন নম্বর *",
+        "hint": "সিস্টেম নম্বর *",
         "read_only": "true",
         "value": "0",
-        "hidden":"true",
         "v_numeric": {
           "value": "true",
           "err": "Please enter a valid ID"
@@ -250,7 +249,7 @@
         "openmrs_entity_id": "first_name",
         "openmrs_data_type": "text",
         "type": "edit_text",
-        "hint": "*নামের প্রথম অংশ (ইংরেজীতে)",
+        "hint": "নামের প্রথম অংশ (ইংরেজীতে)*",
         "expanded": false,
         "v_required": {
           "value": "true",
@@ -267,7 +266,7 @@
         "openmrs_entity": "person",
         "openmrs_entity_id": "last_name",
         "type": "edit_text",
-        "hint": "*নামের শেষ অংশ (ইংরেজীতে)",
+        "hint": "নামের শেষ অংশ (ইংরেজীতে)*",
         "edit_type": "name",
         "v_required": {
           "value": "true",
@@ -300,7 +299,7 @@
         "openmrs_data_type": "text",
         "type": "edit_text",
         "look_up": "true",
-        "hint": "*মাতার নাম (ইংরেজীতে)",
+        "hint": "মাতার নাম (ইংরেজীতে)*",
         "edit_type": "name",
         "v_required": {
           "value": "true",
@@ -333,7 +332,7 @@
         "openmrs_data_type": "text",
         "type": "edit_text",
         "look_up": "true",
-        "hint": "*পিতার নাম (ইংরেজীতে)",
+        "hint": "পিতার নাম (ইংরেজীতে)*",
         "edit_type": "name",
         "v_required": {
           "value": "true",
@@ -382,7 +381,7 @@
         "openmrs_entity_id": "birthdate",
         "openmrs_data_type": "text",
         "type": "date_picker",
-        "hint": "*‘হ্যাঁ’ হলে জন্ম তারিখ",
+        "hint": "‘হ্যাঁ’ হলে জন্ম তারিখ*",
         "v_required": {
           "value": true,
           "err": "Please Enter birth date"
@@ -402,7 +401,7 @@
         "openmrs_entity_id": "",
         "openmrs_data_type": "text",
         "type": "edit_text",
-        "hint": "*না জানলে বয়স লিখুন (বছর)",
+        "hint": "না জানলে বয়স লিখুন (বছর)*",
         "v_numeric": {
           "value": "true",
           "err": "Enter age"
@@ -425,7 +424,7 @@
         "openmrs_entity_id": "gender",
         "openmrs_data_type": "text",
         "type": "spinner",
-        "hint": "*লিঙ্গ",
+        "hint": "লিঙ্গ*",
         "v_required": {
           "value": true,
           "err": "Please select gender"
@@ -551,7 +550,7 @@
         "openmrs_entity_id": "MaritalStatus",
         "openmrs_data_type": "text",
         "type": "spinner",
-        "hint": "*বৈবাহিক অবস্থা",
+        "hint": "বৈবাহিক অবস্থা*",
         "values": [
           "বিবাহিত",
           "দাম্পত্য বিছিন্ন",
@@ -623,7 +622,7 @@
         "openmrs_entity_id": "phoneNumber",
         "openmrs_data_type": "text",
         "type": "edit_text",
-        "hint": "*মোবাইল নম্বর (ইংরেজীতে)",
+        "hint": "মোবাইল নম্বর (ইংরেজীতে)*",
         "v_required": {
           "value": true,
           "err": "Enter 11 digits Mobile Number."
@@ -1228,12 +1227,6 @@
             "openmrs_choice_id": "Postnatal"
           },
           {
-            "key": "familyplanning",
-            "text": "পরিবার পরিকল্পনা",
-            "value": false,
-            "openmrs_choice_id": "familyplanning"
-          },
-          {
             "key": "regulardelivery",
             "text": "স্বাভাবিক প্রসব",
             "value": false,
@@ -1275,6 +1268,67 @@
             ]
           }
         }
+      },
+      {
+        "key": "familyplanning",
+        "openmrs_entity_parent": "",
+        "openmrs_entity": "person_attribute",
+        "openmrs_entity_id": "familyplanning",
+        "openmrs_data_type": "text",
+        "type": "check_box",
+        "label": "পরিবার পরিকল্পনা",
+        "exclusive": ["none"],
+        "options": [
+          {
+            "key": "Condoms",
+            "text": "কনডম",
+            "value": false,
+            "openmrs_choice_id": "Condoms"
+          },
+          {
+            "key": "Injectable",
+            "text": "ইনজেক্টবল",
+            "value": false,
+            "openmrs_choice_id": "Injectable"
+          },
+          {
+            "key": "IUD",
+            "text": "আই ইউ ডি",
+            "value": false,
+            "openmrs_choice_id": "IUD"
+          },
+          {
+            "key": "Implant",
+            "text": "ইমপ্লান্ট",
+            "value": false,
+            "openmrs_choice_id": "Implant"
+          },
+          {
+            "key": "Permanent_FP_Method",
+            "text": "স্থায়ী পদ্ধতি",
+            "value": false,
+            "openmrs_choice_id": "Permanent_FP_Method"
+          },
+          {
+            "key": "Other_Method",
+            "text": "অন্যান্য পদ্ধতি",
+            "value": false,
+            "openmrs_choice_id": "Other_Method"
+          },
+          {
+            "key": "Infertility",
+            "text": "বন্ধ্যা দম্পতি",
+            "value": false,
+            "openmrs_choice_id": "Infertility"
+          },
+          {
+            "key": "No_Method_Usage",
+            "text": "পদ্ধতি ব্যবহার করে না",
+            "value": false,
+            "openmrs_choice_id": "No_Method_Usage"
+          }
+
+        ]
       },
       {
         "key": "illness_information",
