@@ -285,9 +285,9 @@ public class ProfileActivity extends BaseProfileActivity implements ProfileContr
             AlertDialog.Builder builderSingle = new AlertDialog.Builder(this);
 
             final ArrayAdapter<String> arrayAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1);
-            arrayAdapter.add("[+] Add Member");
-            arrayAdapter.add("Household Migration");
-            arrayAdapter.add("GR Household Not Found");
+            arrayAdapter.add("[+] নতুন সদস্য");
+            arrayAdapter.add("খানা স্থানান্তর");
+            arrayAdapter.add("জি আর এ খানা পাওয়া যায়নি");
 //            arrayAdapter.add(getString(R.string.call));
 //            arrayAdapter.add(getString(R.string.start_contact));
 //            arrayAdapter.add(getString(R.string.close_anc_record));
@@ -297,7 +297,7 @@ public class ProfileActivity extends BaseProfileActivity implements ProfileContr
                 public void onClick(DialogInterface dialog, int which) {
                     String textClicked = arrayAdapter.getItem(which);
                     switch (textClicked) {
-                        case "[+] Add Member":
+                        case "[+] নতুন সদস্য":
                             try{
 
 

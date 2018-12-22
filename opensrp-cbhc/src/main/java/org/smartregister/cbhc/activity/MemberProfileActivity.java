@@ -265,14 +265,16 @@ public class MemberProfileActivity extends BaseProfileActivity implements Profil
             AlertDialog.Builder builderSingle = new AlertDialog.Builder(this);
 
             final ArrayAdapter<String> arrayAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1);
-            arrayAdapter.add("Mobile Number");
-            arrayAdapter.add("Marital Status");
-            arrayAdapter.add("Pregnancy");
-            arrayAdapter.add("Risky Habit");
-            arrayAdapter.add("Migration");
-            arrayAdapter.add("Death");
-            arrayAdapter.add("GR Member Not Found ");
 //            arrayAdapter.add(getString(R.string.start_follow_up));
+
+            arrayAdapter.add("মোবাইল নম্বর");
+            arrayAdapter.add("বৈবাহিক অবস্থা");
+            arrayAdapter.add("গর্ভাবস্থা");
+            arrayAdapter.add("ঝুঁকিপূর্ণ অভ্যাস");
+            arrayAdapter.add("স্থানান্তর");
+            arrayAdapter.add("মৃত্যু");
+            arrayAdapter.add("জি আর এ সদস্য পাওয়া যায়নি");
+
 //            arrayAdapter.add(getString(R.string.close_anc_record));
 
             builderSingle.setAdapter(arrayAdapter, new DialogInterface.OnClickListener() {
