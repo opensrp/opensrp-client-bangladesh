@@ -1,5 +1,6 @@
 package org.smartregister.cbhc.activity;
 
+import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
@@ -32,6 +33,8 @@ public class AncJsonFormActivity extends JsonFormActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+//        showform();
     }
 
     @Override
@@ -59,7 +62,7 @@ public class AncJsonFormActivity extends JsonFormActivity {
 
     }
 
-   
+
 
     private void calculateAgeFromBirthDate(String key, String value) {
         if(key.equalsIgnoreCase("member_birth_date")&& value!=null){
@@ -134,5 +137,7 @@ public class AncJsonFormActivity extends JsonFormActivity {
             e.printStackTrace();
         }
     }
+
+
 }
 

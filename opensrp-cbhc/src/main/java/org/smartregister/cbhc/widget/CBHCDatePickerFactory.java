@@ -57,7 +57,7 @@ public class CBHCDatePickerFactory extends DatePickerFactory {
                 editText.addTextChangedListener(new BirthDateTextWatcher(formFragment, editText));
                 editText.setTag(com.vijay.jsonwizard.R.id.after_look_up, false);
             }
-        } catch (JSONException e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }

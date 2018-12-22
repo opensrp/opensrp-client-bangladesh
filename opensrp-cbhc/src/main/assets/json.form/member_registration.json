@@ -382,6 +382,10 @@
         "openmrs_data_type": "text",
         "type": "date_picker",
         "hint": "‘হ্যাঁ’ হলে জন্ম তারিখ*",
+        "expanded": false,
+        "duration": {
+          "label": "Age"
+        },
         "v_required": {
           "value": true,
           "err": "Please Enter birth date"
@@ -831,12 +835,7 @@
           "কারিগরি": "Technical",
           "ধাত্রীবিদ্যা/নার্সিং": "Midwife/Nursing",
           "অন্যান্য": "Others (Education)"
-        }      ,
-        "v_required": {
-          "value": true,
-          "err": "Please Type Educational Qualification"
-        }
-      ,
+        },
         "relevance": {
           "rules-engine": {
             "ex-rules": {
@@ -1131,7 +1130,7 @@
         "openmrs_entity_id": "has_disease",
         "openmrs_data_type": "text",
         "type": "spinner",
-        "hint": "রোগ (যদি থাকে)",
+        "hint": "কোন রোগ বা অবস্থা আছে কি?",
         "values": [
           "হ্যাঁ",
           "না"
@@ -1435,7 +1434,7 @@
         "openmrs_data_type": "text",
         "type": "check_box",
         "label": "পরিবার পরিকল্পনা",
-        "exclusive": ["none"],
+        "exclusive": ["No_Method_Usage"],
         "options": [
           {
             "key": "Condoms",
@@ -1451,7 +1450,7 @@
           },
           {
             "key": "IUD",
-            "text": "নআই ইউ ডি",
+            "text": "আই ইউ ডি",
             "value": false,
             "openmrs_choice_id": "IUD"
           },
@@ -1525,7 +1524,7 @@
         "openmrs_data_type": "text",
         "type": "check_box",
         "label": "রোগ  সম্পর্কিত পারিবারিক তথ্য",
-        "exclusive": ["noIdentifier"],
+        "exclusive": ["None"],
         "options": [
           {
             "key": "High Blood Pressure",
@@ -1562,6 +1561,12 @@
             "text": "অন্যান্য",
             "value": false,
             "openmrs_choice_id": "Others (Family Disease)"
+          },
+          {
+            "key": "None",
+            "text": "নেই",
+            "value": false,
+            "openmrs_choice_id": "None"
           }
         ]
       },
@@ -1596,7 +1601,7 @@
         "openmrs_data_type": "text",
         "type": "check_box",
         "label": "ঝুকিপূর্ন অভ্যাস",
-        "exclusive": ["noIdentifier"],
+        "exclusive": ["None"],
         "options": [
           {
             "key": "Cigarette",
