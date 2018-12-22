@@ -26,8 +26,7 @@ public class ConfigHelper {
         config.setEnableJsonViews(false);
 
         List<Field> filers = new ArrayList<>();
-        filers.add(new Field("Para", "has_tasks_due"));
-        filers.add(new Field("Pregnent Women", "has_tasks_due"));
+        filers.add(new Field("Pregnant Women", "has_tasks_due"));
         filers.add(new Field("Child(0-2 Month)", "has_tasks_due"));
         filers.add(new Field("Child(2 Month - 5 Years)", "has_tasks_due"));
         filers.add(new Field("Adult (Above 50 Years)", "has_tasks_due"));

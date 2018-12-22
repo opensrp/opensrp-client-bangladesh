@@ -166,6 +166,7 @@
 					android:layout_width="25dp"
 					android:layout_height="25dp"
 					android:layout_margin="1dp"
+
 					android:layout_weight="1"
 					android:scaleType="fitXY"
 					app:srcCompat="@drawable/male_child_cbhc" />
