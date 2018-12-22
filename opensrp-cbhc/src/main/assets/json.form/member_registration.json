@@ -576,14 +576,14 @@
         }
       },
       {
-        "key": "husband_spouseName_english",
+        "key": "spouseName_english",
         "openmrs_entity_parent": "",
         "openmrs_entity": "person_attribute",
         "openmrs_entity_id": "spouseNameEnglish",
         "openmrs_data_type": "text",
         "type": "edit_text",
         "look_up": "true",
-        "hint": "স্বামীর নাম (ইংরেজীতে)",
+        "hint": "স্বামী/স্ত্রীর নাম (ইংরেজীতে)",
         "v_required": {
           "value": true,
           "err": "Please Type Husband Name."
@@ -593,85 +593,28 @@
           "err": "Please Enter a Valid Name"
         },
         "relevance": {
-          "rules-engine": {
-            "ex-rules": {
-              "rules-file": "sample-relevance-rules.yml"
-            }
+          "step1:marital_status": {
+            "type": "string",
+            "ex": "equalTo(., \"বিবাহিত\")"
           }
         }
       },
       {
-        "key": "wife_spouseName_english",
-        "openmrs_entity_parent": "",
-        "openmrs_entity": "person_attribute",
-        "openmrs_entity_id": "spouseNameEnglish",
-        "openmrs_data_type": "text",
-        "type": "edit_text",
-        "look_up": "true",
-        "hint": "স্ত্রীর নাম (ইংরেজীতে)",
-        "v_required": {
-          "value": true,
-          "err": "Please Type wife Name."
-        },
-        "v_regex": {
-          "value": "[A-Za-z\\s\.\-]*",
-          "err": "Please Enter a Valid Name"
-        },
-        "relevance": {
-          "rules-engine": {
-            "ex-rules": {
-              "rules-file": "sample-relevance-rules.yml"
-            }
-          }
-        }
-      },
-      {
-        "key": "husband_spouseName_bangali",
+        "key": "spouseName_bengali",
         "openmrs_entity_parent": "",
         "openmrs_entity": "person_attribute",
         "openmrs_entity_id": "spouseNameBangla",
         "openmrs_data_type": "text",
         "type": "edit_text",
-        "look_up": "true",
-        "hint": "স্বামীর নাম (বাংলায়)",
+        "hint": "স্বামী/স্ত্রীর নাম (বাংলায়)",
         "v_required": {
-          "value": true,
-          "err": "Please Type Husband Name."
-        },
-        "v_regex": {
-          "value": "[A-Za-z\\s\.\-]*",
-          "err": "Please Enter a Valid Name"
+          "value": "false",
+          "err": "Please enter the mother/guardian's first name"
         },
         "relevance": {
-          "rules-engine": {
-            "ex-rules": {
-              "rules-file": "sample-relevance-rules.yml"
-            }
-          }
-        }
-      },
-      {
-        "key": "wife_spouseName_bangali",
-        "openmrs_entity_parent": "",
-        "openmrs_entity": "person_attribute",
-        "openmrs_entity_id": "spouseNameBangla",
-        "openmrs_data_type": "text",
-        "type": "edit_text",
-        "look_up": "true",
-        "hint": "স্ত্রীর নাম (বাংলায়)",
-        "v_required": {
-          "value": true,
-          "err": "Please Type wife Name."
-        },
-        "v_regex": {
-          "value": "[A-Za-z\\s\.\-]*",
-          "err": "Please Enter a Valid Name"
-        },
-        "relevance": {
-          "rules-engine": {
-            "ex-rules": {
-              "rules-file": "sample-relevance-rules.yml"
-            }
+          "step1:marital_status": {
+            "type": "string",
+            "ex": "equalTo(., \"বিবাহিত\")"
           }
         }
       },
