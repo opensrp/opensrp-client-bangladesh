@@ -55,6 +55,34 @@ condition: 'step1_age>10'
 actions:
   - "isRelevant = true"
 ---
+name: step1_marital_status
+description: married status
+priority: 1
+condition: 'helper.formatDate(step1_member_birth_date,"y") > 13'
+actions:
+  - "isRelevant = true"
+---
+name: step1_marital_status_by_age
+description: married status by age
+priority: 1
+condition: 'step1_age>13'
+actions:
+  - "isRelevant = true"
+---
+name: step1_contact_phone_number
+description: contact number
+priority: 1
+condition: 'helper.formatDate(step1_member_birth_date,"y") > 10'
+actions:
+  - "isRelevant = true"
+---
+name: step1_contact_phone_number_by_age
+description: contact number by age
+priority: 1
+condition: 'step1_age>10'
+actions:
+  - "isRelevant = true"
+---
 name: step1_Disease_status_male_by_age
 description: disease status for male
 priority: 1
