@@ -51,7 +51,7 @@ actions:
 name: step1_Disease_status_two_month_to_five_year_by_age
 description: disease status two month to five year
 priority: 1
-condition: " step1_has_disease.equalsIgnoreCase('হ্যাঁ') && ((step1_age!=0 && step1_age > .17 && step1_age <=5) || ((helper.formatDate(step1_member_birth_date,'y') > .17 && helper.formatDate(step1_member_birth_date,'y') <=5)))"
+condition: " step1_has_disease.equalsIgnoreCase('হ্যাঁ') && ((step1_age > .17 && step1_age <=5) || ((helper.formatDate(step1_member_birth_date,'y') > .17 && helper.formatDate(step1_member_birth_date,'y') <=5)))"
 actions:
   - "isRelevant = true"
 ---
