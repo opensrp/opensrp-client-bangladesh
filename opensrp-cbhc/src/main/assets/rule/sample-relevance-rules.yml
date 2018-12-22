@@ -1,0 +1,120 @@
+---
+name: step1_husband_spouseName_english
+description: spouse name husband english
+priority: 1
+condition: " step1_marital_status.equalsIgnoreCase('বিবাহিত') && step1_gender .equalsIgnoreCase('মহিলা')"
+actions:
+  - "isRelevant = true"
+---
+name: step1_wife_spouseName_english
+description: spouse name wife english
+priority: 1
+condition: " step1_marital_status.equalsIgnoreCase('বিবাহিত') && step1_gender .equalsIgnoreCase('পুরুষ')"
+actions:
+  - "isRelevant = true"
+---
+name: step1_husband_spouseName_bangali
+description: spouse name husband bangla
+priority: 1
+condition: " step1_marital_status.equalsIgnoreCase('বিবাহিত') && step1_gender .equalsIgnoreCase('মহিলা')"
+actions:
+  - "isRelevant = true"
+---
+name: step1_wife_spouseName_bangali
+description: spouse name wife bangla
+priority: 1
+condition: " step1_marital_status.equalsIgnoreCase('বিবাহিত') && step1_gender .equalsIgnoreCase('পুরুষ')"
+actions:
+  - "isRelevant = true"
+---
+name: step1_educational_qualification
+description: education qualification
+priority: 1
+condition: 'helper.formatDate(step1_member_birth_date,"y") > 4'
+actions:
+  - "isRelevant = true"
+---
+name: step1_educational_qualification_by_age
+description: education qualification
+priority: 1
+condition: 'step1_age> 4 '
+actions:
+  - "isRelevant = true"
+---
+name: step1_occupation
+description: occupation
+priority: 1
+condition: 'helper.formatDate(step1_member_birth_date,"y") > 10'
+actions:
+  - "isRelevant = true"
+---
+name: step1_occupation_by_age
+description: occupation
+priority: 1
+condition: 'step1_age>10'
+actions:
+  - "isRelevant = true"
+---
+name: step1_Disease_status_male_by_age
+description: disease status for male
+priority: 1
+condition: " step1_has_disease.equalsIgnoreCase('হ্যাঁ') && step1_age > 5 && step1_gender.equalsIgnoreCase('পুরুষ')"
+actions:
+  - "isRelevant = true"
+---
+name: step1_Disease_status_female_by_age
+description: disease status for female
+priority: 1
+condition: " step1_has_disease.equalsIgnoreCase('হ্যাঁ') && step1_age > 5 && step1_gender.equalsIgnoreCase('মহিলা')"
+actions:
+  - "isRelevant = true"
+---
+name: step1_Disease_status_zero_to_two_month_by_age
+description: disease status for zero to two month
+priority: 1
+condition: " step1_has_disease.equalsIgnoreCase('হ্যাঁ') && step1_age <= .17"
+actions:
+  - "isRelevant = true"
+---
+name: step1_Disease_status_two_month_to_five_year_by_age
+description: disease status two month to five year
+priority: 1
+condition: " step1_has_disease.equalsIgnoreCase('হ্যাঁ') && (step1_age > .17 && step1_age <=5)"
+actions:
+  - "isRelevant = true"
+---
+name: step1_Disease_status_male
+description: disease status for male
+priority: 1
+condition: " step1_has_disease.equalsIgnoreCase('হ্যাঁ') && helper.formatDate(step1_member_birth_date,'y') > 5 && step1_gender.equalsIgnoreCase('পুরুষ')"
+actions:
+  - "isRelevant = true"
+---
+name: step1_Disease_status_female
+description: disease status for female
+priority: 1
+condition: " step1_has_disease.equalsIgnoreCase('হ্যাঁ') && helper.formatDate(step1_member_birth_date,'y') > 5 && step1_gender.equalsIgnoreCase('মহিলা')"
+actions:
+  - "isRelevant = true"
+---
+name: step1_Disease_status_zero_to_two_month
+description: disease status for zero to two month
+priority: 1
+condition: " step1_has_disease.equalsIgnoreCase('হ্যাঁ') && helper.formatDate(step1_member_birth_date,'y') <= .17"
+actions:
+  - "isRelevant = true"
+---
+name: step1_Disease_status_two_month_to_five_year
+description: disease status two month to five year
+priority: 1
+condition: " step1_has_disease.equalsIgnoreCase('হ্যাঁ') && (helper.formatDate(step1_member_birth_date,'y') > .17 && helper.formatDate(step1_member_birth_date,'y') <=5)"
+actions:
+  - "isRelevant = true"
+---
+name: step1_family_planning
+description: family planning
+priority: 1
+condition: " step1_marital_status.equalsIgnoreCase('বিবাহিত')"
+actions:
+  - "isRelevant = true"
+
