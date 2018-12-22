@@ -311,11 +311,11 @@ public class AncJsonFormFragment extends JsonFormFragment {
 
                         if (view instanceof MaterialEditText) {
                             MaterialEditText materialEditText = (MaterialEditText) view;
-                            materialEditText.setEnabled(false);
+//                            materialEditText.setEnabled(false);
                             materialEditText.setTag(com.vijay.jsonwizard.R.id.after_look_up, true);
                             materialEditText.setText(text);
-                            materialEditText.setInputType(InputType.TYPE_NULL);
-                            disableEditText(materialEditText);
+//                            materialEditText.setInputType(InputType.TYPE_NULL);
+//                            disableEditText(materialEditText);
                         }
                     }
 
