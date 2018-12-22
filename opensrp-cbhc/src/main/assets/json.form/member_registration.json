@@ -539,7 +539,7 @@
         }
       },
       {
-        "key": "marital_status_by_age",
+        "key": "marital_status",
         "openmrs_entity_parent": "",
         "openmrs_entity": "person_attribute",
         "openmrs_entity_id": "MaritalStatus",
@@ -562,16 +562,10 @@
           "বিধবা": "Widow",
           "বিপত্নীক": "Widower"
         },
-        "v_required": {
-          "value": true,
-          "err": "Please Type Marital Status"
-        }
-      ,
         "relevance": {
-          "rules-engine": {
-            "ex-rules": {
-              "rules-file": "sample-relevance-rules.yml"
-            }
+          "step1:age": {
+            "type": "numeric",
+            "ex": "greaterThanEqualTo(., \"13\")"
           }
         }
       },

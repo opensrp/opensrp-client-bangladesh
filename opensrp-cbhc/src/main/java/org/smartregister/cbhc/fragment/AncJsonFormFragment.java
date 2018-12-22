@@ -39,9 +39,12 @@ import org.smartregister.cbhc.viewstate.AncJsonFormFragmentViewState;
 import org.smartregister.commonregistry.CommonPersonObject;
 import org.smartregister.commonregistry.CommonPersonObjectClient;
 import org.smartregister.event.Listener;
+import org.smartregister.util.DatePickerUtils;
+import org.smartregister.util.DateUtil;
 import org.smartregister.util.Utils;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -364,6 +367,25 @@ public class AncJsonFormFragment extends JsonFormFragment {
 
     private void enableEditText(MaterialEditText editText) {
         editText.setInputType(InputType.TYPE_CLASS_TEXT);
+    }
+
+    public void setAgeFromBirthDate(String text){
+        getJsonApi().getmJSONObject();
+        ArrayList<View> formdataviews = getJsonApi().getFormDataViews();
+        for(int i = 0;i<formdataviews.size();i++){
+            if(formdataviews.get(i) instanceof MaterialEditText){
+                if(((MaterialEditText)formdataviews.get(i)).getFloatingLabelText().toString().trim().equalsIgnoreCase("না জানলে বয়স লিখুন (বছর)*")){
+                    Date date = com.vijay.jsonwizard.utils.Utils.getDateFromString(text);
+                    DateTime dateTime = new DateTime(date);
+
+                    int age = Utils.getAgeFromDate(dateTime.toString());
+
+                    ((MaterialEditText) formdataviews.get(i)).setText(""+age);
+                }
+            }
+        }
+        formdataviews.get(0);
+
     }
 
 

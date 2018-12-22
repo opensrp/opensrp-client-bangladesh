@@ -4,6 +4,7 @@ import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.util.Log;
+import android.view.View;
 
 import com.vijay.jsonwizard.activities.JsonFormActivity;
 import com.vijay.jsonwizard.constants.JsonFormConstants;
@@ -41,6 +42,7 @@ public class AncJsonFormActivity extends JsonFormActivity {
     @Override
     public void writeValue(String stepName, String key, String value, String openMrsEntityParent, String openMrsEntity, String openMrsEntityId) throws JSONException {
         callSuperWriteValue(stepName, key, value, openMrsEntityParent, openMrsEntity, openMrsEntityId);
+        calculateAgeFromBirthDate(key,value);
     }
 
     @Override
@@ -54,6 +56,20 @@ public class AncJsonFormActivity extends JsonFormActivity {
 
     protected void callSuperWriteValue(String stepName, String key, String value, String openMrsEntityParent, String openMrsEntity, String openMrsEntityId) throws JSONException {
         super.writeValue(stepName, key, value, openMrsEntityParent, openMrsEntity, openMrsEntityId);
+
+    }
+
+   
+
+    private void calculateAgeFromBirthDate(String key, String value) {
+        if(key.equalsIgnoreCase("member_birth_date")&& value!=null){
+            JSONObject currentFormState = getmJSONObject();
+            try {
+                currentFormState.getJSONObject("step1");
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
     }
 
     protected void initializeFormFragmentCore() {
