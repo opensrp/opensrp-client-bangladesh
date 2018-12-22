@@ -81,8 +81,8 @@
       {
         "key": "is_permanent_address",
         "openmrs_entity_parent": "",
-        "openmrs_entity": "person_attribute",
-        "openmrs_entity_id": "is_permanent_address",
+        "openmrs_entity": "",
+        "openmrs_entity_id": "",
         "openmrs_data_type": "text",
         "type": "spinner",
         "hint": "স্থায়ী ঠিকানা কি একই",
@@ -256,7 +256,7 @@
         "key": "member_count",
         "openmrs_entity_parent": "",
         "openmrs_entity": "",
-        "openmrs_entity_id": "member_count",
+        "openmrs_entity_id": "",
         "type": "edit_text",
         "hint": "খানার মোট সদস্য সংখ্যা",
         "v_numeric": {
