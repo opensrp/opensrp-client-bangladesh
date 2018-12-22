@@ -256,7 +256,7 @@ public class AncApplication extends DrishtiApplication implements TimeChangedBro
 
     private static String[] getFtsSearchFields() {
 //        return new String[]{DBConstants.KEY.BASE_ENTITY_ID, DBConstants.KEY.FIRST_NAME, DBConstants.KEY.LAST_NAME, DBConstants.KEY.ANC_ID, DBConstants.KEY.DATE_REMOVED, DBConstants.KEY.PHONE_NUMBER};
-        return new String[]{DBConstants.KEY.FIRST_NAME, DBConstants.KEY.LAST_NAME, DBConstants.KEY.PHONE_NUMBER, DBConstants.KEY.DATE_REMOVED, "person_nid","person_brid","person_epi","person_address"};
+        return new String[]{DBConstants.KEY.FIRST_NAME, DBConstants.KEY.LAST_NAME, DBConstants.KEY.PHONE_NUMBER, DBConstants.KEY.DATE_REMOVED, "person_nid","person_brid","person_epi","address7"};
 
     }
 

@@ -132,8 +132,8 @@
 
 				<ImageView
 					android:id="@+id/female_child_present"
-					android:layout_width="20dp"
-					android:layout_height="20dp"
+					android:layout_width="24dp"
+					android:layout_height="24dp"
 					android:layout_margin="1dp"
 					android:layout_weight="1"
 					app:srcCompat="@drawable/female_child_cbhc" />
@@ -162,6 +162,7 @@
 					android:layout_width="20dp"
 					android:layout_height="20dp"
 					android:layout_margin="1dp"
+
 					android:layout_weight="1"
 					app:srcCompat="@drawable/male_child_cbhc" />
 

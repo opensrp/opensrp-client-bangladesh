@@ -150,10 +150,10 @@
           }
         },
         {
-          "column_name": "person_address",
+          "column_name": "address7",
           "type": "Client",
           "json_mapping": {
-            "field": "address7"
+            "field": "ADDRESS_LINE"
           }
         }
       ]
@@ -253,10 +253,10 @@
           }
         },
         {
-          "column_name": "person_address",
+          "column_name": "address7",
           "type": "Client",
           "json_mapping": {
-            "field": "address7"
+            "field": "ADDRESS_LINE"
           }
         },
         {
@@ -377,10 +377,10 @@
           }
         },
         {
-          "column_name": "person_address",
+          "column_name": "address7",
           "type": "Client",
           "json_mapping": {
-            "field": "address7"
+            "field": "ADDRESS_LINE"
           }
         },
         {
@@ -501,10 +501,10 @@
           }
         },
         {
-          "column_name": "person_address",
+          "column_name": "address7",
           "type": "Client",
           "json_mapping": {
-            "field": "address7"
+            "field": "ADDRESS_LINE"
           }
         },
         {
