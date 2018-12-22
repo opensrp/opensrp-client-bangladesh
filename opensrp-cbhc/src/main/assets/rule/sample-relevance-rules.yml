@@ -30,49 +30,49 @@ actions:
 name: step1_educational_qualification
 description: education qualification
 priority: 1
-condition: 'helper.formatDate(step1_member_birth_date,"y") > 4'
+condition: 'helper.formatDate(step1_member_birth_date,"y") > 4 || step1_age> 4'
 actions:
   - "isRelevant = true"
 ---
 name: step1_educational_qualification_by_age
 description: education qualification
 priority: 1
-condition: 'step1_age> 4 '
+condition: 'step1_age> 4 || helper.formatDate(step1_member_birth_date,"y") > 4'
 actions:
   - "isRelevant = true"
 ---
 name: step1_occupation
 description: occupation
 priority: 1
-condition: 'helper.formatDate(step1_member_birth_date,"y") > 10'
+condition: 'helper.formatDate(step1_member_birth_date,"y") > 10 || step1_age>10'
 actions:
   - "isRelevant = true"
 ---
 name: step1_occupation_by_age
 description: occupation
 priority: 1
-condition: 'step1_age>10'
+condition: 'step1_age>10 || helper.formatDate(step1_member_birth_date,"y") > 10'
 actions:
   - "isRelevant = true"
 ---
 name: step1_marital_status
 description: married status
 priority: 1
-condition: 'helper.formatDate(step1_member_birth_date,"y") > 13'
+condition: 'helper.formatDate(step1_member_birth_date,"y") > 13 || step1_age>13'
 actions:
   - "isRelevant = true"
 ---
 name: step1_marital_status_by_age
 description: married status by age
 priority: 1
-condition: 'step1_age>13'
+condition: 'step1_age>13 || helper.formatDate(step1_member_birth_date,"y") > 13'
 actions:
   - "isRelevant = true"
 ---
 name: step1_contact_phone_number
 description: contact number
 priority: 1
-condition: 'helper.formatDate(step1_member_birth_date,"y") > 10'
+condition: 'helper.formatDate(step1_member_birth_date,"y") > 10 || step1_age>10'
 actions:
   - "isRelevant = true"
 ---
@@ -86,28 +86,28 @@ actions:
 name: step1_Disease_status_male_by_age
 description: disease status for male
 priority: 1
-condition: " step1_has_disease.equalsIgnoreCase('হ্যাঁ') && step1_age > 5 && step1_gender.equalsIgnoreCase('পুরুষ')"
+condition: " step1_has_disease.equalsIgnoreCase('হ্যাঁ') && (step1_age > 5 || helper.formatDate(step1_member_birth_date,'y') > 5)&& step1_gender.equalsIgnoreCase('পুরুষ')"
 actions:
   - "isRelevant = true"
 ---
 name: step1_Disease_status_female_by_age
 description: disease status for female
 priority: 1
-condition: " step1_has_disease.equalsIgnoreCase('হ্যাঁ') && step1_age > 5 && step1_gender.equalsIgnoreCase('মহিলা')"
+condition: " step1_has_disease.equalsIgnoreCase('হ্যাঁ') && (step1_age > 5 || helper.formatDate(step1_member_birth_date,'y') > 5) && step1_gender.equalsIgnoreCase('মহিলা')"
 actions:
   - "isRelevant = true"
 ---
 name: step1_Disease_status_zero_to_two_month_by_age
 description: disease status for zero to two month
 priority: 1
-condition: " step1_has_disease.equalsIgnoreCase('হ্যাঁ') && step1_age <= .17"
+condition: " step1_has_disease.equalsIgnoreCase('হ্যাঁ') && (step1_age <= .17 || helper.formatDate(step1_member_birth_date,'y') <= .17)"
 actions:
   - "isRelevant = true"
 ---
 name: step1_Disease_status_two_month_to_five_year_by_age
 description: disease status two month to five year
 priority: 1
-condition: " step1_has_disease.equalsIgnoreCase('হ্যাঁ') && (step1_age > .17 && step1_age <=5)"
+condition: " step1_has_disease.equalsIgnoreCase('হ্যাঁ') && ((step1_age > .17 && step1_age <=5) || ((helper.formatDate(step1_member_birth_date,'y') > .17 && helper.formatDate(step1_member_birth_date,'y') <=5)))"
 actions:
   - "isRelevant = true"
 ---
