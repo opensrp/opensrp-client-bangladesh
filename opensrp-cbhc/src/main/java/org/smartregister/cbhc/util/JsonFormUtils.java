@@ -282,6 +282,8 @@ public class JsonFormUtils extends org.smartregister.util.JsonFormUtils {
 
             }
 
+            getFieldJSONObject(fields,"Patient_Identifier").remove("hidden");
+
 
             FormTag formTag = new FormTag();
             formTag.providerId = allSharedPreferences.fetchRegisteredANM();
@@ -687,6 +689,9 @@ public class JsonFormUtils extends org.smartregister.util.JsonFormUtils {
         try {
 
             JSONObject form = FormUtils.getInstance(context).getFormJson(Constants.JSON_FORM.MEMBER_REGISTER);
+            form.put("relational_id",womanClient.get("relational_id"));
+            LookUpUtils.putRelationalIdInLookupObjects(form,womanClient.get("relational_id"));
+
             LocationPickerView lpv = new LocationPickerView(context);
             lpv.init();
             JsonFormUtils.addWomanRegisterHierarchyQuestions(form);

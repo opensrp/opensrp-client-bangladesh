@@ -49,6 +49,10 @@ public class AncRepository extends Repository {
         VaccineTypeRepository.createTable(database);
         WeightRepository.createTable(database);
 
+        //////////////////DraftFormRepository////////////////
+        DraftFormRepository.createTable(database);
+        ////////////////////////////////////////////////////
+
         database.execSQL(AlertRepository.ALTER_ADD_OFFLINE_COLUMN);
         database.execSQL(AlertRepository.OFFLINE_INDEX);
 

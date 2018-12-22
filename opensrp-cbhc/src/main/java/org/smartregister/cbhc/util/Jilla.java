@@ -21,7 +21,7 @@ public class Jilla {
         po.setColumnmaps(details);
 
         for(int i=0;i<jilla_list.length;i++){
-            if(lookup_str!=null&&jilla_list[i].toLowerCase().contains(lookup_str.toLowerCase())){
+            if(lookup_str!=null&&jilla_list[i].toLowerCase().startsWith(lookup_str.toLowerCase())){
                 HashMap<String,String>d = new HashMap<String, String>();
                 d.put("first_name",jilla_list[i]);
                 d.put("last_name","");
