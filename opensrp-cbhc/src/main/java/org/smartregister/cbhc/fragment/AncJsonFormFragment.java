@@ -1,5 +1,9 @@
 package org.smartregister.cbhc.fragment;
 
+import android.app.Activity;
+import android.app.Dialog;
+import android.app.ProgressDialog;
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.Nullable;
@@ -20,6 +24,8 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.rengwuxian.materialedittext.MaterialEditText;
+import com.vijay.jsonwizard.activities.JsonFormActivity;
+import com.vijay.jsonwizard.constants.JsonFormConstants;
 import com.vijay.jsonwizard.fragments.JsonFormFragment;
 import com.vijay.jsonwizard.presenters.JsonFormFragmentPresenter;
 import com.vijay.jsonwizard.utils.FormUtils;
@@ -29,6 +35,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.joda.time.DateTime;
 import org.smartregister.Context;
 import org.smartregister.cbhc.R;
+import org.smartregister.cbhc.activity.AncJsonFormActivity;
 import org.smartregister.cbhc.application.AncApplication;
 import org.smartregister.cbhc.interactor.AncJsonFormInteractor;
 import org.smartregister.cbhc.provider.MotherLookUpSmartClientsProvider;
@@ -39,9 +46,12 @@ import org.smartregister.cbhc.viewstate.AncJsonFormFragmentViewState;
 import org.smartregister.commonregistry.CommonPersonObject;
 import org.smartregister.commonregistry.CommonPersonObjectClient;
 import org.smartregister.event.Listener;
+import org.smartregister.util.DatePickerUtils;
+import org.smartregister.util.DateUtil;
 import org.smartregister.util.Utils;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -60,6 +70,14 @@ public class AncJsonFormFragment extends JsonFormFragment {
     private AlertDialog alertDialog = null;
     private boolean lookedUp = false;
     public static String lookuptype = "";
+    private ProgressDialog validationProgressdialog;
+
+
+
+
+
+
+    AncJsonFormActivity activity;
 
     public static AncJsonFormFragment getFormFragment(String stepName) {
         AncJsonFormFragment jsonFormFragment = new AncJsonFormFragment();
@@ -84,11 +102,8 @@ public class AncJsonFormFragment extends JsonFormFragment {
         return new JsonFormFragmentPresenter(this, AncJsonFormInteractor.getInstance());
     }
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        return super.onOptionsItemSelected(item);
 
-    }
+
 
 
 
@@ -364,6 +379,108 @@ public class AncJsonFormFragment extends JsonFormFragment {
 
     private void enableEditText(MaterialEditText editText) {
         editText.setInputType(InputType.TYPE_CLASS_TEXT);
+    }
+
+    public void setAgeFromBirthDate(String text){
+        getJsonApi().getmJSONObject();
+        ArrayList<View> formdataviews = getJsonApi().getFormDataViews();
+        for(int i = 0;i<formdataviews.size();i++){
+            if(formdataviews.get(i) instanceof MaterialEditText){
+                if(((MaterialEditText)formdataviews.get(i)).getFloatingLabelText().toString().trim().equalsIgnoreCase("না জানলে বয়স লিখুন (বছর)*")){
+                    Date date = com.vijay.jsonwizard.utils.Utils.getDateFromString(text);
+                    DateTime dateTime = new DateTime(date);
+
+                    int age = Utils.getAgeFromDate(dateTime.toString());
+
+                    ((MaterialEditText) formdataviews.get(i)).setText(""+age);
+                }
+            }
+        }
+        formdataviews.get(0);
+
+    }
+
+
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == android.R.id.home) {
+            presenter.onBackClick();
+            return true;
+        } else if (item.getItemId() == com.vijay.jsonwizard.R.id.action_next) {
+            return next();
+        } else if (item.getItemId() == com.vijay.jsonwizard.R.id.action_save) {
+            showform();
+            try {
+                Boolean skipValidation = ((JsonFormActivity) mMainView.getContext()).getIntent().getBooleanExtra(JsonFormConstants.SKIP_VALIDATION,
+                        false);
+                return save(skipValidation);
+            } catch (Exception e) {
+                return save(false);
+            }
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+
+
+    @Override
+    public boolean save(boolean skipValidation) {
+
+        try {
+            mMainView.setTag(com.vijay.jsonwizard.R.id.skip_validation, skipValidation);
+            presenter.onSaveClick(mMainView);
+
+            return true;
+        } catch (Exception e) {
+            dissmissForm();
+        }
+        dissmissForm();
+
+
+        return false;
+    }
+
+    @Override
+    public void scrollToView(final View view) {
+        dissmissForm();
+
+        view.requestFocus();
+        if (!(view instanceof MaterialEditText)) {
+            mScrollView.post(new Runnable() {
+                @Override
+                public void run() {
+                    int y = view.getBottom() - view.getHeight();
+                    if (y < 0) {
+                        y = 0;
+                    }
+                    mScrollView.scrollTo(0, y);
+                }
+            });
+        }
+    }
+
+    @Override
+    public void finishWithResult(Intent returnIntent) {
+        dissmissForm();
+        getActivity().setResult(Activity.RESULT_OK, returnIntent);
+        getActivity().finish();
+    }
+
+    public void showform(){
+//        validationProgressdialog =  new ProgressDialog(this.getActivity());
+//        validationProgressdialog.setTitle("Processing");
+//        validationProgressdialog.setMessage("Checking Validations");
+//        validationProgressdialog.show();
+        show(Snackbar.make(mMainView, "Checking Validations", Snackbar.LENGTH_LONG),Snackbar.LENGTH_LONG);
+    }
+
+    public void dissmissForm() {
+//        if(validationProgressdialog!=null) {
+//            if(validationProgressdialog.isShowing()) {
+//                validationProgressdialog.dismiss();
+//            }
+//        }
     }
 
 

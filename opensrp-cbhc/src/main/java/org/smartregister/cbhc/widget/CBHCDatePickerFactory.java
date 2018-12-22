@@ -9,7 +9,9 @@ import com.rengwuxian.materialedittext.MaterialEditText;
 import com.vijay.jsonwizard.fragments.JsonFormFragment;
 import com.vijay.jsonwizard.widgets.DatePickerFactory;
 
+import org.json.JSONException;
 import org.json.JSONObject;
+import org.smartregister.cbhc.watchers.BirthDateTextWatcher;
 import org.smartregister.cbhc.watchers.LookUpTextWatcher;
 
 import java.util.ArrayList;
@@ -49,6 +51,14 @@ public class CBHCDatePickerFactory extends DatePickerFactory {
 
         } catch (Exception e) {
             Log.e(getClass().getName(), e.toString(), e);
+        }
+        try {
+            if(jsonObject.getString("key").equalsIgnoreCase("member_birth_date")){
+                editText.addTextChangedListener(new BirthDateTextWatcher(formFragment, editText));
+                editText.setTag(com.vijay.jsonwizard.R.id.after_look_up, false);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 

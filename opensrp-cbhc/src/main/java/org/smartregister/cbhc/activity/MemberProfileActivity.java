@@ -285,7 +285,7 @@ public class MemberProfileActivity extends BaseProfileActivity implements Profil
                         case "Call":
                             launchPhoneDialer(womanPhoneNumber);
                             break;
-                        case "Follow Up":
+                        case "গর্ভাবস্থা":
                             getIntent().putExtra(Constants.INTENT_KEY.BASE_ENTITY_ID,householdDetails.getCaseId());
 //                            (Constants.INTENT_KEY.BASE_ENTITY_ID)
                             JsonFormUtils.launchFollowUpForm(MemberProfileActivity.this);

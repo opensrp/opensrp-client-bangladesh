@@ -1,8 +1,10 @@
 package org.smartregister.cbhc.fragment;
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.database.Cursor;
 import android.graphics.drawable.Drawable;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.widget.CursorAdapter;
 import android.util.Log;
@@ -14,6 +16,8 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
+
+import net.sqlcipher.database.SQLiteDatabase;
 
 import org.apache.commons.lang3.StringUtils;
 import org.joda.time.DateTime;
@@ -104,50 +108,71 @@ public class ProfileOverviewFragment extends BaseProfileFragment {
         return fragmentView;
     }
 
-    public void refreshadapter(View view) {
-        //setAdapter data of Household member
-        AncRepository repo = (AncRepository) AncApplication.getInstance().getRepository();
-        net.sqlcipher.database.SQLiteDatabase db = repo.getReadableDatabase();
-        String mother_id = householdDetails.getDetails().get("_id");
+    public void refreshadapter(final View view) {
+        (new AsyncTask(){
+            ProgressDialog dialog;
+            @Override
+            protected void onPreExecute() {
+                super.onPreExecute();
+                dialog = ProgressDialog.show(ProfileOverviewFragment.this.getActivity(),"processing","please wait");
+            }
 
-        String tableName = DBConstants.WOMAN_TABLE_NAME;
-        String childtableName = DBConstants.CHILD_TABLE_NAME;
-        String membertablename = DBConstants.MEMBER_TABLE_NAME;
+            @Override
+            protected Object doInBackground(Object[] objects) {
+                AncRepository repo = (AncRepository) AncApplication.getInstance().getRepository();
+                SQLiteDatabase db = repo.getReadableDatabase();
+                String mother_id = householdDetails.getDetails().get("_id");
 
-        SmartRegisterQueryBuilder queryBUilder = new SmartRegisterQueryBuilder();
-        queryBUilder.SelectInitiateMainTable(tableName, new String[]{
-                tableName + ".relationalid",
-                tableName + ".details",
-                tableName + ".first_name",
-                tableName + "." + DBConstants.KEY.LAST_NAME,
-                tableName + ".dob"
-        });
-        String currentquery = queryBUilder.mainCondition("relational_id = '"+mother_id+"'").concat(" Union all ");
-        SmartRegisterQueryBuilder queryBUilder2 = new SmartRegisterQueryBuilder();
-        queryBUilder2.SelectInitiateMainTable(membertablename, new String[]{
-                membertablename + ".relationalid",
-                membertablename + ".details",
-                membertablename + ".first_name",
-                membertablename + "." + DBConstants.KEY.LAST_NAME,
-                membertablename + ".dob"
-        });
-        currentquery = currentquery.concat(queryBUilder2.mainCondition("relational_id = '"+mother_id+"'").concat(" Union all "));
-        queryBUilder.SelectInitiateMainTable(childtableName, new String[]{
-                childtableName + ".relationalid",
-                childtableName + ".details",
-                childtableName + ".first_name",
-                childtableName + "." + DBConstants.KEY.LAST_NAME,
-                childtableName + ".dob"
-        });
+                String tableName = DBConstants.WOMAN_TABLE_NAME;
+                String childtableName = DBConstants.CHILD_TABLE_NAME;
+                String membertablename = DBConstants.MEMBER_TABLE_NAME;
+
+                SmartRegisterQueryBuilder queryBUilder = new SmartRegisterQueryBuilder();
+                queryBUilder.SelectInitiateMainTable(tableName, new String[]{
+                        tableName + ".relationalid",
+                        tableName + ".details",
+                        tableName + ".first_name",
+                        tableName + "." + DBConstants.KEY.LAST_NAME,
+                        tableName + ".dob"
+                });
+                String currentquery = queryBUilder.mainCondition("relational_id = '"+mother_id+"'").concat(" Union all ");
+                SmartRegisterQueryBuilder queryBUilder2 = new SmartRegisterQueryBuilder();
+                queryBUilder2.SelectInitiateMainTable(membertablename, new String[]{
+                        membertablename + ".relationalid",
+                        membertablename + ".details",
+                        membertablename + ".first_name",
+                        membertablename + "." + DBConstants.KEY.LAST_NAME,
+                        membertablename + ".dob"
+                });
+                currentquery = currentquery.concat(queryBUilder2.mainCondition("relational_id = '"+mother_id+"'").concat(" Union all "));
+                queryBUilder.SelectInitiateMainTable(childtableName, new String[]{
+                        childtableName + ".relationalid",
+                        childtableName + ".details",
+                        childtableName + ".first_name",
+                        childtableName + "." + DBConstants.KEY.LAST_NAME,
+                        childtableName + ".dob"
+                });
 
 //        cursor = db.rawQuery(currentquery.concat(queryBUilder.mainCondition("relational_id = ?")),new String[]{mother_id});
-String rawQuery = queryfortheadapterthing(mother_id);
-        cursor = db.rawQuery(rawQuery,new String[]{});
-        householdList = (ListView)view.findViewById(R.id.household_list);
+                String rawQuery = queryfortheadapterthing(mother_id);
+                cursor = db.rawQuery(rawQuery,new String[]{});
 
-        HouseholdCursorAdpater cursorAdpater = new HouseholdCursorAdpater(getContext(),cursor);
+                return null;
+            }
 
-        householdList.setAdapter(cursorAdpater);
+            @Override
+            protected void onPostExecute(Object o) {
+                super.onPostExecute(o);
+                dialog.dismiss();
+                householdList = (ListView)view.findViewById(R.id.household_list);
+
+                HouseholdCursorAdpater cursorAdpater = new HouseholdCursorAdpater(getContext(),cursor);
+
+                householdList.setAdapter(cursorAdpater);
+            }
+        }).execute();
+        //setAdapter data of Household member
+
     }
 
     public String queryfortheadapterthing(String id){
