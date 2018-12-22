@@ -151,9 +151,10 @@
         },
         {
           "column_name": "person_address",
-          "type": "Client",
+          "type": "Event",
           "json_mapping": {
-            "field": "address7"
+            "field": "obs.fieldCode",
+            "formSubmissionField": "ADDRESS_LINE"
           }
         }
       ]
