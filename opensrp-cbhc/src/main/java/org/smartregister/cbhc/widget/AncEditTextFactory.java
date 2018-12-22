@@ -30,7 +30,6 @@ import java.util.Map;
  * Created by ndegwamartin on 30/06/2018.
  */
 public class AncEditTextFactory extends EditTextFactory {
-    
     @Override
     protected void attachLayout(String stepName, Context context, JsonFormFragment formFragment, JSONObject jsonObject, MaterialEditText editText, ImageView editButton) throws Exception {
         super.attachLayout(stepName, context, formFragment, jsonObject, editText, editButton);
@@ -58,13 +57,6 @@ public class AncEditTextFactory extends EditTextFactory {
             editText.setTag(com.vijay.jsonwizard.R.id.after_look_up, false);
         }
     }
-
-//    @Override
-//    public void attachJson(String stepName, Context context, JsonFormFragment formFragment, JSONObject jsonObject, MaterialEditText editText, ImageView editButton) throws Exception {
-//        super.attachJson(stepName, context, formFragment, jsonObject, editText, editButton);
-//        // lookup hook
-//
-//    }
 
     @Override
     public List<View> getViewsFromJson(String stepName, Context context, JsonFormFragment formFragment, JSONObject jsonObject, CommonListener listener) throws Exception {
