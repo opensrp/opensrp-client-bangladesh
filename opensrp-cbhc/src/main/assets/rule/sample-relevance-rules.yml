@@ -30,14 +30,14 @@ actions:
 name: step1_educational_qualification
 description: education qualification
 priority: 1
-condition: "step1_age >= 4"
+condition: 'step1_age>4 ||helper.formatDate(step1_member_birth_date,"y") > 4'
 actions:
   - "isRelevant = true"
 ---
 name: step1_occupation
 description: occupation
 priority: 1
-condition: "step1_age > 10"
+condition: 'step1_age>10 || helper.formatDate(step1_member_birth_date,"y") > 10'
 actions:
   - "isRelevant = true"
 ---
