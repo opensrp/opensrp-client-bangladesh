@@ -1,32 +1,4 @@
 ---
-name: step1_husband_spouseName_english
-description: spouse name husband english
-priority: 1
-condition: " step1_marital_status.equalsIgnoreCase('বিবাহিত') && step1_gender .equalsIgnoreCase('মহিলা')"
-actions:
-  - "isRelevant = true"
----
-name: step1_wife_spouseName_english
-description: spouse name wife english
-priority: 1
-condition: " step1_marital_status.equalsIgnoreCase('বিবাহিত') && step1_gender .equalsIgnoreCase('পুরুষ')"
-actions:
-  - "isRelevant = true"
----
-name: step1_husband_spouseName_bangali
-description: spouse name husband bangla
-priority: 1
-condition: " step1_marital_status.equalsIgnoreCase('বিবাহিত') && step1_gender .equalsIgnoreCase('মহিলা')"
-actions:
-  - "isRelevant = true"
----
-name: step1_wife_spouseName_bangali
-description: spouse name wife bangla
-priority: 1
-condition: " step1_marital_status.equalsIgnoreCase('বিবাহিত') && step1_gender .equalsIgnoreCase('পুরুষ')"
-actions:
-  - "isRelevant = true"
----
 name: step1_educational_qualification_by_age
 description: education qualification
 priority: 1
