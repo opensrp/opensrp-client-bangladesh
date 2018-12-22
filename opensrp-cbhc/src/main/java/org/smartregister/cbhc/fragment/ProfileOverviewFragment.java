@@ -140,14 +140,32 @@ public class ProfileOverviewFragment extends BaseProfileFragment {
                 childtableName + ".dob"
         });
 
-        cursor = db.rawQuery(currentquery.concat(queryBUilder.mainCondition("relational_id = ?")),new String[]{mother_id});
-
-
+//        cursor = db.rawQuery(currentquery.concat(queryBUilder.mainCondition("relational_id = ?")),new String[]{mother_id});
+String rawQuery = queryfortheadapterthing(mother_id);
+        cursor = db.rawQuery(rawQuery,new String[]{});
         householdList = (ListView)view.findViewById(R.id.household_list);
 
         HouseholdCursorAdpater cursorAdpater = new HouseholdCursorAdpater(getContext(),cursor);
 
         householdList.setAdapter(cursorAdpater);
+    }
+
+    public String queryfortheadapterthing(String id){
+        String query = "Select woman.id as _id , woman.relationalid , woman.details , woman.first_name , woman.last_name , woman.dob , details.value as relation " +
+                "FROM ec_woman as woman, ec_details as details WHERE woman.relational_id = '</>' " +
+                "and details.base_entity_id = woman.id and details.key = 'Realtion_With_Household_Head' " +
+                "Union all " +
+                " " +
+                "Select member.id as _id , member.relationalid , member.details , member.first_name , member.last_name , member.dob, details.value as relation " +
+                "FROM ec_member as member, ec_details as details WHERE member.relational_id = '</>' " +
+                "and details.base_entity_id = member.id and details.key = 'Realtion_With_Household_Head' " +
+                "Union all " +
+                "" +
+                "Select child.id as _id , child.relationalid , child.details , child.first_name , child.last_name , child.dob , details.value as relation " +
+                "FROM ec_child as child, ec_details as details WHERE child.relational_id = '</>'  " +
+                "and details.base_entity_id = child.id " +
+                "and details.key = 'Realtion_With_Household_Head'";
+        return query.replaceAll("</>",id);
     }
     Cursor cursor;
     class HouseholdCursorAdpater extends CursorAdapter {
@@ -168,13 +186,17 @@ public class ProfileOverviewFragment extends BaseProfileFragment {
             final CommonPersonObjectClient pClient = new CommonPersonObjectClient(personinlist.getCaseId(), personinlist.getDetails(), personinlist.getDetails().get("FWHOHFNAME"));
             pClient.setColumnmaps(personinlist.getColumnmaps());
             TextView member_name = (TextView) view.findViewById(R.id.name_tv);
+            TextView relation_tv = (TextView) view.findViewById(R.id.relation_tv);
             TextView member_age = (TextView) view.findViewById(R.id.age_tv);
+            String relation = personinlist.getColumnmaps().get("relation");
 
             String firstName = org.smartregister.util.Utils.getValue(pClient.getColumnmaps(), DBConstants.KEY.FIRST_NAME, true);
             String lastName = org.smartregister.util.Utils.getValue(pClient.getColumnmaps(), DBConstants.KEY.LAST_NAME, true);
-            if(lastName.equalsIgnoreCase("null")||lastName==null){
+            if((lastName!=null&&lastName.equalsIgnoreCase("null"))||lastName==null){
                 lastName = "";
             }
+            if(relation!=null)
+                relation_tv.setText("("+relation+")");
             String patientName = getName(firstName, lastName);
 
             if(profile_photo.get(pClient.entityId())==null){

@@ -2,6 +2,7 @@ package org.smartregister.cbhc.activity;
 
 import android.Manifest;
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
@@ -21,17 +22,23 @@ import android.widget.TextView;
 
 import org.apache.commons.lang3.StringUtils;
 import org.joda.time.DateTime;
+import org.json.JSONObject;
 import org.smartregister.CoreLibrary;
 import org.smartregister.cbhc.R;
 import org.smartregister.cbhc.adapter.ViewPagerAdapter;
 import org.smartregister.cbhc.application.AncApplication;
+import org.smartregister.cbhc.barcode.BarcodeIntentIntegrator;
+import org.smartregister.cbhc.barcode.BarcodeIntentResult;
 import org.smartregister.cbhc.contract.ProfileContract;
+import org.smartregister.cbhc.contract.RegisterContract;
+import org.smartregister.cbhc.domain.AttentionFlag;
 import org.smartregister.cbhc.fragment.ProfileContactsFragment;
 import org.smartregister.cbhc.fragment.ProfileOverviewFragment;
 import org.smartregister.cbhc.fragment.ProfileTasksFragment;
 import org.smartregister.cbhc.fragment.QuickCheckFragment;
 import org.smartregister.cbhc.helper.ImageRenderHelper;
 import org.smartregister.cbhc.presenter.ProfilePresenter;
+import org.smartregister.cbhc.presenter.RegisterPresenter;
 import org.smartregister.cbhc.task.FetchProfileDataTask;
 import org.smartregister.cbhc.util.Constants;
 import org.smartregister.cbhc.util.DBConstants;
@@ -41,6 +48,7 @@ import org.smartregister.cbhc.util.Utils;
 import org.smartregister.cbhc.view.CopyToClipboardDialog;
 import org.smartregister.commonregistry.CommonPersonObject;
 import org.smartregister.commonregistry.CommonPersonObjectClient;
+import org.smartregister.domain.FetchStatus;
 import org.smartregister.domain.ProfileImage;
 import org.smartregister.repository.DetailsRepository;
 import org.smartregister.repository.ImageRepository;
@@ -52,6 +60,7 @@ import org.smartregister.view.activity.DrishtiApplication;
 
 import java.io.File;
 import java.io.Serializable;
+import java.util.List;
 
 import static org.smartregister.cbhc.fragment.ProfileOverviewFragment.EXTRA_HOUSEHOLD_DETAILS;
 import static org.smartregister.util.Utils.getName;
@@ -60,7 +69,7 @@ import static org.smartregister.util.Utils.getValue;
 /**
  * Created by ndegwamartin on 10/07/2018.
  */
-public class ProfileActivity extends BaseProfileActivity implements ProfileContract.View {
+public class ProfileActivity extends BaseProfileActivity implements ProfileContract.View, RegisterContract.View {
 
     private TextView nameView;
     private TextView ageView;
@@ -93,7 +102,7 @@ public class ProfileActivity extends BaseProfileActivity implements ProfileContr
 
         imageRenderHelper = new ImageRenderHelper(this);
 
-
+        presenter = new RegisterPresenter(ProfileActivity.this);
     }
 
     private void setUpViews() {
@@ -192,6 +201,7 @@ public class ProfileActivity extends BaseProfileActivity implements ProfileContr
                 break;
             case R.id.edit_member:
                 CommonPersonObjectClient pclient  = (CommonPersonObjectClient) view.getTag();
+                pclient.getColumnmaps().put("relational_id",householdDetails.getCaseId());
                 String formMetadataformembers = JsonFormUtils.getMemberJsonEditFormString(this, pclient.getColumnmaps());
                 try {
                     JsonFormUtils.startFormForEdit(this, JsonFormUtils.REQUEST_CODE_GET_JSON, formMetadataformembers);
@@ -201,6 +211,7 @@ public class ProfileActivity extends BaseProfileActivity implements ProfileContr
                 break;
             case R.id.profile_image_iv:
                 CommonPersonObjectClient memberclient  = (CommonPersonObjectClient) view.getTag(R.id.clientformemberprofile);
+                memberclient.getColumnmaps().put("relational_id",householdDetails.getCaseId());
                 String clienttype = (String)view.getTag(R.id.typeofclientformemberprofile);
                 Intent intent = new Intent(this, MemberProfileActivity.class);
                 intent.putExtra(Constants.INTENT_KEY.BASE_ENTITY_ID, memberclient.getCaseId());
@@ -214,6 +225,36 @@ public class ProfileActivity extends BaseProfileActivity implements ProfileContr
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
           super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == JsonFormUtils.REQUEST_CODE_GET_JSON && resultCode == RESULT_OK) {
+            try {
+                String jsonString = data.getStringExtra("json");
+                Log.d("JSONResult", jsonString);
+
+                JSONObject form = new JSONObject(jsonString);
+                if (form.getString(JsonFormUtils.ENCOUNTER_TYPE).equals(Constants.EventType.REGISTRATION)) {
+                    presenter.saveForm(jsonString, false);
+                }else if (form.getString(JsonFormUtils.ENCOUNTER_TYPE).equals(Constants.EventType.HouseholdREGISTRATION)) {
+                    presenter.saveForm(jsonString, false);
+                }else if (form.getString(JsonFormUtils.ENCOUNTER_TYPE).equals(Constants.EventType.UPDATE_Household_REGISTRATION)) {
+                    presenter.saveForm(jsonString, true);
+                }else if (form.getString(JsonFormUtils.ENCOUNTER_TYPE).equals(Constants.EventType.MemberREGISTRATION)) {
+                    presenter.saveForm(jsonString, false);
+                } else if (form.getString(JsonFormUtils.ENCOUNTER_TYPE).equals(Constants.EventType.CLOSE)) {
+                    presenter.closeAncRecord(jsonString);
+                }
+            } catch (Exception e) {
+                Log.e(TAG, Log.getStackTraceString(e));
+            }
+
+        } else if (requestCode == BarcodeIntentIntegrator.REQUEST_CODE && resultCode == RESULT_OK) {
+//            BarcodeIntentResult res = BarcodeIntentIntegrator.parseActivityResult(requestCode, resultCode, data);
+//            if (StringUtils.isNotBlank(res.getContents())) {
+//                Log.d("Scanned QR Code", res.getContents());
+//                mBaseFragment.onQRCodeSucessfullyScanned(res.getContents());
+//                mBaseFragment.setSearchTerm(res.getContents());
+//            } else
+//                Log.i("", "NO RESULT FOR QR CODE");
+        }
     }
 
     private ViewPager setupViewPager(ViewPager viewPager) {
@@ -244,6 +285,9 @@ public class ProfileActivity extends BaseProfileActivity implements ProfileContr
             AlertDialog.Builder builderSingle = new AlertDialog.Builder(this);
 
             final ArrayAdapter<String> arrayAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1);
+            arrayAdapter.add("[+] Add Member");
+            arrayAdapter.add("Household Migration");
+            arrayAdapter.add("GR Household Not Found");
 //            arrayAdapter.add(getString(R.string.call));
 //            arrayAdapter.add(getString(R.string.start_contact));
 //            arrayAdapter.add(getString(R.string.close_anc_record));
@@ -253,6 +297,19 @@ public class ProfileActivity extends BaseProfileActivity implements ProfileContr
                 public void onClick(DialogInterface dialog, int which) {
                     String textClicked = arrayAdapter.getItem(which);
                     switch (textClicked) {
+                        case "[+] Add Member":
+                            try{
+
+
+                                presenter.startMemberRegistrationForm(Constants.JSON_FORM.MEMBER_REGISTER,null,null,null,householdDetails.entityId());
+                            }catch(Exception e){
+                                e.printStackTrace();
+                            }
+
+//                            Intent intent = new Intent(ProfileActivity.this, AncJsonFormActivity.class);
+//                            intent.putExtra("json", JsonFormUtils.);
+//                            startActivityForResult(intent, JsonFormUtils.REQUEST_CODE_GET_JSON);
+                            break;
                         case "Call":
                             launchPhoneDialer(womanPhoneNumber);
                             break;
@@ -274,7 +331,7 @@ public class ProfileActivity extends BaseProfileActivity implements ProfileContr
         }
         return super.onOptionsItemSelected(item);
     }
-
+    RegisterPresenter presenter;
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
@@ -343,9 +400,61 @@ public class ProfileActivity extends BaseProfileActivity implements ProfileContr
     }
 
     @Override
+    public Context getContext() {
+        return this;
+    }
+
+    @Override
+    public void displaySyncNotification() {
+
+    }
+
+    @Override
     public void displayToast(int stringID) {
 
         Utils.showShortToast(this, this.getString(stringID));
+    }
+
+    @Override
+    public void displayToast(String message) {
+
+    }
+
+    @Override
+    public void displayShortToast(int resourceId) {
+
+    }
+
+    @Override
+    public void showLanguageDialog(List<String> displayValues) {
+
+    }
+
+    @Override
+    public void startFormActivity(JSONObject form) {
+        try{
+            Intent intent = new Intent(this, AncJsonFormActivity.class);
+            intent.putExtra("json", form.toString());
+            startActivityForResult(intent, JsonFormUtils.REQUEST_CODE_GET_JSON);
+        }catch(Exception e){
+
+        }
+
+    }
+
+    @Override
+    public void refreshList(FetchStatus fetchStatus) {
+
+    }
+
+    @Override
+    public void showAttentionFlagsDialog(List<AttentionFlag> attentionFlags) {
+
+    }
+
+    @Override
+    public void updateInitialsText(String initials) {
+
     }
 
     protected void launchPhoneDialer(String phoneNumber) {

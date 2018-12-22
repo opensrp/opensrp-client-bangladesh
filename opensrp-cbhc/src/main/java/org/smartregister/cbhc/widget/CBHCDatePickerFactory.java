@@ -23,9 +23,8 @@ import java.util.Map;
 public class CBHCDatePickerFactory extends DatePickerFactory {
 
     @Override
-    public void attachJson(String stepName, Context context, JsonFormFragment formFragment, JSONObject jsonObject, MaterialEditText editText, TextView duration) {
-        super.attachJson(stepName, context, formFragment, jsonObject, editText, duration);
-
+    protected void attachLayout(String stepName, Context context, JsonFormFragment formFragment, JSONObject jsonObject, MaterialEditText editText, TextView duration) {
+        super.attachLayout(stepName, context, formFragment, jsonObject, editText, duration);
         try {
             if (jsonObject.has("look_up") && jsonObject.get("look_up").toString().equalsIgnoreCase(Boolean.TRUE.toString())) {
 
@@ -52,4 +51,11 @@ public class CBHCDatePickerFactory extends DatePickerFactory {
             Log.e(getClass().getName(), e.toString(), e);
         }
     }
+
+//    @Override
+//    public void attachJson(String stepName, Context context, JsonFormFragment formFragment, JSONObject jsonObject, MaterialEditText editText, TextView duration) {
+//        super.attachJson(stepName, context, formFragment, jsonObject, editText, duration);
+//
+//
+//    }
 }
