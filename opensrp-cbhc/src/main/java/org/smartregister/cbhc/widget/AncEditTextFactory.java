@@ -30,11 +30,9 @@ import java.util.Map;
  * Created by ndegwamartin on 30/06/2018.
  */
 public class AncEditTextFactory extends EditTextFactory {
-
     @Override
-    public void attachJson(String stepName, Context context, JsonFormFragment formFragment, JSONObject jsonObject, MaterialEditText editText, ImageView editButton) throws Exception {
-        super.attachJson(stepName, context, formFragment, jsonObject, editText, editButton);
-        // lookup hook
+    protected void attachLayout(String stepName, Context context, JsonFormFragment formFragment, JSONObject jsonObject, MaterialEditText editText, ImageView editButton) throws Exception {
+        super.attachLayout(stepName, context, formFragment, jsonObject, editText, editButton);
         if (jsonObject.has("look_up") && jsonObject.get("look_up").toString().equalsIgnoreCase(Boolean.TRUE.toString())) {
             String entityId = jsonObject.getString("key");
             if(jsonObject.has("entity_id")) {
@@ -70,7 +68,7 @@ public class AncEditTextFactory extends EditTextFactory {
             ImageView editButton = (ImageView)rootLayout.findViewById(com.vijay.jsonwizard.R.id.material_edit_text_edit_button);
             editButton.setVisibility(View.INVISIBLE);
 
-            attachJson(stepName, context, formFragment, jsonObject, editText, editButton);
+            attachLayout(stepName, context, formFragment, jsonObject, editText, editButton);
 
             JSONArray canvasIds = new JSONArray();
             rootLayout.setId(ViewUtil.generateViewId());

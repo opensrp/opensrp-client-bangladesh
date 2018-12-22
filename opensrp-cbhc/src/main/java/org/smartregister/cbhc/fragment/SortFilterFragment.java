@@ -54,7 +54,7 @@ public class SortFilterFragment extends Fragment implements SortFilterContract.V
                 R.layout.fragment_sort_filter,
                 container, false);
 
-//        updateFilterList(view, presenter.getConfig().getFilterFields());
+        updateFilterList(view, presenter.getConfig().getFilterFields());
 
         View sortLayout = view.findViewById(R.id.sort_layout);
         sortLayout.setOnClickListener(actionHandler);

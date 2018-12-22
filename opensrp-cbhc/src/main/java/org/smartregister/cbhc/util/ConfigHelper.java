@@ -26,11 +26,11 @@ public class ConfigHelper {
         config.setEnableJsonViews(false);
 
         List<Field> filers = new ArrayList<>();
-        filers.add(new Field(context.getString(R.string.has_tasks_due), "has_tasks_due"));
-        filers.add(new Field(context.getString(R.string.risky_pregnancy), "risky_pregnancy"));
-        filers.add(new Field(context.getString(R.string.syphilis_positive), "syphilis_positive"));
-        filers.add(new Field(context.getString(R.string.hiv_positive), "hiv_positive"));
-        filers.add(new Field(context.getString(R.string.hypertensive), "hypertensive"));
+        filers.add(new Field("Para", "has_tasks_due"));
+        filers.add(new Field("Pregnent Women", "has_tasks_due"));
+        filers.add(new Field("Child(0-2 Month)", "has_tasks_due"));
+        filers.add(new Field("Child(2 Month - 5 Years)", "has_tasks_due"));
+        filers.add(new Field("Adult (Above 50 Years)", "has_tasks_due"));
         config.setFilterFields(filers);
 
         List<Field> sortFields = new ArrayList<>();
