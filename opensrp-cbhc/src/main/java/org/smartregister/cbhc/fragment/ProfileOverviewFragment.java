@@ -196,7 +196,7 @@ String rawQuery = queryfortheadapterthing(mother_id);
                 lastName = "";
             }
             if(relation!=null)
-                relation_tv.setText("("+relation+")");
+                relation_tv.setText(" ("+relation+")");
             String patientName = getName(firstName, lastName);
 
             if(profile_photo.get(pClient.entityId())==null){
