@@ -176,20 +176,16 @@ public class ProfileOverviewFragment extends BaseProfileFragment {
     }
 
     public String queryfortheadapterthing(String id){
-        String query = "Select woman.id as _id , woman.relationalid , woman.details , woman.first_name , woman.last_name , woman.dob , details.value as relation " +
-                "FROM ec_woman as woman, ec_details as details WHERE woman.relational_id = '</>' " +
-                "and details.base_entity_id = woman.id and details.key = 'Realtion_With_Household_Head' " +
-                "Union all " +
+        String query = "select woman.id as _id , woman.relationalid , woman.details , woman.first_name , woman.last_name , woman.dob , details.value as relation " +
+                "FROM ec_woman as woman left join ec_details as details on (details.base_entity_id = woman.id and details.key = 'Realtion_With_Household_Head') " +
+                "WHERE woman.relational_id = '</>'" +
+                " " +                "Union all  Select member.id as _id , member.relationalid , member.details , member.first_name , member.last_name , member.dob, details.value as relation " +
+                "FROM ec_member as member left join ec_details as details on (details.base_entity_id = member.id and details.key = 'Realtion_With_Household_Head') " +
+                "WHERE member.relational_id = '</>' " +
                 " " +
-                "Select member.id as _id , member.relationalid , member.details , member.first_name , member.last_name , member.dob, details.value as relation " +
-                "FROM ec_member as member, ec_details as details WHERE member.relational_id = '</>' " +
-                "and details.base_entity_id = member.id and details.key = 'Realtion_With_Household_Head' " +
-                "Union all " +
-                "" +
-                "Select child.id as _id , child.relationalid , child.details , child.first_name , child.last_name , child.dob , details.value as relation " +
-                "FROM ec_child as child, ec_details as details WHERE child.relational_id = '</>'  " +
-                "and details.base_entity_id = child.id " +
-                "and details.key = 'Realtion_With_Household_Head'";
+                "Union all Select child.id as _id , child.relationalid , child.details , child.first_name , child.last_name , child.dob , details.value as relation " +
+                "FROM ec_child as child left join ec_details as details on (details.base_entity_id = child.id and details.key = 'Realtion_With_Household_Head') " +
+                "WHERE child.relational_id = '</>'";
         return query.replaceAll("</>",id);
     }
     Cursor cursor;
