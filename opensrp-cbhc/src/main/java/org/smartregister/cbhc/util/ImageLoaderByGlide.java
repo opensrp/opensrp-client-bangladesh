@@ -8,6 +8,7 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.load.resource.drawable.GlideDrawable;
 import com.bumptech.glide.request.animation.GlideAnimation;
 import com.bumptech.glide.request.target.ViewTarget;
+import com.bumptech.glide.signature.StringSignature;
 
 import org.smartregister.cbhc.application.AncApplication;
 
@@ -29,6 +30,10 @@ public class ImageLoaderByGlide {
                 iv.setImageDrawable(resource.getCurrent());
             }
         };
-        Glide.with(AncApplication.getInstance().getApplicationContext()).load(url).diskCacheStrategy(DiskCacheStrategy.SOURCE).into(viewTarget);
+        Glide.with(AncApplication.getInstance().getApplicationContext())
+                .load(url)
+                .diskCacheStrategy(DiskCacheStrategy.SOURCE)
+                .signature(new StringSignature(String.valueOf(System.currentTimeMillis())))
+                .into(viewTarget);
     }
 }
