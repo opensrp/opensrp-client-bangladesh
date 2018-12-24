@@ -4,6 +4,8 @@ import android.content.BroadcastReceiver;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
+import android.preference.Preference;
+import android.preference.PreferenceFragment;
 import android.preference.PreferenceManager;
 import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
@@ -63,6 +65,7 @@ import java.util.concurrent.TimeUnit;
 
 import id.zelory.compressor.Compressor;
 
+import static android.preference.PreferenceManager.getDefaultSharedPreferences;
 import static org.smartregister.util.Log.logError;
 import static org.smartregister.util.Log.logInfo;
 
@@ -92,6 +95,11 @@ public class AncApplication extends DrishtiApplication implements TimeChangedBro
     public void onCreate() {
 
         super.onCreate();
+        if(getSharedPreferences().fetchBaseURL("").isEmpty()){
+            AllSharedPreferences allSharedPreferences = new AllSharedPreferences(
+                    getDefaultSharedPreferences(this));
+            allSharedPreferences.updateUrl(getString(R.string.opensrp_url));
+        }
 
         mInstance = this;
         context = Context.getInstance();
@@ -101,8 +109,6 @@ public class AncApplication extends DrishtiApplication implements TimeChangedBro
         //Initialize Modules
         CoreLibrary.init(context);
         initLibraries();
-//
-
 
         SyncStatusBroadcastReceiver.init(this);
         TimeChangedBroadcastReceiver.init(this);
@@ -121,8 +127,9 @@ public class AncApplication extends DrishtiApplication implements TimeChangedBro
         setUpEventHandling();
         initOfflineSchedules();
         scheduleJobs();
-
+//getSharedPreferences().
     }
+
     public void initLibraries() {
         ImmunizationLibrary.init(context, getRepository(), null, BuildConfig.VERSION_CODE, BuildConfig.DATABASE_VERSION);
         ConfigurableViewsLibrary.init(context, getRepository());
@@ -130,6 +137,7 @@ public class AncApplication extends DrishtiApplication implements TimeChangedBro
         startZscoreRefreshService();
         startPullConfigurableViewsIntentService(getApplicationContext());
     }
+
     private AllSharedPreferences getSharedPreferences(){
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
         AllSharedPreferences allSharedPreferences = new AllSharedPreferences(preferences);
@@ -159,6 +167,7 @@ public class AncApplication extends DrishtiApplication implements TimeChangedBro
             logError("Malformed Url: " + baseUrl);
         }
     }
+
     public void initOfflineSchedules() {
         try {
             List<VaccineGroup> childVaccines = VaccinatorUtils.getSupportedVaccines(this);
@@ -405,8 +414,10 @@ public class AncApplication extends DrishtiApplication implements TimeChangedBro
 
         return TimeUnit.MINUTES.toMillis(minutes);
     }
+
     public void startZscoreRefreshService() {
         Intent intent = new Intent(this.getApplicationContext(), ZScoreRefreshIntentService.class);
         this.getApplicationContext().startService(intent);
     }
+
 }
