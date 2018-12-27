@@ -1,0 +1,138 @@
+{
+  "count": "1",
+  "encounter_type": "Member Registration",
+  "entity_id": "",
+  "relational_id": "",
+  "metadata": {
+    "start": {
+      "openmrs_entity_parent": "",
+      "openmrs_entity": "concept",
+      "openmrs_data_type": "start",
+      "openmrs_entity_id": "163137AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
+    },
+    "end": {
+      "openmrs_entity_parent": "",
+      "openmrs_entity": "concept",
+      "openmrs_data_type": "end",
+      "openmrs_entity_id": "163138AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
+    },
+    "today": {
+      "openmrs_entity_parent": "",
+      "openmrs_entity": "encounter",
+      "openmrs_entity_id": "encounter_date"
+    },
+    "deviceid": {
+      "openmrs_entity_parent": "",
+      "openmrs_entity": "concept",
+      "openmrs_data_type": "deviceid",
+      "openmrs_entity_id": "163149AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
+    },
+    "subscriberid": {
+      "openmrs_entity_parent": "",
+      "openmrs_entity": "concept",
+      "openmrs_data_type": "subscriberid",
+      "openmrs_entity_id": "163150AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
+    },
+    "simserial": {
+      "openmrs_entity_parent": "",
+      "openmrs_entity": "concept",
+      "openmrs_data_type": "simserial",
+      "openmrs_entity_id": "163151AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
+    },
+    "phonenumber": {
+      "openmrs_entity_parent": "",
+      "openmrs_entity": "concept",
+      "openmrs_data_type": "phonenumber",
+      "openmrs_entity_id": "163152AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
+    },
+    "encounter_location": "",
+    "look_up": {
+      "entity_id": "",
+      "value": ""
+    }
+  },
+  "step1": {
+    "title": "Member Registration",
+    "fields": [
+      {
+        "key": "followup_Date",
+        "openmrs_entity_parent": "",
+        "openmrs_entity": "",
+        "openmrs_entity_id": "",
+        "openmrs_data_type": "text",
+        "type": "date_picker",
+        "hint": "তারিখ",
+        "expanded": false,
+        "min_date": "today-5y",
+        "max_date": "today",
+        "read_only":"true",
+        "value":"today",
+        "v_required": {
+          "value": "false",
+          "err": "Please enter the date of Followup."
+        }
+      },
+      {
+        "key": "family_planning",
+        "openmrs_entity_parent": "",
+        "openmrs_entity": "person_attribute",
+        "openmrs_entity_id": "familyplanning",
+        "openmrs_data_type": "text",
+        "type": "check_box",
+        "label": "পরিবার পরিকল্পনা",
+        "exclusive": ["No_Method_Usage"],
+        "options": [
+          {
+            "key": "Condoms",
+            "text": "কনডম",
+            "value": false,
+            "openmrs_choice_id": "Condoms"
+          },
+          {
+            "key": "Injectable",
+            "text": "ইনজেক্টবল",
+            "value": false,
+            "openmrs_choice_id": "Injectable"
+          },
+          {
+            "key": "IUD",
+            "text": "আই ইউ ডি",
+            "value": false,
+            "openmrs_choice_id": "IUD"
+          },
+          {
+            "key": "Implant",
+            "text": "ইমপ্লান্ট",
+            "value": false,
+            "openmrs_choice_id": "Implant"
+          },
+          {
+            "key": "Permanent_FP_Method",
+            "text": "স্থায়ী পদ্ধতি",
+            "value": false,
+            "openmrs_choice_id": "Permanent_FP_Method"
+          },
+          {
+            "key": "Other_Method",
+            "text": "অন্যান্য পদ্ধতি",
+            "value": false,
+            "openmrs_choice_id": "Other_Method"
+          },
+          {
+            "key": "Infertility",
+            "text": "বন্ধ্যা দম্পতি",
+            "value": false,
+            "openmrs_choice_id": "Infertility"
+          },
+          {
+            "key": "No_Method_Usage",
+            "text": "পদ্ধতি ব্যবহার করে না",
+            "value": false,
+            "openmrs_choice_id": "No_Method_Usage"
+          }
+        ]
+
+      }
+    ]
+  }
+}

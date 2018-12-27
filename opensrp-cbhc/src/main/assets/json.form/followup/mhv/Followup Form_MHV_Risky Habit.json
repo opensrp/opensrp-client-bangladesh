@@ -1,0 +1,137 @@
+{
+  "count": "1",
+  "encounter_type": "Member Registration",
+  "entity_id": "",
+  "relational_id": "",
+  "metadata": {
+    "start": {
+      "openmrs_entity_parent": "",
+      "openmrs_entity": "concept",
+      "openmrs_data_type": "start",
+      "openmrs_entity_id": "163137AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
+    },
+    "end": {
+      "openmrs_entity_parent": "",
+      "openmrs_entity": "concept",
+      "openmrs_data_type": "end",
+      "openmrs_entity_id": "163138AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
+    },
+    "today": {
+      "openmrs_entity_parent": "",
+      "openmrs_entity": "encounter",
+      "openmrs_entity_id": "encounter_date"
+    },
+    "deviceid": {
+      "openmrs_entity_parent": "",
+      "openmrs_entity": "concept",
+      "openmrs_data_type": "deviceid",
+      "openmrs_entity_id": "163149AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
+    },
+    "subscriberid": {
+      "openmrs_entity_parent": "",
+      "openmrs_entity": "concept",
+      "openmrs_data_type": "subscriberid",
+      "openmrs_entity_id": "163150AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
+    },
+    "simserial": {
+      "openmrs_entity_parent": "",
+      "openmrs_entity": "concept",
+      "openmrs_data_type": "simserial",
+      "openmrs_entity_id": "163151AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
+    },
+    "phonenumber": {
+      "openmrs_entity_parent": "",
+      "openmrs_entity": "concept",
+      "openmrs_data_type": "phonenumber",
+      "openmrs_entity_id": "163152AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
+    },
+    "encounter_location": "",
+    "look_up": {
+      "entity_id": "",
+      "value": ""
+    }
+  },
+  "step1": {
+    "title": "Member Registration",
+    "fields": [
+      {
+        "key": "followup_Date",
+        "openmrs_entity_parent": "",
+        "openmrs_entity": "",
+        "openmrs_entity_id": "",
+        "openmrs_data_type": "text",
+        "type": "date_picker",
+        "hint": "তারিখ",
+        "expanded": false,
+        "min_date": "today-5y",
+        "max_date": "today",
+        "read_only":"true",
+        "value":"today",
+        "v_required": {
+          "value": "false",
+          "err": "Please enter the date of Followup."
+        }
+      },
+      {
+        "key": "risky_habits",
+        "openmrs_entity_parent": "",
+        "openmrs_entity": "person_attribute",
+        "openmrs_entity_id": "RiskyHabit",
+        "openmrs_data_type": "text",
+        "type": "check_box",
+        "label": "ঝুকিপূর্ন অভ্যাস",
+        "exclusive": ["None"],
+        "options": [
+          {
+            "key": "Cigarette",
+            "text": "বিড়ি/সিগারেট",
+            "value": false,
+            "openmrs_choice_id": "Cigarette"
+          },
+          {
+            "key": "Tobacco / White Leaf",
+            "text": "তামাক/সাদা পাতা",
+            "value": false,
+            "openmrs_choice_id": "Tobacco / White Leaf"
+          },
+          {
+            "key": "Others (Tobacco)",
+            "text": "অন্যান্য তামাক",
+            "value": false,
+            "openmrs_choice_id": "Others (Tobacco)"
+          },
+          {
+            "key": "Drug Addiction",
+            "text": "মাদকাসক্ত",
+            "value": false,
+            "openmrs_choice_id": "Drug Addiction"
+          },
+          {
+            "key": "Obesity",
+            "text": "স্থুলকায়",
+            "value": false,
+            "openmrs_choice_id": "Obesity"
+          },
+          {
+            "key": "High Salt Intake",
+            "text": "অতিরিক্ত লবন",
+            "value": false,
+            "openmrs_choice_id": "High Salt Intake"
+          },
+          {
+            "key": "Others (Risky Habit)",
+            "text": "অন্যান্য",
+            "value": false,
+            "openmrs_choice_id": "Others (Risky Habit)"
+          },
+          {
+            "key": "None",
+            "text": "নেই",
+            "value": false,
+            "openmrs_choice_id": "None"
+          }
+        ]
+      }
+    ]
+  }
+}
