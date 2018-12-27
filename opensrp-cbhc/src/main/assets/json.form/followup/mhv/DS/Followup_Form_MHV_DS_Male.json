@@ -1,0 +1,104 @@
+{
+  "count": "1",
+  "encounter_type": "Member Registration",
+  "entity_id": "",
+  "relational_id": "",
+  "metadata": {
+    "start": {
+      "openmrs_entity_parent": "",
+      "openmrs_entity": "concept",
+      "openmrs_data_type": "start",
+      "openmrs_entity_id": "163137AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
+    },
+    "end": {
+      "openmrs_entity_parent": "",
+      "openmrs_entity": "concept",
+      "openmrs_data_type": "end",
+      "openmrs_entity_id": "163138AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
+    },
+    "today": {
+      "openmrs_entity_parent": "",
+      "openmrs_entity": "encounter",
+      "openmrs_entity_id": "encounter_date"
+    },
+    "deviceid": {
+      "openmrs_entity_parent": "",
+      "openmrs_entity": "concept",
+      "openmrs_data_type": "deviceid",
+      "openmrs_entity_id": "163149AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
+    },
+    "subscriberid": {
+      "openmrs_entity_parent": "",
+      "openmrs_entity": "concept",
+      "openmrs_data_type": "subscriberid",
+      "openmrs_entity_id": "163150AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
+    },
+    "simserial": {
+      "openmrs_entity_parent": "",
+      "openmrs_entity": "concept",
+      "openmrs_data_type": "simserial",
+      "openmrs_entity_id": "163151AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
+    },
+    "phonenumber": {
+      "openmrs_entity_parent": "",
+      "openmrs_entity": "concept",
+      "openmrs_data_type": "phonenumber",
+      "openmrs_entity_id": "163152AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
+    },
+    "encounter_location": "",
+    "look_up": {
+      "entity_id": "",
+      "value": ""
+    }
+  },
+  "step1": {
+    "title": "Followup Disease Male",
+    "fields": [
+
+      {
+        "key": "followup_Date",
+        "openmrs_entity_parent": "",
+        "openmrs_entity": "",
+        "openmrs_entity_id": "",
+        "openmrs_data_type": "text",
+        "type": "date_picker",
+        "hint": "তারিখ",
+        "expanded": false,
+        "min_date": "today-5y",
+        "max_date": "today",
+        "read_only":"true",
+        "value":"today",
+        "v_required": {
+          "value": "false",
+          "err": "Please enter the date of Followup."
+        }
+      },
+      {
+        "key":"General_Disease_Male",
+        "openmrs_entity_parent":"",
+        "openmrs_entity":"person_attribute",
+        "openmrs_entity_id":"",
+        "openmrs_data_type":"text",
+        "type":"check_box",
+        "label":"সাধারন রোগ পুরুষ",
+        "exclusive": ["None"],
+        "options":[{"key":"High Blood Pressure","text":"উচ্চ রক্তচাপ ","value":"false","openmrs_choice_id":"High Blood Pressure"},{"key":"Diabetes","text":"ডায়াবেটিস ","value":"false","openmrs_choice_id":"Diabetes"},{"key":"Tuberculosis","text":"যক্ষ্মা ","value":"false","openmrs_choice_id":"Tuberculosis"},{"key":"Others_member_disease","text":"অন্যান্য ","value":"false","openmrs_choice_id":"Others_member_disease"}]
+
+
+      },
+      {
+        "key":"Place_of_Refer",
+        "openmrs_entity_parent":"",
+        "openmrs_entity":"",
+        "openmrs_entity_id":"",
+        "openmrs_data_type":"text",
+        "type":"spinner",
+        "hint":"রেফারের স্থান",
+        "values":["কমিউনিটি ক্লিনিক ", "ইউনিয়ন উপস্বাস্থ্য কেন্দ্র ", "ইউনিয়ন পরিবার কল্যাণ কেন্দ্র ", "ইউনিয়ন স্বাস্থ্য ও পরিবার কল্যাণ কেন্দ্র ", "মা ও শিশু কল্যাণ কেন্দ্র ", "১০ শয্যা বিশিষ্ট হাসপাতাল ","২০ শয্যা বিশিষ্ট হাসপাতাল ","উপজেলা স্বাস্থ্য কমপ্লেক্স ","সদর হাসপাতাল ","মেডিকেল কলেজ হাসপাতাল ","বেসরকারী ক্লিনিক/হাসপাতাল ","এনজিও ","বিশেষায়িত হাসপাতাল ","অন্যান্য ","রেফার করা হয়নি "],
+        "openmrs_choice_ids":{"কমিউনিটি ক্লিনিক ":"Community_Clinic", "ইউনিয়ন উপস্বাস্থ্য কেন্দ্র ":"Union_Sub_Center", "ইউনিয়ন পরিবার কল্যাণ কেন্দ্র ":"Union_Family_Welfare_Center", "ইউনিয়ন স্বাস্থ্য ও পরিবার কল্যাণ কেন্দ্র ":"Union_Health_and_Family_Welfare_Center", "মা ও শিশু কল্যাণ কেন্দ্র ":"Metarnal_and_Child_Wellfare_Center", "১০ শয্যা বিশিষ্ট হাসপাতাল ":"10_Bed_Hospital","২০ শয্যা বিশিষ্ট হাসপাতাল ":"20_Beds_Hospital","উপজেলা স্বাস্থ্য কমপ্লেক্স ":"Upazila_Health_Complex","সদর হাসপাতাল ":"District_Hospital","মেডিকেল কলেজ হাসপাতাল ":"Medical_College_and_Hospital","বেসরকারী ক্লিনিক/হাসপাতাল ":"Private_Clinic_and_Hospital","এনজিও ":"Non-governmental_Organization","বিশেষায়িত হাসপাতাল ":"Specialized_Hospital","অন্যান্য ":"Others_Health_Facility","রেফার করা হয়নি ":"Not_referred"}
+
+      }
+
+    ]
+  }
+}
