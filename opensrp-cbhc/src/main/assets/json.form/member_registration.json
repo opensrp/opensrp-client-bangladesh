@@ -646,10 +646,9 @@
         }
       ,
         "relevance": {
-          "rules-engine": {
-            "ex-rules": {
-              "rules-file": "sample-relevance-rules.yml"
-            }
+          "step1:age": {
+            "type": "numeric",
+            "ex": "greaterThanEqualTo(., \"10\")"
           }
         }
       },
@@ -837,10 +836,9 @@
           "অন্যান্য": "Others (Education)"
         },
         "relevance": {
-          "rules-engine": {
-            "ex-rules": {
-              "rules-file": "sample-relevance-rules.yml"
-            }
+          "step1:age": {
+            "type": "numeric",
+            "ex": "greaterThanEqualTo(., \"4\")"
           }
         }
       },
@@ -1023,13 +1021,11 @@
           "গৃহকর্ম":"Household Work",
           "ছাত্র/ছাত্রী":"Study",
           "অন্যান্য":"Others (Occupation)"
-        }
-      ,
+        },
         "relevance": {
-          "rules-engine": {
-            "ex-rules": {
-              "rules-file": "sample-relevance-rules.yml"
-            }
+          "step1:age": {
+            "type": "numeric",
+            "ex": "greaterThanEqualTo(., \"10\")"
           }
         }
       },
@@ -1486,10 +1482,9 @@
           }
         ],
         "relevance": {
-          "rules-engine": {
-            "ex-rules": {
-              "rules-file": "sample-relevance-rules.yml"
-            }
+          "step1:marital_status": {
+            "type": "string",
+            "ex": "equalTo(., \"বিবাহিত\")"
           }
         }
       },

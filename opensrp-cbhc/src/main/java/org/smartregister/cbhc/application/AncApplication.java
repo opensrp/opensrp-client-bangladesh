@@ -95,12 +95,12 @@ public class AncApplication extends DrishtiApplication implements TimeChangedBro
     public void onCreate() {
 
         super.onCreate();
-        if(getSharedPreferences().fetchBaseURL("").isEmpty()){
-            AllSharedPreferences allSharedPreferences = new AllSharedPreferences(
-                    getDefaultSharedPreferences(this));
-            allSharedPreferences.updateUrl(getString(R.string.opensrp_url));
-        }
-
+//        if(getSharedPreferences().fetchBaseURL("").isEmpty()){
+//            AllSharedPreferences allSharedPreferences = new AllSharedPreferences(
+//                    getDefaultSharedPreferences(this));
+//            allSharedPreferences.updateUrl(getString(R.string.opensrp_url));
+//        }
+//        DrishtiApplication.getInstance().setPassword(getPassword());
         mInstance = this;
         context = Context.getInstance();
         context.updateApplicationContext(getApplicationContext());
@@ -203,7 +203,7 @@ public class AncApplication extends DrishtiApplication implements TimeChangedBro
             password = getContext().userService().getGroupId(username);
         }
 
-        return "";
+        return "opensrp";
 
     }
 

@@ -401,9 +401,10 @@ public class AncJsonFormFragment extends JsonFormFragment {
     }
 
 
-
+     boolean flag=false;
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
+
         if (item.getItemId() == android.R.id.home) {
             presenter.onBackClick();
             return true;
@@ -411,13 +412,20 @@ public class AncJsonFormFragment extends JsonFormFragment {
             return next();
         } else if (item.getItemId() == com.vijay.jsonwizard.R.id.action_save) {
             showform();
-            try {
-                Boolean skipValidation = ((JsonFormActivity) mMainView.getContext()).getIntent().getBooleanExtra(JsonFormConstants.SKIP_VALIDATION,
-                        false);
-                return save(skipValidation);
-            } catch (Exception e) {
-                return save(false);
-            }
+            new Handler().postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    try {
+                        Boolean skipValidation = ((JsonFormActivity) mMainView.getContext()).getIntent().getBooleanExtra(JsonFormConstants.SKIP_VALIDATION,
+                                false);
+                        flag=save(skipValidation);
+                    } catch (Exception e) {
+                        flag=save(false);
+                    }
+                }
+            },500);
+            return flag;
+
         }
         return super.onOptionsItemSelected(item);
     }
@@ -435,7 +443,7 @@ public class AncJsonFormFragment extends JsonFormFragment {
         } catch (Exception e) {
             dissmissForm();
         }
-        dissmissForm();
+        //dissmissForm();
 
 
         return false;
@@ -468,19 +476,19 @@ public class AncJsonFormFragment extends JsonFormFragment {
     }
 
     public void showform(){
-//        validationProgressdialog =  new ProgressDialog(this.getActivity());
-//        validationProgressdialog.setTitle("Processing");
-//        validationProgressdialog.setMessage("Checking Validations");
-//        validationProgressdialog.show();
-        show(Snackbar.make(mMainView, "Checking Validations", Snackbar.LENGTH_LONG),Snackbar.LENGTH_LONG);
+        validationProgressdialog =  new ProgressDialog(this.getActivity());
+        validationProgressdialog.setTitle("Processing");
+        validationProgressdialog.setMessage("Checking Validations");
+        validationProgressdialog.show();
+       // show(Snackbar.make(mMainView, "Checking Validations", Snackbar.LENGTH_LONG),Snackbar.LENGTH_LONG);
     }
 
     public void dissmissForm() {
-//        if(validationProgressdialog!=null) {
-//            if(validationProgressdialog.isShowing()) {
-//                validationProgressdialog.dismiss();
-//            }
-//        }
+        if(validationProgressdialog!=null) {
+            if(validationProgressdialog.isShowing()) {
+                validationProgressdialog.dismiss();
+            }
+        }
     }
 
 
