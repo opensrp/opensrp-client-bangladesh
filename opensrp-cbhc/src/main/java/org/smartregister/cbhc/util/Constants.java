@@ -2,6 +2,9 @@ package org.smartregister.cbhc.util;
 
 import org.smartregister.cbhc.BuildConfig;
 
+import java.lang.reflect.Array;
+import java.util.ArrayList;
+
 /**
  * Created by ndegwamartin on 14/03/2018.
  */
@@ -50,6 +53,68 @@ public abstract class Constants {
         public static final String ANC_REGISTER = "anc_register";
         public static final String ANC_CLOSE = "anc_close";
         public static final String FOLLOW_UP = "member_followup";
+
+    }
+
+    public static class FOLLOWUP_FORM {
+
+        //DS Forms
+        public static final String Followup_Form_MHV_DS_Female = "followup/mhv/DS/Followup_Form_MHV_DS_Female";
+        public static final String Followup_Form_MHV_DS_Male = "followup/mhv/DS/Followup_Form_MHV_DS_Male";
+        public static final String Followup_Form_MHV_DS_NewBorn = "followup/mhv/DS/Followup_Form_MHV_DS_NewBorn";
+        public static final String Followup_Form_MHV_DS_Toddler = "followup/mhv/DS/Followup_Form_MHV_DS_Toddler";
+
+        //Others
+        public static final String Followup_Form_MHV_ANC = "followup/mhv/Followup_Form_MHV_ANC";
+        public static final String Followup_Form_MHV_Death = "followup/mhv/Followup_Form_MHV_Death";
+
+        public static final String Followup_Form_MHV_Delivery = "followup/mhv/Followup_Form_MHV_Delivery";
+        public static final String Followup_Form_MHV_DS = "followup/mhv/Followup_Form_MHV_DS";
+        public static final String Followup_Form_MHV_FP = "followup/mhv/Followup_Form_MHV_FP";
+        public static final String Followup_Form_MHV_Marital = "followup/mhv/Followup_Form_MHV_Marital";
+        public static final String Followup_Form_MHV_Mobile_no = "followup/mhv/Followup_Form_MHV_Mobile_no";
+        public static final String Followup_Form_MHV_PNC = "followup/mhv/Followup_Form_MHV_PNC";
+        public static final String Followup_Form_MHV_Risky_Habit = "followup/mhv/Followup_Form_MHV_Risky_Habit";
+
+        public static ArrayList<FOLLOWUPFORMS> followup_forms;
+        public static ArrayList<FOLLOWUPFORMS> getFollowup_forms(){
+            followup_forms = new ArrayList<>();
+            followup_forms.add(new FOLLOWUPFORMS(Followup_Form_MHV_DS_Female,"Disease Form (Female)"));
+            followup_forms.add(new FOLLOWUPFORMS(Followup_Form_MHV_DS_Male,"Disease Form (Male)"));
+            followup_forms.add(new FOLLOWUPFORMS(Followup_Form_MHV_DS_NewBorn,"Disease Form (0-2 Month)"));
+            followup_forms.add(new FOLLOWUPFORMS(Followup_Form_MHV_DS_Toddler,"Disease Form (2 Month - 5 Years)"));
+
+            followup_forms.add(new FOLLOWUPFORMS(Followup_Form_MHV_ANC,"ANC Form"));
+            followup_forms.add(new FOLLOWUPFORMS(Followup_Form_MHV_Death,"Death Form"));
+
+            followup_forms.add(new FOLLOWUPFORMS(Followup_Form_MHV_Delivery,"Delivery Form (Any New Birth)"));
+
+            followup_forms.add(new FOLLOWUPFORMS(Followup_Form_MHV_FP,"Family Planning Form"));
+            followup_forms.add(new FOLLOWUPFORMS(Followup_Form_MHV_Marital,"Marital Status"));
+            followup_forms.add(new FOLLOWUPFORMS(Followup_Form_MHV_Mobile_no,"Mobile Number"));
+
+            followup_forms.add(new FOLLOWUPFORMS(Followup_Form_MHV_PNC,"PNC Form"));
+            followup_forms.add(new FOLLOWUPFORMS(Followup_Form_MHV_Risky_Habit,"Risky Habit"));
+
+            return followup_forms;
+        }
+        public static class FOLLOWUPFORMS {
+            String form_name;
+            String display_name;
+            public FOLLOWUPFORMS(String form_name,String display_name){
+                this.form_name = form_name;
+                this.display_name = display_name;
+            }
+
+            public String getForm_name(){
+                return form_name;
+            }
+            public String getDisplay_name(){
+                return display_name;
+            }
+        }
+
+
 
     }
 

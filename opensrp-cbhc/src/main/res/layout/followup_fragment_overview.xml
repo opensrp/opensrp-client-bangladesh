@@ -1,0 +1,121 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#ffffff"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:padding="20dp">
+
+        <android.support.v4.widget.NestedScrollView
+            android:id="@+id/scrollView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <LinearLayout
+                android:id="@+id/container"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginBottom="10dp"
+                    android:layout_marginTop="10dp"
+                    android:background="@color/white" />
+
+                <LinearLayout
+                    android:id="@+id/followup_forms"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="10dp"
+                    android:layout_marginTop="10dp"
+                    android:orientation="vertical">
+                    <org.smartregister.view.customcontrols.CustomFontTextView
+
+                        style="@style/CustomFontTextViewStyle.ClientList"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentLeft="true"
+                        android:text="Active Forms"
+                        android:layout_marginBottom="10dp"
+                        android:textColor="@color/text_black"
+                        android:textSize="@dimen/activity_sub_title_size" />
+
+
+                    <org.smartregister.immunization.view.ExpandableHeightGridView
+                        android:id="@+id/followup_form_list"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:columnWidth="@dimen/vaccine_card_width"
+                        android:gravity="center"
+                        android:horizontalSpacing="20dp"
+                        android:isScrollContainer="false"
+                        android:numColumns="2"
+                        android:stretchMode="columnWidth"
+                        android:verticalSpacing="15dp" />
+
+                </LinearLayout>
+                <LinearLayout
+                    android:layout_width="fill_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="10dp"
+                    android:layout_marginBottom="10dp"
+                    android:layout_marginTop="10dp"
+                    android:background="@color/text_black">
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/saved_followupforms"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="10dp"
+                    android:layout_marginTop="10dp"
+                    android:orientation="vertical">
+                    <org.smartregister.view.customcontrols.CustomFontTextView
+
+                        style="@style/CustomFontTextViewStyle.ClientList"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentLeft="true"
+                        android:text="Followup History"
+                        android:layout_marginBottom="10dp"
+                        android:layout_marginTop="10dp"
+                        android:textColor="@color/text_black"
+                        android:textSize="@dimen/activity_sub_title_size"
+                        android:paddingBottom="10dp"/>
+
+
+
+                    <org.smartregister.immunization.view.ExpandableHeightGridView
+                        android:id="@+id/form_history"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:columnWidth="@dimen/vaccine_card_width"
+                        android:gravity="center"
+                        android:horizontalSpacing="20dp"
+                        android:isScrollContainer="false"
+                        android:numColumns="1"
+                        android:stretchMode="columnWidth"
+                        android:verticalSpacing="15dp" />
+
+
+                </LinearLayout>
+
+            </LinearLayout>
+        </android.support.v4.widget.NestedScrollView>
+
+        <!--<LinearLayout-->
+        <!--android:orientation="horizontal"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="3dp"></LinearLayout>-->
+    </LinearLayout>
+
+</LinearLayout>

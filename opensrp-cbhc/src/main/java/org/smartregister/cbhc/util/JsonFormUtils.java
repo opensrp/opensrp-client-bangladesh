@@ -1274,4 +1274,19 @@ public class JsonFormUtils extends org.smartregister.util.JsonFormUtils {
             Log.e(TAG, e.getMessage());
         }
     }
+
+    public static void launchFollowUpForm(Activity activity,final String form_name) {
+        try {
+            Intent intent = new Intent(activity, AncJsonFormActivity.class);
+
+            JSONObject form = FormUtils.getInstance(activity).getFormJson(form_name);
+            if (form != null) {
+                form.put(Constants.JSON_FORM_KEY.ENTITY_ID, activity.getIntent().getStringExtra(Constants.INTENT_KEY.BASE_ENTITY_ID));
+                intent.putExtra(Constants.INTENT_KEY.JSON, form.toString());
+                activity.startActivityForResult(intent, JsonFormUtils.REQUEST_CODE_GET_JSON);
+            }
+        } catch (Exception e) {
+            Log.e(TAG, e.getMessage());
+        }
+    }
 }

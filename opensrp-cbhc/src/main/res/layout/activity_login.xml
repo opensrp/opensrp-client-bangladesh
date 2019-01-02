@@ -18,47 +18,44 @@
 
         <!-- Top section -->
         <LinearLayout
-            android:id="@+id/top_section"
+            android:id="@+id/bottom_section"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentTop="true"
+            android:layout_marginTop="5dp"
             android:orientation="vertical"
-            android:paddingBottom="10dp"
-            android:paddingTop="25dp">
+            android:paddingTop="5dp">
 
-            <ImageView
-                android:id="@+id/login_logo"
-                android:layout_width="@dimen/login_opensrp_logo_width"
-                android:layout_height="@dimen/login_opensrp_logo_width"
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:layout_weight="1"
-                android:contentDescription="logo"
-                android:scaleType="fitCenter"
-                android:src="@drawable/community_clinic_rounded" />
+                android:gravity="bottom"
+                android:orientation="vertical">
 
-            <TextView
-                android:id="@+id/login_title_text_view"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="2dp"
-                android:layout_marginTop="5dp"
-                android:gravity="center_horizontal"
-                android:text="@string/cbhc_app"
-                android:textColor="@color/white"
-                android:textSize="@dimen/login_title_text_size"
-                android:typeface="sans"
-                android:visibility="gone" />
+                <ImageView
+                    android:id="@+id/imageView4"
+                    android:layout_width="@dimen/login_opensrp_cbhc_logo_width"
+                    android:layout_height="@dimen/login_opensrp_cbhc_logo_height"
+                    android:layout_marginTop="10dp"
+                    android:adjustViewBounds="false"
+                    android:cropToPadding="false"
+                    android:scaleType="fitCenter"
+                    android:visibility="gone"
+                    app:srcCompat="@drawable/dghs_logo" />
 
-            <TextView
-                android:id="@+id/login_build_text_view"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="5dp"
-                android:gravity="center_horizontal"
-                android:text="build_number"
-                android:textColor="@color/white"
-                android:textSize="@dimen/login_build_text_view_textSize"
-                android:typeface="sans" />
+                <ImageView
+                    android:id="@+id/imageView3"
+                    android:layout_width="@dimen/login_opensrp_cbhc_logo_width"
+                    android:layout_height="@dimen/login_opensrp_cbhc_logo_height"
+                    android:layout_marginTop="5dp"
+                    android:adjustViewBounds="false"
+                    android:cropToPadding="false"
+                    android:scaleType="fitCenter"
+                    app:srcCompat="@drawable/ministry_of_health_welfare" />
+            </LinearLayout>
+
+
         </LinearLayout>
 
         <!-- Middle section -->
@@ -70,6 +67,7 @@
             android:layout_centerVertical="true"
             android:layout_marginTop="@dimen/login_middle_section_padding_top"
             android:orientation="vertical"
+            android:layout_below="@+id/bottom_section"
             android:paddingLeft="@dimen/login_horizontal_margin"
             android:paddingRight="@dimen/login_horizontal_margin">
 
@@ -171,44 +169,51 @@
                 android:textSize="18sp" />
         </LinearLayout>
         <!-- Bottom section -->
+
         <LinearLayout
-            android:id="@+id/bottom_section"
+            android:id="@+id/top_section"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
-            android:layout_marginTop="5dp"
+            android:layout_below="@+id/middle_section"
             android:orientation="vertical"
-            android:paddingTop="5dp">
+            android:paddingBottom="10dp"
+            android:gravity="bottom"
+            android:paddingTop="25dp">
 
-            <LinearLayout
-                android:layout_width="wrap_content"
+            <ImageView
+                android:id="@+id/login_logo"
+                android:layout_width="64dp"
+                android:layout_height="64dp"
+                android:layout_gravity="center_horizontal"
+                android:layout_weight="1"
+                android:contentDescription="logo"
+                android:scaleType="fitCenter"
+                android:src="@drawable/community_clinic_rounded" />
+
+            <TextView
+                android:id="@+id/login_title_text_view"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:gravity="bottom"
-                android:orientation="vertical">
+                android:layout_marginBottom="2dp"
+                android:layout_marginTop="5dp"
+                android:gravity="center_horizontal"
+                android:text="@string/cbhc_app"
+                android:textColor="@color/white"
+                android:textSize="@dimen/login_title_text_size"
+                android:typeface="sans"
+                android:visibility="gone" />
 
-                <ImageView
-                    android:id="@+id/imageView4"
-                    android:layout_width="@dimen/login_opensrp_cbhc_logo_width"
-                    android:layout_height="@dimen/login_opensrp_cbhc_logo_height"
-                    android:layout_marginTop="10dp"
-                    android:adjustViewBounds="false"
-                    android:cropToPadding="false"
-                    android:scaleType="fitCenter"
-                    android:visibility="gone"
-                    app:srcCompat="@drawable/dghs_logo" />
-
-                <ImageView
-                    android:id="@+id/imageView3"
-                    android:layout_width="@dimen/login_opensrp_cbhc_logo_width"
-                    android:layout_height="@dimen/login_opensrp_cbhc_logo_height"
-                    android:layout_marginTop="5dp"
-                    android:adjustViewBounds="false"
-                    android:cropToPadding="false"
-                    android:scaleType="fitCenter"
-                    app:srcCompat="@drawable/ministry_of_health_welfare" />
-            </LinearLayout>
-
+            <TextView
+                android:id="@+id/login_build_text_view"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="5dp"
+                android:gravity="center_horizontal"
+                android:text="build_number"
+                android:textColor="@color/white"
+                android:textSize="@dimen/login_build_text_view_textSize"
+                android:typeface="sans" />
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
