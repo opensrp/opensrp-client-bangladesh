@@ -4,6 +4,7 @@ package org.smartregister.cbhc.activity;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -156,6 +157,7 @@ public class LoginActivity extends AppCompatActivity implements LoginContract.Vi
 
     @Override
     public void goToHome(boolean remote) {
+//        org.smartregister.Context.getInstance().allSharedPreferences().saveForceRemoteLogin(false);
         if (remote) {
             Utils.startAsyncTask(new SaveTeamLocationsTask(), null);
         }
