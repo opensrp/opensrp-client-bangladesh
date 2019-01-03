@@ -56,6 +56,21 @@
           },
           {
             "field": "eventType",
+            "field_value": "Marital Status",
+            "creates_case": [
+              "ec_woman",
+              "ec_member"
+            ]
+          },
+          {
+            "field": "eventType",
+            "field_value": "Pregnant Status",
+            "creates_case": [
+              "ec_woman"
+            ]
+          },
+          {
+            "field": "eventType",
             "field_value": "Child Registration",
             "creates_case": [
               "ec_child"

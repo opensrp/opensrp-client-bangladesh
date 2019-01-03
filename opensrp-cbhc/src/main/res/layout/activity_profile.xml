@@ -143,7 +143,7 @@
             app:tabIndicatorColor="#1fb2e5"
             app:tabIndicatorHeight="4dp"
             app:tabMaxWidth="0dp"
-            app:tabMode="scrollable"
+            app:tabMode="fixed"
             app:tabSelectedTextColor="#1fb2e5"
             app:tabTextAppearance="@style/CustomFontTextViewStyle.tabIndicator.anc" />
 

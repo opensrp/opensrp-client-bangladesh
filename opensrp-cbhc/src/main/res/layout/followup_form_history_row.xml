@@ -15,7 +15,8 @@
         android:padding="10dp"
         android:textColor="@android:color/black"
         style="@style/CustomFontTextViewStyle.ClientList"
-        android:text="followup forms"/>
+        android:maxLines="4"
+        android:text="followup formsfollowup formsfollowup forms"/>
 
     <org.smartregister.view.customcontrols.CustomFontTextView
         android:id="@+id/saved_form_date"
@@ -25,6 +26,7 @@
         android:paddingLeft="16dp"
         android:textSize="16dp"
         android:padding="10dp"
+        android:maxLines="4"
         android:textColor="@android:color/black"
         style="@style/CustomFontTextViewStyle.ClientList"
         android:text="followup forms"/>

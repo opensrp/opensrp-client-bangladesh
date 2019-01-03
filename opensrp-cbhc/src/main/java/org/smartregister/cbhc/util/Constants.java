@@ -44,6 +44,8 @@ public abstract class Constants {
         public static final String QUICK_CHECK = "Quick Check";
         public static final String CLOSE = "ANC Close";
 
+        public static final String PREGNANT_STATUS = "Pregnant Status";
+        public static final String MARITAL_STATUS = "Marital Status";
     }
 
     public static class JSON_FORM {
@@ -73,28 +75,31 @@ public abstract class Constants {
         public static final String Followup_Form_MHV_FP = "followup/mhv/Followup_Form_MHV_FP";
         public static final String Followup_Form_MHV_Marital = "followup/mhv/Followup_Form_MHV_Marital";
         public static final String Followup_Form_MHV_Mobile_no = "followup/mhv/Followup_Form_MHV_Mobile_no";
+        public static final String Followup_Form_MHV_Pregnant = "followup/mhv/Followup_Form_MHV_Pregnant";
         public static final String Followup_Form_MHV_PNC = "followup/mhv/Followup_Form_MHV_PNC";
         public static final String Followup_Form_MHV_Risky_Habit = "followup/mhv/Followup_Form_MHV_Risky_Habit";
 
         public static ArrayList<FOLLOWUPFORMS> followup_forms;
         public static ArrayList<FOLLOWUPFORMS> getFollowup_forms(){
             followup_forms = new ArrayList<>();
-            followup_forms.add(new FOLLOWUPFORMS(Followup_Form_MHV_DS_Female,"Disease Form (Female)"));
-            followup_forms.add(new FOLLOWUPFORMS(Followup_Form_MHV_DS_Male,"Disease Form (Male)"));
-            followup_forms.add(new FOLLOWUPFORMS(Followup_Form_MHV_DS_NewBorn,"Disease Form (0-2 Month)"));
-            followup_forms.add(new FOLLOWUPFORMS(Followup_Form_MHV_DS_Toddler,"Disease Form (2 Month - 5 Years)"));
+            followup_forms.add(new FOLLOWUPFORMS(Followup_Form_MHV_DS_Female,"সাধারণ রোগ মহিলা "));
+            followup_forms.add(new FOLLOWUPFORMS(Followup_Form_MHV_DS_Male,"সাধারণ রোগ পুরুষ"));
+            followup_forms.add(new FOLLOWUPFORMS(Followup_Form_MHV_DS_NewBorn,"শিশু (০-২ মাস)"));
+            followup_forms.add(new FOLLOWUPFORMS(Followup_Form_MHV_DS_Toddler,"শিশু (২ মাস-৫ বছর)"));
 
-            followup_forms.add(new FOLLOWUPFORMS(Followup_Form_MHV_ANC,"ANC Form"));
-            followup_forms.add(new FOLLOWUPFORMS(Followup_Form_MHV_Death,"Death Form"));
+            followup_forms.add(new FOLLOWUPFORMS(Followup_Form_MHV_ANC,"প্রসব পূর্ব "));
+            followup_forms.add(new FOLLOWUPFORMS(Followup_Form_MHV_Death,"মৃত্যু "));
 
-            followup_forms.add(new FOLLOWUPFORMS(Followup_Form_MHV_Delivery,"Delivery Form (Any New Birth)"));
+            followup_forms.add(new FOLLOWUPFORMS(Followup_Form_MHV_Delivery,"প্রসব"));
 
-            followup_forms.add(new FOLLOWUPFORMS(Followup_Form_MHV_FP,"Family Planning Form"));
-            followup_forms.add(new FOLLOWUPFORMS(Followup_Form_MHV_Marital,"Marital Status"));
-            followup_forms.add(new FOLLOWUPFORMS(Followup_Form_MHV_Mobile_no,"Mobile Number"));
+            followup_forms.add(new FOLLOWUPFORMS(Followup_Form_MHV_FP,"পরিবার পরিকল্পনা"));
+            followup_forms.add(new FOLLOWUPFORMS(Followup_Form_MHV_Marital,"বৈবাহিক অবস্থা"));
+            followup_forms.add(new FOLLOWUPFORMS(Followup_Form_MHV_Mobile_no,"মোবাইল নম্বর"));
 
-            followup_forms.add(new FOLLOWUPFORMS(Followup_Form_MHV_PNC,"PNC Form"));
-            followup_forms.add(new FOLLOWUPFORMS(Followup_Form_MHV_Risky_Habit,"Risky Habit"));
+            followup_forms.add(new FOLLOWUPFORMS(Followup_Form_MHV_PNC,"প্রসব পরবর্তী "));
+            followup_forms.add(new FOLLOWUPFORMS(Followup_Form_MHV_Risky_Habit,"ঝুকিপূর্ন অভ্যাস"));
+
+            followup_forms.add(new FOLLOWUPFORMS(Followup_Form_MHV_Pregnant,"গর্ভাবস্থা"));
 
             return followup_forms;
         }

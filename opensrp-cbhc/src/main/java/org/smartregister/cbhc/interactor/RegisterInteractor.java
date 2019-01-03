@@ -33,6 +33,8 @@ import org.smartregister.sync.ClientProcessorForJava;
 import java.util.Date;
 import java.util.List;
 
+import static org.smartregister.cbhc.util.JsonFormUtils.notFollowUp;
+
 /**
  * Created by keyman 27/06/2018.
  */
@@ -212,30 +214,33 @@ public class RegisterInteractor implements RegisterContract.Interactor {
                 JSONObject eventJson = new JSONObject(JsonFormUtils.gson.toJson(baseEvent));
                 getSyncHelper().addEvent(baseEvent.getBaseEntityId(), eventJson);
             }
+            if(notFollowUp(baseEvent.getEventType())){
 
-            if (isEditMode) {
-                // Unassign current OPENSRP ID
-                if (baseClient != null) {
-                    String newOpenSRPId = baseClient.getIdentifier(DBConstants.KEY.Patient_Identifier).replace("-", "");
-                    String currentOpenSRPId = JsonFormUtils.getString(jsonString, JsonFormUtils.CURRENT_OPENSRP_ID).replace("-", "");
-                    if (!newOpenSRPId.equals(currentOpenSRPId)) {
-                        //OPENSRP ID was changed
-                        getUniqueIdRepository().open(currentOpenSRPId);
+                if (isEditMode) {
+                    // Unassign current OPENSRP ID
+                    if (baseClient != null) {
+                        String newOpenSRPId = baseClient.getIdentifier(DBConstants.KEY.Patient_Identifier).replace("-", "");
+                        String currentOpenSRPId = JsonFormUtils.getString(jsonString, JsonFormUtils.CURRENT_OPENSRP_ID).replace("-", "");
+                        if (!newOpenSRPId.equals(currentOpenSRPId)) {
+                            //OPENSRP ID was changed
+                            getUniqueIdRepository().open(currentOpenSRPId);
+                        }
+                    }
+
+                } else {
+                    if (baseClient != null) {
+                        String opensrpId = baseClient.getIdentifier(DBConstants.KEY.ANC_ID);
+
+                        //mark OPENSRP ID as used
+                        getUniqueIdRepository().close(opensrpId);
                     }
                 }
 
-            } else {
-                if (baseClient != null) {
-                    String opensrpId = baseClient.getIdentifier(DBConstants.KEY.ANC_ID);
 
-                    //mark OPENSRP ID as used
-                    getUniqueIdRepository().close(opensrpId);
+                if (baseClient != null || baseEvent != null) {
+                    String imageLocation = JsonFormUtils.getFieldValue(jsonString, Constants.KEY.PHOTO);
+                    JsonFormUtils.saveImage(baseEvent.getProviderId(), baseClient.getBaseEntityId(), imageLocation);
                 }
-            }
-
-            if (baseClient != null || baseEvent != null) {
-                String imageLocation = JsonFormUtils.getFieldValue(jsonString, Constants.KEY.PHOTO);
-                JsonFormUtils.saveImage(baseEvent.getProviderId(), baseClient.getBaseEntityId(), imageLocation);
             }
 
             long lastSyncTimeStamp = getAllSharedPreferences().fetchLastUpdatedAtDate(0);

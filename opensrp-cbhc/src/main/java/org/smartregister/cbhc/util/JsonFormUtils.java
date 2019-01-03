@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.telephony.TelephonyManager;
 import android.text.TextUtils;
 import android.util.Log;
 import android.util.Pair;
@@ -210,7 +211,10 @@ public class JsonFormUtils extends org.smartregister.util.JsonFormUtils {
             Gender gender = null;
             if(!(encounterType.equalsIgnoreCase(Constants.EventType.MemberREGISTRATION)
             ||encounterType.equalsIgnoreCase(Constants.EventType.Child_REGISTRATION)
-            ||encounterType.equalsIgnoreCase(Constants.EventType.WomanMemberREGISTRATION))) {
+            ||encounterType.equalsIgnoreCase(Constants.EventType.WomanMemberREGISTRATION)
+            ||encounterType.equalsIgnoreCase(Constants.EventType.MARITAL_STATUS)
+            ||encounterType.equalsIgnoreCase(Constants.EventType.PREGNANT_STATUS)
+            )) {
 
                 JSONObject dobUnknownObject = getFieldJSONObject(fields, DBConstants.KEY.DOB_UNKNOWN);
                 JSONArray options = getJSONArray(dobUnknownObject, Constants.JSON_FORM_KEY.OPTIONS);
@@ -234,7 +238,7 @@ public class JsonFormUtils extends org.smartregister.util.JsonFormUtils {
 
                     }
                 }
-            }else{
+            }else if(notFollowUp(encounterType)){
                 String agestring ="";
                 String dobstring = "";
                 JSONObject dobknownObject = getFieldJSONObject(fields, "member_birth_date_known");
@@ -281,8 +285,9 @@ public class JsonFormUtils extends org.smartregister.util.JsonFormUtils {
 
 
             }
-
-            getFieldJSONObject(fields,"Patient_Identifier").remove("hidden");
+            if(notFollowUp(encounterType)) {
+                getFieldJSONObject(fields, "Patient_Identifier").remove("hidden");
+            }
 
 
             FormTag formTag = new FormTag();
@@ -290,97 +295,98 @@ public class JsonFormUtils extends org.smartregister.util.JsonFormUtils {
             formTag.appVersion = BuildConfig.VERSION_CODE;
             formTag.databaseVersion = BuildConfig.DATABASE_VERSION;
 
-
-
-            ArrayList<Address> adresses = new ArrayList<Address>();
-            Address address1 = new Address();
-            try{
-                for (int i = 0; i < fields.length(); i++) {
-                    String key = fields.getJSONObject(i).getString("key");
-
-                    if (key.equals("HIE_FACILITIES")) {
-                        if (!TextUtils.isEmpty(fields.getJSONObject(i).getString("value"))) {
-                            String address = fields.getJSONObject(i).getString("value");
-                            address = address.replace("[", "").replace("]", "");
-                            String[] addressStringArray = address.split(",");
-                            if (addressStringArray.length > 0) {
-                                address1.setAddressType("usual_residence");
-                                address1.addAddressField("country", addressStringArray[0].replaceAll("^\"|\"$", ""));
-                                address1.addAddressField("stateProvince", addressStringArray[1].replaceAll("^\"|\"$", ""));
-                                address1.addAddressField("countyDistrict", addressStringArray[2].replaceAll("^\"|\"$", ""));
-                                address1.addAddressField("cityVillage", addressStringArray[3].replaceAll("^\"|\"$", ""));
-                                address1.addAddressField("address1", addressStringArray[4].replaceAll("^\"|\"$", ""));
-                                address1.addAddressField("address2", addressStringArray[5].replaceAll("^\"|\"$", ""));
-                                address1.addAddressField("address3", addressStringArray[6].replaceAll("^\"|\"$", ""));
-                                address1.addAddressField("address4", addressStringArray[7].replaceAll("^\"|\"$", ""));
-                            }
-                            Log.v("address", address);
-
-                        }
-                    }
-                }
-            }catch (Exception e){
-
-            }
-
-            try{
-                for (int i = 0; i < fields.length(); i++) {
-                    String key = fields.getJSONObject(i).getString("key");
-
-                    if (key.equals("ADDRESS_LINE")) {
-                        if (!TextUtils.isEmpty(fields.getJSONObject(i).getString("value"))) {
-                            String address = fields.getJSONObject(i).getString("value");
-                               address1.addAddressField("address7",address);
-
-                        }
-                    }
-                }
-            }catch (Exception e){
-
-            }
-            String imageLocation = getFieldValue(fields, "household_photo");
-            saveImage(formTag.providerId, entityId, imageLocation);
-
-
             Client baseClient = org.smartregister.util.JsonFormUtils.createBaseClient(fields, formTag, entityId);
-            if(gender!=null){
-                if(gender.equals(Gender.MALE)) {
-                    baseClient.setGender("M");
-                }else if(gender.equals(Gender.FEMALE)) {
-                    baseClient.setGender("F");
-                }else if(gender.equals(Gender.UNKNOWN)) {
-                    baseClient.setGender("O");
+
+            if(notFollowUp(encounterType)) {
+                ArrayList<Address> adresses = new ArrayList<Address>();
+                Address address1 = new Address();
+                try {
+                    for (int i = 0; i < fields.length(); i++) {
+                        String key = fields.getJSONObject(i).getString("key");
+
+                        if (key.equals("HIE_FACILITIES")) {
+                            if (!TextUtils.isEmpty(fields.getJSONObject(i).getString("value"))) {
+                                String address = fields.getJSONObject(i).getString("value");
+                                address = address.replace("[", "").replace("]", "");
+                                String[] addressStringArray = address.split(",");
+                                if (addressStringArray.length > 0) {
+                                    address1.setAddressType("usual_residence");
+                                    address1.addAddressField("country", addressStringArray[0].replaceAll("^\"|\"$", ""));
+                                    address1.addAddressField("stateProvince", addressStringArray[1].replaceAll("^\"|\"$", ""));
+                                    address1.addAddressField("countyDistrict", addressStringArray[2].replaceAll("^\"|\"$", ""));
+                                    address1.addAddressField("cityVillage", addressStringArray[3].replaceAll("^\"|\"$", ""));
+                                    address1.addAddressField("address1", addressStringArray[4].replaceAll("^\"|\"$", ""));
+                                    address1.addAddressField("address2", addressStringArray[5].replaceAll("^\"|\"$", ""));
+                                    address1.addAddressField("address3", addressStringArray[6].replaceAll("^\"|\"$", ""));
+                                    address1.addAddressField("address4", addressStringArray[7].replaceAll("^\"|\"$", ""));
+                                }
+                                Log.v("address", address);
+
+                            }
+                        }
+                    }
+                } catch (Exception e) {
+
                 }
-            }
-            if(baseClient.getGender()==null) {
-                baseClient.setGender("M");
-            }
 
-            adresses.add(address1);
-            HashMap<String,String> check_box_in_forms = processCheckBoxForAttributes(fields);
-            baseClient.setAddresses(adresses);
-            Map<String, Object> attributes_Temp = baseClient.getAttributes();
-            attributes_Temp.putAll(check_box_in_forms);
-            baseClient.setAttributes(attributes_Temp);
+                try {
+                    for (int i = 0; i < fields.length(); i++) {
+                        String key = fields.getJSONObject(i).getString("key");
+
+                        if (key.equals("ADDRESS_LINE")) {
+                            if (!TextUtils.isEmpty(fields.getJSONObject(i).getString("value"))) {
+                                String address = fields.getJSONObject(i).getString("value");
+                                address1.addAddressField("address7", address);
+
+                            }
+                        }
+                    }
+                } catch (Exception e) {
+
+                }
+                String imageLocation = getFieldValue(fields, "household_photo");
+                saveImage(formTag.providerId, entityId, imageLocation);
 
 
-            JSONObject lookUpJSONObject = getJSONObject(metadata, "look_up");
-            String lookUpEntityId = "";
-            String lookUpBaseEntityId = "";
-            if (lookUpJSONObject != null) {
-                lookUpEntityId = getString(lookUpJSONObject, "entity_id");
-                lookUpBaseEntityId = getString(lookUpJSONObject, "value");
-            }
+                if (gender != null) {
+                    if (gender.equals(Gender.MALE)) {
+                        baseClient.setGender("M");
+                    } else if (gender.equals(Gender.FEMALE)) {
+                        baseClient.setGender("F");
+                    } else if (gender.equals(Gender.UNKNOWN)) {
+                        baseClient.setGender("O");
+                    }
+                }
+                if (baseClient.getGender() == null) {
+                    baseClient.setGender("M");
+                }
 
-            if (lookUpEntityId.equals("household") && StringUtils.isNotBlank(lookUpBaseEntityId)) {
-                Client ss = new Client(lookUpBaseEntityId);
-                Context context = AncApplication.getInstance().getContext().applicationContext();
-                addRelationship(context, ss, baseClient);
-                SQLiteDatabase db = AncApplication.getInstance().getRepository().getReadableDatabase();
-                AncRepository pathRepository = new AncRepository(context,AncApplication.getInstance().getContext());
-                EventClientRepository eventClientRepository = new EventClientRepository(pathRepository);
-                JSONObject clientjson = eventClientRepository.getClient(db, lookUpBaseEntityId);
-                baseClient.setAddresses(getAddressFromClientJson(clientjson));
+                adresses.add(address1);
+                HashMap<String, String> check_box_in_forms = processCheckBoxForAttributes(fields);
+                baseClient.setAddresses(adresses);
+                Map<String, Object> attributes_Temp = baseClient.getAttributes();
+                attributes_Temp.putAll(check_box_in_forms);
+                baseClient.setAttributes(attributes_Temp);
+
+
+                JSONObject lookUpJSONObject = getJSONObject(metadata, "look_up");
+                String lookUpEntityId = "";
+                String lookUpBaseEntityId = "";
+                if (lookUpJSONObject != null) {
+                    lookUpEntityId = getString(lookUpJSONObject, "entity_id");
+                    lookUpBaseEntityId = getString(lookUpJSONObject, "value");
+                }
+
+                if (lookUpEntityId.equals("household") && StringUtils.isNotBlank(lookUpBaseEntityId)) {
+                    Client ss = new Client(lookUpBaseEntityId);
+                    Context context = AncApplication.getInstance().getContext().applicationContext();
+                    addRelationship(context, ss, baseClient);
+                    SQLiteDatabase db = AncApplication.getInstance().getRepository().getReadableDatabase();
+                    AncRepository pathRepository = new AncRepository(context, AncApplication.getInstance().getContext());
+                    EventClientRepository eventClientRepository = new EventClientRepository(pathRepository);
+                    JSONObject clientjson = eventClientRepository.getClient(db, lookUpBaseEntityId);
+                    baseClient.setAddresses(getAddressFromClientJson(clientjson));
+                }
             }
             String entitytypeName = "";
             if(encounterType.equalsIgnoreCase(Constants.EventType.Child_REGISTRATION)){
@@ -434,6 +440,15 @@ public class JsonFormUtils extends org.smartregister.util.JsonFormUtils {
         } catch (Exception e) {
             Log.e(TAG, Log.getStackTraceString(e));
             return null;
+        }
+    }
+
+    public static boolean notFollowUp(String encounterType) {
+        if(encounterType.equalsIgnoreCase(Constants.EventType.MARITAL_STATUS)
+                ||encounterType.equalsIgnoreCase(Constants.EventType.PREGNANT_STATUS)){
+            return false;
+        }else{
+            return true;
         }
     }
 
@@ -1288,5 +1303,38 @@ public class JsonFormUtils extends org.smartregister.util.JsonFormUtils {
         } catch (Exception e) {
             Log.e(TAG, e.getMessage());
         }
+    }
+
+    public static Event addMetaData(Context context, Event event, Date start) throws JSONException {
+        SimpleDateFormat DATE_TIME_FORMAT = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+
+        Map<String, String> metaFields = new HashMap<>();
+        metaFields.put("deviceid", "163149AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
+        metaFields.put("end", "163138AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
+        metaFields.put("start", "163137AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
+        Calendar calendar = Calendar.getInstance();
+
+        String end = DATE_TIME_FORMAT.format(calendar.getTime());
+
+        Obs obs = new Obs();
+        obs.setFieldCode("163137AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
+        obs.setValue(DATE_TIME_FORMAT.format(start));
+        obs.setFieldType("concept");
+        obs.setFieldDataType("start");
+        event.addObs(obs);
+
+
+        obs.setFieldCode("163137AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
+        obs.setValue(end);
+        obs.setFieldDataType("end");
+        event.addObs(obs);
+
+        TelephonyManager mTelephonyManager = (TelephonyManager) context.getSystemService(Context.TELEPHONY_SERVICE);
+
+        obs.setFieldCode("163137AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
+        obs.setValue("");
+        obs.setFieldDataType("deviceid");
+        event.addObs(obs);
+        return event;
     }
 }

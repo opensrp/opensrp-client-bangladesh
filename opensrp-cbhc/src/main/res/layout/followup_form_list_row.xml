@@ -17,6 +17,8 @@
         android:paddingLeft="16dp"
         android:textSize="16dp"
         android:padding="10dp"
+        android:maxLines="4"
+        android:minLines="2"
         android:textColor="@android:color/white"
         style="@style/CustomFontTextViewStyle.ClientList"
         android:text="followup forms"/>

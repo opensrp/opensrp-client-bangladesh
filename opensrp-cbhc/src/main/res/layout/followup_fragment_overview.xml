@@ -68,6 +68,7 @@
                     android:layout_marginRight="10dp"
                     android:layout_marginBottom="10dp"
                     android:layout_marginTop="10dp"
+                    android:visibility="gone"
                     android:background="@color/text_black">
 
                 </LinearLayout>
@@ -78,6 +79,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="10dp"
                     android:layout_marginTop="10dp"
+                    android:visibility="gone"
                     android:orientation="vertical">
                     <org.smartregister.view.customcontrols.CustomFontTextView
 

@@ -119,6 +119,12 @@ public class ProfilePresenter implements ProfileContract.Presenter, RegisterCont
 
                 mRegisterInteractor.removeWomanFromANCRegister(jsonString, allSharedPreferences.fetchRegisteredANM());
 
+            }else if (form.getString(JsonFormUtils.ENCOUNTER_TYPE).equals(Constants.EventType.MARITAL_STATUS)) {
+            Pair<Client, Event> values = JsonFormUtils.processRegistrationForm(allSharedPreferences, jsonString);
+            mRegisterInteractor.saveRegistration(values, jsonString, true, this);
+            }else if (form.getString(JsonFormUtils.ENCOUNTER_TYPE).equals(Constants.EventType.PREGNANT_STATUS)) {
+                Pair<Client, Event> values = JsonFormUtils.processRegistrationForm(allSharedPreferences, jsonString);
+                mRegisterInteractor.saveRegistration(values, jsonString, true, this);
             } else {
                 getProfileView().hideProgressDialog();
             }

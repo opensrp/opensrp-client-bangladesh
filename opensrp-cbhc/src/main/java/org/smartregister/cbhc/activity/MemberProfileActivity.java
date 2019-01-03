@@ -2,6 +2,7 @@ package org.smartregister.cbhc.activity;
 
 import android.Manifest;
 import android.app.AlertDialog;
+import android.content.ContentValues;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
@@ -21,6 +22,7 @@ import android.widget.TextView;
 
 import org.apache.commons.lang3.StringUtils;
 import org.joda.time.DateTime;
+import org.json.JSONObject;
 import org.smartregister.CoreLibrary;
 import org.smartregister.cbhc.R;
 import org.smartregister.cbhc.adapter.ViewPagerAdapter;
@@ -34,14 +36,19 @@ import org.smartregister.cbhc.fragment.ProfileContactsFragment;
 import org.smartregister.cbhc.fragment.ProfileOverviewFragment;
 import org.smartregister.cbhc.fragment.ProfileTasksFragment;
 import org.smartregister.cbhc.fragment.QuickCheckFragment;
+import org.smartregister.cbhc.helper.ECSyncHelper;
 import org.smartregister.cbhc.helper.ImageRenderHelper;
 import org.smartregister.cbhc.presenter.ProfilePresenter;
+import org.smartregister.cbhc.sync.AncClientProcessorForJava;
 import org.smartregister.cbhc.util.Constants;
 import org.smartregister.cbhc.util.DBConstants;
 import org.smartregister.cbhc.util.ImageLoaderByGlide;
 import org.smartregister.cbhc.util.JsonFormUtils;
 import org.smartregister.cbhc.util.Utils;
 import org.smartregister.cbhc.view.CopyToClipboardDialog;
+import org.smartregister.clientandeventmodel.Event;
+import org.smartregister.clientandeventmodel.FormEntityConstants;
+import org.smartregister.clientandeventmodel.Obs;
 import org.smartregister.commonregistry.CommonPersonObject;
 import org.smartregister.commonregistry.CommonPersonObjectClient;
 import org.smartregister.domain.ProfileImage;
@@ -51,6 +58,9 @@ import org.smartregister.immunization.domain.ServiceWrapper;
 import org.smartregister.immunization.domain.VaccineWrapper;
 import org.smartregister.immunization.listener.ServiceActionListener;
 import org.smartregister.immunization.listener.VaccinationActionListener;
+import org.smartregister.repository.AllSharedPreferences;
+import org.smartregister.repository.BaseRepository;
+import org.smartregister.repository.EventClientRepository;
 import org.smartregister.repository.ImageRepository;
 import org.smartregister.util.DateUtil;
 import org.smartregister.util.OpenSRPImageLoader;
@@ -59,8 +69,16 @@ import org.smartregister.view.activity.DrishtiApplication;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Date;
 
 import static org.smartregister.cbhc.fragment.ProfileOverviewFragment.EXTRA_HOUSEHOLD_DETAILS;
+import static org.smartregister.cbhc.util.Constants.FOLLOWUP_FORM.Followup_Form_MHV_Death;
+import static org.smartregister.cbhc.util.Constants.FOLLOWUP_FORM.Followup_Form_MHV_Delivery;
+import static org.smartregister.cbhc.util.Constants.FOLLOWUP_FORM.Followup_Form_MHV_Marital;
+import static org.smartregister.cbhc.util.Constants.FOLLOWUP_FORM.Followup_Form_MHV_Mobile_no;
+import static org.smartregister.cbhc.util.Constants.FOLLOWUP_FORM.Followup_Form_MHV_Pregnant;
+import static org.smartregister.cbhc.util.Constants.FOLLOWUP_FORM.Followup_Form_MHV_Risky_Habit;
+import static org.smartregister.cbhc.util.JsonFormUtils.addMetaData;
 import static org.smartregister.util.Utils.getName;
 import static org.smartregister.util.Utils.getValue;
 
@@ -84,6 +102,9 @@ public class MemberProfileActivity extends BaseProfileActivity implements Profil
     public static final String DIALOG_TAG = "PROFILE_DIALOG_TAG";
     private CommonPersonObjectClient householdDetails;
 
+    int age = -1;
+    int gender = -1;
+    int marital_status = 0;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -95,6 +116,8 @@ public class MemberProfileActivity extends BaseProfileActivity implements Profil
             }
             typeofMember = extras.getString("type_of_member");
         }
+
+
         setUpViews();
 
         mProfilePresenter = new ProfilePresenter(this);
@@ -104,6 +127,10 @@ public class MemberProfileActivity extends BaseProfileActivity implements Profil
 
 
     }
+
+
+
+    private TabLayout tabLayout;
 
     private void setUpViews() {
         ImageView circleprofile = (ImageView)findViewById(R.id.imageview_profile);
@@ -125,7 +152,7 @@ public class MemberProfileActivity extends BaseProfileActivity implements Profil
 //        if(imageRecord!=null)
 //            ImageLoaderByGlide.setImageAsTarget(imageRecord.getFilepath(),circleprofile,0);
 
-        TabLayout tabLayout = findViewById(R.id.tabs);
+        tabLayout = findViewById(R.id.tabs);
         ViewPager viewPager = findViewById(R.id.viewpager);
         tabLayout.setupWithViewPager(setupViewPager(viewPager));
 
@@ -249,6 +276,7 @@ public class MemberProfileActivity extends BaseProfileActivity implements Profil
         if(typeofMember.equalsIgnoreCase("malechild")||(typeofMember.equalsIgnoreCase("femalechild"))){
             adapter.addFragment(childImmunizationFragment, "IMMUNIZATION");
             adapter.addFragment(growthFragment, "GROWTH");
+            tabLayout.setTabMode(TabLayout.MODE_SCROLLABLE);
         }
 
 
@@ -260,7 +288,9 @@ public class MemberProfileActivity extends BaseProfileActivity implements Profil
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int itemId = item.getItemId();
-
+        this.age = getAge();
+        this.gender = getGender();
+        this.marital_status = getMaritalStatus();
         // When user click home menu item then quit this activity.
         if (itemId == android.R.id.home) {
             finish();
@@ -269,12 +299,23 @@ public class MemberProfileActivity extends BaseProfileActivity implements Profil
 
             final ArrayAdapter<String> arrayAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1);
 //            arrayAdapter.add(getString(R.string.start_follow_up));
+            if(age>=10){
+                arrayAdapter.add("মোবাইল নম্বর");
+            }
+            if(age>=5&&marital_status==0) {
+                arrayAdapter.add("বৈবাহিক অবস্থা");
+            }
+            if(age>=5&&marital_status==1&&gender==0){
+                arrayAdapter.add("গর্ভাবস্থা");
+//                arrayAdapter.add("জন্ম");
+            }
 
-            arrayAdapter.add("মোবাইল নম্বর");
-            arrayAdapter.add("বৈবাহিক অবস্থা");
-            arrayAdapter.add("গর্ভাবস্থা");
-            arrayAdapter.add("ঝুঁকিপূর্ণ অভ্যাস");
-            arrayAdapter.add("স্থানান্তর");
+            if(age>=5){
+                arrayAdapter.add("ঝুঁকিপূর্ণ অভ্যাস");
+                arrayAdapter.add("স্থানান্তর");
+            }
+
+
             arrayAdapter.add("মৃত্যু");
             arrayAdapter.add("জি আর এ সদস্য পাওয়া যায়নি");
 
@@ -290,8 +331,32 @@ public class MemberProfileActivity extends BaseProfileActivity implements Profil
                             break;
                         case "গর্ভাবস্থা":
                             getIntent().putExtra(Constants.INTENT_KEY.BASE_ENTITY_ID,householdDetails.getCaseId());
-//                            (Constants.INTENT_KEY.BASE_ENTITY_ID)
-                            JsonFormUtils.launchFollowUpForm(MemberProfileActivity.this);
+                            JsonFormUtils.launchFollowUpForm(MemberProfileActivity.this,Followup_Form_MHV_Pregnant);
+                            break;
+                        case "মোবাইল নম্বর":
+                            getIntent().putExtra(Constants.INTENT_KEY.BASE_ENTITY_ID,householdDetails.getCaseId());
+                            JsonFormUtils.launchFollowUpForm(MemberProfileActivity.this,Followup_Form_MHV_Mobile_no);
+                            break;
+                        case "বৈবাহিক অবস্থা":
+                            getIntent().putExtra(Constants.INTENT_KEY.BASE_ENTITY_ID,householdDetails.getCaseId());
+                            JsonFormUtils.launchFollowUpForm(MemberProfileActivity.this,Followup_Form_MHV_Marital);
+                            break;
+                        case "জন্ম":
+                            getIntent().putExtra(Constants.INTENT_KEY.BASE_ENTITY_ID,householdDetails.getCaseId());
+                            JsonFormUtils.launchFollowUpForm(MemberProfileActivity.this,Followup_Form_MHV_Delivery);
+                            break;
+                        case "স্থানান্তর":
+                            break;
+
+                        case "ঝুঁকিপূর্ণ অভ্যাস":
+                            getIntent().putExtra(Constants.INTENT_KEY.BASE_ENTITY_ID,householdDetails.getCaseId());
+                            JsonFormUtils.launchFollowUpForm(MemberProfileActivity.this,Followup_Form_MHV_Risky_Habit);
+                            break;
+                        case "মৃত্যু":
+                            getIntent().putExtra(Constants.INTENT_KEY.BASE_ENTITY_ID,householdDetails.getCaseId());
+                            JsonFormUtils.launchFollowUpForm(MemberProfileActivity.this,Followup_Form_MHV_Death);
+                            break;
+                        case "জি আর এ সদস্য পাওয়া যায়নি":
                             break;
                         case "Close ANC Record":
                             JsonFormUtils.launchANCCloseForm(MemberProfileActivity.this);
@@ -432,6 +497,78 @@ public class MemberProfileActivity extends BaseProfileActivity implements Profil
     @Override
     public void onWeightTaken(WeightWrapper weightWrapper) {
         growthFragment.onWeightTaken(weightWrapper);
+    }
+
+    public int getGender(){
+        String gender = householdDetails.getColumnmaps().get("gender");
+        if(gender==null)
+            return -1;
+        return gender.equals("M")?1:0;
+    }
+    public int getAge() {
+        String age = householdDetails.getColumnmaps().get("age");
+        if(age==null)
+            return -1;
+        return Integer.parseInt(age.trim());
+    }
+    private int getMaritalStatus() {
+        String maritalStatus = householdDetails.getColumnmaps().get("MaritalStatus");
+
+        //"বিবাহিত"
+        return maritalStatus!=null&&(maritalStatus.equals("Married")||maritalStatus.equalsIgnoreCase("বিবাহিত"))?1:0;
+    }
+
+    public void updateClientStatusAsEvent(String attributeName, Object attributeValue, String entityType) {
+        try {
+
+            ECSyncHelper syncHelper = AncApplication.getInstance().getEcSyncHelper();
+
+
+            Date date = new Date();
+            EventClientRepository db = (EventClientRepository) AncApplication.getInstance().getEventClientRepository();
+
+
+            JSONObject client = db.getClientByBaseEntityId(householdDetails.entityId());
+
+
+
+
+            Event event = (Event) new Event()
+                    .withBaseEntityId(householdDetails.entityId())
+                    .withEventDate(new Date())
+                    .withEventType("")
+                    .withLocationId(context().allSharedPreferences().fetchCurrentLocality())
+                    .withProviderId(context().allSharedPreferences().fetchRegisteredANM())
+                    .withEntityType(entityType)
+                    .withFormSubmissionId(JsonFormUtils.generateRandomUUIDString())
+                    .withDateCreated(new Date());
+            event.addObs((new Obs()).withFormSubmissionField(attributeName).withValue(attributeValue).withFieldCode(attributeName).withFieldType("formsubmissionField").withFieldDataType("text").withParentCode("").withHumanReadableValues(new ArrayList<Object>()));
+
+
+
+
+            addMetaData(this, event, date);
+            JSONObject eventJson = new JSONObject(JsonFormUtils.gson.toJson(event));
+            db.addEvent(householdDetails.entityId(), eventJson);
+            long lastSyncTimeStamp = context().allSharedPreferences().fetchLastUpdatedAtDate(0);
+            Date lastSyncDate = new Date(lastSyncTimeStamp);
+            AncClientProcessorForJava.getInstance(this).processClient(syncHelper.getEvents(lastSyncDate, BaseRepository.TYPE_Unsynced));
+            context().allSharedPreferences().saveLastUpdatedAtDate(lastSyncDate.getTime());
+
+            //update details
+
+
+
+        } catch (Exception e) {
+            Log.e(TAG, e.getMessage());
+        }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode,resultCode,data);
+        householdDetails.getColumnmaps().putAll(AncApplication.getInstance().getContext().detailsRepository().getAllDetailsForClient(householdDetails.entityId()));
+
     }
 }
 
