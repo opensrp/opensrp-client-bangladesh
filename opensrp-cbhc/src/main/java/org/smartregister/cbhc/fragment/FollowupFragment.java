@@ -249,11 +249,13 @@ public class FollowupFragment extends BaseProfileFragment {
                 all_forms.add(new Constants.FOLLOWUP_FORM.FOLLOWUPFORMS(Followup_Form_MHV_DS_Female,"সাধারণ রোগ মহিলা "));
             }
             if(marital_status==1){
-                all_forms.add(new Constants.FOLLOWUP_FORM.FOLLOWUPFORMS(Followup_Form_MHV_FP,"পরিবার পরিকল্পনা"));
+
                 if(pregnant_status == 1){
                     all_forms.add(new Constants.FOLLOWUP_FORM.FOLLOWUPFORMS(Followup_Form_MHV_ANC,"প্রসব পূর্ব "));
                     all_forms.add(new Constants.FOLLOWUP_FORM.FOLLOWUPFORMS(Followup_Form_MHV_PNC,"প্রসব পরবর্তী "));
 
+                }else{
+                    all_forms.add(new Constants.FOLLOWUP_FORM.FOLLOWUPFORMS(Followup_Form_MHV_FP,"পরিবার পরিকল্পনা"));
                 }
             }
         }
