@@ -70,6 +70,23 @@
         }
       },
       {
+        "key": "has_disease",
+        "openmrs_entity_parent": "",
+        "openmrs_entity": "person_attribute",
+        "openmrs_entity_id": "has_disease",
+        "openmrs_data_type": "text",
+        "type": "spinner",
+        "hint": "কোন রোগ বা অবস্থা আছে কি?",
+        "values": [
+          "হ্যাঁ",
+          "না"
+        ],
+        "openmrs_choice_ids": {
+          "হ্যাঁ": "Yes",
+          "না": "No"
+        }
+      },
+      {
         "key":"General_Disease_Female",
         "openmrs_entity_parent":"",
         "openmrs_entity":"person_attribute",
