@@ -63,10 +63,6 @@
         "type": "date_picker",
         "hint": "তারিখ",
         "expanded": false,
-        "min_date": "today-5y",
-        "max_date": "today",
-        "read_only":"true",
-        "value":"today",
         "v_required": {
           "value": "false",
           "err": "Please enter the date of Followup."
