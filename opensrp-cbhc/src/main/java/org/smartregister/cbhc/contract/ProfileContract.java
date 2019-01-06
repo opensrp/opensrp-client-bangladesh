@@ -1,5 +1,6 @@
 package org.smartregister.cbhc.contract;
 
+import android.app.Activity;
 import android.content.Intent;
 
 import org.smartregister.cbhc.activity.BaseProfileActivity;
@@ -25,7 +26,7 @@ public interface ProfileContract {
 
         void refreshProfileTopSection(Map<String, String> client);
 
-        void setProfileActivity(ProfileActivity profileActivity);
+        void setProfileActivity(Activity profileActivity);
     }
 
     interface View {

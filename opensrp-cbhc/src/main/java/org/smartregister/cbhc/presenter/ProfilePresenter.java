@@ -1,5 +1,6 @@
 package org.smartregister.cbhc.presenter;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.util.Log;
 import android.util.Pair;
@@ -7,27 +8,19 @@ import android.util.Pair;
 import org.apache.commons.lang3.tuple.Triple;
 import org.json.JSONObject;
 import org.smartregister.cbhc.R;
+import org.smartregister.cbhc.activity.MemberProfileActivity;
 import org.smartregister.cbhc.activity.ProfileActivity;
-import org.smartregister.cbhc.application.AncApplication;
 import org.smartregister.cbhc.contract.ProfileContract;
 import org.smartregister.cbhc.contract.RegisterContract;
-import org.smartregister.cbhc.helper.ECSyncHelper;
 import org.smartregister.cbhc.interactor.ProfileInteractor;
 import org.smartregister.cbhc.interactor.RegisterInteractor;
-import org.smartregister.cbhc.receiver.SyncStatusBroadcastReceiver;
-import org.smartregister.cbhc.sync.AncClientProcessorForJava;
 import org.smartregister.cbhc.util.Constants;
-import org.smartregister.cbhc.util.DBConstants;
 import org.smartregister.cbhc.util.JsonFormUtils;
-import org.smartregister.cbhc.util.Utils;
 import org.smartregister.clientandeventmodel.Client;
 import org.smartregister.clientandeventmodel.Event;
-import org.smartregister.domain.FetchStatus;
-import org.smartregister.domain.db.EventClient;
 import org.smartregister.repository.AllSharedPreferences;
 
 import java.lang.ref.WeakReference;
-import java.util.List;
 import java.util.Map;
 
 /**
@@ -40,7 +33,7 @@ public class ProfilePresenter implements ProfileContract.Presenter, RegisterCont
     private WeakReference<ProfileContract.View> mProfileView;
     private ProfileContract.Interactor mProfileInteractor;
     private RegisterContract.Interactor mRegisterInteractor;
-    ProfileActivity profileActivity;
+    Activity profileActivity;
 
     public ProfilePresenter(ProfileContract.View loginView) {
         mProfileView = new WeakReference<>(loginView);
@@ -157,13 +150,21 @@ public class ProfilePresenter implements ProfileContract.Presenter, RegisterCont
         ////////////////////////////////////////////////////////////////
 
         this.refreshProfileView(getProfileView().getIntentString(Constants.INTENT_KEY.BASE_ENTITY_ID));
-        if(profileActivity!=null)
-            profileActivity.refreshProfileViews();
+        if(profileActivity instanceof ProfileActivity){
+            profileActivity = (ProfileActivity)profileActivity;
+        }
+        if(profileActivity!=null&&profileActivity instanceof ProfileActivity)
+            ((ProfileActivity)profileActivity).refreshProfileViews();
+        if(profileActivity!=null&&profileActivity instanceof MemberProfileActivity)
+            ((MemberProfileActivity)profileActivity).refreshProfileViews();
         getProfileView().hideProgressDialog();
 
         getProfileView().displayToast(isEdit ? R.string.registration_info_updated : R.string.new_registration_saved);
-        if(profileActivity!=null)
-            profileActivity.profileOverviewFragment.refreshadapter(profileActivity.profileOverviewFragment.getFragmentView());
+        if(profileActivity!=null&&profileActivity instanceof ProfileActivity)
+            ((ProfileActivity)profileActivity).profileOverviewFragment.refreshadapter(((ProfileActivity)profileActivity).profileOverviewFragment.getFragmentView());
+//        if(profileActivity!=null&&profileActivity instanceof MemberProfileActivity)
+//            ((MemberProfileActivity)profileActivity).profileOverviewFragment.refreshadapter(((MemberProfileActivity)profileActivity).profileOverviewFragment.getFragmentView());
+
 
     }
 
@@ -179,7 +180,7 @@ public class ProfilePresenter implements ProfileContract.Presenter, RegisterCont
     }
 
     @Override
-    public void setProfileActivity(ProfileActivity profileActivity) {
+    public void setProfileActivity(Activity profileActivity) {
         this.profileActivity = profileActivity;
     }
 }

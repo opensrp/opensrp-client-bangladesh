@@ -1,22 +1,17 @@
 package org.smartregister.cbhc.fragment;
 
 import android.content.Context;
-import android.content.Intent;
 import android.os.Bundle;
+import android.os.CountDownTimer;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
 import android.widget.BaseAdapter;
-import android.widget.CheckBox;
-import android.widget.CompoundButton;
 import android.widget.LinearLayout;
-import android.widget.ListView;
 import android.widget.TextView;
 
-import org.apache.commons.lang3.ArrayUtils;
 import org.smartregister.cbhc.R;
 import org.smartregister.cbhc.application.AncApplication;
 import org.smartregister.cbhc.util.Constants;
@@ -35,14 +30,9 @@ import static org.smartregister.cbhc.util.Constants.FOLLOWUP_FORM.Followup_Form_
 import static org.smartregister.cbhc.util.Constants.FOLLOWUP_FORM.Followup_Form_MHV_DS_Male;
 import static org.smartregister.cbhc.util.Constants.FOLLOWUP_FORM.Followup_Form_MHV_DS_NewBorn;
 import static org.smartregister.cbhc.util.Constants.FOLLOWUP_FORM.Followup_Form_MHV_DS_Toddler;
-import static org.smartregister.cbhc.util.Constants.FOLLOWUP_FORM.Followup_Form_MHV_Death;
 import static org.smartregister.cbhc.util.Constants.FOLLOWUP_FORM.Followup_Form_MHV_Delivery;
 import static org.smartregister.cbhc.util.Constants.FOLLOWUP_FORM.Followup_Form_MHV_FP;
-import static org.smartregister.cbhc.util.Constants.FOLLOWUP_FORM.Followup_Form_MHV_Marital;
-import static org.smartregister.cbhc.util.Constants.FOLLOWUP_FORM.Followup_Form_MHV_Mobile_no;
 import static org.smartregister.cbhc.util.Constants.FOLLOWUP_FORM.Followup_Form_MHV_PNC;
-import static org.smartregister.cbhc.util.Constants.FOLLOWUP_FORM.Followup_Form_MHV_Pregnant;
-import static org.smartregister.cbhc.util.Constants.FOLLOWUP_FORM.Followup_Form_MHV_Risky_Habit;
 
 public class FollowupFragment extends BaseProfileFragment {
 
@@ -56,6 +46,7 @@ public class FollowupFragment extends BaseProfileFragment {
         }
         fragment.setArguments(args);
         return fragment;
+
     }
 
     int age = -1;
@@ -75,18 +66,26 @@ public class FollowupFragment extends BaseProfileFragment {
 
             }
         }
-        this.age = getAge();
-        this.gender = getGender();
-        this.marital_status = getMaritalStatus();
-        this.pregnant_status = getPregnantStatus();
+
     }
 
+    public void notifyAdapter(){
+        householdDetails.getColumnmaps().putAll(AncApplication.getInstance().getContext().detailsRepository().getAllDetailsForClient(householdDetails.entityId()));
+        if(formListRowAdapter!=null){
+            active_forms = getactivateforms(Constants.FOLLOWUP_FORM.getFollowup_forms());
+            formListRowAdapter = new FormListRowAdapter(getActivity(),active_forms);
+            formList.setAdapter(formListRowAdapter);
+            formListRowAdapter.notifyDataSetChanged();
+            form_history.setAdapter(new FormListAdapter(getActivity(),active_forms));
+        }
 
+    }
 
     public View fragmentView;
     ExpandableHeightGridView formList;
     ExpandableHeightGridView form_history;
     ArrayList<Constants.FOLLOWUP_FORM.FOLLOWUPFORMS> active_forms;
+    FormListRowAdapter formListRowAdapter ;
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -96,12 +95,14 @@ public class FollowupFragment extends BaseProfileFragment {
         formList.setExpanded(true);
         form_history.setExpanded(true);
         active_forms = getactivateforms(Constants.FOLLOWUP_FORM.getFollowup_forms());
+        formListRowAdapter = new FormListRowAdapter(getActivity(),active_forms);
+        formList.setAdapter(formListRowAdapter);
+        form_history.setAdapter(new FormListAdapter(getActivity(),active_forms));
 
-//        form_history.setAdapter(new FormListAdapter(getActivity(),Constants.FOLLOWUP_FORM.getFollowup_forms()));
-        formList.setAdapter(new FormListRowAdapter(getActivity(),active_forms));
 
         return fragmentView;
     }
+
 
     class FormListRowAdapter extends BaseAdapter {
         Context context;
@@ -201,10 +202,13 @@ public class FollowupFragment extends BaseProfileFragment {
     protected void onResumption() {
 
     }
+
     private int getPregnantStatus() {
         String ps = householdDetails.getColumnmaps().get("pregnant_status");
         if(ps!=null&&ps.equalsIgnoreCase("গর্ভবতী"))
             return 1;
+        if(ps!=null&&ps.equalsIgnoreCase("প্রসব"))
+            return 2;
         return 0;
     }
     public int getGender(){
@@ -236,6 +240,11 @@ public class FollowupFragment extends BaseProfileFragment {
 //                all_forms.remove(form);
 //            }
 //        }
+        this.age = getAge();
+        this.gender = getGender();
+        this.marital_status = getMaritalStatus();
+        this.pregnant_status = getPregnantStatus();
+
         if(age==0){
             all_forms.add(new Constants.FOLLOWUP_FORM.FOLLOWUPFORMS(Followup_Form_MHV_DS_NewBorn,"শিশু (০-২ মাস)"));
         }
@@ -252,8 +261,12 @@ public class FollowupFragment extends BaseProfileFragment {
 
                 if(pregnant_status == 1){
                     all_forms.add(new Constants.FOLLOWUP_FORM.FOLLOWUPFORMS(Followup_Form_MHV_ANC,"প্রসব পূর্ব "));
-                    all_forms.add(new Constants.FOLLOWUP_FORM.FOLLOWUPFORMS(Followup_Form_MHV_PNC,"প্রসব পরবর্তী "));
 
+
+                }else if(pregnant_status == 2){
+                    all_forms.add(new Constants.FOLLOWUP_FORM.FOLLOWUPFORMS(Followup_Form_MHV_Delivery,"প্রসব"));
+                    all_forms.add(new Constants.FOLLOWUP_FORM.FOLLOWUPFORMS(Followup_Form_MHV_PNC,"প্রসব পরবর্তী "));
+                    all_forms.add(new Constants.FOLLOWUP_FORM.FOLLOWUPFORMS(Followup_Form_MHV_FP,"পরিবার পরিকল্পনা"));
                 }else{
                     all_forms.add(new Constants.FOLLOWUP_FORM.FOLLOWUPFORMS(Followup_Form_MHV_FP,"পরিবার পরিকল্পনা"));
                 }

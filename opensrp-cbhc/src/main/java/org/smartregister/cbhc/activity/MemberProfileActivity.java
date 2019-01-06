@@ -2,7 +2,6 @@ package org.smartregister.cbhc.activity;
 
 import android.Manifest;
 import android.app.AlertDialog;
-import android.content.ContentValues;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
@@ -32,10 +31,8 @@ import org.smartregister.cbhc.fragment.ChildImmunizationFragment;
 import org.smartregister.cbhc.fragment.FollowupFragment;
 import org.smartregister.cbhc.fragment.GrowthFragment;
 import org.smartregister.cbhc.fragment.MemberProfileContactsFragment;
-import org.smartregister.cbhc.fragment.ProfileContactsFragment;
 import org.smartregister.cbhc.fragment.ProfileOverviewFragment;
 import org.smartregister.cbhc.fragment.ProfileTasksFragment;
-import org.smartregister.cbhc.fragment.QuickCheckFragment;
 import org.smartregister.cbhc.helper.ECSyncHelper;
 import org.smartregister.cbhc.helper.ImageRenderHelper;
 import org.smartregister.cbhc.presenter.ProfilePresenter;
@@ -47,7 +44,6 @@ import org.smartregister.cbhc.util.JsonFormUtils;
 import org.smartregister.cbhc.util.Utils;
 import org.smartregister.cbhc.view.CopyToClipboardDialog;
 import org.smartregister.clientandeventmodel.Event;
-import org.smartregister.clientandeventmodel.FormEntityConstants;
 import org.smartregister.clientandeventmodel.Obs;
 import org.smartregister.commonregistry.CommonPersonObject;
 import org.smartregister.commonregistry.CommonPersonObjectClient;
@@ -58,14 +54,11 @@ import org.smartregister.immunization.domain.ServiceWrapper;
 import org.smartregister.immunization.domain.VaccineWrapper;
 import org.smartregister.immunization.listener.ServiceActionListener;
 import org.smartregister.immunization.listener.VaccinationActionListener;
-import org.smartregister.repository.AllSharedPreferences;
 import org.smartregister.repository.BaseRepository;
 import org.smartregister.repository.EventClientRepository;
 import org.smartregister.repository.ImageRepository;
 import org.smartregister.util.DateUtil;
-import org.smartregister.util.OpenSRPImageLoader;
 import org.smartregister.util.PermissionUtils;
-import org.smartregister.view.activity.DrishtiApplication;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -121,7 +114,7 @@ public class MemberProfileActivity extends BaseProfileActivity implements Profil
         setUpViews();
 
         mProfilePresenter = new ProfilePresenter(this);
-//        mProfilePresenter.setProfileActivity(this);
+        mProfilePresenter.setProfileActivity(this);
 
         imageRenderHelper = new ImageRenderHelper(this);
 
@@ -196,7 +189,8 @@ public class MemberProfileActivity extends BaseProfileActivity implements Profil
     }
 
     public void refreshProfileViews(){
-        householdDetails = CommonPersonObjectToClient(AncApplication.getInstance().getContext().commonrepository(DBConstants.HOUSEHOLD_TABLE_NAME).findByBaseEntityId(householdDetails.entityId()));
+//        householdDetails = CommonPersonObjectToClient(AncApplication.getInstance().getContext().commonrepository(DBConstants.HOUSEHOLD_TABLE_NAME).findByBaseEntityId(householdDetails.entityId()));
+        householdDetails.getColumnmaps().putAll(AncApplication.getInstance().getContext().detailsRepository().getAllDetailsForClient(householdDetails.entityId()));
         String firstName = org.smartregister.util.Utils.getValue(householdDetails.getColumnmaps(), DBConstants.KEY.FIRST_NAME, true);
         String lastName = org.smartregister.util.Utils.getValue(householdDetails.getColumnmaps(), DBConstants.KEY.LAST_NAME, true);
         if(lastName.equalsIgnoreCase("null")||lastName==null){
@@ -224,6 +218,7 @@ public class MemberProfileActivity extends BaseProfileActivity implements Profil
         setProfileAge(durationString);
         setProfileID(getValue(householdDetails.getColumnmaps(),"Patient_Identifier",true));
         gestationAgeView.setVisibility(View.GONE);
+        followupFragment.notifyAdapter();
     }
 
     private CommonPersonObjectClient CommonPersonObjectToClient(CommonPersonObject commonPersonObject) {
@@ -258,12 +253,14 @@ public class MemberProfileActivity extends BaseProfileActivity implements Profil
 
     ChildImmunizationFragment childImmunizationFragment;
     GrowthFragment growthFragment;
+    public ProfileOverviewFragment profileOverviewFragment;
+    FollowupFragment followupFragment;
     private ViewPager setupViewPager(ViewPager viewPager) {
         ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
 
-        ProfileOverviewFragment profileOverviewFragment = ProfileOverviewFragment.newInstance(this.getIntent().getExtras());
+        profileOverviewFragment = ProfileOverviewFragment.newInstance(this.getIntent().getExtras());
         MemberProfileContactsFragment profileContactsFragment = MemberProfileContactsFragment.newInstance(this.getIntent().getExtras());
-        FollowupFragment followupFragment = FollowupFragment.newInstance(this.getIntent().getExtras());
+        followupFragment = FollowupFragment.newInstance(this.getIntent().getExtras());
         ProfileTasksFragment profileTasksFragment = ProfileTasksFragment.newInstance(this.getIntent().getExtras());
         growthFragment = GrowthFragment.newInstance(this.getIntent().getExtras());
         growthFragment.setChildDetails(householdDetails);
@@ -304,10 +301,12 @@ public class MemberProfileActivity extends BaseProfileActivity implements Profil
             }
             if(age>=5&&marital_status==0) {
                 arrayAdapter.add("বৈবাহিক অবস্থা");
+
             }
             if(age>=5&&marital_status==1&&gender==0){
                 arrayAdapter.add("গর্ভাবস্থা");
 //                arrayAdapter.add("জন্ম");
+
             }
 
             if(age>=5){
@@ -568,7 +567,9 @@ public class MemberProfileActivity extends BaseProfileActivity implements Profil
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode,resultCode,data);
         householdDetails.getColumnmaps().putAll(AncApplication.getInstance().getContext().detailsRepository().getAllDetailsForClient(householdDetails.entityId()));
-
+        followupFragment.notifyAdapter();
     }
+
+
 }
 
