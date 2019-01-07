@@ -52,7 +52,7 @@
     }
   },
   "step1": {
-    "title": "Marital Status",
+    "title": "বৈবাহিক অবস্থা",
     "fields": [
       {
         "key": "marital_status_followup_Date",

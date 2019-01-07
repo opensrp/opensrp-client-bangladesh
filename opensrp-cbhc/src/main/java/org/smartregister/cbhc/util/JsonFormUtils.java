@@ -165,6 +165,14 @@ public class JsonFormUtils extends org.smartregister.util.JsonFormUtils {
             date_of_registration.remove(JsonFormUtils.VALUE);
             date_of_registration.put(JsonFormUtils.VALUE,df.format("dd-MM-yyyy", new java.util.Date()));
         }
+
+        else if(formName.startsWith("Followup_Form")){
+            android.text.format.DateFormat df = new android.text.format.DateFormat();
+
+            JSONArray field = fields(form);
+            JSONObject date_of_registration = getFieldJSONObject(field,"followup_Date");
+            date_of_registration.put(JsonFormUtils.VALUE,df.format("dd-MM-yyyy", new java.util.Date()));
+        }
         Log.d(TAG, "form is " + form.toString());
         return form;
     }

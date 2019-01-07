@@ -47,8 +47,22 @@
     "encounter_location": ""
   },
   "step1": {
-    "title": "Pregnant Status",
+    "title": "গর্ভাবস্থা",
     "fields": [
+      {
+        "key": "followup_Date",
+        "openmrs_entity_parent": "",
+        "openmrs_entity": "",
+        "openmrs_entity_id": "",
+        "openmrs_data_type": "text",
+        "type": "date_picker",
+        "hint": "তারিখ",
+        "expanded": false,
+        "v_required": {
+          "value": "false",
+          "err": "Please enter the date of Followup."
+        }
+      },
       {
         "key": "pregnant_status",
         "openmrs_entity_parent": "",
