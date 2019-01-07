@@ -33,7 +33,7 @@ import org.smartregister.sync.ClientProcessorForJava;
 import java.util.Date;
 import java.util.List;
 
-import static org.smartregister.cbhc.util.JsonFormUtils.notFollowUp;
+
 
 /**
  * Created by keyman 27/06/2018.
@@ -214,7 +214,7 @@ public class RegisterInteractor implements RegisterContract.Interactor {
                 JSONObject eventJson = new JSONObject(JsonFormUtils.gson.toJson(baseEvent));
                 getSyncHelper().addEvent(baseEvent.getBaseEntityId(), eventJson);
             }
-            if(notFollowUp(baseEvent.getEventType())){
+            if(Utils.notFollowUp(baseEvent.getEventType())){
 
                 if (isEditMode) {
                     // Unassign current OPENSRP ID

@@ -242,5 +242,8 @@ public class Utils {
     public static final String DOB_STRING = "2017-01-01T00:00:00.000Z";
     public static final String GENDER = (new Random()).nextBoolean() ? "male" : "female";
 
+    public static boolean notFollowUp(String encounterType) {
+        return !encounterType.startsWith("Followup");
+    }
 
 }

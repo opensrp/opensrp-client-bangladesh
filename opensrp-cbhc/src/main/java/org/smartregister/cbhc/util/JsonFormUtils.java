@@ -166,13 +166,13 @@ public class JsonFormUtils extends org.smartregister.util.JsonFormUtils {
             date_of_registration.put(JsonFormUtils.VALUE,df.format("dd-MM-yyyy", new java.util.Date()));
         }
 
-        else if(formName.startsWith("Followup_Form")){
-            android.text.format.DateFormat df = new android.text.format.DateFormat();
-
-            JSONArray field = fields(form);
-            JSONObject date_of_registration = getFieldJSONObject(field,"followup_Date");
-            date_of_registration.put(JsonFormUtils.VALUE,df.format("dd-MM-yyyy", new java.util.Date()));
-        }
+//        else if(formName.startsWith("Followup_Form")){
+//            android.text.format.DateFormat df = new android.text.format.DateFormat();
+//
+//            JSONArray field = fields(form);
+//            JSONObject date_of_registration = getFieldJSONObject(field,"followup_Date");
+//            date_of_registration.put(JsonFormUtils.VALUE,df.format("dd-MM-yyyy", new java.util.Date()));
+//        }
         Log.d(TAG, "form is " + form.toString());
         return form;
     }
@@ -220,8 +220,7 @@ public class JsonFormUtils extends org.smartregister.util.JsonFormUtils {
             if(!(encounterType.equalsIgnoreCase(Constants.EventType.MemberREGISTRATION)
             ||encounterType.equalsIgnoreCase(Constants.EventType.Child_REGISTRATION)
             ||encounterType.equalsIgnoreCase(Constants.EventType.WomanMemberREGISTRATION)
-            ||encounterType.equalsIgnoreCase(Constants.EventType.MARITAL_STATUS)
-            ||encounterType.equalsIgnoreCase(Constants.EventType.PREGNANT_STATUS)
+            || !Utils.notFollowUp(encounterType)
             )) {
 
                 JSONObject dobUnknownObject = getFieldJSONObject(fields, DBConstants.KEY.DOB_UNKNOWN);
@@ -246,7 +245,7 @@ public class JsonFormUtils extends org.smartregister.util.JsonFormUtils {
 
                     }
                 }
-            }else if(notFollowUp(encounterType)){
+            }else if(Utils.notFollowUp(encounterType)){
                 String agestring ="";
                 String dobstring = "";
                 JSONObject dobknownObject = getFieldJSONObject(fields, "member_birth_date_known");
@@ -293,7 +292,7 @@ public class JsonFormUtils extends org.smartregister.util.JsonFormUtils {
 
 
             }
-            if(notFollowUp(encounterType)) {
+            if(Utils.notFollowUp(encounterType)) {
                 getFieldJSONObject(fields, "Patient_Identifier").remove("hidden");
             }
 
@@ -305,7 +304,7 @@ public class JsonFormUtils extends org.smartregister.util.JsonFormUtils {
 
             Client baseClient = org.smartregister.util.JsonFormUtils.createBaseClient(fields, formTag, entityId);
 
-            if(notFollowUp(encounterType)) {
+            if(Utils.notFollowUp(encounterType)) {
                 ArrayList<Address> adresses = new ArrayList<Address>();
                 Address address1 = new Address();
                 try {
@@ -451,14 +450,7 @@ public class JsonFormUtils extends org.smartregister.util.JsonFormUtils {
         }
     }
 
-    public static boolean notFollowUp(String encounterType) {
-        if(encounterType.equalsIgnoreCase(Constants.EventType.MARITAL_STATUS)
-                ||encounterType.equalsIgnoreCase(Constants.EventType.PREGNANT_STATUS)){
-            return false;
-        }else{
-            return true;
-        }
-    }
+
 
     private static HashMap<String,String> processCheckBoxForAttributes(JSONArray fields) {
         HashMap<String,String> toReturn = new HashMap<String, String>();

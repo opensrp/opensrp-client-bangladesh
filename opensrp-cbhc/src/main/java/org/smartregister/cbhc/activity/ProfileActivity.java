@@ -125,7 +125,7 @@ public class ProfileActivity extends BaseProfileActivity implements ProfileContr
         }
         String patientName = getName(firstName, lastName);
 
-
+patientName = patientName + " (খানা প্রধান)";
         setProfileName(patientName);
         String dobString = getValue(householdDetails.getColumnmaps(),"dob",true);
         String durationString = "";

@@ -16,6 +16,7 @@ import org.smartregister.cbhc.interactor.ProfileInteractor;
 import org.smartregister.cbhc.interactor.RegisterInteractor;
 import org.smartregister.cbhc.util.Constants;
 import org.smartregister.cbhc.util.JsonFormUtils;
+import org.smartregister.cbhc.util.Utils;
 import org.smartregister.clientandeventmodel.Client;
 import org.smartregister.clientandeventmodel.Event;
 import org.smartregister.repository.AllSharedPreferences;
@@ -112,12 +113,9 @@ public class ProfilePresenter implements ProfileContract.Presenter, RegisterCont
 
                 mRegisterInteractor.removeWomanFromANCRegister(jsonString, allSharedPreferences.fetchRegisteredANM());
 
-            }else if (form.getString(JsonFormUtils.ENCOUNTER_TYPE).equals(Constants.EventType.MARITAL_STATUS)) {
+            }else if (!Utils.notFollowUp(form.getString(JsonFormUtils.ENCOUNTER_TYPE))) {
             Pair<Client, Event> values = JsonFormUtils.processRegistrationForm(allSharedPreferences, jsonString);
             mRegisterInteractor.saveRegistration(values, jsonString, true, this);
-            }else if (form.getString(JsonFormUtils.ENCOUNTER_TYPE).equals(Constants.EventType.PREGNANT_STATUS)) {
-                Pair<Client, Event> values = JsonFormUtils.processRegistrationForm(allSharedPreferences, jsonString);
-                mRegisterInteractor.saveRegistration(values, jsonString, true, this);
             } else {
                 getProfileView().hideProgressDialog();
             }

@@ -6,10 +6,12 @@ import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 import android.util.Log;
 
+import org.slf4j.helpers.Util;
 import org.smartregister.cbhc.application.AncApplication;
 import org.smartregister.cbhc.helper.ECSyncHelper;
 import org.smartregister.cbhc.util.Constants;
 import org.smartregister.cbhc.util.DBConstants;
+import org.smartregister.cbhc.util.Utils;
 import org.smartregister.commonregistry.AllCommonsRepository;
 import org.smartregister.domain.db.Client;
 import org.smartregister.domain.db.Event;
@@ -72,8 +74,7 @@ public class AncClientProcessorForJava extends ClientProcessorForJava {
                         || eventType.equals(Constants.EventType.WomanMemberREGISTRATION)
                         || eventType.equals(Constants.EventType.Child_REGISTRATION)
                         || eventType.equals(Constants.EventType.UPDATE_REGISTRATION)
-                        || eventType.equals(Constants.EventType.MARITAL_STATUS)
-                        || eventType.equals(Constants.EventType.PREGNANT_STATUS)
+                        || !Utils.notFollowUp(eventType)
                         ) {
                     if (clientClassification == null) {
                         continue;
