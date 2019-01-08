@@ -288,7 +288,7 @@ patientName = patientName + " (খানা প্রধান)";
             final ArrayAdapter<String> arrayAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1);
             arrayAdapter.add("[+] নতুন সদস্য");
             arrayAdapter.add("খানা স্থানান্তর");
-            arrayAdapter.add("জি আর এ খানা পাওয়া যায়নি");
+            arrayAdapter.add("খানা পাওয়া যায়নি");
 //            arrayAdapter.add(getString(R.string.call));
 //            arrayAdapter.add(getString(R.string.start_contact));
 //            arrayAdapter.add(getString(R.string.close_anc_record));

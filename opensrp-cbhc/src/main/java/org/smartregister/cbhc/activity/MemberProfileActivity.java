@@ -316,7 +316,7 @@ public class MemberProfileActivity extends BaseProfileActivity implements Profil
 
 
             arrayAdapter.add("মৃত্যু");
-            arrayAdapter.add("জি আর এ সদস্য পাওয়া যায়নি");
+            arrayAdapter.add("সদস্য পাওয়া যায়নি");
 
 //            arrayAdapter.add(getString(R.string.close_anc_record));
 
@@ -355,7 +355,7 @@ public class MemberProfileActivity extends BaseProfileActivity implements Profil
                             getIntent().putExtra(Constants.INTENT_KEY.BASE_ENTITY_ID,householdDetails.getCaseId());
                             JsonFormUtils.launchFollowUpForm(MemberProfileActivity.this,Followup_Form_MHV_Death);
                             break;
-                        case "জি আর এ সদস্য পাওয়া যায়নি":
+                        case "সদস্য পাওয়া যায়নি":
                             break;
                         case "Close ANC Record":
                             JsonFormUtils.launchANCCloseForm(MemberProfileActivity.this);

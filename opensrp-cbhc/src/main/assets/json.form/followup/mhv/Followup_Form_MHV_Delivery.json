@@ -113,32 +113,7 @@
           "মারা গেছেন":"Dead"
         }
       },
-      {
-        "key":"Outcome of delivery",
-        "openmrs_entity_parent":"",
-        "openmrs_entity":"person_attribute",
-        "openmrs_entity_id":"",
-        "openmrs_data_type":"text",
-        "type":"check_box",
-        "label":"প্রসবের ফলাফল",
-        "exclusive":[
-          "None"
-        ],
-        "options":[
-          {
-            "key":"Live Birth",
-            "text":"জীবিত জন্ম",
-            "value":"false",
-            "openmrs_choice_id":"Live Birth"
-          },
-          {
-            "key":"Stillbirth",
-            "text":"মৃত বাচ্চার জন্ম ",
-            "value":"false",
-            "openmrs_choice_id":"Stillbirth"
-          }
-        ]
-      },
+
       {
         "key":"Live Birth",
         "openmrs_entity_parent":"",
@@ -376,8 +351,6 @@
           "উপজেলা স্বাস্থ্য কমপ্লেক্স ",
           "সদর হাসপাতাল ",
           "মেডিকেল কলেজ হাসপাতাল ",
-          "বেসরকারী ক্লিনিক/হাসপাতাল ",
-          "এনজিও ",
           "বিশেষায়িত হাসপাতাল ",
           "অন্যান্য ",
           "রেফার করা হয়নি "
@@ -393,8 +366,6 @@
           "উপজেলা স্বাস্থ্য কমপ্লেক্স ":"Upazila_Health_Complex",
           "সদর হাসপাতাল ":"District_Hospital",
           "মেডিকেল কলেজ হাসপাতাল ":"Medical_College_and_Hospital",
-          "বেসরকারী ক্লিনিক/হাসপাতাল ":"Private_Clinic_and_Hospital",
-          "এনজিও ":"Non-governmental_Organization",
           "বিশেষায়িত হাসপাতাল ":"Specialized_Hospital",
           "অন্যান্য ":"Others_Health_Facility",
           "রেফার করা হয়নি ":"Not_referred"
