@@ -52,7 +52,7 @@
     }
   },
   "step1": {
-    "title": "Member Registration",
+    "title": "নতুন সদস্য নিবদ্ধন",
     "fields": [
       {
         "key": "member_unique_ID",
@@ -364,7 +364,7 @@
         "openmrs_entity_id": "",
         "openmrs_data_type": "text",
         "type": "spinner",
-        "hint": "জন্ম তারিখ জানা আছে কি?",
+        "hint": "জন্ম তারিখ জানা আছে কি?*",
         "values": [
           "হ্যাঁ",
           "না"
@@ -372,7 +372,11 @@
         "openmrs_choice_ids": {
           "হ্যাঁ": "Yes",
           "না": "No"
-        }
+        },
+        "v_required": {
+          "value": true,
+          "err": "Please Select Date of Birth"
+        },
       },
       {
         "key": "member_birth_date",
@@ -446,7 +450,7 @@
         "openmrs_entity_id": "Realtion_With_Household_Head",
         "openmrs_data_type": "text",
         "type": "spinner",
-        "hint": "থানা প্রধানের সাথে সম্পর্ক",
+        "hint": "থানা প্রধানের সাথে সম্পর্ক*",
         "values": [
           "খানা প্রধান",
           "স্বামী/স্ত্রী",
@@ -504,6 +508,10 @@
           "জামাতা": "Son_in_Law",
           "অন্যান্য আত্মীয়": "Others_Relative",
           "অন্যান্য অনাত্মীয়": "Others_Non_Relative"
+        },
+        "v_required": {
+          "value": true,
+          "err": "Please Select Relation"
         }
       },
       {
@@ -550,6 +558,10 @@
         "openmrs_data_type": "text",
         "type": "spinner",
         "hint": "বৈবাহিক অবস্থা*",
+        "v_required": {
+          "value": true,
+          "err": "Please Type NID"
+        },
         "values": [
           "বিবাহিত",
           "দাম্পত্য বিছিন্ন",
@@ -581,7 +593,7 @@
         "openmrs_data_type": "text",
         "type": "edit_text",
         "look_up": "true",
-        "hint": "স্বামী/স্ত্রীর নাম (ইংরেজীতে)",
+        "hint": "স্বামী/স্ত্রীর নাম (ইংরেজীতে)*",
         "v_required": {
           "value": true,
           "err": "Please Type Husband Name."
@@ -660,7 +672,11 @@
         "openmrs_data_type": "text",
         "type": "edit_text",
         "look_up": "true",
-        "hint": "জন্মস্থান (জেলা)"
+        "hint": "জন্মস্থান (জেলা)*",
+        "v_required": {
+          "value": true,
+          "err": "Please Select District"
+        }
       },
       {
         "key": "disability",
@@ -788,7 +804,11 @@
         "openmrs_entity_id": "education",
         "openmrs_data_type": "text",
         "type": "spinner",
-        "hint": "শিক্ষাগত যোগ্যতা",
+        "hint": "শিক্ষাগত যোগ্যতা*",
+        "v_required": {
+          "value": true,
+          "err": "Please Type NID"
+        },
         "values": [
           "কোন শ্রেণীতে উত্তীর্ণ হয়নি",
           "প্লে/নার্সারি/ কেজি",
@@ -848,7 +868,7 @@
         "openmrs_entity": "",
         "openmrs_entity_id": "",
         "type": "edit_text",
-        "hint": "অন্যান্য শিক্ষাগত যোগ্যতা",
+        "hint": "অন্যান্য শিক্ষাগত যোগ্যতা*",
         "v_required": {
           "value": true,
           "err": "Please Type Other Qualification"
@@ -867,7 +887,11 @@
         "openmrs_entity_id": "occupation",
         "openmrs_data_type": "text",
         "type": "spinner",
-        "hint": "প্রধান পেশা",
+        "hint": "প্রধান পেশা*",
+        "v_required": {
+          "value": true,
+          "err": "Please Type NID"
+        },
         "values": [
           "ভৌত বিজ্ঞানী এবং \nএতদসম্পর্কিত টেকনিশিয়ান",
           "ইঞ্জিনিয়ারিং ও স্থপতি",
@@ -1035,7 +1059,7 @@
         "openmrs_entity": "",
         "openmrs_entity_id": "",
         "type": "edit_text",
-        "hint": "অন্যান্য পেশা",
+        "hint": "অন্যান্য পেশা*",
         "v_required": {
           "value": true,
           "err": "Please Type Other Work"
@@ -1054,7 +1078,11 @@
         "openmrs_entity_id": "Religion",
         "openmrs_data_type": "text",
         "type": "spinner",
-        "hint": "ধর্ম",
+        "hint": "ধর্ম*",
+        "v_required": {
+          "value": true,
+          "err": "Please Type NID"
+        },
         "values": [
           "মুসলিম",
           "হিন্দু",
@@ -1076,7 +1104,7 @@
         "openmrs_entity": "",
         "openmrs_entity_id": "",
         "type": "edit_text",
-        "hint": "অন্যান্য ধর্ম",
+        "hint": "অন্যান্য ধর্ম*",
         "v_required": {
           "value": true,
           "err": "Please Type Other Religion"
@@ -1095,7 +1123,11 @@
         "openmrs_entity_id": "bloodgroup",
         "openmrs_data_type": "text",
         "type": "spinner",
-        "hint": "রক্তের গ্রুপ",
+        "hint": "রক্তের গ্রুপ*",
+        "v_required": {
+          "value": true,
+          "err": "Please Type NID"
+        },
         "values": [
           "A+",
           "A-",
@@ -1126,7 +1158,11 @@
         "openmrs_entity_id": "has_disease",
         "openmrs_data_type": "text",
         "type": "spinner",
-        "hint": "কোন রোগ বা অবস্থা আছে কি?",
+        "hint": "কোন রোগ বা অবস্থা আছে কি?*",
+        "v_required": {
+          "value": true,
+          "err": "Please Type NID"
+        },
         "values": [
           "হ্যাঁ",
           "না"
@@ -1429,7 +1465,11 @@
         "openmrs_entity_id": "familyplanning",
         "openmrs_data_type": "text",
         "type": "check_box",
-        "label": "পরিবার পরিকল্পনা",
+        "label": "পরিবার পরিকল্পনা*",
+        "v_required": {
+          "value": true,
+          "err": "Please Type NID"
+        },
         "exclusive": ["No_Method_Usage"],
         "options": [
           {

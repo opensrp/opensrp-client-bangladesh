@@ -52,7 +52,7 @@
     }
   },
   "step1":{
-    "title":"প্রসব",
+    "title":"প্রসব সম্পর্কিত তথ্য হালনাগাদ",
     "fields":[
       {
         "key":"followup_Date",
