@@ -52,7 +52,7 @@
     }
   },
   "step1": {
-    "title": "বৈবাহিক অবস্থা সম্পর্কিত তথ্য হালনাগাদ",
+    "title": "বৈবাহিক অবস্থা সম্পর্কিত তথ্য ",
     "fields": [
       {
         "key": "marital_status_followup_Date",

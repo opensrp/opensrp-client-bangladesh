@@ -792,7 +792,7 @@ public class JsonFormUtils extends org.smartregister.util.JsonFormUtils {
                 jsonObject.put(JsonFormUtils.VALUE, DATE_FORMAT.format(dob));
             }
 
-        }else if(jsonObject.getString(JsonFormUtils.KEY).equalsIgnoreCase(DBConstants.KEY.CONTACT_PHONE_NUMBER)){
+        }else if(jsonObject.getString(JsonFormUtils.KEY).equalsIgnoreCase(DBConstants.KEY.CONTACT_PHONE_NUMBER)||jsonObject.getString(JsonFormUtils.KEY).equalsIgnoreCase(DBConstants.KEY.CONTACT_PHONE_NUMBER_BY_AGE)){
             String phone_number = womanClient.get(DBConstants.KEY.PHONE_NUMBER);
 //            if(phone_number!=null&&phone_number.length()>11){
 //                phone_number = phone_number.substring(phone_number.length()-11);

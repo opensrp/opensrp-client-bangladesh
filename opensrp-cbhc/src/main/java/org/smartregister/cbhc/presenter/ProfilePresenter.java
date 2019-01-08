@@ -160,8 +160,8 @@ public class ProfilePresenter implements ProfileContract.Presenter, RegisterCont
         getProfileView().displayToast(isEdit ? R.string.registration_info_updated : R.string.new_registration_saved);
         if(profileActivity!=null&&profileActivity instanceof ProfileActivity)
             ((ProfileActivity)profileActivity).profileOverviewFragment.refreshadapter(((ProfileActivity)profileActivity).profileOverviewFragment.getFragmentView());
-//        if(profileActivity!=null&&profileActivity instanceof MemberProfileActivity)
-//            ((MemberProfileActivity)profileActivity).profileOverviewFragment.refreshadapter(((MemberProfileActivity)profileActivity).profileOverviewFragment.getFragmentView());
+        if(profileActivity!=null&&profileActivity instanceof MemberProfileActivity)
+            ((MemberProfileActivity)profileActivity).profileOverviewFragment.refreshadapter(((MemberProfileActivity)profileActivity).profileOverviewFragment.getFragmentView());
 
 
     }

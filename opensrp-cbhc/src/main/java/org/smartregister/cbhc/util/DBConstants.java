@@ -30,6 +30,8 @@ public class DBConstants {
         public static final String PHONE_NUMBER = "phone_number";
         public static final String PHONENUMBER = "phonenumber";
         public static final String CONTACT_PHONE_NUMBER = "contact_phone_number";
+        public static final String CONTACT_PHONE_NUMBER_BY_AGE = "contact_phone_number_by_age";
+
         public static final String ALT_NAME = "alt_name";
         public static final String ALT_PHONE_NUMBER = "alt_phone_number";
         public static final String HOME_ADDRESS = "home_address";
