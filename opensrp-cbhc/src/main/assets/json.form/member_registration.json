@@ -376,7 +376,7 @@
         "v_required": {
           "value": true,
           "err": "Please Select Date of Birth"
-        },
+        }
       },
       {
         "key": "member_birth_date",

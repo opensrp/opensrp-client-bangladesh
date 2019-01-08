@@ -76,7 +76,11 @@
         "openmrs_entity_id": "",
         "openmrs_data_type": "text",
         "type": "edit_text",
-        "hint": "গ্রাম/মহল্লা/বাড়ি/সড়ক নম্বর"
+        "hint": "গ্রাম/মহল্লা/বাড়ি/সড়ক নম্বর*",
+        "v_required": {
+          "value": true,
+          "err": "Please type address"
+        }
       },
       {
         "key": "is_permanent_address",
@@ -86,6 +90,10 @@
         "openmrs_data_type": "text",
         "type": "spinner",
         "hint": "স্থায়ী ঠিকানা কি একই",
+        "v_required": {
+          "value": true,
+          "err": "Please Select address"
+        },
         "values": [
           "হ্যাঁ",
           "না"
