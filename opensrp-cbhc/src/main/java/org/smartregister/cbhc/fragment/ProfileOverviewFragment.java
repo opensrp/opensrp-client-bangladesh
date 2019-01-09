@@ -98,6 +98,9 @@ public class ProfileOverviewFragment extends BaseProfileFragment {
     @Override
     protected void onResumption() {
         //Overriden
+//        if(fragmentView!=null){
+//            refreshadapter(fragmentView);
+//        }
     }
 
     @Override
@@ -114,11 +117,13 @@ public class ProfileOverviewFragment extends BaseProfileFragment {
             @Override
             protected void onPreExecute() {
                 super.onPreExecute();
+
                 dialog = ProgressDialog.show(ProfileOverviewFragment.this.getActivity(),"processing","please wait");
             }
 
             @Override
             protected Object doInBackground(Object[] objects) {
+                //householdDetails.getColumnmaps().putAll(AncApplication.getInstance().getContext().detailsRepository().getAllDetailsForClient(householdDetails.entityId()));
                 AncRepository repo = (AncRepository) AncApplication.getInstance().getRepository();
                 SQLiteDatabase db = repo.getReadableDatabase();
                 String mother_id = householdDetails.getDetails().get("_id");

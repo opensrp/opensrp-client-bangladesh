@@ -180,6 +180,7 @@ patientName = patientName + " (খানা প্রধান)";
         setProfileAge(durationString);
         setProfileID(getValue(householdDetails.getColumnmaps(),"Patient_Identifier",true));
         gestationAgeView.setVisibility(View.GONE);
+
     }
 
     private CommonPersonObjectClient CommonPersonObjectToClient(CommonPersonObject commonPersonObject) {
@@ -257,13 +258,13 @@ patientName = patientName + " (খানা প্রধান)";
 //                Log.i("", "NO RESULT FOR QR CODE");
         }
     }
-
+    ProfileContactsFragment profileContactsFragment;
     private ViewPager setupViewPager(ViewPager viewPager) {
         ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
 
         profileOverviewFragment = ProfileOverviewFragment.newInstance(this.getIntent().getExtras());
 
-        ProfileContactsFragment profileContactsFragment = ProfileContactsFragment.newInstance(this.getIntent().getExtras());
+        profileContactsFragment = ProfileContactsFragment.newInstance(this.getIntent().getExtras());
         ProfileTasksFragment profileTasksFragment = ProfileTasksFragment.newInstance(this.getIntent().getExtras());
 
         adapter.addFragment(profileOverviewFragment, this.getString(R.string.members));
@@ -271,6 +272,8 @@ patientName = patientName + " (খানা প্রধান)";
 //        adapter.addFragment(profileTasksFragment, this.getString(R.string.tasks));
 
         viewPager.setAdapter(adapter);
+
+
 
         return viewPager;
     }

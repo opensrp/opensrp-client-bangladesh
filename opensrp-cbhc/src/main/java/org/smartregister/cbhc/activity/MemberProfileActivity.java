@@ -189,15 +189,15 @@ public class MemberProfileActivity extends BaseProfileActivity implements Profil
     }
 
     public void refreshProfileViews(){
-        if(typeofMember.equalsIgnoreCase("malechild")||typeofMember.equalsIgnoreCase("femalechild")){
-            householdDetails = CommonPersonObjectToClient(AncApplication.getInstance().getContext().commonrepository(DBConstants.CHILD_TABLE_NAME).findByBaseEntityId(householdDetails.entityId()));
-        }else if(typeofMember.equalsIgnoreCase("woman")){
-            householdDetails = CommonPersonObjectToClient(AncApplication.getInstance().getContext().commonrepository(DBConstants.WOMAN_TABLE_NAME).findByBaseEntityId(householdDetails.entityId()));
-        }else if(typeofMember.equalsIgnoreCase("member")){
-            householdDetails = CommonPersonObjectToClient(AncApplication.getInstance().getContext().commonrepository(DBConstants.MEMBER_TABLE_NAME).findByBaseEntityId(householdDetails.entityId()));
-        }
+//        if(typeofMember.equalsIgnoreCase("malechild")||typeofMember.equalsIgnoreCase("femalechild")){
+//            householdDetails = CommonPersonObjectToClient(AncApplication.getInstance().getContext().commonrepository(DBConstants.CHILD_TABLE_NAME).findByBaseEntityId(householdDetails.entityId()));
+//        }else if(typeofMember.equalsIgnoreCase("woman")){
+//            householdDetails = CommonPersonObjectToClient(AncApplication.getInstance().getContext().commonrepository(DBConstants.WOMAN_TABLE_NAME).findByBaseEntityId(householdDetails.entityId()));
+//        }else if(typeofMember.equalsIgnoreCase("member")){
+//            householdDetails = CommonPersonObjectToClient(AncApplication.getInstance().getContext().commonrepository(DBConstants.MEMBER_TABLE_NAME).findByBaseEntityId(householdDetails.entityId()));
+//        }
 
-        //householdDetails.getColumnmaps().putAll(AncApplication.getInstance().getContext().detailsRepository().getAllDetailsForClient(householdDetails.entityId()));
+        householdDetails.getColumnmaps().putAll(AncApplication.getInstance().getContext().detailsRepository().getAllDetailsForClient(householdDetails.entityId()));
         String firstName = org.smartregister.util.Utils.getValue(householdDetails.getColumnmaps(), DBConstants.KEY.FIRST_NAME, true);
         String lastName = org.smartregister.util.Utils.getValue(householdDetails.getColumnmaps(), DBConstants.KEY.LAST_NAME, true);
         if(lastName.equalsIgnoreCase("null")||lastName==null){
@@ -226,6 +226,7 @@ public class MemberProfileActivity extends BaseProfileActivity implements Profil
         setProfileID(getValue(householdDetails.getColumnmaps(),"Patient_Identifier",true));
         gestationAgeView.setVisibility(View.GONE);
         followupFragment.notifyAdapter();
+        profileOverviewFragment.reloadView();
     }
 
     private CommonPersonObjectClient CommonPersonObjectToClient(CommonPersonObject commonPersonObject) {
@@ -260,13 +261,14 @@ public class MemberProfileActivity extends BaseProfileActivity implements Profil
 
     ChildImmunizationFragment childImmunizationFragment;
     GrowthFragment growthFragment;
-    public ProfileOverviewFragment profileOverviewFragment;
+//    public ProfileOverviewFragment profileOverviewFragment;
+    public MemberProfileContactsFragment profileOverviewFragment;
     FollowupFragment followupFragment;
     private ViewPager setupViewPager(ViewPager viewPager) {
         ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
 
-        profileOverviewFragment = ProfileOverviewFragment.newInstance(this.getIntent().getExtras());
-        MemberProfileContactsFragment profileContactsFragment = MemberProfileContactsFragment.newInstance(this.getIntent().getExtras());
+//        profileOverviewFragment = ProfileOverviewFragment.newInstance(this.getIntent().getExtras());
+        profileOverviewFragment = MemberProfileContactsFragment.newInstance(this.getIntent().getExtras());
         followupFragment = FollowupFragment.newInstance(this.getIntent().getExtras());
         ProfileTasksFragment profileTasksFragment = ProfileTasksFragment.newInstance(this.getIntent().getExtras());
         growthFragment = GrowthFragment.newInstance(this.getIntent().getExtras());
@@ -275,7 +277,7 @@ public class MemberProfileActivity extends BaseProfileActivity implements Profil
         childImmunizationFragment.setChildDetails(householdDetails);
 
 //        adapter.addFragment(profileOverviewFragment, this.getString(R.string.members));
-        adapter.addFragment(profileContactsFragment, this.getString(R.string.household_overview));
+        adapter.addFragment(profileOverviewFragment, this.getString(R.string.household_overview));
         adapter.addFragment(followupFragment, "FOLLOWUP");
         if(typeofMember.equalsIgnoreCase("malechild")||(typeofMember.equalsIgnoreCase("femalechild"))){
             adapter.addFragment(childImmunizationFragment, "IMMUNIZATION");

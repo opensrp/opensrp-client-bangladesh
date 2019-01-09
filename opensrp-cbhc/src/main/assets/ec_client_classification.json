@@ -56,7 +56,7 @@
           },
           {
             "field": "eventType",
-            "field_value": "Marital Status",
+            "field_value": "Followup Marital Status",
             "creates_case": [
               "ec_woman",
               "ec_member"
@@ -64,7 +64,7 @@
           },
           {
             "field": "eventType",
-            "field_value": "Pregnant Status",
+            "field_value": "Followup Pregnant Status",
             "creates_case": [
               "ec_woman"
             ]
