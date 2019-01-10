@@ -94,9 +94,83 @@
         "openmrs_data_type":"text",
         "type":"check_box",
         "label":"০ - ২ মাসের বাচ্চার অসুখ ",
-        "exclusive": ["None"],
-        "options":[{"key":"Very_severe_disease","text":"খুব মারাত্বক রোগ ","value":"false","openmrs_choice_id":"Very_severe_disease"},{"key":"Probable_Limited_Infection","text":"সম্ভাব্য সীমিত সংক্রামণ ","value":"false","openmrs_choice_id":"Probable_Limited_Infection"},{"key":"Jaundice","text":"জন্ডিস ","value":"false","openmrs_choice_id":"Jaundice"},{"key":"Probable_Limited_Infection","text":"পানি স্বল্পতাহীন ডায়রিয়া ","value":"false","openmrs_choice_id":"Probable_Limited_Infection"},{"key":"Bellybutton_infection","text":"নাভিতে সংক্রামন ","value":"false","openmrs_choice_id":"Bellybutton_infection"},{"key":"Injury","text":"আঘাত ","value":"false","openmrs_choice_id":"Injury"},{"key":"Fever","text":"জ্বর ","value":"false","openmrs_choice_id":"Fever"},{"key":"Pneumonia","text":"নিউমোনিয়া ","value":"false","openmrs_choice_id":"Pneumonia"},{"key":"Pneumonia, unspec.","text":"নিউমোনিয়া নয় সর্দি, কাশী ","value":"false","openmrs_choice_id":"Pneumonia, unspec."},{"key":"Others_member_disease","text":"অন্যান্য ","value":"false","openmrs_choice_id":"Others_member_disease"},{"key":"None","text":"নেই ","value":"false","openmrs_choice_id":"None"}]
-
+        "exclusive":[
+          "None"
+        ],
+        "options":[
+          {
+            "key":"Very_severe_disease",
+            "text":"খুব মারাত্বক রোগ ",
+            "value":"false",
+            "openmrs_choice_id":"Very_severe_disease"
+          },
+          {
+            "key":"Probable_Limited_Infection",
+            "text":"সম্ভাব্য সীমিত সংক্রামণ ",
+            "value":"false",
+            "openmrs_choice_id":"Probable_Limited_Infection"
+          },
+          {
+            "key":"Jaundice",
+            "text":"জন্ডিস ",
+            "value":"false",
+            "openmrs_choice_id":"Jaundice"
+          },
+          {
+            "key":"Probable_Limited_Infection",
+            "text":"পানি স্বল্পতাহীন ডায়রিয়া ",
+            "value":"false",
+            "openmrs_choice_id":"Probable_Limited_Infection"
+          },
+          {
+            "key":"Bellybutton_infection",
+            "text":"নাভিতে সংক্রামন ",
+            "value":"false",
+            "openmrs_choice_id":"Bellybutton_infection"
+          },
+          {
+            "key":"Injury",
+            "text":"আঘাত ",
+            "value":"false",
+            "openmrs_choice_id":"Injury"
+          },
+          {
+            "key":"Fever",
+            "text":"জ্বর ",
+            "value":"false",
+            "openmrs_choice_id":"Fever"
+          },
+          {
+            "key":"Pneumonia",
+            "text":"নিউমোনিয়া ",
+            "value":"false",
+            "openmrs_choice_id":"Pneumonia"
+          },
+          {
+            "key":"Pneumonia, unspec.",
+            "text":"নিউমোনিয়া নয় সর্দি, কাশী ",
+            "value":"false",
+            "openmrs_choice_id":"Pneumonia, unspec."
+          },
+          {
+            "key":"Others_member_disease",
+            "text":"অন্যান্য ",
+            "value":"false",
+            "openmrs_choice_id":"Others_member_disease"
+          },
+          {
+            "key":"None",
+            "text":"নেই ",
+            "value":"false",
+            "openmrs_choice_id":"None"
+          }
+        ],
+        "relevance":{
+          "step1:has_disease":{
+            "type":"string",
+            "ex":"equalTo(., \"হ্যাঁ\")"
+          }
+        }
       },
       {
         "key":"Place_of_Refer",

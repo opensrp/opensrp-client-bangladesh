@@ -69,65 +69,39 @@
         }
       },
       {
-        "key": "family_planning",
-        "openmrs_entity_parent": "",
-        "openmrs_entity": "person_attribute",
-        "openmrs_entity_id": "familyplanning",
-        "openmrs_data_type": "text",
-        "type": "check_box",
-        "label": "পরিবার পরিকল্পনা",
-        "exclusive": ["No_Method_Usage"],
-        "options": [
-          {
-            "key": "Condoms",
-            "text": "কনডম",
-            "value": false,
-            "openmrs_choice_id": "Condoms"
-          },
-          {
-            "key": "Injectable",
-            "text": "ইনজেক্টবল",
-            "value": false,
-            "openmrs_choice_id": "Injectable"
-          },
-          {
-            "key": "IUD",
-            "text": "আই ইউ ডি",
-            "value": false,
-            "openmrs_choice_id": "IUD"
-          },
-          {
-            "key": "Implant",
-            "text": "ইমপ্লান্ট",
-            "value": false,
-            "openmrs_choice_id": "Implant"
-          },
-          {
-            "key": "Permanent_FP_Method",
-            "text": "স্থায়ী পদ্ধতি",
-            "value": false,
-            "openmrs_choice_id": "Permanent_FP_Method"
-          },
-          {
-            "key": "Other_Method",
-            "text": "অন্যান্য পদ্ধতি",
-            "value": false,
-            "openmrs_choice_id": "Other_Method"
-          },
-          {
-            "key": "Infertility",
-            "text": "বন্ধ্যা দম্পতি",
-            "value": false,
-            "openmrs_choice_id": "Infertility"
-          },
-          {
-            "key": "No_Method_Usage",
-            "text": "পদ্ধতি ব্যবহার করে না",
-            "value": false,
-            "openmrs_choice_id": "No_Method_Usage"
+        "key":"family_planning",
+        "openmrs_entity_parent":"",
+        "openmrs_entity":"person_attribute",
+        "openmrs_entity_id":"familyplanning",
+        "openmrs_data_type":"text",
+        "type":"spinner",
+        "hint":"পরিবার পরিকল্পনা",
+        "values":[
+          "কনডম ",
+          "ইনজেক্টবল ",
+          "আই ইউ ডি ",
+          "ইমপ্লান্ট ",
+          "স্থায়ী পদ্ধতি ",
+          "অন্যান্য পদ্ধতি ",
+          "বন্ধ্যা দম্পতি ",
+          "পদ্ধতি ব্যবহার করে না "
+        ],
+        "openmrs_choice_ids":{
+          "কনডম ":"Condoms",
+          "ইনজেক্টবল ":"Injectable",
+          "আই ইউ ডি ":"IUD",
+          "ইমপ্লান্ট ":"Implant",
+          "স্থায়ী পদ্ধতি ":"Permanent_FP_Method",
+          "অন্যান্য পদ্ধতি ":"Other_Method",
+          "বন্ধ্যা দম্পতি ":"Infertility",
+          "পদ্ধতি ব্যবহার করে না ":"No_Method_Usage"
+        },
+        "relevance":{
+          "step1:marital_status":{
+            "type":"string",
+            "ex":"equalTo(., \"বিবাহিত\")"
           }
-        ]
-
+        }
       }
     ]
   }

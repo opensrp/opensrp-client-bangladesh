@@ -279,7 +279,7 @@ public class MemberProfileActivity extends BaseProfileActivity implements Profil
 //        adapter.addFragment(profileOverviewFragment, this.getString(R.string.members));
         adapter.addFragment(profileOverviewFragment, this.getString(R.string.household_overview));
         adapter.addFragment(followupFragment, "FOLLOWUP");
-        if(typeofMember.equalsIgnoreCase("malechild")||(typeofMember.equalsIgnoreCase("femalechild"))){
+        if((typeofMember.equalsIgnoreCase("malechild")||(typeofMember.equalsIgnoreCase("femalechild")))&&getAge()<=5){
             adapter.addFragment(childImmunizationFragment, "IMMUNIZATION");
             adapter.addFragment(growthFragment, "GROWTH");
             tabLayout.setTabMode(TabLayout.MODE_SCROLLABLE);

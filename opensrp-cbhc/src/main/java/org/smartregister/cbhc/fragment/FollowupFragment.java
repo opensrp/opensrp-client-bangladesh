@@ -20,6 +20,7 @@ import org.smartregister.commonregistry.CommonPersonObjectClient;
 import org.smartregister.immunization.view.ExpandableHeightGridView;
 
 import java.io.Serializable;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -219,8 +220,28 @@ public class FollowupFragment extends BaseProfileFragment {
     }
     public int getAge() {
         String age = householdDetails.getColumnmaps().get("age");
-        if(age==null)
-            return -1;
+        String dob = householdDetails.getColumnmaps().get("dob");
+        if(dob.contains("T")){
+            dob = dob.substring(0,dob.indexOf('T'));
+        }
+        if(age!=null&&dob!=null){
+            try{
+                Date dateob=new SimpleDateFormat("yyyy-MM-dd").parse(dob);
+//                Date dateob = new Date(dob);
+                long time = new Date().getTime()-dateob.getTime();
+                long TWO_MONTHS = 62l*24l*60l*60l*1000l;
+                if(time<=TWO_MONTHS){
+                    return 0;
+                }else{
+                    return 1;
+                }
+            }catch(Exception e){
+
+            }
+
+
+        }
+
         return Integer.parseInt(age.trim());
     }
     private int getMaritalStatus() {

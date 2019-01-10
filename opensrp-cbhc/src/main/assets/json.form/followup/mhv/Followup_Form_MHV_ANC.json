@@ -68,20 +68,7 @@
           "err": "Please enter the date of Followup."
         }
       },
-      {
-        "key": "lmp_Date",
-        "openmrs_entity_parent": "",
-        "openmrs_entity": "",
-        "openmrs_entity_id": "",
-        "openmrs_data_type": "text",
-        "type": "date_picker",
-        "hint": "শেষ মাসিকের তারিখ (LMP)",
-        "expanded": false,
-        "v_required": {
-          "value": "false",
-          "err": "Please enter the date of Followup."
-        }
-      },
+
       {
         "key":"Pregnancy_Status",
         "openmrs_entity_parent":"",

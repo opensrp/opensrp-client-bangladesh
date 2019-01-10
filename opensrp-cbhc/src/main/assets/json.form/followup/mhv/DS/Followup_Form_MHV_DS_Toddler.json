@@ -94,9 +94,113 @@
         "openmrs_data_type":"text",
         "type":"check_box",
         "label":"২ মাস থেকে ৫ বছরের বাচ্চার অসুখ ",
-        "exclusive": ["None"],
-        "options":[{"key":"Very_severe_disease","text":"খুব মারাত্বক রোগ ","value":"false","openmrs_choice_id":"Very_severe_disease"},{"key":"Pneumonia","text":"নিউমোনিয়া ","value":"false","openmrs_choice_id":"Pneumonia"},{"key":"Pneumonia, unspec.","text":"নিউমোনিয়া নয় সর্দি, কাশী ","value":"false","openmrs_choice_id":"Pneumonia, unspec."},{"key":"dieriaanddysentry","text":"ডায়ারিয়া ও আমাশয় ","value":"false","openmrs_choice_id":"dieriaanddysentry"},{"key":"Fever","text":"জ্বর ","value":"false","openmrs_choice_id":"Fever"},{"key":"maleria","text":"জ্বর (ম্যালারিয়া) ","value":"false","openmrs_choice_id":"maleria"},{"key":" Hearing loss, unspec.","text":"কানের সমস্যা ","value":"false","openmrs_choice_id":" Hearing loss, unspec."},{"key":"Measles","text":"হাম ","value":"false","openmrs_choice_id":"Measles"},{"key":"Bellybutton_infection","text":"নাভিতে সংক্রামন ","value":"false","openmrs_choice_id":"Bellybutton_infection"},{"key":"Conjunctivitis, unspec.","text":"চোখ উঠা ","value":"false","openmrs_choice_id":"Conjunctivitis, unspec."},{"key":"Jaundice","text":"জন্ডিস ","value":"false","openmrs_choice_id":"Jaundice"},{"key":"Injury","text":"আঘাত ","value":"false","openmrs_choice_id":"Injury"},{"key":"Malnutrition","text":"অপুষ্টি ","value":"false","openmrs_choice_id":"Malnutrition"},{"key":"Anemia","text":"রক্ত স্বল্পতা ","value":"false","openmrs_choice_id":"Anemia"},{"key":"Others_member_disease","text":"অন্যান্য ","value":"false","openmrs_choice_id":"Others_member_disease"},{"key":"None","text":"নেই ","value":"false","openmrs_choice_id":"None"}]
-
+        "exclusive":[
+          "None"
+        ],
+        "options":[
+          {
+            "key":"Very_severe_disease",
+            "text":"খুব মারাত্বক রোগ ",
+            "value":"false",
+            "openmrs_choice_id":"Very_severe_disease"
+          },
+          {
+            "key":"Pneumonia",
+            "text":"নিউমোনিয়া ",
+            "value":"false",
+            "openmrs_choice_id":"Pneumonia"
+          },
+          {
+            "key":"Pneumonia, unspec.",
+            "text":"নিউমোনিয়া নয় সর্দি, কাশী ",
+            "value":"false",
+            "openmrs_choice_id":"Pneumonia, unspec."
+          },
+          {
+            "key":"dieriaanddysentry",
+            "text":"ডায়ারিয়া ও আমাশয় ",
+            "value":"false",
+            "openmrs_choice_id":"dieriaanddysentry"
+          },
+          {
+            "key":"Fever",
+            "text":"জ্বর ",
+            "value":"false",
+            "openmrs_choice_id":"Fever"
+          },
+          {
+            "key":"maleria",
+            "text":"জ্বর (ম্যালারিয়া) ",
+            "value":"false",
+            "openmrs_choice_id":"maleria"
+          },
+          {
+            "key":" Hearing loss, unspec.",
+            "text":"কানের সমস্যা ",
+            "value":"false",
+            "openmrs_choice_id":" Hearing loss, unspec."
+          },
+          {
+            "key":"Measles",
+            "text":"হাম ",
+            "value":"false",
+            "openmrs_choice_id":"Measles"
+          },
+          {
+            "key":"Bellybutton_infection",
+            "text":"নাভিতে সংক্রামন ",
+            "value":"false",
+            "openmrs_choice_id":"Bellybutton_infection"
+          },
+          {
+            "key":"Conjunctivitis, unspec.",
+            "text":"চোখ উঠা ",
+            "value":"false",
+            "openmrs_choice_id":"Conjunctivitis, unspec."
+          },
+          {
+            "key":"Jaundice",
+            "text":"জন্ডিস ",
+            "value":"false",
+            "openmrs_choice_id":"Jaundice"
+          },
+          {
+            "key":"Injury",
+            "text":"আঘাত ",
+            "value":"false",
+            "openmrs_choice_id":"Injury"
+          },
+          {
+            "key":"Malnutrition",
+            "text":"অপুষ্টি ",
+            "value":"false",
+            "openmrs_choice_id":"Malnutrition"
+          },
+          {
+            "key":"Anemia",
+            "text":"রক্ত স্বল্পতা ",
+            "value":"false",
+            "openmrs_choice_id":"Anemia"
+          },
+          {
+            "key":"Others_member_disease",
+            "text":"অন্যান্য ",
+            "value":"false",
+            "openmrs_choice_id":"Others_member_disease"
+          },
+          {
+            "key":"None",
+            "text":"নেই ",
+            "value":"false",
+            "openmrs_choice_id":"None"
+          }
+        ],
+        "relevance":{
+          "step1:has_disease":{
+            "type":"string",
+            "ex":"equalTo(., \"হ্যাঁ\")"
+          }
+        }
       },
       {
         "key":"Place_of_Refer",
