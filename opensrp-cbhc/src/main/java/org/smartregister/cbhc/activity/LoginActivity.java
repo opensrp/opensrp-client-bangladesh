@@ -210,7 +210,6 @@ public class LoginActivity extends AppCompatActivity implements LoginContract.Vi
             String username = userNameEditText.getText().toString();
             String password = passwordEditText.getText().toString();
 
-
             mLoginPresenter.attemptLogin(username, password);
 
             return true;
@@ -224,7 +223,7 @@ public class LoginActivity extends AppCompatActivity implements LoginContract.Vi
             case R.id.login_login_btn:
                 String username = userNameEditText.getText().toString();
                 String password = passwordEditText.getText().toString();
-                
+
                 mLoginPresenter.attemptLogin(username, password);
                 break;
             default:

@@ -206,10 +206,13 @@ public class FollowupFragment extends BaseProfileFragment {
 
     private int getPregnantStatus() {
         String ps = householdDetails.getColumnmaps().get("pregnant_status");
-        if(ps!=null&&ps.equalsIgnoreCase("গর্ভবতী"))
+        String ds = householdDetails.getColumnmaps().get("Disease_status2");
+
+        if((ps!=null&&ps.equalsIgnoreCase("গর্ভবতী"))||(ds!=null&&ds.contains("Antenatal")))
             return 1;
-        if(ps!=null&&ps.equalsIgnoreCase("প্রসব"))
+        if((ps!=null&&ps.equalsIgnoreCase("প্রসব"))||(ds!=null&&ds.contains("Postnatal")))
             return 2;
+        //Antenatal Period,Postnatal
         return 0;
     }
     public int getGender(){
@@ -232,8 +235,6 @@ public class FollowupFragment extends BaseProfileFragment {
                 long TWO_MONTHS = 62l*24l*60l*60l*1000l;
                 if(time<=TWO_MONTHS){
                     return 0;
-                }else{
-                    return 1;
                 }
             }catch(Exception e){
 

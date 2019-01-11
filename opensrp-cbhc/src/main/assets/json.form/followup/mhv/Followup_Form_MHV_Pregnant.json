@@ -67,15 +67,22 @@
         "key": "pregnant_status",
         "openmrs_entity_parent": "",
         "openmrs_entity": "",
-        "openmrs_entity_id": "",
+        "openmrs_entity_id": "pregnant_status",
         "openmrs_data_type": "",
         "type": "spinner",
         "hint": "স্ট্যাটাস",
         "values": [
           "গর্ভবতী",
           "প্রসব",
-          "গর্ভাবস্থার তথ্য ভুল ছিল"
+          "গর্ভাবস্থার তথ্য ভুল ছিল",
+          "প্রসবের তথ্য ভুল ছিল"
         ],
+        "openmrs_choice_ids": {
+          "গর্ভবতী": "Antenatal Period",
+          "প্রসব": "Postnatal",
+          "গর্ভাবস্থার তথ্য ভুল ছিল": "ANC WRONG",
+          "প্রসবের তথ্য ভুল ছিল": "PNC WRONG"
+        },
         "v_required": {
           "value": "true",
           "err": "Please select one option *"
