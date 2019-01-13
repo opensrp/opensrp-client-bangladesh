@@ -87,7 +87,7 @@
         }
       },
       {
-        "key":"General_Disease_Male",
+        "key":"Disease_status_male_by_age",
         "openmrs_entity_parent":"",
         "openmrs_entity":"person_attribute",
         "openmrs_entity_id":"",

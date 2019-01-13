@@ -238,9 +238,11 @@ public class Utils {
 
     public static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("dd/MM/yyyy");
 
-    public static final String ENTITY_ID = "1";
-    public static final String DOB_STRING = "2017-01-01T00:00:00.000Z";
-    public static final String GENDER = (new Random()).nextBoolean() ? "male" : "female";
+    public static CharSequence getDateByFormat(Date date) {
+        android.text.format.DateFormat df = new android.text.format.DateFormat();
+        return df.format("MM-dd-yyyy", new java.util.Date());
+
+    }
 
     public static boolean notFollowUp(String encounterType) {
         return !encounterType.startsWith("Followup");

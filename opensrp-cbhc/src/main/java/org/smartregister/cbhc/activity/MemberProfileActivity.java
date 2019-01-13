@@ -338,31 +338,32 @@ public class MemberProfileActivity extends BaseProfileActivity implements Profil
                             launchPhoneDialer(womanPhoneNumber);
                             break;
                         case "গর্ভাবস্থা":
+
                             getIntent().putExtra(Constants.INTENT_KEY.BASE_ENTITY_ID,householdDetails.getCaseId());
-                            JsonFormUtils.launchFollowUpForm(MemberProfileActivity.this,Followup_Form_MHV_Pregnant);
+                            JsonFormUtils.launchFollowUpForm(MemberProfileActivity.this,householdDetails.getColumnmaps(),Followup_Form_MHV_Pregnant);
                             break;
                         case "মোবাইল নম্বর":
                             getIntent().putExtra(Constants.INTENT_KEY.BASE_ENTITY_ID,householdDetails.getCaseId());
-                            JsonFormUtils.launchFollowUpForm(MemberProfileActivity.this,Followup_Form_MHV_Mobile_no);
+                            JsonFormUtils.launchFollowUpForm(MemberProfileActivity.this,householdDetails.getColumnmaps(),Followup_Form_MHV_Mobile_no);
                             break;
                         case "বৈবাহিক অবস্থা":
                             getIntent().putExtra(Constants.INTENT_KEY.BASE_ENTITY_ID,householdDetails.getCaseId());
-                            JsonFormUtils.launchFollowUpForm(MemberProfileActivity.this,Followup_Form_MHV_Marital);
+                            JsonFormUtils.launchFollowUpForm(MemberProfileActivity.this,householdDetails.getColumnmaps(),Followup_Form_MHV_Marital);
                             break;
                         case "জন্ম":
                             getIntent().putExtra(Constants.INTENT_KEY.BASE_ENTITY_ID,householdDetails.getCaseId());
-                            JsonFormUtils.launchFollowUpForm(MemberProfileActivity.this,Followup_Form_MHV_Delivery);
+                            JsonFormUtils.launchFollowUpForm(MemberProfileActivity.this,householdDetails.getColumnmaps(),Followup_Form_MHV_Delivery);
                             break;
                         case "স্থানান্তর":
                             break;
 
                         case "ঝুঁকিপূর্ণ অভ্যাস":
                             getIntent().putExtra(Constants.INTENT_KEY.BASE_ENTITY_ID,householdDetails.getCaseId());
-                            JsonFormUtils.launchFollowUpForm(MemberProfileActivity.this,Followup_Form_MHV_Risky_Habit);
+                            JsonFormUtils.launchFollowUpForm(MemberProfileActivity.this,householdDetails.getColumnmaps(),Followup_Form_MHV_Risky_Habit);
                             break;
                         case "মৃত্যু":
                             getIntent().putExtra(Constants.INTENT_KEY.BASE_ENTITY_ID,householdDetails.getCaseId());
-                            JsonFormUtils.launchFollowUpForm(MemberProfileActivity.this,Followup_Form_MHV_Death);
+                            JsonFormUtils.launchFollowUpForm(MemberProfileActivity.this,householdDetails.getColumnmaps(),Followup_Form_MHV_Death);
                             break;
                         case "সদস্য পাওয়া যায়নি":
                             break;

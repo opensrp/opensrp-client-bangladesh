@@ -1290,11 +1290,12 @@ public class JsonFormUtils extends org.smartregister.util.JsonFormUtils {
         }
     }
 
-    public static void launchFollowUpForm(Activity activity,final String form_name) {
+    public static void launchFollowUpForm(Activity activity,final Map<String,String>column_maps,final String form_name) {
         try {
             Intent intent = new Intent(activity, AncJsonFormActivity.class);
 
             JSONObject form = FormUtils.getInstance(activity).getFormJson(form_name);
+            followupPopulateFields(form,column_maps);
             if (form != null) {
                 form.put(Constants.JSON_FORM_KEY.ENTITY_ID, activity.getIntent().getStringExtra(Constants.INTENT_KEY.BASE_ENTITY_ID));
                 intent.putExtra(Constants.INTENT_KEY.JSON, form.toString());
@@ -1302,6 +1303,20 @@ public class JsonFormUtils extends org.smartregister.util.JsonFormUtils {
             }
         } catch (Exception e) {
             Log.e(TAG, e.getMessage());
+        }
+    }
+
+    public static void followupPopulateFields(JSONObject form,final Map<String,String>column_maps) {
+
+        JSONArray field = fields(form);
+        JSONObject followup_date = getFieldJSONObject(field,"followup_Date");
+
+        if(followup_date!=null){
+            try {
+                followup_date.put(JsonFormUtils.VALUE,Utils.getDateByFormat(new Date()));
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
         }
     }
 
