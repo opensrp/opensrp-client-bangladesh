@@ -1,5 +1,6 @@
 package org.smartregister.cbhc.util;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
@@ -115,7 +116,7 @@ public class JsonFormUtils extends org.smartregister.util.JsonFormUtils {
                 form.remove(JsonFormUtils.ENTITY_ID);
                 form.put(JsonFormUtils.ENTITY_ID, entityId);
             }
-        }else if (Constants.JSON_FORM.MEMBER_REGISTER.equals(formName)) {
+        }else if (formName.contains(Constants.JSON_FORM.MEMBER_REGISTER)) {
 
 
             if (StringUtils.isNotBlank(entityId)) {
@@ -187,6 +188,7 @@ public class JsonFormUtils extends org.smartregister.util.JsonFormUtils {
     }
 
     public static Pair<Client, Event> processRegistrationForm(AllSharedPreferences allSharedPreferences, String jsonString) {
+        SQLiteDatabase db = AncApplication.getInstance().getRepository().getReadableDatabase();
 
         try {
             Triple<Boolean, JSONObject, JSONArray> registrationFormParams = validateParameters(jsonString);
@@ -196,7 +198,9 @@ public class JsonFormUtils extends org.smartregister.util.JsonFormUtils {
             }
 
             JSONObject jsonForm = registrationFormParams.getMiddle();
+
             JSONArray fields = registrationFormParams.getRight();
+//            removeEmptyFields(fields);
 //            fields = processAttributesWithChoiceIDs(fields);
 
             String entityId = getString(jsonForm, ENTITY_ID);
@@ -292,17 +296,28 @@ public class JsonFormUtils extends org.smartregister.util.JsonFormUtils {
 
 
             }
-            if(Utils.notFollowUp(encounterType)) {
-                getFieldJSONObject(fields, "Patient_Identifier").remove("hidden");
-            }
-
 
             FormTag formTag = new FormTag();
             formTag.providerId = allSharedPreferences.fetchRegisteredANM();
             formTag.appVersion = BuildConfig.VERSION_CODE;
             formTag.databaseVersion = BuildConfig.DATABASE_VERSION;
 
-            Client baseClient = org.smartregister.util.JsonFormUtils.createBaseClient(fields, formTag, entityId);
+
+            Client baseClient = null;
+            if(Utils.notFollowUp(encounterType)) {
+                getFieldJSONObject(fields, "Patient_Identifier").remove("hidden");
+                baseClient = org.smartregister.util.JsonFormUtils.createBaseClient(fields, formTag, entityId);
+
+            }else{
+                JSONObject clientjsonFromForm = new JSONObject(gson.toJson(org.smartregister.util.JsonFormUtils.createBaseClient(fields, formTag, entityId)));
+                JSONObject clientJson = AncApplication.getInstance().getEventClientRepository().getClient(db,entityId);
+                updateClientAttributes(clientjsonFromForm,clientJson);
+                baseClient = gson.fromJson(clientJson.toString(), Client.class);
+            }
+
+
+
+
 
             if(Utils.notFollowUp(encounterType)) {
                 ArrayList<Address> adresses = new ArrayList<Address>();
@@ -315,6 +330,9 @@ public class JsonFormUtils extends org.smartregister.util.JsonFormUtils {
                             if (!TextUtils.isEmpty(fields.getJSONObject(i).getString("value"))) {
                                 String address = fields.getJSONObject(i).getString("value");
                                 address = address.replace("[", "").replace("]", "");
+                                if(!address.startsWith("BANGLADESH")){
+                                    address = "BANGLADESH," + address;
+                                }
                                 String[] addressStringArray = address.split(",");
                                 if (addressStringArray.length > 0) {
                                     address1.setAddressType("usual_residence");
@@ -388,13 +406,13 @@ public class JsonFormUtils extends org.smartregister.util.JsonFormUtils {
                     Client ss = new Client(lookUpBaseEntityId);
                     Context context = AncApplication.getInstance().getContext().applicationContext();
                     addRelationship(context, ss, baseClient);
-                    SQLiteDatabase db = AncApplication.getInstance().getRepository().getReadableDatabase();
                     AncRepository pathRepository = new AncRepository(context, AncApplication.getInstance().getContext());
                     EventClientRepository eventClientRepository = new EventClientRepository(pathRepository);
                     JSONObject clientjson = eventClientRepository.getClient(db, lookUpBaseEntityId);
                     baseClient.setAddresses(getAddressFromClientJson(clientjson));
                 }
             }
+
             String entitytypeName = "";
             if(encounterType.equalsIgnoreCase(Constants.EventType.Child_REGISTRATION)){
                 entitytypeName = DBConstants.CHILD_TABLE_NAME;
@@ -450,6 +468,39 @@ public class JsonFormUtils extends org.smartregister.util.JsonFormUtils {
         }
     }
 
+//    @SuppressLint("NewApi")
+//    private static void removeEmptyFields(JSONArray fields) {
+//        ArrayList<Integer>remove_indexes = new ArrayList<>();
+//        for(int i=0;i<fields.length();i++){
+//            try {
+//                if(fields.getJSONObject(i).has("value")&&fields.getJSONObject(i).getString("value").isEmpty())
+//                    remove_indexes.add(i);
+//            } catch (JSONException e) {
+//                e.printStackTrace();
+//            }
+//        }
+//        for(int i=0;i<remove_indexes.size();i++){
+//            fields.remove(remove_indexes.get(i));
+//        }
+//    }
+
+    private static void updateClientAttributes(JSONObject clientjsonFromForm, JSONObject clientJson) {
+        try {
+            JSONObject formAttributes = clientjsonFromForm.getJSONObject("attributes");
+            JSONObject clientAttributes = clientJson.getJSONObject("attributes");
+            Iterator<String> keys = formAttributes.keys();
+
+            while(keys.hasNext()) {
+                String key = keys.next();
+                clientAttributes.put(key,formAttributes.get(key));
+
+            }
+
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+    }
 
 
     private static HashMap<String,String> processCheckBoxForAttributes(JSONArray fields) {
@@ -706,6 +757,14 @@ public class JsonFormUtils extends org.smartregister.util.JsonFormUtils {
             JSONObject form = FormUtils.getInstance(context).getFormJson(Constants.JSON_FORM.MEMBER_REGISTER);
             form.put("relational_id",womanClient.get("relational_id"));
             LookUpUtils.putRelationalIdInLookupObjects(form,womanClient.get("relational_id"));
+
+
+            //////////////////////////put household id in metadata lookup//////////////////
+            JSONObject metaDataJson = form.getJSONObject("metadata");
+            JSONObject lookup = metaDataJson.getJSONObject("look_up");
+            lookup.put("entity_id", "household");
+            lookup.put("value", womanClient.get("relational_id"));
+            /////////////////////////////////////////////////////////////////////////////
 
             LocationPickerView lpv = new LocationPickerView(context);
             lpv.init();
@@ -1317,6 +1376,33 @@ public class JsonFormUtils extends org.smartregister.util.JsonFormUtils {
             } catch (JSONException e) {
                 e.printStackTrace();
             }
+        }
+        String KEY = "key";
+        String VALUE = "value";
+        String openmrs_entity_id = "openmrs_entity_id";
+        for(int i=0;i<field.length();i++){
+            try {
+                JSONObject object = field.getJSONObject(i);
+                if(object.has(KEY)){
+                    String key = object.getString("key");
+                    if(key!=null&&!key.startsWith("followup_Date")){
+                        String openmrs_key = object.getString(openmrs_entity_id);
+                        String value = column_maps.get(openmrs_key);
+                        if(value==null||(value!=null&&value.isEmpty()))
+                            value = column_maps.get(key);
+
+                        if(value!=null){
+
+                            value = processValueWithChoiceIds(object,value);
+                            object.put(VALUE,value);
+                        }
+                    }
+                }
+
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+
         }
     }
 

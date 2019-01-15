@@ -90,7 +90,7 @@
         "key":"Disease_status_female_by_age",
         "openmrs_entity_parent":"",
         "openmrs_entity":"person_attribute",
-        "openmrs_entity_id":"",
+        "openmrs_entity_id":"Disease_status",
         "openmrs_data_type":"text",
         "type":"check_box",
         "label":"সাধারন রোগ মহিলা",

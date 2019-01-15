@@ -6,6 +6,7 @@ import com.vijay.jsonwizard.widgets.DatePickerFactory;
 
 import org.smartregister.cbhc.widget.AncEditTextFactory;
 import org.smartregister.cbhc.widget.CBHCDatePickerFactory;
+import org.smartregister.cbhc.widget.CBHCTreeViewFactory;
 
 
 /**
@@ -24,6 +25,7 @@ public class AncJsonFormInteractor extends JsonFormInteractor {
         super.registerWidgets();
         map.put(JsonFormConstants.EDIT_TEXT, new AncEditTextFactory());
         map.put(JsonFormConstants.DATE_PICKER, new CBHCDatePickerFactory());
+        map.put(JsonFormConstants.TREE, new CBHCTreeViewFactory());
     }
 
     public static JsonFormInteractor getInstance() {

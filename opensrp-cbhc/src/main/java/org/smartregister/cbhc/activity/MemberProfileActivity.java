@@ -67,7 +67,9 @@ import java.util.Date;
 import static org.smartregister.cbhc.fragment.ProfileOverviewFragment.EXTRA_HOUSEHOLD_DETAILS;
 import static org.smartregister.cbhc.util.Constants.FOLLOWUP_FORM.Followup_Form_MHV_Death;
 import static org.smartregister.cbhc.util.Constants.FOLLOWUP_FORM.Followup_Form_MHV_Delivery;
-import static org.smartregister.cbhc.util.Constants.FOLLOWUP_FORM.Followup_Form_MHV_Marital;
+
+import static org.smartregister.cbhc.util.Constants.FOLLOWUP_FORM.Followup_Form_MHV_Marital_F;
+import static org.smartregister.cbhc.util.Constants.FOLLOWUP_FORM.Followup_Form_MHV_Marital_M;
 import static org.smartregister.cbhc.util.Constants.FOLLOWUP_FORM.Followup_Form_MHV_Mobile_no;
 import static org.smartregister.cbhc.util.Constants.FOLLOWUP_FORM.Followup_Form_MHV_Pregnant;
 import static org.smartregister.cbhc.util.Constants.FOLLOWUP_FORM.Followup_Form_MHV_Risky_Habit;
@@ -347,6 +349,10 @@ public class MemberProfileActivity extends BaseProfileActivity implements Profil
                             JsonFormUtils.launchFollowUpForm(MemberProfileActivity.this,householdDetails.getColumnmaps(),Followup_Form_MHV_Mobile_no);
                             break;
                         case "বৈবাহিক অবস্থা":
+
+                            String Followup_Form_MHV_Marital = Followup_Form_MHV_Marital_F;
+                            if(MemberProfileActivity.this.gender==1)
+                                Followup_Form_MHV_Marital = Followup_Form_MHV_Marital_M;
                             getIntent().putExtra(Constants.INTENT_KEY.BASE_ENTITY_ID,householdDetails.getCaseId());
                             JsonFormUtils.launchFollowUpForm(MemberProfileActivity.this,householdDetails.getColumnmaps(),Followup_Form_MHV_Marital);
                             break;

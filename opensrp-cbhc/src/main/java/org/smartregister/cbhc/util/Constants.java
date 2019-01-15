@@ -73,7 +73,8 @@ public abstract class Constants {
         public static final String Followup_Form_MHV_Delivery = "followup/mhv/Followup_Form_MHV_Delivery";
         public static final String Followup_Form_MHV_DS = "followup/mhv/Followup_Form_MHV_DS";
         public static final String Followup_Form_MHV_FP = "followup/mhv/Followup_Form_MHV_FP";
-        public static final String Followup_Form_MHV_Marital = "followup/mhv/Followup_Form_MHV_Marital";
+        public static final String Followup_Form_MHV_Marital_M = "followup/mhv/Followup_Form_MHV_Marital_M";
+        public static final String Followup_Form_MHV_Marital_F = "followup/mhv/Followup_Form_MHV_Marital_F";
         public static final String Followup_Form_MHV_Mobile_no = "followup/mhv/Followup_Form_MHV_Mobile_no";
         public static final String Followup_Form_MHV_Pregnant = "followup/mhv/Followup_Form_MHV_Pregnant";
         public static final String Followup_Form_MHV_PNC = "followup/mhv/Followup_Form_MHV_PNC";
@@ -93,7 +94,7 @@ public abstract class Constants {
             followup_forms.add(new FOLLOWUPFORMS(Followup_Form_MHV_Delivery,"প্রসব"));
 
             followup_forms.add(new FOLLOWUPFORMS(Followup_Form_MHV_FP,"পরিবার পরিকল্পনা"));
-            followup_forms.add(new FOLLOWUPFORMS(Followup_Form_MHV_Marital,"বৈবাহিক অবস্থা"));
+//            followup_forms.add(new FOLLOWUPFORMS(Followup_Form_MHV_Marital,"বৈবাহিক অবস্থা"));
             followup_forms.add(new FOLLOWUPFORMS(Followup_Form_MHV_Mobile_no,"মোবাইল নম্বর"));
 
             followup_forms.add(new FOLLOWUPFORMS(Followup_Form_MHV_PNC,"প্রসব পরবর্তী "));

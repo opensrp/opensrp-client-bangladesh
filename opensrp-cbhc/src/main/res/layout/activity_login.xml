@@ -22,7 +22,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentTop="true"
-            android:layout_marginTop="5dp"
+            android:layout_marginTop="10dp"
             android:orientation="vertical"
             android:paddingTop="5dp">
 
@@ -93,7 +93,7 @@
                 android:imeOptions="actionNext"
                 android:inputType="text"
                 android:lines="1"
-                android:paddingLeft="10dp"
+                android:paddingLeft="12dp"
                 android:textColor="#666666"
                 android:textColorHint="#6fc8e8"
                 android:textCursorDrawable="@null"
@@ -115,7 +115,7 @@
                 android:imeActionId="@integer/login"
                 android:inputType="textPassword"
                 android:lines="1"
-                android:paddingLeft="10dp"
+                android:paddingLeft="12dp"
                 android:textColor="#666666"
                 android:textColorHint="#6fc8e8"
                 android:textCursorDrawable="@null"

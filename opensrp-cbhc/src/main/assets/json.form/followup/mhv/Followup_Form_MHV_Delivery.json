@@ -83,17 +83,29 @@
         }
       },
       {
-        "key":"time",
+        "key":"Delivery_time",
         "openmrs_entity_parent":"",
         "openmrs_entity":"",
         "openmrs_entity_id":"",
         "openmrs_data_type":"text",
-        "type":"date_picker",
+        "type":"edit_text",
         "hint":"প্রসবের সময়",
         "expanded":false,
         "v_required":{
           "value":"false",
           "err":"Please enter the date of Followup."
+        },
+        "v_numeric": {
+          "value": "true",
+          "err": "Number must be 4 digits in length"
+        },
+        "v_max_length": {
+          "value": "4",
+          "err": "Please Enter 4 digit Time"
+        },
+        "v_min_length": {
+          "value": "4",
+          "err": "Please Enter 4 digit Time"
         }
       },
       {

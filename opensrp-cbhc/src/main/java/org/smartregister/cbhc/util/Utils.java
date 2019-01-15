@@ -240,7 +240,7 @@ public class Utils {
 
     public static CharSequence getDateByFormat(Date date) {
         android.text.format.DateFormat df = new android.text.format.DateFormat();
-        return df.format("MM-dd-yyyy", new java.util.Date());
+        return df.format("dd-MM-yyyy", new java.util.Date());
 
     }
 

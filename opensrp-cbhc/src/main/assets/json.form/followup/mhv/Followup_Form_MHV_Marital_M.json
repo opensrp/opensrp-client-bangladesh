@@ -1,6 +1,6 @@
 {
   "count": "1",
-  "encounter_type": "Followup Family Planning",
+  "encounter_type": "Followup Marital Status Male",
   "entity_id": "",
   "relational_id": "",
   "metadata": {
@@ -52,7 +52,7 @@
     }
   },
   "step1": {
-    "title": "পরিবার পরিকল্পনা সম্পর্কিত তথ্য ",
+    "title": "বৈবাহিক অবস্থা সম্পর্কিত তথ্য ",
     "fields": [
       {
         "key": "followup_Date",
@@ -69,35 +69,30 @@
         }
       },
       {
-        "key":"family_planning",
-        "openmrs_entity_parent":"",
-        "openmrs_entity":"person_attribute",
-        "openmrs_entity_id":"familyplanning",
-        "openmrs_data_type":"text",
-        "type":"spinner",
-        "hint":"পরিবার পরিকল্পনা",
-        "values":[
-          "খাবার বড়ি",
-          "কনডম ",
-          "ইনজেক্টবল ",
-          "আই ইউ ডি ",
-          "ইমপ্লান্ট ",
-          "স্থায়ী পদ্ধতি ",
-          "অন্যান্য পদ্ধতি ",
-          "বন্ধ্যা দম্পতি ",
-          "পদ্ধতি ব্যবহার করে না "
+        "key": "marital_status",
+        "openmrs_entity_parent": "",
+        "openmrs_entity": "person_attribute",
+        "openmrs_entity_id": "MaritalStatus",
+        "openmrs_data_type": "text",
+        "type": "spinner",
+        "hint": "বৈবাহিক অবস্থা*",
+        "values": [
+          "বিবাহিত",
+          "দাম্পত্য বিছিন্ন",
+          "তালাক প্রাপ্ত",
+          "অবিবাহিত",
+          "বিধবা",
+          "বিপত্নীক"
         ],
-        "openmrs_choice_ids":{
-          "খাবার বড়ি":"Oral_Contraceptives",
-          "কনডম ":"Condoms",
-          "ইনজেক্টবল ":"Injectable",
-          "আই ইউ ডি ":"IUD",
-          "ইমপ্লান্ট ":"Implant",
-          "স্থায়ী পদ্ধতি ":"Permanent_FP_Method",
-          "অন্যান্য পদ্ধতি ":"Other_Method",
-          "বন্ধ্যা দম্পতি ":"Infertility",
-          "পদ্ধতি ব্যবহার করে না ":"No_Method_Usage"
+        "openmrs_choice_ids": {
+          "বিবাহিত": "Married",
+          "দাম্পত্য বিছিন্ন": "Conjugal Separation",
+          "তালাক প্রাপ্ত": "Divorced",
+          "অবিবাহিত": "Unmarried",
+          "বিধবা": "Widow",
+          "বিপত্নীক": "Widower"
         }
+
       }
     ]
   }

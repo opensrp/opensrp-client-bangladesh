@@ -56,9 +56,16 @@
           },
           {
             "field": "eventType",
-            "field_value": "Followup Marital Status",
+            "field_value": "Followup Marital Status Female",
             "creates_case": [
-              "ec_woman",
+              "ec_woman"
+            ]
+          },
+
+          {
+            "field": "eventType",
+            "field_value": "Followup Marital Status Male",
+            "creates_case": [
               "ec_member"
             ]
           },
@@ -69,6 +76,35 @@
               "ec_woman"
             ]
           },
+          {
+            "field": "eventType",
+            "field_value": "Followup Disease Female",
+            "creates_case": [
+              "ec_woman"
+            ]
+          },
+          {
+            "field": "eventType",
+            "field_value": "Followup Disease Male",
+            "creates_case": [
+              "ec_member"
+            ]
+          },
+          {
+            "field": "eventType",
+            "field_value": "Followup Disease Child",
+            "creates_case": [
+              "ec_child"
+            ]
+          },
+          {
+            "field": "eventType",
+            "field_value": "Followup Disease Toddler",
+            "creates_case": [
+              "ec_child"
+            ]
+          },
+
           {
             "field": "eventType",
             "field_value": "Child Registration",

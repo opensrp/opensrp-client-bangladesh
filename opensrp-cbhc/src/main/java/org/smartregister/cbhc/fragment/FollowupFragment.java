@@ -72,7 +72,7 @@ public class FollowupFragment extends BaseProfileFragment {
     public void notifyAdapter(){
         householdDetails.getColumnmaps().putAll(AncApplication.getInstance().getContext().detailsRepository().getAllDetailsForClient(householdDetails.entityId()));
         if(formListRowAdapter!=null){
-            active_forms = getactivateforms(Constants.FOLLOWUP_FORM.getFollowup_forms());
+            active_forms = getactivateforms();
             formListRowAdapter = new FormListRowAdapter(getActivity(),active_forms);
             formList.setAdapter(formListRowAdapter);
             formListRowAdapter.notifyDataSetChanged();
@@ -95,7 +95,7 @@ public class FollowupFragment extends BaseProfileFragment {
         form_history = (ExpandableHeightGridView)fragmentView.findViewById(R.id.form_history);
         formList.setExpanded(true);
         form_history.setExpanded(true);
-        active_forms = getactivateforms(Constants.FOLLOWUP_FORM.getFollowup_forms());
+        active_forms = getactivateforms();
         formListRowAdapter = new FormListRowAdapter(getActivity(),active_forms);
         formList.setAdapter(formListRowAdapter);
         form_history.setAdapter(new FormListAdapter(getActivity(),active_forms));
@@ -226,10 +226,10 @@ public class FollowupFragment extends BaseProfileFragment {
     public int getAge() {
         String age = householdDetails.getColumnmaps().get("age");
         String dob = householdDetails.getColumnmaps().get("dob");
-        if(dob.contains("T")){
+        if(dob!=null&&dob.contains("T")){
             dob = dob.substring(0,dob.indexOf('T'));
         }
-        if(age!=null&&dob!=null){
+        if(dob!=null){
             try{
                 Date dateob=new SimpleDateFormat("yyyy-MM-dd").parse(dob);
 //                Date dateob = new Date(dob);
@@ -248,6 +248,11 @@ public class FollowupFragment extends BaseProfileFragment {
 
         }
 
+        if(age==null||(age!=null&&age.isEmpty())){
+            age = "10";
+        }
+
+
         return Integer.parseInt(age.trim());
     }
 
@@ -257,7 +262,7 @@ public class FollowupFragment extends BaseProfileFragment {
         return maritalStatus!=null&&(maritalStatus.equals("Married")||maritalStatus.equalsIgnoreCase("বিবাহিত"))?1:0;
     }
 
-    public ArrayList<Constants.FOLLOWUP_FORM.FOLLOWUPFORMS> getactivateforms(ArrayList<Constants.FOLLOWUP_FORM.FOLLOWUPFORMS> followup_forms){
+    public ArrayList<Constants.FOLLOWUP_FORM.FOLLOWUPFORMS> getactivateforms(){
         ArrayList<Constants.FOLLOWUP_FORM.FOLLOWUPFORMS> all_forms = new ArrayList<Constants.FOLLOWUP_FORM.FOLLOWUPFORMS>();
 //        all_forms.addAll(followup_forms);
 //        String [] remove_from_list = {Followup_Form_MHV_Mobile_no,Followup_Form_MHV_Marital,Followup_Form_MHV_Pregnant,Followup_Form_MHV_Risky_Habit,Followup_Form_MHV_Death};
