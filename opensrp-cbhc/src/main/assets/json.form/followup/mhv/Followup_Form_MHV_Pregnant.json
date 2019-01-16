@@ -92,7 +92,7 @@
         "key": "lmp_date",
         "openmrs_entity_parent": "",
         "openmrs_entity": "",
-        "openmrs_entity_id": "",
+        "openmrs_entity_id": "lmp_date",
         "type": "date_picker",
         "hint": "শেষ মাসিকের তারিখ।",
         "expanded": false,
@@ -105,17 +105,17 @@
           "err": "Please enter the date of delivery"
         },
         "relevance": {
-          "step1:status": {
+          "step1:pregnant_status": {
             "type": "string",
             "ex": "regex(., \"(গর্ভবতী)\")"
           }
         }
       },
       {
-        "key": "delivery_date",
+        "key": "Delivery_date",
         "openmrs_entity_parent": "",
         "openmrs_entity": "",
-        "openmrs_entity_id": "",
+        "openmrs_entity_id": "Delivery_date",
         "type": "date_picker",
         "hint": "প্রসবের তারিখ",
         "expanded": false,
@@ -128,7 +128,7 @@
           "err": "Please enter the date of delivery"
         },
         "relevance": {
-          "step1:status": {
+          "step1:pregnant_status": {
             "type": "string",
             "ex": "regex(., \"(প্রসব)\")"
           }

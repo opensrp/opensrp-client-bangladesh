@@ -1143,7 +1143,7 @@
         "openmrs_data_type": "text",
         "type": "check_box",
         "label": "সাধারন রোগ পুরুষ",
-        "exclusive": ["none"],
+        "exclusive": ["None"],
         "options": [
           {
             "key": "High Blood Pressure",
@@ -1186,7 +1186,7 @@
         "openmrs_data_type": "text",
         "type": "check_box",
         "label": "সাধারন রোগ মহিলা",
-        "exclusive": ["none"],
+        "exclusive": ["None"],
         "options": [
           {
             "key": "High Blood Pressure",
@@ -1284,6 +1284,25 @@
         }
       },
       {
+        "key": "pregnant_status",
+        "openmrs_entity_parent": "",
+        "openmrs_entity": "",
+        "openmrs_entity_id": "pregnant_status",
+        "openmrs_data_type": "",
+        "hidden":true,
+        "type": "spinner",
+        "hint": "স্ট্যাটাস",
+        "values": [
+          "গর্ভবতী",
+          "প্রসব"
+        ],
+        "openmrs_choice_ids": {
+          "গর্ভবতী": "Antenatal Period",
+          "প্রসব": "Postnatal"
+
+        }
+      },
+      {
         "key": "Disease_status_zero_to_two_month_by_age",
         "openmrs_entity_parent": "",
         "openmrs_entity": "person_attribute",
@@ -1291,7 +1310,7 @@
         "openmrs_data_type": "text",
         "type": "check_box",
         "label": "০ - ২ মাসের বাচ্চার অসুখ",
-        "exclusive": ["none"],
+        "exclusive": ["None"],
         "options": [
           {
             "key": "Very_severe_disease",
@@ -1370,7 +1389,7 @@
         "openmrs_data_type": "text",
         "type": "check_box",
         "label": "২ মাস থেকে ৫ বছরের বাচ্চার অসুখ",
-        "exclusive": ["none"],
+        "exclusive": ["None"],
         "options": [
           {
             "key": "Very_severe_disease",

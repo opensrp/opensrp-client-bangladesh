@@ -309,10 +309,17 @@ public class JsonFormUtils extends org.smartregister.util.JsonFormUtils {
                 baseClient = org.smartregister.util.JsonFormUtils.createBaseClient(fields, formTag, entityId);
 
             }else{
+                HashMap<String, String> check_box_in_forms = processCheckBoxForAttributes(fields);
+                updateFieldsWithCheckboxValues(fields,check_box_in_forms);
                 JSONObject clientjsonFromForm = new JSONObject(gson.toJson(org.smartregister.util.JsonFormUtils.createBaseClient(fields, formTag, entityId)));
                 JSONObject clientJson = AncApplication.getInstance().getEventClientRepository().getClient(db,entityId);
                 updateClientAttributes(clientjsonFromForm,clientJson);
                 baseClient = gson.fromJson(clientJson.toString(), Client.class);
+
+//                Map<String, Object> attributes_Temp = baseClient.getAttributes();
+//                attributes_Temp.putAll(check_box_in_forms);
+//                baseClient.setAttributes(attributes_Temp);
+
             }
 
 
@@ -484,6 +491,27 @@ public class JsonFormUtils extends org.smartregister.util.JsonFormUtils {
 //        }
 //    }
 
+    private static void updateFieldsWithCheckboxValues(JSONArray fields,HashMap<String,String>attributes){
+        for(int i=0;i<fields.length();i++){
+            try {
+                //openmrs_entity_id
+                JSONObject obj = fields.getJSONObject(i);
+                if(attributes.get(obj.get("openmrs_entity_id"))!=null&&!attributes.get(obj.get("openmrs_entity_id")).isEmpty()){
+                    obj.put("value",attributes.get(obj.get("openmrs_entity_id")));
+                }else{
+                    if(attributes.get(obj.get("key"))!=null){
+                        obj.put("value",attributes.get(obj.get("key")));
+                    }
+                }
+
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+
+
+        }
+    }
+
     private static void updateClientAttributes(JSONObject clientjsonFromForm, JSONObject clientJson) {
         try {
             JSONObject formAttributes = clientjsonFromForm.getJSONObject("attributes");
@@ -532,13 +560,64 @@ public class JsonFormUtils extends org.smartregister.util.JsonFormUtils {
                             value = value+selectedbox.get(j);
                         }
                     }
-                    toReturn.put(keyname,value);
+                    if(keyname.equalsIgnoreCase("Disease_status")&&!value.isEmpty()){
+                        if(!hasDisease(fields)){
+                            value = "NULL";
+                        }
+                        toReturn.put(keyname,value);
+                        updatePregnantStatus(fields,value);
+                    }
+
+                    else if (!keyname.equalsIgnoreCase("Disease_status"))
+                        toReturn.put(keyname,value);
                 }
             }
         }catch (Exception e){
 
         }
         return toReturn;
+    }
+
+    private static boolean hasDisease(JSONArray fields) {
+        for(int i=0;i<fields.length();i++) {
+            try {
+                JSONObject obj = fields.getJSONObject(i);
+                if(obj.has("key")&&obj.get("key").equals("has_disease")){
+                    String value = obj.getString("value");
+                    if(value.equals("হ্যাঁ"))
+                        return true;
+                    else if(value.equals("না"))
+                        return false;
+                }
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
+        return true;
+    }
+
+    private static void updatePregnantStatus(JSONArray fields,String value) {
+        for(int i=0;i<fields.length();i++){
+            try {
+                JSONObject obj = fields.getJSONObject(i);
+                String key = obj.getString("key");
+                if(key!=null&&key.equalsIgnoreCase("pregnant_status")){
+                    if(obj.has("hidden")){
+                        obj.remove("hidden");
+                    }
+                    if(value!=null&&value.contains("Antenatal")){
+                        obj.put("value","গর্ভবতী");
+                    }else if(value!=null&&value.contains("Postnatal")){
+                        obj.put("value","প্রসব");
+                    }else{
+                        obj.put("value","NULL");
+                    }
+                }
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+
+        }
     }
 
     private static JSONArray processAttributesWithChoiceIDs(JSONArray fields) {

@@ -94,42 +94,76 @@
         "openmrs_data_type":"text",
         "type":"check_box",
         "label":"সাধারন রোগ মহিলা",
-        "exclusive":[
-          "None"
-        ],
+        "exclusive":["None"],
         "options":[
           {
             "key":"High Blood Pressure",
             "text":"উচ্চ রক্তচাপ ",
-            "value":"false",
+            "value":false,
             "openmrs_choice_id":"High Blood Pressure"
           },
           {
             "key":"Diabetes",
             "text":"ডায়াবেটিস ",
-            "value":"false",
+            "value":false,
             "openmrs_choice_id":"Diabetes"
           },
           {
             "key":"Tuberculosis",
-            "text":"যক্ষ্মা ",
-            "value":"false",
+            "text":"সম্ভাব্য যক্ষ্মা ",
+            "value":false,
             "openmrs_choice_id":"Tuberculosis"
           },
-
+          {
+            "key": "Antenatal Period",
+            "text": "প্রসব পূর্ব",
+            "value": false,
+            "openmrs_choice_id": "Antenatal Period"
+          },
+          {
+            "key": "Postnatal",
+            "text": "প্রসবোত্তর",
+            "value": false,
+            "openmrs_choice_id": "Postnatal"
+          },
           {
             "key":"Others_member_disease",
             "text":"অন্যান্য ",
-            "value":"false",
+            "value":false,
             "openmrs_choice_id":"Others_member_disease"
           }
-        ]
+        ],
+        "relevance":{
+          "step1:has_disease":{
+            "type":"string",
+            "ex":"equalTo(., \"হ্যাঁ\")"
+          }
+        }
+      },
+      {
+        "key": "pregnant_status",
+        "openmrs_entity_parent": "",
+        "openmrs_entity": "",
+        "openmrs_entity_id": "pregnant_status",
+        "openmrs_data_type": "",
+        "hidden":true,
+        "type": "spinner",
+        "hint": "স্ট্যাটাস",
+        "values": [
+          "গর্ভবতী",
+          "প্রসব"
+        ],
+        "openmrs_choice_ids": {
+          "গর্ভবতী": "Antenatal Period",
+          "প্রসব": "Postnatal"
+
+        }
       },
       {
         "key":"Place_of_Refer",
         "openmrs_entity_parent":"",
         "openmrs_entity":"",
-        "openmrs_entity_id":"",
+        "openmrs_entity_id":"Place_of_Refer",
         "openmrs_data_type":"text",
         "type":"spinner",
         "hint":"রেফারের স্থান",
@@ -162,13 +196,8 @@
           "বিশেষায়িত হাসপাতাল ":"Specialized_Hospital",
           "অন্যান্য ":"Others_Health_Facility",
           "রেফার করা হয়নি ":"Not_referred"
-        },
-        "relevance":{
-          "step1:has_disease":{
-            "type":"string",
-            "ex":"equalTo(., \"হ্যাঁ\")"
-          }
         }
+
       }
 
     ]

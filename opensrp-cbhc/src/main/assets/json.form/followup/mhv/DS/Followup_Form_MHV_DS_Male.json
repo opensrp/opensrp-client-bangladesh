@@ -94,16 +94,45 @@
         "openmrs_data_type":"text",
         "type":"check_box",
         "label":"সাধারন রোগ পুরুষ",
-        "exclusive": ["None"],
-        "options":[{"key":"High Blood Pressure","text":"উচ্চ রক্তচাপ ","value":"false","openmrs_choice_id":"High Blood Pressure"},{"key":"Diabetes","text":"ডায়াবেটিস ","value":"false","openmrs_choice_id":"Diabetes"},{"key":"Tuberculosis","text":"যক্ষ্মা ","value":"false","openmrs_choice_id":"Tuberculosis"},{"key":"Others_member_disease","text":"অন্যান্য ","value":"false","openmrs_choice_id":"Others_member_disease"}]
-
-
+        "exclusive":["None"],
+        "options":[
+          {
+            "key":"High Blood Pressure",
+            "text":"উচ্চ রক্তচাপ ",
+            "value":false,
+            "openmrs_choice_id":"High Blood Pressure"
+          },
+          {
+            "key":"Diabetes",
+            "text":"ডায়াবেটিস ",
+            "value":false,
+            "openmrs_choice_id":"Diabetes"
+          },
+          {
+            "key":"Tuberculosis",
+            "text":"যক্ষ্মা ",
+            "value":false,
+            "openmrs_choice_id":"Tuberculosis"
+          },
+          {
+            "key":"Others_member_disease",
+            "text":"অন্যান্য ",
+            "value":false,
+            "openmrs_choice_id":"Others_member_disease"
+          }
+        ],
+        "relevance":{
+          "step1:has_disease":{
+            "type":"string",
+            "ex":"equalTo(., \"হ্যাঁ\")"
+          }
+        }
       },
       {
         "key":"Place_of_Refer",
         "openmrs_entity_parent":"",
         "openmrs_entity":"",
-        "openmrs_entity_id":"",
+        "openmrs_entity_id":"Place_of_Refer",
         "openmrs_data_type":"text",
         "type":"spinner",
         "hint":"রেফারের স্থান",
@@ -136,13 +165,8 @@
           "বিশেষায়িত হাসপাতাল ":"Specialized_Hospital",
           "অন্যান্য ":"Others_Health_Facility",
           "রেফার করা হয়নি ":"Not_referred"
-        },
-        "relevance":{
-          "step1:has_disease":{
-            "type":"string",
-            "ex":"equalTo(., \"হ্যাঁ\")"
-          }
         }
+
       }
 
     ]

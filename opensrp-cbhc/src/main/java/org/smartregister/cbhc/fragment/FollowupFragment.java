@@ -209,9 +209,9 @@ public class FollowupFragment extends BaseProfileFragment {
         String ps = householdDetails.getColumnmaps().get("pregnant_status");
         String ds = householdDetails.getColumnmaps().get("Disease_status");
 
-        if((ps!=null&&ps.equalsIgnoreCase("গর্ভবতী"))||(ds!=null&&ds.contains("Antenatal")))
+        if((ps!=null&&ps.equalsIgnoreCase("গর্ভবতী")))
             return 1;
-        if((ps!=null&&ps.equalsIgnoreCase("প্রসব"))||(ds!=null&&ds.contains("Postnatal")))
+        if((ps!=null&&ps.equalsIgnoreCase("প্রসব")))
             return 2;
         //Antenatal Period,Postnatal
         return 0;

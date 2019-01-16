@@ -73,7 +73,7 @@
         "key":"Pregnancy_Status",
         "openmrs_entity_parent":"",
         "openmrs_entity":"",
-        "openmrs_entity_id":"",
+        "openmrs_entity_id":"Pregnancy_Status",
         "openmrs_data_type":"text",
         "type":"spinner",
         "hint":"গর্ভের অবস্থা",
@@ -86,7 +86,7 @@
         "key": "Number_Of_Service_Received_Last_three_Months",
         "openmrs_entity_parent": "",
         "openmrs_entity": "",
-        "openmrs_entity_id": "",
+        "openmrs_entity_id": "Number_Of_Service_Received_Last_three_Months",
         "openmrs_data_type": "text",
         "type": "edit_text",
         "hint": "গত তিন মাসে সেবার সংখ্যা ",
@@ -99,7 +99,7 @@
         "key": "Service_Received_Date",
         "openmrs_entity_parent": "",
         "openmrs_entity": "",
-        "openmrs_entity_id": "",
+        "openmrs_entity_id": "Service_Received_Date",
         "openmrs_data_type": "text",
         "type": "date_picker",
         "hint": "সেবার তারিখ ",
@@ -113,31 +113,110 @@
         "key":"Place_of_Service",
         "openmrs_entity_parent":"",
         "openmrs_entity":"",
-        "openmrs_entity_id":"",
+        "openmrs_entity_id":"Place_of_Service",
         "openmrs_data_type":"text",
         "type":"spinner",
         "hint":"সেবার স্থান",
-        "values":["কমিউনিটি ক্লিনিক ", "ইউনিয়ন উপস্বাস্থ্য কেন্দ্র ", "ইউনিয়ন পরিবার কল্যাণ কেন্দ্র ", "ইউনিয়ন স্বাস্থ্য ও পরিবার কল্যাণ কেন্দ্র ", "মা ও শিশু কল্যাণ কেন্দ্র ", "১০ শয্যা বিশিষ্ট হাসপাতাল ","২০ শয্যা বিশিষ্ট হাসপাতাল ","উপজেলা স্বাস্থ্য কমপ্লেক্স ","সদর হাসপাতাল ","মেডিকেল কলেজ হাসপাতাল ","বেসরকারী ক্লিনিক/হাসপাতাল ","এনজিও ","বিশেষায়িত হাসপাতাল ","অন্যান্য "],
-        "openmrs_choice_ids":{"কমিউনিটি ক্লিনিক ":"Community_Clinic", "ইউনিয়ন উপস্বাস্থ্য কেন্দ্র ":"Union_Sub_Center", "ইউনিয়ন পরিবার কল্যাণ কেন্দ্র ":"Union_Family_Welfare_Center", "ইউনিয়ন স্বাস্থ্য ও পরিবার কল্যাণ কেন্দ্র ":"Union_Health_and_Family_Welfare_Center", "মা ও শিশু কল্যাণ কেন্দ্র ":"Metarnal_and_Child_Wellfare_Center", "১০ শয্যা বিশিষ্ট হাসপাতাল ":"10_Bed_Hospital","২০ শয্যা বিশিষ্ট হাসপাতাল ":"20_Beds_Hospital","উপজেলা স্বাস্থ্য কমপ্লেক্স ":"Upazila_Health_Complex","সদর হাসপাতাল ":"District_Hospital","মেডিকেল কলেজ হাসপাতাল ":"Medical_College_and_Hospital","বেসরকারী ক্লিনিক/হাসপাতাল ":"Private_Clinic_and_Hospital","এনজিও ":"Non-governmental_Organization","বিশেষায়িত হাসপাতাল ":"Specialized_Hospital","অন্যান্য ":"Others_Health_Facility"}
-
+        "values":[
+          "কমিউনিটি ক্লিনিক ",
+          "ইউনিয়ন উপস্বাস্থ্য কেন্দ্র ",
+          "ইউনিয়ন পরিবার কল্যাণ কেন্দ্র ",
+          "ইউনিয়ন স্বাস্থ্য ও পরিবার কল্যাণ কেন্দ্র ",
+          "মা ও শিশু কল্যাণ কেন্দ্র ",
+          "১০ শয্যা বিশিষ্ট হাসপাতাল ",
+          "২০ শয্যা বিশিষ্ট হাসপাতাল ",
+          "উপজেলা স্বাস্থ্য কমপ্লেক্স ",
+          "সদর হাসপাতাল ",
+          "মেডিকেল কলেজ হাসপাতাল ",
+          "বেসরকারী ক্লিনিক/হাসপাতাল ",
+          "এনজিও ",
+          "বিশেষায়িত হাসপাতাল ",
+          "অন্যান্য "
+        ],
+        "openmrs_choice_ids":{
+          "কমিউনিটি ক্লিনিক ":"Community_Clinic",
+          "ইউনিয়ন উপস্বাস্থ্য কেন্দ্র ":"Union_Sub_Center",
+          "ইউনিয়ন পরিবার কল্যাণ কেন্দ্র ":"Union_Family_Welfare_Center",
+          "ইউনিয়ন স্বাস্থ্য ও পরিবার কল্যাণ কেন্দ্র ":"Union_Health_and_Family_Welfare_Center",
+          "মা ও শিশু কল্যাণ কেন্দ্র ":"Metarnal_and_Child_Wellfare_Center",
+          "১০ শয্যা বিশিষ্ট হাসপাতাল ":"10_Bed_Hospital",
+          "২০ শয্যা বিশিষ্ট হাসপাতাল ":"20_Beds_Hospital",
+          "উপজেলা স্বাস্থ্য কমপ্লেক্স ":"Upazila_Health_Complex",
+          "সদর হাসপাতাল ":"District_Hospital",
+          "মেডিকেল কলেজ হাসপাতাল ":"Medical_College_and_Hospital",
+          "বেসরকারী ক্লিনিক/হাসপাতাল ":"Private_Clinic_and_Hospital",
+          "এনজিও ":"Non-governmental_Organization",
+          "বিশেষায়িত হাসপাতাল ":"Specialized_Hospital",
+          "অন্যান্য ":"Others_Health_Facility"
+        }
       },
       {
         "key":"Denger_Signs_During_Pregnancy",
         "openmrs_entity_parent":"",
         "openmrs_entity":"person_attribute",
-        "openmrs_entity_id":"",
+        "openmrs_entity_id":"Denger_Signs_During_Pregnancy",
         "openmrs_data_type":"text",
         "type":"check_box",
         "label":"গর্ভকালীন বিপদ চিহ্ন ",
-        "exclusive": ["None"],
-        "options":[{"key":"Bleeding_Through_Birth_Canal","text":"যোনিপথে রক্তক্ষরণ ","value":"false","openmrs_choice_id":"Bleeding_Through_Birth_Canal"},{"key":"Convulsion","text":"খিঁচুনি ","value":"false","openmrs_choice_id":"Convulsion"},{"key":"High_Temperature_102_Degree_or_More","text":"উচ্চ তাপমাত্রা ১০২ ডিগ্রি বা তদুর্ধ ","value":"false","openmrs_choice_id":"High_Temperature_102_Degree_or_More"},{"key":"Weakness_Blurred_vision","text":"দুর্বলতা, চোখে ঝাপসা দেখা ","value":"false","openmrs_choice_id":"Weakness_Blurred_vision"},{"key":"Prolonged_Delivery_or_Child_Coming_Out_Before","text":"প্রলম্বিত প্রসব/ বাচ্চা আগে বের হওয়া ","value":"false","openmrs_choice_id":"Prolonged_Delivery_or_Child_Coming_Out_Before"},{"key":"Edema","text":"ইডেমা ","value":"false","openmrs_choice_id":"Edema"},{"key":"Jaundice","text":"জন্ডিস ","value":"false","openmrs_choice_id":"Jaundice"},{"key":"No_Denger_Sign","text":"কোনোটিই নেই ","value":"false","openmrs_choice_id":"No_Denger_Sign"}]
-
+        "exclusive":[
+          "None"
+        ],
+        "options":[
+          {
+            "key":"Bleeding_Through_Birth_Canal",
+            "text":"যোনিপথে রক্তক্ষরণ ",
+            "value":"false",
+            "openmrs_choice_id":"Bleeding_Through_Birth_Canal"
+          },
+          {
+            "key":"Convulsion",
+            "text":"খিঁচুনি ",
+            "value":"false",
+            "openmrs_choice_id":"Convulsion"
+          },
+          {
+            "key":"High_Temperature_102_Degree_or_More",
+            "text":"উচ্চ তাপমাত্রা ১০২ ডিগ্রি বা তদুর্ধ ",
+            "value":"false",
+            "openmrs_choice_id":"High_Temperature_102_Degree_or_More"
+          },
+          {
+            "key":"Weakness_Blurred_vision",
+            "text":"দুর্বলতা, চোখে ঝাপসা দেখা ",
+            "value":"false",
+            "openmrs_choice_id":"Weakness_Blurred_vision"
+          },
+          {
+            "key":"Prolonged_Delivery_or_Child_Coming_Out_Before",
+            "text":"প্রলম্বিত প্রসব/ বাচ্চা আগে বের হওয়া ",
+            "value":"false",
+            "openmrs_choice_id":"Prolonged_Delivery_or_Child_Coming_Out_Before"
+          },
+          {
+            "key":"Edema",
+            "text":"ইডেমা ",
+            "value":"false",
+            "openmrs_choice_id":"Edema"
+          },
+          {
+            "key":"Jaundice",
+            "text":"জন্ডিস ",
+            "value":"false",
+            "openmrs_choice_id":"Jaundice"
+          },
+          {
+            "key":"No_Denger_Sign",
+            "text":"কোনোটিই নেই ",
+            "value":"false",
+            "openmrs_choice_id":"No_Denger_Sign"
+          }
+        ]
       },
       {
         "key":"Place_of_Refer",
         "openmrs_entity_parent":"",
         "openmrs_entity":"",
-        "openmrs_entity_id":"",
+        "openmrs_entity_id":"Place_of_Refer",
         "openmrs_data_type":"text",
         "type":"spinner",
         "hint":"রেফারের স্থান",

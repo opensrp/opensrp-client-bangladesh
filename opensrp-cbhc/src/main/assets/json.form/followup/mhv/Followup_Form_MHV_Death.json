@@ -72,7 +72,7 @@
         "key": "Date_Of_Death",
         "openmrs_entity_parent": "",
         "openmrs_entity": "",
-        "openmrs_entity_id": "",
+        "openmrs_entity_id": "Date_Of_Death",
         "openmrs_data_type": "text",
         "type": "date_picker",
         "hint": "মৃত্যুর  তারিখ ",
@@ -86,21 +86,33 @@
         "key": "Time_Of_Death",
         "openmrs_entity_parent": "",
         "openmrs_entity": "",
-        "openmrs_entity_id": "",
+        "openmrs_entity_id": "Time_Of_Death",
         "openmrs_data_type": "text",
-        "type": "date_picker",
+        "type": "edit_text",
         "hint": "মৃত্যুর সময় ",
-        "expanded": false,
-        "v_required": {
-          "value": "false",
-          "err": "Please enter the date of Followup."
+        "expanded":false,
+        "v_required":{
+          "value":"false",
+          "err":"Please enter the date of Followup."
+        },
+        "v_numeric": {
+          "value": "true",
+          "err": "Number must be 4 digits in length"
+        },
+        "v_max_length": {
+          "value": "4",
+          "err": "Please Enter 4 digit Time"
+        },
+        "v_min_length": {
+          "value": "4",
+          "err": "Please Enter 4 digit Time"
         }
       },
       {
         "key": "Place_Of_Death",
         "openmrs_entity_parent": "",
         "openmrs_entity": "",
-        "openmrs_entity_id": "",
+        "openmrs_entity_id": "Place_Of_Death",
         "openmrs_data_type": "text",
         "type": "edit_text",
         "hint": "মৃত্যুর স্থান ",
@@ -113,7 +125,7 @@
         "key": "Cause_Of_Death",
         "openmrs_entity_parent": "",
         "openmrs_entity": "",
-        "openmrs_entity_id": "",
+        "openmrs_entity_id": "Cause_Of_Death",
         "openmrs_data_type": "text",
         "type": "edit_text",
         "hint": "মৃত্যুর কারণ",
