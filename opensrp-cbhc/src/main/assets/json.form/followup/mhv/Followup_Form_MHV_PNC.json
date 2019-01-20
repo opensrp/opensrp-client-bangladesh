@@ -113,8 +113,8 @@
       {
         "key":"Place_of_Refer",
         "openmrs_entity_parent":"",
-        "openmrs_entity":"",
-        "openmrs_entity_id":"Place_of_Refer",
+        "openmrs_entity":"concept",
+        "openmrs_entity_id":"ec28ec95-0f6a-4910-8efc-c2925f9b36b1",
         "openmrs_data_type":"text",
         "type":"spinner",
         "hint":"রেফারের স্থান",

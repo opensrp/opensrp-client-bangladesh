@@ -930,7 +930,21 @@ public class JsonFormUtils extends org.smartregister.util.JsonFormUtils {
                 jsonObject.put(JsonFormUtils.VALUE, DATE_FORMAT.format(dob));
             }
 
-        }else if(jsonObject.getString(JsonFormUtils.KEY).equalsIgnoreCase(DBConstants.KEY.CONTACT_PHONE_NUMBER)||jsonObject.getString(JsonFormUtils.KEY).equalsIgnoreCase(DBConstants.KEY.CONTACT_PHONE_NUMBER_BY_AGE)){
+        }else if ((jsonObject.getString(JsonFormUtils.KEY).equalsIgnoreCase(DBConstants.KEY.member_Reg_Date))) {
+            String reg_date = womanClient.get(DBConstants.KEY.member_Reg_Date);
+            if(reg_date!=null){
+                jsonObject.put(JsonFormUtils.VALUE, reg_date);
+                jsonObject.put(JsonFormUtils.READ_ONLY, true);
+            }
+        }else if ((jsonObject.getString(JsonFormUtils.KEY).equalsIgnoreCase(DBConstants.KEY.Patient_Identifier))) {
+            String Patient_Identifier = womanClient.get(DBConstants.KEY.Patient_Identifier);
+            if(Patient_Identifier!=null){
+                jsonObject.put(JsonFormUtils.VALUE, Patient_Identifier);
+                jsonObject.put(JsonFormUtils.READ_ONLY, true);
+            }
+        }
+
+        else if(jsonObject.getString(JsonFormUtils.KEY).equalsIgnoreCase(DBConstants.KEY.CONTACT_PHONE_NUMBER)||jsonObject.getString(JsonFormUtils.KEY).equalsIgnoreCase(DBConstants.KEY.CONTACT_PHONE_NUMBER_BY_AGE)){
             String phone_number = womanClient.get(DBConstants.KEY.PHONE_NUMBER);
 //            if(phone_number!=null&&phone_number.length()>11){
 //                phone_number = phone_number.substring(phone_number.length()-11);

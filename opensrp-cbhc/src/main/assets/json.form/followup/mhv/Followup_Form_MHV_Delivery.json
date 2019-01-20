@@ -71,8 +71,8 @@
       {
         "key":"Delivery_date",
         "openmrs_entity_parent":"",
-        "openmrs_entity":"",
-        "openmrs_entity_id":"Delivery_date",
+        "openmrs_entity":"concept",
+        "openmrs_entity_id":"aaae5d8c-da92-49a2-914e-63d029b3501f",
         "openmrs_data_type":"text",
         "type":"date_picker",
         "hint":"প্রসবের তারিখ",
@@ -109,10 +109,10 @@
         }
       },
       {
-        "key":"Mom_status",
+        "key":"MOTHER_VITAL",
         "openmrs_entity_parent":"",
-        "openmrs_entity":"",
-        "openmrs_entity_id":"Mom_status",
+        "openmrs_entity":"concept",
+        "openmrs_entity_id":"1bc12372-1635-4b27-a5c4-5d22ed8b7a93",
         "openmrs_data_type":"text",
         "type":"spinner",
         "hint":"মায়ের অবস্থা",
@@ -129,7 +129,7 @@
       {
         "key":"Live Birth",
         "openmrs_entity_parent":"",
-        "openmrs_entity":"person_attribute",
+        "openmrs_entity":"",
         "openmrs_entity_id":"Live Birth",
         "openmrs_data_type":"text",
         "type":"edit_text",
@@ -142,7 +142,7 @@
       {
         "key":"Stillbirth",
         "openmrs_entity_parent":"",
-        "openmrs_entity":"person_attribute",
+        "openmrs_entity":"",
         "openmrs_entity_id":"Stillbirth",
         "openmrs_data_type":"text",
         "type":"edit_text",
@@ -155,7 +155,7 @@
       {
         "key":"Totalbirth",
         "openmrs_entity_parent":"",
-        "openmrs_entity":"person_attribute",
+        "openmrs_entity":"",
         "openmrs_entity_id":"Totalbirth",
         "openmrs_data_type":"text",
         "type":"edit_text",
@@ -168,8 +168,8 @@
       {
         "key":"delivery_type",
         "openmrs_entity_parent":"",
-        "openmrs_entity":"",
-        "openmrs_entity_id":"delivery_type",
+        "openmrs_entity":"concept",
+        "openmrs_entity_id":"050739a2-5e26-44c5-8a51-9658dedf5455",
         "openmrs_data_type":"text",
         "type":"spinner",
         "hint":"প্রসবের ধরণ ",
@@ -185,8 +185,8 @@
       {
         "key":"Place_of_Delivery",
         "openmrs_entity_parent":"",
-        "openmrs_entity":"",
-        "openmrs_entity_id":"Place_of_Delivery",
+        "openmrs_entity":"concept",
+        "openmrs_entity_id":"6544f312-e596-4249-86f0-ba1361c0b9eb",
         "openmrs_data_type":"text",
         "type":"spinner",
         "hint":"প্রসবের স্থান ",
@@ -228,8 +228,8 @@
       {
         "key":"if_home_delivery_how_helpers",
         "openmrs_entity_parent":"",
-        "openmrs_entity":"",
-        "openmrs_entity_id":"if_home_delivery_how_helpers",
+        "openmrs_entity":"concept",
+        "openmrs_entity_id":"eaa90231-3a04-43f6-b245-486b1a25e51e",
         "openmrs_data_type":"text",
         "type":"spinner",
         "hint":"বাড়িতে হলে প্রসবে সহায়তাকারী",
@@ -259,8 +259,8 @@
       {
         "key":"Name_of_Child",
         "openmrs_entity_parent":"",
-        "openmrs_entity":"person_attribute",
-        "openmrs_entity_id":"Name_of_Child",
+        "openmrs_entity":"concept",
+        "openmrs_entity_id":"7a4ffef1-97d9-4c07-add7-9a6138559ff7",
         "openmrs_data_type":"text",
         "type":"edit_text",
         "hint":"বাচ্চার নাম",
@@ -275,10 +275,10 @@
         }
       },
       {
-        "key":"child_gender",
+        "key":"Gender Details",
         "openmrs_entity_parent":"",
-        "openmrs_entity":"person_attribute",
-        "openmrs_entity_id":"child_gender",
+        "openmrs_entity":"concept",
+        "openmrs_entity_id":"e4aae12c-ad9c-445d-a0d3-a8312ce9d3df",
         "openmrs_data_type":"text",
         "type":"spinner",
         "hint":"বাচ্চার লিঙ্গ*",
@@ -300,8 +300,8 @@
       {
         "key":"Child_birth_weight",
         "openmrs_entity_parent":"",
-        "openmrs_entity":"person_attribute",
-        "openmrs_entity_id":"Child_birth_weight",
+        "openmrs_entity":"concept",
+        "openmrs_entity_id":"1e58da4d-60b9-4c60-a079-9a5371d3cfa9",
         "openmrs_data_type":"text",
         "type":"spinner",
         "hint":"বাচ্চার জন্মকালীন ওজন ",
@@ -317,8 +317,8 @@
       {
         "key":"Birth_weight",
         "openmrs_entity_parent":"",
-        "openmrs_entity":"person_attribute",
-        "openmrs_entity_id":"Birth_weight",
+        "openmrs_entity":"concept",
+        "openmrs_entity_id":"9d4aa237-b866-43a1-a75b-9b9490d4a3b9",
         "openmrs_data_type":"text",
         "type":"edit_text",
         "hint":"ওজন",
@@ -330,8 +330,8 @@
       {
         "key":"Used_7.1%_Chlorohexidin",
         "openmrs_entity_parent":"",
-        "openmrs_entity":"person_attribute",
-        "openmrs_entity_id":"",
+        "openmrs_entity":"concept",
+        "openmrs_entity_id":"1f011039-e2dc-49a0-8804-1a96d1d5ba49",
         "openmrs_data_type":"text",
         "type":"spinner",
         "hint":"৭.১% ক্লোরোহেক্সিডিন এর ব্যবহার ",
@@ -347,8 +347,8 @@
       {
         "key":"Place_of_Refer",
         "openmrs_entity_parent":"",
-        "openmrs_entity":"",
-        "openmrs_entity_id":"Place_of_Refer",
+        "openmrs_entity":"concept",
+        "openmrs_entity_id":"ec28ec95-0f6a-4910-8efc-c2925f9b36b1",
         "openmrs_data_type":"text",
         "type":"spinner",
         "hint":"রেফারের স্থান",

@@ -210,7 +210,7 @@
         "key": "member_Reg_Date",
         "openmrs_entity_parent": "",
         "openmrs_entity": "",
-        "openmrs_entity_id": "",
+        "openmrs_entity_id": "member_Reg_Date",
         "openmrs_data_type": "text",
         "type": "date_picker",
         "hint": "রেজিস্ট্রেশন তারিখ",
@@ -364,7 +364,7 @@
         "openmrs_entity_id": "",
         "openmrs_data_type": "text",
         "type": "spinner",
-        "hint": "জন্ম তারিখ জানা আছে কি?",
+        "hint": "জন্ম তারিখ জানা আছে কি?*",
         "values": [
           "হ্যাঁ",
           "না"
@@ -372,6 +372,10 @@
         "openmrs_choice_ids": {
           "হ্যাঁ": "Yes",
           "না": "No"
+        },
+        "v_required": {
+          "value": "false",
+          "err": "Please enter age or date of birth"
         }
 
       },

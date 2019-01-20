@@ -310,10 +310,7 @@ public class MemberProfileActivity extends BaseProfileActivity implements Profil
             if(age>=10){
                 arrayAdapter.add("মোবাইল নম্বর");
             }
-            if(age>=5&&marital_status==0) {
-                arrayAdapter.add("বৈবাহিক অবস্থা");
 
-            }
             if(age>=5&&marital_status==1&&gender==0){
                 arrayAdapter.add("গর্ভাবস্থা");
 //                arrayAdapter.add("জন্ম");
@@ -321,6 +318,7 @@ public class MemberProfileActivity extends BaseProfileActivity implements Profil
             }
 
             if(age>=5){
+                arrayAdapter.add("বৈবাহিক অবস্থা");
                 arrayAdapter.add("ঝুঁকিপূর্ণ অভ্যাস");
                 arrayAdapter.add("স্থানান্তর");
             }

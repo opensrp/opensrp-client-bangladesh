@@ -12,7 +12,7 @@
 		android:layout_height="@dimen/ec_main_header_search_layout_height"
 		android:layout_marginLeft="@dimen/register_search_bar_margin"
 		android:layout_marginRight="@dimen/register_search_bar_min_margin"
-		android:layout_weight="1.5">
+		android:layout_weight="1.7">
 
 		<EditText
 			android:id="@+id/edt_search"
@@ -51,7 +51,7 @@
 		android:layout_marginLeft="@dimen/search_bar_min_margin"
 		android:layout_marginRight="@dimen/register_search_bar_margin"
 		android:layout_marginStart="@dimen/search_bar_min_margin"
-		android:layout_weight="0.5">
+		android:layout_weight="0.3">
 
 		<TextView
 			android:id="@+id/filter_text_view"
@@ -66,7 +66,7 @@
 			android:drawableStart="@drawable/ic_icon_filter"
 			android:drawableTint="@color/white"
 			android:gravity="center"
-			android:text="@string/filter"
+			android:text=""
 			android:textColor="@color/white"
 			android:textSize="@dimen/default_font_size_search_bar" />
 	</RelativeLayout>
