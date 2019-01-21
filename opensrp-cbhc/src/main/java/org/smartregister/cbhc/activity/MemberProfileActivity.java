@@ -61,6 +61,7 @@ import org.smartregister.util.DateUtil;
 import org.smartregister.util.PermissionUtils;
 
 import java.io.Serializable;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 
@@ -520,9 +521,39 @@ public class MemberProfileActivity extends BaseProfileActivity implements Profil
     }
     public int getAge() {
         String age = householdDetails.getColumnmaps().get("age");
-        if(age==null)
-            return -1;
-        return Integer.parseInt(age.trim());
+        String dob = householdDetails.getColumnmaps().get("dob");
+        if(dob!=null&&dob.contains("T")){
+            dob = dob.substring(0,dob.indexOf('T'));
+        }
+
+        if(dob!=null){
+            try{
+                Date dateob=new SimpleDateFormat("yyyy-MM-dd").parse(dob);
+//                Date dateob = new Date(dob);
+                if(dateob!=null) {
+                    long time = new Date().getTime()-dateob.getTime();
+                    long TWO_MONTHS = 62l*24l*60l*60l*1000l;
+                    double YEAR = 365d*24d*60d*60d*1000d;
+                    if(time<=TWO_MONTHS){
+                        return 0;
+                    }
+                    int years = (int)(time/YEAR);
+                    return years;
+                }
+
+            }catch(Exception e){
+
+            }
+
+
+        }
+
+        if((age!=null&&!age.isEmpty())){
+            return Integer.parseInt(age.trim());
+        }
+
+
+        return 0;
     }
     private int getMaritalStatus() {
         String maritalStatus = householdDetails.getColumnmaps().get("MaritalStatus");

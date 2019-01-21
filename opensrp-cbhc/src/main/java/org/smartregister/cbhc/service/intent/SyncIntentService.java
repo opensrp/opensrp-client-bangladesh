@@ -91,8 +91,8 @@ public class SyncIntentService extends IntentService {
             AllSharedPreferences sharedPreferences = AncApplication.getInstance().getContext().userService().getAllSharedPreferences();
             String teamId = sharedPreferences.fetchDefaultTeamId(sharedPreferences.fetchRegisteredANM());
             String providerID = sharedPreferences.fetchRegisteredANM();
-//            String locationid = AncApplication.getInstance().getContext().userService().getAllSharedPreferences().fetchDefaultLocalityId(providerID);
-            String locationid =LocationHelper.getInstance().getDefaultLocation();
+            String locationid = AncApplication.getInstance().getContext().userService().getAllSharedPreferences().fetchDefaultLocalityId(providerID);
+//            String locationid =LocationHelper.getInstance().getDefaultLocation();
             if (StringUtils.isBlank(teamId)) {
                 complete(FetchStatus.fetchedFailed);
                 return;
@@ -108,9 +108,9 @@ public class SyncIntentService extends IntentService {
             Long lastSyncDatetime = ecSyncUpdater.getLastSyncTimeStamp();
             Log.i(SyncIntentService.class.getName(), "LAST SYNC DT :" + new DateTime(lastSyncDatetime));
             lastSyncDatetime = lastSyncDatetime;
-            String url = baseUrl + SYNC_URL + "?" + Constants.SyncFilters.FILTER_TEAM_ID + "=" + teamId + "&serverVersion=" + lastSyncDatetime + "&limit=" + SyncIntentService.EVENT_PULL_LIMIT;
+//            String url = baseUrl + SYNC_URL + "?" + Constants.SyncFilters.FILTER_TEAM_ID + "=" + teamId + "&serverVersion=" + lastSyncDatetime + "&limit=" + SyncIntentService.EVENT_PULL_LIMIT;
 //            String url = baseUrl + SYNC_URL + "?" + Constants.SyncFilters.PROVIDER_ID + "=" + providerID + "&serverVersion=" + lastSyncDatetime + "&limit=" + SyncIntentService.EVENT_PULL_LIMIT;
-//            String url = baseUrl + SYNC_URL + "?" + Constants.SyncFilters.LOCATION_ID + "=" + locationid + "&serverVersion=" + lastSyncDatetime + "&limit=" + SyncIntentService.EVENT_PULL_LIMIT;
+            String url = baseUrl + SYNC_URL + "?" + Constants.SyncFilters.LOCATION_ID + "=" + locationid + "&serverVersion=" + lastSyncDatetime + "&limit=" + SyncIntentService.EVENT_PULL_LIMIT;
 
             Log.i(SyncIntentService.class.getName(), "URL: " + url);
 

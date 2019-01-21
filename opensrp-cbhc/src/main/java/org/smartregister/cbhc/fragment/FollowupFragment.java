@@ -236,9 +236,12 @@ public class FollowupFragment extends BaseProfileFragment {
                 if(dateob!=null) {
                     long time = new Date().getTime()-dateob.getTime();
                     long TWO_MONTHS = 62l*24l*60l*60l*1000l;
+                    double YEAR = 365d*24d*60d*60d*1000d;
                     if(time<=TWO_MONTHS){
                         return 0;
                     }
+                    int years = (int)(time/YEAR);
+                    return years;
                 }
 
             }catch(Exception e){
@@ -248,12 +251,12 @@ public class FollowupFragment extends BaseProfileFragment {
 
         }
 
-        if(age==null||(age!=null&&age.isEmpty())){
-            age = "10";
+        if((age!=null&&!age.isEmpty())){
+            return Integer.parseInt(age.trim());
         }
 
 
-        return Integer.parseInt(age.trim());
+        return 0;
     }
 
     private int getMaritalStatus() {

@@ -34,6 +34,7 @@ android {
         buildConfigField "boolean", "TIME_CHECK", "false"
         buildConfigField "String", "SYNC_TYPE", '"teamId"'
         buildConfigField "int", "MAX_SYNC_RETRIES", '3'
+        buildConfigField "boolean", "IS_SYNC_SETTINGS", "true"
         buildConfigField "long", "BUILD_TIMESTAMP", System.currentTimeMillis() + "L"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
 

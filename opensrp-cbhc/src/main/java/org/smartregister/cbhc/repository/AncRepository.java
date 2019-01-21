@@ -53,6 +53,9 @@ public class AncRepository extends Repository {
         DraftFormRepository.createTable(database);
         ////////////////////////////////////////////////////
 
+        //////////////////FollowupRepository////////////////
+        FollowupRepository.createTable(database);
+
         database.execSQL(AlertRepository.ALTER_ADD_OFFLINE_COLUMN);
         database.execSQL(AlertRepository.OFFLINE_INDEX);
 

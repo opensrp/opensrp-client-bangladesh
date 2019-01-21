@@ -11,9 +11,12 @@ import org.apache.commons.lang3.tuple.Triple;
 import org.json.JSONObject;
 import org.smartregister.cbhc.application.AncApplication;
 import org.smartregister.cbhc.contract.RegisterContract;
+import org.smartregister.cbhc.domain.FollowupForm;
 import org.smartregister.cbhc.domain.UniqueId;
 import org.smartregister.cbhc.event.PatientRemovedEvent;
 import org.smartregister.cbhc.helper.ECSyncHelper;
+import org.smartregister.cbhc.repository.DraftFormRepository;
+import org.smartregister.cbhc.repository.FollowupRepository;
 import org.smartregister.cbhc.repository.UniqueIdRepository;
 import org.smartregister.cbhc.service.intent.SyncIntentService;
 import org.smartregister.cbhc.sync.AncClientProcessorForJava;
@@ -254,6 +257,24 @@ public class RegisterInteractor implements RegisterContract.Interactor {
 //            AncClientProcessorForJava.getInstance(AncApplication.getInstance().getApplicationContext()).processClient(events);
 
             ////////////////////////////////////////////////////////////////
+            //now save followup form here
+            try{
+                JSONObject formObject = new JSONObject(jsonString);
+                String encounter_type = formObject.getString("encounter_type");
+                String base_entity_id = formObject.getString("entity_id");
+                if(encounter_type!=null&&!Utils.notFollowUp(encounter_type)){
+                    //time to save followup jinish
+                    FollowupForm followupForm = new FollowupForm();
+                    followupForm.setBase_entity_id(base_entity_id);
+                    followupForm.setForm_name(encounter_type);
+                    followupForm.setDate(new Date());
+                    followupForm.setFormFields(jsonString);
+                    FollowupRepository followupFormRepository = new FollowupRepository(AncApplication.getInstance().getRepository());
+                    followupFormRepository.saveForm(followupForm);
+                }
+            }catch(Exception e){
+
+            }
 
         } catch (Exception e) {
             Log.e(TAG, Log.getStackTraceString(e));

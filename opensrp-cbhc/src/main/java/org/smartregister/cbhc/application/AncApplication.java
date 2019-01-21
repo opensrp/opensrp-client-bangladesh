@@ -108,7 +108,8 @@ public class AncApplication extends DrishtiApplication implements TimeChangedBro
 
         //Initialize Modules
         CoreLibrary.init(context);
-        initLibraries();
+        ConfigurableViewsLibrary.init(context, getRepository());
+
 
         SyncStatusBroadcastReceiver.init(this);
         TimeChangedBroadcastReceiver.init(this);
@@ -120,19 +121,19 @@ public class AncApplication extends DrishtiApplication implements TimeChangedBro
         } catch (Exception e) {
             Log.e(TAG, e.getMessage());
         }
-
+        initLibraries();
         //Initialize JsonSpec Helper
         this.jsonSpecHelper = new JsonSpecHelper(this);
 
         setUpEventHandling();
         initOfflineSchedules();
         scheduleJobs();
-//getSharedPreferences().
+
     }
 
     public void initLibraries() {
         ImmunizationLibrary.init(context, getRepository(), null, BuildConfig.VERSION_CODE, BuildConfig.DATABASE_VERSION);
-        ConfigurableViewsLibrary.init(context, getRepository());
+
         GrowthMonitoringLibrary.init(context, getRepository(), BuildConfig.VERSION_CODE, BuildConfig.DATABASE_VERSION);
         startZscoreRefreshService();
         startPullConfigurableViewsIntentService(getApplicationContext());
@@ -203,7 +204,7 @@ public class AncApplication extends DrishtiApplication implements TimeChangedBro
             password = getContext().userService().getGroupId(username);
         }
 
-        return "";
+        return password;
 
     }
 
