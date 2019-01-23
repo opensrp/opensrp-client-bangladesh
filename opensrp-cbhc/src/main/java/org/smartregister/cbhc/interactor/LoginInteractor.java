@@ -3,12 +3,18 @@ package org.smartregister.cbhc.interactor;
 import android.content.Context;
 import android.util.Log;
 
+import com.evernote.android.job.JobManager;
+
 import org.joda.time.DateTime;
 import org.smartregister.cbhc.BuildConfig;
 import org.smartregister.cbhc.R;
 import org.smartregister.cbhc.application.AncApplication;
 import org.smartregister.cbhc.contract.LoginContract;
+import org.smartregister.cbhc.job.AncJobCreator;
+import org.smartregister.cbhc.job.ImageUploadServiceJob;
+import org.smartregister.cbhc.job.PullUniqueIdsServiceJob;
 import org.smartregister.cbhc.job.SyncServiceJob;
+import org.smartregister.cbhc.job.ViewConfigurationsServiceJob;
 import org.smartregister.cbhc.task.RemoteLoginTask;
 import org.smartregister.cbhc.util.Constants;
 import org.smartregister.cbhc.util.NetworkUtils;
@@ -21,6 +27,7 @@ import org.smartregister.service.UserService;
 
 import java.lang.ref.WeakReference;
 import java.util.TimeZone;
+import java.util.concurrent.TimeUnit;
 
 import static org.smartregister.domain.LoginResponse.NO_INTERNET_CONNECTIVITY;
 import static org.smartregister.domain.LoginResponse.UNAUTHORIZED;
@@ -55,6 +62,30 @@ public class LoginInteractor implements LoginContract.Interactor {
         loginWithLocalFlag(view, !getSharedPreferences().fetchForceRemoteLogin(), userName, password);
     }
 
+    public void scheduleJobs() {
+        //init Job Manager
+
+
+
+        //schedule jobs
+        SyncServiceJob.scheduleJob(SyncServiceJob.TAG, TimeUnit.MINUTES.toMillis(BuildConfig.DATA_SYNC_DURATION_MINUTES), getFlexValue(BuildConfig.DATA_SYNC_DURATION_MINUTES));
+        PullUniqueIdsServiceJob.scheduleJob(SyncServiceJob.TAG, TimeUnit.MINUTES.toMillis(BuildConfig.PULL_UNIQUE_IDS_MINUTES), getFlexValue(BuildConfig.PULL_UNIQUE_IDS_MINUTES));
+        ImageUploadServiceJob.scheduleJob(SyncServiceJob.TAG, TimeUnit.MINUTES.toMillis(BuildConfig.IMAGE_UPLOAD_MINUTES), getFlexValue(BuildConfig.IMAGE_UPLOAD_MINUTES));
+        ViewConfigurationsServiceJob.scheduleJob(SyncServiceJob.TAG, TimeUnit.MINUTES.toMillis(BuildConfig.VIEW_SYNC_CONFIGURATIONS_MINUTES), getFlexValue(BuildConfig.VIEW_SYNC_CONFIGURATIONS_MINUTES));
+//        ZJob.scheduleJob(SyncServiceJob.TAG, TimeUnit.MINUTES.toMillis(BuildConfig.VIEW_SYNC_CONFIGURATIONS_MINUTES), getFlexValue(BuildConfig.VIEW_SYNC_CONFIGURATIONS_MINUTES));
+
+    }
+    private static final int MINIMUM_JOB_FLEX_VALUE = 1;
+    private long getFlexValue(int value) {
+        int minutes = MINIMUM_JOB_FLEX_VALUE;
+
+        if (value > MINIMUM_JOB_FLEX_VALUE) {
+
+            minutes = (int) Math.ceil(value / 3);
+        }
+
+        return TimeUnit.MINUTES.toMillis(minutes);
+    }
     protected void loginWithLocalFlag(WeakReference<LoginContract.View> view, boolean localLogin, String userName, String password) {
 
         getLoginView().hideKeyboard();
@@ -111,6 +142,7 @@ public class LoginInteractor implements LoginContract.Interactor {
                                     remoteLoginWith(userName, password,
                                             loginResponse.payload());
 
+                                    scheduleJobs();
                                     AncApplication.getInstance().startPullUniqueIdsService();
 
                                 } else {

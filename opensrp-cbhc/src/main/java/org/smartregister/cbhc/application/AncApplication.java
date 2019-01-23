@@ -74,7 +74,7 @@ import static org.smartregister.util.Log.logInfo;
  */
 public class AncApplication extends DrishtiApplication implements TimeChangedBroadcastReceiver.OnTimeChangedListener {
 
-    private static final int MINIMUM_JOB_FLEX_VALUE = 1;
+
 
     private static JsonSpecHelper jsonSpecHelper;
 
@@ -96,9 +96,8 @@ public class AncApplication extends DrishtiApplication implements TimeChangedBro
 
         super.onCreate();
         if(getSharedPreferences().fetchBaseURL("").isEmpty()){
-            AllSharedPreferences allSharedPreferences = new AllSharedPreferences(
-                    getDefaultSharedPreferences(this));
-            allSharedPreferences.updateUrl(getString(R.string.opensrp_url));
+
+            updateUrl(getString(R.string.opensrp_url));
         }
 //        DrishtiApplication.getInstance().setPassword(getPassword());
         mInstance = this;
@@ -108,30 +107,36 @@ public class AncApplication extends DrishtiApplication implements TimeChangedBro
 
         //Initialize Modules
         CoreLibrary.init(context);
-        ConfigurableViewsLibrary.init(context, getRepository());
+
 
 
         SyncStatusBroadcastReceiver.init(this);
         TimeChangedBroadcastReceiver.init(this);
         TimeChangedBroadcastReceiver.getInstance().addOnTimeChangedListener(this);
 
-
+        JobManager.create(this).addJobCreator(new AncJobCreator());
         try {
             Utils.saveLanguage("en");
         } catch (Exception e) {
             Log.e(TAG, e.getMessage());
         }
-        initLibraries();
+//        initLibraries();
         //Initialize JsonSpec Helper
         this.jsonSpecHelper = new JsonSpecHelper(this);
 
         setUpEventHandling();
-        initOfflineSchedules();
-        scheduleJobs();
+        String groupId = getPassword();
+        if(groupId!=null&&!groupId.isEmpty()){
+//            initLibraries();
+            initOfflineSchedules();
+        }
+
+
 
     }
 
     public void initLibraries() {
+        ConfigurableViewsLibrary.init(context, getRepository());
         ImmunizationLibrary.init(context, getRepository(), null, BuildConfig.VERSION_CODE, BuildConfig.DATABASE_VERSION);
 
         GrowthMonitoringLibrary.init(context, getRepository(), BuildConfig.VERSION_CODE, BuildConfig.DATABASE_VERSION);
@@ -197,7 +202,7 @@ public class AncApplication extends DrishtiApplication implements TimeChangedBro
         }
         return repository;
     }
-
+    private String DEFAULT_PASSWORD = "1e815e13-f6ca-42ef-97c8-83394c201a47";
     public String getPassword() {
         if (password == null) {
             String username = getContext().userService().getAllSharedPreferences().fetchRegisteredANM();
@@ -391,30 +396,9 @@ public class AncApplication extends DrishtiApplication implements TimeChangedBro
 //        logoutCurrentUser();
     }
 
-    public void scheduleJobs() {
-        //init Job Manager
 
-        JobManager.create(this).addJobCreator(new AncJobCreator());
 
-        //schedule jobs
-        SyncServiceJob.scheduleJob(SyncServiceJob.TAG, TimeUnit.MINUTES.toMillis(BuildConfig.DATA_SYNC_DURATION_MINUTES), getFlexValue(BuildConfig.DATA_SYNC_DURATION_MINUTES));
-        PullUniqueIdsServiceJob.scheduleJob(SyncServiceJob.TAG, TimeUnit.MINUTES.toMillis(BuildConfig.PULL_UNIQUE_IDS_MINUTES), getFlexValue(BuildConfig.PULL_UNIQUE_IDS_MINUTES));
-        ImageUploadServiceJob.scheduleJob(SyncServiceJob.TAG, TimeUnit.MINUTES.toMillis(BuildConfig.IMAGE_UPLOAD_MINUTES), getFlexValue(BuildConfig.IMAGE_UPLOAD_MINUTES));
-        ViewConfigurationsServiceJob.scheduleJob(SyncServiceJob.TAG, TimeUnit.MINUTES.toMillis(BuildConfig.VIEW_SYNC_CONFIGURATIONS_MINUTES), getFlexValue(BuildConfig.VIEW_SYNC_CONFIGURATIONS_MINUTES));
-//        ZJob.scheduleJob(SyncServiceJob.TAG, TimeUnit.MINUTES.toMillis(BuildConfig.VIEW_SYNC_CONFIGURATIONS_MINUTES), getFlexValue(BuildConfig.VIEW_SYNC_CONFIGURATIONS_MINUTES));
 
-    }
-
-    private long getFlexValue(int value) {
-        int minutes = MINIMUM_JOB_FLEX_VALUE;
-
-        if (value > MINIMUM_JOB_FLEX_VALUE) {
-
-            minutes = (int) Math.ceil(value / 3);
-        }
-
-        return TimeUnit.MINUTES.toMillis(minutes);
-    }
 
     public void startZscoreRefreshService() {
         Intent intent = new Intent(this.getApplicationContext(), ZScoreRefreshIntentService.class);

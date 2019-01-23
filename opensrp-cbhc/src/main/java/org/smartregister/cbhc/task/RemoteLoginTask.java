@@ -35,8 +35,17 @@ public class RemoteLoginTask extends AsyncTask<Void, Void, LoginResponse> {
     @Override
     protected LoginResponse doInBackground(Void... params) {
 
+        LoginResponse loginResponse = getOpenSRPContext().userService().isValidRemoteLogin(mUsername, mPassword);
+        if(loginResponse.equals(LoginResponse.SUCCESS)){
+            getOpenSRPContext().userService().getAllSharedPreferences().updateANMUserName(mUsername);
+            String password = getOpenSRPContext().userService().getGroupId(mUsername);
+            if(password!=null){
+                AncApplication.getInstance().initLibraries();
+                AncApplication.getInstance().initOfflineSchedules();
+            }
 
-        return getOpenSRPContext().userService().isValidRemoteLogin(mUsername, mPassword);
+        }
+        return loginResponse;
     }
 
     @Override

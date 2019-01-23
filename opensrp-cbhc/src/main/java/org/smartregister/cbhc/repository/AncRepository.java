@@ -21,6 +21,7 @@ import org.smartregister.immunization.util.IMDatabaseUtils;
 import org.smartregister.repository.AlertRepository;
 import org.smartregister.repository.EventClientRepository;
 import org.smartregister.repository.Repository;
+import org.smartregister.repository.SettingsRepository;
 
 /**
  * Created by ndegwamartin on 09/04/2018.
