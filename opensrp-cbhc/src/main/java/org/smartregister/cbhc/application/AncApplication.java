@@ -204,7 +204,7 @@ public class AncApplication extends DrishtiApplication implements TimeChangedBro
             password = getContext().userService().getGroupId(username);
         }
 
-        return password;
+        return "";
 
     }
 

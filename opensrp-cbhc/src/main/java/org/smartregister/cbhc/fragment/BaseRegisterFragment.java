@@ -217,6 +217,7 @@ public abstract class BaseRegisterFragment extends RecyclerViewFragment implemen
         }catch (Exception e){
 
         }
+
         presenter.initializeQueries(getMainCondition());
         updateSearchView();
         setServiceModeViewDrawableRight(null);
@@ -360,12 +361,16 @@ public abstract class BaseRegisterFragment extends RecyclerViewFragment implemen
     }
     public void clearSortAndFilter(){
         this.Sortqueries = default_sort_query;
-
+        presenter.initializeQueries(getMainCondition());
         filter(this.filters,this.joinTable,this.mainCondition,false);
     }
     public void updateSortAndFilter(List<Field> filterList, Field sortField) {
-        presenter.updateSortAndFilter(filterList, sortField);
-
+//        presenter.updateSortAndFilter(filterList, sortField);
+        if(filterList.size()==0){
+            presenter.initializeQueries(getMainCondition());
+        }else{
+            mainSelect = filterSelect(filterList.get(0).getDbAlias());
+        }
         this.Sortqueries = sortField.getDbAlias();
         filter(this.filters,this.joinTable,this.mainCondition,false);
     }
@@ -580,6 +585,59 @@ public abstract class BaseRegisterFragment extends RecyclerViewFragment implemen
                 onViewClicked(view);
             }
         }
+    }
+
+    public String filterSelect(String filter) {
+
+        SmartRegisterQueryBuilder queryBUilder = new SmartRegisterQueryBuilder();
+        String tableName = "ec_household";
+        String[] columns = new String[]{
+                tableName + ".relationalid",
+                tableName + "." + DBConstants.KEY.LAST_INTERACTED_WITH,
+                tableName + "." + DBConstants.KEY.BASE_ENTITY_ID,
+                tableName + "." + DBConstants.KEY.FIRST_NAME,
+                tableName + "." + DBConstants.KEY.LAST_NAME,
+                tableName + "." + DBConstants.KEY.DOB,
+                tableName + "." + "Patient_Identifier",
+                tableName + "." + DBConstants.KEY.PHONE_NUMBER,
+                "(select ec_details.value from ec_details where ec_details.key='address7' and ec_details.base_entity_id=ec_household.id) as para"
+                };
+
+        if(filter.equals("pregnant")){
+            columns = new String[]{
+                    tableName + ".relationalid",
+                    tableName + "." + DBConstants.KEY.LAST_INTERACTED_WITH,
+                    tableName + "." + DBConstants.KEY.BASE_ENTITY_ID,
+                    tableName + "." + DBConstants.KEY.FIRST_NAME,
+                    tableName + "." + DBConstants.KEY.LAST_NAME,
+                    tableName + "." + DBConstants.KEY.DOB,
+                    tableName + "." + "Patient_Identifier",
+                    tableName + "." + DBConstants.KEY.PHONE_NUMBER,
+                    "(select ec_details.value from ec_details where ec_details.key='address7' and ec_details.base_entity_id=ec_household.id) as para",
+                    "(select ec_details.value from ec_details where ec_details.key='Disease_status' and ec_details.value = 'Antenatal Period' and ec_details.base_entity_id=(select ec_woman.id from ec_woman where  ec_household.id=ec_woman.relational_id )) as Disease_status"};
+//                    mainCondition = getMainCondition() + " and Disease_status IS NOT NULL";
+        }else if(filter.equals("infant")){
+            columns = new String[]{
+                    tableName + ".relationalid",
+                    tableName + "." + DBConstants.KEY.LAST_INTERACTED_WITH,
+                    tableName + "." + DBConstants.KEY.BASE_ENTITY_ID,
+                    tableName + "." + DBConstants.KEY.FIRST_NAME,
+                    tableName + "." + DBConstants.KEY.LAST_NAME,
+                    tableName + "." + DBConstants.KEY.DOB,
+                    tableName + "." + "Patient_Identifier",
+                    tableName + "." + DBConstants.KEY.PHONE_NUMBER,
+                    "(select ec_details.value from ec_details where ec_details.key='address7' and ec_details.base_entity_id=ec_household.id) as para"
+            };
+        }else if(filter.equals("toddler")){
+
+        }else if(filter.equals("adult")){
+
+        }
+
+
+
+        queryBUilder.SelectInitiateMainTable(tableName, columns);
+        return queryBUilder.mainCondition(mainCondition);
     }
 }
 
