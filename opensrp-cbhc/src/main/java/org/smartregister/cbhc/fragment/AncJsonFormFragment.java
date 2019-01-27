@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.Nullable;
@@ -19,6 +20,7 @@ import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -26,6 +28,7 @@ import android.widget.TextView;
 import com.rengwuxian.materialedittext.MaterialEditText;
 import com.vijay.jsonwizard.activities.JsonFormActivity;
 import com.vijay.jsonwizard.constants.JsonFormConstants;
+import com.vijay.jsonwizard.customviews.MaterialSpinner;
 import com.vijay.jsonwizard.fragments.JsonFormFragment;
 import com.vijay.jsonwizard.presenters.JsonFormFragmentPresenter;
 import com.vijay.jsonwizard.utils.FormUtils;
@@ -33,6 +36,8 @@ import com.vijay.jsonwizard.widgets.DatePickerFactory;
 
 import org.apache.commons.lang3.StringUtils;
 import org.joda.time.DateTime;
+import org.json.JSONException;
+import org.json.JSONObject;
 import org.smartregister.Context;
 import org.smartregister.cbhc.R;
 import org.smartregister.cbhc.activity.AncJsonFormActivity;
@@ -45,6 +50,7 @@ import org.smartregister.cbhc.util.MotherLookUpUtils;
 import org.smartregister.cbhc.viewstate.AncJsonFormFragmentViewState;
 import org.smartregister.commonregistry.CommonPersonObject;
 import org.smartregister.commonregistry.CommonPersonObjectClient;
+import org.smartregister.commonregistry.CommonRepository;
 import org.smartregister.event.Listener;
 import org.smartregister.util.DatePickerUtils;
 import org.smartregister.util.DateUtil;
@@ -488,6 +494,65 @@ public class AncJsonFormFragment extends JsonFormFragment {
             if(validationProgressdialog.isShowing()) {
                 validationProgressdialog.dismiss();
             }
+        }
+    }
+
+    @Override
+    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+        presenter.onItemSelected(parent, view, position, id);
+//        JSONObject currentObject = get
+        if(parent instanceof MaterialSpinner) {
+            if (((MaterialSpinner) parent).getFloatingLabelText().toString().equalsIgnoreCase("থানা প্রধানের সাথে সম্পর্ক*")) {
+                processHeadOfHouseHoldAsMember(position);
+            }
+        }
+    }
+
+    private void processHeadOfHouseHoldAsMember(int position) {
+        if (position == 0) {
+            (new AsyncTask() {
+                String headOfHouseholdFirstName = "";
+                String headOfHouseholdLastName = "";
+                String headOfHouseholdage = "";
+                @Override
+                protected Object doInBackground(Object[] objects) {
+                    JSONObject formObject = getJsonApi().getmJSONObject();
+                    if (formObject.has("metadata")){
+                        try {
+                            JSONObject metadata = formObject.getJSONObject("metadata");
+                            if (metadata.has("look_up")) {
+                                JSONObject look_up = metadata.getJSONObject("look_up");
+                                if (look_up.has("entity_id") && look_up.getString("entity_id").equalsIgnoreCase("household")) {
+                                    String relational_id = look_up.getString("value");
+                                    CommonRepository commonRepository = AncApplication.getInstance().getContext().commonrepository("ec_household");
+                                    CommonPersonObject household = commonRepository.findByBaseEntityId(relational_id);
+                                    headOfHouseholdFirstName = getValue(household.getColumnmaps(), "first_name", false);
+                                    headOfHouseholdLastName = getValue(household.getColumnmaps(), "last_name", false);
+                                }
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                    return null;
+                }
+
+                @Override
+                protected void onPostExecute(Object o) {
+                    super.onPostExecute(o);
+                    ArrayList<View> formdataviews = getJsonApi().getFormDataViews();
+                    for (int i = 0; i < formdataviews.size(); i++) {
+                        if (formdataviews.get(i) instanceof MaterialEditText) {
+                            if (((MaterialEditText) formdataviews.get(i)).getFloatingLabelText().toString().trim().equalsIgnoreCase("নামের প্রথম অংশ (ইংরেজীতে)*")) {
+                                ((MaterialEditText) formdataviews.get(i)).setText(headOfHouseholdFirstName);
+                            }
+                            if (((MaterialEditText) formdataviews.get(i)).getFloatingLabelText().toString().trim().equalsIgnoreCase("নামের শেষ অংশ (ইংরেজীতে)*")) {
+                                ((MaterialEditText) formdataviews.get(i)).setText(headOfHouseholdLastName);
+                            }
+                        }
+                    }
+                }
+            }).execute();
         }
     }
 
