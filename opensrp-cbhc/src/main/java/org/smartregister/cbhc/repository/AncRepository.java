@@ -68,6 +68,7 @@ public class AncRepository extends Repository {
         database.execSQL(WeightRepository.UPDATE_TABLE_ADD_OUT_OF_AREA_COL);
         database.execSQL(WeightRepository.UPDATE_TABLE_ADD_OUT_OF_AREA_COL_INDEX);
 
+        HealthIdRepository.createTable(database);
         UniqueIdRepository.createTable(database);
         RecurringServiceTypeRepository.createTable(database);
         RecurringServiceRecordRepository.createTable(database);

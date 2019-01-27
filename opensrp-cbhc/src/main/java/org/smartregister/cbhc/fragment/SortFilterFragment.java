@@ -236,6 +236,7 @@ public class SortFilterFragment extends Fragment implements SortFilterContract.V
                         Field currentField = (Field) tag;
                         if (isChecked) {
                             if (!presenter.getFilterList().contains(currentField)) {
+                                clear();
                                 presenter.getFilterList().add(currentField);
                             }
                         } else {

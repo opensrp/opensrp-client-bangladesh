@@ -152,7 +152,7 @@ dependencies {
         exclude group: 'com.android.support', module: 'cardview-v7'
     }
 
-    implementation('org.smartregister:opensrp-client-core:1.5.13-SNAPSHOT@aar') {
+    implementation('org.smartregister:opensrp-client-core:2.5.13-SNAPSHOT') {
         transitive = true
         exclude group: 'com.github.bmelnychuk', module: 'atv'
         exclude group: 'com.google.guava', module: 'guava'

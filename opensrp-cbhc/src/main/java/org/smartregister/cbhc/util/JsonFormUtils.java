@@ -459,7 +459,8 @@ public class JsonFormUtils extends org.smartregister.util.JsonFormUtils {
                     String key = fields.getJSONObject(i).getString("key");
                     if(key.equalsIgnoreCase("Patient_Identifier")){
                         String identifier = fields.getJSONObject(i).getString("value");
-                        AncApplication.getInstance().getUniqueIdRepository().close(identifier);
+                        AncApplication.getInstance().getHealthIdRepository().close(identifier);
+//                        AncApplication.getInstance().getUniqueIdRepository().close(identifier);
 
                     }
                 }

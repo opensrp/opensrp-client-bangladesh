@@ -103,7 +103,7 @@ public class RegisterPresenter implements RegisterContract.Presenter, RegisterCo
 
         if (StringUtils.isBlank(entityId)) {
 //            Triple<String, String, String> triple = Triple.of(formName, metadata, currentLocationId);
-            interactor.getNextUniqueId(formName, metadata, currentLocationId,householdID, this);
+            interactor.getNextHealthId(formName, metadata, currentLocationId,householdID, this);
             return;
         }
         JSONObject form = FormUtils.getInstance(AncApplication.getInstance().getApplicationContext()).getFormJson(Constants.JSON_FORM.MEMBER_REGISTER);

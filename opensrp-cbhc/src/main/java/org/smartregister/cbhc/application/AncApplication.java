@@ -33,7 +33,9 @@ import org.smartregister.cbhc.job.ViewConfigurationsServiceJob;
 import org.smartregister.cbhc.job.ZJob;
 import org.smartregister.cbhc.receiver.SyncStatusBroadcastReceiver;
 import org.smartregister.cbhc.repository.AncRepository;
+import org.smartregister.cbhc.repository.HealthIdRepository;
 import org.smartregister.cbhc.repository.UniqueIdRepository;
+import org.smartregister.cbhc.service.intent.PullHealthIdsIntentService;
 import org.smartregister.cbhc.service.intent.PullUniqueIdsIntentService;
 import org.smartregister.cbhc.util.DBConstants;
 import org.smartregister.cbhc.util.Utils;
@@ -83,6 +85,7 @@ public class AncApplication extends DrishtiApplication implements TimeChangedBro
     private static CommonFtsObject commonFtsObject;
     private ConfigurableViewsHelper configurableViewsHelper;
     private UniqueIdRepository uniqueIdRepository;
+    private HealthIdRepository healthIdRepository;
 
     private ECSyncHelper ecSyncHelper;
     private Compressor compressor;
@@ -120,16 +123,17 @@ public class AncApplication extends DrishtiApplication implements TimeChangedBro
         } catch (Exception e) {
             Log.e(TAG, e.getMessage());
         }
-//        initLibraries();
+        initLibraries();
+        initOfflineSchedules();
         //Initialize JsonSpec Helper
         this.jsonSpecHelper = new JsonSpecHelper(this);
 
         setUpEventHandling();
         String groupId = getPassword();
-        if(groupId!=null&&!groupId.isEmpty()){
+//        if(groupId!=null&&!groupId.isEmpty()){
 //            initLibraries();
-            initOfflineSchedules();
-        }
+//            initOfflineSchedules();
+//        }
 
 
 
@@ -299,7 +303,12 @@ public class AncApplication extends DrishtiApplication implements TimeChangedBro
         }
         return uniqueIdRepository;
     }
-
+    public HealthIdRepository getHealthIdRepository() {
+        if (healthIdRepository == null) {
+            healthIdRepository = new HealthIdRepository((AncRepository) getRepository());
+        }
+        return healthIdRepository;
+    }
     public ConfigurableViewsHelper getConfigurableViewsHelper() {
         if (configurableViewsHelper == null) {
             configurableViewsHelper = new ConfigurableViewsHelper(getConfigurableViewsRepository(),
@@ -376,7 +385,10 @@ public class AncApplication extends DrishtiApplication implements TimeChangedBro
         }
     };
 
-
+    public void startPullHealthIdsService() {
+        Intent intent = new Intent(getApplicationContext(), PullHealthIdsIntentService.class);
+        getApplicationContext().startService(intent);
+    }
     public void startPullUniqueIdsService() {
         Intent intent = new Intent(getApplicationContext(), PullUniqueIdsIntentService.class);
         getApplicationContext().startService(intent);

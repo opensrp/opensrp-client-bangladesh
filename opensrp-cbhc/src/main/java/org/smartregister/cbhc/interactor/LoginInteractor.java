@@ -12,6 +12,7 @@ import org.smartregister.cbhc.application.AncApplication;
 import org.smartregister.cbhc.contract.LoginContract;
 import org.smartregister.cbhc.job.AncJobCreator;
 import org.smartregister.cbhc.job.ImageUploadServiceJob;
+import org.smartregister.cbhc.job.PullHealthIdsServiceJob;
 import org.smartregister.cbhc.job.PullUniqueIdsServiceJob;
 import org.smartregister.cbhc.job.SyncServiceJob;
 import org.smartregister.cbhc.job.ViewConfigurationsServiceJob;
@@ -69,9 +70,10 @@ public class LoginInteractor implements LoginContract.Interactor {
 
         //schedule jobs
         SyncServiceJob.scheduleJob(SyncServiceJob.TAG, TimeUnit.MINUTES.toMillis(BuildConfig.DATA_SYNC_DURATION_MINUTES), getFlexValue(BuildConfig.DATA_SYNC_DURATION_MINUTES));
-        PullUniqueIdsServiceJob.scheduleJob(SyncServiceJob.TAG, TimeUnit.MINUTES.toMillis(BuildConfig.PULL_UNIQUE_IDS_MINUTES), getFlexValue(BuildConfig.PULL_UNIQUE_IDS_MINUTES));
-        ImageUploadServiceJob.scheduleJob(SyncServiceJob.TAG, TimeUnit.MINUTES.toMillis(BuildConfig.IMAGE_UPLOAD_MINUTES), getFlexValue(BuildConfig.IMAGE_UPLOAD_MINUTES));
-        ViewConfigurationsServiceJob.scheduleJob(SyncServiceJob.TAG, TimeUnit.MINUTES.toMillis(BuildConfig.VIEW_SYNC_CONFIGURATIONS_MINUTES), getFlexValue(BuildConfig.VIEW_SYNC_CONFIGURATIONS_MINUTES));
+        PullUniqueIdsServiceJob.scheduleJob(PullUniqueIdsServiceJob.TAG, TimeUnit.MINUTES.toMillis(BuildConfig.PULL_UNIQUE_IDS_MINUTES), getFlexValue(BuildConfig.PULL_UNIQUE_IDS_MINUTES));
+        PullHealthIdsServiceJob.scheduleJob(PullHealthIdsServiceJob.TAG, TimeUnit.MINUTES.toMillis(BuildConfig.PULL_UNIQUE_IDS_MINUTES), getFlexValue(BuildConfig.PULL_UNIQUE_IDS_MINUTES));
+        ImageUploadServiceJob.scheduleJob(ImageUploadServiceJob.TAG, TimeUnit.MINUTES.toMillis(BuildConfig.IMAGE_UPLOAD_MINUTES), getFlexValue(BuildConfig.IMAGE_UPLOAD_MINUTES));
+        ViewConfigurationsServiceJob.scheduleJob(ViewConfigurationsServiceJob.TAG, TimeUnit.MINUTES.toMillis(BuildConfig.VIEW_SYNC_CONFIGURATIONS_MINUTES), getFlexValue(BuildConfig.VIEW_SYNC_CONFIGURATIONS_MINUTES));
 //        ZJob.scheduleJob(SyncServiceJob.TAG, TimeUnit.MINUTES.toMillis(BuildConfig.VIEW_SYNC_CONFIGURATIONS_MINUTES), getFlexValue(BuildConfig.VIEW_SYNC_CONFIGURATIONS_MINUTES));
 
     }
@@ -144,6 +146,7 @@ public class LoginInteractor implements LoginContract.Interactor {
 
                                     scheduleJobs();
                                     AncApplication.getInstance().startPullUniqueIdsService();
+                                    AncApplication.getInstance().startPullHealthIdsService();
 
                                 } else {
                                     if (timeStatus.equals(TimeStatus.TIMEZONE_MISMATCH)) {

@@ -89,6 +89,9 @@ public interface RegisterContract {
 
         void getNextUniqueId(String formName,String metadata,String currentLocationId,String householdID, RegisterContract.InteractorCallBack callBack);
 
+
+
+        void getNextHealthId(String formName,String metadata,String currentLocationId,String householdID, RegisterContract.InteractorCallBack callBack);
         void saveRegistration(final Pair<Client, Event> pair, final String jsonString, final boolean isEditMode, final RegisterContract.InteractorCallBack callBack);
 
         void removeWomanFromANCRegister(String closeFormJsonString, String providerId);

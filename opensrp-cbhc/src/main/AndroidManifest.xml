@@ -85,6 +85,7 @@
                 android:resource="@xml/captured_images_path" />
         </provider>
 
+        <service android:name=".service.intent.PullHealthIdsIntentService" />
         <service android:name=".service.intent.PullUniqueIdsIntentService" />
         <service android:name=".service.intent.SyncIntentService" />
         <service android:name=".service.intent.ValidateIntentService" />

@@ -17,6 +17,7 @@ import org.smartregister.cbhc.event.PatientRemovedEvent;
 import org.smartregister.cbhc.helper.ECSyncHelper;
 import org.smartregister.cbhc.repository.DraftFormRepository;
 import org.smartregister.cbhc.repository.FollowupRepository;
+import org.smartregister.cbhc.repository.HealthIdRepository;
 import org.smartregister.cbhc.repository.UniqueIdRepository;
 import org.smartregister.cbhc.service.intent.SyncIntentService;
 import org.smartregister.cbhc.sync.AncClientProcessorForJava;
@@ -52,6 +53,7 @@ public class RegisterInteractor implements RegisterContract.Interactor {
     private AppExecutors appExecutors;
 
     private UniqueIdRepository uniqueIdRepository;
+    private HealthIdRepository healthIdRepository;
 
     private ECSyncHelper syncHelper;
 
@@ -117,7 +119,29 @@ public class RegisterInteractor implements RegisterContract.Interactor {
 
         appExecutors.diskIO().execute(runnable);
     }
+    @Override
+    public void getNextHealthId(final String formName,final String metadata,final String currentLocationId,final String householdID, final RegisterContract.InteractorCallBack callBack) {
 
+        Runnable runnable = new Runnable() {
+            @Override
+            public void run() {
+                UniqueId uniqueId = getHealthIdRepository().getNextUniqueId();
+                final String entityId = uniqueId != null ? uniqueId.getOpenmrsId() : "";
+                appExecutors.mainThread().execute(new Runnable() {
+                    @Override
+                    public void run() {
+                        if (StringUtils.isBlank(entityId)) {
+                            callBack.onNoUniqueId();
+                        } else {
+                            callBack.onUniqueIdFetched(formName, metadata, currentLocationId,householdID, entityId);
+                        }
+                    }
+                });
+            }
+        };
+
+        appExecutors.diskIO().execute(runnable);
+    }
 
 
     @Override
@@ -227,6 +251,7 @@ public class RegisterInteractor implements RegisterContract.Interactor {
                         if (!newOpenSRPId.equals(currentOpenSRPId)) {
                             //OPENSRP ID was changed
                             getUniqueIdRepository().open(currentOpenSRPId);
+                            getHealthIdRepository().close(currentOpenSRPId);
                         }
                     }
 
@@ -236,6 +261,7 @@ public class RegisterInteractor implements RegisterContract.Interactor {
 
                         //mark OPENSRP ID as used
                         getUniqueIdRepository().close(opensrpId);
+                        getHealthIdRepository().close(opensrpId);
                     }
                 }
 
@@ -292,7 +318,12 @@ public class RegisterInteractor implements RegisterContract.Interactor {
         }
         return uniqueIdRepository;
     }
-
+    public HealthIdRepository getHealthIdRepository() {
+        if (healthIdRepository == null) {
+            healthIdRepository = AncApplication.getInstance().getHealthIdRepository();
+        }
+        return healthIdRepository;
+    }
     public void setUniqueIdRepository(UniqueIdRepository uniqueIdRepository) {
         this.uniqueIdRepository = uniqueIdRepository;
     }

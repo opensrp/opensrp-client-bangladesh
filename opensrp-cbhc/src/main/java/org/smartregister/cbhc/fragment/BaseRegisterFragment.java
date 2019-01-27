@@ -52,7 +52,9 @@ import org.smartregister.service.ImageUploadSyncService;
 import org.smartregister.view.activity.SecuredNativeSmartRegisterActivity;
 import org.smartregister.view.dialog.DialogOption;
 
+import java.text.SimpleDateFormat;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
 import java.util.Set;
 
@@ -217,7 +219,7 @@ public abstract class BaseRegisterFragment extends RecyclerViewFragment implemen
         }catch (Exception e){
 
         }
-
+        this.condition = "";
         presenter.initializeQueries(getMainCondition());
         updateSearchView();
         setServiceModeViewDrawableRight(null);
@@ -289,6 +291,7 @@ public abstract class BaseRegisterFragment extends RecyclerViewFragment implemen
     private void renderView() {
         getDefaultOptionsProvider();
         if (isPausedOrRefreshList()) {
+            this.condition = "";
             presenter.initializeQueries(getMainCondition());
         }
         updateSearchView();
@@ -361,12 +364,14 @@ public abstract class BaseRegisterFragment extends RecyclerViewFragment implemen
     }
     public void clearSortAndFilter(){
         this.Sortqueries = default_sort_query;
+        this.condition = "";
         presenter.initializeQueries(getMainCondition());
         filter(this.filters,this.joinTable,this.mainCondition,false);
     }
     public void updateSortAndFilter(List<Field> filterList, Field sortField) {
 //        presenter.updateSortAndFilter(filterList, sortField);
         if(filterList.size()==0){
+            this.condition = "";
             presenter.initializeQueries(getMainCondition());
         }else{
             mainSelect = filterSelect(filterList.get(0).getDbAlias());
@@ -588,6 +593,11 @@ public abstract class BaseRegisterFragment extends RecyclerViewFragment implemen
     }
 
     public String filterSelect(String filter) {
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+        String dateString = format.format( new Date() );
+        String TWO_MONTHS = format.format( new Date(new Date().getTime()-2l*32l*24l*60l*60l*1000l));
+        String FIVE_YEAR = format.format( new Date(new Date().getTime()-5l*12l*30l*24l*60l*60l*1000l));
+        String FIFTY_YEAR = format.format( new Date(new Date().getTime()-50l*12l*30l*24l*60l*60l*1000l));
 
         SmartRegisterQueryBuilder queryBUilder = new SmartRegisterQueryBuilder();
         String tableName = "ec_household";
@@ -615,7 +625,7 @@ public abstract class BaseRegisterFragment extends RecyclerViewFragment implemen
                     tableName + "." + DBConstants.KEY.PHONE_NUMBER,
                     "(select ec_details.value from ec_details where ec_details.key='address7' and ec_details.base_entity_id=ec_household.id) as para",
                     "(select ec_details.value from ec_details where ec_details.key='Disease_status' and ec_details.value = 'Antenatal Period' and ec_details.base_entity_id=(select ec_woman.id from ec_woman where  ec_household.id=ec_woman.relational_id )) as Disease_status"};
-//                    mainCondition = getMainCondition() + " and Disease_status IS NOT NULL";
+                    condition = " Disease_status IS NOT NULL";
         }else if(filter.equals("infant")){
             columns = new String[]{
                     tableName + ".relationalid",
@@ -626,18 +636,50 @@ public abstract class BaseRegisterFragment extends RecyclerViewFragment implemen
                     tableName + "." + DBConstants.KEY.DOB,
                     tableName + "." + "Patient_Identifier",
                     tableName + "." + DBConstants.KEY.PHONE_NUMBER,
-                    "(select ec_details.value from ec_details where ec_details.key='address7' and ec_details.base_entity_id=ec_household.id) as para"
+                    "(select ec_details.value from ec_details where ec_details.key='address7' and ec_details.base_entity_id=ec_household.id) as para",
+                    "(select ec_child.dob from ec_child where ec_child.relational_id = ec_household.id and ec_child.dob > DATE('"+TWO_MONTHS+"')) as child_dob"
             };
+                    condition = " child_dob IS NOT NULL";
         }else if(filter.equals("toddler")){
-
+            columns = new String[]{
+                    tableName + ".relationalid",
+                    tableName + "." + DBConstants.KEY.LAST_INTERACTED_WITH,
+                    tableName + "." + DBConstants.KEY.BASE_ENTITY_ID,
+                    tableName + "." + DBConstants.KEY.FIRST_NAME,
+                    tableName + "." + DBConstants.KEY.LAST_NAME,
+                    tableName + "." + DBConstants.KEY.DOB,
+                    tableName + "." + "Patient_Identifier",
+                    tableName + "." + DBConstants.KEY.PHONE_NUMBER,
+                    "(select ec_details.value from ec_details where ec_details.key='address7' and ec_details.base_entity_id=ec_household.id) as para",
+                    "(select ec_child.dob from ec_child where ec_child.relational_id = ec_household.id and (ec_child.dob < DATE('"+TWO_MONTHS+"') and ec_child.dob > DATE('"+FIVE_YEAR+"'))) as child_dob"
+            };
+            condition = " child_dob IS NOT NULL";
         }else if(filter.equals("adult")){
+            columns = new String[]{
+                    tableName + ".relationalid",
+                    tableName + "." + DBConstants.KEY.LAST_INTERACTED_WITH,
+                    tableName + "." + DBConstants.KEY.BASE_ENTITY_ID,
+                    tableName + "." + DBConstants.KEY.FIRST_NAME,
+                    tableName + "." + DBConstants.KEY.LAST_NAME,
+                    tableName + "." + DBConstants.KEY.DOB,
+                    tableName + "." + "Patient_Identifier",
+                    tableName + "." + DBConstants.KEY.PHONE_NUMBER,
+                    "(select ec_details.value from ec_details where ec_details.key='address7' and ec_details.base_entity_id=ec_household.id) as para",
+                    "(select ec_member.dob from ec_member where (ec_member.relational_id = ec_household.id and ec_member.dob < DATE('"+FIFTY_YEAR+"'))) as member_dob" ,
+                            "(select ec_woman.dob from ec_woman where (ec_woman.relational_id = ec_household.id and ec_woman.dob < DATE('"+FIFTY_YEAR+"'))) as  woman_dob" ,
+                            "(select ec_child.dob from ec_child where (ec_child.relational_id = ec_household.id and ec_child.dob < DATE('"+FIFTY_YEAR+"'))) as child_dob"
+            };
+            condition = "(child_dob IS NOT NULL OR member_dob IS NOT NULL OR woman_dob IS NOT NULL ) ";
 
         }
 
 
 
         queryBUilder.SelectInitiateMainTable(tableName, columns);
-        return queryBUilder.mainCondition(mainCondition);
+        String query = queryBUilder.mainCondition(mainCondition);
+        this.countSelect = "SELECT COUNT(*) FROM ( "+ query +" AND "+condition +" ) ";
+//        this.countSelect = query;
+        return query;
     }
 }
 
