@@ -103,6 +103,8 @@ public class RegisterPresenter implements RegisterContract.Presenter, RegisterCo
 
         if (StringUtils.isBlank(entityId)) {
 //            Triple<String, String, String> triple = Triple.of(formName, metadata, currentLocationId);
+//            Triple<String, String, String> triple = Triple.of(formName, metadata, currentLocationId);
+//            interactor.getNextUniqueId(triple, this);
             interactor.getNextHealthId(formName, metadata, currentLocationId,householdID, this);
             return;
         }
