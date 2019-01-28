@@ -123,17 +123,17 @@ public class AncApplication extends DrishtiApplication implements TimeChangedBro
         } catch (Exception e) {
             Log.e(TAG, e.getMessage());
         }
-        initLibraries();
-        initOfflineSchedules();
+//        initLibraries();
+//        initOfflineSchedules();
         //Initialize JsonSpec Helper
         this.jsonSpecHelper = new JsonSpecHelper(this);
 
         setUpEventHandling();
         String groupId = getPassword();
-//        if(groupId!=null&&!groupId.isEmpty()){
-//            initLibraries();
-//            initOfflineSchedules();
-//        }
+        if(groupId!=null&&!groupId.isEmpty()){
+            initLibraries();
+            initOfflineSchedules();
+        }
 
 
 
@@ -213,7 +213,7 @@ public class AncApplication extends DrishtiApplication implements TimeChangedBro
             password = getContext().userService().getGroupId(username);
         }
 
-        return "";
+        return password;
 
     }
 
