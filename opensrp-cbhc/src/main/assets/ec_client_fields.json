@@ -261,6 +261,13 @@
           }
         },
         {
+          "column_name": "Disease_status",
+          "type": "Client",
+          "json_mapping": {
+            "field": "attributes.Disease_status"
+          }
+        },
+        {
           "column_name": "alt_name",
           "type": "Client",
           "json_mapping": {

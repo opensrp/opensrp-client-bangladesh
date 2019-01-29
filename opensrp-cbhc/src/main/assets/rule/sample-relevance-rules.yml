@@ -13,6 +13,20 @@ condition: " step1_has_disease.equalsIgnoreCase('হ্যাঁ') && (step1_age
 actions:
   - "isRelevant = true"
 ---
+name: step1_pregnant_status
+description: pregnant_status for female
+priority: 1
+condition: " (step1_marital_status.equalsIgnoreCase('বিবাহিত') ) && step1_gender.equalsIgnoreCase('মহিলা')"
+actions:
+  - "isRelevant = true"
+---
+name: step1_family_planning
+description: family_planning for female
+priority: 1
+condition: " (step1_marital_status.equalsIgnoreCase('বিবাহিত') ) && !step1_pregnant_status.equalsIgnoreCase('প্রসব পূর্ব')"
+actions:
+  - "isRelevant = true"
+---
 name: step1_Disease_status_zero_to_two_month_by_age
 description: disease status for zero to two month
 priority: 1

@@ -175,11 +175,13 @@
         "hint":"প্রসবের ধরণ ",
         "values":[
           "স্বাভাবিক প্রসব ",
-          "সিজার "
+          "সিজার ",
+          "অন্যান্য উপায়ে"
         ],
         "openmrs_choice_ids":{
           "স্বাভাবিক প্রসব ":"normal",
-          "সিজার ":"not normal"
+          "সিজার ":"not normal",
+          "অন্যান্য উপায়ে":"Other_Instrumental"
         }
       },
       {
@@ -325,6 +327,12 @@
         "v_numeric":{
           "value":"true",
           "err":"Enter a valid Number"
+        },
+        "relevance": {
+          "step1:Child_birth_weight": {
+            "type": "string",
+            "ex": "regex(., \"(হ্যাঁ)\")"
+          }
         }
       },
       {

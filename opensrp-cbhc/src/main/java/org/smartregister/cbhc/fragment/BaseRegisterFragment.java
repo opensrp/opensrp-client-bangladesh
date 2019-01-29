@@ -623,8 +623,9 @@ public abstract class BaseRegisterFragment extends RecyclerViewFragment implemen
                     tableName + "." + DBConstants.KEY.DOB,
                     tableName + "." + "Patient_Identifier",
                     tableName + "." + DBConstants.KEY.PHONE_NUMBER,
-                    "(select ec_details.value from ec_details where ec_details.key='address7' and ec_details.base_entity_id=ec_household.id) as para",
-                    "(select ec_details.value from ec_details where ec_details.key='Disease_status' and ec_details.value = 'Antenatal Period' and ec_details.base_entity_id=(select ec_woman.id from ec_woman where  ec_household.id=ec_woman.relational_id )) as Disease_status"};
+                    "(select ec_woman.Disease_status from ec_woman where ec_woman.Disease_status = 'Antenatal Period' and ec_household.id=ec_woman.relational_id) as Disease_status"
+                    };
+            //"(select ec_details.value from ec_details where ec_details.key='Disease_status' and ec_details.value = 'Antenatal Period' and ec_details.base_entity_id=(select ec_woman.id from ec_woman where  ec_household.id=ec_woman.relational_id )) as Disease_status"
                     condition = " Disease_status IS NOT NULL";
         }else if(filter.equals("infant")){
             columns = new String[]{
@@ -636,7 +637,7 @@ public abstract class BaseRegisterFragment extends RecyclerViewFragment implemen
                     tableName + "." + DBConstants.KEY.DOB,
                     tableName + "." + "Patient_Identifier",
                     tableName + "." + DBConstants.KEY.PHONE_NUMBER,
-                    "(select ec_details.value from ec_details where ec_details.key='address7' and ec_details.base_entity_id=ec_household.id) as para",
+
                     "(select ec_child.dob from ec_child where ec_child.relational_id = ec_household.id and ec_child.dob > DATE('"+TWO_MONTHS+"')) as child_dob"
             };
                     condition = " child_dob IS NOT NULL";
@@ -650,7 +651,7 @@ public abstract class BaseRegisterFragment extends RecyclerViewFragment implemen
                     tableName + "." + DBConstants.KEY.DOB,
                     tableName + "." + "Patient_Identifier",
                     tableName + "." + DBConstants.KEY.PHONE_NUMBER,
-                    "(select ec_details.value from ec_details where ec_details.key='address7' and ec_details.base_entity_id=ec_household.id) as para",
+
                     "(select ec_child.dob from ec_child where ec_child.relational_id = ec_household.id and (ec_child.dob < DATE('"+TWO_MONTHS+"') and ec_child.dob > DATE('"+FIVE_YEAR+"'))) as child_dob"
             };
             condition = " child_dob IS NOT NULL";
@@ -664,7 +665,7 @@ public abstract class BaseRegisterFragment extends RecyclerViewFragment implemen
                     tableName + "." + DBConstants.KEY.DOB,
                     tableName + "." + "Patient_Identifier",
                     tableName + "." + DBConstants.KEY.PHONE_NUMBER,
-                    "(select ec_details.value from ec_details where ec_details.key='address7' and ec_details.base_entity_id=ec_household.id) as para",
+
                     "(select ec_member.dob from ec_member where (ec_member.relational_id = ec_household.id and ec_member.dob < DATE('"+FIFTY_YEAR+"'))) as member_dob" ,
                             "(select ec_woman.dob from ec_woman where (ec_woman.relational_id = ec_household.id and ec_woman.dob < DATE('"+FIFTY_YEAR+"'))) as  woman_dob" ,
                             "(select ec_child.dob from ec_child where (ec_child.relational_id = ec_household.id and ec_child.dob < DATE('"+FIFTY_YEAR+"'))) as child_dob"

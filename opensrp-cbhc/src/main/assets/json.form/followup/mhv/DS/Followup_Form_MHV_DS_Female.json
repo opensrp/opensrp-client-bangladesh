@@ -114,18 +114,7 @@
             "value":false,
             "openmrs_choice_id":"Tuberculosis"
           },
-          {
-            "key": "Antenatal Period",
-            "text": "প্রসব পূর্ব",
-            "value": false,
-            "openmrs_choice_id": "Antenatal Period"
-          },
-          {
-            "key": "Postnatal",
-            "text": "প্রসবোত্তর",
-            "value": false,
-            "openmrs_choice_id": "Postnatal"
-          },
+
           {
             "key":"Others_member_disease",
             "text":"অন্যান্য ",

@@ -390,7 +390,7 @@ public class JsonFormUtils extends org.smartregister.util.JsonFormUtils {
                     }
                 }
                 if (baseClient.getGender() == null) {
-                    baseClient.setGender("M");
+                    baseClient.setGender("H");
                 }
 
                 adresses.add(address1);
@@ -562,11 +562,11 @@ public class JsonFormUtils extends org.smartregister.util.JsonFormUtils {
                         }
                     }
                     if(keyname.equalsIgnoreCase("Disease_status")&&!value.isEmpty()){
-                        if(!hasDisease(fields)){
-                            value = "NULL";
-                        }
+//                        if(!hasDisease(fields)){
+//                            value = "NULL";
+//                        }
                         toReturn.put(keyname,value);
-                        updatePregnantStatus(fields,value);
+//                        updatePregnantStatus(fields,value);
                     }
 
                     else if (!keyname.equalsIgnoreCase("Disease_status"))

@@ -76,6 +76,7 @@
         "openmrs_entity_id":"Pregnancy_Status",
         "openmrs_data_type":"text",
         "type":"spinner",
+        "hidden":true,
         "hint":"গর্ভের অবস্থা",
         "values":["এখনো গর্ভবতী ", "গর্ভ নষ্ট হয়েছে ", "MR করেছে " ],
         "openmrs_choice_ids":{"এখনো গর্ভবতী ":"Still_Pregnant", "গর্ভ নষ্ট হয়েছে ":"Miscarriage", "MR করেছে ":"Did_MR" }
@@ -192,18 +193,7 @@
             "value":"false",
             "openmrs_choice_id":"Prolonged_Delivery_or_Child_Coming_Out_Before"
           },
-          {
-            "key":"Edema",
-            "text":"ইডেমা ",
-            "value":"false",
-            "openmrs_choice_id":"Edema"
-          },
-          {
-            "key":"Jaundice",
-            "text":"জন্ডিস ",
-            "value":"false",
-            "openmrs_choice_id":"Jaundice"
-          },
+
           {
             "key":"No_Denger_Sign",
             "text":"কোনোটিই নেই ",
@@ -211,6 +201,40 @@
             "openmrs_choice_id":"No_Denger_Sign"
           }
         ]
+      },
+      {
+        "key": "Have_EDEMA",
+        "openmrs_entity_parent": "",
+        "openmrs_entity": "person_attribute",
+        "openmrs_entity_id": "Have_EDEMA",
+        "openmrs_data_type": "text",
+        "type": "spinner",
+        "hint": "ইডেমা আছে",
+        "values": [
+          "হ্যাঁ",
+          "না"
+        ],
+        "openmrs_choice_ids": {
+          "হ্যাঁ": "Yes",
+          "না": "No"
+        }
+      },
+      {
+        "key": "Have_Jaundice	",
+        "openmrs_entity_parent": "",
+        "openmrs_entity": "person_attribute",
+        "openmrs_entity_id": "Have_Jaundice	",
+        "openmrs_data_type": "text",
+        "type": "spinner",
+        "hint": "জন্ডিস আছে",
+        "values": [
+          "হ্যাঁ",
+          "না"
+        ],
+        "openmrs_choice_ids": {
+          "হ্যাঁ": "Yes",
+          "না": "No"
+        }
       },
       {
         "key":"Place_of_Refer",
