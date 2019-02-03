@@ -1780,10 +1780,10 @@
         "hint": "মন্তব্য"
       },
       {
-        "key": "household_photo",
+        "key": "member_photo",
         "openmrs_entity_parent": "",
         "openmrs_entity": "",
-        "openmrs_entity_id": "",
+        "openmrs_entity_id": "member_photo",
         "type": "choose_image",
         "uploadButtonText": "ছবি তুলুন "
       }
