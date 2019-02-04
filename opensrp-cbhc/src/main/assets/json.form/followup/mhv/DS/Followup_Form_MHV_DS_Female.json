@@ -129,25 +129,7 @@
           }
         }
       },
-      {
-        "key": "pregnant_status",
-        "openmrs_entity_parent": "",
-        "openmrs_entity": "",
-        "openmrs_entity_id": "pregnant_status",
-        "openmrs_data_type": "",
-        "hidden":true,
-        "type": "spinner",
-        "hint": "স্ট্যাটাস",
-        "values": [
-          "গর্ভবতী",
-          "প্রসব"
-        ],
-        "openmrs_choice_ids": {
-          "গর্ভবতী": "Antenatal Period",
-          "প্রসব": "Postnatal"
 
-        }
-      },
       {
         "key":"Place_of_Refer",
         "openmrs_entity_parent":"",

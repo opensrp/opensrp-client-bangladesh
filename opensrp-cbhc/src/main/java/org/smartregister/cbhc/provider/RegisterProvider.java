@@ -367,6 +367,9 @@ public class RegisterProvider implements RecyclerViewProvider<RegisterProvider.R
 
             }
             try{
+//                cursor = AncApplication.getInstance().getContext().commonrepository("ec_woman").rawCustomQueryForAdapter("Select Count(*) from ec_woman where relational_id = '"+pc.getCaseId()+"'"
+//                        +" and ec_woman.id in (Select base_entity_id from ec_details where key = 'Disease_status' and value like '%Antenatal Period%');"
+//                );
                 cursor = AncApplication.getInstance().getContext().commonrepository("ec_woman").rawCustomQueryForAdapter("Select Count(*) from ec_woman where relational_id = '"+pc.getCaseId()+"'"
                         +" and ec_woman.id in (Select base_entity_id from ec_details where key = 'Disease_status' and value like '%Antenatal Period%');"
                 );

@@ -67,7 +67,7 @@
         "key": "pregnant_status",
         "openmrs_entity_parent": "",
         "openmrs_entity": "",
-        "openmrs_entity_id": "pregnant_status",
+        "openmrs_entity_id": "PregnancyStatus",
         "openmrs_data_type": "",
         "type": "spinner",
         "hint": "গর্ভাবস্থার তথ্য",
