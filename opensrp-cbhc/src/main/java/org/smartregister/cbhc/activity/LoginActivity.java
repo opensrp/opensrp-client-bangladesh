@@ -28,10 +28,13 @@ import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import net.sqlcipher.database.SQLiteDatabase;
+
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 import org.joda.time.DateTime;
 import org.smartregister.cbhc.R;
+import org.smartregister.cbhc.application.AncApplication;
 import org.smartregister.cbhc.contract.LoginContract;
 import org.smartregister.cbhc.event.ViewConfigurationSyncCompleteEvent;
 import org.smartregister.cbhc.presenter.LoginPresenter;
@@ -223,7 +226,16 @@ public class LoginActivity extends AppCompatActivity implements LoginContract.Vi
             case R.id.login_login_btn:
                 String username = userNameEditText.getText().toString();
                 String password = passwordEditText.getText().toString();
-                
+//                username = "ftp";
+//                password = "Ftp@1234";
+//                SQLiteDatabase db = AncApplication.getInstance().getRepository().getWritableDatabase();
+//                db.rawExecSQL("DELETE FROM ec_household");
+//                db.rawExecSQL("DELETE FROM ec_member");
+//                db.rawExecSQL("DELETE FROM ec_woman");
+//                db.rawExecSQL("DELETE FROM ec_child");
+//                db.rawExecSQL("DELETE FROM ec_details");
+//                db.rawExecSQL("DELETE FROM event");
+//                db.rawExecSQL("DELETE FROM client");
                 mLoginPresenter.attemptLogin(username, password);
                 break;
             default:

@@ -477,8 +477,9 @@
           "হ্যাঁ": "Yes",
           "না": "No"
         },
+
         "v_required": {
-          "value": "false",
+          "value": true,
           "err": "Please enter age or date of birth"
         }
 
@@ -519,6 +520,10 @@
         "v_numeric": {
           "value": "true",
           "err": "Enter age"
+        },
+        "v_regex": {
+          "value": "[^0]+",
+          "err": "Please enter age or select date of birth"
         },
         "v_required": {
           "value": true,

@@ -394,11 +394,14 @@ public class AncJsonFormFragment extends JsonFormFragment {
             if(formdataviews.get(i) instanceof MaterialEditText){
                 if(((MaterialEditText)formdataviews.get(i)).getFloatingLabelText().toString().trim().equalsIgnoreCase("না জানলে বয়স লিখুন (বছর)*")){
                     Date date = com.vijay.jsonwizard.utils.Utils.getDateFromString(text);
-                    DateTime dateTime = new DateTime(date);
+                    if(date!=null){
+                        DateTime dateTime = new DateTime(date);
 
-                    int age = Utils.getAgeFromDate(dateTime.toString());
+                        int age = Utils.getAgeFromDate(dateTime.toString());
 
-                    ((MaterialEditText) formdataviews.get(i)).setText(""+age);
+                        ((MaterialEditText) formdataviews.get(i)).setText(""+age);
+                    }
+
                 }
             }
         }

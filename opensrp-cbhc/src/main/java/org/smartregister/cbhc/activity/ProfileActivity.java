@@ -20,6 +20,8 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import net.sqlcipher.database.SQLiteDatabase;
+
 import org.apache.commons.lang3.StringUtils;
 import org.joda.time.DateTime;
 import org.json.JSONObject;
@@ -39,6 +41,7 @@ import org.smartregister.cbhc.fragment.QuickCheckFragment;
 import org.smartregister.cbhc.helper.ImageRenderHelper;
 import org.smartregister.cbhc.presenter.ProfilePresenter;
 import org.smartregister.cbhc.presenter.RegisterPresenter;
+import org.smartregister.cbhc.repository.AncRepository;
 import org.smartregister.cbhc.task.FetchProfileDataTask;
 import org.smartregister.cbhc.util.Constants;
 import org.smartregister.cbhc.util.DBConstants;
@@ -125,7 +128,7 @@ public class ProfileActivity extends BaseProfileActivity implements ProfileContr
         }
         String patientName = getName(firstName, lastName);
 
-patientName = patientName + " (খানা প্রধান)";
+        patientName = patientName + " (খানা প্রধান)";
         setProfileName(patientName);
         String dobString = getValue(householdDetails.getColumnmaps(),"dob",true);
         String durationString = "";
