@@ -226,8 +226,8 @@ public class LoginActivity extends AppCompatActivity implements LoginContract.Vi
             case R.id.login_login_btn:
                 String username = userNameEditText.getText().toString();
                 String password = passwordEditText.getText().toString();
-//                username = "ftp";
-//                password = "Ftp@1234";
+//                username = "zahin";
+//                password = "123456";
 //                SQLiteDatabase db = AncApplication.getInstance().getRepository().getWritableDatabase();
 //                db.rawExecSQL("DELETE FROM ec_household");
 //                db.rawExecSQL("DELETE FROM ec_member");

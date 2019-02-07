@@ -307,6 +307,10 @@
           "জামাতা": "Son_in_Law",
           "অন্যান্য আত্মীয়": "Others_Relative",
           "অন্যান্য অনাত্মীয়": "Others_Non_Relative"
+        },
+        "v_required": {
+          "value": true,
+          "err": "Please select relation"
         }
 
       },
@@ -561,7 +565,7 @@
         "openmrs_entity_id": "MaritalStatus",
         "openmrs_data_type": "text",
         "type": "spinner",
-        "hint": "বৈবাহিক অবস্থা",
+        "hint": "বৈবাহিক অবস্থা*",
         "values": [
           "বিবাহিত",
           "দাম্পত্য বিছিন্ন",
@@ -570,6 +574,7 @@
           "বিধবা",
           "বিপত্নীক"
         ],
+
         "openmrs_choice_ids": {
           "বিবাহিত": "Married",
           "দাম্পত্য বিছিন্ন": "Conjugal Separation",
@@ -594,6 +599,10 @@
         "type": "edit_text",
         "look_up": "true",
         "hint": "স্বামী/স্ত্রীর নাম (ইংরেজীতে)",
+        "v_required": {
+          "value": true,
+          "err": "Please select spouse name"
+        },
         "v_regex": {
           "value": "[A-Za-z\\s\.\-]*",
           "err": "Please Enter a Valid Name"
@@ -613,10 +622,6 @@
         "openmrs_data_type": "text",
         "type": "edit_text",
         "hint": "স্বামী/স্ত্রীর নাম (বাংলায়)",
-        "v_required": {
-          "value": "false",
-          "err": "Please enter the mother/guardian's first name"
-        },
         "relevance": {
           "step1:marital_status": {
             "type": "string",
@@ -668,6 +673,10 @@
         "openmrs_data_type": "text",
         "type": "edit_text",
         "look_up": "true",
+        "v_required": {
+          "value": true,
+          "err": "Please select place of birth"
+        },
         "hint": "জন্মস্থান (জেলা)"
 
       },
@@ -679,6 +688,10 @@
         "openmrs_data_type": "text",
         "type": "spinner",
         "hint": "প্রতিবন্ধী",
+        "v_required": {
+          "value": true,
+          "err": "Please select disability"
+        },
         "values": [
           "হ্যাঁ",
           "না"
@@ -738,6 +751,10 @@
         "openmrs_data_type": "select one",
         "type": "spinner",
         "hint": "জাতিসত্তা",
+        "v_required": {
+          "value": true,
+          "err": "Please select ethnicity"
+        },
         "values": [
           "বাঙ্গালী",
           "চাকমা",
@@ -798,6 +815,10 @@
         "openmrs_data_type": "text",
         "type": "spinner",
         "hint": "শিক্ষাগত যোগ্যতা",
+        "v_required": {
+          "value": true,
+          "err": "Please select educational qualification"
+        },
         "values": [
           "কোন শ্রেণীতে উত্তীর্ণ হয়নি",
           "প্লে/নার্সারি/ কেজি",
@@ -1031,6 +1052,10 @@
           "ছাত্র/ছাত্রী":"Study",
           "অন্যান্য":"Others (Occupation)"
         },
+        "v_required": {
+          "value": true,
+          "err": "Please select work"
+        },
         "relevance": {
           "step1:age": {
             "type": "numeric",
@@ -1071,6 +1096,10 @@
           "খ্রিস্টান",
           "অন্যান্য"
         ],
+        "v_required": {
+          "value": true,
+          "err": "Please select religion"
+        },
         "openmrs_choice_ids": {
           "মুসলিম": "Muslim",
           "হিন্দু": "Hindu",
@@ -1116,6 +1145,10 @@
           "AB-",
           "রক্তের গ্রুপ জানা নেই"
         ],
+        "v_required": {
+          "value": true,
+          "err": "Please select blood group"
+        },
         "openmrs_choice_ids": {
           "A+": "A+",
           "A-": "A-",
@@ -1136,6 +1169,10 @@
         "openmrs_data_type": "text",
         "type": "spinner",
         "hint": "রোগ আছে কিনা?",
+        "v_required": {
+          "value": true,
+          "err": "Please select disease status"
+        },
         "values": [
           "হ্যাঁ",
           "না"
