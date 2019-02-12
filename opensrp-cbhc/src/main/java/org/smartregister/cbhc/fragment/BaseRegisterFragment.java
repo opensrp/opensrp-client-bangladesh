@@ -623,10 +623,10 @@ public abstract class BaseRegisterFragment extends RecyclerViewFragment implemen
                     tableName + "." + DBConstants.KEY.DOB,
                     tableName + "." + "Patient_Identifier",
                     tableName + "." + DBConstants.KEY.PHONE_NUMBER,
-                    "(select ec_woman.Disease_status from ec_woman where ec_woman.Disease_status = 'Antenatal Period' and ec_household.id=ec_woman.relational_id) as Disease_status"
+                    "(select ec_woman.pregnant_status from ec_woman where (ec_woman.pregnant_status = 'Antenatal Period' or ec_woman.pregnant_status like '%প্রসব পূর্ব%') and ec_household.id=ec_woman.relational_id) as pregnant_status"
                     };
             //"(select ec_details.value from ec_details where ec_details.key='Disease_status' and ec_details.value = 'Antenatal Period' and ec_details.base_entity_id=(select ec_woman.id from ec_woman where  ec_household.id=ec_woman.relational_id )) as Disease_status"
-                    condition = " Disease_status IS NOT NULL";
+                    condition = " pregnant_status IS NOT NULL";
         }else if(filter.equals("infant")){
             columns = new String[]{
                     tableName + ".relationalid",

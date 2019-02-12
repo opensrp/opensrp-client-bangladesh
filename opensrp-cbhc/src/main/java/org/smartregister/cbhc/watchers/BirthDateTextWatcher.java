@@ -32,6 +32,7 @@ public class BirthDateTextWatcher implements TextWatcher {
 
 
     public BirthDateTextWatcher(JsonFormFragment formFragment, View view) {
+
         this.formFragment = formFragment;
         mView = view;
         lookUpMap = new HashMap<>();
@@ -39,6 +40,7 @@ public class BirthDateTextWatcher implements TextWatcher {
     }
 
     public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
     }
 
     public void onTextChanged(CharSequence charSequence, int start, int before, int count) {

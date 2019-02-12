@@ -307,8 +307,11 @@
           "জামাতা": "Son_in_Law",
           "অন্যান্য আত্মীয়": "Others_Relative",
           "অন্যান্য অনাত্মীয়": "Others_Non_Relative"
+        },
+        "v_required": {
+          "value": true,
+          "err": "Please select relation"
         }
-
       },
       {
         "key": "relation_other_1",
@@ -457,7 +460,7 @@
         "hint": "পিতার নাম (বাংলায়)",
         "edit_type": "name",
         "v_required": {
-          "value": "false",
+          "value": false,
           "err": "Please enter the mother/guardian's first name"
         }
       },
@@ -478,7 +481,7 @@
           "না": "No"
         },
         "v_required": {
-          "value": "false",
+          "value": true,
           "err": "Please enter age or date of birth"
         }
 
@@ -495,6 +498,7 @@
         "duration": {
           "label": "Age"
         },
+
         "v_required": {
           "value": true,
           "err": "Please Enter birth date"
@@ -519,6 +523,10 @@
         "v_numeric": {
           "value": "true",
           "err": "Enter age"
+        },
+        "v_regex": {
+          "value": "[^0]+",
+          "err": "Please enter age or select date of birth"
         },
         "v_required": {
           "value": true,
@@ -1230,7 +1238,7 @@
       {
         "key": "pregnant_status",
         "openmrs_entity_parent": "",
-        "openmrs_entity": "",
+        "openmrs_entity": "person_attribute",
         "openmrs_entity_id": "pregnant_status",
         "openmrs_data_type": "",
         "type": "spinner",

@@ -88,7 +88,7 @@
         "openmrs_entity":"",
         "openmrs_entity_id":"Delivery_time",
         "openmrs_data_type":"text",
-        "type":"edit_text",
+        "type":"time_picker",
         "hint":"প্রসবের সময়",
         "expanded":false,
         "v_required":{
