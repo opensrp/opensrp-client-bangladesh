@@ -70,6 +70,7 @@ public abstract class Constants {
         public static final String Followup_Form_MHV_ANC = "followup/mhv/Followup_Form_MHV_ANC";
         public static final String Followup_Form_MHV_Death = "followup/mhv/Followup_Form_MHV_Death";
 
+        public static final String Followup_Form_MHV_Transfer = "followup/mhv/Followup_Form_MHV_HH_Transfer";
         public static final String Followup_Form_MHV_Delivery = "followup/mhv/Followup_Form_MHV_Delivery";
         public static final String Followup_Form_MHV_DS = "followup/mhv/Followup_Form_MHV_DS";
         public static final String Followup_Form_MHV_FP = "followup/mhv/Followup_Form_MHV_FP";

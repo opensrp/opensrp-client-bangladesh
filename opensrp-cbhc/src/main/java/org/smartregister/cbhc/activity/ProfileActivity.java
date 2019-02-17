@@ -63,6 +63,7 @@ import java.io.Serializable;
 import java.util.List;
 
 import static org.smartregister.cbhc.fragment.ProfileOverviewFragment.EXTRA_HOUSEHOLD_DETAILS;
+import static org.smartregister.cbhc.util.Constants.FOLLOWUP_FORM.Followup_Form_MHV_Transfer;
 import static org.smartregister.util.Utils.getName;
 import static org.smartregister.util.Utils.getValue;
 
@@ -304,7 +305,6 @@ public class ProfileActivity extends BaseProfileActivity implements ProfileContr
                         case "[+] নতুন সদস্য":
                             try{
 
-
                                 presenter.startMemberRegistrationForm(Constants.JSON_FORM.MEMBER_REGISTER,null,null,null,householdDetails.entityId());
                             }catch(Exception e){
                                 e.printStackTrace();
@@ -313,6 +313,13 @@ public class ProfileActivity extends BaseProfileActivity implements ProfileContr
 //                            Intent intent = new Intent(ProfileActivity.this, AncJsonFormActivity.class);
 //                            intent.putExtra("json", JsonFormUtils.);
 //                            startActivityForResult(intent, JsonFormUtils.REQUEST_CODE_GET_JSON);
+                            break;
+                        case "খানা স্থানান্তর":
+                            getIntent().putExtra(Constants.INTENT_KEY.BASE_ENTITY_ID,householdDetails.getCaseId());
+                            JsonFormUtils.launchFollowUpForm(ProfileActivity.this,householdDetails.getColumnmaps(),Followup_Form_MHV_Transfer);
+                            break;
+                        case "খানা পাওয়া যায়নি":
+                            removeHHAlertDialog();
                             break;
                         case "Call":
                             launchPhoneDialer(womanPhoneNumber);
@@ -334,6 +341,25 @@ public class ProfileActivity extends BaseProfileActivity implements ProfileContr
             builderSingle.show();
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    protected void removeHHAlertDialog() {
+        android.support.v7.app.AlertDialog alertDialog = new android.support.v7.app.AlertDialog.Builder(this).create();
+        alertDialog.setTitle("Are you sure you want to remove this household?");
+
+        alertDialog.setButton(android.support.v7.app.AlertDialog.BUTTON_NEGATIVE, "NO",
+                new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                });
+        alertDialog.setButton(android.support.v7.app.AlertDialog.BUTTON_POSITIVE, "YES",
+                new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+
+                    }
+                });
+        alertDialog.show();
     }
 
     RegisterPresenter presenter;

@@ -74,6 +74,7 @@ import static org.smartregister.cbhc.util.Constants.FOLLOWUP_FORM.Followup_Form_
 import static org.smartregister.cbhc.util.Constants.FOLLOWUP_FORM.Followup_Form_MHV_Mobile_no;
 import static org.smartregister.cbhc.util.Constants.FOLLOWUP_FORM.Followup_Form_MHV_Pregnant;
 import static org.smartregister.cbhc.util.Constants.FOLLOWUP_FORM.Followup_Form_MHV_Risky_Habit;
+import static org.smartregister.cbhc.util.Constants.FOLLOWUP_FORM.Followup_Form_MHV_Transfer;
 import static org.smartregister.cbhc.util.JsonFormUtils.addMetaData;
 import static org.smartregister.util.Utils.getName;
 import static org.smartregister.util.Utils.getValue;
@@ -360,6 +361,8 @@ public class MemberProfileActivity extends BaseProfileActivity implements Profil
                             JsonFormUtils.launchFollowUpForm(MemberProfileActivity.this,householdDetails.getColumnmaps(),Followup_Form_MHV_Delivery);
                             break;
                         case "স্থানান্তর":
+                            getIntent().putExtra(Constants.INTENT_KEY.BASE_ENTITY_ID,householdDetails.getCaseId());
+                            JsonFormUtils.launchFollowUpForm(MemberProfileActivity.this,householdDetails.getColumnmaps(),Followup_Form_MHV_Transfer);
                             break;
 
                         case "ঝুঁকিপূর্ণ অভ্যাস":
@@ -371,6 +374,7 @@ public class MemberProfileActivity extends BaseProfileActivity implements Profil
                             JsonFormUtils.launchFollowUpForm(MemberProfileActivity.this,householdDetails.getColumnmaps(),Followup_Form_MHV_Death);
                             break;
                         case "সদস্য পাওয়া যায়নি":
+                            removeChildAlertDialog();
                             break;
                         case "Close ANC Record":
                             JsonFormUtils.launchANCCloseForm(MemberProfileActivity.this);
@@ -386,6 +390,42 @@ public class MemberProfileActivity extends BaseProfileActivity implements Profil
             builderSingle.show();
         }
         return super.onOptionsItemSelected(item);
+    }
+    protected void removeChildAlertDialog() {
+        android.support.v7.app.AlertDialog alertDialog = new android.support.v7.app.AlertDialog.Builder(this).create();
+        alertDialog.setTitle("Are you sure you want to remove this member?");
+
+        alertDialog.setButton(android.support.v7.app.AlertDialog.BUTTON_NEGATIVE, "NO",
+                new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                });
+        alertDialog.setButton(android.support.v7.app.AlertDialog.BUTTON_POSITIVE, "YES",
+                new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+
+                    }
+                });
+        alertDialog.show();
+    }
+    protected android.support.v7.app.AlertDialog createChildAlertDialog() {
+        android.support.v7.app.AlertDialog alertDialog = new android.support.v7.app.AlertDialog.Builder(this).create();
+        alertDialog.setTitle("Add Child");
+
+        alertDialog.setButton(android.support.v7.app.AlertDialog.BUTTON_NEGATIVE, "Cancel",
+                new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                });
+        alertDialog.setButton(android.support.v7.app.AlertDialog.BUTTON_POSITIVE, "Add [+]",
+                new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+
+                    }
+                });
+        return alertDialog;
     }
 
     @Override
@@ -519,6 +559,7 @@ public class MemberProfileActivity extends BaseProfileActivity implements Profil
             return -1;
         return gender.equals("M")?1:0;
     }
+
     public int getAge() {
         String age = householdDetails.getColumnmaps().get("age");
         String dob = householdDetails.getColumnmaps().get("dob");
@@ -555,6 +596,7 @@ public class MemberProfileActivity extends BaseProfileActivity implements Profil
 
         return 0;
     }
+
     private int getMaritalStatus() {
         String maritalStatus = householdDetails.getColumnmaps().get("MaritalStatus");
 
@@ -614,7 +656,7 @@ public class MemberProfileActivity extends BaseProfileActivity implements Profil
         householdDetails.getColumnmaps().putAll(AncApplication.getInstance().getContext().detailsRepository().getAllDetailsForClient(householdDetails.entityId()));
         followupFragment.notifyAdapter();
         if (requestCode == JsonFormUtils.REQUEST_CODE_GET_JSON && resultCode == RESULT_OK) {
-            String jsonString = data.getStringExtra("json");
+//            String jsonString = data.getStringExtra("json");
 
 //            if(jsonString.contains("Followup Delivery")){
 //                AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(this);
