@@ -1,0 +1,80 @@
+{
+  "count": "1",
+  "encounter_type": "Followup Member Transfer",
+  "entity_id": "",
+  "relational_id": "",
+  "metadata": {
+    "start": {
+      "openmrs_entity_parent": "",
+      "openmrs_entity": "concept",
+      "openmrs_data_type": "start",
+      "openmrs_entity_id": "163137AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
+    },
+    "end": {
+      "openmrs_entity_parent": "",
+      "openmrs_entity": "concept",
+      "openmrs_data_type": "end",
+      "openmrs_entity_id": "163138AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
+    },
+    "today": {
+      "openmrs_entity_parent": "",
+      "openmrs_entity": "encounter",
+      "openmrs_entity_id": "encounter_date"
+    },
+    "deviceid": {
+      "openmrs_entity_parent": "",
+      "openmrs_entity": "concept",
+      "openmrs_data_type": "deviceid",
+      "openmrs_entity_id": "163149AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
+    },
+    "subscriberid": {
+      "openmrs_entity_parent": "",
+      "openmrs_entity": "concept",
+      "openmrs_data_type": "subscriberid",
+      "openmrs_entity_id": "163150AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
+    },
+    "simserial": {
+      "openmrs_entity_parent": "",
+      "openmrs_entity": "concept",
+      "openmrs_data_type": "simserial",
+      "openmrs_entity_id": "163151AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
+    },
+    "phonenumber": {
+      "openmrs_entity_parent": "",
+      "openmrs_entity": "concept",
+      "openmrs_data_type": "phonenumber",
+      "openmrs_entity_id": "163152AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
+    },
+    "encounter_location": "",
+    "look_up": {
+      "entity_id": "",
+      "value": ""
+    }
+  },
+  "step1": {
+    "title": "স্থানান্তরের কারণ",
+    "fields": [
+      {
+        "key":"Member_Migrated",
+        "openmrs_entity_parent":"",
+        "openmrs_entity":"person_attribute",
+        "openmrs_entity_id":"Cause_of_Member_Migration",
+        "openmrs_data_type":"text",
+        "type":"spinner",
+        "hint":"স্থানান্তরের কারণ  ",
+        "values":[
+          "বৈবাহিক",
+          "জীবিকা নির্বাহে",
+          "বিদেশে গমন  ",
+          "অন্যান্য"
+        ],
+        "openmrs_choice_ids":{
+          "বৈবাহিক":"Marital_Migration",
+          "জীবিকা নির্বাহে ":"Livelihood_Migration",
+          "বিদেশে গমন   ":"Abroad_Migration",
+          "অন্যান্য" : "Other_Migration"
+        }
+      }
+    ]
+  }
+}

@@ -219,6 +219,7 @@ public class LoginActivity extends AppCompatActivity implements LoginContract.Vi
 
     @Override
     public void onClick(View v) {
+
         switch (v.getId()) {
             case R.id.login_login_btn:
                 String username = userNameEditText.getText().toString();
@@ -230,6 +231,7 @@ public class LoginActivity extends AppCompatActivity implements LoginContract.Vi
             default:
                 break;
         }
+
     }
 
     @Override
@@ -237,6 +239,7 @@ public class LoginActivity extends AppCompatActivity implements LoginContract.Vi
         userNameEditText.setError(getString(resourceId));
         userNameEditText.requestFocus();
         showErrorDialog(getResources().getString(R.string.unauthorized));
+
     }
 
     @Override

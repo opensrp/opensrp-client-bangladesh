@@ -52,7 +52,7 @@
     }
   },
   "step1": {
-    "title": "নতুন সদস্য নিবদ্ধন",
+    "title": "নতুন সদস্য নিবন্ধন",
     "fields": [
       {
         "key": "member_unique_ID",
@@ -356,6 +356,7 @@
         "openmrs_entity_id": "first_name",
         "openmrs_data_type": "text",
         "type": "edit_text",
+        "edit_type": "name",
         "hint": "নামের প্রথম অংশ (ইংরেজীতে)*",
         "expanded": false,
         "v_required": {

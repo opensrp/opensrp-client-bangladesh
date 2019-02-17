@@ -99,6 +99,20 @@
           },
           {
             "field": "eventType",
+            "field_value": "Followup HH Transfer",
+            "creates_case": [
+              "ec_child"
+            ]
+          },
+          {
+            "field": "eventType",
+            "field_value": "Followup Member Transfer",
+            "creates_case": [
+              "ec_child"
+            ]
+          },
+          {
+            "field": "eventType",
             "field_value": "Followup Disease Toddler",
             "creates_case": [
               "ec_child"

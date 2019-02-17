@@ -219,7 +219,7 @@ public abstract class BaseRegisterFragment extends RecyclerViewFragment implemen
         }catch (Exception e){
 
         }
-        this.condition = "";
+        this.registerCondition = "";
         presenter.initializeQueries(getMainCondition());
         updateSearchView();
         setServiceModeViewDrawableRight(null);
@@ -291,7 +291,7 @@ public abstract class BaseRegisterFragment extends RecyclerViewFragment implemen
     private void renderView() {
         getDefaultOptionsProvider();
         if (isPausedOrRefreshList()) {
-            this.condition = "";
+            this.registerCondition = "";
             presenter.initializeQueries(getMainCondition());
         }
         updateSearchView();
@@ -362,16 +362,18 @@ public abstract class BaseRegisterFragment extends RecyclerViewFragment implemen
             filterStatus.setText(Html.fromHtml(clientAdapter.getTotalcount() + " patients " + sortText));
         }
     }
+
     public void clearSortAndFilter(){
         this.Sortqueries = default_sort_query;
-        this.condition = "";
+        this.registerCondition = "";
         presenter.initializeQueries(getMainCondition());
         filter(this.filters,this.joinTable,this.mainCondition,false);
     }
+
     public void updateSortAndFilter(List<Field> filterList, Field sortField) {
 //        presenter.updateSortAndFilter(filterList, sortField);
         if(filterList.size()==0){
-            this.condition = "";
+            this.registerCondition = "";
             presenter.initializeQueries(getMainCondition());
         }else{
             mainSelect = filterSelect(filterList.get(0).getDbAlias());
@@ -626,7 +628,7 @@ public abstract class BaseRegisterFragment extends RecyclerViewFragment implemen
                     "(select ec_woman.pregnant_status from ec_woman where (ec_woman.pregnant_status = 'Antenatal Period' or ec_woman.pregnant_status like '%প্রসব পূর্ব%') and ec_household.id=ec_woman.relational_id) as pregnant_status"
                     };
             //"(select ec_details.value from ec_details where ec_details.key='Disease_status' and ec_details.value = 'Antenatal Period' and ec_details.base_entity_id=(select ec_woman.id from ec_woman where  ec_household.id=ec_woman.relational_id )) as Disease_status"
-                    condition = " pregnant_status IS NOT NULL";
+            registerCondition = " pregnant_status IS NOT NULL";
         }else if(filter.equals("infant")){
             columns = new String[]{
                     tableName + ".relationalid",
@@ -640,7 +642,7 @@ public abstract class BaseRegisterFragment extends RecyclerViewFragment implemen
 
                     "(select ec_child.dob from ec_child where ec_child.relational_id = ec_household.id and ec_child.dob > DATE('"+TWO_MONTHS+"')) as child_dob"
             };
-                    condition = " child_dob IS NOT NULL";
+            registerCondition = " child_dob IS NOT NULL";
         }else if(filter.equals("toddler")){
             columns = new String[]{
                     tableName + ".relationalid",
@@ -654,7 +656,7 @@ public abstract class BaseRegisterFragment extends RecyclerViewFragment implemen
 
                     "(select ec_child.dob from ec_child where ec_child.relational_id = ec_household.id and (ec_child.dob < DATE('"+TWO_MONTHS+"') and ec_child.dob > DATE('"+FIVE_YEAR+"'))) as child_dob"
             };
-            condition = " child_dob IS NOT NULL";
+            registerCondition = " child_dob IS NOT NULL";
         }else if(filter.equals("adult")){
             columns = new String[]{
                     tableName + ".relationalid",
@@ -670,7 +672,7 @@ public abstract class BaseRegisterFragment extends RecyclerViewFragment implemen
                             "(select ec_woman.dob from ec_woman where (ec_woman.relational_id = ec_household.id and ec_woman.dob < DATE('"+FIFTY_YEAR+"'))) as  woman_dob" ,
                             "(select ec_child.dob from ec_child where (ec_child.relational_id = ec_household.id and ec_child.dob < DATE('"+FIFTY_YEAR+"'))) as child_dob"
             };
-            condition = "(child_dob IS NOT NULL OR member_dob IS NOT NULL OR woman_dob IS NOT NULL ) ";
+            registerCondition = "(child_dob IS NOT NULL OR member_dob IS NOT NULL OR woman_dob IS NOT NULL ) ";
 
         }
 
@@ -678,7 +680,7 @@ public abstract class BaseRegisterFragment extends RecyclerViewFragment implemen
 
         queryBUilder.SelectInitiateMainTable(tableName, columns);
         String query = queryBUilder.mainCondition(mainCondition);
-        this.countSelect = "SELECT COUNT(*) FROM ( "+ query +" AND "+condition +" ) ";
+        this.countSelect = "SELECT COUNT(*) FROM ( "+ query +" AND "+registerCondition +" ) ";
 //        this.countSelect = query;
         return query;
     }

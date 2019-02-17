@@ -201,7 +201,7 @@ public class JsonFormUtils extends org.smartregister.util.JsonFormUtils {
 
             JSONArray fields = registrationFormParams.getRight();
 //            removeEmptyFields(fields);
-//            fields = processAttributesWithChoiceIDs(fields);
+            fields = processAttributesWithChoiceIDs(fields);
 
             String entityId = getString(jsonForm, ENTITY_ID);
             if (isBlank(entityId)) {
@@ -579,48 +579,27 @@ public class JsonFormUtils extends org.smartregister.util.JsonFormUtils {
         return toReturn;
     }
 
-    private static boolean hasDisease(JSONArray fields) {
-        for(int i=0;i<fields.length();i++) {
+
+    private static JSONArray processAttributesValueWithChoiceIDs(JSONArray fields) {
+        for(int i = 0;i<fields.length();i++){
             try {
-                JSONObject obj = fields.getJSONObject(i);
-                if(obj.has("key")&&obj.get("key").equals("has_disease")){
-                    String value = obj.getString("value");
-                    if(value.equals("হ্যাঁ"))
-                        return true;
-                    else if(value.equals("না"))
-                        return false;
+                JSONObject fieldObject = fields.getJSONObject(i);
+//                if(fieldObject.has("openmrs_entity")){
+//                    if(fieldObject.getString("openmrs_entity").equalsIgnoreCase("person_attribute")){
+                if(fieldObject.has("openmrs_choice_ids")){
+                    if(fieldObject.has("value")){
+                        String valueEntered = fieldObject.getString("value");
+                        fieldObject.put("value",fieldObject.getJSONObject("openmrs_choice_ids").get(valueEntered));
+                    }
                 }
+//                    }
+//                }
             } catch (JSONException e) {
                 e.printStackTrace();
             }
         }
-        return true;
+        return fields;
     }
-
-    private static void updatePregnantStatus(JSONArray fields,String value) {
-        for(int i=0;i<fields.length();i++){
-            try {
-                JSONObject obj = fields.getJSONObject(i);
-                String key = obj.getString("key");
-                if(key!=null&&key.equalsIgnoreCase("pregnant_status")){
-                    if(obj.has("hidden")){
-                        obj.remove("hidden");
-                    }
-                    if(value!=null&&value.contains("Antenatal")){
-                        obj.put("value","গর্ভবতী");
-                    }else if(value!=null&&value.contains("Postnatal")){
-                        obj.put("value","প্রসব");
-                    }else{
-                        obj.put("value","NULL");
-                    }
-                }
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
-
-        }
-    }
-
     private static JSONArray processAttributesWithChoiceIDs(JSONArray fields) {
         for(int i = 0;i<fields.length();i++){
             try {
