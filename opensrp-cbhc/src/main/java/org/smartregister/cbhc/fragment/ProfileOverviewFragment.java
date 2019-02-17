@@ -214,7 +214,14 @@ public class ProfileOverviewFragment extends BaseProfileFragment {
             TextView member_name = (TextView) view.findViewById(R.id.name_tv);
             TextView relation_tv = (TextView) view.findViewById(R.id.relation_tv);
             TextView member_age = (TextView) view.findViewById(R.id.age_tv);
+            ImageView pregnant_icon = (ImageView)view.findViewById(R.id.pregnant_woman_present);
             String relation = personinlist.getColumnmaps().get("relation");
+
+
+            String pregnant_status = personinlist.getColumnmaps().get("pregnant_status");
+            if(pregnant_status!=null && (pregnant_status.contains("Antenatal Period")||pregnant_status.contains("প্রসব পূর্ব"))){
+                pregnant_icon.setVisibility(View.VISIBLE);
+            }
 
             String firstName = org.smartregister.util.Utils.getValue(pClient.getColumnmaps(), DBConstants.KEY.FIRST_NAME, true);
             String lastName = org.smartregister.util.Utils.getValue(pClient.getColumnmaps(), DBConstants.KEY.LAST_NAME, true);

@@ -65,8 +65,10 @@ public class MemberProfileContactsFragment extends BaseProfileFragment {
     protected void onResumption() {
         //Overriden
     }
+
     LayoutInflater inflater;
     View fragmentView;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
@@ -76,13 +78,14 @@ public class MemberProfileContactsFragment extends BaseProfileFragment {
         return fragmentView;
     }
 
-    public void reloadView(){
+    public void reloadView() {
         householdDetails.getColumnmaps().putAll(AncApplication.getInstance().getContext().detailsRepository().getAllDetailsForClient(householdDetails.entityId()));
         LinearLayout linearLayoutholder = (LinearLayout)fragmentView.findViewById(R.id.profile_overview_details_holder);
         linearLayoutholder.removeAllViews();
         setupView();
     }
-    public void setupView(){
+
+    public void setupView() {
         LinearLayout linearLayoutholder = (LinearLayout)fragmentView.findViewById(R.id.profile_overview_details_holder);
         LinearLayout.LayoutParams mainparams =new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,ViewGroup.LayoutParams.WRAP_CONTENT);
         try {
@@ -123,7 +126,7 @@ public class MemberProfileContactsFragment extends BaseProfileFragment {
                 }
             }
 
-        }catch (Exception e){
+        } catch (Exception e){
 
         }
     }

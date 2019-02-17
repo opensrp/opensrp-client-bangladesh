@@ -674,9 +674,6 @@ public class MemberProfileActivity extends BaseProfileActivity implements Profil
 //                attentionFlagAlertDialog = dialogBuilder.create();
 //            }
         }
-//        data.getBundleExtra()
-
-
 
     }
 

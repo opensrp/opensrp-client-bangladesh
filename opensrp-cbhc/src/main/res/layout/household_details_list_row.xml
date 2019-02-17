@@ -72,6 +72,7 @@
                 <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:gravity="center_vertical"
                     android:orientation="horizontal">
 
                     <org.smartregister.view.customcontrols.CustomFontTextView
@@ -83,6 +84,15 @@
                         android:text="Age: 33"
                         android:textColor="#9d9d9d"
                         android:textSize="12sp" />
+                    <ImageView
+                        android:id="@+id/pregnant_woman_present"
+                        android:layout_width="25dp"
+                        android:layout_height="25dp"
+                        android:layout_margin="1dp"
+                        android:layout_weight="1"
+                        android:visibility="gone"
+                        android:scaleType="fitXY"
+                        app:srcCompat="@drawable/pregnant_woman" />
                 </LinearLayout>
             </LinearLayout>
 
