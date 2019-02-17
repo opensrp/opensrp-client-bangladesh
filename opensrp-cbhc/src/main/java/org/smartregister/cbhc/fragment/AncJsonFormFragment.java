@@ -4,8 +4,11 @@ import android.app.Activity;
 import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Environment;
 import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
@@ -22,6 +25,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.BaseAdapter;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -39,6 +43,7 @@ import org.joda.time.DateTime;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.smartregister.Context;
+import org.smartregister.CoreLibrary;
 import org.smartregister.cbhc.R;
 import org.smartregister.cbhc.activity.AncJsonFormActivity;
 import org.smartregister.cbhc.application.AncApplication;
@@ -51,11 +56,14 @@ import org.smartregister.cbhc.viewstate.AncJsonFormFragmentViewState;
 import org.smartregister.commonregistry.CommonPersonObject;
 import org.smartregister.commonregistry.CommonPersonObjectClient;
 import org.smartregister.commonregistry.CommonRepository;
+import org.smartregister.domain.ProfileImage;
 import org.smartregister.event.Listener;
+import org.smartregister.repository.ImageRepository;
 import org.smartregister.util.DatePickerUtils;
 import org.smartregister.util.DateUtil;
 import org.smartregister.util.Utils;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -505,7 +513,7 @@ public class AncJsonFormFragment extends JsonFormFragment {
         presenter.onItemSelected(parent, view, position, id);
 //        JSONObject currentObject = get
         if(parent instanceof MaterialSpinner) {
-            if (((MaterialSpinner) parent).getFloatingLabelText().toString().equalsIgnoreCase("থানা প্রধানের সাথে সম্পর্ক*")) {
+            if (((MaterialSpinner) parent).getFloatingLabelText().toString().equalsIgnoreCase("খানা প্রধানের সাথে সম্পর্ক*")) {
                 processHeadOfHouseHoldAsMember(position);
             }
         }
@@ -514,6 +522,7 @@ public class AncJsonFormFragment extends JsonFormFragment {
     private void processHeadOfHouseHoldAsMember(int position) {
         if (position == 0) {
             (new AsyncTask() {
+                ProfileImage imageRecord;
                 String headOfHouseholdFirstName = "";
                 String headOfHouseholdLastName = "";
                 String headOfHouseholdage = "";
@@ -531,6 +540,8 @@ public class AncJsonFormFragment extends JsonFormFragment {
                                     CommonPersonObject household = commonRepository.findByBaseEntityId(relational_id);
                                     headOfHouseholdFirstName = getValue(household.getColumnmaps(), "first_name", false);
                                     headOfHouseholdLastName = getValue(household.getColumnmaps(), "last_name", false);
+                                    ImageRepository imageRepo = CoreLibrary.getInstance().context().imageRepository();
+                                    imageRecord = imageRepo.findByEntityId(relational_id);
                                 }
                             }
                         } catch (JSONException e) {
@@ -553,10 +564,32 @@ public class AncJsonFormFragment extends JsonFormFragment {
                                 ((MaterialEditText) formdataviews.get(i)).setText(headOfHouseholdLastName);
                             }
                         }
+                        if(formdataviews.get(i) instanceof ImageView){
+                            try{
+                            ImageView imageView = (ImageView) formdataviews.get(i);
+                            String filePath = imageRecord.getFilepath();
+
+                            File sd = Environment.getExternalStorageDirectory();
+
+                            File image = new File(filePath);
+                            BitmapFactory.Options bmOptions = new BitmapFactory.Options();
+                            Bitmap bitmap = BitmapFactory.decodeFile(image.getAbsolutePath(),bmOptions);
+//                            bitmap = Bitmap.createScaledBitmap(bitmap,imageView.getWidth(),imageView.getHeight(),true);
+
+                            updateRelevantImageView(bitmap,imageRecord.getFilepath(),(String)imageView.getTag(com.vijay.jsonwizard.R.id.key));
+
+                            }catch (Exception e){
+
+                            }
+                        }
                     }
+
+
+
                 }
             }).execute();
         }
+
     }
 
 
