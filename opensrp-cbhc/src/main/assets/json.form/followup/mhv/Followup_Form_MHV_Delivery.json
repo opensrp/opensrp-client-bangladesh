@@ -256,6 +256,12 @@
           "FWA/HA ":"FWA_HA",
           "FWV ":"FWV",
           "অন্যান্য ":"others_anyone"
+        },
+        "relevance": {
+          "step1:Place_of_Delivery": {
+            "type": "string",
+            "ex": "regex(., \"(বাড়িতে)\")"
+          }
         }
       },
       {

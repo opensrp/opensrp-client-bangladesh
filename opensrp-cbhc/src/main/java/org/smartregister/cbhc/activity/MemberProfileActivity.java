@@ -613,6 +613,29 @@ public class MemberProfileActivity extends BaseProfileActivity implements Profil
         super.onActivityResult(requestCode,resultCode,data);
         householdDetails.getColumnmaps().putAll(AncApplication.getInstance().getContext().detailsRepository().getAllDetailsForClient(householdDetails.entityId()));
         followupFragment.notifyAdapter();
+        if (requestCode == JsonFormUtils.REQUEST_CODE_GET_JSON && resultCode == RESULT_OK) {
+            String jsonString = data.getStringExtra("json");
+
+//            if(jsonString.contains("Followup Delivery")){
+//                AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(this);
+//
+//                attentionFlagDialogView = LayoutInflater.from(this).inflate(R.layout.alert_dialog_attention_flag, null);
+//                dialogBuilder.setView(attentionFlagDialogView);
+//
+//                attentionFlagDialogView.findViewById(R.id.closeButton).setOnClickListener(new View.OnClickListener() {
+//                    @Override
+//                    public void onClick(View view) {
+//                        attentionFlagAlertDialog.dismiss();
+//                    }
+//                });
+//
+//                attentionFlagAlertDialog = dialogBuilder.create();
+//            }
+        }
+//        data.getBundleExtra()
+
+
+
     }
 
 

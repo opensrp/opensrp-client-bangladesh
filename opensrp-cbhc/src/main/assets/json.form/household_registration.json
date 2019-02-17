@@ -169,8 +169,7 @@
         "openmrs_entity": "person",
         "openmrs_entity_id": "birthdateApprox",
         "type": "check_box",
-        "hidden":"true",
-        "label": "",
+        "label": "জন্ম তারিখ জানা আছে কি?*",
         "exclusive": ["none"],
         "options": [
           {

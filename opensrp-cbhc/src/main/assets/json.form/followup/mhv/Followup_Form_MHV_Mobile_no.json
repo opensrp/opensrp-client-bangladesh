@@ -68,23 +68,7 @@
           "err": "Please enter the date of Followup."
         }
       },
-      {
-        "key": "Mobile_Number_Change",
-        "openmrs_entity_parent": "",
-        "openmrs_entity": "",
-        "openmrs_entity_id": "",
-        "openmrs_data_type": "text",
-        "type": "spinner",
-        "hint": "নতুন মোবাইল নম্বর",
-        "values": [
-          "হ্যাঁ",
-          "না"
-        ],
-        "openmrs_choice_ids": {
-          "হ্যাঁ": "Yes",
-          "না": "No"
-        }
-      },
+
       {
         "key": "New_Mobile_Number",
         "openmrs_entity_parent": "",

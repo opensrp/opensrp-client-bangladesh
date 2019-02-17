@@ -76,7 +76,7 @@
         "openmrs_entity_id": "has_disease",
         "openmrs_data_type": "text",
         "type": "spinner",
-        "hint": "কোন রোগ বা অবস্থা আছে কি?",
+        "hint": "কোন রোগ আছে কি?",
         "values": [
           "হ্যাঁ",
           "না"
@@ -128,7 +128,7 @@
           },
           {
             "key":"maleria",
-            "text":"জ্বর (ম্যালারিয়া) ",
+            "text":"জ্বর (ম্যালেরিয়া) ",
             "value":false,
             "openmrs_choice_id":"maleria"
           },
@@ -185,13 +185,8 @@
             "text":"অন্যান্য ",
             "value":false,
             "openmrs_choice_id":"Others_member_disease"
-          },
-          {
-            "key":"None",
-            "text":"নেই ",
-            "value":false,
-            "openmrs_choice_id":"None"
           }
+
         ],
         "relevance":{
           "step1:has_disease":{

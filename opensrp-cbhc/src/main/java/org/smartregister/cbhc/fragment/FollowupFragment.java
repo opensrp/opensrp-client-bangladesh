@@ -216,12 +216,13 @@ public class FollowupFragment extends BaseProfileFragment {
         return 0;
     }
 
-    public int getGender(){
+    public int getGender() {
         String gender = householdDetails.getColumnmaps().get("gender");
         if(gender==null)
             return -1;
         return gender.equals("M")?1:0;
     }
+
     public int getAge() {
         String age = householdDetails.getColumnmaps().get("age");
         String dob = householdDetails.getColumnmaps().get("dob");
@@ -287,9 +288,9 @@ public class FollowupFragment extends BaseProfileFragment {
         }
         if(age>5){
             if(gender==1){
-                all_forms.add(new Constants.FOLLOWUP_FORM.FOLLOWUPFORMS(Followup_Form_MHV_DS_Male,"সাধারণ রোগ পুরুষ"));
+                all_forms.add(new Constants.FOLLOWUP_FORM.FOLLOWUPFORMS(Followup_Form_MHV_DS_Male,"সাধারণ রোগ"));
             }else{
-                all_forms.add(new Constants.FOLLOWUP_FORM.FOLLOWUPFORMS(Followup_Form_MHV_DS_Female,"সাধারণ রোগ মহিলা "));
+                all_forms.add(new Constants.FOLLOWUP_FORM.FOLLOWUPFORMS(Followup_Form_MHV_DS_Female,"সাধারণ রোগ"));
             }
             if(marital_status==1){
 

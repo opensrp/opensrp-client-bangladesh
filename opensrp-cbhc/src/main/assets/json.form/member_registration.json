@@ -249,7 +249,7 @@
         "openmrs_entity_id": "Realtion_With_Household_Head",
         "openmrs_data_type": "text",
         "type": "spinner",
-        "hint": "থানা প্রধানের সাথে সম্পর্ক*",
+        "hint": "খানা প্রধানের সাথে সম্পর্ক*",
         "values": [
           "খানা প্রধান",
           "স্বামী/স্ত্রী",
@@ -524,10 +524,6 @@
         "v_numeric": {
           "value": "true",
           "err": "Enter age"
-        },
-        "v_regex": {
-          "value": "[^0]+",
-          "err": "Please enter age or select date of birth"
         },
         "v_required": {
           "value": true,
@@ -1377,7 +1373,7 @@
         "openmrs_entity_id": "Disease_status",
         "openmrs_data_type": "text",
         "type": "check_box",
-        "label": "০ - ২ মাসের বাচ্চার অসুখ",
+        "label": "০ - ২ মাসের বাচ্চার রোগ",
         "exclusive": ["None"],
         "options": [
           {
@@ -1456,7 +1452,7 @@
         "openmrs_entity_id": "Disease_status",
         "openmrs_data_type": "text",
         "type": "check_box",
-        "label": "২ মাস থেকে ৫ বছরের বাচ্চার অসুখ",
+        "label": "২ মাস থেকে ৫ বছরের বাচ্চার রোগ",
         "exclusive": ["None"],
         "options": [
           {
@@ -1491,7 +1487,7 @@
           },
           {
             "key": "maleria",
-            "text": "জ্বর (ম্যালারিয়া)",
+            "text": "জ্বর (ম্যালেরিয়া)",
             "value": false,
             "openmrs_choice_id": "maleria"
           },
@@ -1789,7 +1785,7 @@
         "hint": "মন্তব্য"
       },
       {
-        "key": "member_photo",
+        "key": "household_photo",
         "openmrs_entity_parent": "",
         "openmrs_entity": "",
         "openmrs_entity_id": "member_photo",
