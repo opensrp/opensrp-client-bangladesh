@@ -2,6 +2,7 @@ package org.smartregister.cbhc.util;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -37,6 +38,8 @@ import org.smartregister.clientandeventmodel.Event;
 import org.smartregister.clientandeventmodel.FormEntityConstants;
 import org.smartregister.clientandeventmodel.Gender;
 import org.smartregister.clientandeventmodel.Obs;
+import org.smartregister.commonregistry.CommonPersonObject;
+import org.smartregister.commonregistry.CommonRepository;
 import org.smartregister.configurableviews.model.Field;
 import org.smartregister.domain.Photo;
 import org.smartregister.domain.ProfileImage;
@@ -450,6 +453,7 @@ public class JsonFormUtils extends org.smartregister.util.JsonFormUtils {
             if(!isBlank(formSubmissionID)){
                baseEvent.setFormSubmissionId(formSubmissionID);
             }
+            checkForAgeChangeToMemberType(fields, metadata, formTag, entityId, encounterType, entitytypeName);
 
             JsonFormUtils.tagSyncMetadata(allSharedPreferences, baseEvent);// tag docs
 
@@ -474,6 +478,20 @@ public class JsonFormUtils extends org.smartregister.util.JsonFormUtils {
             Log.e(TAG, Log.getStackTraceString(e));
             return null;
         }
+    }
+
+    private static void checkForAgeChangeToMemberType(JSONArray fields, JSONObject metadata, FormTag formTag, String entityId, String encounterType, String entitytypeName) {
+
+        if(entitytypeName.equalsIgnoreCase(DBConstants.MEMBER_TABLE_NAME)||entitytypeName.equalsIgnoreCase(DBConstants.WOMAN_TABLE_NAME)){
+            CommonRepository commonRepository = AncApplication.getInstance().getContext().commonrepository(DBConstants.CHILD_TABLE_NAME);
+            CommonPersonObject cpo = commonRepository.findByBaseEntityId(entityId);
+            if(cpo!=null){
+                ContentValues cv = new ContentValues();
+                cv.put("date_removed",""+System.currentTimeMillis());
+                commonRepository.updateColumn(DBConstants.CHILD_TABLE_NAME,cv,entityId);
+            }
+        }
+
     }
 
 //    @SuppressLint("NewApi")
