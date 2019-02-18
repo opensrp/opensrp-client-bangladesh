@@ -119,6 +119,7 @@ public class ProfileOverviewFragment extends BaseProfileFragment {
                 super.onPreExecute();
 
                 dialog = ProgressDialog.show(ProfileOverviewFragment.this.getActivity(),"processing","please wait");
+                setRelationMap();
             }
 
             @Override
@@ -170,7 +171,7 @@ public class ProfileOverviewFragment extends BaseProfileFragment {
                 super.onPostExecute(o);
                 dialog.dismiss();
                 householdList = (ListView)view.findViewById(R.id.household_list);
-
+                profile_photo.clear();
                 HouseholdCursorAdpater cursorAdpater = new HouseholdCursorAdpater(getContext(),cursor);
 
                 householdList.setAdapter(cursorAdpater);
@@ -180,19 +181,24 @@ public class ProfileOverviewFragment extends BaseProfileFragment {
 
     }
 
-    public String queryfortheadapterthing(String id){
-        String query = "select woman.id as _id , woman.relationalid , woman.details , woman.first_name , woman.last_name , woman.dob , details.value as relation " +
+    public String queryfortheadapterthing(String id) {
+        String query = "SELECT * FROM "  +
+                "        (select woman.id as _id , woman.relationalid , woman.details , woman.first_name , woman.last_name , woman.dob , woman.pregnant_status, details.value as relation " +
                 "FROM ec_woman as woman left join ec_details as details on (details.base_entity_id = woman.id and details.key = 'Realtion_With_Household_Head') " +
-                "WHERE woman.relational_id = '</>'" +
-                " " +                "Union all  Select member.id as _id , member.relationalid , member.details , member.first_name , member.last_name , member.dob, details.value as relation " +
+                "WHERE (woman.relational_id = '</>' and woman.date_removed IS NULL)" +
+                " " +                "Union all  Select member.id as _id , member.relationalid , member.details , member.first_name , member.last_name , member.dob, member.pregnant_status, details.value as relation " +
                 "FROM ec_member as member left join ec_details as details on (details.base_entity_id = member.id and details.key = 'Realtion_With_Household_Head') " +
-                "WHERE member.relational_id = '</>' " +
+                "WHERE (member.relational_id = '</>' and member.date_removed IS NULL)" +
                 " " +
-                "Union all Select child.id as _id , child.relationalid , child.details , child.first_name , child.last_name , child.dob , details.value as relation " +
+                "Union all Select child.id as _id , child.relationalid , child.details , child.first_name , child.last_name , child.dob , child.pregnant_status, details.value as relation " +
                 "FROM ec_child as child left join ec_details as details on (details.base_entity_id = child.id and details.key = 'Realtion_With_Household_Head') " +
-                "WHERE child.relational_id = '</>'";
+                "WHERE (child.relational_id = '</>' and child.date_removed IS NULL))" +
+                " ORDER BY CASE WHEN relation = 'খানা প্রধান' THEN 1 " +
+                " WHEN relation = 'Household_Head' THEN 1 " +
+                "Else relation END ASC;";
         return query.replaceAll("</>",id);
     }
+    HashMap<String,String>rmap = new HashMap<String,String>();
     Cursor cursor;
     class HouseholdCursorAdpater extends CursorAdapter {
         private Context context;
@@ -221,6 +227,8 @@ public class ProfileOverviewFragment extends BaseProfileFragment {
             String pregnant_status = personinlist.getColumnmaps().get("pregnant_status");
             if(pregnant_status!=null && (pregnant_status.contains("Antenatal Period")||pregnant_status.contains("প্রসব পূর্ব"))){
                 pregnant_icon.setVisibility(View.VISIBLE);
+            }else{
+                pregnant_icon.setVisibility(View.INVISIBLE);
             }
 
             String firstName = org.smartregister.util.Utils.getValue(pClient.getColumnmaps(), DBConstants.KEY.FIRST_NAME, true);
@@ -228,8 +236,13 @@ public class ProfileOverviewFragment extends BaseProfileFragment {
             if((lastName!=null&&lastName.equalsIgnoreCase("null"))||lastName==null){
                 lastName = "";
             }
-            if(relation!=null)
+            if(relation!=null){
+                if(rmap.get(relation)!=null){
+                    relation = rmap.get(relation);
+                }
                 relation_tv.setText(" ("+relation+")");
+            }
+
             String patientName = getName(firstName, lastName);
 
             if(profile_photo.get(pClient.entityId())==null){
@@ -527,5 +540,37 @@ public class ProfileOverviewFragment extends BaseProfileFragment {
             cursor.close();
         }
         profile_photo.clear();
+    }
+
+    public void setRelationMap(){
+        rmap.clear();
+        rmap.put("Household_Head","খানা প্রধান");
+        rmap.put("Husband_or_Wife","স্বামী/স্ত্রী");
+        rmap.put("Son","পুত্র");
+        rmap.put("Daughter","কন্যা");
+        rmap.put("Daughter_in_law","পুত্রবধূ");
+        rmap.put("Grandson","নাতি");
+        rmap.put("Granddaughter","নাতনি");
+        rmap.put("father","পিতা");
+        rmap.put("Mother","মাতা");
+        rmap.put("Brother","ভাই");
+        rmap.put("Sister","বোন");
+        rmap.put("Nephew(Paternal)","ভাইপো");
+        rmap.put("Niece(Paternal)","ভাইঝি");
+        rmap.put("Nephew(Maternal)","ভাগ্নে");
+        rmap.put("Niece(Maternal)","ভাগ্নি");
+        rmap.put("Father_in_Law","শ্বশুর");
+        rmap.put("Mother in Law","শাশুড়ি");
+        rmap.put("Brother_in_Law","শ্যালক");
+        rmap.put("Sister_in_Law","শ্যালিকা");
+        rmap.put("Brother_in_Law(Wife)","দেবর");
+        rmap.put("Brother_in_Law_Wife(Wife)","জা");
+        rmap.put("Sister_in_Law(Wife)","ননদ");
+        rmap.put("Wife_of_Brother","ভাইয়ের স্ত্রী");
+        rmap.put("Husband_of_Sister","ভগ্নিপতি");
+        rmap.put("Son_in_Law","জামাতা");
+        rmap.put("Others_Relative","অন্যান্য আত্মীয়");
+        rmap.put("Others_Non_Relative","অন্যান্য অনাত্মীয়");
+
     }
 }

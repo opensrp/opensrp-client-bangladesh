@@ -160,6 +160,7 @@
         "openmrs_data_type":"text",
         "type":"edit_text",
         "hint":"জন্মের সংখ্যা",
+        "hidden":true,
         "v_numeric":{
           "value":"true",
           "err":"Enter a valid Number"

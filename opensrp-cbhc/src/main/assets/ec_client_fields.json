@@ -413,6 +413,13 @@
           }
         },
         {
+          "column_name": "pregnant_status",
+          "type": "Client",
+          "json_mapping": {
+            "field": "attributes.pregnant_status"
+          }
+        },
+        {
           "column_name": "reminders",
           "type": "Client",
           "json_mapping": {
@@ -534,6 +541,13 @@
           "type": "Client",
           "json_mapping": {
             "field": "attributes.alt_phone_number"
+          }
+        },
+        {
+          "column_name": "pregnant_status",
+          "type": "Client",
+          "json_mapping": {
+            "field": "attributes.pregnant_status"
           }
         },
         {
