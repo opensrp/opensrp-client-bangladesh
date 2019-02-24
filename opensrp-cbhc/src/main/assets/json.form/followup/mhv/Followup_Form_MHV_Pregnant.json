@@ -131,6 +131,38 @@
         }
       },
       {
+        "key":"Delivery_time",
+        "openmrs_entity_parent":"",
+        "openmrs_entity":"",
+        "openmrs_entity_id":"Delivery_time",
+        "openmrs_data_type":"text",
+        "type":"time_picker",
+        "hint":"প্রসবের সময়",
+        "expanded":false,
+        "v_required":{
+          "value":"false",
+          "err":"Please enter the date of Followup."
+        },
+        "v_numeric": {
+          "value": "true",
+          "err": "Number must be 4 digits in length"
+        },
+        "v_max_length": {
+          "value": "4",
+          "err": "Please Enter 4 digit Time"
+        },
+        "v_min_length": {
+          "value": "4",
+          "err": "Please Enter 4 digit Time"
+        },
+        "relevance": {
+          "step1:pregnant_status": {
+            "type": "string",
+            "ex": "regex(., \"(প্রসবোত্তর)\")"
+          }
+        }
+      },
+      {
         "key": "Date_Of_Abortion",
         "openmrs_entity_parent": "",
         "openmrs_entity": "",
@@ -193,8 +225,399 @@
             "ex": "regex(., \"(MR করেছে)\")"
           }
         }
+      },
+      /*delivery form*/
+      {
+        "key":"MOTHER_VITAL",
+        "openmrs_entity_parent":"",
+        "openmrs_entity":"concept",
+        "openmrs_entity_id":"1bc12372-1635-4b27-a5c4-5d22ed8b7a93",
+        "openmrs_data_type":"text",
+        "type":"spinner",
+        "hint":"মায়ের অবস্থা",
+        "values":[
+          "বেঁচে আছেন",
+          "মারা গেছেন"
+        ],
+        "openmrs_choice_ids":{
+          "বেঁচে আছেন":"Living",
+          "মারা গেছেন":"Dead"
+        },
+        "relevance": {
+          "step1:pregnant_status": {
+            "type": "string",
+            "ex": "regex(., \"(প্রসবোত্তর)\")"
+          }
+        }
+      },
+      {
+        "key": "Outcome of delivery",
+        "openmrs_entity_parent": "",
+        "openmrs_entity": "person_attribute",
+        "openmrs_entity_id": "Outcome of delivery",
+        "openmrs_data_type": "text",
+        "type": "check_box",
+        "label": "প্রসবের ফলাফল",
+        "exclusive": ["None"],
+        "options": [
+          {
+            "key": "Live Birth",
+            "text": "জীবিত জন্ম",
+            "value": false,
+            "openmrs_choice_id": "Live Birth"
+          },
+          {
+            "key": "Stillbirth",
+            "text": "মৃত জন্ম",
+            "value": false,
+            "openmrs_choice_id": "Stillbirth"
+          }
+        ],
+        "relevance": {
+          "step1:pregnant_status": {
+            "type": "string",
+            "ex": "regex(., \"(প্রসবোত্তর)\")"
+          }
+        }
+      },
+      {
+        "key":"Live Birth",
+        "openmrs_entity_parent":"",
+        "openmrs_entity":"",
+        "openmrs_entity_id":"Live Birth",
+        "openmrs_data_type":"text",
+        "type":"edit_text",
+        "hint":"জীবিত জন্মের সংখ্যা",
+        "v_numeric":{
+          "value":"true",
+          "err":"Enter a valid Number"
+        },
+        "relevance": {
+          "step1:pregnant_status": {
+            "type": "string",
+            "ex": "regex(., \"(প্রসবোত্তর)\")"
+          }
+        }
+      },
+      {
+        "key":"Stillbirth",
+        "openmrs_entity_parent":"",
+        "openmrs_entity":"",
+        "openmrs_entity_id":"Stillbirth",
+        "openmrs_data_type":"text",
+        "type":"edit_text",
+        "hint":"মৃত জন্মের সংখ্যা",
+        "v_numeric":{
+          "value":"true",
+          "err":"Enter a valid Number"
+        },
+        "relevance": {
+          "step1:pregnant_status": {
+            "type": "string",
+            "ex": "regex(., \"(প্রসবোত্তর)\")"
+          }
+        }
+      },
+      {
+        "key":"Totalbirth",
+        "openmrs_entity_parent":"",
+        "openmrs_entity":"",
+        "openmrs_entity_id":"Totalbirth",
+        "openmrs_data_type":"text",
+        "type":"edit_text",
+        "hint":"জন্মের সংখ্যা",
+        "hidden":true,
+        "v_numeric":{
+          "value":"true",
+          "err":"Enter a valid Number"
+        },
+        "relevance": {
+          "step1:pregnant_status": {
+            "type": "string",
+            "ex": "regex(., \"(প্রসবোত্তর)\")"
+          }
+        }
+      },
+      {
+        "key":"delivery_type",
+        "openmrs_entity_parent":"",
+        "openmrs_entity":"concept",
+        "openmrs_entity_id":"050739a2-5e26-44c5-8a51-9658dedf5455",
+        "openmrs_data_type":"text",
+        "type":"spinner",
+        "hint":"প্রসবের ধরণ ",
+        "values":[
+          "স্বাভাবিক প্রসব ",
+          "অস্ত্রপচার ",
+          "অন্যান্য উপায়ে"
+        ],
+        "openmrs_choice_ids":{
+          "স্বাভাবিক প্রসব ":"normal",
+          "অস্ত্রপচার ":"Caesarean Section",
+          "অন্যান্য উপায়ে":"Other_Instrumental"
+        },
+        "relevance": {
+          "step1:pregnant_status": {
+            "type": "string",
+            "ex": "regex(., \"(প্রসবোত্তর)\")"
+          }
+        }
+      },
+      {
+        "key":"Place_of_Delivery",
+        "openmrs_entity_parent":"",
+        "openmrs_entity":"concept",
+        "openmrs_entity_id":"6544f312-e596-4249-86f0-ba1361c0b9eb",
+        "openmrs_data_type":"text",
+        "type":"spinner",
+        "hint":"প্রসবের স্থান ",
+        "values":[
+          "বাড়িতে",
+          "কমিউনিটি ক্লিনিক ",
+          "ইউনিয়ন উপস্বাস্থ্য কেন্দ্র ",
+          "ইউনিয়ন পরিবার কল্যাণ কেন্দ্র ",
+          "ইউনিয়ন স্বাস্থ্য ও পরিবার কল্যাণ কেন্দ্র ",
+          "মা ও শিশু কল্যাণ কেন্দ্র ",
+          "১০ শয্যা বিশিষ্ট হাসপাতাল ",
+          "২০ শয্যা বিশিষ্ট হাসপাতাল ",
+          "উপজেলা স্বাস্থ্য কমপ্লেক্স ",
+          "সদর হাসপাতাল ",
+          "মেডিকেল কলেজ হাসপাতাল ",
+          "বেসরকারী ক্লিনিক/হাসপাতাল ",
+          "এনজিও ",
+          "বিশেষায়িত হাসপাতাল ",
+          "অন্যান্য "
+        ],
+        "openmrs_choice_ids":{
+          "বাড়িতে":"at_house",
+          "কমিউনিটি ক্লিনিক ":"Community_Clinic",
+          "ইউনিয়ন উপস্বাস্থ্য কেন্দ্র ":"Union_Sub_Center",
+          "ইউনিয়ন পরিবার কল্যাণ কেন্দ্র ":"Union_Family_Welfare_Center",
+          "ইউনিয়ন স্বাস্থ্য ও পরিবার কল্যাণ কেন্দ্র ":"Union_Health_and_Family_Welfare_Center",
+          "মা ও শিশু কল্যাণ কেন্দ্র ":"Metarnal_and_Child_Wellfare_Center",
+          "১০ শয্যা বিশিষ্ট হাসপাতাল ":"10_Bed_Hospital",
+          "২০ শয্যা বিশিষ্ট হাসপাতাল ":"20_Beds_Hospital",
+          "উপজেলা স্বাস্থ্য কমপ্লেক্স ":"Upazila_Health_Complex",
+          "সদর হাসপাতাল ":"District_Hospital",
+          "মেডিকেল কলেজ হাসপাতাল ":"Medical_College_and_Hospital",
+          "বেসরকারী ক্লিনিক/হাসপাতাল ":"Private_Clinic_and_Hospital",
+          "এনজিও ":"Non-governmental_Organization",
+          "বিশেষায়িত হাসপাতাল ":"Specialized_Hospital",
+          "অন্যান্য ":"Others_Health_Facility"
+        },
+        "relevance": {
+          "step1:pregnant_status": {
+            "type": "string",
+            "ex": "regex(., \"(প্রসবোত্তর)\")"
+          }
+        }
+      },
+      {
+        "key":"if_home_delivery_how_helpers",
+        "openmrs_entity_parent":"",
+        "openmrs_entity":"concept",
+        "openmrs_entity_id":"eaa90231-3a04-43f6-b245-486b1a25e51e",
+        "openmrs_data_type":"text",
+        "type":"spinner",
+        "hint":"বাড়িতে হলে প্রসবে সহায়তাকারী",
+        "values":[
+          "কেউ না ",
+          "আত্মীয়-স্বজন ",
+          "প্রতিবেশী ",
+          "অপ্রশিক্ষিত দাই ",
+          "প্র্রশিক্ষিত দাই ",
+          "এনজিও কর্মী ",
+          "FWA/HA ",
+          "FWV ",
+          "অন্যান্য "
+        ],
+        "openmrs_choice_ids":{
+          "কেউ না ":"nobody",
+          "আত্মীয়-স্বজন ":"Relatives",
+          "প্রতিবেশী ":"Neighbor",
+          "অপ্রশিক্ষিত দাই ":"Traditional_birth_Attendent",
+          "প্র্রশিক্ষিত দাই ":"Trained_birth_Attendent",
+          "এনজিও কর্মী ":"NGO_Workers",
+          "FWA/HA ":"FWA_HA",
+          "FWV ":"FWV",
+          "অন্যান্য ":"others_anyone"
+        },
+        "relevance": {
+          "step1:Place_of_Delivery": {
+            "type": "string",
+            "ex": "regex(., \"(বাড়িতে)\")"
+          }
+        }
+      },
+      {
+        "key":"Name_of_Child",
+        "openmrs_entity_parent":"",
+        "openmrs_entity":"concept",
+        "openmrs_entity_id":"7a4ffef1-97d9-4c07-add7-9a6138559ff7",
+        "openmrs_data_type":"text",
+        "type":"edit_text",
+        "hint":"বাচ্চার নাম",
+        "expanded":false,
+        "v_required":{
+          "value":"true",
+          "err":"Please Enter a Valid Name"
+        },
+        "v_regex":{
+          "value":"[A-Za-z\\s\.\-]*",
+          "err":"Please Enter a Valid Name"
+        },
+        "relevance": {
+          "step1:pregnant_status": {
+            "type": "string",
+            "ex": "regex(., \"(প্রসবোত্তর)\")"
+          }
+        }
+      },
+      {
+        "key":"Gender Details",
+        "openmrs_entity_parent":"",
+        "openmrs_entity":"concept",
+        "openmrs_entity_id":"e4aae12c-ad9c-445d-a0d3-a8312ce9d3df",
+        "openmrs_data_type":"text",
+        "type":"spinner",
+        "hint":"বাচ্চার লিঙ্গ*",
+        "v_required":{
+          "value":true,
+          "err":"Please select gender"
+        },
+        "values":[
+          "পুরুষ",
+          "মহিলা",
+          "তৃতীয় লিঙ্গ"
+        ],
+        "openmrs_choice_ids":{
+          "পুরুষ":"M",
+          "মহিলা":"F",
+          "তৃতীয় লিঙ্গ":"O"
+        },
+        "relevance": {
+          "step1:pregnant_status": {
+            "type": "string",
+            "ex": "regex(., \"(প্রসবোত্তর)\")"
+          }
+        }
+      },
+      {
+        "key":"Child_birth_weight",
+        "openmrs_entity_parent":"",
+        "openmrs_entity":"concept",
+        "openmrs_entity_id":"1e58da4d-60b9-4c60-a079-9a5371d3cfa9",
+        "openmrs_data_type":"text",
+        "type":"spinner",
+        "hint":"বাচ্চার জন্মকালীন ওজন ",
+        "values":[
+          "হ্যাঁ",
+          "না"
+        ],
+        "openmrs_choice_ids":{
+          "হ্যাঁ":"Yes",
+          "না":"No"
+        },
+        "relevance": {
+          "step1:pregnant_status": {
+            "type": "string",
+            "ex": "regex(., \"(প্রসবোত্তর)\")"
+          }
+        }
+      },
+      {
+        "key":"Birth_weight",
+        "openmrs_entity_parent":"",
+        "openmrs_entity":"concept",
+        "openmrs_entity_id":"9d4aa237-b866-43a1-a75b-9b9490d4a3b9",
+        "openmrs_data_type":"text",
+        "type":"edit_text",
+        "hint":"ওজন",
+        "v_numeric":{
+          "value":"true",
+          "err":"Enter a valid Number"
+        },
+        "relevance": {
+          "step1:Child_birth_weight": {
+            "type": "string",
+            "ex": "regex(., \"(হ্যাঁ)\")"
+          }
+        },
+        "relevance": {
+          "step1:pregnant_status": {
+            "type": "string",
+            "ex": "regex(., \"(প্রসবোত্তর)\")"
+          }
+        }
+      },
+      {
+        "key":"Used_7.1%_Chlorohexidin",
+        "openmrs_entity_parent":"",
+        "openmrs_entity":"concept",
+        "openmrs_entity_id":"1f011039-e2dc-49a0-8804-1a96d1d5ba49",
+        "openmrs_data_type":"text",
+        "type":"spinner",
+        "hint":"৭.১% ক্লোরোহেক্সিডিন এর ব্যবহার ",
+        "values":[
+          "হ্যাঁ",
+          "না"
+        ],
+        "openmrs_choice_ids":{
+          "হ্যাঁ":"Yes",
+          "না":"No"
+        },
+        "relevance": {
+          "step1:pregnant_status": {
+            "type": "string",
+            "ex": "regex(., \"(প্রসবোত্তর)\")"
+          }
+        }
+      },
+      {
+        "key":"Place_of_Refer",
+        "openmrs_entity_parent":"",
+        "openmrs_entity":"concept",
+        "openmrs_entity_id":"ec28ec95-0f6a-4910-8efc-c2925f9b36b1",
+        "openmrs_data_type":"text",
+        "type":"spinner",
+        "hint":"রেফারের স্থান",
+        "values":[
+          "কমিউনিটি ক্লিনিক ",
+          "ইউনিয়ন উপস্বাস্থ্য কেন্দ্র ",
+          "ইউনিয়ন পরিবার কল্যাণ কেন্দ্র ",
+          "ইউনিয়ন স্বাস্থ্য ও পরিবার কল্যাণ কেন্দ্র ",
+          "মা ও শিশু কল্যাণ কেন্দ্র ",
+          "১০ শয্যা বিশিষ্ট হাসপাতাল ",
+          "২০ শয্যা বিশিষ্ট হাসপাতাল ",
+          "উপজেলা স্বাস্থ্য কমপ্লেক্স ",
+          "সদর হাসপাতাল ",
+          "মেডিকেল কলেজ হাসপাতাল ",
+          "বিশেষায়িত হাসপাতাল ",
+          "অন্যান্য ",
+          "রেফার করা হয়নি "
+        ],
+        "openmrs_choice_ids":{
+          "কমিউনিটি ক্লিনিক ":"Community_Clinic",
+          "ইউনিয়ন উপস্বাস্থ্য কেন্দ্র ":"Union_Sub_Center",
+          "ইউনিয়ন পরিবার কল্যাণ কেন্দ্র ":"Union_Family_Welfare_Center",
+          "ইউনিয়ন স্বাস্থ্য ও পরিবার কল্যাণ কেন্দ্র ":"Union_Health_and_Family_Welfare_Center",
+          "মা ও শিশু কল্যাণ কেন্দ্র ":"Metarnal_and_Child_Wellfare_Center",
+          "১০ শয্যা বিশিষ্ট হাসপাতাল ":"10_Bed_Hospital",
+          "২০ শয্যা বিশিষ্ট হাসপাতাল ":"20_Beds_Hospital",
+          "উপজেলা স্বাস্থ্য কমপ্লেক্স ":"Upazila_Health_Complex",
+          "সদর হাসপাতাল ":"District_Hospital",
+          "মেডিকেল কলেজ হাসপাতাল ":"Medical_College_and_Hospital",
+          "বিশেষায়িত হাসপাতাল ":"Specialized_Hospital",
+          "অন্যান্য ":"Others_Health_Facility",
+          "রেফার করা হয়নি ":"Not_referred"
+        },
+        "relevance": {
+          "step1:pregnant_status": {
+            "type": "string",
+            "ex": "regex(., \"(প্রসবোত্তর)\")"
+          }
+        }
       }
-
     ]
   }
 }

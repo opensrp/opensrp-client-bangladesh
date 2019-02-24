@@ -491,6 +491,24 @@ public class MemberProfileActivity extends BaseProfileActivity implements Profil
     }
 
     @Override
+    public void startFormActivity(JSONObject form) {
+        try{
+            Intent intent = new Intent(this, AncJsonFormActivity.class);
+            intent.putExtra("json", form.toString());
+            startActivityForResult(intent, JsonFormUtils.REQUEST_CODE_GET_JSON);
+        }catch(Exception e){
+
+        }
+
+    }
+
+    @Override
+    public ProfileContract.View getView() {
+        return this;
+    }
+
+
+    @Override
     public String getIntentString(String intentKey) {
 
         return this.getIntent().getStringExtra(intentKey);
@@ -656,23 +674,37 @@ public class MemberProfileActivity extends BaseProfileActivity implements Profil
         householdDetails.getColumnmaps().putAll(AncApplication.getInstance().getContext().detailsRepository().getAllDetailsForClient(householdDetails.entityId()));
         followupFragment.notifyAdapter();
         if (requestCode == JsonFormUtils.REQUEST_CODE_GET_JSON && resultCode == RESULT_OK) {
-//            String jsonString = data.getStringExtra("json");
+            try {
+            String jsonString = data.getStringExtra("json");
+            JSONObject form = new JSONObject(jsonString);
+            if(jsonString.contains("Followup Delivery")) {
+                android.support.v7.app.AlertDialog alertDialog = new android.support.v7.app.AlertDialog.Builder(this).create();
+                alertDialog.setTitle("Add Child");
+                alertDialog.setCanceledOnTouchOutside(false);
+                alertDialog.setButton(android.support.v7.app.AlertDialog.BUTTON_NEGATIVE, "CANCEL",
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int which) {
+                                dialog.dismiss();
+                            }
+                        });
+                alertDialog.setButton(android.support.v7.app.AlertDialog.BUTTON_POSITIVE, "ADD [+]",
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int which) {
+                                try{
 
-//            if(jsonString.contains("Followup Delivery")){
-//                AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(this);
-//
-//                attentionFlagDialogView = LayoutInflater.from(this).inflate(R.layout.alert_dialog_attention_flag, null);
-//                dialogBuilder.setView(attentionFlagDialogView);
-//
-//                attentionFlagDialogView.findViewById(R.id.closeButton).setOnClickListener(new View.OnClickListener() {
-//                    @Override
-//                    public void onClick(View view) {
-//                        attentionFlagAlertDialog.dismiss();
-//                    }
-//                });
-//
-//                attentionFlagAlertDialog = dialogBuilder.create();
-//            }
+                                    mProfilePresenter.startMemberRegistrationForm(Constants.JSON_FORM.MEMBER_REGISTER,null,null,null,householdDetails.entityId());
+                                }catch(Exception e){
+                                    e.printStackTrace();
+                                }
+                            }
+                        });
+                alertDialog.show();
+            }else if (form.getString(JsonFormUtils.ENCOUNTER_TYPE).equals(Constants.EventType.MemberREGISTRATION)) {
+                mProfilePresenter.saveForm(jsonString, false);
+            }
+            } catch (Exception e) {
+                Log.e(TAG, Log.getStackTraceString(e));
+            }
         }
 
     }

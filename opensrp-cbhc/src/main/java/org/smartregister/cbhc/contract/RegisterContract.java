@@ -101,7 +101,7 @@ public interface RegisterContract {
     public interface InteractorCallBack {
         void onUniqueIdFetched(Triple<String, String, String> triple, String entityId);
 
-        void onUniqueIdFetched(String formName,String metadata,String currentLocationId,String householdID, String entityId);
+        void onUniqueIdFetched(String formName,String metadata,String currentLocationId,String householdID, String entityId) ;
 
         void onNoUniqueId();
 

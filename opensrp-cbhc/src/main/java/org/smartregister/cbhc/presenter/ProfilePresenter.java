@@ -5,21 +5,26 @@ import android.content.Intent;
 import android.util.Log;
 import android.util.Pair;
 
+import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.tuple.Triple;
 import org.json.JSONObject;
 import org.smartregister.cbhc.R;
 import org.smartregister.cbhc.activity.MemberProfileActivity;
 import org.smartregister.cbhc.activity.ProfileActivity;
+import org.smartregister.cbhc.application.AncApplication;
 import org.smartregister.cbhc.contract.ProfileContract;
 import org.smartregister.cbhc.contract.RegisterContract;
 import org.smartregister.cbhc.interactor.ProfileInteractor;
 import org.smartregister.cbhc.interactor.RegisterInteractor;
+import org.smartregister.cbhc.model.RegisterModel;
 import org.smartregister.cbhc.util.Constants;
 import org.smartregister.cbhc.util.JsonFormUtils;
+import org.smartregister.cbhc.util.LookUpUtils;
 import org.smartregister.cbhc.util.Utils;
 import org.smartregister.clientandeventmodel.Client;
 import org.smartregister.clientandeventmodel.Event;
 import org.smartregister.repository.AllSharedPreferences;
+import org.smartregister.util.FormUtils;
 
 import java.lang.ref.WeakReference;
 import java.util.Map;
@@ -35,11 +40,15 @@ public class ProfilePresenter implements ProfileContract.Presenter, RegisterCont
     private ProfileContract.Interactor mProfileInteractor;
     private RegisterContract.Interactor mRegisterInteractor;
     Activity profileActivity;
+    private RegisterContract.Model model;
+    private RegisterContract.Interactor interactor;
 
     public ProfilePresenter(ProfileContract.View loginView) {
         mProfileView = new WeakReference<>(loginView);
         mProfileInteractor = new ProfileInteractor(this);
         mRegisterInteractor = new RegisterInteractor();
+        model = new RegisterModel();
+        interactor = new RegisterInteractor();
     }
 
     @Override
@@ -72,7 +81,44 @@ public class ProfilePresenter implements ProfileContract.Presenter, RegisterCont
             return null;
         }
     }
+    @Override
 
+    public void startMemberRegistrationForm(String formName, String entityId, String metadata, String currentLocationId,String householdID) throws Exception {
+
+        if (StringUtils.isBlank(entityId)) {
+//            Triple<String, String, String> triple = Triple.of(formName, metadata, currentLocationId);
+//            Triple<String, String, String> triple = Triple.of(formName, metadata, currentLocationId);
+//            interactor.getNextUniqueId(triple, this);
+            interactor.getNextHealthId(formName, metadata, currentLocationId,householdID, this);
+//            return;
+        }
+
+
+    }
+    @Override
+    public void saveForm(String jsonString, boolean isEditMode) {
+
+        try {
+
+            getView().showProgressDialog(R.string.saving_dialog_title);
+
+            Pair<Client, Event> pair = model.processRegistration(jsonString);
+            if (pair == null) {
+                return;
+            }
+
+            interactor.saveRegistration(pair, jsonString, isEditMode, this);
+
+        } catch (Exception e) {
+            Log.e(TAG, Log.getStackTraceString(e));
+        }
+    }
+    private ProfileContract.View getView() {
+        if (mProfileView != null)
+            return mProfileView.get();
+        else
+            return null;
+    }
     @Override
     public void processFormDetailsSave(Intent data, AllSharedPreferences allSharedPreferences) {
         try {
@@ -131,7 +177,17 @@ public class ProfilePresenter implements ProfileContract.Presenter, RegisterCont
 
     @Override
     public void onUniqueIdFetched(String formName, String metadata, String currentLocationId, String householdID, String entityId) {
+        JSONObject form;
+        try {
+            form = FormUtils.getInstance(AncApplication.getInstance().getApplicationContext()).getFormJson(Constants.JSON_FORM.MEMBER_REGISTER);
+            form = JsonFormUtils.getFormAsJson(form,formName, entityId, currentLocationId,householdID);
+            form.put("relational_id",householdID);
+            LookUpUtils.putRelationalIdInLookupObjects(form,householdID);
 
+            getView().startFormActivity(form);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
 

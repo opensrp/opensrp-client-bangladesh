@@ -474,6 +474,11 @@ public class ProfileActivity extends BaseProfileActivity implements ProfileContr
     }
 
     @Override
+    public ProfileContract.View getView() {
+        return this;
+    }
+
+    @Override
     public void refreshList(FetchStatus fetchStatus) {
 
     }

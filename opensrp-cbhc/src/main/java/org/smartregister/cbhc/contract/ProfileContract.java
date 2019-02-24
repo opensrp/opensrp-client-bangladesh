@@ -3,6 +3,8 @@ package org.smartregister.cbhc.contract;
 import android.app.Activity;
 import android.content.Intent;
 
+import org.apache.commons.lang3.tuple.Triple;
+import org.json.JSONObject;
 import org.smartregister.cbhc.activity.BaseProfileActivity;
 import org.smartregister.cbhc.activity.ProfileActivity;
 import org.smartregister.repository.AllSharedPreferences;
@@ -25,8 +27,9 @@ public interface ProfileContract {
         void processFormDetailsSave(Intent data, AllSharedPreferences allSharedPreferences);
 
         void refreshProfileTopSection(Map<String, String> client);
-
+        void saveForm(String jsonString, boolean isEditMode);
         void setProfileActivity(Activity profileActivity);
+        void startMemberRegistrationForm(String formName, String entityId, String metadata, String currentLocationId,String householdID) throws Exception;
     }
 
     interface View {
@@ -50,6 +53,8 @@ public interface ProfileContract {
         String getIntentString(String intentKey);
 
         void setWomanPhoneNumber(String phoneNumber);
+        void startFormActivity(JSONObject form);
+        ProfileContract.View getView();
 
     }
 
@@ -58,6 +63,5 @@ public interface ProfileContract {
         void onDestroy(boolean isChangingConfiguration);
 
         void refreshProfileView(String baseEntityId);
-
     }
 }

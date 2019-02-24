@@ -198,8 +198,10 @@ public class ProfileOverviewFragment extends BaseProfileFragment {
                 "Else relation END ASC;";
         return query.replaceAll("</>",id);
     }
+
     HashMap<String,String>rmap = new HashMap<String,String>();
     Cursor cursor;
+
     class HouseholdCursorAdpater extends CursorAdapter {
         private Context context;
         private LayoutInflater inflater = null;

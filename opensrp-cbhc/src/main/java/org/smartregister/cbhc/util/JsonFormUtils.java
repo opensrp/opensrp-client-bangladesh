@@ -1204,6 +1204,7 @@ public class JsonFormUtils extends org.smartregister.util.JsonFormUtils {
         }
         return toreturn;
     }
+
     private static String return_JSON_RECURSIVELY(JSONArray nodes,JSONArray nodestring)throws  JSONException{
         String toreturn = null;
         for(int j = 0;j<nodes.length();j++) {

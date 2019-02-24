@@ -241,6 +241,7 @@ public class RegisterInteractor implements RegisterContract.Interactor {
                 JSONObject eventJson = new JSONObject(JsonFormUtils.gson.toJson(baseEvent));
                 getSyncHelper().addEvent(baseEvent.getBaseEntityId(), eventJson);
             }
+
             if(Utils.notFollowUp(baseEvent.getEventType())){
 
                 if (isEditMode) {
@@ -251,7 +252,7 @@ public class RegisterInteractor implements RegisterContract.Interactor {
                         if (!newOpenSRPId.equals(currentOpenSRPId)) {
                             //OPENSRP ID was changed
                             getUniqueIdRepository().open(currentOpenSRPId);
-                            getHealthIdRepository().close(currentOpenSRPId);
+                            getHealthIdRepository().open(currentOpenSRPId);
                         }
                     }
 
