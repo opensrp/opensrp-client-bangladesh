@@ -242,7 +242,7 @@ public class RegisterInteractor implements RegisterContract.Interactor {
                 getSyncHelper().addEvent(baseEvent.getBaseEntityId(), eventJson);
             }
 
-            if(Utils.notFollowUp(baseEvent.getEventType())){
+            if(Utils.notFollowUp(baseEvent.getEventType())) {
 
                 if (isEditMode) {
                     // Unassign current OPENSRP ID
@@ -251,14 +251,14 @@ public class RegisterInteractor implements RegisterContract.Interactor {
                         String currentOpenSRPId = JsonFormUtils.getString(jsonString, JsonFormUtils.CURRENT_OPENSRP_ID).replace("-", "");
                         if (!newOpenSRPId.equals(currentOpenSRPId)) {
                             //OPENSRP ID was changed
-                            getUniqueIdRepository().open(currentOpenSRPId);
-                            getHealthIdRepository().open(currentOpenSRPId);
+                            getUniqueIdRepository().close(currentOpenSRPId);
+                            getHealthIdRepository().close(currentOpenSRPId);
                         }
                     }
 
                 } else {
                     if (baseClient != null) {
-                        String opensrpId = baseClient.getIdentifier(DBConstants.KEY.ANC_ID);
+                        String opensrpId = baseClient.getIdentifier(DBConstants.KEY.Patient_Identifier);
 
                         //mark OPENSRP ID as used
                         getUniqueIdRepository().close(opensrpId);

@@ -169,6 +169,7 @@
         "openmrs_entity": "person",
         "openmrs_entity_id": "birthdateApprox",
         "type": "check_box",
+        "hidden":true,
         "label": "জন্ম তারিখ জানা আছে কি?*",
         "exclusive": ["none"],
         "options": [
@@ -185,6 +186,7 @@
         "openmrs_entity": "person",
         "openmrs_entity_id": "birthdate",
         "type": "date_picker",
+        "hidden":true,
         "hint": "Date of birth(DOB) *",
         "expanded": false,
         "duration": {
@@ -214,6 +216,7 @@
         "openmrs_entity": "",
         "openmrs_entity_id": "age",
         "type": "edit_text",
+        "hidden":true,
         "hint": "বয়স*",
         "v_numeric": {
           "value": "true",

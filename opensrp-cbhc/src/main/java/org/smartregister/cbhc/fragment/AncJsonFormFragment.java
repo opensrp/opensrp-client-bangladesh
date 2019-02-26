@@ -64,6 +64,7 @@ import org.smartregister.util.DateUtil;
 import org.smartregister.util.Utils;
 
 import java.io.File;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -518,13 +519,16 @@ public class AncJsonFormFragment extends JsonFormFragment {
             }
         }
     }
-
+    public static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("dd-MM-yyyy");
     private void processHeadOfHouseHoldAsMember(int position) {
         if (position == 0) {
-            (new AsyncTask() {
+            Utils.startAsyncTask(new AsyncTask() {
                 ProfileImage imageRecord;
                 String headOfHouseholdFirstName = "";
                 String headOfHouseholdLastName = "";
+                String headOfHouseholdMobileNumber = "";
+                String headOfHouseholdDOB = "";
+                String headOfHouseholdDOBUnknown = "";
                 String headOfHouseholdage = "";
                 @Override
                 protected Object doInBackground(Object[] objects) {
@@ -540,6 +544,9 @@ public class AncJsonFormFragment extends JsonFormFragment {
                                     CommonPersonObject household = commonRepository.findByBaseEntityId(relational_id);
                                     headOfHouseholdFirstName = getValue(household.getColumnmaps(), "first_name", false);
                                     headOfHouseholdLastName = getValue(household.getColumnmaps(), "last_name", false);
+                                    headOfHouseholdMobileNumber = getValue(household.getColumnmaps(),"phone_number",false);
+                                    headOfHouseholdDOB = getValue(household.getColumnmaps(),"dob",false);
+                                    headOfHouseholdDOBUnknown = getValue(household.getColumnmaps(),"dob_unknown",false);
                                     ImageRepository imageRepo = CoreLibrary.getInstance().context().imageRepository();
                                     imageRecord = imageRepo.findByEntityId(relational_id);
                                 }
@@ -563,7 +570,25 @@ public class AncJsonFormFragment extends JsonFormFragment {
                             if (((MaterialEditText) formdataviews.get(i)).getFloatingLabelText().toString().trim().equalsIgnoreCase("নামের শেষ অংশ (ইংরেজীতে)*")) {
                                 ((MaterialEditText) formdataviews.get(i)).setText(headOfHouseholdLastName);
                             }
+                            if (((MaterialEditText) formdataviews.get(i)).getFloatingLabelText().toString().trim().equalsIgnoreCase("মোবাইল নম্বর (ইংরেজীতে)*")) {
+                                ((MaterialEditText) formdataviews.get(i)).setText(headOfHouseholdMobileNumber);
+                            }
+//                            if (((MaterialEditText) formdataviews.get(i)).getFloatingLabelText().toString().trim().equalsIgnoreCase("‘হ্যাঁ’ হলে জন্ম তারিখ*")) {
+//                                Date dob = org.smartregister.cbhc.util.Utils.dobStringToDate(headOfHouseholdDOB);
+//                                headOfHouseholdDOB = DATE_FORMAT.format(dob);
+//                                ((MaterialEditText) formdataviews.get(i)).setText(headOfHouseholdDOB);
+//                            }
                         }
+//                        if (formdataviews.get(i) instanceof MaterialSpinner) {
+//                            if (((MaterialSpinner) formdataviews.get(i)).getFloatingLabelText().toString().trim().equalsIgnoreCase("জন্ম তারিখ জানা আছে কি?*")) {
+//                                if(headOfHouseholdDOBUnknown.equalsIgnoreCase("true")){
+//                                    ((MaterialSpinner) formdataviews.get(i)).setSelection(0);
+//                                }else{
+//                                    ((MaterialSpinner) formdataviews.get(i)).setSelection(1);
+//                                }
+//                            }
+//
+//                        }
                         if(formdataviews.get(i) instanceof ImageView){
                             try{
                             ImageView imageView = (ImageView) formdataviews.get(i);
@@ -587,7 +612,7 @@ public class AncJsonFormFragment extends JsonFormFragment {
 
 
                 }
-            }).execute();
+            },null);
         }
 
     }

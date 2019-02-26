@@ -124,7 +124,7 @@ public class RegisterProvider implements RecyclerViewProvider<RegisterProvider.R
             String d[] = last_interacted_with.split(" ");
             last_interacted_with = d[1] + " "+d[2]+" "+d[5];
 
-        }catch(Exception e){
+        } catch(Exception e) {
 
         }
 
@@ -292,7 +292,7 @@ public class RegisterProvider implements RecyclerViewProvider<RegisterProvider.R
 
     }
 
-    class MemberCountAsyncTask extends AsyncTask{
+    class MemberCountAsyncTask extends AsyncTask {
         CommonPersonObjectClient pc;
         int count = 0;
         int femalechild = 0;
