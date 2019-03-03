@@ -291,8 +291,9 @@ public class ProfileActivity extends BaseProfileActivity implements ProfileContr
 
             final ArrayAdapter<String> arrayAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1);
             arrayAdapter.add("[+] নতুন সদস্য");
-            arrayAdapter.add("খানা স্থানান্তর");
-            arrayAdapter.add("খানা পাওয়া যায়নি");
+//            arrayAdapter.add("খানা স্থানান্তর");
+//            arrayAdapter.add("খানা পাওয়া যায়নি");
+            arrayAdapter.add("খাানার অবস্থা্ন");
 //            arrayAdapter.add(getString(R.string.call));
 //            arrayAdapter.add(getString(R.string.start_contact));
 //            arrayAdapter.add(getString(R.string.close_anc_record));
@@ -302,6 +303,10 @@ public class ProfileActivity extends BaseProfileActivity implements ProfileContr
                 public void onClick(DialogInterface dialog, int which) {
                     String textClicked = arrayAdapter.getItem(which);
                     switch (textClicked) {
+                        case "খাানার অবস্থা্ন":
+                            getIntent().putExtra(Constants.INTENT_KEY.BASE_ENTITY_ID,householdDetails.getCaseId());
+                            JsonFormUtils.launchFollowUpForm(ProfileActivity.this,householdDetails.getColumnmaps(),Followup_Form_MHV_Transfer);
+                            break;
                         case "[+] নতুন সদস্য":
                             try{
 

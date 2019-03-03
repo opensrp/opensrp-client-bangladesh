@@ -69,6 +69,31 @@
         }
       },
       {
+        "key": "reason_invalid",
+        "openmrs_entity_parent": "",
+        "openmrs_entity": "",
+        "openmrs_entity_id": "",
+        "openmrs_data_type": "text",
+        "type": "spinner",
+        "hint": "কারন",
+        "values": [
+          "মৃত্যু হয়েছে",
+          "স্থানান্তরীত হয়েছে",
+          "সদস্য পাওয়া যায়নি"
+        ],
+        "openmrs_choice_ids": {
+          "মৃত্যু হয়েছে": "death",
+          "স্থানান্তরীত হয়েছে": "transfered",
+          "সদস্য পাওয়া যায়নি":"member not found"
+        },
+        "v_required": {
+          "value": true,
+          "err": "Please select member status"
+        }
+
+      },
+
+      {
         "key": "Date_Of_Death",
         "openmrs_entity_parent": "",
         "openmrs_entity": "",
@@ -80,6 +105,12 @@
         "v_required": {
           "value": "false",
           "err": "Please enter the date of Followup."
+        },
+        "relevance": {
+          "step1:reason_invalid": {
+            "type": "string",
+            "ex": "equalTo(., \"মৃত্যু হয়েছে\")"
+          }
         }
       },
       {
@@ -106,6 +137,12 @@
         "v_min_length": {
           "value": "4",
           "err": "Please Enter 4 digit Time"
+        },
+        "relevance": {
+          "step1:reason_invalid": {
+            "type": "string",
+            "ex": "equalTo(., \"মৃত্যু হয়েছে\")"
+          }
         }
       },
       {
@@ -119,7 +156,13 @@
         "v_numeric": {
           "value": "false",
           "err": "Enter value"
+        },
+        "relevance": {
+        "step1:reason_invalid": {
+          "type": "string",
+          "ex": "equalTo(., \"মৃত্যু হয়েছে\")"
         }
+      }
       },
       {
         "key": "Cause_Of_Death",
@@ -132,6 +175,81 @@
         "v_numeric": {
           "value": "false",
           "err": "Enter value"
+        },
+        "relevance": {
+          "step1:reason_invalid": {
+            "type": "string",
+            "ex": "equalTo(., \"মৃত্যু হয়েছে\")"
+          }
+        }
+      },
+      {
+        "key": "transfer_location",
+        "openmrs_entity_parent": "",
+        "openmrs_entity": "",
+        "openmrs_entity_id": "",
+        "openmrs_data_type": "text",
+        "type": "spinner",
+        "hint": "স্থানান্তর হয়েছে",
+        "values": [
+          "দেশের মধ্যে",
+          "বিদেশে গমন"
+        ],
+        "openmrs_choice_ids": {
+          "দেশের মধ্যে": "domestic_transfer",
+          "বিদেশে গমন": "international_transfered"
+        },
+        "relevance": {
+          "step1:reason_invalid": {
+            "type": "string",
+            "ex": "equalTo(., \"স্থানান্তরীত হয়েছে\")"
+          }
+        }
+      },
+
+      {
+        "key": "jilla",
+        "openmrs_entity_parent": "",
+        "openmrs_entity": "person_attribute",
+        "openmrs_entity_id": "jilla",
+        "openmrs_data_type": "text",
+        "type": "edit_text",
+        "hint": "জেলা",
+        "relevance": {
+          "step1:transfer_location": {
+            "type": "string",
+            "ex": "equalTo(., \"দেশের মধ্যে\")"
+          }
+        }
+      },
+      {
+        "key": "upojila",
+        "openmrs_entity_parent": "",
+        "openmrs_entity": "person_attribute",
+        "openmrs_entity_id": "jilla",
+        "openmrs_data_type": "text",
+        "type": "edit_text",
+        "hint": "উপজেলা",
+        "relevance": {
+          "step1:transfer_location": {
+            "type": "string",
+            "ex": "equalTo(., \"দেশের মধ্যে\")"
+          }
+        }
+      },
+      {
+        "key": "eunion",
+        "openmrs_entity_parent": "",
+        "openmrs_entity": "person_attribute",
+        "openmrs_entity_id": "eunion",
+        "openmrs_data_type": "text",
+        "type": "edit_text",
+        "hint": "ইউনিয়ন",
+        "relevance": {
+          "step1:transfer_location": {
+            "type": "string",
+            "ex": "equalTo(., \"দেশের মধ্যে\")"
+          }
         }
       }
     ]

@@ -204,7 +204,7 @@ public class JsonFormUtils extends org.smartregister.util.JsonFormUtils {
 
             JSONArray fields = registrationFormParams.getRight();
 //            removeEmptyFields(fields);
-//            fields = processAttributesWithChoiceIDs(fields);
+            fields = processAttributesWithChoiceIDs(fields);
 
             String entityId = getString(jsonForm, ENTITY_ID);
             if (isBlank(entityId)) {

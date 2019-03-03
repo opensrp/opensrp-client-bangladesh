@@ -94,7 +94,7 @@ public class MemberProfileContactsFragment extends BaseProfileFragment {
             for(int i=0;i<field.length();i++){
                 processPopulatableFieldsForHouseholds(householdDetails.getColumnmaps(),field.getJSONObject(i));
             }
-            for(int i = 0;i<field.length();i++){
+            for(int i = 0;i<field.length();i++) {
                 if(field.getJSONObject(i).has("hint")) {
                     inflater = (LayoutInflater) getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
                     View view = inflater.inflate(R.layout.overview_list_row, null, false);

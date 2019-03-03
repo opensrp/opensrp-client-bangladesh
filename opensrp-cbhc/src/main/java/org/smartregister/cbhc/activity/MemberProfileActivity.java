@@ -61,8 +61,10 @@ import org.smartregister.util.DateUtil;
 import org.smartregister.util.PermissionUtils;
 
 import java.io.Serializable;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 
 import static org.smartregister.cbhc.fragment.ProfileOverviewFragment.EXTRA_HOUSEHOLD_DETAILS;
@@ -86,6 +88,7 @@ public class MemberProfileActivity extends BaseProfileActivity implements Profil
 
     private TextView nameView;
     private TextView ageView;
+    private  TextView pregnant_statusView;
     private TextView gestationAgeView;
     private TextView ancIdView;
     private ImageView imageView;
@@ -157,6 +160,7 @@ public class MemberProfileActivity extends BaseProfileActivity implements Profil
         gestationAgeView = findViewById(R.id.textview_gestation_age);
         ancIdView = findViewById(R.id.textview_anc_id);
         nameView = findViewById(R.id.textview_name);
+        pregnant_statusView = findViewById(R.id.textview_pregnant_status);
         imageView = findViewById(R.id.imageview_profile);
 
 //setProfileImage(householdDetails.entityId());
@@ -164,6 +168,23 @@ public class MemberProfileActivity extends BaseProfileActivity implements Profil
         String lastName = org.smartregister.util.Utils.getValue(householdDetails.getColumnmaps(), DBConstants.KEY.LAST_NAME, true);
         if(lastName.equalsIgnoreCase("null")||lastName==null){
             lastName = "";
+        }
+        String lmp_date = householdDetails.getColumnmaps().get("lmp_date");
+        String delivery_status = householdDetails.getColumnmaps().get("pregnant_status");
+        if(lmp_date!=null&&delivery_status!=null) {
+            SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
+            Calendar c = Calendar.getInstance();
+            try {
+                c.setTime(sdf.parse(lmp_date));
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+            c.add(Calendar.DATE, 280);  // number of days to add
+            lmp_date = sdf.format(c.getTime());  // dt is now the new date
+            if(delivery_status.equalsIgnoreCase("প্রসব পূর্ব")||delivery_status.equalsIgnoreCase("Antenatal Period")){
+                pregnant_statusView.setVisibility(View.VISIBLE);
+                pregnant_statusView.setText("EDD: "+lmp_date);
+            }
         }
         String patientName = getName(firstName, lastName);
 
@@ -322,12 +343,12 @@ public class MemberProfileActivity extends BaseProfileActivity implements Profil
             if(age>=5){
                 arrayAdapter.add("বৈবাহিক অবস্থা");
                 arrayAdapter.add("ঝুঁকিপূর্ণ অভ্যাস");
-                arrayAdapter.add("স্থানান্তর");
+//                arrayAdapter.add("স্থানান্তর");
             }
 
 
-            arrayAdapter.add("মৃত্যু");
-            arrayAdapter.add("সদস্য পাওয়া যায়নি");
+            arrayAdapter.add("তথ্য সংগ্রহ সম্ভব নয়");
+//            arrayAdapter.add("সদস্য পাওয়া যায়নি");
 
 //            arrayAdapter.add(getString(R.string.close_anc_record));
 
@@ -369,7 +390,7 @@ public class MemberProfileActivity extends BaseProfileActivity implements Profil
                             getIntent().putExtra(Constants.INTENT_KEY.BASE_ENTITY_ID,householdDetails.getCaseId());
                             JsonFormUtils.launchFollowUpForm(MemberProfileActivity.this,householdDetails.getColumnmaps(),Followup_Form_MHV_Risky_Habit);
                             break;
-                        case "মৃত্যু":
+                        case "তথ্য সংগ্রহ সম্ভব নয়":
                             getIntent().putExtra(Constants.INTENT_KEY.BASE_ENTITY_ID,householdDetails.getCaseId());
                             JsonFormUtils.launchFollowUpForm(MemberProfileActivity.this,householdDetails.getColumnmaps(),Followup_Form_MHV_Death);
                             break;

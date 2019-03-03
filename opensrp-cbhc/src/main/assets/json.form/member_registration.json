@@ -555,7 +555,82 @@
           "তৃতীয় লিঙ্গ":"O"
         }
       },
+      /*age 0 - 41 days */
+      /*
+      {
+        "key":"Child_birth_weight",
+        "openmrs_entity_parent":"",
+        "openmrs_entity":"concept",
+        "openmrs_entity_id":"1e58da4d-60b9-4c60-a079-9a5371d3cfa9",
+        "openmrs_data_type":"text",
+        "type":"spinner",
+        "hint":"বাচ্চার জন্মকালীন ওজন ",
+        "values":[
+          "হ্যাঁ",
+          "না"
+        ],
+        "openmrs_choice_ids":{
+          "হ্যাঁ":"Yes",
+          "না":"No"
+        },
+        "relevance": {
+          "step1:pregnant_status": {
+            "type": "string",
+            "ex": "regex(., \"(প্রসবোত্তর)\")"
+          }
+        }
+      },
+      {
+        "key":"Birth_weight",
+        "openmrs_entity_parent":"",
+        "openmrs_entity":"concept",
+        "openmrs_entity_id":"9d4aa237-b866-43a1-a75b-9b9490d4a3b9",
+        "openmrs_data_type":"text",
+        "type":"edit_text",
+        "hint":"ওজন",
+        "v_numeric":{
+          "value":"true",
+          "err":"Enter a valid Number"
+        },
+        "relevance": {
+          "step1:Child_birth_weight": {
+            "type": "string",
+            "ex": "regex(., \"(হ্যাঁ)\")"
+          }
+        },
+        "relevance": {
+          "step1:pregnant_status": {
+            "type": "string",
+            "ex": "regex(., \"(প্রসবোত্তর)\")"
+          }
+        }
+      },
+      {
+        "key":"Used_7.1%_Chlorohexidin",
+        "openmrs_entity_parent":"",
+        "openmrs_entity":"concept",
+        "openmrs_entity_id":"1f011039-e2dc-49a0-8804-1a96d1d5ba49",
+        "openmrs_data_type":"text",
+        "type":"spinner",
+        "hint":"৭.১% ক্লোরোহেক্সিডিন এর ব্যবহার ",
+        "values":[
+          "হ্যাঁ",
+          "না"
+        ],
+        "openmrs_choice_ids":{
+          "হ্যাঁ":"Yes",
+          "না":"No"
+        },
+        "relevance": {
+          "step1:pregnant_status": {
+            "type": "string",
+            "ex": "regex(., \"(প্রসবোত্তর)\")"
+          }
+        }
+      },
+      */
 
+      /**/
       {
         "key": "marital_status",
         "openmrs_entity_parent": "",
@@ -1241,7 +1316,7 @@
         "openmrs_entity_id": "pregnant_status",
         "openmrs_data_type": "",
         "type": "spinner",
-        "hint": "গর্ভাবস্থার তথ্য",
+        "hint": "গর্ভাবস্থার সম্পর্কিত তথ্য",
         "values": [
           "প্রসব পূর্ব",
           "প্রসবোত্তর",
@@ -1270,12 +1345,13 @@
         "openmrs_entity": "",
         "openmrs_entity_id": "lmp_date",
         "type": "date_picker",
-        "hint": "শেষ মাসিকের তারিখ।",
+        "hint": "শেষ মাসিকের তারিখ",
         "expanded": false,
         "duration": {
           "label": "Yrs"
         },
-        "max_date": "today",
+        "max_date": "today-42d",
+        "min_date": "today-308d",
 
         "relevance": {
           "step1:pregnant_status": {

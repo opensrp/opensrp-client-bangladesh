@@ -388,7 +388,7 @@ public class ProfileOverviewFragment extends BaseProfileFragment {
             return  view;
         }
 
-        public void addChild(LinearLayout household_details_list_row, String mother_id){
+        public void addChild(LinearLayout household_details_list_row, String mother_id) {
             Log.e("--------------",mother_id);
 
 

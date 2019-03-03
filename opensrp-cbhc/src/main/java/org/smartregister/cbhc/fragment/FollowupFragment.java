@@ -208,9 +208,9 @@ public class FollowupFragment extends BaseProfileFragment {
     private int getPregnantStatus() {
         String ps = householdDetails.getColumnmaps().get("pregnant_status");
 
-        if((ps!=null&&ps.equalsIgnoreCase("প্রসব পূর্ব")))
+        if((ps!=null&&(ps.equalsIgnoreCase("প্রসব পূর্ব")||ps.equalsIgnoreCase("Antenatal Period"))))
             return 1;
-        if((ps!=null&&ps.equalsIgnoreCase("প্রসবোত্তর")))
+        if((ps!=null&&(ps.equalsIgnoreCase("প্রসবোত্তর")||ps.equalsIgnoreCase("Postnatal"))))
             return 2;
         //Antenatal Period,Postnatal
         return 0;
@@ -299,7 +299,7 @@ public class FollowupFragment extends BaseProfileFragment {
 
 
                 }else if(pregnant_status == 2){
-                    all_forms.add(new Constants.FOLLOWUP_FORM.FOLLOWUPFORMS(Followup_Form_MHV_Delivery,"প্রসব"));
+//                    all_forms.add(new Constants.FOLLOWUP_FORM.FOLLOWUPFORMS(Followup_Form_MHV_Delivery,"প্রসব"));
                     all_forms.add(new Constants.FOLLOWUP_FORM.FOLLOWUPFORMS(Followup_Form_MHV_PNC,"প্রসব পরবর্তী "));
                     all_forms.add(new Constants.FOLLOWUP_FORM.FOLLOWUPFORMS(Followup_Form_MHV_FP,"পরিবার পরিকল্পনা"));
                 }else{

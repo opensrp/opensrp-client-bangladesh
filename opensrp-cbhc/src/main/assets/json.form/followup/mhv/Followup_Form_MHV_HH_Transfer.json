@@ -52,9 +52,30 @@
     }
   },
   "step1": {
-    "title": "খানা স্থানান্তর ",
+    "title": "খাানার অবস্থা্ন",
     "fields": [
+      {
+        "key": "household_status",
+        "openmrs_entity_parent": "",
+        "openmrs_entity": "",
+        "openmrs_entity_id": "",
+        "openmrs_data_type": "text",
+        "type": "spinner",
+        "hint": "খাানার অবস্থা্ন",
+        "values": [
+          "খানা স্থানান্তর",
+          "খানা পাওয়া যায়নি "
+        ],
+        "openmrs_choice_ids": {
+          "খানা স্থানান্তর": "Household_Migrated",
+          "খানা পাওয়া যায়নি ": "Household_Not_Found"
+        },
+        "v_required": {
+          "value": true,
+          "err": "Please select household status"
+        }
 
+      },
       {
         "key": "jilla",
         "openmrs_entity_parent": "",
@@ -62,8 +83,13 @@
         "openmrs_entity_id": "jilla",
         "openmrs_data_type": "text",
         "type": "edit_text",
-        "hint": "জেলা"
-
+        "hint": "জেলা",
+        "relevance": {
+          "step1:household_status": {
+            "type": "string",
+            "ex": "equalTo(., \"খানা স্থানান্তর\")"
+          }
+        }
       },
       {
         "key": "upojila",
@@ -72,7 +98,13 @@
         "openmrs_entity_id": "jilla",
         "openmrs_data_type": "text",
         "type": "edit_text",
-        "hint": "উপজেলা"
+        "hint": "উপজেলা",
+        "relevance": {
+          "step1:household_status": {
+            "type": "string",
+            "ex": "equalTo(., \"খানা স্থানান্তর\")"
+          }
+        }
 
       },
       {
@@ -82,7 +114,13 @@
         "openmrs_entity_id": "eunion",
         "openmrs_data_type": "text",
         "type": "edit_text",
-        "hint": "ইউনিয়ন"
+        "hint": "ইউনিয়ন",
+        "relevance": {
+          "step1:household_status": {
+            "type": "string",
+            "ex": "equalTo(., \"খানা স্থানান্তর\")"
+          }
+        }
 
       }
     ]
