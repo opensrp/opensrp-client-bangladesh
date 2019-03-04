@@ -55,6 +55,8 @@ android {
 
     buildTypes {
         release {
+            minifyEnabled false
+            debuggable false
             resValue "string", 'opensrp_url', '"http://27.147.129.52:8080/opensrp/"'
             buildConfigField "int", "OPENMRS_UNIQUE_ID_INITIAL_BATCH_SIZE", '250'
             buildConfigField "int", "OPENMRS_UNIQUE_ID_BATCH_SIZE", '100'
@@ -67,7 +69,6 @@ android {
             buildConfigField "int", "IMAGE_UPLOAD_MINUTES", '7'
             buildConfigField "int", "PULL_UNIQUE_IDS_MINUTES", '10'
             buildConfigField "int", "VIEW_SYNC_CONFIGURATIONS_MINUTES", '2'
-            testCoverageEnabled true
         }
 
         debug {
@@ -140,7 +141,7 @@ dependencies {
 
 //    use cbhc-vaccines branch for local build in immunization library
 
-    implementation('org.smartregister:opensrp-client-immunization:2.4.6-SNAPSHOT@aar') {
+    implementation('org.smartregister:opensrp-client-immunization:2.4.7-SNAPSHOT') {
         transitive = true
         exclude group: 'org.smartregister', module: 'opensrp-client-core'
         exclude group: 'org.smartregister', module: 'opensrp-client-native-form'
@@ -157,7 +158,7 @@ dependencies {
     }
 
 //    use issue158 branch for local build
-    implementation('org.smartregister:opensrp-client-core:2.5.13-SNAPSHOT') {
+    implementation('org.smartregister:opensrp-client-core:2.5.14-SNAPSHOT') {
         transitive = true
         exclude group: 'com.github.bmelnychuk', module: 'atv'
         exclude group: 'com.google.guava', module: 'guava'

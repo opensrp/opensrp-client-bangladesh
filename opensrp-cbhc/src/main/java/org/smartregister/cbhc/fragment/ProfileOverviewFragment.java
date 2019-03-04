@@ -229,8 +229,6 @@ public class ProfileOverviewFragment extends BaseProfileFragment {
             String pregnant_status = personinlist.getColumnmaps().get("pregnant_status");
             if(pregnant_status!=null && (pregnant_status.contains("Antenatal Period")||pregnant_status.contains("প্রসব পূর্ব"))){
                 pregnant_icon.setVisibility(View.VISIBLE);
-            }else{
-                pregnant_icon.setVisibility(View.INVISIBLE);
             }
 
             String firstName = org.smartregister.util.Utils.getValue(pClient.getColumnmaps(), DBConstants.KEY.FIRST_NAME, true);
@@ -318,7 +316,8 @@ public class ProfileOverviewFragment extends BaseProfileFragment {
                             d = getResources().getDrawable(R.drawable.child_boy_infant);
                             profile_photo.put(pClient.entityId(),d);
                         }
-
+                        pregnant_icon.setVisibility(View.VISIBLE);
+                        pregnant_icon.setImageResource(R.drawable.male_child_cbhc);
 
 //                        profileImageIV.setImageDrawable(getResources().getDrawable(R.drawable.child_boy_infant));
 //                        DrishtiApplication.getCachedImageLoaderInstance().getImageByClientId(pClient.entityId(), OpenSRPImageLoader.getStaticImageListener(profileImageIV, R.drawable.child_boy_infant, R.drawable.child_boy_infant));
@@ -333,7 +332,8 @@ public class ProfileOverviewFragment extends BaseProfileFragment {
                             profile_photo.put(pClient.entityId(),d);
                         }
 
-
+                        pregnant_icon.setVisibility(View.VISIBLE);
+                        pregnant_icon.setImageResource(R.drawable.female_child_cbhc);
 //                        profileImageIV.setImageDrawable(getResources().getDrawable(R.drawable.child_girl_infant));
 //                        DrishtiApplication.getCachedImageLoaderInstance().getImageByClientId(pClient.entityId(), OpenSRPImageLoader.getStaticImageListener(profileImageIV, R.drawable.child_girl_infant, R.drawable.child_girl_infant));
                         clientype = "femalechild";

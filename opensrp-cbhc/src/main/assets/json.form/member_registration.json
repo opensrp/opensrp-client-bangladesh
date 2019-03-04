@@ -760,6 +760,10 @@
           "হ্যাঁ",
           "না"
         ],
+        "v_required": {
+          "value": true,
+          "err": "Please Select Diability"
+        },
         "openmrs_choice_ids": {
           "হ্যাঁ": "Yes",
           "না": "No"
@@ -799,6 +803,7 @@
           "বহুমাত্রিক প্রতিবন্ধিতা": "Multidimensional Disability",
           "ডাউন সিনড্রম": "Down Syndrome"
         },
+
         "relevance": {
           "step1:disability": {
             "type": "string",
@@ -847,6 +852,10 @@
           "মুন্ডা": "Munda",
           "অন্যান্য": "Others (Ethnicity)"
 
+        },
+        "v_required": {
+          "value": true,
+          "err": "Please Select Ethnicity"
         }
       },
       {
@@ -921,6 +930,7 @@
           "ধাত্রীবিদ্যা/নার্সিং": "Midwife/Nursing",
           "অন্যান্য": "Others (Education)"
         },
+
         "relevance": {
           "step1:age": {
             "type": "numeric",
@@ -1108,6 +1118,10 @@
           "ছাত্র/ছাত্রী":"Study",
           "অন্যান্য":"Others (Occupation)"
         },
+        "v_required": {
+          "value": true,
+          "err": "Please Select Occupation"
+        },
         "relevance": {
           "step1:age": {
             "type": "numeric",
@@ -1154,6 +1168,10 @@
           "বৌদ্ধ": "Buddhist",
           "খ্রিস্টান": "Christian",
           "অন্যান্য": "Others (Religion)"
+        },
+        "v_required": {
+          "value": true,
+          "err": "Please Select Religion"
         }
       },
       {
@@ -1203,6 +1221,10 @@
           "AB+": "AB+",
           "AB-": "AB-",
           "রক্তের গ্রুপ জানা নেই":"BloodGroupUnknown"
+        },
+        "v_required": {
+          "value": true,
+          "err": "Please Select Blood Group"
         }
       },
       {
@@ -1220,6 +1242,10 @@
         "openmrs_choice_ids": {
           "হ্যাঁ": "Yes",
           "না": "No"
+        },
+        "v_required": {
+          "value": true,
+          "err": "Please Select Disease"
         }
       },
       {
@@ -1313,7 +1339,7 @@
         "key": "pregnant_status",
         "openmrs_entity_parent": "",
         "openmrs_entity": "person_attribute",
-        "openmrs_entity_id": "pregnant_status",
+        "openmrs_entity_id": "PregnancyStatus",
         "openmrs_data_type": "",
         "type": "spinner",
         "hint": "গর্ভাবস্থার সম্পর্কিত তথ্য",
@@ -1331,6 +1357,7 @@
           "MR করেছে": "Did_MR",
           "কোনটিই নই":"None_Above"
         },
+
         "relevance": {
           "rules-engine": {
             "ex-rules": {
@@ -1343,7 +1370,7 @@
         "key": "lmp_date",
         "openmrs_entity_parent": "",
         "openmrs_entity": "",
-        "openmrs_entity_id": "lmp_date",
+        "openmrs_entity_id": "LMP",
         "type": "date_picker",
         "hint": "শেষ মাসিকের তারিখ",
         "expanded": false,
@@ -1380,70 +1407,7 @@
           }
         }
       },
-      {
-        "key": "Date_Of_Abortion",
-        "openmrs_entity_parent": "",
-        "openmrs_entity": "",
-        "openmrs_entity_id": "Date_Of_Abortion",
-        "type": "date_picker",
-        "hint": "গর্ভপাতের তারিখ",
-        "expanded": false,
-        "duration": {
-          "label": "Yrs"
-        },
-        "max_date": "today",
 
-        "relevance": {
-          "step1:pregnant_status": {
-            "type": "string",
-            "ex": "regex(., \"(গর্ভপাত হয়েছে)\")"
-          }
-        }
-      },
-      {
-        "key": "Type_Of_Abortion",
-        "openmrs_entity_parent": "",
-        "openmrs_entity": "",
-        "openmrs_entity_id": "Type_Of_Abortion",
-        "openmrs_data_type": "",
-        "type": "spinner",
-        "hint": "গর্ভপাতের ধরণ",
-        "values": [
-          "অনাকাঙ্খিত গর্ভপাত",
-          "ঔষধ দ্বারা গর্ভপাত"
-        ],
-        "openmrs_choice_ids": {
-          "অনাকাঙ্খিত গর্ভপাত": "Spontaneous_Abortion",
-          "ঔষধ দ্বারা গর্ভপাত": "Medicine_Induced_Abortion"
-        },
-
-        "relevance": {
-          "step1:pregnant_status": {
-            "type": "string",
-            "ex": "regex(., \"(গর্ভপাত হয়েছে)\")"
-          }
-        }
-      },
-      {
-        "key": "Date_Of_MR",
-        "openmrs_entity_parent": "",
-        "openmrs_entity": "",
-        "openmrs_entity_id": "Date_Of_MR",
-        "type": "date_picker",
-        "hint": "MR এর তারিখ",
-        "expanded": false,
-        "duration": {
-          "label": "Yrs"
-        },
-        "max_date": "today",
-
-        "relevance": {
-          "step1:pregnant_status": {
-            "type": "string",
-            "ex": "regex(., \"(MR করেছে)\")"
-          }
-        }
-      },
       {
         "key": "Disease_status_zero_to_two_month_by_age",
         "openmrs_entity_parent": "",
@@ -1661,6 +1625,10 @@
           "অন্যান্য পদ্ধতি ":"Other_Method",
           "বন্ধ্যা দম্পতি ":"Infertility",
           "পদ্ধতি ব্যবহার করে না ":"No_Method_Usage"
+        },
+        "v_required": {
+          "value": true,
+          "err": "Please Select Family Planning"
         },
         "relevance": {
           "rules-engine": {

@@ -517,11 +517,13 @@ public class AncJsonFormFragment extends JsonFormFragment {
             if (((MaterialSpinner) parent).getFloatingLabelText().toString().equalsIgnoreCase("খানা প্রধানের সাথে সম্পর্ক*")) {
                 processHeadOfHouseHoldAsMember(position);
             }
+            if (((MaterialSpinner) parent).getFloatingLabelText().toString().equalsIgnoreCase("লিঙ্গ*")) {
+                processHeadOfHouseHoldRelation(position);
+            }
         }
     }
-    public static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("dd-MM-yyyy");
-    private void processHeadOfHouseHoldAsMember(int position) {
-        if (position == 0) {
+    public void processHeadOfHouseHoldRelation(final int position){
+
             Utils.startAsyncTask(new AsyncTask() {
                 ProfileImage imageRecord;
                 String headOfHouseholdFirstName = "";
@@ -562,23 +564,74 @@ public class AncJsonFormFragment extends JsonFormFragment {
                 protected void onPostExecute(Object o) {
                     super.onPostExecute(o);
                     ArrayList<View> formdataviews = getJsonApi().getFormDataViews();
-                    for (int i = 0; i < formdataviews.size(); i++) {
-                        if (formdataviews.get(i) instanceof MaterialEditText) {
-                            if (((MaterialEditText) formdataviews.get(i)).getFloatingLabelText().toString().trim().equalsIgnoreCase("নামের প্রথম অংশ (ইংরেজীতে)*")) {
-                                ((MaterialEditText) formdataviews.get(i)).setText(headOfHouseholdFirstName);
+
+                    update_spouse_hint(formdataviews,position+1);
+
+                }
+            },null);
+    }
+    public static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("dd-MM-yyyy");
+    private void processHeadOfHouseHoldAsMember(final int position) {
+        if (position == 0||position == 1||position == 2) {
+            Utils.startAsyncTask(new AsyncTask() {
+                ProfileImage imageRecord;
+                String headOfHouseholdFirstName = "";
+                String headOfHouseholdLastName = "";
+                String headOfHouseholdMobileNumber = "";
+                String headOfHouseholdDOB = "";
+                String headOfHouseholdDOBUnknown = "";
+                String headOfHouseholdage = "";
+                @Override
+                protected Object doInBackground(Object[] objects) {
+                    JSONObject formObject = getJsonApi().getmJSONObject();
+                    if (formObject.has("metadata")){
+                        try {
+                            JSONObject metadata = formObject.getJSONObject("metadata");
+                            if (metadata.has("look_up")) {
+                                JSONObject look_up = metadata.getJSONObject("look_up");
+                                if (look_up.has("entity_id") && look_up.getString("entity_id").equalsIgnoreCase("household")) {
+                                    String relational_id = look_up.getString("value");
+                                    CommonRepository commonRepository = AncApplication.getInstance().getContext().commonrepository("ec_household");
+                                    CommonPersonObject household = commonRepository.findByBaseEntityId(relational_id);
+                                    headOfHouseholdFirstName = getValue(household.getColumnmaps(), "first_name", false);
+                                    headOfHouseholdLastName = getValue(household.getColumnmaps(), "last_name", false);
+                                    headOfHouseholdMobileNumber = getValue(household.getColumnmaps(),"phone_number",false);
+                                    headOfHouseholdDOB = getValue(household.getColumnmaps(),"dob",false);
+                                    headOfHouseholdDOBUnknown = getValue(household.getColumnmaps(),"dob_unknown",false);
+                                    ImageRepository imageRepo = CoreLibrary.getInstance().context().imageRepository();
+                                    imageRecord = imageRepo.findByEntityId(relational_id);
+                                }
                             }
-                            if (((MaterialEditText) formdataviews.get(i)).getFloatingLabelText().toString().trim().equalsIgnoreCase("নামের শেষ অংশ (ইংরেজীতে)*")) {
-                                ((MaterialEditText) formdataviews.get(i)).setText(headOfHouseholdLastName);
-                            }
-                            if (((MaterialEditText) formdataviews.get(i)).getFloatingLabelText().toString().trim().equalsIgnoreCase("মোবাইল নম্বর (ইংরেজীতে)*")) {
-                                ((MaterialEditText) formdataviews.get(i)).setText(headOfHouseholdMobileNumber);
-                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                    return null;
+                }
+
+                @Override
+                protected void onPostExecute(Object o) {
+                    super.onPostExecute(o);
+                    ArrayList<View> formdataviews = getJsonApi().getFormDataViews();
+                    if(position == 0) {
+
+                        for (int i = 0; i < formdataviews.size(); i++) {
+                            if (formdataviews.get(i) instanceof MaterialEditText) {
+                                if (((MaterialEditText) formdataviews.get(i)).getFloatingLabelText().toString().trim().equalsIgnoreCase("নামের প্রথম অংশ (ইংরেজীতে)*")) {
+                                    ((MaterialEditText) formdataviews.get(i)).setText(headOfHouseholdFirstName);
+                                }
+                                if (((MaterialEditText) formdataviews.get(i)).getFloatingLabelText().toString().trim().equalsIgnoreCase("নামের শেষ অংশ (ইংরেজীতে)*")) {
+                                    ((MaterialEditText) formdataviews.get(i)).setText(headOfHouseholdLastName);
+                                }
+                                if (((MaterialEditText) formdataviews.get(i)).getFloatingLabelText().toString().trim().equalsIgnoreCase("মোবাইল নম্বর (ইংরেজীতে)*")) {
+                                    ((MaterialEditText) formdataviews.get(i)).setText(headOfHouseholdMobileNumber);
+                                }
 //                            if (((MaterialEditText) formdataviews.get(i)).getFloatingLabelText().toString().trim().equalsIgnoreCase("‘হ্যাঁ’ হলে জন্ম তারিখ*")) {
 //                                Date dob = org.smartregister.cbhc.util.Utils.dobStringToDate(headOfHouseholdDOB);
 //                                headOfHouseholdDOB = DATE_FORMAT.format(dob);
 //                                ((MaterialEditText) formdataviews.get(i)).setText(headOfHouseholdDOB);
 //                            }
-                        }
+                            }
 //                        if (formdataviews.get(i) instanceof MaterialSpinner) {
 //                            if (((MaterialSpinner) formdataviews.get(i)).getFloatingLabelText().toString().trim().equalsIgnoreCase("জন্ম তারিখ জানা আছে কি?*")) {
 //                                if(headOfHouseholdDOBUnknown.equalsIgnoreCase("true")){
@@ -589,34 +642,88 @@ public class AncJsonFormFragment extends JsonFormFragment {
 //                            }
 //
 //                        }
-                        if(formdataviews.get(i) instanceof ImageView){
-                            try{
-                            ImageView imageView = (ImageView) formdataviews.get(i);
-                            String filePath = imageRecord.getFilepath();
+                            if (formdataviews.get(i) instanceof ImageView) {
+                                try {
+                                    ImageView imageView = (ImageView) formdataviews.get(i);
+                                    String filePath = imageRecord.getFilepath();
 
-                            File sd = Environment.getExternalStorageDirectory();
+                                    File sd = Environment.getExternalStorageDirectory();
 
-                            File image = new File(filePath);
-                            BitmapFactory.Options bmOptions = new BitmapFactory.Options();
-                            Bitmap bitmap = BitmapFactory.decodeFile(image.getAbsolutePath(),bmOptions);
+                                    File image = new File(filePath);
+                                    BitmapFactory.Options bmOptions = new BitmapFactory.Options();
+                                    Bitmap bitmap = BitmapFactory.decodeFile(image.getAbsolutePath(), bmOptions);
 //                            bitmap = Bitmap.createScaledBitmap(bitmap,imageView.getWidth(),imageView.getHeight(),true);
 
-                            updateRelevantImageView(bitmap,imageRecord.getFilepath(),(String)imageView.getTag(com.vijay.jsonwizard.R.id.key));
+                                    updateRelevantImageView(bitmap, imageRecord.getFilepath(), (String) imageView.getTag(com.vijay.jsonwizard.R.id.key));
 
-                            }catch (Exception e){
+                                } catch (Exception e) {
 
+                                }
                             }
                         }
+
+                    }else{
+                        update_spouse_hint(formdataviews,position);
                     }
-
-
-
+//
                 }
             },null);
         }
 
     }
+    public void update_spouse_hint(ArrayList<View> formdataviews,int position){
+        for (int i = 0; i < formdataviews.size(); i++) {
+            if (formdataviews.get(i) instanceof MaterialEditText) {
+                if (position==1) {
+                    if (((MaterialEditText) formdataviews.get(i)).getFloatingLabelText().toString().trim().equalsIgnoreCase("স্বামী/স্ত্রীর নাম (ইংরেজীতে)")) {
+                        ((MaterialEditText) formdataviews.get(i)).setHint("স্ত্রীর নাম (ইংরেজীতে)");
+                        ((MaterialEditText) formdataviews.get(i)).setFloatingLabelText("স্ত্রীর নাম (ইংরেজীতে)");
+//                                        ((MaterialEditText) formdataviews.get(i)).setText(headOfHouseholdFirstName+" "+headOfHouseholdLastName);
+                    }
+                    if (((MaterialEditText) formdataviews.get(i)).getFloatingLabelText().toString().trim().equalsIgnoreCase("স্ত্রীর নাম (ইংরেজীতে)")) {
+                        ((MaterialEditText) formdataviews.get(i)).setHint("স্বামীর নাম (ইংরেজীতে)");
+                        ((MaterialEditText) formdataviews.get(i)).setFloatingLabelText("স্বামীর নাম (ইংরেজীতে)");
+//                                        ((MaterialEditText) formdataviews.get(i)).setText(headOfHouseholdFirstName+" "+headOfHouseholdLastName);
+                    }
+                    if (((MaterialEditText) formdataviews.get(i)).getFloatingLabelText().toString().trim().equalsIgnoreCase("স্বামী/স্ত্রীর নাম (বাংলায়)")) {
+                        ((MaterialEditText) formdataviews.get(i)).setHint("স্ত্রীর নাম (বাংলায়)");
+//                                        ((MaterialEditText) formdataviews.get(i)).setText(headOfHouseholdFirstName+" "+headOfHouseholdLastName);
+                    }
+                    if (((MaterialEditText) formdataviews.get(i)).getFloatingLabelText().toString().trim().equalsIgnoreCase("স্ত্রীর নাম (বাংলায়)")) {
+                        ((MaterialEditText) formdataviews.get(i)).setHint("স্বামীর নাম (বাংলায়)");
+//                                        ((MaterialEditText) formdataviews.get(i)).setText(headOfHouseholdFirstName+" "+headOfHouseholdLastName);
+                    }
 
+                } else if (position == 2) {
+                    if (((MaterialEditText) formdataviews.get(i)).getFloatingLabelText().toString().trim().equalsIgnoreCase("স্বামী/স্ত্রীর নাম (ইংরেজীতে)")) {
+                        ((MaterialEditText) formdataviews.get(i)).setHint("স্বামীর নাম (ইংরেজীতে)");
+//                                        ((MaterialEditText) formdataviews.get(i)).setText(headOfHouseholdFirstName+" "+headOfHouseholdLastName);
+                    }
+                    if (((MaterialEditText) formdataviews.get(i)).getFloatingLabelText().toString().trim().equalsIgnoreCase("স্বামীর নাম (ইংরেজীতে)")) {
+                        ((MaterialEditText) formdataviews.get(i)).setHint("স্ত্রীর নাম (ইংরেজীতে)");
+//                                        ((MaterialEditText) formdataviews.get(i)).setText(headOfHouseholdFirstName+" "+headOfHouseholdLastName);
+                    }
+                    if (((MaterialEditText) formdataviews.get(i)).getFloatingLabelText().toString().trim().equalsIgnoreCase("স্বামী/স্ত্রীর নাম (বাংলায়)")) {
+                        ((MaterialEditText) formdataviews.get(i)).setHint("স্বামীর নাম (বাংলায়)");
+//                                        ((MaterialEditText) formdataviews.get(i)).setText(headOfHouseholdFirstName+" "+headOfHouseholdLastName);
+                    }
+                    if (((MaterialEditText) formdataviews.get(i)).getFloatingLabelText().toString().trim().equalsIgnoreCase("স্বামীর নাম (বাংলায়)")) {
+                        ((MaterialEditText) formdataviews.get(i)).setHint("স্ত্রীর নাম (বাংলায়)");
+//                                        ((MaterialEditText) formdataviews.get(i)).setText(headOfHouseholdFirstName+" "+headOfHouseholdLastName);
+                    }
+
+                }
+
+
+
+//                            if (((MaterialEditText) formdataviews.get(i)).getFloatingLabelText().toString().trim().equalsIgnoreCase("‘হ্যাঁ’ হলে জন্ম তারিখ*")) {
+//                                Date dob = org.smartregister.cbhc.util.Utils.dobStringToDate(headOfHouseholdDOB);
+//                                headOfHouseholdDOB = DATE_FORMAT.format(dob);
+//                                ((MaterialEditText) formdataviews.get(i)).setText(headOfHouseholdDOB);
+//                            }
+            }
+        }
+    }
 
 }
 

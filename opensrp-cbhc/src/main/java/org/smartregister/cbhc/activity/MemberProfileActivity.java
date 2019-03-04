@@ -213,7 +213,7 @@ public class MemberProfileActivity extends BaseProfileActivity implements Profil
         gestationAgeView.setVisibility(View.GONE);
     }
 
-    public void refreshProfileViews(){
+    public void refreshProfileViews() {
 //        if(typeofMember.equalsIgnoreCase("malechild")||typeofMember.equalsIgnoreCase("femalechild")){
 //            householdDetails = CommonPersonObjectToClient(AncApplication.getInstance().getContext().commonrepository(DBConstants.CHILD_TABLE_NAME).findByBaseEntityId(householdDetails.entityId()));
 //        }else if(typeofMember.equalsIgnoreCase("woman")){
@@ -225,7 +225,7 @@ public class MemberProfileActivity extends BaseProfileActivity implements Profil
         householdDetails.getColumnmaps().putAll(AncApplication.getInstance().getContext().detailsRepository().getAllDetailsForClient(householdDetails.entityId()));
         String firstName = org.smartregister.util.Utils.getValue(householdDetails.getColumnmaps(), DBConstants.KEY.FIRST_NAME, true);
         String lastName = org.smartregister.util.Utils.getValue(householdDetails.getColumnmaps(), DBConstants.KEY.LAST_NAME, true);
-        if(lastName.equalsIgnoreCase("null")||lastName==null){
+        if(lastName.equalsIgnoreCase("null")||lastName==null) {
             lastName = "";
         }
         String patientName = getName(firstName, lastName);
