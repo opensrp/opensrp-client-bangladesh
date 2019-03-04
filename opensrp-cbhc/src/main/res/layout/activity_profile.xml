@@ -122,7 +122,7 @@
                     android:textAppearance="@style/TextAppearance.AppCompat.Small"
                     android:text="Charity Otala"
                     android:textColor="@android:color/white"
-                    android:textSize="@dimen/activity_title_size" />
+                     />
                 <Button
                     android:id="@+id/btn_profile_registration_info"
                     android:layout_width="wrap_content"

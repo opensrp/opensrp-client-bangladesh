@@ -168,6 +168,16 @@
                 android:textAllCaps="true"
                 android:textColor="#6fc8e8"
                 android:textSize="18sp" />
+            <com.vijay.jsonwizard.views.CustomTextView
+                android:layout_marginTop="20dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="5dp"
+                android:gravity="center_horizontal"
+                android:text="Population Registration and Information Management Application"
+                android:textColor="@color/white"
+                android:textSize="@dimen/login_build_text_view_textSize"
+                android:typeface="sans" />
         </LinearLayout>
         <!-- Bottom section -->
 

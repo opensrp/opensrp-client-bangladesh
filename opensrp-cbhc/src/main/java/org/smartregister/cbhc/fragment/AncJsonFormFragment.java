@@ -565,7 +565,7 @@ public class AncJsonFormFragment extends JsonFormFragment {
                     super.onPostExecute(o);
                     ArrayList<View> formdataviews = getJsonApi().getFormDataViews();
 
-                    update_spouse_hint(formdataviews,position+1);
+                    update_spouse_hint(formdataviews,position+1,headOfHouseholdFirstName+" "+headOfHouseholdLastName);
 
                 }
             },null);
@@ -663,7 +663,7 @@ public class AncJsonFormFragment extends JsonFormFragment {
                         }
 
                     }else{
-                        update_spouse_hint(formdataviews,position);
+                        update_spouse_hint(formdataviews,position,headOfHouseholdFirstName+" "+headOfHouseholdLastName);
                     }
 //
                 }
@@ -671,45 +671,54 @@ public class AncJsonFormFragment extends JsonFormFragment {
         }
 
     }
-    public void update_spouse_hint(ArrayList<View> formdataviews,int position){
+    public void update_spouse_hint(ArrayList<View> formdataviews,int position,String headOfHouseholdName){
         for (int i = 0; i < formdataviews.size(); i++) {
             if (formdataviews.get(i) instanceof MaterialEditText) {
                 if (position==1) {
                     if (((MaterialEditText) formdataviews.get(i)).getFloatingLabelText().toString().trim().equalsIgnoreCase("স্বামী/স্ত্রীর নাম (ইংরেজীতে)")) {
                         ((MaterialEditText) formdataviews.get(i)).setHint("স্ত্রীর নাম (ইংরেজীতে)");
                         ((MaterialEditText) formdataviews.get(i)).setFloatingLabelText("স্ত্রীর নাম (ইংরেজীতে)");
-//                                        ((MaterialEditText) formdataviews.get(i)).setText(headOfHouseholdFirstName+" "+headOfHouseholdLastName);
+                        ((MaterialEditText) formdataviews.get(i)).setText(headOfHouseholdName);
                     }
-                    if (((MaterialEditText) formdataviews.get(i)).getFloatingLabelText().toString().trim().equalsIgnoreCase("স্ত্রীর নাম (ইংরেজীতে)")) {
-                        ((MaterialEditText) formdataviews.get(i)).setHint("স্বামীর নাম (ইংরেজীতে)");
-                        ((MaterialEditText) formdataviews.get(i)).setFloatingLabelText("স্বামীর নাম (ইংরেজীতে)");
-//                                        ((MaterialEditText) formdataviews.get(i)).setText(headOfHouseholdFirstName+" "+headOfHouseholdLastName);
-                    }
+
                     if (((MaterialEditText) formdataviews.get(i)).getFloatingLabelText().toString().trim().equalsIgnoreCase("স্বামী/স্ত্রীর নাম (বাংলায়)")) {
                         ((MaterialEditText) formdataviews.get(i)).setHint("স্ত্রীর নাম (বাংলায়)");
-//                                        ((MaterialEditText) formdataviews.get(i)).setText(headOfHouseholdFirstName+" "+headOfHouseholdLastName);
+                        ((MaterialEditText) formdataviews.get(i)).setFloatingLabelText("স্ত্রীর নাম (বাংলায়)");
+//                        ((MaterialEditText) formdataviews.get(i)).setText(headOfHouseholdName);
                     }
-                    if (((MaterialEditText) formdataviews.get(i)).getFloatingLabelText().toString().trim().equalsIgnoreCase("স্ত্রীর নাম (বাংলায়)")) {
-                        ((MaterialEditText) formdataviews.get(i)).setHint("স্বামীর নাম (বাংলায়)");
-//                                        ((MaterialEditText) formdataviews.get(i)).setText(headOfHouseholdFirstName+" "+headOfHouseholdLastName);
+                    if (((MaterialEditText) formdataviews.get(i)).getFloatingLabelText().toString().trim().equalsIgnoreCase("স্বামীর নাম (বাংলায়)")) {
+                        ((MaterialEditText) formdataviews.get(i)).setHint("স্ত্রীর নাম (বাংলায়)");
+                        ((MaterialEditText) formdataviews.get(i)).setFloatingLabelText("স্ত্রীর নাম (বাংলায়)");
+//                        ((MaterialEditText) formdataviews.get(i)).setText(headOfHouseholdName);
                     }
+                    if (((MaterialEditText) formdataviews.get(i)).getFloatingLabelText().toString().trim().equalsIgnoreCase("স্বামীর নাম (ইংরেজীতে)")) {
+                        ((MaterialEditText) formdataviews.get(i)).setHint("স্ত্রীর নাম (ইংরেজীতে)");
+                        ((MaterialEditText) formdataviews.get(i)).setFloatingLabelText("স্ত্রীর নাম (ইংরেজীতে)");
+                        ((MaterialEditText) formdataviews.get(i)).setText(headOfHouseholdName);
+                    }
+
 
                 } else if (position == 2) {
                     if (((MaterialEditText) formdataviews.get(i)).getFloatingLabelText().toString().trim().equalsIgnoreCase("স্বামী/স্ত্রীর নাম (ইংরেজীতে)")) {
                         ((MaterialEditText) formdataviews.get(i)).setHint("স্বামীর নাম (ইংরেজীতে)");
-//                                        ((MaterialEditText) formdataviews.get(i)).setText(headOfHouseholdFirstName+" "+headOfHouseholdLastName);
+                        ((MaterialEditText) formdataviews.get(i)).setFloatingLabelText("স্বামীর নাম (ইংরেজীতে)");
+                        ((MaterialEditText) formdataviews.get(i)).setText(headOfHouseholdName);
                     }
-                    if (((MaterialEditText) formdataviews.get(i)).getFloatingLabelText().toString().trim().equalsIgnoreCase("স্বামীর নাম (ইংরেজীতে)")) {
-                        ((MaterialEditText) formdataviews.get(i)).setHint("স্ত্রীর নাম (ইংরেজীতে)");
-//                                        ((MaterialEditText) formdataviews.get(i)).setText(headOfHouseholdFirstName+" "+headOfHouseholdLastName);
-                    }
+
                     if (((MaterialEditText) formdataviews.get(i)).getFloatingLabelText().toString().trim().equalsIgnoreCase("স্বামী/স্ত্রীর নাম (বাংলায়)")) {
                         ((MaterialEditText) formdataviews.get(i)).setHint("স্বামীর নাম (বাংলায়)");
-//                                        ((MaterialEditText) formdataviews.get(i)).setText(headOfHouseholdFirstName+" "+headOfHouseholdLastName);
+                        ((MaterialEditText) formdataviews.get(i)).setFloatingLabelText("স্বামীর নাম (বাংলায়)");
+//                        ((MaterialEditText) formdataviews.get(i)).setText(headOfHouseholdName);
                     }
-                    if (((MaterialEditText) formdataviews.get(i)).getFloatingLabelText().toString().trim().equalsIgnoreCase("স্বামীর নাম (বাংলায়)")) {
-                        ((MaterialEditText) formdataviews.get(i)).setHint("স্ত্রীর নাম (বাংলায়)");
-//                                        ((MaterialEditText) formdataviews.get(i)).setText(headOfHouseholdFirstName+" "+headOfHouseholdLastName);
+                    if (((MaterialEditText) formdataviews.get(i)).getFloatingLabelText().toString().trim().equalsIgnoreCase("স্ত্রীর নাম (বাংলায়)")) {
+                        ((MaterialEditText) formdataviews.get(i)).setHint("স্বামীর নাম (বাংলায়)");
+                        ((MaterialEditText) formdataviews.get(i)).setFloatingLabelText("স্বামীর নাম (বাংলায়)");
+//                        ((MaterialEditText) formdataviews.get(i)).setText(headOfHouseholdName);
+                    }
+                    if (((MaterialEditText) formdataviews.get(i)).getFloatingLabelText().toString().trim().equalsIgnoreCase("স্ত্রীর নাম (ইংরেজীতে)")) {
+                        ((MaterialEditText) formdataviews.get(i)).setHint("স্বামীর নাম (ইংরেজীতে)");
+                        ((MaterialEditText) formdataviews.get(i)).setFloatingLabelText("স্বামীর নাম (ইংরেজীতে)");
+                        ((MaterialEditText) formdataviews.get(i)).setText(headOfHouseholdName);
                     }
 
                 }
