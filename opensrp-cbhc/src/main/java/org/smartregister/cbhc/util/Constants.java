@@ -44,7 +44,7 @@ public abstract class Constants {
         public static final String QUICK_CHECK = "Quick Check";
         public static final String CLOSE = "ANC Close";
 
-        public static final String PREGNANT_STATUS = "Pregnant Status";
+        public static final String PREGNANT_STATUS = "PregnancyStatus";
         public static final String MARITAL_STATUS = "Marital Status";
     }
 

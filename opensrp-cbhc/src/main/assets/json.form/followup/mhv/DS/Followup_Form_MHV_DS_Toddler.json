@@ -76,7 +76,7 @@
         "openmrs_entity_id": "has_disease",
         "openmrs_data_type": "text",
         "type": "spinner",
-        "hint": "কোন রোগ আছে কি?",
+        "hint": "রোগ আছে কিনা?",
         "values": [
           "হ্যাঁ",
           "না"
@@ -93,7 +93,7 @@
         "openmrs_entity_id":"Disease_status",
         "openmrs_data_type":"text",
         "type":"check_box",
-        "label":"২ মাস থেকে ৫ বছরের বাচ্চার অসুখ ",
+        "label":"২ মাস থেকে ৫ বছরের শিশুর রোগ ",
         "exclusive":["None"],
         "options":[
           {

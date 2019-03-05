@@ -556,7 +556,7 @@
         }
       },
       /*age 0 - 41 days */
-      /*
+
       {
         "key":"Child_birth_weight",
         "openmrs_entity_parent":"",
@@ -574,9 +574,10 @@
           "না":"No"
         },
         "relevance": {
-          "step1:pregnant_status": {
-            "type": "string",
-            "ex": "regex(., \"(প্রসবোত্তর)\")"
+          "rules-engine": {
+            "ex-rules": {
+              "rules-file": "sample-relevance-rules.yml"
+            }
           }
         }
       },
@@ -593,20 +594,15 @@
           "err":"Enter a valid Number"
         },
         "relevance": {
-          "step1:Child_birth_weight": {
-            "type": "string",
-            "ex": "regex(., \"(হ্যাঁ)\")"
-          }
-        },
-        "relevance": {
-          "step1:pregnant_status": {
-            "type": "string",
-            "ex": "regex(., \"(প্রসবোত্তর)\")"
+          "rules-engine": {
+            "ex-rules": {
+              "rules-file": "sample-relevance-rules.yml"
+            }
           }
         }
       },
       {
-        "key":"Used_7.1%_Chlorohexidin",
+        "key":"Used_7_1_Chlorohexidin",
         "openmrs_entity_parent":"",
         "openmrs_entity":"concept",
         "openmrs_entity_id":"1f011039-e2dc-49a0-8804-1a96d1d5ba49",
@@ -622,13 +618,14 @@
           "না":"No"
         },
         "relevance": {
-          "step1:pregnant_status": {
-            "type": "string",
-            "ex": "regex(., \"(প্রসবোত্তর)\")"
+          "rules-engine": {
+            "ex-rules": {
+              "rules-file": "sample-relevance-rules.yml"
+            }
           }
         }
       },
-      */
+
 
       /**/
       {
@@ -1118,10 +1115,7 @@
           "ছাত্র/ছাত্রী":"Study",
           "অন্যান্য":"Others (Occupation)"
         },
-        "v_required": {
-          "value": true,
-          "err": "Please Select Occupation"
-        },
+
         "relevance": {
           "step1:age": {
             "type": "numeric",
@@ -1625,10 +1619,6 @@
           "অন্যান্য পদ্ধতি ":"Other_Method",
           "বন্ধ্যা দম্পতি ":"Infertility",
           "পদ্ধতি ব্যবহার করে না ":"No_Method_Usage"
-        },
-        "v_required": {
-          "value": true,
-          "err": "Please Select Family Planning"
         },
         "relevance": {
           "rules-engine": {

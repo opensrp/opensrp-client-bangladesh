@@ -30,14 +30,35 @@ actions:
 name: step1_Disease_status_zero_to_two_month_by_age
 description: disease status for zero to two month
 priority: 1
-condition: " step1_has_disease.equalsIgnoreCase('হ্যাঁ') && ((step1_age!=0 && step1_age <= .17) || helper.formatDate(step1_member_birth_date,'y') <= .17)"
+condition: " step1_has_disease.equalsIgnoreCase('হ্যাঁ') && (helper.formatDate(step1_member_birth_date,'d') <= 62)"
+actions:
+  - "isRelevant = true"
+---
+name: step1_Child_birth_weight
+description: Child_birth_weight
+priority: 1
+condition: " (helper.formatDate(step1_member_birth_date,'d') <= 62)"
+actions:
+  - "isRelevant = true"
+---
+name: step1_Birth_weight
+description: Birth_weight
+priority: 1
+condition: " (helper.formatDate(step1_member_birth_date,'d') <= 62)"
+actions:
+  - "isRelevant = true"
+---
+name: step1_Used_7_1_Chlorohexidin
+description: Used_7.1%_Chlorohexidin
+priority: 1
+condition: " (helper.formatDate(step1_member_birth_date,'d') <= 62)"
 actions:
   - "isRelevant = true"
 ---
 name: step1_Disease_status_two_month_to_five_year_by_age
 description: disease status two month to five year
 priority: 1
-condition: " step1_has_disease.equalsIgnoreCase('হ্যাঁ') && ((step1_age > .17 && step1_age <=5) || ((helper.formatDate(step1_member_birth_date,'y') > .17 && helper.formatDate(step1_member_birth_date,'y') <=5)))"
+condition: " step1_has_disease.equalsIgnoreCase('হ্যাঁ') && ((step1_age > .17 && step1_age <=5) || ((helper.formatDate(step1_member_birth_date,'d') > 62 && helper.formatDate(step1_member_birth_date,'y') <=5)))"
 actions:
   - "isRelevant = true"
 

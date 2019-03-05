@@ -255,26 +255,7 @@
           }
         }
       },
-      {
-        "key":"Totalbirth",
-        "openmrs_entity_parent":"",
-        "openmrs_entity":"",
-        "openmrs_entity_id":"Totalbirth",
-        "openmrs_data_type":"text",
-        "type":"edit_text",
-        "hint":"জন্মের সংখ্যা",
-        "hidden":true,
-        "v_numeric":{
-          "value":"true",
-          "err":"Enter a valid Number"
-        },
-        "relevance": {
-          "step1:pregnant_status": {
-            "type": "string",
-            "ex": "regex(., \"(প্রসবোত্তর)\")"
-          }
-        }
-      },
+
       {
         "key":"delivery_type",
         "openmrs_entity_parent":"",

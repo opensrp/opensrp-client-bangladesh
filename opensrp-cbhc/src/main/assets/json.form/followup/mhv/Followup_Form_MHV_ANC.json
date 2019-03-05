@@ -103,7 +103,7 @@
         "openmrs_entity_id": "Service_Received_Date",
         "openmrs_data_type": "text",
         "type": "date_picker",
-        "hint": "সেবার তারিখ ",
+        "hint": "সর্বশেষ সেবার তারিখ ",
         "expanded": false,
         "v_required": {
           "value": "false",

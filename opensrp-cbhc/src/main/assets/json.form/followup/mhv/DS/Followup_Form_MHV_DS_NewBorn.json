@@ -76,7 +76,7 @@
         "openmrs_entity_id": "has_disease",
         "openmrs_data_type": "text",
         "type": "spinner",
-        "hint": "কোন রোগ বা অবস্থা আছে কি?",
+        "hint": "রোগ আছে কিনা?",
         "values": [
           "হ্যাঁ",
           "না"
@@ -93,7 +93,7 @@
         "openmrs_entity_id":"Disease_status",
         "openmrs_data_type":"text",
         "type":"check_box",
-        "label":"০ - ২ মাসের বাচ্চার অসুখ ",
+        "label":"০ - ২ মাসের শিশুর রোগ ",
         "exclusive":["None"],
         "options":[
           {
@@ -155,12 +155,6 @@
             "text":"অন্যান্য ",
             "value":false,
             "openmrs_choice_id":"Others_member_disease"
-          },
-          {
-            "key":"None",
-            "text":"নেই ",
-            "value":false,
-            "openmrs_choice_id":"None"
           }
         ],
         "relevance":{

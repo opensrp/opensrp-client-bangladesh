@@ -68,6 +68,7 @@ import java.util.Calendar;
 import java.util.Date;
 
 import static org.smartregister.cbhc.fragment.ProfileOverviewFragment.EXTRA_HOUSEHOLD_DETAILS;
+import static org.smartregister.cbhc.util.Constants.EventType.PREGNANT_STATUS;
 import static org.smartregister.cbhc.util.Constants.FOLLOWUP_FORM.Followup_Form_MHV_Death;
 import static org.smartregister.cbhc.util.Constants.FOLLOWUP_FORM.Followup_Form_MHV_Delivery;
 
@@ -170,7 +171,7 @@ public class MemberProfileActivity extends BaseProfileActivity implements Profil
             lastName = "";
         }
         String lmp_date = householdDetails.getColumnmaps().get("lmp_date");
-        String delivery_status = householdDetails.getColumnmaps().get("pregnant_status");
+        String delivery_status = householdDetails.getColumnmaps().get(PREGNANT_STATUS);
         if(lmp_date!=null&&delivery_status!=null) {
             SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
             Calendar c = Calendar.getInstance();

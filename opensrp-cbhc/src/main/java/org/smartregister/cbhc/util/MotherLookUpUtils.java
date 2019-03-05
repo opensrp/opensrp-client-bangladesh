@@ -186,7 +186,7 @@ public class MotherLookUpUtils {
                     tableName.split(",")[0] + ".dob"
             });
             if(!isBlank(relationalid)){
-                queryBUilder.addCondition("and "+tableName.split(",")[0]+".relational_id = '"+relationalid+"'");
+                queryBUilder.addCondition("where "+tableName.split(",")[0]+".relational_id = '"+relationalid+"'");
             }
             String currentquery = queryBUilder.getSelectquery().concat(" Union all ");
             SmartRegisterQueryBuilder queryBUilder2 = new SmartRegisterQueryBuilder();
@@ -198,7 +198,7 @@ public class MotherLookUpUtils {
                     tableName.split(",")[1] + ".dob"
             });
             if(!isBlank(relationalid)){
-                queryBUilder2.addCondition("and "+tableName.split(",")[1]+".relational_id = '"+relationalid+"'");
+                queryBUilder2.addCondition("where "+tableName.split(",")[1]+".relational_id = '"+relationalid+"'");
             }
             currentquery = currentquery.concat(queryBUilder2.getSelectquery());
             return queryBUilder.Endquery(currentquery);
