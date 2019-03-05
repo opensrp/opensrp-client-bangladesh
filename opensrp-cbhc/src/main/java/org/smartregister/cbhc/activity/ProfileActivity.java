@@ -293,7 +293,7 @@ public class ProfileActivity extends BaseProfileActivity implements ProfileContr
             arrayAdapter.add("[+] নতুন সদস্য");
 //            arrayAdapter.add("খানা স্থানান্তর");
 //            arrayAdapter.add("খানা পাওয়া যায়নি");
-            arrayAdapter.add("খাানার অবস্থা্ন");
+            arrayAdapter.add("খাানার অবস্থান");
 //            arrayAdapter.add(getString(R.string.call));
 //            arrayAdapter.add(getString(R.string.start_contact));
 //            arrayAdapter.add(getString(R.string.close_anc_record));
@@ -303,7 +303,7 @@ public class ProfileActivity extends BaseProfileActivity implements ProfileContr
                 public void onClick(DialogInterface dialog, int which) {
                     String textClicked = arrayAdapter.getItem(which);
                     switch (textClicked) {
-                        case "খাানার অবস্থা্ন":
+                        case "খাানার অবস্থান":
                             getIntent().putExtra(Constants.INTENT_KEY.BASE_ENTITY_ID,householdDetails.getCaseId());
                             JsonFormUtils.launchFollowUpForm(ProfileActivity.this,householdDetails.getColumnmaps(),Followup_Form_MHV_Transfer);
                             break;
