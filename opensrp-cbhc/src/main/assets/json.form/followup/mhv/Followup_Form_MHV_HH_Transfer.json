@@ -55,6 +55,21 @@
     "title": "খাানার অবস্থান",
     "fields": [
       {
+        "key": "date_removed",
+        "openmrs_entity_parent": "",
+        "openmrs_entity": "person_attribute",
+        "openmrs_entity_id": "date_removed",
+        "openmrs_data_type": "text",
+        "type": "date_picker",
+        "hint": "তারিখ",
+        "value":"today",
+        "expanded": false,
+        "v_required": {
+          "value": "false",
+          "err": "Please enter the date of Followup."
+        }
+      },
+      {
         "key": "household_status",
         "openmrs_entity_parent": "",
         "openmrs_entity": "",

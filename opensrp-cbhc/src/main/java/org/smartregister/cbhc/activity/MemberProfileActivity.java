@@ -136,8 +136,6 @@ public class MemberProfileActivity extends BaseProfileActivity implements Profil
     private void setUpViews() {
         ImageView circleprofile = (ImageView)findViewById(R.id.imageview_profile);
 
-
-
         if(typeofMember.equalsIgnoreCase("malechild")){
             circleprofile.setImageDrawable(getResources().getDrawable(R.drawable.child_boy_infant));
         }else if(typeofMember.equalsIgnoreCase("femalechild")){
@@ -167,7 +165,7 @@ public class MemberProfileActivity extends BaseProfileActivity implements Profil
 //setProfileImage(householdDetails.entityId());
         String firstName = org.smartregister.util.Utils.getValue(householdDetails.getColumnmaps(), DBConstants.KEY.FIRST_NAME, true);
         String lastName = org.smartregister.util.Utils.getValue(householdDetails.getColumnmaps(), DBConstants.KEY.LAST_NAME, true);
-        if(lastName.equalsIgnoreCase("null")||lastName==null){
+        if(lastName.equalsIgnoreCase("null")||lastName==null) {
             lastName = "";
         }
         String lmp_date = householdDetails.getColumnmaps().get("lmp_date");

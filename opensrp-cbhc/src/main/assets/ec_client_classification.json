@@ -42,6 +42,13 @@
           },
           {
             "field": "eventType",
+            "field_value": "Followup HH Transfer",
+            "creates_case": [
+              "ec_household"
+            ]
+          },
+          {
+            "field": "eventType",
             "field_value": "Member Registration",
             "creates_case": [
               "ec_member"
