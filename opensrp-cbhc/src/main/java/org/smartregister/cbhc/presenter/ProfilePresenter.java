@@ -200,7 +200,7 @@ public class ProfilePresenter implements ProfileContract.Presenter, RegisterCont
     @Override
     public void onRegistrationSaved(boolean isEdit) {
 
-
+        if(getProfileView()==null) return;
         ////////////////////////////////////////////////////////////////
 
         this.refreshProfileView(getProfileView().getIntentString(Constants.INTENT_KEY.BASE_ENTITY_ID));

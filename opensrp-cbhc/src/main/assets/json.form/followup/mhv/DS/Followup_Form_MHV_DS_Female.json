@@ -76,7 +76,7 @@
         "openmrs_entity_id": "has_disease",
         "openmrs_data_type": "text",
         "type": "spinner",
-        "hint": "কোন রোগ বা অবস্থা আছে কি?",
+        "hint": "রোগ আছে কিনা?",
         "values": [
           "হ্যাঁ",
           "না"

@@ -114,15 +114,15 @@ public class LoginPresenter implements LoginContract.Presenter {
 
     @Override
     public void positionViews() {
-        final ScrollView canvasSV = getLoginView().getActivityContext().findViewById(R.id.canvasSV);
-        canvasSV.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
-
-            @Override
-            public void onGlobalLayout() {
-                canvasGlobalLayoutListenerProcessor(canvasSV, this);
-            }
-
-        });
+//        final ScrollView canvasSV = getLoginView().getActivityContext().findViewById(R.id.canvasSV);
+//        canvasSV.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+//
+//            @Override
+//            public void onGlobalLayout() {
+//                canvasGlobalLayoutListenerProcessor(canvasSV, this);
+//            }
+//
+//        });
     }
 
 

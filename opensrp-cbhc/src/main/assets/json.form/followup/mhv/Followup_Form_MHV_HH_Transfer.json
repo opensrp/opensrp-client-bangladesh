@@ -62,11 +62,10 @@
         "openmrs_data_type": "text",
         "type": "date_picker",
         "hint": "তারিখ",
-        "value":"today",
         "expanded": false,
         "v_required": {
-          "value": "false",
-          "err": "Please enter the date of Followup."
+          "value": true,
+          "err": "Please enter the date of removal."
         }
       },
       {

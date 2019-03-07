@@ -300,6 +300,12 @@ public class JsonFormUtils extends org.smartregister.util.JsonFormUtils {
 
             }
 
+            if(encounterType.equalsIgnoreCase(Constants.EventType.HouseholdREGISTRATION)){
+                JSONObject dobJSONObject = getFieldJSONObject(fields, DBConstants.KEY.DOB);
+                //dobJSONObject.put("hidden",false);
+                dobJSONObject.put(VALUE, Utils.getDob(100));
+            }
+
             FormTag formTag = new FormTag();
             formTag.providerId = allSharedPreferences.fetchRegisteredANM();
             formTag.appVersion = BuildConfig.VERSION_CODE;

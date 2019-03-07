@@ -160,7 +160,7 @@
         "type":"check_box",
         "label":"গর্ভকালীন বিপদ চিহ্ন ",
         "exclusive":[
-          "None"
+          "No_Denger_Sign"
         ],
         "options":[
           {

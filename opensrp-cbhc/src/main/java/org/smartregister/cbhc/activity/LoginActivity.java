@@ -10,6 +10,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
+import android.database.Cursor;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
@@ -28,15 +29,20 @@ import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import net.sqlcipher.database.SQLiteDatabase;
+
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 import org.joda.time.DateTime;
 import org.smartregister.cbhc.R;
+import org.smartregister.cbhc.application.AncApplication;
 import org.smartregister.cbhc.contract.LoginContract;
 import org.smartregister.cbhc.event.ViewConfigurationSyncCompleteEvent;
 import org.smartregister.cbhc.presenter.LoginPresenter;
+import org.smartregister.cbhc.repository.AncRepository;
 import org.smartregister.cbhc.task.SaveTeamLocationsTask;
 import org.smartregister.cbhc.util.Constants;
+import org.smartregister.commonregistry.CommonRepository;
 import org.smartregister.repository.AllSharedPreferences;
 import org.smartregister.util.Utils;
 
@@ -226,6 +232,10 @@ public class LoginActivity extends AppCompatActivity implements LoginContract.Vi
                 String password = passwordEditText.getText().toString();
 //                username = "ftp";
 //                password = "Ftp@1234";
+//                AncRepository repo = (AncRepository) AncApplication.getInstance().getRepository();
+//                SQLiteDatabase db = repo.getReadableDatabase();
+//                Cursor cursor = db.rawQuery("sql",new String[]{});
+//                cursor.close();
                 mLoginPresenter.attemptLogin(username, password);
                 break;
             default:

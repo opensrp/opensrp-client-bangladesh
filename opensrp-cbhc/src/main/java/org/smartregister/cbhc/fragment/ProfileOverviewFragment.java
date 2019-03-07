@@ -98,9 +98,9 @@ public class ProfileOverviewFragment extends BaseProfileFragment {
     @Override
     protected void onResumption() {
         //Overriden
-//        if(fragmentView!=null){
-//            refreshadapter(fragmentView);
-//        }
+        if(fragmentView!=null){
+            refreshadapter(fragmentView);
+        }
     }
 
     @Override
@@ -192,7 +192,7 @@ public class ProfileOverviewFragment extends BaseProfileFragment {
                 " " +
                 "Union all Select child.id as _id , child.relationalid , child.details , child.first_name , child.last_name , child.dob , child.PregnancyStatus, details.value as relation " +
                 "FROM ec_child as child left join ec_details as details on (details.base_entity_id = child.id and details.key = 'Realtion_With_Household_Head') " +
-                "WHERE (child.relational_id = '</>' and child.date_removed IS NULL))" +
+                "WHERE (child.relational_id = '</>' and child.date_removed IS NULL)) group by _id" +
                 " ORDER BY CASE WHEN relation = 'খানা প্রধান' THEN 1 " +
                 " WHEN relation = 'Household_Head' THEN 1 " +
                 "Else relation END ASC;";
@@ -228,7 +228,11 @@ public class ProfileOverviewFragment extends BaseProfileFragment {
 
             String pregnant_status = personinlist.getColumnmaps().get("PregnancyStatus");
 
-
+            if(pregnant_status!=null && (pregnant_status.contains("Antenatal Period")||pregnant_status.contains("প্রসব পূর্ব"))){
+                pregnant_icon.setVisibility(View.VISIBLE);
+            }else{
+                pregnant_icon.setVisibility(View.INVISIBLE);
+            }
             String firstName = org.smartregister.util.Utils.getValue(pClient.getColumnmaps(), DBConstants.KEY.FIRST_NAME, true);
             String lastName = org.smartregister.util.Utils.getValue(pClient.getColumnmaps(), DBConstants.KEY.LAST_NAME, true);
             if((lastName!=null&&lastName.equalsIgnoreCase("null"))||lastName==null){
@@ -361,11 +365,7 @@ public class ProfileOverviewFragment extends BaseProfileFragment {
                             profile_photo.put(pClient.entityId(),d);
                         }
 
-                        if(pregnant_status!=null && (pregnant_status.contains("Antenatal Period")||pregnant_status.contains("প্রসব পূর্ব"))){
-                            pregnant_icon.setVisibility(View.VISIBLE);
-                        }else{
-                            pregnant_icon.setVisibility(View.INVISIBLE);
-                        }
+
 //                        profileImageIV.setImageDrawable(getResources().getDrawable(R.drawable.women_cbhc_placeholder));
 //                        DrishtiApplication.getCachedImageLoaderInstance().getImageByClientId(pClient.entityId(), OpenSRPImageLoader.getStaticImageListener(profileImageIV, R.drawable.women_cbhc_placeholder, R.drawable.women_cbhc_placeholder));
                         clientype = "woman";

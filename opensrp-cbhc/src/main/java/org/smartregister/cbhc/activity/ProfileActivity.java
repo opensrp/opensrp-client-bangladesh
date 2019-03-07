@@ -8,6 +8,7 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
@@ -19,6 +20,9 @@ import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import net.sqlcipher.Cursor;
+import net.sqlcipher.database.SQLiteDatabase;
 
 import org.apache.commons.lang3.StringUtils;
 import org.joda.time.DateTime;
@@ -39,6 +43,7 @@ import org.smartregister.cbhc.fragment.QuickCheckFragment;
 import org.smartregister.cbhc.helper.ImageRenderHelper;
 import org.smartregister.cbhc.presenter.ProfilePresenter;
 import org.smartregister.cbhc.presenter.RegisterPresenter;
+import org.smartregister.cbhc.repository.AncRepository;
 import org.smartregister.cbhc.task.FetchProfileDataTask;
 import org.smartregister.cbhc.util.Constants;
 import org.smartregister.cbhc.util.DBConstants;
@@ -233,7 +238,7 @@ public class ProfileActivity extends BaseProfileActivity implements ProfileContr
                 String jsonString = data.getStringExtra("json");
                 Log.d("JSONResult", jsonString);
 
-                JSONObject form = new JSONObject(jsonString);
+                final JSONObject form = new JSONObject(jsonString);
                 if (form.getString(JsonFormUtils.ENCOUNTER_TYPE).equals(Constants.EventType.REGISTRATION)) {
                     presenter.saveForm(jsonString, false);
                 }else if (form.getString(JsonFormUtils.ENCOUNTER_TYPE).equals(Constants.EventType.HouseholdREGISTRATION)) {
@@ -244,6 +249,30 @@ public class ProfileActivity extends BaseProfileActivity implements ProfileContr
                     presenter.saveForm(jsonString, false);
                 } else if (form.getString(JsonFormUtils.ENCOUNTER_TYPE).equals(Constants.EventType.CLOSE)) {
                     presenter.closeAncRecord(jsonString);
+                }else if (form.getString(JsonFormUtils.ENCOUNTER_TYPE).equals("Followup HH Transfer")){
+                    android.support.v7.app.AlertDialog alertDialog = new android.support.v7.app.AlertDialog.Builder(this).create();
+                    alertDialog.setTitle("Are you confirm about the action?");
+                    alertDialog.setCanceledOnTouchOutside(false);
+                    alertDialog.setButton(android.support.v7.app.AlertDialog.BUTTON_NEGATIVE, "NO",
+                            new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int which) {
+                                    dialog.dismiss();
+                                }
+                            });
+                    alertDialog.setButton(android.support.v7.app.AlertDialog.BUTTON_POSITIVE, "CONFIRM",
+                            new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int which) {
+                                    try{
+                                        String entity_id = form.getString("entity_id");
+                                        removeMember(entity_id);
+
+
+                                    }catch(Exception e){
+                                        e.printStackTrace();
+                                    }
+                                }
+                            });
+                    alertDialog.show();
                 }
             } catch (Exception e) {
                 Log.e(TAG, Log.getStackTraceString(e));
@@ -410,7 +439,8 @@ public class ProfileActivity extends BaseProfileActivity implements ProfileContr
 
     @Override
     public void setProfileAge(String age) {
-        ageView.setText("AGE " + age);
+        ageView.setVisibility(View.GONE);
+//        ageView.setText("AGE " + age);
 
     }
 
@@ -432,7 +462,7 @@ public class ProfileActivity extends BaseProfileActivity implements ProfileContr
     @Override
     public String getIntentString(String intentKey) {
 
-        return this.getIntent().getStringExtra(intentKey);
+        return this.getIntent().getStringExtra(intentKey)==null ?"":this.getIntent().getStringExtra(intentKey);
     }
 
     @Override
@@ -512,6 +542,48 @@ public class ProfileActivity extends BaseProfileActivity implements ProfileContr
                 copyToClipboardDialog.show();
             }
         }
+    }
+    public void removeMember(final String entity_id) {
+        org.smartregister.util.Utils.startAsyncTask((new AsyncTask() {
+
+            @Override
+            protected void onPostExecute(Object o) {
+                super.onPostExecute(o);
+                ProfileActivity.this.finish();
+            }
+
+            @Override
+            protected Object doInBackground(Object[] objects) {
+                AncRepository repo = (AncRepository) AncApplication.getInstance().getRepository();
+                SQLiteDatabase db = repo.getReadableDatabase();
+                String tables[] = {"ec_household","ec_member","ec_child","ec_woman"};
+
+                Cursor cursor = null;
+                try{
+
+                }catch(Exception e){
+
+                }
+                for(int i=0;i<tables.length;i++) {
+                    String sql = "select * from "+tables[i]+" where base_entity_id = '"+entity_id+"';";
+                    cursor = db.rawQuery(sql,new String[]{});
+                    if(cursor!=null&&cursor.getCount()!=0) {
+                        sql = "UPDATE "+tables[i]+" SET 'date_removed' = '20-12-2019' WHERE base_entity_id = '"+entity_id+"';";
+                        db.execSQL(sql);
+//                        db.rawQuery(sql,new String[]{});
+
+                    }
+                    if(cursor!=null)
+                        cursor.close();
+                }
+
+
+
+
+                return null;
+            }
+        }), null);
+
     }
 }
 

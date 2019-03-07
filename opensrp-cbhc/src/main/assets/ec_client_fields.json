@@ -271,7 +271,7 @@
           "column_name": "PregnancyStatus",
           "type": "Client",
           "json_mapping": {
-            "field": "attributes.pregnant_status"
+            "field": "attributes.PregnancyStatus"
           }
         },
         {
@@ -416,7 +416,7 @@
           "column_name": "PregnancyStatus",
           "type": "Client",
           "json_mapping": {
-            "field": "attributes.pregnant_status"
+            "field": "attributes.PregnancyStatus"
           }
         },
         {
@@ -547,7 +547,7 @@
           "column_name": "PregnancyStatus",
           "type": "Client",
           "json_mapping": {
-            "field": "attributes.pregnant_status"
+            "field": "attributes.PregnancyStatus"
           }
         },
         {

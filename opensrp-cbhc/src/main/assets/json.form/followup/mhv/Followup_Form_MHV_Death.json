@@ -55,17 +55,17 @@
     "title": "তথ্য সংগ্রহ সম্ভব নয়",
     "fields": [
       {
-        "key": "followup_Date",
+        "key": "date_removed",
         "openmrs_entity_parent": "",
         "openmrs_entity": "",
-        "openmrs_entity_id": "",
+        "openmrs_entity_id": "date_removed",
         "openmrs_data_type": "text",
         "type": "date_picker",
         "hint": "তারিখ",
         "expanded": false,
         "v_required": {
-          "value": "false",
-          "err": "Please enter the date of Followup."
+          "value": true,
+          "err": "Please enter the date of removal."
         }
       },
       {

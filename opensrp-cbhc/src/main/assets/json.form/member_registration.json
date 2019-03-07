@@ -1687,7 +1687,7 @@
           },
           {
             "key": "Psychological Disease",
-            "text": "মানসিক অসুখ",
+            "text": "মানসিক রোগ",
             "value": false,
             "openmrs_choice_id": "Psychological Disease"
           },

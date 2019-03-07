@@ -176,7 +176,7 @@
           {
             "key": "dob_unknown",
             "text": "DOB unknown?",
-            "value": "true"
+            "value": false
           }
         ]
       },
@@ -186,29 +186,15 @@
         "openmrs_entity": "person",
         "openmrs_entity_id": "birthdate",
         "type": "date_picker",
-        "hidden":true,
         "hint": "Date of birth(DOB) *",
+        "hidden":true,
+        "value":"today",
         "expanded": false,
         "duration": {
           "label": "Age"
         },
         "min_date": "today-49y",
-        "max_date": "today-15y",
-        "v_required": {
-          "value": "true",
-          "err": "Please enter the date of birth"
-        },
-        "relevance": {
-          "step1:dob_unknown": {
-            "ex-checkbox": [
-              {
-                "not": [
-                  "dob_unknown"
-                ]
-              }
-            ]
-          }
-        }
+        "max_date": "today-15y"
       },
       {
         "key": "age",

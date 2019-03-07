@@ -163,7 +163,70 @@
           }
         }
       },
+      {
+        "key": "Date_Of_Abortion",
+        "openmrs_entity_parent": "",
+        "openmrs_entity": "",
+        "openmrs_entity_id": "Date_Of_Abortion",
+        "type": "date_picker",
+        "hint": "গর্ভপাতের তারিখ",
+        "expanded": false,
+        "duration": {
+          "label": "Yrs"
+        },
+        "max_date": "today",
 
+        "relevance": {
+          "step1:pregnant_status": {
+            "type": "string",
+            "ex": "regex(., \"(গর্ভপাত হয়েছে)\")"
+          }
+        }
+      },
+      {
+        "key": "Type_Of_Abortion",
+        "openmrs_entity_parent": "",
+        "openmrs_entity": "",
+        "openmrs_entity_id": "Type_Of_Abortion",
+        "openmrs_data_type": "",
+        "type": "spinner",
+        "hint": "গর্ভপাতের ধরণ",
+        "values": [
+          "অনাকাঙ্খিত গর্ভপাত",
+          "ঔষধ দ্বারা গর্ভপাত"
+        ],
+        "openmrs_choice_ids": {
+          "অনাকাঙ্খিত গর্ভপাত": "Spontaneous_Abortion",
+          "ঔষধ দ্বারা গর্ভপাত": "Medicine_Induced_Abortion"
+        },
+
+        "relevance": {
+          "step1:pregnant_status": {
+            "type": "string",
+            "ex": "regex(., \"(গর্ভপাত হয়েছে)\")"
+          }
+        }
+      },
+      {
+        "key": "Date_Of_MR",
+        "openmrs_entity_parent": "",
+        "openmrs_entity": "",
+        "openmrs_entity_id": "Date_Of_MR",
+        "type": "date_picker",
+        "hint": "MR এর তারিখ",
+        "expanded": false,
+        "duration": {
+          "label": "Yrs"
+        },
+        "max_date": "today",
+
+        "relevance": {
+          "step1:pregnant_status": {
+            "type": "string",
+            "ex": "regex(., \"(MR করেছে)\")"
+          }
+        }
+      },
       {
         "key":"MOTHER_VITAL",
         "openmrs_entity_parent":"",
