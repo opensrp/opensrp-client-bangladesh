@@ -11,11 +11,13 @@ import org.smartregister.cbhc.R;
 import org.smartregister.cbhc.application.AncApplication;
 import org.smartregister.cbhc.contract.LoginContract;
 import org.smartregister.cbhc.job.AncJobCreator;
+import org.smartregister.cbhc.job.DeleteIntentServiceJob;
 import org.smartregister.cbhc.job.ImageUploadServiceJob;
 import org.smartregister.cbhc.job.PullHealthIdsServiceJob;
 import org.smartregister.cbhc.job.PullUniqueIdsServiceJob;
 import org.smartregister.cbhc.job.SyncServiceJob;
 import org.smartregister.cbhc.job.ViewConfigurationsServiceJob;
+import org.smartregister.cbhc.service.intent.DeleteIntentService;
 import org.smartregister.cbhc.task.RemoteLoginTask;
 import org.smartregister.cbhc.util.Constants;
 import org.smartregister.cbhc.util.NetworkUtils;
@@ -48,7 +50,6 @@ public class LoginInteractor implements LoginContract.Interactor {
     public LoginInteractor(LoginContract.Presenter loginPresenter) {
         this.mLoginPresenter = loginPresenter;
 
-
     }
 
     @Override
@@ -74,9 +75,11 @@ public class LoginInteractor implements LoginContract.Interactor {
         PullHealthIdsServiceJob.scheduleJob(PullHealthIdsServiceJob.TAG, TimeUnit.MINUTES.toMillis(BuildConfig.PULL_UNIQUE_IDS_MINUTES), getFlexValue(BuildConfig.PULL_UNIQUE_IDS_MINUTES));
         ImageUploadServiceJob.scheduleJob(ImageUploadServiceJob.TAG, TimeUnit.MINUTES.toMillis(BuildConfig.IMAGE_UPLOAD_MINUTES), getFlexValue(BuildConfig.IMAGE_UPLOAD_MINUTES));
         ViewConfigurationsServiceJob.scheduleJob(ViewConfigurationsServiceJob.TAG, TimeUnit.MINUTES.toMillis(BuildConfig.VIEW_SYNC_CONFIGURATIONS_MINUTES), getFlexValue(BuildConfig.VIEW_SYNC_CONFIGURATIONS_MINUTES));
+        DeleteIntentServiceJob.scheduleJob(DeleteIntentServiceJob.TAG, TimeUnit.MINUTES.toMillis(BuildConfig.DATA_SYNC_DURATION_MINUTES), getFlexValue(BuildConfig.DATA_SYNC_DURATION_MINUTES));
 //        ZJob.scheduleJob(SyncServiceJob.TAG, TimeUnit.MINUTES.toMillis(BuildConfig.VIEW_SYNC_CONFIGURATIONS_MINUTES), getFlexValue(BuildConfig.VIEW_SYNC_CONFIGURATIONS_MINUTES));
 
     }
+
     private static final int MINIMUM_JOB_FLEX_VALUE = 1;
     private long getFlexValue(int value) {
         int minutes = MINIMUM_JOB_FLEX_VALUE;
@@ -88,6 +91,7 @@ public class LoginInteractor implements LoginContract.Interactor {
 
         return TimeUnit.MINUTES.toMillis(minutes);
     }
+
     protected void loginWithLocalFlag(WeakReference<LoginContract.View> view, boolean localLogin, String userName, String password) {
 
         getLoginView().hideKeyboard();

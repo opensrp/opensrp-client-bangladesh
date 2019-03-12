@@ -88,6 +88,7 @@
         <service android:name=".service.intent.PullHealthIdsIntentService" />
         <service android:name=".service.intent.PullUniqueIdsIntentService" />
         <service android:name=".service.intent.SyncIntentService" />
+        <service android:name=".service.intent.DeleteIntentService" />
         <service android:name=".service.intent.ValidateIntentService" />
         <service android:name=".service.intent.ExtendedSyncIntentService" />
 

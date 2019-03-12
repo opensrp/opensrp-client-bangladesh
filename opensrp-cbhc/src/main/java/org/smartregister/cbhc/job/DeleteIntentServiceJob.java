@@ -4,22 +4,18 @@ import android.content.Intent;
 import android.support.annotation.NonNull;
 
 import org.smartregister.cbhc.service.intent.DeleteIntentService;
-import org.smartregister.cbhc.service.intent.SyncIntentService;
 import org.smartregister.cbhc.util.Constants;
+import org.smartregister.service.ImageUploadSyncService;
 
-/**
- * Created by ndegwamartin on 05/09/2018.
- */
-public class SyncServiceJob extends BaseJob {
+public class DeleteIntentServiceJob extends BaseJob {
 
-    public static final String TAG = "SyncServiceJob";
+    public static final String TAG = "DeleteIntentServiceJob";
 
     @NonNull
     @Override
     protected Result onRunJob(@NonNull Params params) {
-        Intent intent = new Intent(getApplicationContext(), SyncIntentService.class);
+        Intent intent = new Intent(getApplicationContext(), DeleteIntentService.class);
         getApplicationContext().startService(intent);
-
         return params != null && params.getExtras().getBoolean(Constants.INTENT_KEY.TO_RESCHEDULE, false) ? Result.RESCHEDULE : Result.SUCCESS;
     }
 }

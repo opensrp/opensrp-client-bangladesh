@@ -28,6 +28,8 @@ public class AncJobCreator implements JobCreator {
                 return new ValidateSyncDataServiceJob();
             case ViewConfigurationsServiceJob.TAG:
                 return new ViewConfigurationsServiceJob();
+            case DeleteIntentServiceJob.TAG:
+                return new DeleteIntentServiceJob();
             default:
                 return null;
         }

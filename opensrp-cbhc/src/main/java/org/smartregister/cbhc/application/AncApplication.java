@@ -4,20 +4,15 @@ import android.content.BroadcastReceiver;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
-import android.preference.Preference;
-import android.preference.PreferenceFragment;
 import android.preference.PreferenceManager;
 import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
-
 import com.evernote.android.job.JobManager;
-
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 import org.smartregister.Context;
 import org.smartregister.CoreLibrary;
-
 import org.smartregister.cbhc.BuildConfig;
 import org.smartregister.cbhc.CBHCEventBusIndex;
 import org.smartregister.cbhc.R;
@@ -26,11 +21,6 @@ import org.smartregister.cbhc.event.TriggerSyncEvent;
 import org.smartregister.cbhc.event.ViewConfigurationSyncCompleteEvent;
 import org.smartregister.cbhc.helper.ECSyncHelper;
 import org.smartregister.cbhc.job.AncJobCreator;
-import org.smartregister.cbhc.job.ImageUploadServiceJob;
-import org.smartregister.cbhc.job.PullUniqueIdsServiceJob;
-import org.smartregister.cbhc.job.SyncServiceJob;
-import org.smartregister.cbhc.job.ViewConfigurationsServiceJob;
-import org.smartregister.cbhc.job.ZJob;
 import org.smartregister.cbhc.receiver.SyncStatusBroadcastReceiver;
 import org.smartregister.cbhc.repository.AncRepository;
 import org.smartregister.cbhc.repository.HealthIdRepository;
@@ -59,15 +49,10 @@ import org.smartregister.sync.ClientProcessorForJava;
 import org.smartregister.sync.DrishtiSyncScheduler;
 import org.smartregister.view.activity.DrishtiApplication;
 import org.smartregister.view.receiver.TimeChangedBroadcastReceiver;
-
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.List;
-import java.util.concurrent.TimeUnit;
-
 import id.zelory.compressor.Compressor;
-
-import static android.preference.PreferenceManager.getDefaultSharedPreferences;
 import static org.smartregister.util.Log.logError;
 import static org.smartregister.util.Log.logInfo;
 
@@ -125,7 +110,7 @@ public class AncApplication extends DrishtiApplication implements TimeChangedBro
         }
 //        initLibraries();
 //        initOfflineSchedules();
-        //Initialize JsonSpec Helper
+// Initialize JsonSpec Helper
         this.jsonSpecHelper = new JsonSpecHelper(this);
 
         setUpEventHandling();

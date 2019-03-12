@@ -1,10 +1,15 @@
 package org.smartregister.cbhc.service.intent;
 
+import android.annotation.SuppressLint;
 import android.app.IntentService;
 import android.content.Context;
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.util.Log;
 import android.util.Pair;
+
+import net.sqlcipher.Cursor;
+import net.sqlcipher.database.SQLiteDatabase;
 
 import org.apache.commons.lang3.StringUtils;
 import org.joda.time.DateTime;
@@ -12,13 +17,10 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.smartregister.cbhc.BuildConfig;
-import org.smartregister.cbhc.R;
 import org.smartregister.cbhc.application.AncApplication;
 import org.smartregister.cbhc.helper.ECSyncHelper;
-import org.smartregister.cbhc.helper.LocationHelper;
-import org.smartregister.cbhc.job.DeleteIntentServiceJob;
-import org.smartregister.cbhc.job.ImageUploadServiceJob;
 import org.smartregister.cbhc.receiver.SyncStatusBroadcastReceiver;
+import org.smartregister.cbhc.repository.AncRepository;
 import org.smartregister.cbhc.sync.AncClientProcessorForJava;
 import org.smartregister.cbhc.util.Constants;
 import org.smartregister.cbhc.util.NetworkUtils;
@@ -26,17 +28,17 @@ import org.smartregister.domain.FetchStatus;
 import org.smartregister.domain.Response;
 import org.smartregister.domain.db.EventClient;
 import org.smartregister.repository.AllSharedPreferences;
-import org.smartregister.repository.EventClientRepository;
 import org.smartregister.service.HTTPAgent;
+import org.smartregister.util.Utils;
 
-import java.text.MessageFormat;
 import java.util.Date;
 import java.util.List;
-import java.util.Map;
 
-public class SyncIntentService extends IntentService {
-    private static final String ADD_URL = "/rest/event/add";
-    public static final String SYNC_URL = "/rest/event/sync";
+
+public class DeleteIntentService extends IntentService {
+
+
+    public static final String SYNC_URL = "/rest/event/client-list-to-delete";
 
     private Context context;
     private HTTPAgent httpAgent;
@@ -44,8 +46,8 @@ public class SyncIntentService extends IntentService {
     public static final int EVENT_PULL_LIMIT = 250;
     private static final int EVENT_PUSH_LIMIT = 50;
 
-    public SyncIntentService() {
-        super("SyncIntentService");
+    public DeleteIntentService() {
+        super("DeleteIntentService");
     }
 
     @Override
@@ -63,7 +65,6 @@ public class SyncIntentService extends IntentService {
 
     protected void handleSync() {
         sendSyncStatusBroadcastMessage(FetchStatus.fetchStarted);
-
         doSync();
     }
 
@@ -74,7 +75,6 @@ public class SyncIntentService extends IntentService {
         }
 
         try {
-            pushToServer();
             pullECFromServer();
 
         } catch (Exception e) {
@@ -110,10 +110,11 @@ public class SyncIntentService extends IntentService {
             Long lastSyncDatetime = ecSyncUpdater.getLastSyncTimeStamp();
             Log.i(SyncIntentService.class.getName(), "LAST SYNC DT :" + new DateTime(lastSyncDatetime));
             lastSyncDatetime = lastSyncDatetime;
+//            lastSyncDatetime = 0;
 //            String url = baseUrl + SYNC_URL + "?" + Constants.SyncFilters.FILTER_TEAM_ID + "=" + teamId + "&serverVersion=" + lastSyncDatetime + "&limit=" + SyncIntentService.EVENT_PULL_LIMIT;
 //            String url = baseUrl + SYNC_URL + "?" + Constants.SyncFilters.PROVIDER_ID + "=" + providerID + "&serverVersion=" + lastSyncDatetime + "&limit=" + SyncIntentService.EVENT_PULL_LIMIT;
             String url = baseUrl + SYNC_URL + "?" + Constants.SyncFilters.LOCATION_ID + "=" + locationid + "&serverVersion=" + lastSyncDatetime + "&limit=" + SyncIntentService.EVENT_PULL_LIMIT;
-
+//            String url = baseUrl + SYNC_URL + "?" + Constants.SyncFilters.LOCATION_ID + "=" + locationid + "&serverVersion=" + 0 + "&limit=" + SyncIntentService.EVENT_PULL_LIMIT;
             Log.i(SyncIntentService.class.getName(), "URL: " + url);
 
             if (httpAgent == null) {
@@ -125,37 +126,75 @@ public class SyncIntentService extends IntentService {
                 fetchFailed(count);
             }
 
-            JSONObject jsonObject = new JSONObject((String) resp.payload());
-
-            int eCount = fetchNumberOfEvents(jsonObject);
-            Log.i(getClass().getName(), "Parse Network Event Count: " + eCount);
-
-            if (eCount == 0) {
-                complete(FetchStatus.nothingFetched);
-            } else if (eCount < 0) {
-                fetchFailed(count);
-            } else if (eCount > 0) {
-                final Pair<Long, Long> serverVersionPair = getMinMaxServerVersions(jsonObject);
-                long lastServerVersion = serverVersionPair.second - 1;
-                if (eCount < EVENT_PULL_LIMIT) {
-                    lastServerVersion = serverVersionPair.second;
+            JSONArray entity_ids = new JSONArray((String) resp.payload());
+            String ids[] = new String[entity_ids.length()];
+            if(entity_ids!=null){
+                for(int i=0;i<entity_ids.length();i++){
+                    String id = entity_ids.getString(i);
+                    ids[i] = id;
+//                    System.out.println(id);
                 }
-
-                ecSyncUpdater.saveAllClientsAndEvents(jsonObject);
-                ecSyncUpdater.updateLastSyncTimeStamp(lastServerVersion);
-
-                processClient(serverVersionPair);
-
-                fetchRetry(0);
             }
+            delete_from_table(ids);
+//            JSONObject jsonObject = new JSONObject((String) resp.payload());
+
+//            int eCount = fetchNumberOfEvents(jsonObject);
+//            Log.i(getClass().getName(), "Parse Network Event Count: " + eCount);
+
+//            if (eCount == 0) {
+//                complete(FetchStatus.nothingFetched);
+//            } else if (eCount < 0) {
+//                fetchFailed(count);
+//            } else if (eCount > 0) {
+//                final Pair<Long, Long> serverVersionPair = getMinMaxServerVersions(jsonObject);
+//                long lastServerVersion = serverVersionPair.second - 1;
+//                if (eCount < EVENT_PULL_LIMIT) {
+//                    lastServerVersion = serverVersionPair.second;
+//                }
+//
+//                ecSyncUpdater.saveAllClientsAndEvents(jsonObject);
+//                ecSyncUpdater.updateLastSyncTimeStamp(lastServerVersion);
+//
+//                processClient(serverVersionPair);
+//
+//                fetchRetry(0);
+//            }
         } catch (Exception e) {
             Log.e(getClass().getName(), "Fetch Retry Exception: " + e.getMessage(), e.getCause());
             fetchFailed(count);
-        }finally {
-            DeleteIntentServiceJob.scheduleJobImmediately(DeleteIntentServiceJob.TAG);
         }
     }
+    @SuppressLint("StaticFieldLeak")
+    public void delete_from_table(final String[]ids){
+        Utils.startAsyncTask(new AsyncTask() {
+            @Override
+            protected Object doInBackground(Object[] objects) {
+                String tablename[] = {"ec_details","ec_household","ec_woman","ec_child","ec_member","event","client"};
+                AncRepository repo = (AncRepository) AncApplication.getInstance().getRepository();
+                SQLiteDatabase db = repo.getReadableDatabase();
 
+                for(int i=0;i<tablename.length;i++) {
+
+                    String sql = "DELETE FROM " + tablename[i] + " WHERE ";
+                    String condition = "";
+                    for(int k = 0;k<ids.length;k++) {
+                        condition = condition + " " + tablename[i]+".base_entity_id='"+ ids[k]+"' OR ";
+                    }
+                    condition = condition.substring(0,condition.length()-4);
+                    sql = sql + condition + ";";
+                    //execute query
+//                    System.out.println(sql);
+                    db.execSQL(sql);
+                }
+
+
+
+
+                return null;
+            }
+        },null);
+
+    }
     public void fetchFailed(int count) {
         if (count < BuildConfig.MAX_SYNC_RETRIES) {
             int newCount = count + 1;
@@ -176,52 +215,9 @@ public class SyncIntentService extends IntentService {
         }
     }
 
-    // PUSH TO SERVER
-    private void pushToServer() {
-        pushECToServer();
-    }
 
-    private void pushECToServer() {
-        EventClientRepository db = AncApplication.getInstance().getEventClientRepository();
-        boolean keepSyncing = true;
 
-        while (keepSyncing) {
-            try {
-                Map<String, Object> pendingEvents = db.getUnSyncedEvents(EVENT_PUSH_LIMIT);
 
-                if (pendingEvents.isEmpty()) {
-                    return;
-                }
-
-                String baseUrl = AncApplication.getInstance().getContext().configuration().dristhiBaseURL();
-                if (baseUrl.endsWith(context.getString(R.string.url_separator))) {
-                    baseUrl = baseUrl.substring(0, baseUrl.lastIndexOf(context.getString(R.string.url_separator)));
-                }
-                // create request body
-                JSONObject request = new JSONObject();
-                if (pendingEvents.containsKey(context.getString(R.string.clients_key))) {
-                    request.put(context.getString(R.string.clients_key), pendingEvents.get(context.getString(R.string.clients_key)));
-                }
-                if (pendingEvents.containsKey(context.getString(R.string.events_key))) {
-                    request.put(context.getString(R.string.events_key), pendingEvents.get(context.getString(R.string.events_key)));
-                }
-                String jsonPayload = request.toString();
-                Response<String> response = httpAgent.post(
-                        MessageFormat.format("{0}/{1}",
-                                baseUrl,
-                                ADD_URL),
-                        jsonPayload);
-                if (response.isFailure()) {
-                    Log.e(getClass().getName(), "Events sync failed.");
-                    return;
-                }
-                db.markEventsAsSynced(pendingEvents);
-                Log.i(getClass().getName(), "Events synced successfully.");
-            } catch (Exception e) {
-                Log.e(getClass().getName(), e.getMessage(), e);
-            }
-        }
-    }
 
     private void sendSyncStatusBroadcastMessage(FetchStatus fetchStatus) {
         Intent intent = new Intent();
@@ -240,7 +236,6 @@ public class SyncIntentService extends IntentService {
 
         ECSyncHelper ecSyncUpdater = ECSyncHelper.getInstance(context);
         ecSyncUpdater.updateLastCheckTimeStamp(new Date().getTime());
-        DeleteIntentServiceJob.scheduleJobImmediately(DeleteIntentServiceJob.TAG);
     }
 
     private Pair<Long, Long> getMinMaxServerVersions(JSONObject jsonObject) {
@@ -289,5 +284,4 @@ public class SyncIntentService extends IntentService {
         }
         return count;
     }
-
 }
