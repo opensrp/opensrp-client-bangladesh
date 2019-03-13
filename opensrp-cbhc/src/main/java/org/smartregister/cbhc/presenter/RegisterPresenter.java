@@ -113,7 +113,6 @@ public class RegisterPresenter implements RegisterContract.Presenter, RegisterCo
         form = JsonFormUtils.getFormAsJson(form,formName, entityId, currentLocationId,householdID);
         form.put("relational_id",householdID);
         LookUpUtils.putRelationalIdInLookupObjects(form,householdID);
-
         getView().startFormActivity(form);
 
     }

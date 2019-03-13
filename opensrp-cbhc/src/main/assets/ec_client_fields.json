@@ -275,6 +275,13 @@
           }
         },
         {
+          "column_name": "tasks",
+          "type": "Event",
+          "json_mapping": {
+            "field": ""
+          }
+        },
+        {
           "column_name": "alt_name",
           "type": "Client",
           "json_mapping": {
@@ -420,6 +427,13 @@
           }
         },
         {
+          "column_name": "tasks",
+          "type": "Event",
+          "json_mapping": {
+            "field": ""
+          }
+        },
+        {
           "column_name": "reminders",
           "type": "Client",
           "json_mapping": {
@@ -548,6 +562,13 @@
           "type": "Client",
           "json_mapping": {
             "field": "attributes.PregnancyStatus"
+          }
+        },
+        {
+          "column_name": "tasks",
+          "type": "Event",
+          "json_mapping": {
+            "field": ""
           }
         },
         {

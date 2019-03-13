@@ -262,5 +262,6 @@
     <string name="cbhc_app">CBHC</string>
     <string name="household_register">Household Register</string>
     <string name="start_new_form">start new form</string>
+    <string name="total_unregister_child">+Child: %1$s</string>
 
 </resources>

@@ -12,6 +12,7 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -49,6 +50,7 @@ import org.smartregister.cbhc.util.Constants;
 import org.smartregister.cbhc.util.DBConstants;
 import org.smartregister.cbhc.util.ImageLoaderByGlide;
 import org.smartregister.cbhc.util.JsonFormUtils;
+import org.smartregister.cbhc.util.LookUpUtils;
 import org.smartregister.cbhc.util.Utils;
 import org.smartregister.cbhc.view.CopyToClipboardDialog;
 import org.smartregister.commonregistry.CommonPersonObject;
@@ -227,12 +229,26 @@ public class ProfileActivity extends BaseProfileActivity implements ProfileContr
                 intent.putExtra("type_of_member",clienttype);
                 startActivity(intent);
                 break;
+            case R.id.total_birth_btn:
+                CommonPersonObjectClient pClient  = (CommonPersonObjectClient) view.getTag(R.id.clientformemberprofile);
+                String firstNameEnglish = org.smartregister.util.Utils.getValue(pClient.getColumnmaps(), DBConstants.KEY.FIRST_NAME, true);
+                String lastNameEnglish = org.smartregister.util.Utils.getValue(pClient.getColumnmaps(), DBConstants.KEY.LAST_NAME, true);
+                motherNameEnglish=getName(firstNameEnglish, lastNameEnglish);
+                try {
+                    presenter.startMemberRegistrationForm(Constants.JSON_FORM.MEMBER_REGISTER,null,null,null,householdDetails.entityId());
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+
+                break;
         }
     }
+    private String motherNameEnglish;
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
           super.onActivityResult(requestCode, resultCode, data);
+        motherNameEnglish="";
         if (requestCode == JsonFormUtils.REQUEST_CODE_GET_JSON && resultCode == RESULT_OK) {
             try {
                 String jsonString = data.getStringExtra("json");
@@ -500,8 +516,12 @@ public class ProfileActivity extends BaseProfileActivity implements ProfileContr
     public void startFormActivity(JSONObject form) {
         try{
             Intent intent = new Intent(this, AncJsonFormActivity.class);
+            if(!TextUtils.isEmpty(motherNameEnglish)){
+                LookUpUtils.putMotherName(form,motherNameEnglish);
+            }
             intent.putExtra("json", form.toString());
             startActivityForResult(intent, JsonFormUtils.REQUEST_CODE_GET_JSON);
+
         }catch(Exception e){
 
         }

@@ -24,4 +24,23 @@ public class LookUpUtils {
         }
 
     }
+    public static void putMotherName(JSONObject form, String motherName){
+        try {
+            JSONObject stepOne = form.getJSONObject(JsonFormUtils.STEP1);
+            JSONArray jsonArray = stepOne.getJSONArray(JsonFormUtils.FIELDS);
+            for (int i = 0; i < jsonArray.length(); i++) {
+                JSONObject jsonObject = jsonArray.getJSONObject(i);
+
+                if (jsonObject.getString(JsonFormUtils.KEY).equalsIgnoreCase("Mother_Guardian_First_Name_english")){
+//                    jsonObject.put("mother_id",motherId);
+                    jsonObject.put(JsonFormUtils.VALUE,motherName);
+                }
+
+            }
+        }catch(Exception e){
+            e.printStackTrace();
+
+        }
+
+    }
 }

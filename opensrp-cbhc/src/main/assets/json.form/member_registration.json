@@ -1375,9 +1375,10 @@
         "min_date": "today-308d",
 
         "relevance": {
-          "step1:pregnant_status": {
-            "type": "string",
-            "ex": "regex(., \"(প্রসব পূর্ব)\")"
+          "rules-engine": {
+            "ex-rules": {
+              "rules-file": "sample-relevance-rules.yml"
+            }
           }
         }
       },

@@ -7,6 +7,7 @@ import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.widget.CursorAdapter;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -222,24 +223,25 @@ public class ProfileOverviewFragment extends BaseProfileFragment {
             TextView member_name = (TextView) view.findViewById(R.id.name_tv);
             TextView relation_tv = (TextView) view.findViewById(R.id.relation_tv);
             TextView member_age = (TextView) view.findViewById(R.id.age_tv);
-            ImageView pregnant_icon = (ImageView)view.findViewById(R.id.pregnant_woman_present);
+            ImageView pregnant_icon = (ImageView) view.findViewById(R.id.pregnant_woman_present);
+            Button noOfUnregisterButton=view.findViewById(R.id.total_birth_btn);
             String relation = personinlist.getColumnmaps().get("relation");
 
 
             String pregnant_status = personinlist.getColumnmaps().get("PregnancyStatus");
 
-            if(pregnant_status!=null && (pregnant_status.contains("Antenatal Period")||pregnant_status.contains("প্রসব পূর্ব"))){
+            if(pregnant_status!=null && (pregnant_status.contains("Antenatal Period")||pregnant_status.contains("প্রসব পূর্ব"))) {
                 pregnant_icon.setVisibility(View.VISIBLE);
             }else{
                 pregnant_icon.setVisibility(View.INVISIBLE);
             }
             String firstName = org.smartregister.util.Utils.getValue(pClient.getColumnmaps(), DBConstants.KEY.FIRST_NAME, true);
             String lastName = org.smartregister.util.Utils.getValue(pClient.getColumnmaps(), DBConstants.KEY.LAST_NAME, true);
-            if((lastName!=null&&lastName.equalsIgnoreCase("null"))||lastName==null){
+            if((lastName!=null&&lastName.equalsIgnoreCase("null"))||lastName==null) {
                 lastName = "";
             }
-            if(relation!=null){
-                if(rmap.get(relation)!=null){
+            if(relation!=null) {
+                if(rmap.get(relation)!=null) {
                     relation = rmap.get(relation);
                 }
                 relation_tv.setText(" ("+relation+")");
@@ -265,6 +267,21 @@ public class ProfileOverviewFragment extends BaseProfileFragment {
             DetailsRepository detailsRepository = AncApplication.getInstance().getContext().detailsRepository();
             Map<String, String> detailmap = detailsRepository.getAllDetailsForClient(pClient.getCaseId());
             String gender = detailmap.get("gender");
+            String noOfChild=getValue(detailmap,"Live Birth",true);
+            if(!TextUtils.isEmpty(noOfChild)){
+                int child=Integer.valueOf(noOfChild) - childCount(pClient.getCaseId());
+                if(child>0){
+                    noOfUnregisterButton.setVisibility(View.VISIBLE);
+                    noOfUnregisterButton.setText(getString(R.string.total_unregister_child,child+""));
+                }
+                else {
+                    noOfUnregisterButton.setVisibility(View.GONE);
+                }
+
+
+            }else{
+                noOfUnregisterButton.setVisibility(View.GONE);
+            }
             //            String dobString = cursor.getString(cursor.getColumnIndex("dob"));
             String dobString = getValue(personinlist.getColumnmaps(),"dob",true);
             int age = 0;
@@ -310,6 +327,7 @@ public class ProfileOverviewFragment extends BaseProfileFragment {
 //            }
             Drawable d = null;
             if(age<5){
+                assert gender != null;
                 if(gender.equalsIgnoreCase("m")){
                     if (pClient.entityId() != null) {//image already in local storage most likey ):
                         //set profile image by passing the client id.If the image doesn't exist in the image org.smartregister.cbhc.repository then download and save locally
@@ -342,6 +360,7 @@ public class ProfileOverviewFragment extends BaseProfileFragment {
                     }
                 }
             }else{
+                assert gender != null;
                 if(gender.equalsIgnoreCase("m")){
                     if (pClient.entityId() != null) {//image already in local storage most likey ):
                         //set profile image by passing the client id.If the image doesn't exist in the image org.smartregister.cbhc.repository then download and save locally
@@ -378,6 +397,8 @@ public class ProfileOverviewFragment extends BaseProfileFragment {
             profileImageIV.setTag(R.id.clientformemberprofile,pClient);
             profileImageIV.setTag(R.id.typeofclientformemberprofile,clientype);
             profileImageIV.setOnClickListener((ProfileActivity)getActivity());
+            noOfUnregisterButton.setTag(R.id.clientformemberprofile,pClient);
+            noOfUnregisterButton.setOnClickListener((ProfileActivity)getActivity());
 
         }
 
@@ -388,6 +409,29 @@ public class ProfileOverviewFragment extends BaseProfileFragment {
             View view = inflater.inflate(R.layout.household_details_list_row,parent,false);
 
             return  view;
+        }
+
+        public int childCount(String motherId){
+            String tableName = DBConstants.CHILD_TABLE_NAME;
+            String parentTableName = DBConstants.WOMAN_TABLE_NAME;
+            SmartRegisterQueryBuilder queryBUilder = new SmartRegisterQueryBuilder();
+            queryBUilder.SelectInitiateMainTable(tableName, new String[]{
+                    tableName + ".relationalid",
+                    tableName + ".details",
+                    tableName + ".relational_id"
+            });
+            queryBUilder.customJoin("LEFT JOIN " + parentTableName + " ON  " + tableName + ".relational_id =  " + parentTableName + ".id");
+            String mainSelect = queryBUilder.mainCondition(" ");
+
+            AncRepository repo = (AncRepository) AncApplication.getInstance().getRepository();
+            net.sqlcipher.database.SQLiteDatabase db = repo.getReadableDatabase();
+
+            Cursor cursor = db.rawQuery(mainSelect+tableName+".relational_id = ?",new String[]{motherId});
+            if(cursor!=null && cursor.getCount()>0){
+                return cursor.getCount();
+
+            }
+            return 0;
         }
 
         public void addChild(LinearLayout household_details_list_row, String mother_id) {
@@ -435,6 +479,9 @@ public class ProfileOverviewFragment extends BaseProfileFragment {
 
 
             Cursor cursor = db.rawQuery(mainSelect+ "and "+tableName+".relational_id = ?",new String[]{mother_id});
+            if(cursor!=null && cursor.getCount()>0){
+
+            }
 
 
 

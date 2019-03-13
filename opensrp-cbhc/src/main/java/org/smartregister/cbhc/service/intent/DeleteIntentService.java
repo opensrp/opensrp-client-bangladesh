@@ -11,6 +11,7 @@ import android.util.Pair;
 import net.sqlcipher.Cursor;
 import net.sqlcipher.database.SQLiteDatabase;
 
+import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.joda.time.DateTime;
 import org.json.JSONArray;
@@ -172,23 +173,20 @@ public class DeleteIntentService extends IntentService {
                 String tablename[] = {"ec_details","ec_household","ec_woman","ec_child","ec_member","event","client"};
                 AncRepository repo = (AncRepository) AncApplication.getInstance().getRepository();
                 SQLiteDatabase db = repo.getReadableDatabase();
+                if(!ArrayUtils.isEmpty(ids)) {
+                    for(int i=0;i<tablename.length;i++) {
 
-                for(int i=0;i<tablename.length;i++) {
-
-                    String sql = "DELETE FROM " + tablename[i] + " WHERE ";
-                    String condition = "";
-                    for(int k = 0;k<ids.length;k++) {
-                        condition = condition + " " + tablename[i]+".base_entity_id='"+ ids[k]+"' OR ";
+                        String sql = "DELETE FROM " + tablename[i] + " WHERE ";
+                        String condition = "";
+                        for(int k = 0;k<ids.length;k++) {
+                            condition = condition + " " + tablename[i]+".base_entity_id='"+ ids[k]+"' OR ";
+                        }
+                        if(condition.length()>4)
+                            condition = condition.substring(0,condition.length()-4);
+                        sql = sql + condition + ";";
+                        db.execSQL(sql);
                     }
-                    condition = condition.substring(0,condition.length()-4);
-                    sql = sql + condition + ";";
-                    //execute query
-//                    System.out.println(sql);
-                    db.execSQL(sql);
                 }
-
-
-
 
                 return null;
             }
