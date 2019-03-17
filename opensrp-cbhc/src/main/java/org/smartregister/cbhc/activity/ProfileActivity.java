@@ -27,6 +27,7 @@ import net.sqlcipher.database.SQLiteDatabase;
 
 import org.apache.commons.lang3.StringUtils;
 import org.joda.time.DateTime;
+import org.json.JSONArray;
 import org.json.JSONObject;
 import org.smartregister.CoreLibrary;
 import org.smartregister.cbhc.R;
@@ -263,6 +264,7 @@ public class ProfileActivity extends BaseProfileActivity implements ProfileContr
                     presenter.saveForm(jsonString, true);
                 }else if (form.getString(JsonFormUtils.ENCOUNTER_TYPE).equals(Constants.EventType.MemberREGISTRATION)) {
                     presenter.saveForm(jsonString, false);
+                    updateScheduledTasks(form);
                 } else if (form.getString(JsonFormUtils.ENCOUNTER_TYPE).equals(Constants.EventType.CLOSE)) {
                     presenter.closeAncRecord(jsonString);
                 }else if (form.getString(JsonFormUtils.ENCOUNTER_TYPE).equals("Followup HH Transfer")){
@@ -304,6 +306,41 @@ public class ProfileActivity extends BaseProfileActivity implements ProfileContr
 //                Log.i("", "NO RESULT FOR QR CODE");
         }
     }
+
+    private void updateScheduledTasks(final JSONObject form) {
+        org.smartregister.util.Utils.startAsyncTask((new AsyncTask() {
+            @Override
+            protected Object doInBackground(Object[] objects) {
+                AncRepository repo = (AncRepository) AncApplication.getInstance().getRepository();
+                SQLiteDatabase db = repo.getReadableDatabase();
+                try {
+                    JSONArray fields = form.getJSONObject("step1").getJSONArray("fields");
+                    String mother_name = "";
+                    String entity_id = householdDetails.entityId();
+
+                    for(int i=0;i<fields.length();i++) {
+                        JSONObject field_object = fields.getJSONObject(i);
+                        if(field_object.getString("key").equalsIgnoreCase("Mother_Guardian_First_Name_english")) {
+                            String value = field_object.getString("value");
+                            if(value!=null&&!StringUtils.isEmpty(value)){
+                                mother_name = value;
+                                mother_name = mother_name.split(" ")[0];
+                                break;
+                            }
+                        }
+
+                    }
+                    String sql = "UPDATE ec_woman SET tasks = tasks-1 WHERE relational_id = '"+entity_id+"' AND first_name like '%"+mother_name+"%' AND tasks IS NOT NULL;";
+                    db.execSQL(sql);
+
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+                return null;
+            }
+        }),null);
+    }
+
     ProfileContactsFragment profileContactsFragment;
     private ViewPager setupViewPager(ViewPager viewPager) {
         ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());

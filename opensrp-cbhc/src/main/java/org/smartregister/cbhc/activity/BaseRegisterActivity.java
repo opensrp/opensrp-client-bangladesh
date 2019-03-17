@@ -4,6 +4,7 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
@@ -23,13 +24,17 @@ import android.widget.ArrayAdapter;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import net.sqlcipher.database.SQLiteDatabase;
+
 import org.apache.commons.lang3.StringUtils;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
+import org.json.JSONArray;
 import org.json.JSONObject;
 import org.smartregister.cbhc.R;
 import org.smartregister.cbhc.adapter.PagerAdapter;
+import org.smartregister.cbhc.application.AncApplication;
 import org.smartregister.cbhc.barcode.Barcode;
 import org.smartregister.cbhc.barcode.BarcodeIntentIntegrator;
 import org.smartregister.cbhc.barcode.BarcodeIntentResult;
@@ -42,6 +47,7 @@ import org.smartregister.cbhc.fragment.HomeRegisterFragment;
 import org.smartregister.cbhc.helper.BottomNavigationHelper;
 import org.smartregister.cbhc.listener.BottomNavigationListener;
 import org.smartregister.cbhc.presenter.RegisterPresenter;
+import org.smartregister.cbhc.repository.AncRepository;
 import org.smartregister.cbhc.util.Constants;
 import org.smartregister.cbhc.util.DBConstants;
 import org.smartregister.cbhc.util.JsonFormUtils;
@@ -379,6 +385,7 @@ public abstract class BaseRegisterActivity extends SecuredNativeSmartRegisterAct
                     presenter.saveForm(jsonString, true);
                 }else if (form.getString(JsonFormUtils.ENCOUNTER_TYPE).equals(Constants.EventType.MemberREGISTRATION)) {
                     presenter.saveForm(jsonString, false);
+                    updateScheduledTasks(form);
                 } else if (form.getString(JsonFormUtils.ENCOUNTER_TYPE).equals(Constants.EventType.CLOSE)) {
                     presenter.closeAncRecord(jsonString);
                 }
@@ -396,7 +403,39 @@ public abstract class BaseRegisterActivity extends SecuredNativeSmartRegisterAct
                 Log.i("", "NO RESULT FOR QR CODE");
         }
     }
+    private void updateScheduledTasks(final JSONObject form) {
+        org.smartregister.util.Utils.startAsyncTask((new AsyncTask() {
+            @Override
+            protected Object doInBackground(Object[] objects) {
+                AncRepository repo = (AncRepository) AncApplication.getInstance().getRepository();
+                SQLiteDatabase db = repo.getReadableDatabase();
+                try {
+                    JSONArray fields = form.getJSONObject("step1").getJSONArray("fields");
+                    String mother_name = "";
+                    String entity_id = form.getString("relational_id");
 
+                    for(int i=0;i<fields.length();i++) {
+                        JSONObject field_object = fields.getJSONObject(i);
+                        if(field_object.getString("key").equalsIgnoreCase("Mother_Guardian_First_Name_english")) {
+                            String value = field_object.getString("value");
+                            if(value!=null&&!StringUtils.isEmpty(value)){
+                                mother_name = value;
+                                mother_name = mother_name.split(" ")[0];
+                                break;
+                            }
+                        }
+
+                    }
+                    String sql = "UPDATE ec_woman SET tasks = tasks-1 WHERE relational_id = '"+entity_id+"' AND first_name like '%"+mother_name+"%' AND tasks IS NOT NULL;";
+                    db.execSQL(sql);
+
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+                return null;
+            }
+        }),null);
+    }
     public void switchToFragment(final int position) {
         Log.v("we are here", "switchtofragragment");
         try {

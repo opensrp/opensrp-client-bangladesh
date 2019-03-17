@@ -25,6 +25,8 @@ import net.sqlcipher.database.SQLiteDatabase;
 
 import org.apache.commons.lang3.StringUtils;
 import org.joda.time.DateTime;
+import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 import org.smartregister.CoreLibrary;
 import org.smartregister.cbhc.R;
@@ -750,6 +752,8 @@ public class MemberProfileActivity extends BaseProfileActivity implements Profil
                             }
                         });
                 alertDialog.show();
+            }else if(form.getString(JsonFormUtils.ENCOUNTER_TYPE).equals("Followup Pregnant Status")){
+                updateScheduledTasks(form);
             }
             else if (form.getString(JsonFormUtils.ENCOUNTER_TYPE).equals(Constants.EventType.MemberREGISTRATION)) {
                 mProfilePresenter.saveForm(jsonString, false);
@@ -761,7 +765,38 @@ public class MemberProfileActivity extends BaseProfileActivity implements Profil
         }
 
     }
+    public void updateScheduledTasks(final JSONObject form){
+        org.smartregister.util.Utils.startAsyncTask((new AsyncTask() {
+            @Override
+            protected Object doInBackground(Object[] objects) {
+                AncRepository repo = (AncRepository) AncApplication.getInstance().getRepository();
+                SQLiteDatabase db = repo.getReadableDatabase();
+                try {
+                    JSONArray fields = form.getJSONObject("step1").getJSONArray("fields");
+                    int live_birth = 0;
+                    String entity_id = householdDetails.entityId();
 
+                    for(int i=0;i<fields.length();i++) {
+                        JSONObject field_object = fields.getJSONObject(i);
+                        if(field_object.getString("key").equalsIgnoreCase("Live Birth")) {
+                            String value = field_object.getString("value");
+                            if(value!=null&&!StringUtils.isEmpty(value)){
+                                live_birth = Integer.valueOf(value);
+                                break;
+                            }
+                        }
+
+                    }
+                    String sql = "UPDATE ec_woman SET tasks = '"+live_birth+"' WHERE base_entity_id = '"+entity_id+"';";
+                    db.execSQL(sql);
+
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+                return null;
+            }
+        }),null);
+    }
     public void removeMember(final String entity_id) {
         org.smartregister.util.Utils.startAsyncTask((new AsyncTask() {
 
