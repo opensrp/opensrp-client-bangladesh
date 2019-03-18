@@ -119,7 +119,7 @@
         "openmrs_entity": "",
         "openmrs_entity_id": "Time_Of_Death",
         "openmrs_data_type": "text",
-        "type": "edit_text",
+        "type": "time_picker",
         "hint": "মৃত্যুর সময় ",
         "expanded":false,
         "v_required":{

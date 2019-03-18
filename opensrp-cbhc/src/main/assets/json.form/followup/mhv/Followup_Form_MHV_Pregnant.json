@@ -148,14 +148,7 @@
           "value": "true",
           "err": "Number must be 4 digits in length"
         },
-        "v_max_length": {
-          "value": "4",
-          "err": "Please Enter 4 digit Time"
-        },
-        "v_min_length": {
-          "value": "4",
-          "err": "Please Enter 4 digit Time"
-        },
+        
         "relevance": {
           "step1:pregnant_status": {
             "type": "string",
