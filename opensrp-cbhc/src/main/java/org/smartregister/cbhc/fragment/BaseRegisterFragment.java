@@ -2,6 +2,7 @@ package org.smartregister.cbhc.fragment;
 
 import android.content.Intent;
 import android.database.Cursor;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
@@ -25,17 +26,21 @@ import android.widget.TextView;
 
 import com.github.ybq.android.spinkit.style.FadingCircle;
 
+import net.sqlcipher.database.SQLiteDatabase;
+
 import org.apache.commons.lang3.StringUtils;
 import org.smartregister.cbhc.R;
 import org.smartregister.cbhc.activity.BaseRegisterActivity;
 import org.smartregister.cbhc.activity.HomeRegisterActivity;
 import org.smartregister.cbhc.activity.ProfileActivity;
+import org.smartregister.cbhc.application.AncApplication;
 import org.smartregister.cbhc.contract.RegisterFragmentContract;
 import org.smartregister.cbhc.cursor.AdvancedMatrixCursor;
 import org.smartregister.cbhc.domain.AttentionFlag;
 import org.smartregister.cbhc.event.SyncEvent;
 import org.smartregister.cbhc.provider.RegisterProvider;
 import org.smartregister.cbhc.receiver.SyncStatusBroadcastReceiver;
+import org.smartregister.cbhc.repository.AncRepository;
 import org.smartregister.cbhc.service.intent.SyncIntentService;
 import org.smartregister.cbhc.util.Constants;
 import org.smartregister.cbhc.util.DBConstants;
@@ -147,12 +152,13 @@ public abstract class BaseRegisterFragment extends RecyclerViewFragment implemen
             }
         };
     }
-
+TextView unsyncView;
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_register, container, false);
         rootView = view;//handle to the root
+
 
         Toolbar toolbar = view.findViewById(R.id.register_toolbar);
         AppCompatActivity activity = ((AppCompatActivity) getActivity());
@@ -164,7 +170,7 @@ public abstract class BaseRegisterFragment extends RecyclerViewFragment implemen
         activity.getSupportActionBar().setLogo(R.drawable.round_white_background);
         activity.getSupportActionBar().setDisplayUseLogoEnabled(false);
         activity.getSupportActionBar().setDisplayShowTitleEnabled(false);
-
+        unsyncView = (TextView)toolbar.findViewById(R.id.unsync_count);
         setupViews(view);
         return view;
     }
@@ -493,6 +499,7 @@ public abstract class BaseRegisterFragment extends RecyclerViewFragment implemen
                     renderView();
 
                     syncStatusSnackbar = Snackbar.make(rootView, R.string.sync_complete, Snackbar.LENGTH_LONG);
+                    updateUnsyncCount();
                 } else if (fetchStatus.equals(FetchStatus.noConnection)) {
                     syncStatusSnackbar = Snackbar.make(rootView, R.string.sync_failed_no_internet, Snackbar.LENGTH_LONG);
                 }
@@ -508,6 +515,7 @@ public abstract class BaseRegisterFragment extends RecyclerViewFragment implemen
     public void onResume() {
         super.onResume();
         registerSyncStatusBroadcastReceiver();
+        updateUnsyncCount();
     }
 
     @Override
@@ -531,9 +539,48 @@ public abstract class BaseRegisterFragment extends RecyclerViewFragment implemen
             if (qrCodeScanImageView != null) {
                 qrCodeScanImageView.setVisibility(View.VISIBLE);
             }
+
         }
     }
+    public void updateUnsyncCount(){
+        org.smartregister.util.Utils.startAsyncTask(new AsyncTask() {
 
+            int count = 0;
+
+            @Override
+            protected Object doInBackground(Object[] objects) {
+                try{
+                    AncRepository repo = (AncRepository) AncApplication.getInstance().getRepository();
+                    SQLiteDatabase db = repo.getReadableDatabase();
+                    Cursor cursor = db.rawQuery("SELECT * FROM event WHERE syncStatus='Unsynced'",new String[]{});
+                    if(cursor!=null&&cursor.getCount()>0){
+                        count = cursor.getCount();
+                    }
+
+                    cursor.close();
+                }catch(Exception e){
+
+                }
+
+                return null;
+            }
+
+            @Override
+            protected void onPostExecute(Object o) {
+                super.onPostExecute(o);
+                if(unsyncView!=null){
+                    if(count!=0){
+                        unsyncView.setVisibility(View.VISIBLE);
+                        unsyncView.setText(count+"");
+                    }else{
+                        unsyncView.setVisibility(View.GONE);
+                    }
+                }
+
+            }
+
+        },null);
+    }
     @Override
     public void recalculatePagination(AdvancedMatrixCursor matrixCursor) {
         clientAdapter.setTotalcount(matrixCursor.getCount());

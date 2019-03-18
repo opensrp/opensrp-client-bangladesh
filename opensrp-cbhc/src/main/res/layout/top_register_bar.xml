@@ -77,6 +77,18 @@
             android:layout_margin="3dp"
             android:gravity="center"
             android:src="@drawable/ic_icon_synchronize" />
+        <com.vijay.jsonwizard.views.CustomTextView
+            android:id="@+id/unsync_count"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentRight="true"
+            android:text="10"
+            android:visibility="gone"
+            android:layout_marginTop="-5dp"
+            android:textStyle="bold"
+            android:textSize="14dp"
+            android:textColor="@android:color/holo_red_dark"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
 
     </RelativeLayout>
 

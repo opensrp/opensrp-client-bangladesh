@@ -249,7 +249,6 @@ public class LoginActivity extends AppCompatActivity implements LoginContract.Vi
         userNameEditText.setError(getString(resourceId));
         userNameEditText.requestFocus();
         showErrorDialog(getResources().getString(R.string.unauthorized));
-
     }
 
     @Override
