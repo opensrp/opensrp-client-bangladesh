@@ -1,8 +1,8 @@
 ---
-name: step1_Disease_status
+name: step1_Disease_status_zero_to_two_month_by_age
 description: disease status for zero to two month
 priority: 1
-condition: "step1_has_disease.equalsIgnoreCase('হ্যাঁ') && (helper.formatDate(step1_member_birth_date,'d') >= 0 && helper.formatDate(step1_member_birth_date,'d') <= 62)"
+condition: "step1_has_disease.equalsIgnoreCase('হ্যাঁ') && helper.formatDate(step1_member_birth_date,'d') >= 0 && helper.formatDate(step1_member_birth_date,'d') <= 62"
 actions:
   - "isRelevant = true"
 ---
