@@ -555,7 +555,7 @@
           "তৃতীয় লিঙ্গ":"O"
         }
       },
-      /*age 0 - 41 days */
+
 
       {
         "key":"Child_birth_weight",
@@ -627,7 +627,7 @@
       },
 
 
-      /**/
+
       {
         "key": "marital_status",
         "openmrs_entity_parent": "",

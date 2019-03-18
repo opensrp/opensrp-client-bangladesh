@@ -1,8 +1,8 @@
 ---
-name: step1_Disease_status_zero_to_two_month_by_age
+name: step1_Disease_status
 description: disease status for zero to two month
 priority: 1
-condition: "step1_has_disease.equalsIgnoreCase('হ্যাঁ') && (helper.formatDate(step1_member_birth_date,'d') <= 62)"
+condition: "step1_has_disease.equalsIgnoreCase('হ্যাঁ') && (helper.formatDate(step1_member_birth_date,'d') >= 0 && helper.formatDate(step1_member_birth_date,'d') <= 62)"
 actions:
   - "isRelevant = true"
 ---
@@ -15,14 +15,14 @@ actions:
 ---
 name: step1_Disease_status_male_by_age
 description: disease status for male
-priority: 1
+priority: 2
 condition: "step1_has_disease.equalsIgnoreCase('হ্যাঁ') && step1_age > 5 && step1_gender.equalsIgnoreCase('পুরুষ')"
 actions:
   - "isRelevant = true"
 ---
 name: step1_Disease_status_female_by_age
 description: disease status for female
-priority: 1
+priority: 2
 condition: "step1_has_disease.equalsIgnoreCase('হ্যাঁ') && step1_age > 5  && step1_gender.equalsIgnoreCase('মহিলা')"
 actions:
   - "isRelevant = true"
