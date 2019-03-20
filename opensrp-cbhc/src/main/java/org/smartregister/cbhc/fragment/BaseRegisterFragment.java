@@ -473,7 +473,7 @@ TextView unsyncView;
     }
 
     private void refreshSyncStatusViews(FetchStatus fetchStatus) {
-
+        Log.d("sync_status","refreshSyncStatusViews>>"+SyncStatusBroadcastReceiver.getInstance().isSyncing()+":fetchStatus:"+fetchStatus);
 
         if (SyncStatusBroadcastReceiver.getInstance().isSyncing()) {
             if (syncStatusSnackbar != null) syncStatusSnackbar.dismiss();
@@ -495,11 +495,22 @@ TextView unsyncView;
                 } else if (fetchStatus.equals(FetchStatus.fetched)
                         || fetchStatus.equals(FetchStatus.nothingFetched)) {
 
-                    setRefreshList(true);
-                    renderView();
+                    try{
+                        setRefreshList(true);
+
+                    }catch (Exception e){
+                        e.printStackTrace();
+                    }
+                    try{
+
+                        renderView();
+                    }catch (Exception e){
+                        e.printStackTrace();
+                    }
+
 
                     syncStatusSnackbar = Snackbar.make(rootView, R.string.sync_complete, Snackbar.LENGTH_LONG);
-                    updateUnsyncCount();
+//                    updateUnsyncCount();
                 } else if (fetchStatus.equals(FetchStatus.noConnection)) {
                     syncStatusSnackbar = Snackbar.make(rootView, R.string.sync_failed_no_internet, Snackbar.LENGTH_LONG);
                 }
@@ -515,7 +526,7 @@ TextView unsyncView;
     public void onResume() {
         super.onResume();
         registerSyncStatusBroadcastReceiver();
-        updateUnsyncCount();
+//        updateUnsyncCount();
     }
 
     @Override
@@ -524,17 +535,25 @@ TextView unsyncView;
         super.onPause();
     }
 
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+    }
+
     private void refreshSyncProgressSpinner() {
+        if(syncProgressBar == null){
+            syncProgressBar = rootView.findViewById(R.id.sync_progress_bar);
+        }
         if (SyncStatusBroadcastReceiver.getInstance().isSyncing()) {
-            if (syncProgressBar != null) {
-                syncProgressBar.setVisibility(View.VISIBLE);
+            if (rootView.findViewById(R.id.sync_progress_bar) != null) {
+                rootView.findViewById(R.id.sync_progress_bar).setVisibility(View.VISIBLE);
             }
             if (qrCodeScanImageView != null) {
                 qrCodeScanImageView.setVisibility(View.GONE);
             }
         } else {
-            if (syncProgressBar != null) {
-                syncProgressBar.setVisibility(View.GONE);
+            if (rootView.findViewById(R.id.sync_progress_bar) != null) {
+                rootView.findViewById(R.id.sync_progress_bar).setVisibility(View.GONE);
             }
             if (qrCodeScanImageView != null) {
                 qrCodeScanImageView.setVisibility(View.VISIBLE);

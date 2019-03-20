@@ -65,7 +65,7 @@ public class DeleteIntentService extends IntentService {
     }
 
     protected void handleSync() {
-        sendSyncStatusBroadcastMessage(FetchStatus.fetchStarted);
+        //sendSyncStatusBroadcastMessage(FetchStatus.fetchStarted);
         doSync();
     }
 
@@ -168,9 +168,17 @@ public class DeleteIntentService extends IntentService {
     @SuppressLint("StaticFieldLeak")
     public void delete_from_table(final String[]ids){
         Utils.startAsyncTask(new AsyncTask() {
+
+            @Override
+            protected void onPostExecute(Object o) {
+                super.onPostExecute(o);
+                removeTransferedSync();
+            }
+
             @Override
             protected Object doInBackground(Object[] objects) {
-                String tablename[] = {"ec_details","ec_household","ec_woman","ec_child","ec_member","event","client"};
+
+                String tablename[] = {"ec_details","ec_household","ec_woman","ec_child","ec_member"};
                 AncRepository repo = (AncRepository) AncApplication.getInstance().getRepository();
                 SQLiteDatabase db = repo.getReadableDatabase();
                 if(!ArrayUtils.isEmpty(ids)) {
@@ -186,6 +194,24 @@ public class DeleteIntentService extends IntentService {
                         sql = sql + condition + ";";
                         db.execSQL(sql);
                     }
+
+                    tablename = new String[2];
+                    tablename[0] = "event";
+                    tablename[1] = "client";
+
+                    for(int i=0;i<tablename.length;i++) {
+
+                        String sql = "DELETE FROM " + tablename[i] + " WHERE ";
+                        String condition = "";
+                        for(int k = 0;k<ids.length;k++) {
+                            condition = condition + " " + tablename[i]+".baseEntityId='"+ ids[k]+"' OR ";
+                        }
+                        if(condition.length()>4)
+                            condition = condition.substring(0,condition.length()-4);
+                        sql = sql + condition + ";";
+                        db.execSQL(sql);
+                    }
+
                 }
 
                 return null;
@@ -207,13 +233,35 @@ public class DeleteIntentService extends IntentService {
             ECSyncHelper ecUpdater = ECSyncHelper.getInstance(context);
             List<EventClient> events = ecUpdater.allEventClients(serverVersionPair.first - 1, serverVersionPair.second);
             AncClientProcessorForJava.getInstance(context).processClient(events);
-            sendSyncStatusBroadcastMessage(FetchStatus.fetched);
+            //sendSyncStatusBroadcastMessage(FetchStatus.fetched);
         } catch (Exception e) {
             Log.e(getClass().getName(), "Process Client Exception: " + e.getMessage(), e.getCause());
         }
     }
 
+    public void removeTransferedSync(){
+        org.smartregister.util.Utils.startAsyncTask((new AsyncTask() {
+            @Override
+            protected Object doInBackground(Object[] objects) {
+                AncRepository repo = (AncRepository) AncApplication.getInstance().getRepository();
+                SQLiteDatabase db = repo.getReadableDatabase();
+                try {
+                    String sql = "";
+                    sql = "UPDATE ec_member SET date_removed = '01-01-1000' WHERE date_removed IS NULL AND base_entity_id = (SELECT baseEntityId FROM event WHERE json LIKE '%Followup Death Status%' OR json LIKE '%Followup HH Transfer%' OR json LIKE '%Followup Member Transfer%');";
+                    db.execSQL(sql);
+                    sql = "UPDATE ec_woman SET date_removed = '01-01-1000' WHERE date_removed IS NULL AND base_entity_id = (SELECT baseEntityId FROM event WHERE json LIKE '%Followup Death Status%' OR json LIKE '%Followup HH Transfer%' OR json LIKE '%Followup Member Transfer%');";
+                    db.execSQL(sql);
+                    sql = "UPDATE ec_child SET date_removed = '01-01-1000' WHERE date_removed IS NULL AND base_entity_id = (SELECT baseEntityId FROM event WHERE json LIKE '%Followup Death Status%' OR json LIKE '%Followup HH Transfer%' OR json LIKE '%Followup Member Transfer%');";
+                    db.execSQL(sql);
+                    sql = "UPDATE ec_household SET date_removed = '01-01-1000' WHERE date_removed IS NULL AND base_entity_id = (SELECT baseEntityId FROM event WHERE json LIKE '%Followup Death Status%' OR json LIKE '%Followup HH Transfer%' OR json LIKE '%Followup Member Transfer%');";
+                    db.execSQL(sql);
+                }catch(Exception e) {
 
+                }
+             return null;
+            }
+        }),null);
+    }
 
 
 

@@ -20,6 +20,13 @@ condition: "step1_has_disease.equalsIgnoreCase('হ্যাঁ') && step1_age >
 actions:
   - "isRelevant = true"
 ---
+name: step1_risky_habits
+description: risky_habits
+priority: 1
+condition: "step1_age > 5 || (helper.formatDate(step1_member_birth_date,'d') > 1825)"
+actions:
+  - "isRelevant = true"
+---
 name: step1_Disease_status_female_by_age
 description: disease status for female
 priority: 2
@@ -66,7 +73,7 @@ actions:
 name: step1_Birth_weight
 description: Birth_weight
 priority: 1
-condition: "(helper.formatDate(step1_member_birth_date,'d') <= 62)"
+condition: "step1_Child_birth_weight.equalsIgnoreCase('হ্যাঁ') && (helper.formatDate(step1_member_birth_date,'d') <= 62)"
 actions:
   - "isRelevant = true"
 ---

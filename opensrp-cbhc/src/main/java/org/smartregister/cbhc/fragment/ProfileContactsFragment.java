@@ -229,7 +229,7 @@ public class ProfileContactsFragment extends BaseProfileFragment {
 
             String dobString = womanClient.get(DBConstants.KEY.DOB);
             if(dobString==null||dobString.isEmpty()){
-                dobString = "1919-01-01T05:53:20.000+05:53:20";
+                dobString = "1980-01-01T05:53:20.000+05:53:20";
             }
             Date dob = Utils.dobStringToDate(dobString);
             if (dob != null) {

@@ -1787,7 +1787,14 @@
             "value": false,
             "openmrs_choice_id": "None"
           }
-        ]
+        ],
+        "relevance": {
+          "rules-engine": {
+            "ex-rules": {
+              "rules-file": "sample-relevance-rules.yml"
+            }
+          }
+        }
       },
       {
         "key": "habits_other",

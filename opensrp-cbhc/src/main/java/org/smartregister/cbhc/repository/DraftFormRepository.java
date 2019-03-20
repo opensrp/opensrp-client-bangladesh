@@ -82,7 +82,7 @@ public class DraftFormRepository extends BaseRepository {
         List<draft_form_object> draftFormObjects = new ArrayList<draft_form_object>();
         Cursor cursor = null;
         try {
-            cursor = getReadableDatabase().query(DraftForm_TABLE_NAME, DraftForm_TABLE_COLUMNS, household_BASE_ENTITY_ID +" = ?  AND "+ draft_STATUS + " = ? ", new String[]{"",TYPE_draft_open}, null, null, null, null);
+            cursor = getReadableDatabase().query(DraftForm_TABLE_NAME, DraftForm_TABLE_COLUMNS, household_BASE_ENTITY_ID +" = ?  AND "+ draft_STATUS + " = ? AND formName NOT LIKE 'Followup%'", new String[]{"",TYPE_draft_open}, null, null, null, null);
             draftFormObjects = readAllDraftForms(cursor);
         } catch (Exception e) {
             Log.e(TAG, Log.getStackTraceString(e));
