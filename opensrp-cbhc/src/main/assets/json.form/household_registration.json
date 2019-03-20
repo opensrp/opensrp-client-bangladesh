@@ -76,7 +76,7 @@
         "openmrs_entity_id": "",
         "openmrs_data_type": "text",
         "type": "edit_text",
-        "hint": "গ্রাম/মহল্লা/বাড়ি/সড়ক নম্বর*",
+        "hint": "বর্তমান ঠিকানা*",
         "v_required": {
           "value": true,
           "err": "Please type address"

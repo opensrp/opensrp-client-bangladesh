@@ -242,16 +242,16 @@ public class AncJsonFormFragment extends JsonFormFragment {
     }
 
     private void clearView() {
-        snackbar = Snackbar
-                .make(getMainView(), "Undo Lookup.", Snackbar.LENGTH_INDEFINITE);
-        snackbar.setAction("Clear", new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                snackbar.dismiss();
-                clearMotherLookUp();
-            }
-        });
-        show(snackbar, 30000);
+//        snackbar = Snackbar
+//                .make(getMainView(), "Undo Lookup.", Snackbar.LENGTH_INDEFINITE);
+//        snackbar.setAction("Clear", new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                snackbar.dismiss();
+//                clearMotherLookUp();
+//            }
+//        });
+//        show(snackbar, 30000);
     }
 
     private void show(final Snackbar snackbar, int duration) {
@@ -664,10 +664,33 @@ public class AncJsonFormFragment extends JsonFormFragment {
 
                     }else{
                         update_spouse_hint(formdataviews,position,headOfHouseholdFirstName+" "+headOfHouseholdLastName);
+
                     }
 //
                 }
             },null);
+        }
+        if(position !=0){
+            ArrayList<View> formdataviews = getJsonApi().getFormDataViews();
+
+
+                for (int i = 0; i < formdataviews.size(); i++) {
+                    if (formdataviews.get(i) instanceof MaterialEditText) {
+
+                        if (((MaterialEditText) formdataviews.get(i)).getFloatingLabelText().toString().trim().equalsIgnoreCase("নামের প্রথম অংশ (ইংরেজীতে)*")) {
+                            ((MaterialEditText) formdataviews.get(i)).setText("");
+                        }
+
+                        if (((MaterialEditText) formdataviews.get(i)).getFloatingLabelText().toString().trim().equalsIgnoreCase("নামের শেষ অংশ (ইংরেজীতে)*")) {
+                            ((MaterialEditText) formdataviews.get(i)).setText("");
+                        }
+
+                        if (((MaterialEditText) formdataviews.get(i)).getFloatingLabelText().toString().trim().equalsIgnoreCase("মোবাইল নম্বর (ইংরেজীতে)*")) {
+                            ((MaterialEditText) formdataviews.get(i)).setText("");
+                        }
+
+                    }
+                }
         }
 
     }

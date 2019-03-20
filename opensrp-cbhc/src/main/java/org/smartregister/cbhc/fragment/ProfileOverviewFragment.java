@@ -286,11 +286,12 @@ public class ProfileOverviewFragment extends BaseProfileFragment {
             if(tasks_status!=null&&!tasks_status.isEmpty()){
                 try{
                     int tasks_count = Integer.valueOf(tasks_status);
-                    if(tasks_count==0){
-                        noOfUnregisterButton.setVisibility(View.GONE);
-                    }else{
+                    if(tasks_count>0){
                         noOfUnregisterButton.setText(getString(R.string.total_unregister_child,tasks_count+""));
                         noOfUnregisterButton.setVisibility(View.VISIBLE);
+
+                    }else{
+                        noOfUnregisterButton.setVisibility(View.GONE);
                     }
                 }catch(Exception e){
 

@@ -510,7 +510,7 @@ TextView unsyncView;
 
 
                     syncStatusSnackbar = Snackbar.make(rootView, R.string.sync_complete, Snackbar.LENGTH_LONG);
-//                    updateUnsyncCount();
+                    updateUnsyncCount();
                 } else if (fetchStatus.equals(FetchStatus.noConnection)) {
                     syncStatusSnackbar = Snackbar.make(rootView, R.string.sync_failed_no_internet, Snackbar.LENGTH_LONG);
                 }
@@ -526,7 +526,7 @@ TextView unsyncView;
     public void onResume() {
         super.onResume();
         registerSyncStatusBroadcastReceiver();
-//        updateUnsyncCount();
+        updateUnsyncCount();
     }
 
     @Override

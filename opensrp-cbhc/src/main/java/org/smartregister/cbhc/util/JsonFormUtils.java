@@ -346,9 +346,9 @@ public class JsonFormUtils extends org.smartregister.util.JsonFormUtils {
                             if (!TextUtils.isEmpty(fields.getJSONObject(i).getString("value"))) {
                                 String address = fields.getJSONObject(i).getString("value");
                                 address = address.replace("[", "").replace("]", "");
-                                if(!address.startsWith("BANGLADESH")){
-                                    address = "BANGLADESH," + address;
-                                }
+//                                if(!address.startsWith("BANGLADESH")){
+//                                    address = "BANGLADESH," + address;
+//                                }
                                 String[] addressStringArray = address.split(",");
                                 if (addressStringArray.length > 0) {
                                     address1.setAddressType("usual_residence");
@@ -1139,6 +1139,7 @@ public class JsonFormUtils extends org.smartregister.util.JsonFormUtils {
             allLevels.add("Upazilla");
             allLevels.add("Union");
             allLevels.add("Ward");
+            allLevels.add("Block");
             allLevels.add("Subunit");
             allLevels.add("EPI center");
 
@@ -1150,6 +1151,7 @@ public class JsonFormUtils extends org.smartregister.util.JsonFormUtils {
             healthFacilities.add("Upazilla");
             healthFacilities.add("Union");
             healthFacilities.add("Ward");
+            healthFacilities.add("Block");
             healthFacilities.add("Subunit");
             healthFacilities.add("EPI center");
 
@@ -1161,6 +1163,7 @@ public class JsonFormUtils extends org.smartregister.util.JsonFormUtils {
             healthFacilities.add("Upazilla");
             healthFacilities.add("Union");
             healthFacilities.add("Ward");
+            healthFacilities.add("Block");
             healthFacilities.add("Subunit");
             healthFacilities.add("EPI center");
 
@@ -1183,7 +1186,7 @@ public class JsonFormUtils extends org.smartregister.util.JsonFormUtils {
                     }
                     JSONArray defaultvalueArray = new JSONArray(upToFacilitiesString);
                     String processedDefaultValue = processDefaultValueArray(defaultvalueArray);
-                    questions.getJSONObject(i).put(Constants.KEY.VALUE, processedDefaultValue);
+//                    questions.getJSONObject(i).put(Constants.KEY.VALUE, processedDefaultValue);
 
                     if (StringUtils.isNotBlank(defaultFacilityString)) {
                         questions.getJSONObject(i).put(Constants.KEY.DEFAULT, defaultFacilityString);
