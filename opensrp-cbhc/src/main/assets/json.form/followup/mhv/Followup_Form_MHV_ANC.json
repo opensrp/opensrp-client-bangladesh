@@ -170,7 +170,7 @@
       {
         "key":"Denger_Signs_During_Pregnancy",
         "openmrs_entity_parent":"",
-        "openmrs_entity":"person_attribute",
+        "openmrs_entity":"",
         "openmrs_entity_id":"Denger_Signs_During_Pregnancy",
         "openmrs_data_type":"text",
         "type":"check_box",
@@ -225,7 +225,7 @@
       {
         "key": "Have_EDEMA",
         "openmrs_entity_parent": "",
-        "openmrs_entity": "person_attribute",
+        "openmrs_entity": "",
         "openmrs_entity_id": "Have_EDEMA",
         "openmrs_data_type": "text",
         "type": "spinner",
@@ -242,7 +242,7 @@
       {
         "key": "Have_Jaundice	",
         "openmrs_entity_parent": "",
-        "openmrs_entity": "person_attribute",
+        "openmrs_entity": "",
         "openmrs_entity_id": "Have_Jaundice	",
         "openmrs_data_type": "text",
         "type": "spinner",

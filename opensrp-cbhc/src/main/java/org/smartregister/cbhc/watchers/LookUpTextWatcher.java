@@ -88,9 +88,8 @@ public class LookUpTextWatcher implements TextWatcher {
             listener = pathJsonFormFragment.motherLookUpListener();
         }
             lookuptype = mEntityId;
-//        if (mEntityId.equalsIgnoreCase("mother")) {
             MotherLookUpUtils.motherLookUp(context, lookUpMap.get(mEntityId), listener, null,relationalid,lookuptype);
-//        }
+
 
     }
 

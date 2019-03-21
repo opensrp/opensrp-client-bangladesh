@@ -129,7 +129,7 @@
       {
         "key": "Outcome of delivery",
         "openmrs_entity_parent": "",
-        "openmrs_entity": "person_attribute",
+        "openmrs_entity": "",
         "openmrs_entity_id": "Outcome of delivery",
         "openmrs_data_type": "text",
         "type": "check_box",

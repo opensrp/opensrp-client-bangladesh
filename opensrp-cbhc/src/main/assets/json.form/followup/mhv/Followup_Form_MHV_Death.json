@@ -222,7 +222,7 @@
       {
         "key": "jilla",
         "openmrs_entity_parent": "",
-        "openmrs_entity": "person_attribute",
+        "openmrs_entity": "",
         "openmrs_entity_id": "jilla",
         "openmrs_data_type": "text",
         "type": "edit_text",
@@ -237,7 +237,7 @@
       {
         "key": "upojila",
         "openmrs_entity_parent": "",
-        "openmrs_entity": "person_attribute",
+        "openmrs_entity": "",
         "openmrs_entity_id": "jilla",
         "openmrs_data_type": "text",
         "type": "edit_text",
@@ -252,7 +252,7 @@
       {
         "key": "eunion",
         "openmrs_entity_parent": "",
-        "openmrs_entity": "person_attribute",
+        "openmrs_entity": "",
         "openmrs_entity_id": "eunion",
         "openmrs_data_type": "text",
         "type": "edit_text",
