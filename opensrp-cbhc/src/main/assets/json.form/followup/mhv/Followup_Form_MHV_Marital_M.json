@@ -91,8 +91,11 @@
           "অবিবাহিত": "Unmarried",
           "বিধবা": "Widow",
           "বিপত্নীক": "Widower"
+        },
+        "v_required": {
+          "value": true,
+          "err": "Please enter marital status."
         }
-
       },
       {
         "key":"family_planning",

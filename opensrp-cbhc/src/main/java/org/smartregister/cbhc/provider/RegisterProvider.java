@@ -64,9 +64,14 @@ public class RegisterProvider implements RecyclerViewProvider<RegisterProvider.R
         this.context = context;
         this.commonRepository = commonRepository;
     }
+
     @Override
     public void getView(Cursor cursor, SmartRegisterClient client, RegisterViewHolder viewHolder) {
         CommonPersonObjectClient pc = (CommonPersonObjectClient) client;
+//        String removeId = org.smartregister.util.Utils.getValue(pc.getColumnmaps(), DBConstants.KEY.BASE_ENTITY_ID, true);
+//        if(removeId.equalsIgnoreCase(213214)){
+//            return;
+//        }
         if (visibleColumns.isEmpty()) {
             populatePatientColumn(pc, client, viewHolder);
             populateIdentifierColumn(pc, viewHolder);

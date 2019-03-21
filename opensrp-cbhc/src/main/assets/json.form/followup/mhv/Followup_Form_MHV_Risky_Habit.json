@@ -126,7 +126,11 @@
             "value": false,
             "openmrs_choice_id": "None"
           }
-        ]
+        ],
+        "v_required": {
+          "value": true,
+          "err": "Please enter risky habits."
+        }
       }
     ]
   }

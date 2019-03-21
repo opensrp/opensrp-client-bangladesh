@@ -94,6 +94,10 @@
         "v_numeric": {
           "value": "true",
           "err": "Enter numeric values only"
+        },
+        "v_required": {
+          "value": true,
+          "err": "Please enter number of services in last three months."
         }
       },
       {
@@ -108,6 +112,12 @@
         "v_required": {
           "value": "false",
           "err": "Please enter the date of Service Received."
+        },
+        "relevance": {
+          "step1:Number_Of_Service_Received_Last_three_Months": {
+            "type": "numeric",
+            "ex": "greaterThanEqualTo(., \"1\")"
+          }
         }
       },
       {
@@ -149,6 +159,12 @@
           "এনজিও ":"Non-governmental_Organization",
           "বিশেষায়িত হাসপাতাল ":"Specialized_Hospital",
           "অন্যান্য ":"Others_Health_Facility"
+        },
+        "relevance": {
+          "step1:Number_Of_Service_Received_Last_three_Months": {
+            "type": "numeric",
+            "ex": "greaterThanEqualTo(., \"1\")"
+          }
         }
       },
       {
@@ -200,7 +216,11 @@
             "value":"false",
             "openmrs_choice_id":"No_Denger_Sign"
           }
-        ]
+        ],
+        "v_required": {
+          "value": true,
+          "err": "Please select danger sign."
+        }
       },
       {
         "key": "Have_EDEMA",

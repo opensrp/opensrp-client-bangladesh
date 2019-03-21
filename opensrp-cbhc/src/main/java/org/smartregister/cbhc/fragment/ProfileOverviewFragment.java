@@ -104,6 +104,8 @@ public class ProfileOverviewFragment extends BaseProfileFragment {
         }
     }
 
+
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
@@ -162,6 +164,9 @@ public class ProfileOverviewFragment extends BaseProfileFragment {
 
 //        cursor = db.rawQuery(currentquery.concat(queryBUilder.mainCondition("relational_id = ?")),new String[]{mother_id});
                 String rawQuery = queryfortheadapterthing(mother_id);
+//                if(cursor!=null&&!cursor.isClosed()){
+//                    cursor.close();
+//                }
                 cursor = db.rawQuery(rawQuery,new String[]{});
 
                 return null;
@@ -300,14 +305,17 @@ public class ProfileOverviewFragment extends BaseProfileFragment {
             }else{
                 noOfUnregisterButton.setVisibility(View.GONE);
             }
+
             //            String dobString = cursor.getString(cursor.getColumnIndex("dob"));
             String dobString = getValue(personinlist.getColumnmaps(),"dob",true);
             int age = 0;
+
             try {
-             age =   getAge((new DateTime(dobString)));
+                age =   getAge((new DateTime(dobString)));
             } catch (Exception e) {
                 e.printStackTrace();
             }
+
             String durationString = "";
             if (StringUtils.isNotBlank(dobString)) {
                 try {
@@ -615,6 +623,8 @@ public class ProfileOverviewFragment extends BaseProfileFragment {
         rmap.clear();
         rmap.put("Household_Head","খানা প্রধান");
         rmap.put("Husband_or_Wife","স্বামী/স্ত্রী");
+        rmap.put("Husband","স্বামী");
+        rmap.put("Wife","স্ত্রী");
         rmap.put("Son","পুত্র");
         rmap.put("Daughter","কন্যা");
         rmap.put("Daughter_in_law","পুত্রবধূ");

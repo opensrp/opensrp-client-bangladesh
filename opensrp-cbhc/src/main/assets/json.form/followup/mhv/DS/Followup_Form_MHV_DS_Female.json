@@ -185,6 +185,12 @@
           "বিশেষায়িত হাসপাতাল ":"Specialized_Hospital",
           "অন্যান্য ":"Others_Health_Facility",
           "রেফার করা হয়নি ":"Not_referred"
+        },
+        "relevance":{
+          "step1:has_disease":{
+            "type":"string",
+            "ex":"equalTo(., \"হ্যাঁ\")"
+          }
         }
 
       }

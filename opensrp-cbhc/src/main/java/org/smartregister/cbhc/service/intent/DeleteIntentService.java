@@ -247,13 +247,22 @@ public class DeleteIntentService extends IntentService {
                 SQLiteDatabase db = repo.getReadableDatabase();
                 try {
                     String sql = "";
-                    sql = "UPDATE ec_member SET date_removed = '01-01-1000' WHERE date_removed IS NULL AND base_entity_id = (SELECT baseEntityId FROM event WHERE json LIKE '%Followup Death Status%' OR json LIKE '%Followup HH Transfer%' OR json LIKE '%Followup Member Transfer%');";
+                    sql = "UPDATE ec_member SET date_removed = '01-01-1000' WHERE date_removed IS NULL AND base_entity_id = (SELECT baseEntityId FROM event WHERE json LIKE '%Followup Death Status%' group by baseEntityId);";
                     db.execSQL(sql);
-                    sql = "UPDATE ec_woman SET date_removed = '01-01-1000' WHERE date_removed IS NULL AND base_entity_id = (SELECT baseEntityId FROM event WHERE json LIKE '%Followup Death Status%' OR json LIKE '%Followup HH Transfer%' OR json LIKE '%Followup Member Transfer%');";
+                    sql = "UPDATE ec_woman SET date_removed = '01-01-1000' WHERE date_removed IS NULL AND base_entity_id = (SELECT baseEntityId FROM event WHERE json LIKE '%Followup Death Status%' group by baseEntityId);";
                     db.execSQL(sql);
-                    sql = "UPDATE ec_child SET date_removed = '01-01-1000' WHERE date_removed IS NULL AND base_entity_id = (SELECT baseEntityId FROM event WHERE json LIKE '%Followup Death Status%' OR json LIKE '%Followup HH Transfer%' OR json LIKE '%Followup Member Transfer%');";
+                    sql = "UPDATE ec_child SET date_removed = '01-01-1000' WHERE date_removed IS NULL AND base_entity_id = (SELECT baseEntityId FROM event WHERE json LIKE '%Followup Death Status%' group by baseEntityId);";
                     db.execSQL(sql);
-                    sql = "UPDATE ec_household SET date_removed = '01-01-1000' WHERE date_removed IS NULL AND base_entity_id = (SELECT baseEntityId FROM event WHERE json LIKE '%Followup Death Status%' OR json LIKE '%Followup HH Transfer%' OR json LIKE '%Followup Member Transfer%');";
+                    sql = "UPDATE ec_household SET date_removed = '01-01-1000' WHERE date_removed IS NULL AND base_entity_id = (SELECT baseEntityId FROM event WHERE json LIKE '%Followup HH Transfer%' group by baseEntityId);";
+                    db.execSQL(sql);
+
+                    sql = "UPDATE ec_member_search SET date_removed = '01-01-1000' WHERE date_removed IS NULL AND base_entity_id = (SELECT baseEntityId FROM event WHERE json LIKE '%Followup Death Status%' group by baseEntityId);";
+                    db.execSQL(sql);
+                    sql = "UPDATE ec_woman_search SET date_removed = '01-01-1000' WHERE date_removed IS NULL AND base_entity_id = (SELECT baseEntityId FROM event WHERE json LIKE '%Followup Death Status%' group by baseEntityId);";
+                    db.execSQL(sql);
+                    sql = "UPDATE ec_child_search SET date_removed = '01-01-1000' WHERE date_removed IS NULL AND base_entity_id = (SELECT baseEntityId FROM event WHERE json LIKE '%Followup Death Status%' group by baseEntityId);";
+                    db.execSQL(sql);
+                    sql = "UPDATE ec_household_search SET date_removed = '01-01-1000' WHERE date_removed IS NULL AND base_entity_id = (SELECT baseEntityId FROM event WHERE json LIKE '%Followup HH Transfer%' group by baseEntityId);";
                     db.execSQL(sql);
                 }catch(Exception e) {
 

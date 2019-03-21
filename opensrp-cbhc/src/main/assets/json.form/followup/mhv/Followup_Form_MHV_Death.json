@@ -55,7 +55,7 @@
     "title": "তথ্য সংগ্রহ সম্ভব নয়",
     "fields": [
       {
-        "key": "date_removed",
+        "key": "followup_Date",
         "openmrs_entity_parent": "",
         "openmrs_entity": "",
         "openmrs_entity_id": "date_removed",
@@ -103,8 +103,8 @@
         "hint": "মৃত্যুর  তারিখ ",
         "expanded": false,
         "v_required": {
-          "value": "false",
-          "err": "Please enter the date of Followup."
+          "value": true,
+          "err": "Please enter the date of death."
         },
         "relevance": {
           "step1:reason_invalid": {
@@ -157,6 +157,10 @@
           "value": "false",
           "err": "Enter value"
         },
+        "v_required": {
+        "value": true,
+        "err": "Please enter the place of death."
+        },
         "relevance": {
         "step1:reason_invalid": {
           "type": "string",
@@ -181,6 +185,10 @@
             "type": "string",
             "ex": "equalTo(., \"মৃত্যু হয়েছে\")"
           }
+        },
+        "v_required": {
+          "value": true,
+          "err": "Please enter the cause of death."
         }
       },
       {
@@ -198,6 +206,10 @@
         "openmrs_choice_ids": {
           "দেশের মধ্যে": "domestic_transfer",
           "বিদেশে গমন": "international_transfered"
+        },
+        "v_required": {
+        "value": true,
+        "err": "Please enter transfer location."
         },
         "relevance": {
           "step1:reason_invalid": {

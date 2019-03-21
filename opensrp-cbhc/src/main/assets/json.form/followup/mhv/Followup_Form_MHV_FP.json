@@ -97,6 +97,10 @@
           "অন্যান্য পদ্ধতি ":"Other_Method",
           "বন্ধ্যা দম্পতি ":"Infertility",
           "পদ্ধতি ব্যবহার করে না ":"No_Method_Usage"
+        },
+        "v_required": {
+          "value": true,
+          "err": "Please enter family planning."
         }
       }
     ]

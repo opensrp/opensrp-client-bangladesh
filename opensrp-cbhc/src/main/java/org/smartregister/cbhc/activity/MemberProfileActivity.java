@@ -810,7 +810,7 @@ public class MemberProfileActivity extends BaseProfileActivity implements Profil
             protected Object doInBackground(Object[] objects) {
                 AncRepository repo = (AncRepository) AncApplication.getInstance().getRepository();
                 SQLiteDatabase db = repo.getReadableDatabase();
-                String tables[] = {"ec_household","ec_member","ec_child","ec_woman"};
+                String tables[] = {"ec_household","ec_member","ec_child","ec_woman","ec_household_search","ec_member_search","ec_child_search","ec_woman_search"};
 
                 Cursor cursor = null;
                 try{

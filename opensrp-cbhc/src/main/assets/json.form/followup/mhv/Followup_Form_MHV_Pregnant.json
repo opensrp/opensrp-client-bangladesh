@@ -104,6 +104,10 @@
         "max_date": "today-42d",
         "min_date": "today-308d",
 
+        "v_required": {
+          "value": true,
+          "err": "Please enter lmp date."
+        },
         "relevance": {
           "step1:pregnant_status": {
             "type": "string",
@@ -123,7 +127,10 @@
           "label": "Yrs"
         },
         "max_date": "today",
-
+        "v_required": {
+          "value": true,
+          "err": "Please enter delivery date."
+        },
         "relevance": {
           "step1:pregnant_status": {
             "type": "string",
@@ -168,7 +175,10 @@
           "label": "Yrs"
         },
         "max_date": "today",
-
+        "v_required": {
+          "value": true,
+          "err": "Please enter abortion date."
+        },
         "relevance": {
           "step1:pregnant_status": {
             "type": "string",
@@ -192,7 +202,10 @@
           "অনাকাঙ্খিত গর্ভপাত": "Spontaneous_Abortion",
           "ঔষধ দ্বারা গর্ভপাত": "Medicine_Induced_Abortion"
         },
-
+        "v_required": {
+          "value": true,
+          "err": "Please enter abortion type."
+        },
         "relevance": {
           "step1:pregnant_status": {
             "type": "string",
@@ -212,7 +225,10 @@
           "label": "Yrs"
         },
         "max_date": "today",
-
+        "v_required": {
+          "value": true,
+          "err": "Please enter MR date."
+        },
         "relevance": {
           "step1:pregnant_status": {
             "type": "string",
