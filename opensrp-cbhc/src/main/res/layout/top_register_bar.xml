@@ -81,14 +81,15 @@
             android:id="@+id/unsync_count"
             android:layout_alignParentTop="true"
             android:layout_alignParentRight="true"
-            android:text="10"
-            android:visibility="gone"
-            android:layout_marginTop="-5dp"
+            android:text="100"
+            android:visibility="visible"
             android:textStyle="bold"
-            android:textSize="14dp"
-            android:textColor="@android:color/holo_red_dark"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+            android:textSize="10dp"
+            android:gravity="center"
+            android:background="@drawable/round_red_background"
+            android:textColor="@android:color/white"
+            android:layout_width="18dp"
+            android:layout_height="18dp" />
 
     </RelativeLayout>
 

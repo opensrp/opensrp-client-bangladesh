@@ -56,6 +56,7 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -204,7 +205,7 @@ public class JsonFormUtils extends org.smartregister.util.JsonFormUtils {
 
             JSONArray fields = registrationFormParams.getRight();
 //            removeEmptyFields(fields);
-            fields = processAttributesWithChoiceIDs(fields);
+//            fields = processAttributesWithChoiceIDs(fields);
 
             String entityId = getString(jsonForm, ENTITY_ID);
             if (isBlank(entityId)) {
@@ -213,6 +214,9 @@ public class JsonFormUtils extends org.smartregister.util.JsonFormUtils {
 
             String encounterType = getString(jsonForm, ENCOUNTER_TYPE);
             JSONObject metadata = getJSONObject(jsonForm, METADATA);
+            if(!encounterType.contains("Household")) {
+                fields = processAttributesWithChoiceIDs(fields);
+            }
 
             // String lastLocationName = null;
             // String lastLocationId = null;
@@ -316,15 +320,16 @@ public class JsonFormUtils extends org.smartregister.util.JsonFormUtils {
             if(Utils.notFollowUp(encounterType)) {
                 getFieldJSONObject(fields, "Patient_Identifier").remove("hidden");
                 baseClient = org.smartregister.util.JsonFormUtils.createBaseClient(fields, formTag, entityId);
-
+                baseClient = updateClientDates(baseClient);
             }else{
                 HashMap<String, String> check_box_in_forms = processCheckBoxForAttributes(fields);
                 updateFieldsWithCheckboxValues(fields,check_box_in_forms);
                 JSONObject clientjsonFromForm = new JSONObject(gson.toJson(org.smartregister.util.JsonFormUtils.createBaseClient(fields, formTag, entityId)));
                 JSONObject clientJson = AncApplication.getInstance().getEventClientRepository().getClient(db,entityId);
                 updateClientAttributes(clientjsonFromForm,clientJson);
-                baseClient = gson.fromJson(clientJson.toString(), Client.class);
 
+                baseClient = gson.fromJson(clientJson.toString(), Client.class);
+                baseClient = updateClientDates(baseClient);
 //                Map<String, Object> attributes_Temp = baseClient.getAttributes();
 //                attributes_Temp.putAll(check_box_in_forms);
 //                baseClient.setAttributes(attributes_Temp);
@@ -536,7 +541,44 @@ public class JsonFormUtils extends org.smartregister.util.JsonFormUtils {
 
         }
     }
+    private static Client updateClientDates(Client client) {
+        try {
 
+            String lmp_date = (String)client.getAttribute("LMP");
+            String delivery_date = (String)client.getAttribute("delivery_date");
+            if(lmp_date!=null){
+                client.setAttributes((Map<String, Object>) client.getAttributes().put("LMP",(Object)timezonedateformat(lmp_date)));
+            }
+            if(delivery_date!=null){
+                client.setAttributes((Map<String, Object>) client.getAttributes().put("delivery_date",(Object)timezonedateformat(delivery_date)));
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return client;
+    }
+    public static String timezonedateformat(String dateString){
+        final String OLD_FORMAT = "dd-MM-yyyy";
+        final String NEW_FORMAT = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'";
+
+// August 12, 2010
+        String oldDateString = dateString;
+        String newDateString = dateString;
+
+        SimpleDateFormat sdf = new SimpleDateFormat(OLD_FORMAT);
+        Date d = null;
+        try {
+            d = sdf.parse(oldDateString);
+            sdf.applyPattern(NEW_FORMAT);
+            newDateString = sdf.format(d);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+        return newDateString;
+    }
     private static void updateClientAttributes(JSONObject clientjsonFromForm, JSONObject clientJson) {
         try {
             JSONObject formAttributes = clientjsonFromForm.getJSONObject("attributes");
@@ -923,10 +965,30 @@ public class JsonFormUtils extends org.smartregister.util.JsonFormUtils {
 
         return "";
     }
-    public static void  processPopulatableFieldsForHouseholds(Map<String, String> womanClient, JSONObject jsonObject) throws JSONException {
+    public static void processPopulatableFieldsForHouseholds(Map<String, String> womanClient, JSONObject jsonObject) throws JSONException {
 
 
-        if ((jsonObject.getString(JsonFormUtils.KEY).equalsIgnoreCase(DBConstants.KEY.DOB)||jsonObject.getString(JsonFormUtils.KEY).equalsIgnoreCase(DBConstants.KEY.MEMBER_DOB)) && !Boolean.valueOf(womanClient.get(DBConstants.KEY.DOB_UNKNOWN))) {
+        if ((jsonObject.getString(JsonFormUtils.KEY).equalsIgnoreCase("lmp_date"))) {
+
+            String dobString = womanClient.get("lmp_date");
+            Date dob = Utils.dobStringToDate(dobString);
+            if (dob != null) {
+                jsonObject.put(JsonFormUtils.VALUE, DATE_FORMAT.format(dob));
+            }
+
+        }
+        else if ((jsonObject.getString(JsonFormUtils.KEY).equalsIgnoreCase("Delivery_date"))) {
+
+            String dobString = womanClient.get("Delivery_date");
+            Date dob = Utils.dobStringToDate(dobString);
+            if (dob != null) {
+                jsonObject.put(JsonFormUtils.VALUE, DATE_FORMAT.format(dob));
+            }
+
+        }
+
+
+        else if ((jsonObject.getString(JsonFormUtils.KEY).equalsIgnoreCase(DBConstants.KEY.DOB)||jsonObject.getString(JsonFormUtils.KEY).equalsIgnoreCase(DBConstants.KEY.MEMBER_DOB)) && !Boolean.valueOf(womanClient.get(DBConstants.KEY.DOB_UNKNOWN))) {
 
             String dobString = womanClient.get(DBConstants.KEY.DOB);
             Date dob = Utils.dobStringToDate(dobString);
@@ -1071,7 +1133,27 @@ public class JsonFormUtils extends org.smartregister.util.JsonFormUtils {
     protected static void processPopulatableFields(Map<String, String> womanClient, JSONObject jsonObject) throws JSONException {
 
 
-        if (jsonObject.getString(JsonFormUtils.KEY).equalsIgnoreCase(DBConstants.KEY.DOB) && !Boolean.valueOf(womanClient.get(DBConstants.KEY.DOB_UNKNOWN))) {
+        if (jsonObject.getString(JsonFormUtils.KEY).equalsIgnoreCase("lmp_date")) {
+
+            String dobString = womanClient.get("lmp_date");
+            Date dob = Utils.dobStringToDate(dobString);
+            if (dob != null) {
+                jsonObject.put(JsonFormUtils.VALUE, DATE_FORMAT.format(dob));
+            }
+
+        }
+        else if (jsonObject.getString(JsonFormUtils.KEY).equalsIgnoreCase("Delivery_date")) {
+
+            String dobString = womanClient.get("Delivery_date");
+            Date dob = Utils.dobStringToDate(dobString);
+            if (dob != null) {
+                jsonObject.put(JsonFormUtils.VALUE, DATE_FORMAT.format(dob));
+            }
+
+        }
+
+
+        else if (jsonObject.getString(JsonFormUtils.KEY).equalsIgnoreCase(DBConstants.KEY.DOB) && !Boolean.valueOf(womanClient.get(DBConstants.KEY.DOB_UNKNOWN))) {
 
             String dobString = womanClient.get(DBConstants.KEY.DOB);
             Date dob = Utils.dobStringToDate(dobString);
