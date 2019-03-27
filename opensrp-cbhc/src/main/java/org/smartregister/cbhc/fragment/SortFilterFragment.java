@@ -182,8 +182,11 @@ public class SortFilterFragment extends Fragment implements SortFilterContract.V
                     presenter.updateSortAndFilter();
                     break;
                 case R.id.clear_filter:
-                    presenter.clearSortAndFilter();
+
 //                    filterAdapter.clear();
+                    presenter.getFilterList().clear();
+                    filterAdapter.notifyDataSetChanged();
+                    presenter.clearSortAndFilter();
                     break;
                 case R.id.sort_layout:
                     updateSortList(presenter.getConfig().getSortFields());

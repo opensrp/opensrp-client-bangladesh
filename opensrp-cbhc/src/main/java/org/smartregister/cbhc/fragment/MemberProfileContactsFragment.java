@@ -105,7 +105,6 @@ public class MemberProfileContactsFragment extends BaseProfileFragment {
                     TextView textLabel = (TextView)LayoutForDetailRow.findViewById(R.id.label);
                     TextView textValue = (TextView)LayoutForDetailRow.findViewById(R.id.value);
 
-
 //                    CustomFontTextView textLabel = new CustomFontTextView(getActivity());
                     textLabel.setTextSize(15);
 //                    CustomFontTextView textValue = new CustomFontTextView(getActivity());
@@ -125,6 +124,10 @@ public class MemberProfileContactsFragment extends BaseProfileFragment {
                     }
 
                     textValue.setSingleLine(false);
+//                    if(KEY.equalsIgnoreCase("Disease_status_female_by_age")){
+//                        String k = KEY;
+//                        System.out.println(k);
+//                    }
 
 //                    LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
 //                    params.weight = 1;

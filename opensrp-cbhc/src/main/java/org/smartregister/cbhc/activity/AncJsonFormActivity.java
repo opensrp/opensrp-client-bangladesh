@@ -16,6 +16,8 @@ import org.smartregister.cbhc.application.AncApplication;
 import org.smartregister.cbhc.domain.draft_form_object;
 import org.smartregister.cbhc.fragment.AncJsonFormFragment;
 import org.smartregister.cbhc.repository.DraftFormRepository;
+import org.smartregister.cbhc.repository.HealthIdRepository;
+import org.smartregister.cbhc.repository.UniqueIdRepository;
 import org.smartregister.cbhc.util.JsonFormUtils;
 
 import static org.apache.commons.lang3.StringUtils.isBlank;
@@ -105,7 +107,8 @@ public class AncJsonFormActivity extends JsonFormActivity {
 
         dialog.show();
     }
-
+    private UniqueIdRepository uniqueIdRepository;
+    private HealthIdRepository healthIdRepository;
     private void saveDraft() {
         JSONObject partialform = getmJSONObject();
 
@@ -115,7 +118,18 @@ public class AncJsonFormActivity extends JsonFormActivity {
         processDraftForm(partialform,draftFormObject);
         draftFormRepository.add(draftFormObject);
     }
-
+    public UniqueIdRepository getUniqueIdRepository() {
+        if (uniqueIdRepository == null) {
+            uniqueIdRepository = AncApplication.getInstance().getUniqueIdRepository();
+        }
+        return uniqueIdRepository;
+    }
+    public HealthIdRepository getHealthIdRepository() {
+        if (healthIdRepository == null) {
+            healthIdRepository = AncApplication.getInstance().getHealthIdRepository();
+        }
+        return healthIdRepository;
+    }
     private void processDraftForm(JSONObject partialform, draft_form_object draftFormObject) {
         try {
             String formname = partialform.getString("encounter_type");

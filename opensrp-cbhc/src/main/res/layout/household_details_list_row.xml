@@ -97,13 +97,13 @@
                 <Button
                     android:id="@+id/total_birth_btn"
                     style="@style/CustomFontTextViewStyle.ClientList.Light"
-                    android:background="@drawable/due_contact_blue"
+                    android:background="@drawable/bg_red_gradient"
                     android:layout_width="wrap_content"
                     android:layout_height="20dp"
                     android:paddingLeft="5dp"
                     android:paddingRight="5dp"
                     android:visibility="gone"
-                    android:textColor="@color/vaccine_red_bg_st"
+                    android:textColor="@color/white"
                     android:textSize="12sp" />
             </LinearLayout>
 
