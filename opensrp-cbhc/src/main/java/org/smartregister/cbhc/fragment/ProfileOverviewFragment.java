@@ -237,8 +237,10 @@ public class ProfileOverviewFragment extends BaseProfileFragment {
             String tasks_status = personinlist.getColumnmaps().get("tasks");
 
             if(pregnant_status!=null && (pregnant_status.contains("Antenatal Period")||pregnant_status.contains("প্রসব পূর্ব"))) {
+                pregnant_icon.setImageResource(R.drawable.pregnant_woman);
                 pregnant_icon.setVisibility(View.VISIBLE);
             }else{
+                pregnant_icon.setImageResource(R.drawable.pregnant_woman);
                 pregnant_icon.setVisibility(View.INVISIBLE);
             }
             String firstName = org.smartregister.util.Utils.getValue(pClient.getColumnmaps(), DBConstants.KEY.FIRST_NAME, true);
@@ -294,7 +296,6 @@ public class ProfileOverviewFragment extends BaseProfileFragment {
                     if(tasks_count>0){
                         noOfUnregisterButton.setText(getString(R.string.total_unregister_child,tasks_count+""));
                         noOfUnregisterButton.setVisibility(View.VISIBLE);
-
                     }else{
                         noOfUnregisterButton.setVisibility(View.GONE);
                     }

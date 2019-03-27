@@ -8,6 +8,7 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import org.apache.commons.lang3.ArrayUtils;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.smartregister.cbhc.R;
@@ -109,11 +110,20 @@ public class MemberProfileContactsFragment extends BaseProfileFragment {
                     textLabel.setTextSize(15);
 //                    CustomFontTextView textValue = new CustomFontTextView(getActivity());
                     textValue.setTextSize(15);
-                    textLabel.setText(field.getJSONObject(i).getString("hint"));
+                    String hint = field.getJSONObject(i).getString("hint");
+                    textLabel.setText(hint);
                     textLabel.setSingleLine(false);
+                    String VALUE = "";
                     if(field.getJSONObject(i).has(JsonFormUtils.VALUE)) {
-                        textValue.setText(field.getJSONObject(i).getString(JsonFormUtils.VALUE));
+                        VALUE = field.getJSONObject(i).getString(JsonFormUtils.VALUE);
+                        textValue.setText(VALUE);
                     }
+
+                    String KEY = "";
+                    if(field.getJSONObject(i).has(JsonFormUtils.KEY)) {
+                        KEY = field.getJSONObject(i).getString(JsonFormUtils.KEY);
+                    }
+
                     textValue.setSingleLine(false);
 
 //                    LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
@@ -122,12 +132,27 @@ public class MemberProfileContactsFragment extends BaseProfileFragment {
 //                    LayoutForDetailRow.addView(textLabel, params);
 //                    LayoutForDetailRow.addView(textValue, params);
 //                    linearLayoutholder.addView(LayoutForDetailRow, mainparams);
-                    linearLayoutholder.addView(LayoutForDetailRow);
+                    if(!removeField(KEY,VALUE)){
+                        if((hint.contains("অন্যান্য")&&VALUE.isEmpty())){
+
+                        }else{
+                            linearLayoutholder.addView(LayoutForDetailRow);
+                        }
+                    }
+
                 }
             }
 
         } catch (Exception e){
 
         }
+    }
+
+    public boolean removeField(String KEY, String VALUE){
+        String keys[] = {"Child_birth_weight","Birth_weight","Used_7_1_Chlorohexidin","marital_status","spouseName_english",
+                "spouseName_bengali","contact_phone_number_by_age",
+                "educational_qualification_by_age","occupation_by_age","pregnant_status","lmp_date","Delivery_date","family_planning","risky_habits"};
+        return ArrayUtils.contains(keys,KEY)&&VALUE.isEmpty();
+
     }
 }

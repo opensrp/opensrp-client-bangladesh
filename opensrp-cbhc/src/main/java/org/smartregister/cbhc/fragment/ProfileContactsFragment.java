@@ -116,12 +116,18 @@ public class ProfileContactsFragment extends BaseProfileFragment {
                     textLabel.setTextSize(15);
 //                    CustomFontTextView textValue = new CustomFontTextView(getActivity());
                     textValue.setTextSize(15);
-                    textLabel.setText(field.getJSONObject(i).getString("hint"));
+                    String hint = field.getJSONObject(i).getString("hint");
+                    textLabel.setText(hint);
                     textLabel.setSingleLine(false);
+                    String value = "";
                     if(field.getJSONObject(i).has(JsonFormUtils.VALUE)) {
-                        String value = field.getJSONObject(i).getString(JsonFormUtils.VALUE);
+                        value = field.getJSONObject(i).getString(JsonFormUtils.VALUE);
                         value = processLocationValue(value);
                         textValue.setText(value);
+                    }
+                    String KEY = "";
+                    if(field.getJSONObject(i).has(JsonFormUtils.KEY)) {
+                        KEY = field.getJSONObject(i).getString(JsonFormUtils.KEY);
                     }
                                         textValue.setSingleLine(false);
 //                    LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
@@ -130,7 +136,16 @@ public class ProfileContactsFragment extends BaseProfileFragment {
 //                    LayoutForDetailRow.addView(textLabel, params);
 //                    LayoutForDetailRow.addView(textValue, params);
 //                    linearLayoutholder.addView(LayoutForDetailRow, mainparams);
-                    linearLayoutholder.addView(LayoutForDetailRow);
+                    if(!(KEY.equalsIgnoreCase("dob_unknown")||KEY.equalsIgnoreCase("dob")||KEY.equalsIgnoreCase("age"))){
+                        if((hint.contains("অন্যান্য")&&value.isEmpty())){
+
+                        }else{
+                            linearLayoutholder.addView(LayoutForDetailRow);
+                        }
+
+
+                    }
+
                 }
             }
 
@@ -262,18 +277,22 @@ public class ProfileContactsFragment extends BaseProfileFragment {
                 jsonObject.put(JsonFormUtils.VALUE, photo.getFilePath());
 
             }
-        } else if (jsonObject.getString(JsonFormUtils.KEY).equalsIgnoreCase(DBConstants.KEY.DOB_UNKNOWN)) {
+        }
+        else if (jsonObject.getString(JsonFormUtils.KEY).equalsIgnoreCase(DBConstants.KEY.DOB_UNKNOWN)) {
 
             jsonObject.put(JsonFormUtils.READ_ONLY, false);
             JSONObject optionsObject = jsonObject.getJSONArray(Constants.JSON_FORM_KEY.OPTIONS).getJSONObject(0);
             optionsObject.put(JsonFormUtils.VALUE, womanClient.get(DBConstants.KEY.DOB_UNKNOWN));
 
-        } else if (jsonObject.getString(JsonFormUtils.KEY).equalsIgnoreCase(DBConstants.KEY.AGE)) {
+        }
+
+        else if (jsonObject.getString(JsonFormUtils.KEY).equalsIgnoreCase(DBConstants.KEY.AGE)) {
 
             jsonObject.put(JsonFormUtils.READ_ONLY, false);
             jsonObject.put(JsonFormUtils.VALUE, Utils.getAgeFromDate(womanClient.get(DBConstants.KEY.DOB)));
 
-        } else if (jsonObject.getString(JsonFormUtils.KEY).equalsIgnoreCase(DBConstants.KEY.ANC_ID)) {
+        }
+        else if (jsonObject.getString(JsonFormUtils.KEY).equalsIgnoreCase(DBConstants.KEY.ANC_ID)) {
 
             jsonObject.put(JsonFormUtils.VALUE, womanClient.get(DBConstants.KEY.ANC_ID).replace("-", ""));
 
