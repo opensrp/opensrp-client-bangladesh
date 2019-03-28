@@ -10,6 +10,7 @@ import android.view.View;
 import com.vijay.jsonwizard.activities.JsonFormActivity;
 import com.vijay.jsonwizard.constants.JsonFormConstants;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.smartregister.cbhc.application.AncApplication;
@@ -18,6 +19,7 @@ import org.smartregister.cbhc.fragment.AncJsonFormFragment;
 import org.smartregister.cbhc.repository.DraftFormRepository;
 import org.smartregister.cbhc.repository.HealthIdRepository;
 import org.smartregister.cbhc.repository.UniqueIdRepository;
+import org.smartregister.cbhc.util.DBConstants;
 import org.smartregister.cbhc.util.JsonFormUtils;
 
 import static org.apache.commons.lang3.StringUtils.isBlank;
@@ -135,6 +137,8 @@ public class AncJsonFormActivity extends JsonFormActivity {
             String formname = partialform.getString("encounter_type");
             draftFormObject.setFormNAME(formname);
 
+
+
             JSONObject metadata = getJSONObject(partialform, METADATA);
             JSONObject lookUpJSONObject = getJSONObject(metadata, "look_up");
             String lookUpEntityId = "";
@@ -146,10 +150,40 @@ public class AncJsonFormActivity extends JsonFormActivity {
             if(!isBlank(lookUpEntityId)&& !isBlank(lookUpBaseEntityId)){
                 draftFormObject.setHousehold_BASE_ENTITY_ID(lookUpBaseEntityId);
             }
+            String newOpenSRPId = getPatientIdentifier(partialform);
+
+            if(formname.contains("Household")){
+                uniqueIdRepository = getUniqueIdRepository();
+                uniqueIdRepository.close(newOpenSRPId);
+            }else{
+                healthIdRepository = getHealthIdRepository();
+                healthIdRepository.close(newOpenSRPId);
+            }
 
         } catch (JSONException e) {
             e.printStackTrace();
         }
+    }
+
+    public String getPatientIdentifier(JSONObject formobject){
+        String identifier = "";
+        try{
+
+            JSONArray jsonArray = formobject.getJSONObject("step1").getJSONArray("fields");
+            for(int i=0;i<jsonArray.length();i++){
+                JSONObject jsonObject = jsonArray.getJSONObject(i);
+                String key = jsonObject.getString("key");
+
+                if(key.equalsIgnoreCase("Patient_Identifier")){
+                    identifier = jsonObject.getString("value");
+                    break;
+                }
+
+            }
+        }catch(Exception e){
+
+        }
+        return identifier;
     }
 
 
