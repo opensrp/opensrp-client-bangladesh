@@ -52,7 +52,7 @@
     }
   },
   "step1": {
-    "title": "খাানার অবস্থান",
+    "title": "খানার অবস্থান",
     "fields": [
       {
         "key": "followup_Date",

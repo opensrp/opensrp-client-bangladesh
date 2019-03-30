@@ -1,6 +1,7 @@
 package org.smartregister.cbhc.activity;
 
 import android.app.FragmentTransaction;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.util.Log;
@@ -163,5 +164,33 @@ public class HomeRegisterActivity extends BaseRegisterActivity {
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    @Override
+    public void onBackPressed() {
+
+
+        android.support.v7.app.AlertDialog alertDialog = new android.support.v7.app.AlertDialog.Builder(this).create();
+        alertDialog.setTitle("Do you want to exit?");
+        alertDialog.setCanceledOnTouchOutside(false);
+        alertDialog.setButton(android.support.v7.app.AlertDialog.BUTTON_NEGATIVE, "NO",
+                new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                });
+        alertDialog.setButton(android.support.v7.app.AlertDialog.BUTTON_POSITIVE, "EXIT",
+                new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        try{
+                            finish();
+
+
+                        }catch(Exception e){
+                            e.printStackTrace();
+                        }
+                    }
+                });
+        alertDialog.show();
     }
 }
