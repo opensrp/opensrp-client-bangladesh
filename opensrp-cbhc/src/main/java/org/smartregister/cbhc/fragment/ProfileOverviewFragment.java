@@ -239,6 +239,7 @@ public class ProfileOverviewFragment extends BaseProfileFragment {
             Button noOfUnregisterButton=view.findViewById(R.id.total_birth_btn);
             String relation = personinlist.getColumnmaps().get("relation");
 
+            ImageView profileImageIV = (ImageView)view.findViewById(R.id.profile_image_iv);
 
             String pregnant_status = personinlist.getColumnmaps().get("PregnancyStatus");
             String tasks_status = personinlist.getColumnmaps().get("tasks");
@@ -269,6 +270,9 @@ public class ProfileOverviewFragment extends BaseProfileFragment {
                 ProfileImage imageRecord = imageRepo.findByEntityId(pClient.entityId());
                 if(imageRecord!=null){
                     profile_photo.put(pClient.entityId(),Drawable.createFromPath(imageRecord.getFilepath()));
+                }else{
+                    DrishtiApplication.getCachedImageLoaderInstance().getImageByClientId(pClient.entityId(), OpenSRPImageLoader.getStaticImageListener(profileImageIV, R.drawable.male_cbhc_placeholder, R.drawable.male_cbhc_placeholder));
+
                 }
             }
 
@@ -349,7 +353,6 @@ public class ProfileOverviewFragment extends BaseProfileFragment {
             LinearLayout editButton = (LinearLayout)view.findViewById(R.id.edit_member);
             editButton.setTag(pClient);
             editButton.setOnClickListener((ProfileActivity)getActivity());
-            ImageView profileImageIV = (ImageView)view.findViewById(R.id.profile_image_iv);
             String clientype = "";
 
 //
@@ -367,7 +370,6 @@ public class ProfileOverviewFragment extends BaseProfileFragment {
                         profileImageIV.setTag(org.smartregister.R.id.entity_id, pClient.entityId());
                         if(profile_photo.get(pClient.entityId())==null){
                             d = getResources().getDrawable(R.drawable.child_boy_infant);
-                            DrishtiApplication.getCachedImageLoaderInstance().getImageByClientId(pClient.entityId(), OpenSRPImageLoader.getStaticImageListener(profileImageIV, R.drawable.child_boy_infant, R.drawable.child_boy_infant));
                             profile_photo.put(pClient.entityId(),d);
                         }
                         pregnant_icon.setVisibility(View.VISIBLE);
@@ -380,7 +382,6 @@ public class ProfileOverviewFragment extends BaseProfileFragment {
                         profileImageIV.setTag(org.smartregister.R.id.entity_id, pClient.entityId());
                         if(profile_photo.get(pClient.entityId())==null){
                             d = getResources().getDrawable(R.drawable.child_girl_infant);
-                            DrishtiApplication.getCachedImageLoaderInstance().getImageByClientId(pClient.entityId(), OpenSRPImageLoader.getStaticImageListener(profileImageIV, R.drawable.child_girl_infant, R.drawable.child_girl_infant));
                             profile_photo.put(pClient.entityId(),d);
                         }
 
@@ -396,7 +397,6 @@ public class ProfileOverviewFragment extends BaseProfileFragment {
                         profileImageIV.setTag(org.smartregister.R.id.entity_id, pClient.entityId());
                         if(profile_photo.get(pClient.entityId())==null){
                             d = getResources().getDrawable(R.drawable.male_cbhc_placeholder);
-                            DrishtiApplication.getCachedImageLoaderInstance().getImageByClientId(pClient.entityId(), OpenSRPImageLoader.getStaticImageListener(profileImageIV, R.drawable.male_cbhc_placeholder, R.drawable.male_cbhc_placeholder));
                             profile_photo.put(pClient.entityId(),d);
                         }
                         pregnant_icon.setVisibility(View.INVISIBLE);
@@ -408,7 +408,6 @@ public class ProfileOverviewFragment extends BaseProfileFragment {
                         profileImageIV.setTag(org.smartregister.R.id.entity_id, pClient.entityId());
                         if(profile_photo.get(pClient.entityId())==null){
                             d = getResources().getDrawable(R.drawable.women_cbhc_placeholder);
-                            DrishtiApplication.getCachedImageLoaderInstance().getImageByClientId(pClient.entityId(), OpenSRPImageLoader.getStaticImageListener(profileImageIV, R.drawable.women_cbhc_placeholder, R.drawable.women_cbhc_placeholder));
                             profile_photo.put(pClient.entityId(),d);
                         }
                         clientype = "woman";
