@@ -253,8 +253,6 @@ public class ProfileActivity extends BaseProfileActivity implements ProfileContr
         if (requestCode == JsonFormUtils.REQUEST_CODE_GET_JSON && resultCode == RESULT_OK) {
             try {
                 String jsonString = data.getStringExtra("json");
-                Log.d("JSONResult", jsonString);
-
                 final JSONObject form = new JSONObject(jsonString);
                 if (form.getString(JsonFormUtils.ENCOUNTER_TYPE).equals(Constants.EventType.REGISTRATION)) {
                     presenter.saveForm(jsonString, false);
@@ -332,6 +330,7 @@ public class ProfileActivity extends BaseProfileActivity implements ProfileContr
                     }
                     String sql = "UPDATE ec_woman SET tasks = tasks-1 WHERE relational_id = '"+entity_id+"' AND first_name like '%"+mother_name+"%' AND tasks IS NOT NULL;";
                     db.execSQL(sql);
+                    db.close();
 
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -627,6 +626,7 @@ public class ProfileActivity extends BaseProfileActivity implements ProfileContr
                     if(cursor!=null&&cursor.getCount()!=0) {
                         sql = "UPDATE "+tables[i]+" SET date_removed = '01-01-1000' WHERE base_entity_id = '"+entity_id+"';";
                         db.execSQL(sql);
+                        db.close();
 //                        db.rawQuery(sql,new String[]{});
 
                     }

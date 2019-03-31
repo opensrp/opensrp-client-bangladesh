@@ -36,6 +36,7 @@
         <activity
             android:name=".activity.AncJsonFormActivity"
             android:launchMode="singleTop"
+            android:configChanges="orientation|screenSize"
             android:screenOrientation="portrait"
             android:theme="@style/AncAppTheme.NoActionBar"
             android:windowSoftInputMode="stateAlwaysHidden|adjustResize" />

@@ -141,7 +141,7 @@ dependencies {
 
 //    use cbhc-vaccines branch for local build in immunization library
 
-    implementation('org.smartregister:opensrp-client-immunization:2.4.7-SNAPSHOT') {
+    implementation('org.smartregister:opensrp-client-immunization:1.4.7-SNAPSHOT') {
         transitive = true
         exclude group: 'org.smartregister', module: 'opensrp-client-core'
         exclude group: 'org.smartregister', module: 'opensrp-client-native-form'
