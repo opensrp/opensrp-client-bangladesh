@@ -13,10 +13,10 @@ condition: " step1_has_disease.equalsIgnoreCase('হ্যাঁ') && ((step1_ag
 actions:
   - "isRelevant = true"
 ---
-name: step1_Disease_status_male_by_age
-description: disease status for male
+name: step1_Disease_Type
+description: Disease_Type
 priority: 2
-condition: "step1_has_disease.equalsIgnoreCase('হ্যাঁ') && step1_age > 5 && step1_gender.equalsIgnoreCase('পুরুষ')"
+condition: "step1_has_disease.equalsIgnoreCase('হ্যাঁ') && step1_age > 5"
 actions:
   - "isRelevant = true"
 ---
@@ -27,17 +27,10 @@ condition: "step1_age > 5 || (helper.formatDate(step1_member_birth_date,'d') > 1
 actions:
   - "isRelevant = true"
 ---
-name: step1_Disease_status_female_by_age
-description: disease status for female
-priority: 2
-condition: "step1_has_disease.equalsIgnoreCase('হ্যাঁ') && step1_age > 5  && step1_gender.equalsIgnoreCase('মহিলা')"
-actions:
-  - "isRelevant = true"
----
 name: step1_pregnant_status
 description: pregnant_status for female
 priority: 1
-condition: "(step1_marital_status.equalsIgnoreCase('বিবাহিত') ) && step1_gender.equalsIgnoreCase('মহিলা') && step1_age < 56"
+condition: "step1_marital_status.equalsIgnoreCase('বিবাহিত')  && step1_gender.equalsIgnoreCase('মহিলা') && step1_age < 56"
 actions:
   - "isRelevant = true"
 ---

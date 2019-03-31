@@ -87,45 +87,188 @@
         }
       },
       {
-        "key":"Disease_status_female_by_age",
-        "openmrs_entity_parent":"",
-        "openmrs_entity":"person_attribute",
-        "openmrs_entity_id":"Disease_status",
-        "openmrs_data_type":"text",
-        "type":"check_box",
-        "label":"সাধারন রোগ মহিলা",
-        "exclusive":["None"],
-        "options":[
+        "key": "Disease_Type",
+        "openmrs_entity_parent": "",
+        "openmrs_entity": "person_attribute",
+        "openmrs_entity_id": "Disease Type",
+        "openmrs_data_type": "text",
+        "type": "check_box",
+        "label": "রোগের ধরণ",
+        "exclusive": ["None"],
+        "options": [
           {
-            "key":"High Blood Pressure",
-            "text":"উচ্চ রক্তচাপ ",
-            "value":false,
-            "openmrs_choice_id":"High Blood Pressure"
+            "key": "Communicable Disease",
+            "text": "সংক্রামক রোগ",
+            "value": false,
+            "openmrs_choice_id": "Communicable Disease"
           },
           {
-            "key":"Diabetes",
-            "text":"ডায়াবেটিস ",
-            "value":false,
-            "openmrs_choice_id":"Diabetes"
-          },
-          {
-            "key":"Tuberculosis",
-            "text":"সম্ভাব্য যক্ষ্মা ",
-            "value":false,
-            "openmrs_choice_id":"Tuberculosis"
-          },
-
-          {
-            "key":"Others_member_disease",
-            "text":"অন্যান্য ",
-            "value":false,
-            "openmrs_choice_id":"Others_member_disease"
+            "key": "Non Communicable Disease",
+            "text": "অসংক্রামক রোগ",
+            "value": false,
+            "openmrs_choice_id": "Non Communicable Disease"
           }
         ],
-        "relevance":{
-          "step1:has_disease":{
-            "type":"string",
-            "ex":"equalTo(., \"হ্যাঁ\")"
+        "relevance": {
+          "step1:has_disease": {
+            "type": "string",
+            "ex": "regex(., \"হ্যাঁ\")"
+          }
+        }
+      },
+
+      {
+        "key": "Communicable Disease",
+        "openmrs_entity_parent": "",
+        "openmrs_entity": "person_attribute",
+        "openmrs_entity_id": "Communicable Disease",
+        "openmrs_data_type": "text",
+        "type": "check_box",
+        "label": "সংক্রামক রোগ",
+        "exclusive": ["None"],
+        "options": [
+          {
+            "key": "maleria",
+            "text": "জ্বর (ম্যালারিয়া)",
+            "value": false,
+            "openmrs_choice_id": "maleria"
+          },
+          {
+            "key": "Dengue",
+            "text": "ডেঙ্গু",
+            "value": false,
+            "openmrs_choice_id": "Dengue"
+          },
+          {
+            "key": "Leprosy",
+            "text": "কুষ্ঠ ",
+            "value": false,
+            "openmrs_choice_id": "Leprosy"
+          },
+          {
+            "key": "Tuberculosis",
+            "text": "যক্ষ্মা  ",
+            "value": false,
+            "openmrs_choice_id": "Tuberculosis"
+          },
+          {
+            "key": "Rabies",
+            "text": "জলাতঙ্ক ",
+            "value": false,
+            "openmrs_choice_id": "Rabies"
+          },
+          {
+            "key": "Avian Flu",
+            "text": "এভিয়েন ইনফ্লুয়েঞ্জা  ",
+            "value": false,
+            "openmrs_choice_id": "Avian Flu"
+          },
+          {
+            "key": "Swine Flu",
+            "text": "সোয়াইন ফ্লু ",
+            "value": false,
+            "openmrs_choice_id": "Swine Flu"
+          },
+          {
+            "key": "Nipah",
+            "text": "নিপাহ  ",
+            "value": false,
+            "openmrs_choice_id": "Nipah"
+          },
+          {
+            "key": "Acute Viral Hepatitis",
+            "text": "যকৃতের ভাইরাস জনিত প্রদাহ ",
+            "value": false,
+            "openmrs_choice_id": "Acute Viral Hepatitis"
+          },
+          {
+            "key": "Diarrhoea",
+            "text": "ডায়ারিয়া  ",
+            "value": false,
+            "openmrs_choice_id": "Diarrhoea"
+          },
+          {
+            "key": "Worms Infection",
+            "text": "কৃমি সংক্রামণ   ",
+            "value": false,
+            "openmrs_choice_id": "Worms Infection"
+          },
+          {
+            "key": "Sexual Disease",
+            "text": "যৌন রোগ",
+            "value": false,
+            "openmrs_choice_id": "Sexual Disease"
+          }
+        ],
+        "relevance": {
+          "step1:Disease_Type": {
+            "ex-checkbox": [
+              {
+                "or": [
+                  "Communicable Disease"
+                ]
+              }
+            ]
+          }
+        }
+      },
+
+      {
+        "key": "Non Communicable Disease",
+        "openmrs_entity_parent": "",
+        "openmrs_entity": "person_attribute",
+        "openmrs_entity_id": "Non Communicable Disease",
+        "openmrs_data_type": "text",
+        "type": "check_box",
+        "label": "অসংক্রামক রোগ",
+        "exclusive": ["None"],
+        "options": [
+          {
+            "key": "Arsenicosis",
+            "text": "আর্সেনিকোসিস",
+            "value": false,
+            "openmrs_choice_id": "Arsenicosis"
+          },
+          {
+            "key": "Asthma",
+            "text": "হাঁপানি বা এ্যাজমা",
+            "value": false,
+            "openmrs_choice_id": "Asthma"
+          },
+          {
+            "key": "Diabetes",
+            "text": "ডায়াবেটিস  ",
+            "value": false,
+            "openmrs_choice_id": "Diabetes"
+          },
+          {
+            "key": "High Blood Pressure",
+            "text": "উচ্চ রক্তচাপ  ",
+            "value": false,
+            "openmrs_choice_id": "High Blood Pressure"
+          },
+          {
+            "key": "Stroke",
+            "text": "স্ট্রোক ",
+            "value": false,
+            "openmrs_choice_id": "Stroke"
+          },
+          {
+            "key": "Tumor or Cancer",
+            "text": "টিউমার বা ক্যানসার ",
+            "value": false,
+            "openmrs_choice_id": "Tumor or Cancer"
+          }
+        ],
+        "relevance": {
+          "step1:Disease_Type": {
+            "ex-checkbox": [
+              {
+                "or": [
+                  "Non Communicable Disease"
+                ]
+              }
+            ]
           }
         }
       },
