@@ -227,7 +227,9 @@ public class RegisterInteractor implements RegisterContract.Interactor {
 
             Client baseClient = pair.first;
             Event baseEvent = pair.second;
-
+//            if(jsonString.contains("Followup HH Transfer")){
+//                isEditMode = false;
+//            }
             if (baseClient != null) {
                 JSONObject clientJson = new JSONObject(JsonFormUtils.gson.toJson(baseClient));
                 if (isEditMode) {

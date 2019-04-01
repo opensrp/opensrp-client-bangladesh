@@ -133,7 +133,7 @@ public class AncApplication extends DrishtiApplication implements TimeChangedBro
         startPullConfigurableViewsIntentService(getApplicationContext());
     }
 
-    private AllSharedPreferences getSharedPreferences(){
+    private AllSharedPreferences getSharedPreferences() {
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
         AllSharedPreferences allSharedPreferences = new AllSharedPreferences(preferences);
         return allSharedPreferences;

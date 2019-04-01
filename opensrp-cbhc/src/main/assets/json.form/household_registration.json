@@ -62,7 +62,7 @@
         "openmrs_entity_id": "",
         "openmrs_data_type": "text",
         "type": "tree",
-        "hint": "খানার ঠিকানা(ওয়ার্ড,ইউনিয়ন)",
+        "hint": "খানার ঠিকানা(ব্লক,ওয়ার্ড,ইউনিয়ন)",
         "tree": [],
         "v_required": {
           "value": true,
