@@ -516,20 +516,23 @@ public class AncJsonFormFragment extends JsonFormFragment {
 
     @Override
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-        if(isPressed&&position>=0){
+        if(position>=0){
             presenter.onItemSelected(parent, view, position, id);
 //        JSONObject currentObject = get
             if(parent instanceof MaterialSpinner) {
                 if (((MaterialSpinner) parent).getFloatingLabelText().toString().equalsIgnoreCase("খানা প্রধানের সাথে সম্পর্ক*")) {
+                    if(isPressed)
                     processHeadOfHouseHoldAsMember(position);
                 }
                 if (((MaterialSpinner) parent).getFloatingLabelText().toString().equalsIgnoreCase("লিঙ্গ*")) {
+                    if(isPressed)
                     processHeadOfHouseHoldRelation(position);
+                    isPressed = true;
                 }
             }
         }
 //        if(countSelect++>20)
-        isPressed =true;
+
 
     }
     public void processHeadOfHouseHoldRelation(final int position){
