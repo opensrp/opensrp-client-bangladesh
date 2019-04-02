@@ -154,7 +154,9 @@ public class MemberProfileContactsFragment extends BaseProfileFragment {
     public boolean removeField(String KEY, String VALUE){
         String keys[] = {"Child_birth_weight","Birth_weight","Used_7_1_Chlorohexidin","marital_status","spouseName_english",
                 "spouseName_bengali","contact_phone_number_by_age",
-                "educational_qualification_by_age","occupation_by_age","pregnant_status","lmp_date","Delivery_date","family_planning","risky_habits"};
+                "educational_qualification_by_age","occupation_by_age","pregnant_status","lmp_date","Delivery_date","family_planning","risky_habits",
+        "Professional technical professionals","Semi-skilled labor service","Unskilled labor","Factory worker, blue collar service","Home based manufacturing",
+        "Business","Domestic Servant"};
         return ArrayUtils.contains(keys,KEY)&&VALUE.isEmpty();
 
     }

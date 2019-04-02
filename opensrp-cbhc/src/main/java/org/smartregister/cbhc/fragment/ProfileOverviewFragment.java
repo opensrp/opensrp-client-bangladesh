@@ -271,7 +271,7 @@ public class ProfileOverviewFragment extends BaseProfileFragment {
                 if(imageRecord!=null){
                     profile_photo.put(pClient.entityId(),Drawable.createFromPath(imageRecord.getFilepath()));
                 }else{
-                    DrishtiApplication.getCachedImageLoaderInstance().getImageByClientId(pClient.entityId(), OpenSRPImageLoader.getStaticImageListener(profileImageIV, R.drawable.male_cbhc_placeholder, R.drawable.male_cbhc_placeholder));
+                   // DrishtiApplication.getCachedImageLoaderInstance().getImageByClientId(pClient.entityId(), OpenSRPImageLoader.getStaticImageListener(profileImageIV, R.drawable.male_cbhc_placeholder, R.drawable.male_cbhc_placeholder));
 
                 }
             }
@@ -283,9 +283,7 @@ public class ProfileOverviewFragment extends BaseProfileFragment {
 
             member_name.setText(patientName);
 
-            DetailsRepository detailsRepository = AncApplication.getInstance().getContext().detailsRepository();
-            Map<String, String> detailmap = detailsRepository.getAllDetailsForClient(pClient.getCaseId());
-            String gender = detailmap.get("gender");
+
 //            String noOfChild=getValue(detailmap,"Live Birth",true);
 //            if(!TextUtils.isEmpty(noOfChild)){
 //                int child=Integer.valueOf(noOfChild) - childCount(pClient.getCaseId());
@@ -349,12 +347,8 @@ public class ProfileOverviewFragment extends BaseProfileFragment {
                 }
             });
 
-            pClient.getColumnmaps().putAll(detailmap);
-            LinearLayout editButton = (LinearLayout)view.findViewById(R.id.edit_member);
-            editButton.setTag(pClient);
-            editButton.setOnClickListener((ProfileActivity)getActivity());
-            String clientype = "";
 
+            new ProfilePhotoAsyncTask(pClient,age,profileImageIV,view,pregnant_icon).execute();
 //
 //            if (pClient.entityId() != null) {//image already in local storage most likey ):
 //                //set profile image by passing the client id.If the image doesn't exist in the image org.smartregister.cbhc.repository then download and save locally
@@ -362,63 +356,9 @@ public class ProfileOverviewFragment extends BaseProfileFragment {
 //                DrishtiApplication.getCachedImageLoaderInstance().getImageByClientId(pClient.entityId(), OpenSRPImageLoader.getStaticImageListener((ImageView) profileImageIV, R.drawable.woman_placeholder, R.drawable.woman_placeholder));
 //
 //            }
-            Drawable d = null;
-            if(age<5){
-                if(!TextUtils.isEmpty(gender) && gender.equalsIgnoreCase("m")){
-                    if (pClient.entityId() != null) {//image already in local storage most likey ):
-                        //set profile image by passing the client id.If the image doesn't exist in the image org.smartregister.cbhc.repository then download and save locally
-                        profileImageIV.setTag(org.smartregister.R.id.entity_id, pClient.entityId());
-                        if(profile_photo.get(pClient.entityId())==null){
-                            d = getResources().getDrawable(R.drawable.child_boy_infant);
-                            profile_photo.put(pClient.entityId(),d);
-                        }
-                        pregnant_icon.setVisibility(View.VISIBLE);
-                        pregnant_icon.setImageResource(R.drawable.male_child_cbhc);
-                        clientype = "malechild";
-                    }
-                }else if(!TextUtils.isEmpty(gender) && gender.equalsIgnoreCase("f")){
-                    if (pClient.entityId() != null) {//image already in local storage most likey ):
-                        //set profile image by passing the client id.If the image doesn't exist in the image org.smartregister.cbhc.repository then download and save locally
-                        profileImageIV.setTag(org.smartregister.R.id.entity_id, pClient.entityId());
-                        if(profile_photo.get(pClient.entityId())==null){
-                            d = getResources().getDrawable(R.drawable.child_girl_infant);
-                            profile_photo.put(pClient.entityId(),d);
-                        }
 
-                        pregnant_icon.setVisibility(View.VISIBLE);
-                        pregnant_icon.setImageResource(R.drawable.female_child_cbhc);
-                        clientype = "femalechild";
-                    }
-                }
-            }else{
-                if(!TextUtils.isEmpty(gender) && gender.equalsIgnoreCase("m")){
-                    if (pClient.entityId() != null) {//image already in local storage most likey ):
-                        //set profile image by passing the client id.If the image doesn't exist in the image org.smartregister.cbhc.repository then download and save locally
-                        profileImageIV.setTag(org.smartregister.R.id.entity_id, pClient.entityId());
-                        if(profile_photo.get(pClient.entityId())==null){
-                            d = getResources().getDrawable(R.drawable.male_cbhc_placeholder);
-                            profile_photo.put(pClient.entityId(),d);
-                        }
-                        pregnant_icon.setVisibility(View.INVISIBLE);
-                        clientype = "member";
-                    }
-                }else if(!TextUtils.isEmpty(gender) && gender.equalsIgnoreCase("f")){
-                    if (pClient.entityId() != null) {//image already in local storage most likey ):
-                        //set profile image by passing the client id.If the image doesn't exist in the image org.smartregister.cbhc.repository then download and save locally
-                        profileImageIV.setTag(org.smartregister.R.id.entity_id, pClient.entityId());
-                        if(profile_photo.get(pClient.entityId())==null){
-                            d = getResources().getDrawable(R.drawable.women_cbhc_placeholder);
-                            profile_photo.put(pClient.entityId(),d);
-                        }
-                        clientype = "woman";
-                    }
-                }
-            }
-            if(profile_photo.get(pClient.entityId())!=null){
-                profileImageIV.setImageDrawable(profile_photo.get(pClient.entityId()));
-            }
             profileImageIV.setTag(R.id.clientformemberprofile,pClient);
-            profileImageIV.setTag(R.id.typeofclientformemberprofile,clientype);
+
             profileImageIV.setOnClickListener((ProfileActivity)getActivity());
             noOfUnregisterButton.setTag(R.id.clientformemberprofile,pClient);
             noOfUnregisterButton.setOnClickListener((ProfileActivity)getActivity());
@@ -433,7 +373,106 @@ public class ProfileOverviewFragment extends BaseProfileFragment {
 
             return  view;
         }
+        class ProfilePhotoAsyncTask extends AsyncTask {
+            CommonPersonObjectClient pClient;
+            int age = 0;
+            ImageView profileImageIV;
+            View view;
+            ImageView pregnant_icon;
+            public ProfilePhotoAsyncTask(CommonPersonObjectClient pClient, int age,ImageView profileImageIV,View view,ImageView pregnant_icon){
+                this.pClient = pClient;
+                this.age = age;
+                this.profileImageIV = profileImageIV;
+                this.view = view;
+                this.pregnant_icon = pregnant_icon;
+            }
+            String gender;
+            String clientype = "";
+            @Override
+            protected Object doInBackground(Object[] objects) {
+                DetailsRepository detailsRepository = AncApplication.getInstance().getContext().detailsRepository();
+                Map<String, String> detailmap = detailsRepository.getAllDetailsForClient(pClient.getCaseId());
+                gender = detailmap.get("gender");
+                pClient.getColumnmaps().putAll(detailmap);
 
+                Map<String,Object> map = new HashMap<String,Object>();
+                        map.put("gender",gender);
+                map.put("pclient",pClient);
+                return map;
+            }
+
+            @Override
+            protected void onPostExecute(Object o) {
+                super.onPostExecute(o);
+                String gender = "";
+                CommonPersonObjectClient pClient = null;
+                if(o instanceof HashMap){
+
+                    gender = (String)((HashMap) o).get("gender");
+                    pClient = (CommonPersonObjectClient)((HashMap) o).get("pclient");
+                }
+                LinearLayout editButton = (LinearLayout)view.findViewById(R.id.edit_member);
+                editButton.setTag(pClient);
+                editButton.setOnClickListener((ProfileActivity)getActivity());
+                Drawable d = null;
+                if(age<5){
+                    if(!TextUtils.isEmpty(gender) && gender.equalsIgnoreCase("m")){
+                        if (pClient.entityId() != null) {//image already in local storage most likey ):
+                            //set profile image by passing the client id.If the image doesn't exist in the image org.smartregister.cbhc.repository then download and save locally
+                            profileImageIV.setTag(org.smartregister.R.id.entity_id, pClient.entityId());
+                            if(profile_photo.get(pClient.entityId())==null){
+                                d = getResources().getDrawable(R.drawable.child_boy_infant);
+                                profile_photo.put(pClient.entityId(),d);
+                            }
+                            pregnant_icon.setVisibility(View.VISIBLE);
+                            pregnant_icon.setImageResource(R.drawable.male_child_cbhc);
+                            clientype = "malechild";
+                        }
+                    }else if(!TextUtils.isEmpty(gender) && gender.equalsIgnoreCase("f")){
+                        if (pClient.entityId() != null) {//image already in local storage most likey ):
+                            //set profile image by passing the client id.If the image doesn't exist in the image org.smartregister.cbhc.repository then download and save locally
+                            profileImageIV.setTag(org.smartregister.R.id.entity_id, pClient.entityId());
+                            if(profile_photo.get(pClient.entityId())==null){
+                                d = getResources().getDrawable(R.drawable.child_girl_infant);
+                                profile_photo.put(pClient.entityId(),d);
+                            }
+
+                            pregnant_icon.setVisibility(View.VISIBLE);
+                            pregnant_icon.setImageResource(R.drawable.female_child_cbhc);
+                            clientype = "femalechild";
+                        }
+                    }
+                }else{
+                    if(!TextUtils.isEmpty(gender) && gender.equalsIgnoreCase("m")){
+                        if (pClient.entityId() != null) {//image already in local storage most likey ):
+                            //set profile image by passing the client id.If the image doesn't exist in the image org.smartregister.cbhc.repository then download and save locally
+                            profileImageIV.setTag(org.smartregister.R.id.entity_id, pClient.entityId());
+                            if(profile_photo.get(pClient.entityId())==null){
+                                d = getResources().getDrawable(R.drawable.male_cbhc_placeholder);
+                                profile_photo.put(pClient.entityId(),d);
+                            }
+                            pregnant_icon.setVisibility(View.INVISIBLE);
+                            clientype = "member";
+                        }
+                    }else if(!TextUtils.isEmpty(gender) && gender.equalsIgnoreCase("f")){
+                        if (pClient.entityId() != null) {//image already in local storage most likey ):
+                            //set profile image by passing the client id.If the image doesn't exist in the image org.smartregister.cbhc.repository then download and save locally
+                            profileImageIV.setTag(org.smartregister.R.id.entity_id, pClient.entityId());
+                            if(profile_photo.get(pClient.entityId())==null){
+                                d = getResources().getDrawable(R.drawable.women_cbhc_placeholder);
+                                profile_photo.put(pClient.entityId(),d);
+                            }
+                            clientype = "woman";
+                        }
+                    }
+                }
+                if(profile_photo.get(pClient.entityId())!=null){
+                    profileImageIV.setImageDrawable(profile_photo.get(pClient.entityId()));
+                }
+
+                profileImageIV.setTag(R.id.typeofclientformemberprofile,clientype);
+            }
+        }
         public int childCount(String motherId){
             String tableName = DBConstants.CHILD_TABLE_NAME;
             String parentTableName = DBConstants.WOMAN_TABLE_NAME;
@@ -545,7 +584,7 @@ public class ProfileOverviewFragment extends BaseProfileFragment {
                     if (pClient.entityId() != null) {//image already in local storage most likey ):
                         //set profile image by passing the client id.If the image doesn't exist in the image org.smartregister.cbhc.repository then download and save locally
                         profileImageIV.setTag(org.smartregister.R.id.entity_id, pClient.entityId());
-                        DrishtiApplication.getCachedImageLoaderInstance().getImageByClientId(pClient.entityId(), OpenSRPImageLoader.getStaticImageListener((ImageView) profileImageIV, ImageUtils.profileImageResourceByGender(gender), ImageUtils.profileImageResourceByGender(gender)));
+                        //DrishtiApplication.getCachedImageLoaderInstance().getImageByClientId(pClient.entityId(), OpenSRPImageLoader.getStaticImageListener((ImageView) profileImageIV, ImageUtils.profileImageResourceByGender(gender), ImageUtils.profileImageResourceByGender(gender)));
 
                     }
                 }

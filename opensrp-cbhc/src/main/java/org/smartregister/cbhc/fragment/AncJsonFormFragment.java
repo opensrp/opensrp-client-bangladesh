@@ -512,10 +512,11 @@ public class AncJsonFormFragment extends JsonFormFragment {
         }
     }
     private boolean isPressed =false;
+    private int countSelect = 0;
 
     @Override
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-        if(isPressed){
+        if(isPressed&&position>=0){
             presenter.onItemSelected(parent, view, position, id);
 //        JSONObject currentObject = get
             if(parent instanceof MaterialSpinner) {
@@ -527,6 +528,7 @@ public class AncJsonFormFragment extends JsonFormFragment {
                 }
             }
         }
+        if(countSelect++>20)
         isPressed =true;
 
     }
