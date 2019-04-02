@@ -428,7 +428,6 @@ public abstract class BaseRegisterActivity extends SecuredNativeSmartRegisterAct
                     }
                     String sql = "UPDATE ec_woman SET tasks = tasks-1 WHERE relational_id = '"+entity_id+"' AND first_name like '%"+mother_name+"%' AND tasks IS NOT NULL;";
                     db.execSQL(sql);
-                    db.close();
 
                 } catch (Exception e) {
                     e.printStackTrace();

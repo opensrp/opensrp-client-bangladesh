@@ -6,6 +6,7 @@ import android.database.Cursor;
 import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v4.widget.CursorAdapter;
 import android.text.TextUtils;
 import android.util.Log;
@@ -72,6 +73,7 @@ public class ProfileOverviewFragment extends BaseProfileFragment {
     public View getFragmentView() {
         return fragmentView;
     }
+    private Handler myHandler;
 
     public static ProfileOverviewFragment newInstance(Bundle bundle) {
         Bundle args = bundle;
@@ -86,6 +88,7 @@ public class ProfileOverviewFragment extends BaseProfileFragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        myHandler = new Handler();
         Bundle extras = this.getActivity().getIntent().getExtras();
         if (extras != null) {
             Serializable serializable = extras.getSerializable(EXTRA_HOUSEHOLD_DETAILS);
@@ -104,7 +107,13 @@ public class ProfileOverviewFragment extends BaseProfileFragment {
     protected void onResumption() {
         //Overriden
         if(fragmentView!=null){
-            refreshadapter(fragmentView);
+            myHandler.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    refreshadapter(fragmentView);
+                }
+            },1000);
+
         }
     }
 
@@ -649,6 +658,7 @@ public class ProfileOverviewFragment extends BaseProfileFragment {
     @Override
     public void onDestroy() {
         super.onDestroy();
+        if(myHandler!=null)myHandler.removeCallbacksAndMessages(null);
 //        profile_photo.clear();
     }
 
