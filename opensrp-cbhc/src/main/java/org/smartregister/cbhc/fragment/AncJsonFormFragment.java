@@ -528,7 +528,7 @@ public class AncJsonFormFragment extends JsonFormFragment {
                 }
             }
         }
-        if(countSelect++>20)
+//        if(countSelect++>20)
         isPressed =true;
 
     }
