@@ -1574,14 +1574,14 @@
           "প্রসবোত্তর",
           "গর্ভপাত হয়েছে",
           "MR করেছে",
-          "কোনটিই নই"
+          "কোনটিই নয়"
         ],
         "openmrs_choice_ids": {
           "প্রসব পূর্ব": "Antenatal Period",
           "প্রসবোত্তর": "Postnatal",
           "গর্ভপাত হয়েছে": "Miscarriage",
           "MR করেছে": "Did_MR",
-          "কোনটিই নই":"None_Above"
+          "কোনটিই নয়":"None_Above"
         },
 
         "relevance": {
