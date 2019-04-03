@@ -75,14 +75,12 @@
           "প্রসব পূর্ব",
           "প্রসবোত্তর",
           "গর্ভপাত হয়েছে",
-          "MR করেছে",
           "কোনটিই নয়"
         ],
         "openmrs_choice_ids": {
           "প্রসব পূর্ব": "Antenatal Period",
           "প্রসবোত্তর": "Postnatal",
           "গর্ভপাত হয়েছে": "Miscarriage",
-          "MR করেছে": "Did_MR",
           "কোনটিই নয়":"None_Above"
         },
         "v_required": {
@@ -210,29 +208,6 @@
           "step1:pregnant_status": {
             "type": "string",
             "ex": "regex(., \"(গর্ভপাত হয়েছে)\")"
-          }
-        }
-      },
-      {
-        "key": "Date_Of_MR",
-        "openmrs_entity_parent": "",
-        "openmrs_entity": "",
-        "openmrs_entity_id": "Date_Of_MR",
-        "type": "date_picker",
-        "hint": "MR এর তারিখ",
-        "expanded": false,
-        "duration": {
-          "label": "Yrs"
-        },
-        "max_date": "today",
-        "v_required": {
-          "value": true,
-          "err": "Please enter MR date."
-        },
-        "relevance": {
-          "step1:pregnant_status": {
-            "type": "string",
-            "ex": "regex(., \"(MR করেছে)\")"
           }
         }
       },

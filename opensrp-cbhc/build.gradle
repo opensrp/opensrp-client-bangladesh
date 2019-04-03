@@ -27,8 +27,8 @@ android {
         applicationId "org.smartregister.cbhc"
         minSdkVersion androidMinSdkVersion
         targetSdkVersion androidTargetSdkVersion
-        versionCode 6
-        versionName "1.1.4"
+        versionCode 7
+        versionName "1.1.5"
         multiDexEnabled true
         buildConfigField "long", "MAX_SERVER_TIME_DIFFERENCE", "1800000l"
         buildConfigField "boolean", "TIME_CHECK", "false"
