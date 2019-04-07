@@ -19,6 +19,7 @@ import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import net.sqlcipher.Cursor;
 import net.sqlcipher.database.SQLiteDatabase;
@@ -119,10 +120,13 @@ public class MemberProfileActivity extends BaseProfileActivity implements Profil
         Bundle extras = this.getIntent().getExtras();
         if (extras != null) {
             Serializable serializable = extras.getSerializable(EXTRA_HOUSEHOLD_DETAILS);
-            if (serializable != null && serializable instanceof CommonPersonObjectClient) {
+            if (serializable instanceof CommonPersonObjectClient) {
                 householdDetails = (CommonPersonObjectClient) serializable;
             }
             typeofMember = extras.getString("type_of_member");
+        }else{
+            Toast.makeText(this,"Details not found",Toast.LENGTH_SHORT).show();
+            finish();
         }
 
 
@@ -141,17 +145,19 @@ public class MemberProfileActivity extends BaseProfileActivity implements Profil
     private TabLayout tabLayout;
 
     private void setUpViews() {
-        ImageView circleprofile = (ImageView)findViewById(R.id.imageview_profile);
-
-        if(typeofMember.equalsIgnoreCase("malechild")){
-            circleprofile.setImageDrawable(getResources().getDrawable(R.drawable.child_boy_infant));
-        }else if(typeofMember.equalsIgnoreCase("femalechild")){
-            circleprofile.setImageDrawable(getResources().getDrawable(R.drawable.child_girl_infant));
-        }else if(typeofMember.equalsIgnoreCase("woman")){
-            circleprofile.setImageDrawable(getResources().getDrawable(R.drawable.female_register_placeholder_profile));
-        }else if(typeofMember.equalsIgnoreCase("member")){
-            circleprofile.setImageDrawable(getResources().getDrawable(R.drawable.male_register_placeholder_profile));
+        imageView = findViewById(R.id.imageview_profile);
+        if(typeofMember!=null){
+            if(typeofMember.equalsIgnoreCase("malechild")){
+                imageView.setImageDrawable(getResources().getDrawable(R.drawable.child_boy_infant));
+            }else if(typeofMember.equalsIgnoreCase("femalechild")){
+                imageView.setImageDrawable(getResources().getDrawable(R.drawable.child_girl_infant));
+            }else if(typeofMember.equalsIgnoreCase("woman")){
+                imageView.setImageDrawable(getResources().getDrawable(R.drawable.female_register_placeholder_profile));
+            }else if(typeofMember.equalsIgnoreCase("member")){
+                imageView.setImageDrawable(getResources().getDrawable(R.drawable.male_register_placeholder_profile));
+            }
         }
+
 //        ImageRepository imageRepo = CoreLibrary.getInstance().context().imageRepository();
 //        ProfileImage imageRecord = imageRepo.findByEntityId(householdDetails.entityId());
 //
@@ -167,7 +173,6 @@ public class MemberProfileActivity extends BaseProfileActivity implements Profil
         ancIdView = findViewById(R.id.textview_anc_id);
         nameView = findViewById(R.id.textview_name);
         pregnant_statusView = findViewById(R.id.textview_pregnant_status);
-        imageView = findViewById(R.id.imageview_profile);
 
 //setProfileImage(householdDetails.entityId());
         String firstName = org.smartregister.util.Utils.getValue(householdDetails.getColumnmaps(), DBConstants.KEY.FIRST_NAME, true);

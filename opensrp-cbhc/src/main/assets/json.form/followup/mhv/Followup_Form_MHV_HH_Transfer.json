@@ -75,7 +75,7 @@
         "openmrs_entity_id": "household_status",
         "openmrs_data_type": "text",
         "type": "spinner",
-        "hint": "খাানার অবস্থান",
+        "hint": "খানার অবস্থান",
         "values": [
           "খানা স্থানান্তর",
           "খানা পাওয়া যায়নি "

@@ -398,7 +398,7 @@ public class AncApplication extends DrishtiApplication implements TimeChangedBro
 
 
     public void startZscoreRefreshService() {
-        Intent intent = new Intent(this.getApplicationContext(), ZScoreRefreshIntentService.class);
+        Intent intent = new Intent(getInstance().getApplicationContext(), ZScoreRefreshIntentService.class);
         this.getApplicationContext().startService(intent);
     }
 

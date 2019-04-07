@@ -330,7 +330,6 @@ public class ProfileActivity extends BaseProfileActivity implements ProfileContr
                     }
                     String sql = "UPDATE ec_woman SET tasks = tasks-1 WHERE relational_id = '"+entity_id+"' AND first_name like '%"+mother_name+"%' AND tasks IS NOT NULL;";
                     db.execSQL(sql);
-                    db.close();
 
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -374,7 +373,7 @@ public class ProfileActivity extends BaseProfileActivity implements ProfileContr
             arrayAdapter.add("[+] নতুন সদস্য");
 //            arrayAdapter.add("খানা স্থানান্তর");
 //            arrayAdapter.add("খানা পাওয়া যায়নি");
-            arrayAdapter.add("খাানার অবস্থান");
+            arrayAdapter.add("খানার অবস্থান");
 //            arrayAdapter.add(getString(R.string.call));
 //            arrayAdapter.add(getString(R.string.start_contact));
 //            arrayAdapter.add(getString(R.string.close_anc_record));
@@ -571,6 +570,7 @@ public class ProfileActivity extends BaseProfileActivity implements ProfileContr
 
     @Override
     public void refreshList(FetchStatus fetchStatus) {
+        profileOverviewFragment.refreshadapter();
 
     }
 
@@ -625,7 +625,6 @@ public class ProfileActivity extends BaseProfileActivity implements ProfileContr
                     if(cursor!=null&&cursor.getCount()!=0) {
                         sql = "UPDATE "+tables[i]+" SET date_removed = '01-01-1000' WHERE base_entity_id = '"+entity_id+"';";
                         db.execSQL(sql);
-                        db.close();
 //                        db.rawQuery(sql,new String[]{});
 
                     }

@@ -201,21 +201,18 @@ public class ProfilePresenter implements ProfileContract.Presenter, RegisterCont
     public void onRegistrationSaved(boolean isEdit) {
 
         if(getProfileView()==null) return;
-        ////////////////////////////////////////////////////////////////
 
         this.refreshProfileView(getProfileView().getIntentString(Constants.INTENT_KEY.BASE_ENTITY_ID));
-        if(profileActivity instanceof ProfileActivity){
-            profileActivity = (ProfileActivity)profileActivity;
-        }
-        if(profileActivity!=null&&profileActivity instanceof ProfileActivity)
+
+        if(profileActivity instanceof ProfileActivity)
             ((ProfileActivity)profileActivity).refreshProfileViews();
-        if(profileActivity!=null&&profileActivity instanceof MemberProfileActivity)
+        if(profileActivity instanceof MemberProfileActivity)
             ((MemberProfileActivity)profileActivity).refreshProfileViews();
         getProfileView().hideProgressDialog();
 
         getProfileView().displayToast(isEdit ? R.string.registration_info_updated : R.string.new_registration_saved);
-        if(profileActivity!=null&&profileActivity instanceof ProfileActivity)
-            ((ProfileActivity)profileActivity).profileOverviewFragment.refreshadapter(((ProfileActivity)profileActivity).profileOverviewFragment.getFragmentView());
+        if(profileActivity instanceof ProfileActivity)
+            ((ProfileActivity)profileActivity).profileOverviewFragment.refreshadapter();
 //        if(profileActivity!=null&&profileActivity instanceof MemberProfileActivity)
 //            ((MemberProfileActivity)profileActivity).profileOverviewFragment.refreshadapter(((MemberProfileActivity)profileActivity).profileOverviewFragment.getFragmentView());
 

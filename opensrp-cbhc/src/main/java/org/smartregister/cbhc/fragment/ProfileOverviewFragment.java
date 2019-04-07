@@ -1,11 +1,13 @@
 package org.smartregister.cbhc.fragment;
 
+import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.database.Cursor;
 import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v4.widget.CursorAdapter;
 import android.text.TextUtils;
 import android.util.Log;
@@ -72,6 +74,8 @@ public class ProfileOverviewFragment extends BaseProfileFragment {
     public View getFragmentView() {
         return fragmentView;
     }
+    private Handler myHandler;
+    private Activity mActivity;
 
     public static ProfileOverviewFragment newInstance(Bundle bundle) {
         Bundle args = bundle;
@@ -86,6 +90,7 @@ public class ProfileOverviewFragment extends BaseProfileFragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        myHandler = new Handler();
         Bundle extras = this.getActivity().getIntent().getExtras();
         if (extras != null) {
             Serializable serializable = extras.getSerializable(EXTRA_HOUSEHOLD_DETAILS);
@@ -103,21 +108,51 @@ public class ProfileOverviewFragment extends BaseProfileFragment {
     @Override
     protected void onResumption() {
         //Overriden
-        if(fragmentView!=null){
-            refreshadapter(fragmentView);
-        }
+//        if(fragmentView!=null){
+//            myHandler.postDelayed(new Runnable() {
+//                @Override
+//                public void run() {
+//                    refreshadapter();
+//                }
+//            },1000);
+//
+//        }
     }
 
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        mActivity = (Activity)context;
+    }
 
+    @Override
+    public void onAttach(Activity activity) {
+        super.onAttach(activity);
+        mActivity = activity;
+    }
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        mActivity = null;
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
         fragmentView = inflater.inflate(R.layout.fragment_profile_overview, container, false);
-        refreshadapter(fragmentView);
+        refreshadapter();
         return fragmentView;
     }
-    public void refreshadapter(final View view) {
+
+    @Override
+    public void onViewCreated(View view, Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        refreshadapter();
+    }
+
+    public void refreshadapter() {
+        if(fragmentView==null) return;
         (new AsyncTask(){
             ProgressDialog dialog;
             @Override
@@ -179,8 +214,9 @@ public class ProfileOverviewFragment extends BaseProfileFragment {
             @Override
             protected void onPostExecute(Object o) {
                 super.onPostExecute(o);
-                dialog.dismiss();
-                householdList = (ListView)view.findViewById(R.id.household_list);
+                if(mActivity == null) return;
+                if(dialog!=null && dialog.isShowing())dialog.dismiss();
+                householdList = (ListView)fragmentView.findViewById(R.id.household_list);
                 profile_photo.clear();
                 if(o instanceof Cursor){
                     Cursor cursor = (Cursor)o;
@@ -216,7 +252,6 @@ public class ProfileOverviewFragment extends BaseProfileFragment {
     HashMap<String,String>rmap = new HashMap<String,String>();
 
     class HouseholdCursorAdpater extends CursorAdapter {
-        private Context context;
         private LayoutInflater inflater = null;
 
         public HouseholdCursorAdpater(Context context, Cursor c) {
@@ -404,6 +439,7 @@ public class ProfileOverviewFragment extends BaseProfileFragment {
             @Override
             protected void onPostExecute(Object o) {
                 super.onPostExecute(o);
+                if(mActivity == null) return;
                 String gender = "";
                 CommonPersonObjectClient pClient = null;
                 if(o instanceof HashMap){
@@ -421,7 +457,7 @@ public class ProfileOverviewFragment extends BaseProfileFragment {
                             //set profile image by passing the client id.If the image doesn't exist in the image org.smartregister.cbhc.repository then download and save locally
                             profileImageIV.setTag(org.smartregister.R.id.entity_id, pClient.entityId());
                             if(profile_photo.get(pClient.entityId())==null){
-                                d = getResources().getDrawable(R.drawable.child_boy_infant);
+                                d = mActivity.getResources().getDrawable(R.drawable.child_boy_infant);
                                 profile_photo.put(pClient.entityId(),d);
                             }
                             pregnant_icon.setVisibility(View.VISIBLE);
@@ -433,7 +469,7 @@ public class ProfileOverviewFragment extends BaseProfileFragment {
                             //set profile image by passing the client id.If the image doesn't exist in the image org.smartregister.cbhc.repository then download and save locally
                             profileImageIV.setTag(org.smartregister.R.id.entity_id, pClient.entityId());
                             if(profile_photo.get(pClient.entityId())==null){
-                                d = getResources().getDrawable(R.drawable.child_girl_infant);
+                                d = mActivity.getResources().getDrawable(R.drawable.child_girl_infant);
                                 profile_photo.put(pClient.entityId(),d);
                             }
 
@@ -448,7 +484,7 @@ public class ProfileOverviewFragment extends BaseProfileFragment {
                             //set profile image by passing the client id.If the image doesn't exist in the image org.smartregister.cbhc.repository then download and save locally
                             profileImageIV.setTag(org.smartregister.R.id.entity_id, pClient.entityId());
                             if(profile_photo.get(pClient.entityId())==null){
-                                d = getResources().getDrawable(R.drawable.male_cbhc_placeholder);
+                                d = mActivity.getResources().getDrawable(R.drawable.male_cbhc_placeholder);
                                 profile_photo.put(pClient.entityId(),d);
                             }
                             pregnant_icon.setVisibility(View.INVISIBLE);
@@ -459,7 +495,7 @@ public class ProfileOverviewFragment extends BaseProfileFragment {
                             //set profile image by passing the client id.If the image doesn't exist in the image org.smartregister.cbhc.repository then download and save locally
                             profileImageIV.setTag(org.smartregister.R.id.entity_id, pClient.entityId());
                             if(profile_photo.get(pClient.entityId())==null){
-                                d = getResources().getDrawable(R.drawable.women_cbhc_placeholder);
+                                d = mActivity.getResources().getDrawable(R.drawable.women_cbhc_placeholder);
                                 profile_photo.put(pClient.entityId(),d);
                             }
                             clientype = "woman";
@@ -649,6 +685,7 @@ public class ProfileOverviewFragment extends BaseProfileFragment {
     @Override
     public void onDestroy() {
         super.onDestroy();
+        if(myHandler!=null)myHandler.removeCallbacksAndMessages(null);
 //        profile_photo.clear();
     }
 

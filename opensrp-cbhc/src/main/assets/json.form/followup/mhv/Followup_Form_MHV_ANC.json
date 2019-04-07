@@ -78,8 +78,8 @@
         "type":"spinner",
         "hidden":true,
         "hint":"গর্ভের অবস্থা",
-        "values":["এখনো গর্ভবতী ", "গর্ভ নষ্ট হয়েছে ", "MR করেছে " ],
-        "openmrs_choice_ids":{"এখনো গর্ভবতী ":"Still_Pregnant", "গর্ভ নষ্ট হয়েছে ":"Miscarriage", "MR করেছে ":"Did_MR" }
+        "values":["এখনো গর্ভবতী ", "গর্ভ নষ্ট হয়েছে "],
+        "openmrs_choice_ids":{"এখনো গর্ভবতী ":"Still_Pregnant", "গর্ভ নষ্ট হয়েছে ":"Miscarriage" }
 
 
       },

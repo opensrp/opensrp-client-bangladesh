@@ -86,14 +86,9 @@ public class AncJsonFormFragment extends JsonFormFragment {
 
     private Snackbar snackbar = null;
     private AlertDialog alertDialog = null;
-    private boolean lookedUp = false;
+    private boolean lookedUp = true;
     public static String lookuptype = "";
     private ProgressDialog validationProgressdialog;
-
-
-
-
-
 
     AncJsonFormActivity activity;
 
@@ -108,6 +103,17 @@ public class AncJsonFormFragment extends JsonFormFragment {
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         return super.onCreateView(inflater, container, savedInstanceState);
+    }
+
+    @Override
+    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                isPressed = true;
+            }
+        },10000);
     }
 
     @Override
@@ -368,7 +374,7 @@ public class AncJsonFormFragment extends JsonFormFragment {
     private final Listener<HashMap<CommonPersonObject, List<CommonPersonObject>>> motherLookUpListener = new Listener<HashMap<CommonPersonObject, List<CommonPersonObject>>>() {
         @Override
         public void onEvent(HashMap<CommonPersonObject, List<CommonPersonObject>> data) {
-            if (!lookedUp) {
+            if (lookedUp && isPressed) {
                 showMotherLookUp(data);
             }
         }
@@ -516,21 +522,17 @@ public class AncJsonFormFragment extends JsonFormFragment {
 
     @Override
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-        if(position>=0){
             presenter.onItemSelected(parent, view, position, id);
 //        JSONObject currentObject = get
             if(parent instanceof MaterialSpinner) {
                 if (((MaterialSpinner) parent).getFloatingLabelText().toString().equalsIgnoreCase("খানা প্রধানের সাথে সম্পর্ক*")) {
-                    if(isPressed)
                     processHeadOfHouseHoldAsMember(position);
                 }
                 if (((MaterialSpinner) parent).getFloatingLabelText().toString().equalsIgnoreCase("লিঙ্গ*")) {
-                    if(isPressed)
                     processHeadOfHouseHoldRelation(position);
-                    isPressed = true;
                 }
             }
-        }
+
 //        if(countSelect++>20)
 
 
@@ -684,7 +686,7 @@ public class AncJsonFormFragment extends JsonFormFragment {
                 }
             },null);
         }
-        if(position >0){
+        if(position >0 && isPressed){
             ArrayList<View> formdataviews = getJsonApi().getFormDataViews();
 
 
