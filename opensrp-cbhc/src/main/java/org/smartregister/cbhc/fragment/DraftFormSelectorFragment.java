@@ -182,6 +182,13 @@ public class DraftFormSelectorFragment extends DialogFragment implements View.On
 
     }
 
+    @Override
+    public void dismiss() {
+        if(getFragmentManager()!=null){
+            super.dismiss();
+        }
+    }
+
     public void displayShortToast(int resourceId) {
         Utils.showShortToast(context, this.getString(resourceId));
     }

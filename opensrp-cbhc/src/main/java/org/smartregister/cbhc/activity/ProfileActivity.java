@@ -373,7 +373,7 @@ public class ProfileActivity extends BaseProfileActivity implements ProfileContr
             arrayAdapter.add("[+] নতুন সদস্য");
 //            arrayAdapter.add("খানা স্থানান্তর");
 //            arrayAdapter.add("খানা পাওয়া যায়নি");
-            arrayAdapter.add("খাানার অবস্থান");
+            arrayAdapter.add("খানার অবস্থান");
 //            arrayAdapter.add(getString(R.string.call));
 //            arrayAdapter.add(getString(R.string.start_contact));
 //            arrayAdapter.add(getString(R.string.close_anc_record));
@@ -570,6 +570,7 @@ public class ProfileActivity extends BaseProfileActivity implements ProfileContr
 
     @Override
     public void refreshList(FetchStatus fetchStatus) {
+        profileOverviewFragment.refreshadapter();
 
     }
 
