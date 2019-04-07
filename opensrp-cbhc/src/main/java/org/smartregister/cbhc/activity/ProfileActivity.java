@@ -614,7 +614,6 @@ public class ProfileActivity extends BaseProfileActivity implements ProfileContr
                 SQLiteDatabase db = repo.getReadableDatabase();
                 String tables[] = {"ec_household","ec_member","ec_child","ec_woman","ec_household_search","ec_member_search","ec_child_search","ec_woman_search"};
 
-                Cursor cursor = null;
                 try{
 
                 }catch(Exception e){
@@ -622,7 +621,7 @@ public class ProfileActivity extends BaseProfileActivity implements ProfileContr
                 }
                 for(int i=0;i<tables.length;i++) {
                     String sql = "select * from "+tables[i]+" where base_entity_id = '"+entity_id+"';";
-                    cursor = db.rawQuery(sql,new String[]{});
+                    Cursor cursor = db.rawQuery(sql,new String[]{});
                     if(cursor!=null&&cursor.getCount()!=0) {
                         sql = "UPDATE "+tables[i]+" SET date_removed = '01-01-1000' WHERE base_entity_id = '"+entity_id+"';";
                         db.execSQL(sql);

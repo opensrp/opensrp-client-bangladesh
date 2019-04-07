@@ -40,13 +40,7 @@
               "ec_woman"
             ]
           },
-          {
-            "field": "eventType",
-            "field_value": "Followup HH Transfer",
-            "creates_case": [
-              "ec_household"
-            ]
-          },
+
           {
             "field": "eventType",
             "field_value": "Member Registration",
@@ -105,14 +99,7 @@
             ]
           },
 
-          {
-            "field": "eventType",
-            "field_value": "Followup Member Transfer",
-            "creates_case": [
-              "ec_child"
-            ]
-          },
-          {
+         {
             "field": "eventType",
             "field_value": "Followup Disease Toddler",
             "creates_case": [
