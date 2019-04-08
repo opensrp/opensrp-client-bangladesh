@@ -228,7 +228,7 @@ public class ProfileActivity extends BaseProfileActivity implements ProfileContr
                 intent.putExtra(Constants.INTENT_KEY.BASE_ENTITY_ID, memberclient.getCaseId());
                 intent.putExtra(ProfileOverviewFragment.EXTRA_HOUSEHOLD_DETAILS,memberclient);
                 intent.putExtra("type_of_member",clienttype);
-                startActivity(intent);
+                startActivityForResult(intent,1002);
                 break;
             case R.id.total_birth_btn:
                 CommonPersonObjectClient pClient  = (CommonPersonObjectClient) view.getTag(R.id.clientformemberprofile);
@@ -250,7 +250,11 @@ public class ProfileActivity extends BaseProfileActivity implements ProfileContr
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
           super.onActivityResult(requestCode, resultCode, data);
         motherNameEnglish="";
-        if (requestCode == JsonFormUtils.REQUEST_CODE_GET_JSON && resultCode == RESULT_OK) {
+        if(requestCode == 1002){
+            refreshList(null);
+            refreshProfileViews();
+        }
+        else if (requestCode == JsonFormUtils.REQUEST_CODE_GET_JSON && resultCode == RESULT_OK) {
             try {
                 String jsonString = data.getStringExtra("json");
                 final JSONObject form = new JSONObject(jsonString);
@@ -614,7 +618,6 @@ public class ProfileActivity extends BaseProfileActivity implements ProfileContr
                 SQLiteDatabase db = repo.getReadableDatabase();
                 String tables[] = {"ec_household","ec_member","ec_child","ec_woman","ec_household_search","ec_member_search","ec_child_search","ec_woman_search"};
 
-                Cursor cursor = null;
                 try{
 
                 }catch(Exception e){
@@ -622,7 +625,7 @@ public class ProfileActivity extends BaseProfileActivity implements ProfileContr
                 }
                 for(int i=0;i<tables.length;i++) {
                     String sql = "select * from "+tables[i]+" where base_entity_id = '"+entity_id+"';";
-                    cursor = db.rawQuery(sql,new String[]{});
+                    Cursor cursor = db.rawQuery(sql,new String[]{});
                     if(cursor!=null&&cursor.getCount()!=0) {
                         sql = "UPDATE "+tables[i]+" SET date_removed = '01-01-1000' WHERE base_entity_id = '"+entity_id+"';";
                         db.execSQL(sql);
