@@ -183,8 +183,11 @@ public class RegisterPresenter implements RegisterContract.Presenter, RegisterCo
     }
     @Override
     public void onRegistrationSaved(boolean isEdit) {
-        getView().refreshList(FetchStatus.fetched);
-        getView().hideProgressDialog();
+        if(getView()!=null){
+            getView().refreshList(FetchStatus.fetched);
+            getView().hideProgressDialog();
+        }
+
     }
 
     @Override

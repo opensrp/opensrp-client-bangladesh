@@ -124,6 +124,7 @@ public class DraftFormSelectorFragment extends DialogFragment implements View.On
         new Handler().post(new Runnable() {
             @Override
             public void run() {
+                if(getDialog()!=null)
                 getDialog().getWindow().setLayout(FrameLayout.LayoutParams.MATCH_PARENT, FrameLayout.LayoutParams.WRAP_CONTENT);
 
             }

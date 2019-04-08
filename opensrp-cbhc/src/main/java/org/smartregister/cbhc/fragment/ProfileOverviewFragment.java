@@ -174,31 +174,31 @@ public class ProfileOverviewFragment extends BaseProfileFragment {
                 String childtableName = DBConstants.CHILD_TABLE_NAME;
                 String membertablename = DBConstants.MEMBER_TABLE_NAME;
 
-                SmartRegisterQueryBuilder queryBUilder = new SmartRegisterQueryBuilder();
-                queryBUilder.SelectInitiateMainTable(tableName, new String[]{
-                        tableName + ".relationalid",
-                        tableName + ".details",
-                        tableName + ".first_name",
-                        tableName + "." + DBConstants.KEY.LAST_NAME,
-                        tableName + ".dob"
-                });
-                String currentquery = queryBUilder.mainCondition("relational_id = '"+mother_id+"'").concat(" Union all ");
-                SmartRegisterQueryBuilder queryBUilder2 = new SmartRegisterQueryBuilder();
-                queryBUilder2.SelectInitiateMainTable(membertablename, new String[]{
-                        membertablename + ".relationalid",
-                        membertablename + ".details",
-                        membertablename + ".first_name",
-                        membertablename + "." + DBConstants.KEY.LAST_NAME,
-                        membertablename + ".dob"
-                });
-                currentquery = currentquery.concat(queryBUilder2.mainCondition("relational_id = '"+mother_id+"'").concat(" Union all "));
-                queryBUilder.SelectInitiateMainTable(childtableName, new String[]{
-                        childtableName + ".relationalid",
-                        childtableName + ".details",
-                        childtableName + ".first_name",
-                        childtableName + "." + DBConstants.KEY.LAST_NAME,
-                        childtableName + ".dob"
-                });
+//                SmartRegisterQueryBuilder queryBUilder = new SmartRegisterQueryBuilder();
+//                queryBUilder.SelectInitiateMainTable(tableName, new String[]{
+//                        tableName + ".relationalid",
+//                        tableName + ".details",
+//                        tableName + ".first_name",
+//                        tableName + "." + DBConstants.KEY.LAST_NAME,
+//                        tableName + ".dob"
+//                });
+//                String currentquery = queryBUilder.mainCondition("relational_id = '"+mother_id+"'").concat(" Union all ");
+//                SmartRegisterQueryBuilder queryBUilder2 = new SmartRegisterQueryBuilder();
+//                queryBUilder2.SelectInitiateMainTable(membertablename, new String[]{
+//                        membertablename + ".relationalid",
+//                        membertablename + ".details",
+//                        membertablename + ".first_name",
+//                        membertablename + "." + DBConstants.KEY.LAST_NAME,
+//                        membertablename + ".dob"
+//                });
+//                currentquery = currentquery.concat(queryBUilder2.mainCondition("relational_id = '"+mother_id+"'").concat(" Union all "));
+//                queryBUilder.SelectInitiateMainTable(childtableName, new String[]{
+//                        childtableName + ".relationalid",
+//                        childtableName + ".details",
+//                        childtableName + ".first_name",
+//                        childtableName + "." + DBConstants.KEY.LAST_NAME,
+//                        childtableName + ".dob"
+//                });
 
 //        cursor = db.rawQuery(currentquery.concat(queryBUilder.mainCondition("relational_id = ?")),new String[]{mother_id});
                 String rawQuery = queryfortheadapterthing(mother_id);
