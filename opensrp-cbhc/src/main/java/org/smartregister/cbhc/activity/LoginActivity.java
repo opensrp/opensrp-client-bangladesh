@@ -232,7 +232,8 @@ public class LoginActivity extends AppCompatActivity implements LoginContract.Vi
                 String password = passwordEditText.getText().toString();
 //                username = "testmhv2";
 //                username = "maxii";
-//                password = "123456";
+                username = "teliya1@cc.com";
+                password = "123456";
 //                AncRepository repo = (AncRepository) AncApplication.getInstance().getRepository();
 //                SQLiteDatabase db = repo.getReadableDatabase();
 //                Cursor cursor = db.rawQuery("sql",new String[]{});

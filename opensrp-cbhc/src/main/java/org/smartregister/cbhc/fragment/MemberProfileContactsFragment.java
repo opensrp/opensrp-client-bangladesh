@@ -156,7 +156,8 @@ public class MemberProfileContactsFragment extends BaseProfileFragment {
                 "spouseName_bengali","contact_phone_number_by_age",
                 "educational_qualification_by_age","occupation_by_age","pregnant_status","lmp_date","Delivery_date","family_planning","risky_habits",
         "Professional technical professionals","Semi-skilled labor service","Unskilled labor","Factory worker, blue collar service","Home based manufacturing",
-        "Business","Domestic Servant"};
+        "Business","Domestic Servant","member_NID","member_BRID","Citizen_Card_number","member_f_name_bengali","Mother_Guardian_First_Name_bengali","Father_Guardian_First_Name_bengali",
+        "spouseName_bengali","disability_type","Occupation_Category"};
         return ArrayUtils.contains(keys,KEY)&&VALUE.isEmpty();
 
     }

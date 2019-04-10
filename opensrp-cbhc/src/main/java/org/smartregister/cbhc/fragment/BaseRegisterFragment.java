@@ -152,7 +152,7 @@ public abstract class BaseRegisterFragment extends RecyclerViewFragment implemen
             }
         };
     }
-TextView unsyncView;
+    TextView unsyncView;
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {

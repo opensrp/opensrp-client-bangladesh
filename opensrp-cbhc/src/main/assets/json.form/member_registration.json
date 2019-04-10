@@ -715,8 +715,8 @@
           "err": "Number must begin with 095, 096, or 097 and must be a total of 11 digits in length"
         },
         "v_regex": {
-          "value": "0|(01[3-9][0-9]{8})|\s*",
-          "err": "Number must begin with 013, 015, 016,017,018 or 019 and must be a total of 11 digits in length"
+          "value": "0|(01[0-9][0-9]{8})|\s*",
+          "err": "Number must begin with 011, 012, 013, 014, 015, 016,017,018 or 019 and must be a total of 11 digits in length"
         },
         "v_max_length": {
           "value": "11",

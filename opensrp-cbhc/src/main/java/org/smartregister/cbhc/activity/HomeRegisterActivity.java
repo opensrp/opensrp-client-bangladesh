@@ -2,6 +2,11 @@ package org.smartregister.cbhc.activity;
 
 import android.app.FragmentTransaction;
 import android.content.DialogInterface;
+import android.content.Intent;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
+import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.util.Log;
@@ -25,6 +30,11 @@ import org.smartregister.cbhc.util.DBConstants;
 import org.smartregister.commonregistry.CommonPersonObjectClient;
 import org.smartregister.configurableviews.model.Field;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.Arrays;
 import java.util.List;
 
@@ -192,5 +202,66 @@ public class HomeRegisterActivity extends BaseRegisterActivity {
                     }
                 });
         alertDialog.show();
+    }
+
+    public void app_version_status(){
+        org.smartregister.util.Utils.startAsyncTask(new AsyncTask() {
+            String version_code = "";
+            @Override
+            protected Object doInBackground(Object[] objects) {
+                try {
+                    // Create a URL for the desired page
+                    URL url = new URL("http://192.168.22.152:8080/opt/multimedia/app-version.txt");
+
+                    // Read all the text returned by the server
+                    BufferedReader in = new BufferedReader(new InputStreamReader(url.openStream()));
+                    String str;
+                    str = "";
+                    while ((str = in.readLine()) != null) {
+                        // str is one line of text; readLine() strips the newline character(s)
+                        version_code +=str;
+                    }
+                    in.close();
+                } catch (MalformedURLException e) {
+                } catch (IOException e) {
+                }
+                return null;
+            }
+
+            @Override
+            protected void onPostExecute(Object o) {
+                super.onPostExecute(o);
+                try {
+                    PackageInfo pInfo = HomeRegisterActivity.this.getPackageManager().getPackageInfo(getPackageName(), 0);
+                    String version = pInfo.versionName;
+                    if(!version.equalsIgnoreCase(version_code.trim())){
+                        android.support.v7.app.AlertDialog alertDialog = new android.support.v7.app.AlertDialog.Builder(HomeRegisterActivity.this).create();
+                        alertDialog.setTitle("New version available");
+                        alertDialog.setCanceledOnTouchOutside(false);
+
+                        alertDialog.setButton(android.support.v7.app.AlertDialog.BUTTON_POSITIVE, "UPDATE",
+                                new DialogInterface.OnClickListener() {
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        try{
+                                            final String appPackageName = getPackageName(); // getPackageName() from Context or Activity object
+                                            try {
+                                                startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=" + appPackageName)));
+                                            } catch (android.content.ActivityNotFoundException anfe) {
+                                                startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/apps/details?id=" + appPackageName)));
+                                            }
+
+
+                                        }catch(Exception e){
+                                            e.printStackTrace();
+                                        }
+                                    }
+                                });
+                        alertDialog.show();
+                    }
+                } catch (PackageManager.NameNotFoundException e) {
+                    e.printStackTrace();
+                }
+            }
+        },null);
     }
 }
