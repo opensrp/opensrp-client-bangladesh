@@ -12,7 +12,11 @@ import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.graphics.drawable.ColorDrawable;
+import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
+import android.preference.Preference;
+import android.preference.PreferenceFragment;
 import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.text.method.HideReturnsTransformationMethod;
@@ -46,9 +50,13 @@ import org.smartregister.commonregistry.CommonRepository;
 import org.smartregister.repository.AllSharedPreferences;
 import org.smartregister.util.Utils;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.net.MalformedURLException;
 import java.net.URL;
 
+import static org.smartregister.AllConstants.DRISHTI_BASE_URL;
 import static org.smartregister.util.Log.logError;
 import static org.smartregister.util.Log.logInfo;
 
@@ -77,7 +85,16 @@ public class LoginActivity extends AppCompatActivity implements LoginContract.Vi
         mLoginPresenter = new LoginPresenter(this);
         mLoginPresenter.setLanguage();
         setupViews(mLoginPresenter);
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
+        AllSharedPreferences allSharedPreferences = new AllSharedPreferences(preferences);
+        if (!allSharedPreferences.fetchBaseURL("").isEmpty()) {
+            allSharedPreferences.updateUrl(getString(R.string.opensrp_url));
+            preferences.edit().putString(DRISHTI_BASE_URL, getString(R.string.opensrp_url)).apply();
 
+        }
+
+
+        app_version_status();
 
 
 
@@ -222,7 +239,6 @@ public class LoginActivity extends AppCompatActivity implements LoginContract.Vi
         }
         return false;
     }
-
     @Override
     public void onClick(View v) {
 
@@ -232,8 +248,8 @@ public class LoginActivity extends AppCompatActivity implements LoginContract.Vi
                 String password = passwordEditText.getText().toString();
 //                username = "testmhv2";
 //                username = "maxii";
-                username = "teliya1@cc.com";
-                password = "123456";
+//                username = "teliya1@cc.com";
+//                password = "123456";
 //                AncRepository repo = (AncRepository) AncApplication.getInstance().getRepository();
 //                SQLiteDatabase db = repo.getReadableDatabase();
 //                Cursor cursor = db.rawQuery("sql",new String[]{});
@@ -289,6 +305,66 @@ public class LoginActivity extends AppCompatActivity implements LoginContract.Vi
         return this;
 
     }
+    public void app_version_status(){
+        org.smartregister.util.Utils.startAsyncTask(new AsyncTask() {
+            String version_code = "";
+            String version = "";
+            @Override
+            protected Object doInBackground(Object[] objects) {
+                try {
+                    // Create a URL for the desired page
+                    URL url = new URL("http://192.168.22.152:8080/opt/multimedia/app-version.txt");
 
+                    // Read all the text returned by the server
+                    BufferedReader in = new BufferedReader(new InputStreamReader(url.openStream()));
+                    String str;
+                    str = "";
+                    while ((str = in.readLine()) != null) {
+                        // str is one line of text; readLine() strips the newline character(s)
+                        version_code +=str;
+                    }
+                    in.close();
+                } catch (MalformedURLException e) {
+                } catch (IOException e) {
+                }
+                return null;
+            }
+
+            @Override
+            protected void onPostExecute(Object o) {
+                super.onPostExecute(o);
+                try {
+                    PackageInfo pInfo = LoginActivity.this.getPackageManager().getPackageInfo(getPackageName(), 0);
+                    version = pInfo.versionName;
+                    if(!version.equalsIgnoreCase(version_code.trim())){
+                        android.support.v7.app.AlertDialog alertDialog = new android.support.v7.app.AlertDialog.Builder(LoginActivity.this).create();
+                        alertDialog.setTitle("New version available");
+                        alertDialog.setCanceledOnTouchOutside(true);
+
+                        alertDialog.setButton(android.support.v7.app.AlertDialog.BUTTON_POSITIVE, "UPDATE",
+                                new DialogInterface.OnClickListener() {
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        try{
+                                            final String appPackageName = getPackageName(); // getPackageName() from Context or Activity object
+                                            try {
+                                                startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=" + appPackageName)));
+                                            } catch (android.content.ActivityNotFoundException anfe) {
+                                                startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/apps/details?id=" + appPackageName)));
+                                            }
+
+
+                                        }catch(Exception e){
+                                            e.printStackTrace();
+                                        }
+                                    }
+                                });
+                        alertDialog.show();
+                    }
+                } catch (PackageManager.NameNotFoundException e) {
+                    e.printStackTrace();
+                }
+            }
+        },null);
+    }
 
 }

@@ -2,6 +2,7 @@ package org.smartregister.cbhc.fragment;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,6 +11,7 @@ import android.widget.TextView;
 
 import org.apache.commons.lang3.ArrayUtils;
 import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 import org.smartregister.cbhc.R;
 import org.smartregister.cbhc.application.AncApplication;
@@ -20,6 +22,8 @@ import org.smartregister.util.FormUtils;
 import org.smartregister.view.customcontrols.CustomFontTextView;
 
 import java.io.Serializable;
+import java.util.HashMap;
+import java.util.Map;
 
 import static org.smartregister.cbhc.fragment.ProfileContactsFragment.processPopulatableFieldsForHouseholds;
 import static org.smartregister.cbhc.fragment.ProfileOverviewFragment.EXTRA_HOUSEHOLD_DETAILS;
@@ -85,6 +89,50 @@ public class MemberProfileContactsFragment extends BaseProfileFragment {
         linearLayoutholder.removeAllViews();
         setupView();
     }
+    public void processCheckboxValues(Map<String, String> womanClient, JSONArray field){
+
+        for(int i=0;i<field.length();i++){
+            try {
+                JSONObject object = field.getJSONObject(i);
+                if(object.has("type")&&object.getString("type").equals("check_box")){
+                    String key = object.getString("key");
+                    String openmrs_id = object.getString("openmrs_entity_id");
+                    String value = "";
+                    if(womanClient.get(key)!=null){
+                        value = womanClient.get(key);
+                    }else if(womanClient.get(openmrs_id)!=null){
+                        value = womanClient.get(openmrs_id);
+                    }
+                    String vals [] = value.split(",");
+                    HashMap<String,String>options_map = new HashMap<String,String>();
+                    JSONArray options = object.getJSONArray("options");
+                    if(options!=null){
+                        for(int k = 0;k<options.length();k++){
+                            JSONObject option_object = options.getJSONObject(k);
+                            options_map.put(option_object.getString("key"),option_object.getString("text"));
+                        }
+                    }
+                    String val = "";
+                    if(!ArrayUtils.isEmpty(vals)){
+                        for(int k = 0;k<vals.length;k++){
+                            val = val + options_map.get(vals[k]) + ",";
+                        }
+                    }
+                    value = val;
+                    if(value.endsWith(",")){
+                        value = value.substring(0,value.length()-1);
+                    }
+                    if(value.equalsIgnoreCase("null")){
+                        value = "";
+                    }
+                    object.put("value",value);
+                }
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+
+        }
+    }
 
     public void setupView() {
         LinearLayout linearLayoutholder = (LinearLayout)fragmentView.findViewById(R.id.profile_overview_details_holder);
@@ -95,8 +143,10 @@ public class MemberProfileContactsFragment extends BaseProfileFragment {
             for(int i=0;i<field.length();i++){
                 processPopulatableFieldsForHouseholds(householdDetails.getColumnmaps(),field.getJSONObject(i));
             }
+            processCheckboxValues(householdDetails.getColumnmaps(),field);
+
             for(int i = 0;i<field.length();i++) {
-                if(field.getJSONObject(i).has("hint")) {
+                if(field.getJSONObject(i).has("hint")||field.getJSONObject(i).has("label")) {
                     inflater = (LayoutInflater) getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
                     View view = inflater.inflate(R.layout.overview_list_row, null, false);
                     LinearLayout LayoutForDetailRow = (LinearLayout)view;
@@ -104,12 +154,18 @@ public class MemberProfileContactsFragment extends BaseProfileFragment {
 //                    LayoutForDetailRow.setOrientation(LinearLayout.HORIZONTAL);
                     TextView textLabel = (TextView)LayoutForDetailRow.findViewById(R.id.label);
                     TextView textValue = (TextView)LayoutForDetailRow.findViewById(R.id.value);
-
+textValue.setGravity(Gravity.LEFT);
 //                    CustomFontTextView textLabel = new CustomFontTextView(getActivity());
                     textLabel.setTextSize(15);
 //                    CustomFontTextView textValue = new CustomFontTextView(getActivity());
                     textValue.setTextSize(15);
-                    String hint = field.getJSONObject(i).getString("hint");
+                    String hint = "";
+                    if(field.getJSONObject(i).has("hint")){
+                        hint = field.getJSONObject(i).getString("hint");
+                    }else if(field.getJSONObject(i).has("label")){
+                        hint = field.getJSONObject(i).getString("label");
+                    }
+
                     textLabel.setText(hint);
                     textLabel.setSingleLine(false);
                     String VALUE = "";
@@ -157,7 +213,7 @@ public class MemberProfileContactsFragment extends BaseProfileFragment {
                 "educational_qualification_by_age","occupation_by_age","pregnant_status","lmp_date","Delivery_date","family_planning","risky_habits",
         "Professional technical professionals","Semi-skilled labor service","Unskilled labor","Factory worker, blue collar service","Home based manufacturing",
         "Business","Domestic Servant","member_NID","member_BRID","Citizen_Card_number","member_f_name_bengali","Mother_Guardian_First_Name_bengali","Father_Guardian_First_Name_bengali",
-        "spouseName_bengali","disability_type","Occupation_Category"};
+        "spouseName_bengali","disability_type","Occupation_Category","Disease_Type","Communicable Disease","Non Communicable Disease","Disease_status_zero_to_two_month_by_age","Disease_status_two_month_to_five_year_by_age"};
         return ArrayUtils.contains(keys,KEY)&&VALUE.isEmpty();
 
     }
