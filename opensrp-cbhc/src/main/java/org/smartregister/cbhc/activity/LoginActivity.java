@@ -87,6 +87,7 @@ public class LoginActivity extends AppCompatActivity implements LoginContract.Vi
         setupViews(mLoginPresenter);
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
         AllSharedPreferences allSharedPreferences = new AllSharedPreferences(preferences);
+
         if (!allSharedPreferences.fetchBaseURL("").isEmpty()) {
             allSharedPreferences.updateUrl(getString(R.string.opensrp_url));
             preferences.edit().putString(DRISHTI_BASE_URL, getString(R.string.opensrp_url)).apply();
