@@ -117,6 +117,7 @@ public abstract class BaseRegisterFragment extends RecyclerViewFragment implemen
         @Override
         public void afterTextChanged(Editable editable) {
             //Overriden Do something after Text Changed
+            setTotalPatients();
         }
     };
 
@@ -374,6 +375,7 @@ public abstract class BaseRegisterFragment extends RecyclerViewFragment implemen
         this.registerCondition = "";
         presenter.initializeQueries(getMainCondition());
         filter(this.filters,this.joinTable,this.mainCondition,false);
+        setTotalPatients();
     }
 
     public void updateSortAndFilter(List<Field> filterList, Field sortField) {
@@ -386,6 +388,7 @@ public abstract class BaseRegisterFragment extends RecyclerViewFragment implemen
         }
         this.Sortqueries = sortField.getDbAlias();
         filter(this.filters,this.joinTable,this.mainCondition,false);
+        setTotalPatients();
     }
 
     @Override

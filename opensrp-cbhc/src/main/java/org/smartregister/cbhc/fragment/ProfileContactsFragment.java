@@ -285,7 +285,33 @@ public class ProfileContactsFragment extends BaseProfileFragment {
             optionsObject.put(JsonFormUtils.VALUE, womanClient.get(DBConstants.KEY.DOB_UNKNOWN));
 
         }
-
+        else if(jsonObject.getString(JsonFormUtils.KEY).equalsIgnoreCase("member_birth_date")){
+            String mamber_dob = womanClient.get("dob");
+            if(mamber_dob!=null&&!mamber_dob.isEmpty()){
+                if(mamber_dob.contains("T")){
+                    mamber_dob = mamber_dob.substring(0,mamber_dob.indexOf("T"));
+                    jsonObject.put(JsonFormUtils.VALUE,mamber_dob);
+                }
+            }
+        }
+        else if(jsonObject.getString(JsonFormUtils.KEY).equalsIgnoreCase("lmp_date")){
+            String lmp_date = womanClient.get("LMP");
+            if(lmp_date!=null&&!lmp_date.isEmpty()){
+                if(lmp_date.contains("T")){
+                    lmp_date = lmp_date.substring(0,lmp_date.indexOf("T"));
+                    jsonObject.put(JsonFormUtils.VALUE,lmp_date);
+                }
+            }
+        }
+        else if(jsonObject.getString(JsonFormUtils.KEY).equalsIgnoreCase("Delivery_date")){
+            String delivery_date = womanClient.get("delivery_date");
+            if(delivery_date!=null&&!delivery_date.isEmpty()){
+                if(delivery_date.contains("T")){
+                    delivery_date = delivery_date.substring(0,delivery_date.indexOf("T"));
+                    jsonObject.put(JsonFormUtils.VALUE,delivery_date);
+                }
+            }
+        }
         else if (jsonObject.getString(JsonFormUtils.KEY).equalsIgnoreCase(DBConstants.KEY.AGE)) {
 
             jsonObject.put(JsonFormUtils.READ_ONLY, false);

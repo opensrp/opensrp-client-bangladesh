@@ -83,11 +83,7 @@ public class AncApplication extends DrishtiApplication implements TimeChangedBro
     public void onCreate() {
 
         super.onCreate();
-        if(getSharedPreferences().fetchBaseURL("").isEmpty()){
 
-            updateUrl(getString(R.string.opensrp_url));
-        }
-//        DrishtiApplication.getInstance().setPassword(getPassword());
         mInstance = this;
         context = Context.getInstance();
         context.updateApplicationContext(getApplicationContext());
@@ -139,29 +135,7 @@ public class AncApplication extends DrishtiApplication implements TimeChangedBro
         return allSharedPreferences;
     }
 
-    private void updateUrl(String baseUrl) {
-        try {
-            SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
-            AllSharedPreferences allSharedPreferences = new AllSharedPreferences(preferences);
 
-            URL url = new URL(baseUrl);
-
-            String base = url.getProtocol() + "://" + url.getHost();
-            int port = url.getPort();
-
-            logInfo("Base URL: " + base);
-            logInfo("Port: " + port);
-
-            allSharedPreferences.saveHost(base);
-            allSharedPreferences.savePort(port);
-
-            logInfo("Saved URL: " + allSharedPreferences.fetchHost(""));
-            logInfo("Port: " + allSharedPreferences.fetchPort(0));
-
-        } catch (MalformedURLException e) {
-            logError("Malformed Url: " + baseUrl);
-        }
-    }
 
     public void initOfflineSchedules() {
         try {

@@ -133,6 +133,23 @@ public class MemberProfileContactsFragment extends BaseProfileFragment {
 
         }
     }
+    public void setPregnantStatus(Map<String,String>clientmap){
+        String pregnant_status = clientmap.get("PregnancyStatus");
+        if(pregnant_status == null || (pregnant_status!=null&&pregnant_status.isEmpty())){
+            clientmap.put("LMP","");
+            clientmap.put("delivery_date","");
+        }else{
+            if(pregnant_status.equalsIgnoreCase("প্রসব পূর্ব")||pregnant_status.equalsIgnoreCase("Antenatal Period")){
+                clientmap.put("delivery_date","");
+                clientmap.put("familyplanning","");
+            }else if(pregnant_status.equalsIgnoreCase("প্রসবোত্তর")||pregnant_status.equalsIgnoreCase("Postnatal")){
+                clientmap.put("LMP","");
+            }else{
+                clientmap.put("LMP","");
+                clientmap.put("delivery_date","");
+            }
+        }
+    }
 
     public void setupView() {
         LinearLayout linearLayoutholder = (LinearLayout)fragmentView.findViewById(R.id.profile_overview_details_holder);
@@ -140,6 +157,7 @@ public class MemberProfileContactsFragment extends BaseProfileFragment {
         try {
             JSONObject form = FormUtils.getInstance(AncApplication.getInstance().getApplicationContext()).getFormJson(Constants.JSON_FORM.MEMBER_REGISTER);
             JSONArray field = fields(form);
+            setPregnantStatus(householdDetails.getColumnmaps());
             for(int i=0;i<field.length();i++){
                 processPopulatableFieldsForHouseholds(householdDetails.getColumnmaps(),field.getJSONObject(i));
             }
@@ -154,7 +172,7 @@ public class MemberProfileContactsFragment extends BaseProfileFragment {
 //                    LayoutForDetailRow.setOrientation(LinearLayout.HORIZONTAL);
                     TextView textLabel = (TextView)LayoutForDetailRow.findViewById(R.id.label);
                     TextView textValue = (TextView)LayoutForDetailRow.findViewById(R.id.value);
-textValue.setGravity(Gravity.LEFT);
+                    textValue.setGravity(Gravity.LEFT);
 //                    CustomFontTextView textLabel = new CustomFontTextView(getActivity());
                     textLabel.setTextSize(15);
 //                    CustomFontTextView textValue = new CustomFontTextView(getActivity());
@@ -213,7 +231,8 @@ textValue.setGravity(Gravity.LEFT);
                 "educational_qualification_by_age","occupation_by_age","pregnant_status","lmp_date","Delivery_date","family_planning","risky_habits",
         "Professional technical professionals","Semi-skilled labor service","Unskilled labor","Factory worker, blue collar service","Home based manufacturing",
         "Business","Domestic Servant","member_NID","member_BRID","Citizen_Card_number","member_f_name_bengali","Mother_Guardian_First_Name_bengali","Father_Guardian_First_Name_bengali",
-        "spouseName_bengali","disability_type","Occupation_Category","Disease_Type","Communicable Disease","Non Communicable Disease","Disease_status_zero_to_two_month_by_age","Disease_status_two_month_to_five_year_by_age"};
+        "spouseName_bengali","disability_type","Occupation_Category","Disease_Type","Communicable Disease","Non Communicable Disease",
+                "Disease_status_zero_to_two_month_by_age","Disease_status_two_month_to_five_year_by_age","comments"};
         return ArrayUtils.contains(keys,KEY)&&VALUE.isEmpty();
 
     }

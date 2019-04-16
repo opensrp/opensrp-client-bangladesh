@@ -970,7 +970,7 @@ public class JsonFormUtils extends org.smartregister.util.JsonFormUtils {
 
         if ((jsonObject.getString(JsonFormUtils.KEY).equalsIgnoreCase("lmp_date"))) {
 
-            String dobString = womanClient.get("lmp_date");
+            String dobString = womanClient.get("LMP");
             Date dob = Utils.dobStringToDate(dobString);
             if (dob != null) {
                 jsonObject.put(JsonFormUtils.VALUE, DATE_FORMAT.format(dob));
@@ -979,7 +979,7 @@ public class JsonFormUtils extends org.smartregister.util.JsonFormUtils {
         }
         else if ((jsonObject.getString(JsonFormUtils.KEY).equalsIgnoreCase("Delivery_date"))) {
 
-            String dobString = womanClient.get("Delivery_date");
+            String dobString = womanClient.get("delivery_date");
             Date dob = Utils.dobStringToDate(dobString);
             if (dob != null) {
                 jsonObject.put(JsonFormUtils.VALUE, DATE_FORMAT.format(dob));

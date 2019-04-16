@@ -555,8 +555,6 @@
           "তৃতীয় লিঙ্গ":"O"
         }
       },
-
-
       {
         "key":"Child_birth_weight",
         "openmrs_entity_parent":"",
