@@ -36,6 +36,8 @@ import org.smartregister.util.FormUtils;
 import org.smartregister.view.customcontrols.CustomFontTextView;
 
 import java.io.Serializable;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -236,7 +238,8 @@ public class ProfileContactsFragment extends BaseProfileFragment {
         }
         return value;
     }
-
+    public static Date date_of_birth = new Date();
+    public static int age = 0;
     public static void processPopulatableFieldsForHouseholds(Map<String, String> womanClient, JSONObject jsonObject) throws JSONException {
 
 
@@ -291,6 +294,12 @@ public class ProfileContactsFragment extends BaseProfileFragment {
                 if(mamber_dob.contains("T")){
                     mamber_dob = mamber_dob.substring(0,mamber_dob.indexOf("T"));
                     jsonObject.put(JsonFormUtils.VALUE,mamber_dob);
+                    SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
+                    try {
+                        date_of_birth = sdf.parse(mamber_dob);
+                    } catch (ParseException e) {
+                        e.printStackTrace();
+                    }
                 }
             }
         }
@@ -315,7 +324,7 @@ public class ProfileContactsFragment extends BaseProfileFragment {
         else if (jsonObject.getString(JsonFormUtils.KEY).equalsIgnoreCase(DBConstants.KEY.AGE)) {
 
             jsonObject.put(JsonFormUtils.READ_ONLY, false);
-            jsonObject.put(JsonFormUtils.VALUE, Utils.getAgeFromDate(womanClient.get(DBConstants.KEY.DOB)));
+            jsonObject.put(JsonFormUtils.VALUE, age = Utils.getAgeFromDate(womanClient.get(DBConstants.KEY.DOB)));
 
         }
         else if (jsonObject.getString(JsonFormUtils.KEY).equalsIgnoreCase(DBConstants.KEY.ANC_ID)) {

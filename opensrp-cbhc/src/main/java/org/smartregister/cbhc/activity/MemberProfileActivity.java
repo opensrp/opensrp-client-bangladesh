@@ -212,8 +212,8 @@ public class MemberProfileActivity extends BaseProfileActivity implements Profil
         org.smartregister.util.Utils.startAsyncTask(new AsyncTask() {
 
 
-            String lmp_date;
-            String delivery_status;
+            String lmp_date = "";
+            String delivery_status = "";
             @Override
             protected Object doInBackground(Object[] objects) {
                 AncRepository repo = (AncRepository) AncApplication.getInstance().getRepository();

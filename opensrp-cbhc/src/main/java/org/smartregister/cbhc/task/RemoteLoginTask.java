@@ -53,6 +53,7 @@ public class RemoteLoginTask extends AsyncTask<Void, Void, LoginResponse> {
         super.onPostExecute(loginResponse);
 
         mLoginView.showProgress(false);
+        if(loginResponse!=null)
         afterLoginCheck.onEvent(loginResponse);
     }
 

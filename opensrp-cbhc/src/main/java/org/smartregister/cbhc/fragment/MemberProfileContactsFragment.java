@@ -10,6 +10,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import org.apache.commons.lang3.ArrayUtils;
+import org.joda.time.Days;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -27,6 +28,7 @@ import java.io.Serializable;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.TimeUnit;
 
 import static org.smartregister.cbhc.fragment.ProfileContactsFragment.processPopulatableFieldsForHouseholds;
 import static org.smartregister.cbhc.fragment.ProfileOverviewFragment.EXTRA_HOUSEHOLD_DETAILS;
@@ -122,11 +124,37 @@ public class MemberProfileContactsFragment extends BaseProfileFragment {
                         }
                     }
                     value = val;
+
                     if(value.endsWith(",")){
                         value = value.substring(0,value.length()-1);
                     }
                     if(value.equalsIgnoreCase("null")){
                         value = "";
+                    }
+                    long days = -1;
+                    if(ProfileContactsFragment.date_of_birth!=null){
+                        long diff = ProfileContactsFragment.date_of_birth.getTime() - new Date().getTime();
+                        days = TimeUnit.DAYS.convert(diff, TimeUnit.MILLISECONDS);
+                    }
+
+                    if(ProfileContactsFragment.age>=5){
+                        if(key.equalsIgnoreCase("Disease_status_zero_to_two_month_by_age")||key.equalsIgnoreCase("Disease_status_two_month_to_five_year_by_age")){
+                            value = "";
+                        }
+                    }else if((ProfileContactsFragment.age>=1&&ProfileContactsFragment.age<5)||(days>=62&&days<1826)){
+                        if(key.equalsIgnoreCase("Disease_status_zero_to_two_month_by_age")||
+                                key.equalsIgnoreCase("Non Communicable Disease")||
+                                key.equalsIgnoreCase("Communicable Disease")||
+                                key.equalsIgnoreCase("Disease_Type")){
+                            value = "";
+                        }
+                    }else{
+                        if(key.equalsIgnoreCase("Disease_status_two_month_to_five_year_by_age")||
+                                key.equalsIgnoreCase("Non Communicable Disease")||
+                                key.equalsIgnoreCase("Communicable Disease")||
+                                key.equalsIgnoreCase("Disease_Type")){
+                            value = "";
+                        }
                     }
                     object.put("value",value);
                 }
@@ -161,12 +189,15 @@ public class MemberProfileContactsFragment extends BaseProfileFragment {
             JSONObject form = FormUtils.getInstance(AncApplication.getInstance().getApplicationContext()).getFormJson(Constants.JSON_FORM.MEMBER_REGISTER);
             JSONArray field = fields(form);
             setPregnantStatus(householdDetails.getColumnmaps());
+            ProfileContactsFragment.date_of_birth = null;
+            ProfileContactsFragment.age = -1;
+
             for(int i=0;i<field.length();i++){
                 processPopulatableFieldsForHouseholds(householdDetails.getColumnmaps(),field.getJSONObject(i));
             }
 
             processCheckboxValues(householdDetails.getColumnmaps(),field);
-            processDiseaseStatus(householdDetails.getColumnmaps(),field);
+            //processDiseaseStatus(householdDetails.getColumnmaps(),field);
 
             for(int i = 0;i<field.length();i++) {
                 if(field.getJSONObject(i).has("hint")||field.getJSONObject(i).has("label")) {
@@ -246,7 +277,7 @@ public class MemberProfileContactsFragment extends BaseProfileFragment {
         "Professional technical professionals","Semi-skilled labor service","Unskilled labor","Factory worker, blue collar service","Home based manufacturing",
         "Business","Domestic Servant","member_NID","member_BRID","Citizen_Card_number","member_f_name_bengali","Mother_Guardian_First_Name_bengali","Father_Guardian_First_Name_bengali",
         "spouseName_bengali","disability_type","Occupation_Category","Disease_Type","Communicable Disease","Non Communicable Disease",
-                "Disease_status_zero_to_two_month_by_age","Disease_status_two_month_to_five_year_by_age","comments"};
+                "Disease_status_zero_to_two_month_by_age","Disease_status_two_month_to_five_year_by_age","comments","illness_information"};
         return ArrayUtils.contains(keys,KEY)&&VALUE.isEmpty();
 
     }
