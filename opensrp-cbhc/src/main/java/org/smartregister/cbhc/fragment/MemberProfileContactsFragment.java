@@ -16,12 +16,15 @@ import org.json.JSONObject;
 import org.smartregister.cbhc.R;
 import org.smartregister.cbhc.application.AncApplication;
 import org.smartregister.cbhc.util.Constants;
+import org.smartregister.cbhc.util.DBConstants;
 import org.smartregister.cbhc.util.JsonFormUtils;
+import org.smartregister.cbhc.util.Utils;
 import org.smartregister.commonregistry.CommonPersonObjectClient;
 import org.smartregister.util.FormUtils;
 import org.smartregister.view.customcontrols.CustomFontTextView;
 
 import java.io.Serializable;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -161,7 +164,9 @@ public class MemberProfileContactsFragment extends BaseProfileFragment {
             for(int i=0;i<field.length();i++){
                 processPopulatableFieldsForHouseholds(householdDetails.getColumnmaps(),field.getJSONObject(i));
             }
+
             processCheckboxValues(householdDetails.getColumnmaps(),field);
+            processDiseaseStatus(householdDetails.getColumnmaps(),field);
 
             for(int i = 0;i<field.length();i++) {
                 if(field.getJSONObject(i).has("hint")||field.getJSONObject(i).has("label")) {
@@ -221,6 +226,15 @@ public class MemberProfileContactsFragment extends BaseProfileFragment {
             }
 
         } catch (Exception e){
+
+        }
+    }
+
+    private void processDiseaseStatus(Map<String,String> columnmaps, JSONArray field) {
+        String dateString = columnmaps.get("birthdate");
+        int age = 0;
+        Date date = new Date(dateString);
+        for(int i=0;i<field.length();i++) {
 
         }
     }
