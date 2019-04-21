@@ -852,21 +852,21 @@ public class MemberProfileActivity extends BaseProfileActivity implements Profil
 
                 Cursor cursor = null;
                 try{
+                    for(int i=0;i<tables.length;i++) {
+                        String sql = "select * from "+tables[i]+" where base_entity_id = '"+entity_id+"';";
+                        cursor = db.rawQuery(sql,new String[]{});
+                        if(cursor!=null&&cursor.getCount()!=0) {
+                            sql = "UPDATE "+tables[i]+" SET 'date_removed' = '20-12-2019' WHERE base_entity_id = '"+entity_id+"';";
+                            db.execSQL(sql);
+//                        db.rawQuery(sql,new String[]{});
+
+                        }
+                        if(cursor!=null)
+                            cursor.close();
+                    }
 
                 }catch(Exception e){
 
-                }
-                for(int i=0;i<tables.length;i++) {
-                    String sql = "select * from "+tables[i]+" where base_entity_id = '"+entity_id+"';";
-                    cursor = db.rawQuery(sql,new String[]{});
-                    if(cursor!=null&&cursor.getCount()!=0) {
-                        sql = "UPDATE "+tables[i]+" SET 'date_removed' = '20-12-2019' WHERE base_entity_id = '"+entity_id+"';";
-                        db.execSQL(sql);
-//                        db.rawQuery(sql,new String[]{});
-
-                    }
-                    if(cursor!=null)
-                        cursor.close();
                 }
 
 

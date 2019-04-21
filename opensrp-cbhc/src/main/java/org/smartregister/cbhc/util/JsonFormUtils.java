@@ -328,8 +328,15 @@ public class JsonFormUtils extends org.smartregister.util.JsonFormUtils {
                 JSONObject clientJson = AncApplication.getInstance().getEventClientRepository().getClient(db,entityId);
                 updateClientAttributes(clientjsonFromForm,clientJson);
 
+
+                if(encounterType.equalsIgnoreCase("Followup HH Transfer"))
+                    clientJson.put("birthdate","1900-01-01");
                 baseClient = gson.fromJson(clientJson.toString(), Client.class);
                 baseClient = updateClientDates(baseClient);
+                if(encounterType.equalsIgnoreCase("Followup HH Transfer"))
+                    baseClient.setBirthdate(timezoneformatDate("01-01-1900"));
+
+
 //                Map<String, Object> attributes_Temp = baseClient.getAttributes();
 //                attributes_Temp.putAll(check_box_in_forms);
 //                baseClient.setAttributes(attributes_Temp);
@@ -558,6 +565,26 @@ public class JsonFormUtils extends org.smartregister.util.JsonFormUtils {
         }
 
         return client;
+    }
+    public static Date timezoneformatDate(String dateString){
+        final String OLD_FORMAT = "dd-MM-yyyy";
+        final String NEW_FORMAT = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'";
+
+// August 12, 2010
+        String oldDateString = dateString;
+        String newDateString = dateString;
+
+        SimpleDateFormat sdf = new SimpleDateFormat(OLD_FORMAT);
+        Date d = null;
+        try {
+            d = sdf.parse(oldDateString);
+            sdf.applyPattern(NEW_FORMAT);
+            newDateString = sdf.format(d);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+        return d;
     }
     public static String timezonedateformat(String dateString){
         final String OLD_FORMAT = "dd-MM-yyyy";
