@@ -211,15 +211,16 @@ public class MemberProfileActivity extends BaseProfileActivity implements Profil
     public void updateEDD(final String entity_id){
         org.smartregister.util.Utils.startAsyncTask(new AsyncTask() {
 
-
             String lmp_date = "";
             String delivery_status = "";
+            String Patient_identifier = "";
             @Override
             protected Object doInBackground(Object[] objects) {
                 AncRepository repo = (AncRepository) AncApplication.getInstance().getRepository();
                 SQLiteDatabase db = repo.getReadableDatabase();
                 String sql = "SELECT VALUE FROM ec_details WHERE (KEY = 'lmp_date' OR KEY = 'LMP') AND base_entity_id = '"+entity_id+"'";
                 Cursor cursor = db.rawQuery(sql,new String[]{});
+
                 try{
                     if(cursor.moveToNext()){
                         lmp_date = cursor.getString(0);
@@ -243,6 +244,15 @@ public class MemberProfileActivity extends BaseProfileActivity implements Profil
                 }finally{
                     cursor.close();
                 }
+                sql = "SELECT VALUE FROM ec_details WHERE (KEY = 'Patient_Identifier') AND base_entity_id = '"+entity_id+"'";
+                cursor = db.rawQuery(sql,new String[]{});
+                try {
+                    if (cursor.moveToNext()) {
+                       Patient_identifier = cursor.getString(0);
+                    }
+                }catch(Exception e){
+
+                }
 
                 return null;
             }
@@ -253,6 +263,9 @@ public class MemberProfileActivity extends BaseProfileActivity implements Profil
                 if(delivery_status.equalsIgnoreCase("প্রসব পূর্ব")||delivery_status.equalsIgnoreCase("Antenatal Period")){
                     pregnant_statusView.setVisibility(View.VISIBLE);
                     pregnant_statusView.setText("EDD: "+lmp_date);
+                }
+                if(Patient_identifier!=null){
+                    ancIdView.setText("ID: " + Patient_identifier);
                 }
             }
         },null);

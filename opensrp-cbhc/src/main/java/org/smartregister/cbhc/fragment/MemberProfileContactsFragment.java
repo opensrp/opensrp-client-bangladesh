@@ -94,6 +94,7 @@ public class MemberProfileContactsFragment extends BaseProfileFragment {
         linearLayoutholder.removeAllViews();
         setupView();
     }
+
     public void processCheckboxValues(Map<String, String> womanClient, JSONArray field){
 
         for(int i=0;i<field.length();i++){
@@ -164,6 +165,7 @@ public class MemberProfileContactsFragment extends BaseProfileFragment {
 
         }
     }
+
     public void setPregnantStatus(Map<String,String>clientmap){
         String pregnant_status = clientmap.get("PregnancyStatus");
         if(pregnant_status == null || (pregnant_status!=null&&pregnant_status.isEmpty())){

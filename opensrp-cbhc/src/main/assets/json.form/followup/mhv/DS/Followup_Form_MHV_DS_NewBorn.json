@@ -90,7 +90,7 @@
         "key":"Disease_status_zero_to_two_month_by_age",
         "openmrs_entity_parent":"",
         "openmrs_entity":"person_attribute",
-        "openmrs_entity_id":"Disease_status",
+        "openmrs_entity_id":"Disease_Below_2Month_Age",
         "openmrs_data_type":"text",
         "type":"check_box",
         "label":"০ - ২ মাসের শিশুর রোগ ",
@@ -115,10 +115,10 @@
             "openmrs_choice_id":"Jaundice"
           },
           {
-            "key":"Probable_Limited_Infection",
+            "key":"Diarrhoea_No_Dehydration",
             "text":"পানি স্বল্পতাহীন ডায়রিয়া ",
             "value":false,
-            "openmrs_choice_id":"Probable_Limited_Infection"
+            "openmrs_choice_id":"Diarrhoea_No_Dehydration"
           },
           {
             "key":"Bellybutton_infection",

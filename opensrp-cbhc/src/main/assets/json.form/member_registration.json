@@ -1662,10 +1662,10 @@
             "openmrs_choice_id": "Jaundice"
           },
           {
-            "key": "Probable_Limited_Infection",
+            "key": "Diarrhoea_No_Dehydration",
             "text": "পানি স্বল্পতাহীন ডায়রিয়া ",
             "value": false,
-            "openmrs_choice_id": "Probable_Limited_Infection"
+            "openmrs_choice_id": "Diarrhoea_No_Dehydration"
           },
           {
             "key": "Bellybutton_infection",
