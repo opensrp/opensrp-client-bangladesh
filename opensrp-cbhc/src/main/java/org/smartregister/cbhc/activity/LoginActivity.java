@@ -38,6 +38,7 @@ import net.sqlcipher.database.SQLiteDatabase;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 import org.joda.time.DateTime;
+import org.smartregister.cbhc.BuildConfig;
 import org.smartregister.cbhc.R;
 import org.smartregister.cbhc.application.AncApplication;
 import org.smartregister.cbhc.contract.LoginContract;
@@ -89,6 +90,7 @@ public class LoginActivity extends AppCompatActivity implements LoginContract.Vi
         AllSharedPreferences allSharedPreferences = new AllSharedPreferences(preferences);
         String baseurl = allSharedPreferences.fetchBaseURL("");
         if (baseurl.isEmpty()) {
+
             allSharedPreferences.updateUrl(getString(R.string.opensrp_url));
             preferences.edit().putString(DRISHTI_BASE_URL, getString(R.string.opensrp_url)).apply();
 
@@ -314,7 +316,8 @@ public class LoginActivity extends AppCompatActivity implements LoginContract.Vi
             protected Object doInBackground(Object[] objects) {
                 try {
                     // Create a URL for the desired page
-                    URL url = new URL("http://192.168.22.152:8080/opt/multimedia/app-version.txt");
+                    String base_url = getString(R.string.opensrp_url).replace("opensrp/","");
+                    URL url = new URL(base_url + "opt/multimedia/app-version.txt");
 
                     // Read all the text returned by the server
                     BufferedReader in = new BufferedReader(new InputStreamReader(url.openStream()));

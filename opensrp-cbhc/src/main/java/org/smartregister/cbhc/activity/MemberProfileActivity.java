@@ -244,15 +244,15 @@ public class MemberProfileActivity extends BaseProfileActivity implements Profil
                 }finally{
                     cursor.close();
                 }
-                sql = "SELECT VALUE FROM ec_details WHERE (KEY = 'Patient_Identifier') AND base_entity_id = '"+entity_id+"'";
-                cursor = db.rawQuery(sql,new String[]{});
-                try {
-                    if (cursor.moveToNext()) {
-                       Patient_identifier = cursor.getString(0);
-                    }
-                }catch(Exception e){
-
-                }
+//                sql = "SELECT VALUE FROM ec_details WHERE (KEY = 'Patient_Identifier') AND base_entity_id = '"+entity_id+"'";
+//                cursor = db.rawQuery(sql,new String[]{});
+//                try {
+//                    if (cursor.moveToNext()) {
+//                       Patient_identifier = cursor.getString(0);
+//                    }
+//                }catch(Exception e){
+//
+//                }
 
                 return null;
             }
@@ -264,9 +264,9 @@ public class MemberProfileActivity extends BaseProfileActivity implements Profil
                     pregnant_statusView.setVisibility(View.VISIBLE);
                     pregnant_statusView.setText("EDD: "+lmp_date);
                 }
-                if(Patient_identifier!=null){
-                    ancIdView.setText("ID: " + Patient_identifier);
-                }
+//                if(Patient_identifier!=null){
+//                    ancIdView.setText("ID: " + Patient_identifier);
+//                }
             }
         },null);
     }
