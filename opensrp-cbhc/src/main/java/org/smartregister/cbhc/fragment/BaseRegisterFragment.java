@@ -117,6 +117,7 @@ public abstract class BaseRegisterFragment extends RecyclerViewFragment implemen
         @Override
         public void afterTextChanged(Editable editable) {
             //Overriden Do something after Text Changed
+            setTotalPatients();
         }
     };
 
@@ -152,7 +153,7 @@ public abstract class BaseRegisterFragment extends RecyclerViewFragment implemen
             }
         };
     }
-TextView unsyncView;
+    TextView unsyncView;
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -374,6 +375,7 @@ TextView unsyncView;
         this.registerCondition = "";
         presenter.initializeQueries(getMainCondition());
         filter(this.filters,this.joinTable,this.mainCondition,false);
+        setTotalPatients();
     }
 
     public void updateSortAndFilter(List<Field> filterList, Field sortField) {
@@ -386,6 +388,7 @@ TextView unsyncView;
         }
         this.Sortqueries = sortField.getDbAlias();
         filter(this.filters,this.joinTable,this.mainCondition,false);
+        setTotalPatients();
     }
 
     @Override

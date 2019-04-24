@@ -256,7 +256,7 @@ public class ProfileActivity extends BaseProfileActivity implements ProfileContr
         }
         else if (requestCode == JsonFormUtils.REQUEST_CODE_GET_JSON && resultCode == RESULT_OK) {
             try {
-                String jsonString = data.getStringExtra("json");
+                final String jsonString = data.getStringExtra("json");
                 final JSONObject form = new JSONObject(jsonString);
                 if (form.getString(JsonFormUtils.ENCOUNTER_TYPE).equals(Constants.EventType.REGISTRATION)) {
                     presenter.saveForm(jsonString, false);
@@ -285,7 +285,7 @@ public class ProfileActivity extends BaseProfileActivity implements ProfileContr
                                     try{
                                         String entity_id = form.getString("entity_id");
                                         removeMember(entity_id);
-
+//                                        presenter.saveForm(jsonString, false);
 
                                     }catch(Exception e){
                                         e.printStackTrace();
@@ -387,7 +387,7 @@ public class ProfileActivity extends BaseProfileActivity implements ProfileContr
                 public void onClick(DialogInterface dialog, int which) {
                     String textClicked = arrayAdapter.getItem(which);
                     switch (textClicked) {
-                        case "খাানার অবস্থান":
+                        case "খানার অবস্থান":
                             getIntent().putExtra(Constants.INTENT_KEY.BASE_ENTITY_ID,householdDetails.getCaseId());
                             JsonFormUtils.launchFollowUpForm(ProfileActivity.this,householdDetails.getColumnmaps(),Followup_Form_MHV_Transfer);
                             break;
@@ -619,22 +619,22 @@ public class ProfileActivity extends BaseProfileActivity implements ProfileContr
                 String tables[] = {"ec_household","ec_member","ec_child","ec_woman","ec_household_search","ec_member_search","ec_child_search","ec_woman_search"};
 
                 try{
+                    for(int i=0;i<tables.length;i++) {
+                        String sql = "select * from "+tables[i]+" where base_entity_id = '"+entity_id+"';";
+                        Cursor cursor = db.rawQuery(sql,new String[]{});
+                        if(cursor!=null&&cursor.getCount()!=0) {
+                            sql = "UPDATE "+tables[i]+" SET date_removed = '01-01-1000' WHERE base_entity_id = '"+entity_id+"';";
+                            db.execSQL(sql);
+//                        db.rawQuery(sql,new String[]{});
 
+                        }
+                        if(cursor!=null)
+                            cursor.close();
+                    }
                 }catch(Exception e){
 
                 }
-                for(int i=0;i<tables.length;i++) {
-                    String sql = "select * from "+tables[i]+" where base_entity_id = '"+entity_id+"';";
-                    Cursor cursor = db.rawQuery(sql,new String[]{});
-                    if(cursor!=null&&cursor.getCount()!=0) {
-                        sql = "UPDATE "+tables[i]+" SET date_removed = '01-01-1000' WHERE base_entity_id = '"+entity_id+"';";
-                        db.execSQL(sql);
-//                        db.rawQuery(sql,new String[]{});
 
-                    }
-                    if(cursor!=null)
-                        cursor.close();
-                }
 
 
 

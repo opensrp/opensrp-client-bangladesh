@@ -31,6 +31,8 @@ import org.smartregister.commonregistry.CommonPersonObjectClient;
 import org.smartregister.repository.AllSharedPreferences;
 import org.smartregister.util.DateUtil;
 
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Collection;
@@ -53,6 +55,7 @@ public class Utils {
 
     private static final SimpleDateFormat DB_DF = new SimpleDateFormat(Constants.SQLITE_DATE_TIME_FORMAT);
     private static final DateTimeFormatter SQLITE_DATE_DF = DateTimeFormat.forPattern(Constants.SQLITE_DATE_TIME_FORMAT);
+
     
     public static void showToast(Context context, String message) {
         Toast.makeText(context, message, Toast.LENGTH_LONG).show();

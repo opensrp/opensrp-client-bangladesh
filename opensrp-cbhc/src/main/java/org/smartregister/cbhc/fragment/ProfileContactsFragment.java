@@ -36,6 +36,8 @@ import org.smartregister.util.FormUtils;
 import org.smartregister.view.customcontrols.CustomFontTextView;
 
 import java.io.Serializable;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -236,7 +238,8 @@ public class ProfileContactsFragment extends BaseProfileFragment {
         }
         return value;
     }
-
+    public static Date date_of_birth = new Date();
+    public static int age = 0;
     public static void processPopulatableFieldsForHouseholds(Map<String, String> womanClient, JSONObject jsonObject) throws JSONException {
 
 
@@ -285,11 +288,43 @@ public class ProfileContactsFragment extends BaseProfileFragment {
             optionsObject.put(JsonFormUtils.VALUE, womanClient.get(DBConstants.KEY.DOB_UNKNOWN));
 
         }
-
+        else if(jsonObject.getString(JsonFormUtils.KEY).equalsIgnoreCase("member_birth_date")){
+            String mamber_dob = womanClient.get("dob");
+            if(mamber_dob!=null&&!mamber_dob.isEmpty()){
+                if(mamber_dob.contains("T")){
+                    mamber_dob = mamber_dob.substring(0,mamber_dob.indexOf("T"));
+                    jsonObject.put(JsonFormUtils.VALUE,mamber_dob);
+                    SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
+                    try {
+                        date_of_birth = sdf.parse(mamber_dob);
+                    } catch (ParseException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+        }
+        else if(jsonObject.getString(JsonFormUtils.KEY).equalsIgnoreCase("lmp_date")){
+            String lmp_date = womanClient.get("LMP");
+            if(lmp_date!=null&&!lmp_date.isEmpty()){
+                if(lmp_date.contains("T")){
+                    lmp_date = lmp_date.substring(0,lmp_date.indexOf("T"));
+                    jsonObject.put(JsonFormUtils.VALUE,lmp_date);
+                }
+            }
+        }
+        else if(jsonObject.getString(JsonFormUtils.KEY).equalsIgnoreCase("Delivery_date")){
+            String delivery_date = womanClient.get("delivery_date");
+            if(delivery_date!=null&&!delivery_date.isEmpty()){
+                if(delivery_date.contains("T")){
+                    delivery_date = delivery_date.substring(0,delivery_date.indexOf("T"));
+                    jsonObject.put(JsonFormUtils.VALUE,delivery_date);
+                }
+            }
+        }
         else if (jsonObject.getString(JsonFormUtils.KEY).equalsIgnoreCase(DBConstants.KEY.AGE)) {
 
             jsonObject.put(JsonFormUtils.READ_ONLY, false);
-            jsonObject.put(JsonFormUtils.VALUE, Utils.getAgeFromDate(womanClient.get(DBConstants.KEY.DOB)));
+            jsonObject.put(JsonFormUtils.VALUE, age = Utils.getAgeFromDate(womanClient.get(DBConstants.KEY.DOB)));
 
         }
         else if (jsonObject.getString(JsonFormUtils.KEY).equalsIgnoreCase(DBConstants.KEY.ANC_ID)) {

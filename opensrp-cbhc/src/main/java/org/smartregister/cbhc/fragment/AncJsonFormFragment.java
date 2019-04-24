@@ -522,6 +522,7 @@ public class AncJsonFormFragment extends JsonFormFragment {
 
     @Override
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+        if(presenter !=null&&parent!=null&&view!=null)
             presenter.onItemSelected(parent, view, position, id);
 //        JSONObject currentObject = get
             if(parent instanceof MaterialSpinner) {

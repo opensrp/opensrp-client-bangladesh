@@ -181,26 +181,10 @@ public class MemberProfileActivity extends BaseProfileActivity implements Profil
         if(lastName.equalsIgnoreCase("null")||lastName==null) {
             lastName = "";
         }
-        String lmp_date = householdDetails.getColumnmaps().get("lmp_date");
-        String delivery_status = householdDetails.getColumnmaps().get(PREGNANT_STATUS);
-        if(lmp_date!=null&&delivery_status!=null) {
-            SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
-            Calendar c = Calendar.getInstance();
-            try {
-                c.setTime(sdf.parse(lmp_date));
-            } catch (ParseException e) {
-                e.printStackTrace();
-            }
-            c.add(Calendar.DATE, 280);  // number of days to add
-            lmp_date = sdf.format(c.getTime());  // dt is now the new date
-            if(delivery_status.equalsIgnoreCase("প্রসব পূর্ব")||delivery_status.equalsIgnoreCase("Antenatal Period")){
-                pregnant_statusView.setVisibility(View.VISIBLE);
-                pregnant_statusView.setText("EDD: "+lmp_date);
-            }
-        }
+
         String patientName = getName(firstName, lastName);
 
-
+        updateEDD(householdDetails.getCaseId());
         setProfileName(patientName);
         String dobString = getValue(householdDetails.getColumnmaps(),"dob",true);
         String durationString = "";
@@ -224,7 +208,68 @@ public class MemberProfileActivity extends BaseProfileActivity implements Profil
         setProfileID(getValue(householdDetails.getColumnmaps(),"Patient_Identifier",true));
         gestationAgeView.setVisibility(View.GONE);
     }
+    public void updateEDD(final String entity_id){
+        org.smartregister.util.Utils.startAsyncTask(new AsyncTask() {
 
+            String lmp_date = "";
+            String delivery_status = "";
+            String Patient_identifier = "";
+            @Override
+            protected Object doInBackground(Object[] objects) {
+                AncRepository repo = (AncRepository) AncApplication.getInstance().getRepository();
+                SQLiteDatabase db = repo.getReadableDatabase();
+                String sql = "SELECT VALUE FROM ec_details WHERE (KEY = 'lmp_date' OR KEY = 'LMP') AND base_entity_id = '"+entity_id+"'";
+                Cursor cursor = db.rawQuery(sql,new String[]{});
+
+                try{
+                    if(cursor.moveToNext()){
+                        lmp_date = cursor.getString(0);
+
+                        delivery_status = householdDetails.getColumnmaps().get(PREGNANT_STATUS);
+                        if(lmp_date!=null&&delivery_status!=null) {
+                            SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
+                            Calendar c = Calendar.getInstance();
+                            try {
+                                c.setTime(sdf.parse(lmp_date));
+                            } catch (ParseException e) {
+                                e.printStackTrace();
+                            }
+                            c.add(Calendar.DATE, 280);  // number of days to add
+                            lmp_date = sdf.format(c.getTime());  // dt is now the new date
+
+                        }
+                    }
+                }catch(Exception e){
+
+                }finally{
+                    cursor.close();
+                }
+//                sql = "SELECT VALUE FROM ec_details WHERE (KEY = 'Patient_Identifier') AND base_entity_id = '"+entity_id+"'";
+//                cursor = db.rawQuery(sql,new String[]{});
+//                try {
+//                    if (cursor.moveToNext()) {
+//                       Patient_identifier = cursor.getString(0);
+//                    }
+//                }catch(Exception e){
+//
+//                }
+
+                return null;
+            }
+
+            @Override
+            protected void onPostExecute(Object o) {
+                super.onPostExecute(o);
+                if(delivery_status.equalsIgnoreCase("প্রসব পূর্ব")||delivery_status.equalsIgnoreCase("Antenatal Period")){
+                    pregnant_statusView.setVisibility(View.VISIBLE);
+                    pregnant_statusView.setText("EDD: "+lmp_date);
+                }
+//                if(Patient_identifier!=null){
+//                    ancIdView.setText("ID: " + Patient_identifier);
+//                }
+            }
+        },null);
+    }
     public void refreshProfileViews() {
 //        if(typeofMember.equalsIgnoreCase("malechild")||typeofMember.equalsIgnoreCase("femalechild")){
 //            householdDetails = CommonPersonObjectToClient(AncApplication.getInstance().getContext().commonrepository(DBConstants.CHILD_TABLE_NAME).findByBaseEntityId(householdDetails.entityId()));
@@ -820,21 +865,21 @@ public class MemberProfileActivity extends BaseProfileActivity implements Profil
 
                 Cursor cursor = null;
                 try{
+                    for(int i=0;i<tables.length;i++) {
+                        String sql = "select * from "+tables[i]+" where base_entity_id = '"+entity_id+"';";
+                        cursor = db.rawQuery(sql,new String[]{});
+                        if(cursor!=null&&cursor.getCount()!=0) {
+                            sql = "UPDATE "+tables[i]+" SET 'date_removed' = '20-12-2019' WHERE base_entity_id = '"+entity_id+"';";
+                            db.execSQL(sql);
+//                        db.rawQuery(sql,new String[]{});
+
+                        }
+                        if(cursor!=null)
+                            cursor.close();
+                    }
 
                 }catch(Exception e){
 
-                }
-                for(int i=0;i<tables.length;i++) {
-                    String sql = "select * from "+tables[i]+" where base_entity_id = '"+entity_id+"';";
-                    cursor = db.rawQuery(sql,new String[]{});
-                    if(cursor!=null&&cursor.getCount()!=0) {
-                        sql = "UPDATE "+tables[i]+" SET 'date_removed' = '20-12-2019' WHERE base_entity_id = '"+entity_id+"';";
-                        db.execSQL(sql);
-//                        db.rawQuery(sql,new String[]{});
-
-                    }
-                    if(cursor!=null)
-                        cursor.close();
                 }
 
 

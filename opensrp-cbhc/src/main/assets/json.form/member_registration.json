@@ -555,8 +555,6 @@
           "তৃতীয় লিঙ্গ":"O"
         }
       },
-
-
       {
         "key":"Child_birth_weight",
         "openmrs_entity_parent":"",
@@ -715,8 +713,8 @@
           "err": "Number must begin with 095, 096, or 097 and must be a total of 11 digits in length"
         },
         "v_regex": {
-          "value": "0|(01[3-9][0-9]{8})|\s*",
-          "err": "Number must begin with 013, 015, 016,017,018 or 019 and must be a total of 11 digits in length"
+          "value": "0|(01[0-9][0-9]{8})|\s*",
+          "err": "Number must begin with 011, 012, 013, 014, 015, 016,017,018 or 019 and must be a total of 11 digits in length"
         },
         "v_max_length": {
           "value": "11",
@@ -1639,7 +1637,7 @@
         "key": "Disease_status_zero_to_two_month_by_age",
         "openmrs_entity_parent": "",
         "openmrs_entity": "person_attribute",
-        "openmrs_entity_id": "Disease_status",
+        "openmrs_entity_id": "Disease_Below_2Month_Age",
         "openmrs_data_type": "text",
         "type": "check_box",
         "label": "০ - ২ মাসের বাচ্চার রোগ",
@@ -1664,10 +1662,10 @@
             "openmrs_choice_id": "Jaundice"
           },
           {
-            "key": "Probable_Limited_Infection",
+            "key": "Diarrhoea_No_Dehydration",
             "text": "পানি স্বল্পতাহীন ডায়রিয়া ",
             "value": false,
-            "openmrs_choice_id": "Probable_Limited_Infection"
+            "openmrs_choice_id": "Diarrhoea_No_Dehydration"
           },
           {
             "key": "Bellybutton_infection",
@@ -1718,7 +1716,7 @@
         "key": "Disease_status_two_month_to_five_year_by_age",
         "openmrs_entity_parent": "",
         "openmrs_entity": "person_attribute",
-        "openmrs_entity_id": "Disease_status",
+        "openmrs_entity_id": "Disease_2Month_5Years",
         "openmrs_data_type": "text",
         "type": "check_box",
         "label": "২ মাস থেকে ৫ বছরের বাচ্চার রোগ",

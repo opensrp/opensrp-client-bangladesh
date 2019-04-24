@@ -87,10 +87,10 @@
         }
       },
       {
-        "key":"Disease_2Month_5Years",
+        "key":"Disease_status_two_month_to_five_year_by_age",
         "openmrs_entity_parent":"",
         "openmrs_entity":"person_attribute",
-        "openmrs_entity_id":"Disease_status",
+        "openmrs_entity_id":"Disease_2Month_5Years",
         "openmrs_data_type":"text",
         "type":"check_box",
         "label":"২ মাস থেকে ৫ বছরের শিশুর রোগ ",
