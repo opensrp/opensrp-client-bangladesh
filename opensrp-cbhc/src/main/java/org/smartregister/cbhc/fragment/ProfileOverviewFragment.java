@@ -309,7 +309,7 @@ public class ProfileOverviewFragment extends BaseProfileFragment {
                 if(imageRecord!=null){
                     profile_photo.put(pClient.entityId(),Drawable.createFromPath(imageRecord.getFilepath()));
                 }else{
-                    DrishtiApplication.getCachedImageLoaderInstance().getImageByClientId(pClient.entityId(), OpenSRPImageLoader.getStaticImageListener(profileImageIV, R.drawable.male_cbhc_placeholder, R.drawable.male_cbhc_placeholder));
+                    //DrishtiApplication.getCachedImageLoaderInstance().getImageByClientId(pClient.entityId(), OpenSRPImageLoader.getStaticImageListener(profileImageIV, R.drawable.male_cbhc_placeholder, R.drawable.male_cbhc_placeholder));
 
                 }
             }
@@ -426,7 +426,7 @@ public class ProfileOverviewFragment extends BaseProfileFragment {
 //                            d = mActivity.getResources().getDrawable(R.drawable.child_girl_infant);
 //                            profile_photo.put(pClient.entityId(),d);
                             url = FileUtilities.getImageUrl(pClient.entityId()).replaceAll("///","/");
-                            ImageLoaderByGlide.setImageAsTarget(url,profileImageIV,R.drawable.male_cbhc_placeholder);
+                            ImageLoaderByGlide.setImageAsTarget(url,profileImageIV,R.drawable.child_girl_infant);
                         }else{
                             profileImageIV.setImageDrawable(profile_photo.get(pClient.entityId()));
                         }

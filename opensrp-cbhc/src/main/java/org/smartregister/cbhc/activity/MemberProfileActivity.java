@@ -227,7 +227,7 @@ public class MemberProfileActivity extends BaseProfileActivity implements Profil
 
                         delivery_status = householdDetails.getColumnmaps().get(PREGNANT_STATUS);
                         if(lmp_date!=null&&delivery_status!=null) {
-                            SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
+                            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd\'T\'HH:mm:ss.SSS\'Z\'");
                             Calendar c = Calendar.getInstance();
                             try {
                                 c.setTime(sdf.parse(lmp_date));
@@ -235,6 +235,7 @@ public class MemberProfileActivity extends BaseProfileActivity implements Profil
                                 e.printStackTrace();
                             }
                             c.add(Calendar.DATE, 280);  // number of days to add
+                            sdf = new SimpleDateFormat("dd-MM-yyyy");
                             lmp_date = sdf.format(c.getTime());  // dt is now the new date
 
                         }
