@@ -308,9 +308,9 @@ public class ProfileOverviewFragment extends BaseProfileFragment {
                 ProfileImage imageRecord = imageRepo.findByEntityId(pClient.entityId());
                 if(imageRecord!=null){
                     profile_photo.put(pClient.entityId(),Drawable.createFromPath(imageRecord.getFilepath()));
-                }else{
-                    //DrishtiApplication.getCachedImageLoaderInstance().getImageByClientId(pClient.entityId(), OpenSRPImageLoader.getStaticImageListener(profileImageIV, R.drawable.male_cbhc_placeholder, R.drawable.male_cbhc_placeholder));
-
+                }
+                else{
+//                    DrishtiApplication.getCachedImageLoaderInstance().getImageByClientId(pClient.entityId(), OpenSRPImageLoader.getStaticImageListener(profileImageIV, R.drawable.male_cbhc_placeholder, R.drawable.male_cbhc_placeholder));
                 }
             }
 
@@ -410,8 +410,10 @@ public class ProfileOverviewFragment extends BaseProfileFragment {
 //                            profile_photo.put(pClient.entityId(),d);
                             url = FileUtilities.getImageUrl(pClient.entityId()).replaceAll("///","/");
                             ImageLoaderByGlide.setImageAsTarget(url,profileImageIV,R.drawable.child_boy_infant);
-                        }else{
-                            profileImageIV.setImageDrawable(profile_photo.get(pClient.entityId()));
+
+                        }
+                        else{
+                            DrishtiApplication.getCachedImageLoaderInstance().getImageByClientId(pClient.entityId(), OpenSRPImageLoader.getStaticImageListener(profileImageIV, R.drawable.child_boy_infant, R.drawable.child_boy_infant));
                         }
 
                         pregnant_icon.setVisibility(View.VISIBLE);
@@ -427,8 +429,10 @@ public class ProfileOverviewFragment extends BaseProfileFragment {
 //                            profile_photo.put(pClient.entityId(),d);
                             url = FileUtilities.getImageUrl(pClient.entityId()).replaceAll("///","/");
                             ImageLoaderByGlide.setImageAsTarget(url,profileImageIV,R.drawable.child_girl_infant);
-                        }else{
-                            profileImageIV.setImageDrawable(profile_photo.get(pClient.entityId()));
+
+                        }
+                        else{
+                            DrishtiApplication.getCachedImageLoaderInstance().getImageByClientId(pClient.entityId(), OpenSRPImageLoader.getStaticImageListener(profileImageIV, R.drawable.child_girl_infant, R.drawable.child_girl_infant));
                         }
 
                         pregnant_icon.setVisibility(View.VISIBLE);
@@ -446,8 +450,10 @@ public class ProfileOverviewFragment extends BaseProfileFragment {
 //                            profile_photo.put(pClient.entityId(),d);
                             url = FileUtilities.getImageUrl(pClient.entityId()).replaceAll("///","/");
                             ImageLoaderByGlide.setImageAsTarget(url,profileImageIV,R.drawable.male_cbhc_placeholder);
-                        }else{
-                            profileImageIV.setImageDrawable(profile_photo.get(pClient.entityId()));
+
+                        }
+                        else{
+                            DrishtiApplication.getCachedImageLoaderInstance().getImageByClientId(pClient.entityId(), OpenSRPImageLoader.getStaticImageListener(profileImageIV, R.drawable.male_cbhc_placeholder, R.drawable.male_cbhc_placeholder));
                         }
 
                         pregnant_icon.setVisibility(View.INVISIBLE);
@@ -462,8 +468,11 @@ public class ProfileOverviewFragment extends BaseProfileFragment {
 //                            profile_photo.put(pClient.entityId(),d);
                             url = FileUtilities.getImageUrl(pClient.entityId()).replaceAll("///","/");
                             ImageLoaderByGlide.setImageAsTarget(url,profileImageIV,R.drawable.women_cbhc_placeholder);
-                        }else{
-                            profileImageIV.setImageDrawable(profile_photo.get(pClient.entityId()));
+                            DrishtiApplication.getCachedImageLoaderInstance().getImageByClientId(pClient.entityId(), OpenSRPImageLoader.getStaticImageListener(profileImageIV, R.drawable.women_cbhc_placeholder, R.drawable.women_cbhc_placeholder));
+                        }
+
+                        else{
+                            DrishtiApplication.getCachedImageLoaderInstance().getImageByClientId(pClient.entityId(), OpenSRPImageLoader.getStaticImageListener(profileImageIV, R.drawable.women_cbhc_placeholder, R.drawable.women_cbhc_placeholder));
                         }
 
                         clientype = "woman";
@@ -471,6 +480,9 @@ public class ProfileOverviewFragment extends BaseProfileFragment {
                 }
             }
 
+//            if(profile_photo.get(pClient.entityId())!=null){
+//                profileImageIV.setImageDrawable(profile_photo.get(pClient.entityId()));
+//            }
 
 
             profileImageIV.setTag(R.id.typeofclientformemberprofile,clientype);
