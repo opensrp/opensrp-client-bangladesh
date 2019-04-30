@@ -411,8 +411,7 @@ public class ProfileOverviewFragment extends BaseProfileFragment {
                             url = FileUtilities.getImageUrl(pClient.entityId()).replaceAll("///","/");
                             ImageLoaderByGlide.setImageAsTarget(url,profileImageIV,R.drawable.child_boy_infant);
 
-                        }
-                        else{
+                        }else{
                             DrishtiApplication.getCachedImageLoaderInstance().getImageByClientId(pClient.entityId(), OpenSRPImageLoader.getStaticImageListener(profileImageIV, R.drawable.child_boy_infant, R.drawable.child_boy_infant));
                         }
 
@@ -430,8 +429,7 @@ public class ProfileOverviewFragment extends BaseProfileFragment {
                             url = FileUtilities.getImageUrl(pClient.entityId()).replaceAll("///","/");
                             ImageLoaderByGlide.setImageAsTarget(url,profileImageIV,R.drawable.child_girl_infant);
 
-                        }
-                        else{
+                        }else{
                             DrishtiApplication.getCachedImageLoaderInstance().getImageByClientId(pClient.entityId(), OpenSRPImageLoader.getStaticImageListener(profileImageIV, R.drawable.child_girl_infant, R.drawable.child_girl_infant));
                         }
 
@@ -451,8 +449,7 @@ public class ProfileOverviewFragment extends BaseProfileFragment {
                             url = FileUtilities.getImageUrl(pClient.entityId()).replaceAll("///","/");
                             ImageLoaderByGlide.setImageAsTarget(url,profileImageIV,R.drawable.male_cbhc_placeholder);
 
-                        }
-                        else{
+                        }else{
                             DrishtiApplication.getCachedImageLoaderInstance().getImageByClientId(pClient.entityId(), OpenSRPImageLoader.getStaticImageListener(profileImageIV, R.drawable.male_cbhc_placeholder, R.drawable.male_cbhc_placeholder));
                         }
 
@@ -468,10 +465,7 @@ public class ProfileOverviewFragment extends BaseProfileFragment {
 //                            profile_photo.put(pClient.entityId(),d);
                             url = FileUtilities.getImageUrl(pClient.entityId()).replaceAll("///","/");
                             ImageLoaderByGlide.setImageAsTarget(url,profileImageIV,R.drawable.women_cbhc_placeholder);
-                            DrishtiApplication.getCachedImageLoaderInstance().getImageByClientId(pClient.entityId(), OpenSRPImageLoader.getStaticImageListener(profileImageIV, R.drawable.women_cbhc_placeholder, R.drawable.women_cbhc_placeholder));
-                        }
-
-                        else{
+                        }else{
                             DrishtiApplication.getCachedImageLoaderInstance().getImageByClientId(pClient.entityId(), OpenSRPImageLoader.getStaticImageListener(profileImageIV, R.drawable.women_cbhc_placeholder, R.drawable.women_cbhc_placeholder));
                         }
 
