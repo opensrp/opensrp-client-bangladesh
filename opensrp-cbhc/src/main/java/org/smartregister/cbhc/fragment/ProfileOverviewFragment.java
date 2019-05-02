@@ -303,16 +303,16 @@ public class ProfileOverviewFragment extends BaseProfileFragment {
 
             String patientName = getName(firstName, lastName);
 
-            if(profile_photo.get(pClient.entityId())==null){
-                ImageRepository imageRepo = CoreLibrary.getInstance().context().imageRepository();
-                ProfileImage imageRecord = imageRepo.findByEntityId(pClient.entityId());
-                if(imageRecord!=null){
-                    profile_photo.put(pClient.entityId(),Drawable.createFromPath(imageRecord.getFilepath()));
-                }
-                else{
+//            if(profile_photo.get(pClient.entityId())==null){
+//                ImageRepository imageRepo = CoreLibrary.getInstance().context().imageRepository();
+//                ProfileImage imageRecord = imageRepo.findByEntityId(pClient.entityId());
+//                if(imageRecord!=null){
+//                    profile_photo.put(pClient.entityId(),Drawable.createFromPath(imageRecord.getFilepath()));
+//                }
+//                else{
 //                    DrishtiApplication.getCachedImageLoaderInstance().getImageByClientId(pClient.entityId(), OpenSRPImageLoader.getStaticImageListener(profileImageIV, R.drawable.male_cbhc_placeholder, R.drawable.male_cbhc_placeholder));
-                }
-            }
+//                }
+//            }
 
             ;
 //            int nameColumnIndex = cursor.getColumnIndex("first_name");
@@ -405,15 +405,15 @@ public class ProfileOverviewFragment extends BaseProfileFragment {
                     if (pClient.entityId() != null) {//image already in local storage most likey ):
                         //set profile image by passing the client id.If the image doesn't exist in the image org.smartregister.cbhc.repository then download and save locally
                         profileImageIV.setTag(org.smartregister.R.id.entity_id, pClient.entityId());
-                        if(profile_photo.get(pClient.entityId())==null){
-//                            d = mActivity.getResources().getDrawable(R.drawable.child_boy_infant);
-//                            profile_photo.put(pClient.entityId(),d);
-                            url = FileUtilities.getImageUrl(pClient.entityId()).replaceAll("///","/");
-                            ImageLoaderByGlide.setImageAsTarget(url,profileImageIV,R.drawable.child_boy_infant);
-
-                        }else{
+//                        if(profile_photo.get(pClient.entityId())==null){
+////                            d = mActivity.getResources().getDrawable(R.drawable.child_boy_infant);
+////                            profile_photo.put(pClient.entityId(),d);
+//                            url = FileUtilities.getImageUrl(pClient.entityId()).replaceAll("///","/");
+//                            ImageLoaderByGlide.setImageAsTarget(url,profileImageIV,R.drawable.child_boy_infant);
+//
+//                        }else{
                             DrishtiApplication.getCachedImageLoaderInstance().getImageByClientId(pClient.entityId(), OpenSRPImageLoader.getStaticImageListener(profileImageIV, R.drawable.child_boy_infant, R.drawable.child_boy_infant));
-                        }
+//                        }
 
                         pregnant_icon.setVisibility(View.VISIBLE);
                         pregnant_icon.setImageResource(R.drawable.male_child_cbhc);
@@ -423,15 +423,15 @@ public class ProfileOverviewFragment extends BaseProfileFragment {
                     if (pClient.entityId() != null) {//image already in local storage most likey ):
                         //set profile image by passing the client id.If the image doesn't exist in the image org.smartregister.cbhc.repository then download and save locally
                         profileImageIV.setTag(org.smartregister.R.id.entity_id, pClient.entityId());
-                        if(profile_photo.get(pClient.entityId())==null){
-//                            d = mActivity.getResources().getDrawable(R.drawable.child_girl_infant);
-//                            profile_photo.put(pClient.entityId(),d);
-                            url = FileUtilities.getImageUrl(pClient.entityId()).replaceAll("///","/");
-                            ImageLoaderByGlide.setImageAsTarget(url,profileImageIV,R.drawable.child_girl_infant);
-
-                        }else{
+//                        if(profile_photo.get(pClient.entityId())==null){
+////                            d = mActivity.getResources().getDrawable(R.drawable.child_girl_infant);
+////                            profile_photo.put(pClient.entityId(),d);
+//                            url = FileUtilities.getImageUrl(pClient.entityId()).replaceAll("///","/");
+//                            ImageLoaderByGlide.setImageAsTarget(url,profileImageIV,R.drawable.child_girl_infant);
+//
+//                        }else{
                             DrishtiApplication.getCachedImageLoaderInstance().getImageByClientId(pClient.entityId(), OpenSRPImageLoader.getStaticImageListener(profileImageIV, R.drawable.child_girl_infant, R.drawable.child_girl_infant));
-                        }
+//                        }
 
                         pregnant_icon.setVisibility(View.VISIBLE);
                         pregnant_icon.setImageResource(R.drawable.female_child_cbhc);
@@ -443,15 +443,15 @@ public class ProfileOverviewFragment extends BaseProfileFragment {
                     if (pClient.entityId() != null) {//image already in local storage most likey ):
                         //set profile image by passing the client id.If the image doesn't exist in the image org.smartregister.cbhc.repository then download and save locally
                         profileImageIV.setTag(org.smartregister.R.id.entity_id, pClient.entityId());
-                        if(profile_photo.get(pClient.entityId())==null){
-//                            d = mActivity.getResources().getDrawable(R.drawable.male_cbhc_placeholder);
-//                            profile_photo.put(pClient.entityId(),d);
-                            url = FileUtilities.getImageUrl(pClient.entityId()).replaceAll("///","/");
-                            ImageLoaderByGlide.setImageAsTarget(url,profileImageIV,R.drawable.male_cbhc_placeholder);
-
-                        }else{
+//                        if(profile_photo.get(pClient.entityId())==null){
+////                            d = mActivity.getResources().getDrawable(R.drawable.male_cbhc_placeholder);
+////                            profile_photo.put(pClient.entityId(),d);
+//                            url = FileUtilities.getImageUrl(pClient.entityId()).replaceAll("///","/");
+//                            ImageLoaderByGlide.setImageAsTarget(url,profileImageIV,R.drawable.male_cbhc_placeholder);
+//
+//                        }else{
                             DrishtiApplication.getCachedImageLoaderInstance().getImageByClientId(pClient.entityId(), OpenSRPImageLoader.getStaticImageListener(profileImageIV, R.drawable.male_cbhc_placeholder, R.drawable.male_cbhc_placeholder));
-                        }
+//                        }
 
                         pregnant_icon.setVisibility(View.INVISIBLE);
                         clientype = "member";
@@ -460,14 +460,14 @@ public class ProfileOverviewFragment extends BaseProfileFragment {
                     if (pClient.entityId() != null) {//image already in local storage most likey ):
                         //set profile image by passing the client id.If the image doesn't exist in the image org.smartregister.cbhc.repository then download and save locally
                         profileImageIV.setTag(org.smartregister.R.id.entity_id, pClient.entityId());
-                        if(profile_photo.get(pClient.entityId())==null){
-//                            d = mActivity.getResources().getDrawable(R.drawable.women_cbhc_placeholder);
-//                            profile_photo.put(pClient.entityId(),d);
-                            url = FileUtilities.getImageUrl(pClient.entityId()).replaceAll("///","/");
-                            ImageLoaderByGlide.setImageAsTarget(url,profileImageIV,R.drawable.women_cbhc_placeholder);
-                        }else{
+//                        if(profile_photo.get(pClient.entityId())==null){
+////                            d = mActivity.getResources().getDrawable(R.drawable.women_cbhc_placeholder);
+////                            profile_photo.put(pClient.entityId(),d);
+//                            url = FileUtilities.getImageUrl(pClient.entityId()).replaceAll("///","/");
+//                            ImageLoaderByGlide.setImageAsTarget(url,profileImageIV,R.drawable.women_cbhc_placeholder);
+//                        }else{
                             DrishtiApplication.getCachedImageLoaderInstance().getImageByClientId(pClient.entityId(), OpenSRPImageLoader.getStaticImageListener(profileImageIV, R.drawable.women_cbhc_placeholder, R.drawable.women_cbhc_placeholder));
-                        }
+//                        }
 
                         clientype = "woman";
                     }
