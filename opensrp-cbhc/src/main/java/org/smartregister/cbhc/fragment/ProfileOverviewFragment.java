@@ -208,10 +208,15 @@ public class ProfileOverviewFragment extends BaseProfileFragment {
 //                if(cursor!=null&&!cursor.isClosed()){
 //                    cursor.close();
 //                }
+                Cursor cursor = null;
+                try{
+                    cursor = db.rawQuery(rawQuery,new String[]{});
+                }catch(Exception e){
 
-               Cursor cursor = db.rawQuery(rawQuery,new String[]{});
+                }
 
                 return cursor;
+
             }
 
             @Override
@@ -221,7 +226,7 @@ public class ProfileOverviewFragment extends BaseProfileFragment {
                 if(dialog!=null && dialog.isShowing())dialog.dismiss();
                 householdList = (ListView)fragmentView.findViewById(R.id.household_list);
                 profile_photo.clear();
-                if(o instanceof Cursor){
+                if(o!=null && o instanceof Cursor){
                     Cursor cursor = (Cursor)o;
                     HouseholdCursorAdpater cursorAdpater = new HouseholdCursorAdpater(getContext(),cursor);
 

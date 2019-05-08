@@ -214,7 +214,8 @@ public class AncApplication extends DrishtiApplication implements TimeChangedBro
 
     public void startPullConfigurableViewsIntentService(android.content.Context context) {
         Intent intent = new Intent(context, PullConfigurableViewsIntentService.class);
-        context.startService(intent);
+        if(context!=null)
+            context.startService(intent);
     }
 
     public static CommonFtsObject createCommonFtsObject() {
