@@ -361,6 +361,7 @@ public class RegisterProvider implements RecyclerViewProvider<RegisterProvider.R
                 cursor = db.rawQuery(sql,new String[]{});
 //                cursor.moveToFirst();
                 count = cursor.getCount();
+                cursor.close();
             }catch(Exception e){
                     e.printStackTrace();
             }
