@@ -13,10 +13,13 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import net.sqlcipher.database.SQLiteDatabase;
+
 import org.apache.commons.lang3.text.WordUtils;
 import org.smartregister.cbhc.R;
 import org.smartregister.cbhc.application.AncApplication;
 import org.smartregister.cbhc.fragment.BaseRegisterFragment;
+import org.smartregister.cbhc.repository.AncRepository;
 import org.smartregister.cbhc.util.DBConstants;
 import org.smartregister.cbhc.util.Utils;
 import org.smartregister.commonregistry.CommonPersonObject;
@@ -327,29 +330,40 @@ public class RegisterProvider implements RecyclerViewProvider<RegisterProvider.R
         @Override
         protected Object doInBackground(Object[] objects) {
             Cursor cursor  ;
+//            try{
+//                cursor = AncApplication.getInstance().getContext().commonrepository("ec_member").rawCustomQueryForAdapter("Select Count(*) from ec_member where relational_id = '"+pc.getCaseId()+"' and date_removed IS NULL");
+//                cursor.moveToFirst();
+//                count = count+Integer.parseInt(cursor.getString(0));
+//                cursor.close();
+//            }catch (Exception e){
+//                Log.e("member error",e.getMessage());
+//            }
+//            try{
+//                cursor = AncApplication.getInstance().getContext().commonrepository("ec_child").rawCustomQueryForAdapter("Select Count(*) from ec_child where relational_id = '"+pc.getCaseId()+"' and date_removed IS NULL");
+//                cursor.moveToFirst();
+//                count = count+Integer.parseInt(cursor.getString(0));
+//                cursor.close();
+//            }catch (Exception e){
+//
+//            }
+//            try{
+//                cursor = AncApplication.getInstance().getContext().commonrepository("ec_woman").rawCustomQueryForAdapter("Select Count(*) from ec_woman where relational_id = '"+pc.getCaseId()+"' and date_removed IS NULL");
+//                cursor.moveToFirst();
+//                count = count+Integer.parseInt(cursor.getString(0));
+//                cursor.close();
+//            }catch (Exception e){
+//
+//            }
             try{
-                cursor = AncApplication.getInstance().getContext().commonrepository("ec_member").rawCustomQueryForAdapter("Select Count(*) from ec_member where relational_id = '"+pc.getCaseId()+"' and date_removed IS NULL");
-                cursor.moveToFirst();
-                count = count+Integer.parseInt(cursor.getString(0));
+                AncRepository repo = (AncRepository) AncApplication.getInstance().getRepository();
+                SQLiteDatabase db = repo.getReadableDatabase();
+                String sql = "Select base_entity_id from (Select base_entity_id from ec_member where relational_id='"+pc.getCaseId()+"' and date_removed IS NULL UNION Select base_entity_id from ec_woman where relational_id='"+pc.getCaseId()+"' and date_removed IS NULL UNION Select base_entity_id from ec_child where relational_id='"+pc.getCaseId()+"' and date_removed IS NULL " +") group by base_entity_id";
+                cursor = db.rawQuery(sql,new String[]{});
+//                cursor.moveToFirst();
+                count = cursor.getCount();
                 cursor.close();
-            }catch (Exception e){
-                Log.e("member error",e.getMessage());
-            }
-            try{
-                cursor = AncApplication.getInstance().getContext().commonrepository("ec_child").rawCustomQueryForAdapter("Select Count(*) from ec_child where relational_id = '"+pc.getCaseId()+"' and date_removed IS NULL");
-                cursor.moveToFirst();
-                count = count+Integer.parseInt(cursor.getString(0));
-                cursor.close();
-            }catch (Exception e){
-
-            }
-            try{
-                cursor = AncApplication.getInstance().getContext().commonrepository("ec_woman").rawCustomQueryForAdapter("Select Count(*) from ec_woman where relational_id = '"+pc.getCaseId()+"' and date_removed IS NULL");
-                cursor.moveToFirst();
-                count = count+Integer.parseInt(cursor.getString(0));
-                cursor.close();
-            }catch (Exception e){
-
+            }catch(Exception e){
+                    e.printStackTrace();
             }
             try{
                 cursor = AncApplication.getInstance().getContext().commonrepository("ec_child").rawCustomQueryForAdapter("Select Count(*) from ec_child where relational_id = '"+pc.getCaseId()+"'"

@@ -68,6 +68,7 @@ import org.smartregister.view.activity.DrishtiApplication;
 
 import java.io.File;
 import java.io.Serializable;
+import java.text.SimpleDateFormat;
 import java.util.List;
 
 import static org.smartregister.cbhc.fragment.ProfileOverviewFragment.EXTRA_HOUSEHOLD_DETAILS;
@@ -212,6 +213,7 @@ public class ProfileActivity extends BaseProfileActivity implements ProfileContr
                 break;
             case R.id.edit_member:
                 CommonPersonObjectClient pclient  = (CommonPersonObjectClient) view.getTag();
+                pclient.getColumnmaps().putAll(AncApplication.getInstance().getContext().detailsRepository().getAllDetailsForClient(pclient.entityId()));
                 pclient.getColumnmaps().put("relational_id",householdDetails.getCaseId());
                 String formMetadataformembers = JsonFormUtils.getMemberJsonEditFormString(this, pclient.getColumnmaps());
                 try {

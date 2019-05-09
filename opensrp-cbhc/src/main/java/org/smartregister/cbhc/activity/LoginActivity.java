@@ -242,6 +242,7 @@ public class LoginActivity extends AppCompatActivity implements LoginContract.Vi
         }
         return false;
     }
+
     @Override
     public void onClick(View v) {
 
@@ -249,6 +250,7 @@ public class LoginActivity extends AppCompatActivity implements LoginContract.Vi
             case R.id.login_login_btn:
                 String username = userNameEditText.getText().toString();
                 String password = passwordEditText.getText().toString();
+                
 //                username = "testmhv2";
 //                username = "maxii";
 //                username = "teliya1@cc.com";
@@ -362,7 +364,8 @@ public class LoginActivity extends AppCompatActivity implements LoginContract.Vi
                                         }
                                     }
                                 });
-                        alertDialog.show();
+                        if(alertDialog!=null)
+                            alertDialog.show();
                     }
                 } catch (PackageManager.NameNotFoundException e) {
                     e.printStackTrace();
