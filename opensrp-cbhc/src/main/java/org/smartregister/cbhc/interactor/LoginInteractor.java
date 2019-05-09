@@ -116,19 +116,21 @@ public class LoginInteractor implements LoginContract.Interactor {
     }
 
     private void localLoginWith(String userName, String password) {
-
-        getUserService().localLogin(userName, password);
-        getLoginView().goToHome(false);
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                Log.i(getClass().getName(), "Starting DrishtiSyncScheduler " + DateTime.now().toString());
-                if (NetworkUtils.isNetworkAvailable()) {
-                    SyncServiceJob.scheduleJobImmediately(SyncServiceJob.TAG);
+        if(getUserService()!=null&&userName!=null&&password!=null){
+            getUserService().localLogin(userName, password);
+            getLoginView().goToHome(false);
+            new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    Log.i(getClass().getName(), "Starting DrishtiSyncScheduler " + DateTime.now().toString());
+                    if (NetworkUtils.isNetworkAvailable()) {
+                        SyncServiceJob.scheduleJobImmediately(SyncServiceJob.TAG);
+                    }
+                    Log.i(getClass().getName(), "Started DrishtiSyncScheduler " + DateTime.now().toString());
                 }
-                Log.i(getClass().getName(), "Started DrishtiSyncScheduler " + DateTime.now().toString());
-            }
-        }).start();
+            }).start();
+        }
+
     }
 
     private void remoteLogin(final String userName, final String password) {
