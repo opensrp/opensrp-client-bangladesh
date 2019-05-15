@@ -21,6 +21,7 @@ import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import net.sqlcipher.Cursor;
 import net.sqlcipher.database.SQLiteDatabase;
@@ -38,6 +39,7 @@ import org.smartregister.cbhc.barcode.BarcodeIntentResult;
 import org.smartregister.cbhc.contract.ProfileContract;
 import org.smartregister.cbhc.contract.RegisterContract;
 import org.smartregister.cbhc.domain.AttentionFlag;
+import org.smartregister.cbhc.domain.UniqueId;
 import org.smartregister.cbhc.fragment.ProfileContactsFragment;
 import org.smartregister.cbhc.fragment.ProfileOverviewFragment;
 import org.smartregister.cbhc.fragment.ProfileTasksFragment;
@@ -46,6 +48,8 @@ import org.smartregister.cbhc.helper.ImageRenderHelper;
 import org.smartregister.cbhc.presenter.ProfilePresenter;
 import org.smartregister.cbhc.presenter.RegisterPresenter;
 import org.smartregister.cbhc.repository.AncRepository;
+import org.smartregister.cbhc.repository.HealthIdRepository;
+import org.smartregister.cbhc.repository.UniqueIdRepository;
 import org.smartregister.cbhc.task.FetchProfileDataTask;
 import org.smartregister.cbhc.util.Constants;
 import org.smartregister.cbhc.util.DBConstants;
@@ -173,7 +177,7 @@ public class ProfileActivity extends BaseProfileActivity implements ProfileContr
         patientName = patientName + " (খানা প্রধান)";
 
         setProfileName(patientName);
-           String dobString = getValue(householdDetails.getColumnmaps(),"dob",true);
+        String dobString = getValue(householdDetails.getColumnmaps(),"dob",true);
         String durationString = "";
         if (StringUtils.isNotBlank(dobString)) {
             try {
@@ -199,11 +203,39 @@ public class ProfileActivity extends BaseProfileActivity implements ProfileContr
         return commonPersonObjectClient;
     }
 
+    private UniqueIdRepository uniqueIdRepository;
+    private HealthIdRepository healthIdRepository;
+    public UniqueIdRepository getUniqueIdRepository() {
+        if (uniqueIdRepository == null) {
+            uniqueIdRepository = AncApplication.getInstance().getUniqueIdRepository();
+        }
+        return uniqueIdRepository;
+    }
+    String patient_identifier;
+    public HealthIdRepository getHealthIdRepository() {
+        if (healthIdRepository == null) {
+            healthIdRepository = AncApplication.getInstance().getHealthIdRepository();
+        }
+        return healthIdRepository;
+    }
     @Override
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.btn_profile_registration_info:
                 householdDetails.getColumnmaps().putAll(AncApplication.getInstance().getContext().detailsRepository().getAllDetailsForClient(householdDetails.entityId()));
+                patient_identifier = householdDetails.getColumnmaps().get("Patient_Identifier");
+
+                if(patient_identifier == null || (patient_identifier!=null && patient_identifier.isEmpty()) || patient_identifier.equalsIgnoreCase("null")){
+                    UniqueId uniqueId = getUniqueIdRepository().getNextUniqueId();
+                    final String entityId = uniqueId != null ? uniqueId.getOpenmrsId() : "";
+                    if (StringUtils.isBlank(entityId)) {
+                        displayShortToast(R.string.no_openmrs_id);
+                    } else {
+                        householdDetails.getColumnmaps().put("Patient_Identifier",entityId);
+                    }
+                }
+
+
                 String formMetadata = JsonFormUtils.getHouseholdJsonEditFormString(this, householdDetails.getColumnmaps());
                 try {
                     JsonFormUtils.startFormForEdit(this, JsonFormUtils.REQUEST_CODE_GET_JSON, formMetadata);
@@ -214,6 +246,17 @@ public class ProfileActivity extends BaseProfileActivity implements ProfileContr
             case R.id.edit_member:
                 CommonPersonObjectClient pclient  = (CommonPersonObjectClient) view.getTag();
                 pclient.getColumnmaps().putAll(AncApplication.getInstance().getContext().detailsRepository().getAllDetailsForClient(pclient.entityId()));
+                patient_identifier = pclient.getColumnmaps().get("Patient_Identifier");
+
+                if(patient_identifier == null || (patient_identifier!=null && patient_identifier.isEmpty()) || patient_identifier.equalsIgnoreCase("null")){
+                    UniqueId uniqueId = getHealthIdRepository().getNextUniqueId();
+                    final String entityId = uniqueId != null ? uniqueId.getOpenmrsId() : "";
+                    if (StringUtils.isBlank(entityId)) {
+                        displayShortToast(R.string.no_openmrs_id);
+                    } else {
+                        pclient.getColumnmaps().put("Patient_Identifier",entityId);
+                    }
+                }
                 pclient.getColumnmaps().put("relational_id",householdDetails.getCaseId());
                 String formMetadataformembers = JsonFormUtils.getMemberJsonEditFormString(this, pclient.getColumnmaps());
                 try {
@@ -545,7 +588,7 @@ public class ProfileActivity extends BaseProfileActivity implements ProfileContr
 
     @Override
     public void displayShortToast(int resourceId) {
-
+        org.smartregister.util.Utils.showShortToast(this, this.getString(resourceId));
     }
 
     @Override

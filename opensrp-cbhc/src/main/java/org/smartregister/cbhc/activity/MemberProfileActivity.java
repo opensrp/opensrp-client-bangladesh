@@ -34,6 +34,7 @@ import org.smartregister.cbhc.R;
 import org.smartregister.cbhc.adapter.ViewPagerAdapter;
 import org.smartregister.cbhc.application.AncApplication;
 import org.smartregister.cbhc.contract.ProfileContract;
+import org.smartregister.cbhc.domain.UniqueId;
 import org.smartregister.cbhc.fragment.ChildImmunizationFragment;
 import org.smartregister.cbhc.fragment.FollowupFragment;
 import org.smartregister.cbhc.fragment.GrowthFragment;
@@ -44,6 +45,8 @@ import org.smartregister.cbhc.helper.ECSyncHelper;
 import org.smartregister.cbhc.helper.ImageRenderHelper;
 import org.smartregister.cbhc.presenter.ProfilePresenter;
 import org.smartregister.cbhc.repository.AncRepository;
+import org.smartregister.cbhc.repository.HealthIdRepository;
+import org.smartregister.cbhc.repository.UniqueIdRepository;
 import org.smartregister.cbhc.sync.AncClientProcessorForJava;
 import org.smartregister.cbhc.util.Constants;
 import org.smartregister.cbhc.util.DBConstants;
@@ -317,12 +320,33 @@ public class MemberProfileActivity extends BaseProfileActivity implements Profil
         commonPersonObjectClient.setColumnmaps(commonPersonObject.getColumnmaps());
         return commonPersonObjectClient;
     }
-
+    private UniqueIdRepository uniqueIdRepository;
+    private HealthIdRepository healthIdRepository;
+    public HealthIdRepository getHealthIdRepository() {
+        if (healthIdRepository == null) {
+            healthIdRepository = AncApplication.getInstance().getHealthIdRepository();
+        }
+        return healthIdRepository;
+    }
+    public void displayShortToast(int resourceId) {
+        org.smartregister.util.Utils.showShortToast(this, this.getString(resourceId));
+    }
     @Override
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.btn_profile_registration_info:
                 householdDetails.getColumnmaps().putAll(AncApplication.getInstance().getContext().detailsRepository().getAllDetailsForClient(householdDetails.entityId()));
+                String patient_identifier = householdDetails.getColumnmaps().get("Patient_Identifier");
+
+                if(patient_identifier == null || (patient_identifier!=null && patient_identifier.isEmpty()) || patient_identifier.equalsIgnoreCase("null")){
+                    UniqueId uniqueId = getHealthIdRepository().getNextUniqueId();
+                    final String entityId = uniqueId != null ? uniqueId.getOpenmrsId() : "";
+                    if (StringUtils.isBlank(entityId)) {
+                        displayShortToast(R.string.no_openmrs_id);
+                    } else {
+                        householdDetails.getColumnmaps().put("Patient_Identifier",entityId);
+                    }
+                }
                 String formMetadataformembers = JsonFormUtils.getMemberJsonEditFormString(this, householdDetails.getColumnmaps());
                 try {
                     JsonFormUtils.startFormForEdit(this, JsonFormUtils.REQUEST_CODE_GET_JSON, formMetadataformembers);
