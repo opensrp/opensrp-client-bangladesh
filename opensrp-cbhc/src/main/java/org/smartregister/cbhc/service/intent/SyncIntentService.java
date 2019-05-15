@@ -24,6 +24,7 @@ import org.smartregister.cbhc.util.Constants;
 import org.smartregister.cbhc.util.NetworkUtils;
 import org.smartregister.domain.FetchStatus;
 import org.smartregister.domain.Response;
+import org.smartregister.domain.db.Client;
 import org.smartregister.domain.db.EventClient;
 import org.smartregister.repository.AllSharedPreferences;
 import org.smartregister.repository.EventClientRepository;
@@ -141,9 +142,9 @@ public class SyncIntentService extends IntentService {
                     lastServerVersion = serverVersionPair.second;
                 }
 
-                ecSyncUpdater.saveAllClientsAndEvents(jsonObject);
-                ecSyncUpdater.updateLastSyncTimeStamp(lastServerVersion);
-
+                new ClientInsertThread(ecSyncUpdater,jsonObject,lastServerVersion).start();
+//                ecSyncUpdater.saveAllClientsAndEvents(jsonObject);
+//                ecSyncUpdater.updateLastSyncTimeStamp(lastServerVersion);
                 processClient(serverVersionPair);
 
                 fetchRetry(0);
@@ -155,7 +156,23 @@ public class SyncIntentService extends IntentService {
             DeleteIntentServiceJob.scheduleJobImmediately(DeleteIntentServiceJob.TAG);
         }
     }
+    class ClientInsertThread extends Thread {
+        ECSyncHelper ecSyncUpdater;
+        JSONObject jsonObject;
+        long lastServerVersion;
+        public ClientInsertThread(ECSyncHelper ecSyncUpdater,JSONObject jsonObject,long lastServerVersion){
+            this.ecSyncUpdater = ecSyncUpdater;
+            this.jsonObject = jsonObject;
+            this.lastServerVersion = lastServerVersion;
+        }
 
+        @Override
+        public void run() {
+            ecSyncUpdater.saveAllClientsAndEvents(jsonObject);
+            ecSyncUpdater.updateLastSyncTimeStamp(lastServerVersion);
+        }
+
+    }
     public void fetchFailed(int count) {
         if (count < BuildConfig.MAX_SYNC_RETRIES) {
             int newCount = count + 1;
@@ -166,16 +183,34 @@ public class SyncIntentService extends IntentService {
     }
 
     private void processClient(Pair<Long, Long> serverVersionPair) {
-        try {
-            ECSyncHelper ecUpdater = ECSyncHelper.getInstance(context);
-            List<EventClient> events = ecUpdater.allEventClients(serverVersionPair.first - 1, serverVersionPair.second);
-            AncClientProcessorForJava.getInstance(context).processClient(events);
-            sendSyncStatusBroadcastMessage(FetchStatus.fetched);
-        } catch (Exception e) {
-            Log.e(getClass().getName(), "Process Client Exception: " + e.getMessage(), e.getCause());
+        new ClientEventThread(serverVersionPair).start();
+//        try {
+//            ECSyncHelper ecUpdater = ECSyncHelper.getInstance(context);
+//            List<EventClient> events = ecUpdater.allEventClients(serverVersionPair.first - 1, serverVersionPair.second);
+//            AncClientProcessorForJava.getInstance(context).processClient(events);
+//            sendSyncStatusBroadcastMessage(FetchStatus.fetched);
+//        } catch (Exception e) {
+//            Log.e(getClass().getName(), "Process Client Exception: " + e.getMessage(), e.getCause());
+//        }
+    }
+    class ClientEventThread extends Thread {
+        Pair<Long, Long> serverVersionPair;
+        public ClientEventThread(Pair<Long, Long> serverVersionPair){
+            this.serverVersionPair = serverVersionPair;
+        }
+
+        @Override
+        public void run() {
+            try {
+                ECSyncHelper ecUpdater = ECSyncHelper.getInstance(context);
+                List<EventClient> events = ecUpdater.allEventClients(serverVersionPair.first - 1, serverVersionPair.second);
+                AncClientProcessorForJava.getInstance(context).processClient(events);
+                sendSyncStatusBroadcastMessage(FetchStatus.fetched);
+            } catch (Exception e) {
+                Log.e(getClass().getName(), "Process Client Exception: " + e.getMessage(), e.getCause());
+            }
         }
     }
-
     // PUSH TO SERVER
     private void pushToServer() {
         pushECToServer();

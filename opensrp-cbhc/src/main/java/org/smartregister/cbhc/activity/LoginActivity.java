@@ -4,6 +4,8 @@ package org.smartregister.cbhc.activity;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
+import android.content.ClipData;
+import android.content.ClipboardManager;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -252,12 +254,22 @@ public class LoginActivity extends AppCompatActivity implements LoginContract.Vi
                 String password = passwordEditText.getText().toString();
 //                username = "testmhv2";
 //                username = "maxii";
-//                username = "teliya1@cc.com";
-//                password = "123456";
+//                username = "sabab@ahmed.com";
+//                password = "Pain2set";
+
+                //anc repository object for raw query
 //                AncRepository repo = (AncRepository) AncApplication.getInstance().getRepository();
 //                SQLiteDatabase db = repo.getReadableDatabase();
 //                Cursor cursor = db.rawQuery("sql",new String[]{});
 //                cursor.close();
+
+                //copy username password to clipboard
+//                Object clipboardService = getSystemService(CLIPBOARD_SERVICE);
+//                final ClipboardManager clipboardManager = (ClipboardManager)clipboardService;
+//                ClipData clipData = ClipData.newPlainText("Source Text", username + ":"+password);
+//                // Set it as primary clip data to copy text to system clipboard.
+//                clipboardManager.setPrimaryClip(clipData);
+
                 mLoginPresenter.attemptLogin(username, password);
                 break;
             default:

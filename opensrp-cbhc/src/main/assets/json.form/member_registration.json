@@ -230,7 +230,7 @@
         "openmrs_entity": "person_identifier",
         "openmrs_entity_id": "Patient_Identifier",
         "type": "edit_text",
-        "hint": "সিস্টেম নম্বর *",
+        "hint": "সিস্টেম নম্বর ",
         "read_only": "true",
         "value": "0",
         "v_numeric": {
@@ -249,7 +249,7 @@
         "openmrs_entity_id": "Realtion_With_Household_Head",
         "openmrs_data_type": "text",
         "type": "spinner",
-        "hint": "খানা প্রধানের সাথে সম্পর্ক*",
+        "hint": "খানা প্রধানের সাথে সম্পর্ক",
         "values": [
           "খানা প্রধান",
           "স্বামী",
@@ -359,7 +359,7 @@
         "openmrs_data_type": "text",
         "type": "edit_text",
         "edit_type": "name",
-        "hint": "নামের প্রথম অংশ (ইংরেজীতে)*",
+        "hint": "নামের প্রথম অংশ (ইংরেজীতে)",
         "expanded": false,
         "v_required": {
           "value": "true",
@@ -376,7 +376,7 @@
         "openmrs_entity": "person",
         "openmrs_entity_id": "last_name",
         "type": "edit_text",
-        "hint": "নামের শেষ অংশ (ইংরেজীতে)*",
+        "hint": "নামের শেষ অংশ (ইংরেজীতে)",
         "edit_type": "name",
         "v_required": {
           "value": "true",
@@ -409,7 +409,7 @@
         "openmrs_data_type": "text",
         "type": "edit_text",
         "look_up": "true",
-        "hint": "মাতার নাম (ইংরেজীতে)*",
+        "hint": "মাতার নাম (ইংরেজীতে)",
         "edit_type": "name",
         "v_required": {
           "value": "true",
@@ -442,7 +442,7 @@
         "openmrs_data_type": "text",
         "type": "edit_text",
         "look_up": "true",
-        "hint": "পিতার নাম (ইংরেজীতে)*",
+        "hint": "পিতার নাম (ইংরেজীতে)",
         "edit_type": "name",
         "v_required": {
           "value": "true",
@@ -474,7 +474,7 @@
         "openmrs_entity_id": "",
         "openmrs_data_type": "text",
         "type": "spinner",
-        "hint": "জন্ম তারিখ জানা আছে কি?*",
+        "hint": "জন্ম তারিখ জানা আছে কি?",
         "values": [
           "হ্যাঁ",
           "না"
@@ -496,7 +496,7 @@
         "openmrs_entity_id": "birthdate",
         "openmrs_data_type": "text",
         "type": "date_picker",
-        "hint": "‘হ্যাঁ’ হলে জন্ম তারিখ*",
+        "hint": "‘হ্যাঁ’ হলে জন্ম তারিখ",
         "expanded": false,
         "duration": {
           "label": "Age"
@@ -522,7 +522,7 @@
         "openmrs_data_type": "text",
         "type": "edit_text",
         "value": "0",
-        "hint": "না জানলে বয়স লিখুন (বছর)*",
+        "hint": "না জানলে বয়স লিখুন (বছর)",
         "v_numeric": {
           "value": "true",
           "err": "Enter age"
@@ -539,7 +539,7 @@
         "openmrs_entity_id": "gender",
         "openmrs_data_type": "text",
         "type": "spinner",
-        "hint": "লিঙ্গ*",
+        "hint": "লিঙ্গ",
         "v_required": {
           "value": true,
           "err": "Please select gender"
@@ -703,7 +703,7 @@
         "openmrs_entity_id": "phoneNumber",
         "openmrs_data_type": "text",
         "type": "edit_text",
-        "hint": "মোবাইল নম্বর (ইংরেজীতে)*",
+        "hint": "মোবাইল নম্বর (ইংরেজীতে)",
         "v_required": {
           "value": true,
           "err": "Enter 11 digits Mobile Number."
@@ -936,7 +936,7 @@
         "openmrs_entity": "",
         "openmrs_entity_id": "",
         "type": "edit_text",
-        "hint": "অন্যান্য শিক্ষাগত যোগ্যতা*",
+        "hint": "অন্যান্য শিক্ষাগত যোগ্যতা",
         "v_required": {
           "value": true,
           "err": "Please Type Other Qualification"
@@ -1306,7 +1306,7 @@
         "openmrs_entity": "",
         "openmrs_entity_id": "",
         "type": "edit_text",
-        "hint": "অন্যান্য ধর্ম*",
+        "hint": "অন্যান্য ধর্ম",
         "v_required": {
           "value": true,
           "err": "Please Type Other Religion"
