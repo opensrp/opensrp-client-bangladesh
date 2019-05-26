@@ -89,6 +89,7 @@ public class SyncIntentService extends IntentService {
     }
 
     private synchronized void fetchRetry(final int count) {
+
         try {
             // Fetch team
             AllSharedPreferences sharedPreferences = AncApplication.getInstance().getContext().userService().getAllSharedPreferences();
@@ -142,11 +143,14 @@ public class SyncIntentService extends IntentService {
                     lastServerVersion = serverVersionPair.second;
                 }
 
-                new ClientInsertThread(ecSyncUpdater,jsonObject,lastServerVersion).start();
-//                ecSyncUpdater.saveAllClientsAndEvents(jsonObject);
-//                ecSyncUpdater.updateLastSyncTimeStamp(lastServerVersion);
+//                new ClientInsertThread(ecSyncUpdater,jsonObject,lastServerVersion).start();
+                long start  = System.currentTimeMillis();
+                ecSyncUpdater.saveAllClientsAndEvents(jsonObject);
+                ecSyncUpdater.updateLastSyncTimeStamp(lastServerVersion);
                 processClient(serverVersionPair);
-
+                long end = System.currentTimeMillis();
+                long diff = end - start;
+                System.out.println(diff);
                 fetchRetry(0);
             }
         } catch (Exception e) {
@@ -156,6 +160,7 @@ public class SyncIntentService extends IntentService {
             DeleteIntentServiceJob.scheduleJobImmediately(DeleteIntentServiceJob.TAG);
         }
     }
+
     class ClientInsertThread extends Thread {
         ECSyncHelper ecSyncUpdater;
         JSONObject jsonObject;
@@ -183,15 +188,15 @@ public class SyncIntentService extends IntentService {
     }
 
     private void processClient(Pair<Long, Long> serverVersionPair) {
-        new ClientEventThread(serverVersionPair).start();
-//        try {
-//            ECSyncHelper ecUpdater = ECSyncHelper.getInstance(context);
-//            List<EventClient> events = ecUpdater.allEventClients(serverVersionPair.first - 1, serverVersionPair.second);
-//            AncClientProcessorForJava.getInstance(context).processClient(events);
-//            sendSyncStatusBroadcastMessage(FetchStatus.fetched);
-//        } catch (Exception e) {
-//            Log.e(getClass().getName(), "Process Client Exception: " + e.getMessage(), e.getCause());
-//        }
+//        new ClientEventThread(serverVersionPair).start();
+        try {
+            ECSyncHelper ecUpdater = ECSyncHelper.getInstance(context);
+            List<EventClient> events = ecUpdater.allEventClients(serverVersionPair.first - 1, serverVersionPair.second);
+            AncClientProcessorForJava.getInstance(context).processClient(events);
+            sendSyncStatusBroadcastMessage(FetchStatus.fetched);
+        } catch (Exception e) {
+            Log.e(getClass().getName(), "Process Client Exception: " + e.getMessage(), e.getCause());
+        }
     }
     class ClientEventThread extends Thread {
         Pair<Long, Long> serverVersionPair;

@@ -102,7 +102,6 @@ public class LoginActivity extends AppCompatActivity implements LoginContract.Vi
         app_version_status();
 
 
-
     }
 
     @Override
@@ -254,9 +253,10 @@ public class LoginActivity extends AppCompatActivity implements LoginContract.Vi
                 String password = passwordEditText.getText().toString();
 //                username = "testmhv2";
 //                username = "maxii";
+//                username = "teliya1@cc.com";
 //                username = "sabab@ahmed.com";
 //                password = "Pain2set";
-
+//                password = "123456";
                 //anc repository object for raw query
 //                AncRepository repo = (AncRepository) AncApplication.getInstance().getRepository();
 //                SQLiteDatabase db = repo.getReadableDatabase();
@@ -321,15 +321,17 @@ public class LoginActivity extends AppCompatActivity implements LoginContract.Vi
         return this;
 
     }
-    public void app_version_status(){
+
+    public void app_version_status() {
         org.smartregister.util.Utils.startAsyncTask(new AsyncTask() {
             String version_code = "";
             String version = "";
+
             @Override
             protected Object doInBackground(Object[] objects) {
                 try {
                     // Create a URL for the desired page
-                    String base_url = getString(R.string.opensrp_url).replace("opensrp/","");
+                    String base_url = getString(R.string.opensrp_url).replace("opensrp/", "");
                     URL url = new URL(base_url + "opt/multimedia/app-version.txt");
 
                     // Read all the text returned by the server
@@ -338,7 +340,7 @@ public class LoginActivity extends AppCompatActivity implements LoginContract.Vi
                     str = "";
                     while ((str = in.readLine()) != null) {
                         // str is one line of text; readLine() strips the newline character(s)
-                        version_code +=str;
+                        version_code += str;
                     }
                     in.close();
                 } catch (MalformedURLException e) {
@@ -353,7 +355,7 @@ public class LoginActivity extends AppCompatActivity implements LoginContract.Vi
                 try {
                     PackageInfo pInfo = LoginActivity.this.getPackageManager().getPackageInfo(getPackageName(), 0);
                     version = pInfo.versionName;
-                    if(!version.equalsIgnoreCase(version_code.trim())){
+                    if (!version.equalsIgnoreCase(version_code.trim())) {
                         android.support.v7.app.AlertDialog alertDialog = new android.support.v7.app.AlertDialog.Builder(LoginActivity.this).create();
                         alertDialog.setTitle("New version available");
                         alertDialog.setCanceledOnTouchOutside(true);
@@ -361,7 +363,7 @@ public class LoginActivity extends AppCompatActivity implements LoginContract.Vi
                         alertDialog.setButton(android.support.v7.app.AlertDialog.BUTTON_POSITIVE, "UPDATE",
                                 new DialogInterface.OnClickListener() {
                                     public void onClick(DialogInterface dialog, int which) {
-                                        try{
+                                        try {
                                             final String appPackageName = getPackageName(); // getPackageName() from Context or Activity object
                                             try {
                                                 startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=" + appPackageName)));
@@ -370,19 +372,19 @@ public class LoginActivity extends AppCompatActivity implements LoginContract.Vi
                                             }
 
 
-                                        }catch(Exception e){
+                                        } catch (Exception e) {
                                             e.printStackTrace();
                                         }
                                     }
                                 });
-                        if(alertDialog!=null)
+                        if (alertDialog != null)
                             alertDialog.show();
                     }
                 } catch (PackageManager.NameNotFoundException e) {
                     e.printStackTrace();
                 }
             }
-        },null);
+        }, null);
     }
 
 }

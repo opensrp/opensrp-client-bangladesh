@@ -267,6 +267,11 @@ public class FollowupFragment extends BaseProfileFragment {
 
     public ArrayList<Constants.FOLLOWUP_FORM.FOLLOWUPFORMS> getactivateforms(){
         ArrayList<Constants.FOLLOWUP_FORM.FOLLOWUPFORMS> all_forms = new ArrayList<Constants.FOLLOWUP_FORM.FOLLOWUPFORMS>();
+        String patient_identifier = householdDetails.getColumnmaps().get("Patient_Identifier");
+
+        if(patient_identifier == null || (patient_identifier!=null && patient_identifier.isEmpty()) || patient_identifier.equalsIgnoreCase("null")){
+            return all_forms;
+        }
 //        all_forms.addAll(followup_forms);
 //        String [] remove_from_list = {Followup_Form_MHV_Mobile_no,Followup_Form_MHV_Marital,Followup_Form_MHV_Pregnant,Followup_Form_MHV_Risky_Habit,Followup_Form_MHV_Death};
 //

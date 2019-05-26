@@ -411,22 +411,27 @@ public class MemberProfileActivity extends BaseProfileActivity implements Profil
             AlertDialog.Builder builderSingle = new AlertDialog.Builder(this);
 
             final ArrayAdapter<String> arrayAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1);
-//            arrayAdapter.add(getString(R.string.start_follow_up));
-            if(age>=10){
-                arrayAdapter.add("মোবাইল নম্বর");
-            }
+            String patient_identifier = householdDetails.getColumnmaps().get("Patient_Identifier");
 
-            if(age>=5&&marital_status==1&&gender==0){
-                arrayAdapter.add("গর্ভাবস্থা");
+            if(!(patient_identifier == null || (patient_identifier!=null && patient_identifier.isEmpty()) || patient_identifier.equalsIgnoreCase("null"))){
+                //            arrayAdapter.add(getString(R.string.start_follow_up));
+                if(age>=10){
+                    arrayAdapter.add("মোবাইল নম্বর");
+                }
+
+                if(age>=5&&marital_status==1&&gender==0){
+                    arrayAdapter.add("গর্ভাবস্থা");
 //                arrayAdapter.add("জন্ম");
 
+                }
+
+                if(age>=5){
+                    arrayAdapter.add("বৈবাহিক অবস্থা");
+                    arrayAdapter.add("ঝুঁকিপূর্ণ অভ্যাস");
+//                arrayAdapter.add("স্থানান্তর");
+                }
             }
 
-            if(age>=5){
-                arrayAdapter.add("বৈবাহিক অবস্থা");
-                arrayAdapter.add("ঝুঁকিপূর্ণ অভ্যাস");
-//                arrayAdapter.add("স্থানান্তর");
-            }
 
 
             arrayAdapter.add("তথ্য সংগ্রহ সম্ভব নয়");
