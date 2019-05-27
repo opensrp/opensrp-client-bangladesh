@@ -80,20 +80,24 @@ public class SyncStatusBroadcastReceiver extends BroadcastReceiver {
     public void onReceive(Context context, Intent intent) {
         Bundle data = intent.getExtras();
         if (data != null) {
-            Serializable fetchStatusSerializable = data.getSerializable(EXTRA_FETCH_STATUS);
-            if (fetchStatusSerializable != null && fetchStatusSerializable instanceof FetchStatus) {
-                FetchStatus fetchStatus = (FetchStatus) fetchStatusSerializable;
-                if (fetchStatus.equals(FetchStatus.fetchStarted)) {
-                    started();
-                } else {
-                    boolean isComplete = data.getBoolean(EXTRA_COMPLETE_STATUS);
-                    if (isComplete) {
-                        complete(fetchStatus, context);
-                        startExtendedSync();
+            try {
+                Serializable fetchStatusSerializable = data.getSerializable(EXTRA_FETCH_STATUS);
+                if (fetchStatusSerializable != null && fetchStatusSerializable instanceof FetchStatus) {
+                    FetchStatus fetchStatus = (FetchStatus) fetchStatusSerializable;
+                    if (fetchStatus.equals(FetchStatus.fetchStarted)) {
+                        started();
                     } else {
-                        inProgress(fetchStatus);
+                        boolean isComplete = data.getBoolean(EXTRA_COMPLETE_STATUS);
+                        if (isComplete) {
+                            complete(fetchStatus, context);
+                            startExtendedSync();
+                        } else {
+                            inProgress(fetchStatus);
+                        }
                     }
                 }
+            }catch(Exception e){
+                e.printStackTrace();
             }
         }
     }

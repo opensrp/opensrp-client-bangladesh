@@ -174,7 +174,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="5dp"
                 android:gravity="center_horizontal"
-                android:text="Population Registration and Information Management Application - MHV"
+                android:text="Population Registration and Information Management Application - HA"
                 android:textColor="@color/white"
                 android:textSize="@dimen/login_build_text_view_textSize"
                 android:typeface="sans" />
