@@ -136,7 +136,7 @@ public class GrowthUtil {
     }
 
 
-    private static Date dateOfBirth() {
+    public static Date dateOfBirth() {
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd\'T\'HH:mm:ss.SSS\'Z\'");
         try {
             return simpleDateFormat.parse(DOB_STRING);

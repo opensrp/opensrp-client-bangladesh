@@ -23,6 +23,7 @@ import org.smartregister.growthmonitoring.GrowthMonitoringLibrary;
 import org.smartregister.growthmonitoring.domain.Weight;
 import org.smartregister.growthmonitoring.domain.WeightWrapper;
 import org.smartregister.growthmonitoring.fragment.GrowthDialogFragment;
+import org.smartregister.growthmonitoring.fragment.RecordWeightDialogFragment;
 import org.smartregister.growthmonitoring.listener.WeightActionListener;
 import org.smartregister.growthmonitoring.repository.WeightRepository;
 import org.smartregister.growthmonitoring.service.intent.WeightIntentService;
@@ -74,8 +75,26 @@ public class GrowthFragment extends BaseProfileFragment {
                 view.setEnabled(true);
             }
         });
+        View recordHeight = fragmentView.findViewById(R.id.recordHeight);
+        recordHeight.setClickable(true);
+        recordHeight.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
 
+                RecordHeightDialogFragment recordHeightDialogFragment = RecordHeightDialogFragment.newInstance();
+                recordHeightDialogFragment.show(GrowthUtil.initFragmentTransaction(getActivity(), DIALOG_TAG), DIALOG_TAG);
+            }
+        });
+        View recordMUAC = fragmentView.findViewById(R.id.recordMUAC);
+        recordMUAC.setClickable(true);
+        recordMUAC.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
 
+                RecordMUACDialogFragment recordMUACDialogFragment = RecordMUACDialogFragment.newInstance();
+                recordMUACDialogFragment.show(GrowthUtil.initFragmentTransaction(getActivity(), DIALOG_TAG), DIALOG_TAG);
+            }
+        });
         ImageButton growthChartButton = (ImageButton) fragmentView.findViewById(R.id.growth_chart_button);
         growthChartButton.setOnClickListener(new View.OnClickListener() {
             @Override

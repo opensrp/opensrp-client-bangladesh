@@ -38,6 +38,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="WEIGHT-FOR-AGE"
+                android:visibility="gone"
                 android:textColor="@color/text_black"
                 android:textSize="@dimen/activity_sub_title_size" />
 
@@ -74,6 +75,84 @@
 
                 <ImageButton
                     android:id="@+id/growth_chart_button"
+                    android:layout_width="0dp"
+                    android:layout_height="70dp"
+                    android:layout_marginLeft="@dimen/card_category_horizontal_margin"
+                    android:layout_weight="0.5"
+                    android:background="@null"
+                    android:src="@drawable/ic_icon_growth_chart" />
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:weightSum="2">
+
+                <LinearLayout
+                    android:id="@+id/recordHeight"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1.5"
+                    android:background="@drawable/record_weight_bg"
+                    android:gravity="center"
+                    android:orientation="horizontal"
+                    android:paddingBottom="16dp"
+                    android:paddingTop="16dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:text="Record Height"
+                        android:textAllCaps="false"
+                        android:textAppearance="?android:attr/textAppearanceSmall"
+                        android:textColor="@color/text_black"
+                        android:textSize="19sp" />
+                </LinearLayout>
+
+                <ImageButton
+                    android:visibility="invisible"
+                    android:layout_width="0dp"
+                    android:layout_height="70dp"
+                    android:layout_marginLeft="@dimen/card_category_horizontal_margin"
+                    android:layout_weight="0.5"
+                    android:background="@null"
+                    android:src="@drawable/ic_icon_growth_chart" />
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:weightSum="2">
+
+                <LinearLayout
+                    android:id="@+id/recordMUAC"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1.5"
+                    android:background="@drawable/record_weight_bg"
+                    android:gravity="center"
+                    android:orientation="horizontal"
+                    android:paddingBottom="16dp"
+                    android:paddingTop="16dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:text="Record MUAC"
+                        android:textAllCaps="false"
+                        android:textAppearance="?android:attr/textAppearanceSmall"
+                        android:textColor="@color/text_black"
+                        android:textSize="19sp" />
+                </LinearLayout>
+
+                <ImageButton
+                    android:visibility="invisible"
                     android:layout_width="0dp"
                     android:layout_height="70dp"
                     android:layout_marginLeft="@dimen/card_category_horizontal_margin"
