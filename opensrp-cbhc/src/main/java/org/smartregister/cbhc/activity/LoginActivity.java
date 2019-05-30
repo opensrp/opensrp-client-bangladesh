@@ -75,6 +75,7 @@ public class LoginActivity extends AppCompatActivity implements LoginContract.Vi
     private Button loginButton;
     private TextView buildDetailsView;
     private LoginContract.Presenter mLoginPresenter;
+    LoginActivity mActivity;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -84,7 +85,7 @@ public class LoginActivity extends AppCompatActivity implements LoginContract.Vi
         getSupportActionBar().setDisplayShowHomeEnabled(false);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
         getSupportActionBar().setBackgroundDrawable(new ColorDrawable(getResources().getColor(R.color.customAppThemeBlue)));
-
+        mActivity = this;
         mLoginPresenter = new LoginPresenter(this);
         mLoginPresenter.setLanguage();
         setupViews(mLoginPresenter);
@@ -99,7 +100,7 @@ public class LoginActivity extends AppCompatActivity implements LoginContract.Vi
         }
 
 
-        app_version_status();
+//        app_version_status();
 
 
     }
@@ -122,6 +123,7 @@ public class LoginActivity extends AppCompatActivity implements LoginContract.Vi
     @Override
     protected void onResume() {
         super.onResume();
+        mActivity = this;
         mLoginPresenter.processViewCustomizations();
         if (!mLoginPresenter.isUserLoggedOut()) {
             goToHome(false);
@@ -131,6 +133,7 @@ public class LoginActivity extends AppCompatActivity implements LoginContract.Vi
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        mActivity = null;
         mLoginPresenter.onDestroy(isChangingConfigurations());
     }
 
@@ -279,6 +282,12 @@ public class LoginActivity extends AppCompatActivity implements LoginContract.Vi
     }
 
     @Override
+    protected void onPause() {
+        super.onPause();
+        mActivity = null;
+    }
+
+    @Override
     public void setUsernameError(int resourceId) {
         userNameEditText.setError(getString(resourceId));
         userNameEditText.requestFocus();
@@ -377,7 +386,7 @@ public class LoginActivity extends AppCompatActivity implements LoginContract.Vi
                                         }
                                     }
                                 });
-                        if (alertDialog != null)
+                        if (mActivity!=null&&alertDialog != null)
                             alertDialog.show();
                     }
                 } catch (PackageManager.NameNotFoundException e) {

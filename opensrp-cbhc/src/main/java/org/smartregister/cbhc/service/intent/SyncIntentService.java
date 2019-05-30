@@ -144,13 +144,13 @@ public class SyncIntentService extends IntentService {
                 }
 
 //                new ClientInsertThread(ecSyncUpdater,jsonObject,lastServerVersion).start();
-                long start  = System.currentTimeMillis();
+               // long start  = System.currentTimeMillis();
                 ecSyncUpdater.saveAllClientsAndEvents(jsonObject);
                 ecSyncUpdater.updateLastSyncTimeStamp(lastServerVersion);
                 processClient(serverVersionPair);
-                long end = System.currentTimeMillis();
-                long diff = end - start;
-                System.out.println(diff);
+               // long end = System.currentTimeMillis();
+              //  long diff = end - start;
+                //System.out.println(diff);
                 fetchRetry(0);
             }
         } catch (Exception e) {

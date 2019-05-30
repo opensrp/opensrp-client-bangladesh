@@ -81,10 +81,20 @@ public class AncClientProcessorForJava extends ClientProcessorForJava {
                     }
 
                     Client client = eventClient.getClient();
-
+                    if(!eventType.contains("Household")){
+                        String log = "client: "+client.getRelationships();
+                        System.out.println(log);
+                    }
                     //iterate through the events
-                    if (client != null) {
-                        processEvent(event, client, clientClassification);
+                    if (client != null && event != null && clientClassification != null) {
+                        if(!eventType.contains("Household")){
+                            if(client.getRelationships()!=null){
+                                processEvent(event, client, clientClassification);
+                            }
+                        }else{
+                            processEvent(event, client, clientClassification);
+                        }
+
 
                     }
                 }
