@@ -18,6 +18,8 @@ import org.smartregister.cbhc.helper.ECSyncHelper;
 import org.smartregister.cbhc.helper.LocationHelper;
 import org.smartregister.cbhc.job.DeleteIntentServiceJob;
 import org.smartregister.cbhc.job.ImageUploadServiceJob;
+import org.smartregister.cbhc.job.PullHealthIdsServiceJob;
+import org.smartregister.cbhc.job.PullUniqueIdsServiceJob;
 import org.smartregister.cbhc.receiver.SyncStatusBroadcastReceiver;
 import org.smartregister.cbhc.sync.AncClientProcessorForJava;
 import org.smartregister.cbhc.util.Constants;
@@ -158,6 +160,8 @@ public class SyncIntentService extends IntentService {
             fetchFailed(count);
         }finally {
             DeleteIntentServiceJob.scheduleJobImmediately(DeleteIntentServiceJob.TAG);
+            PullHealthIdsServiceJob.scheduleJobImmediately(PullHealthIdsServiceJob.TAG);
+            PullUniqueIdsServiceJob.scheduleJobImmediately(PullUniqueIdsServiceJob.TAG);
         }
     }
 
