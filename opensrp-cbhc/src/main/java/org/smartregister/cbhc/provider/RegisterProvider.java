@@ -37,6 +37,7 @@ import org.smartregister.view.viewholder.OnClickFormLauncher;
 
 import java.text.MessageFormat;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.Set;
 
 import static org.smartregister.util.Utils.getName;
@@ -75,11 +76,18 @@ public class RegisterProvider implements RecyclerViewProvider<RegisterProvider.R
 //        if(removeId.equalsIgnoreCase(213214)){
 //            return;
 //        }
+
         if (visibleColumns.isEmpty()) {
             populatePatientColumn(pc, client, viewHolder);
             populateIdentifierColumn(pc, viewHolder);
             populateLastColumn(pc, viewHolder);
-            (new MemberCountAsyncTask(pc,viewHolder)).execute();
+            MemberCount mc = memberCountHashMap.get(pc.entityId());
+            if(mc!=null){
+                populateMemberCountColumn(viewHolder,mc);
+            }else{
+                (new MemberCountAsyncTask(pc,viewHolder)).execute();
+            }
+
             return;
         }
 
@@ -105,6 +113,8 @@ public class RegisterProvider implements RecyclerViewProvider<RegisterProvider.R
         ConfigurableViewsLibrary.getInstance().getConfigurableViewsHelper().processRegisterColumns(mapping, convertView, visibleColumns, R.id.register_columns);
         */
     }
+
+
 
     private void populatePatientColumn(CommonPersonObjectClient pc, SmartRegisterClient client, RegisterViewHolder viewHolder) {
 
@@ -300,6 +310,52 @@ public class RegisterProvider implements RecyclerViewProvider<RegisterProvider.R
 
     }
 
+    class MemberCount {
+        int memberCount;
+        int femaleChildCount;
+        int maleChildCount;
+        int pregnantCount;
+    }
+    private void populateMemberCountColumn(RegisterViewHolder viewHolder, MemberCount mc){
+
+        TextView countView = viewHolder.memberCount;
+        TextView femalechildcount = viewHolder.femalechild;
+        TextView malechildcount = viewHolder.malechild;
+        TextView pregnantcountView = viewHolder.pregnantcount;
+
+        ImageView femalechildpresent = viewHolder.femalepresent;
+        ImageView malechildpresent = viewHolder.malepresent;
+        ImageView pregnantpresent = viewHolder.pregnantpresent;
+
+        countView.setText("Members: "+mc.memberCount);
+        if(mc.femaleChildCount>0){
+            femalechildcount.setVisibility(View.VISIBLE);
+            femalechildpresent.setVisibility(View.VISIBLE);
+            femalechildcount.setText(""+mc.femaleChildCount);
+        }else{
+            femalechildcount.setVisibility(View.GONE);
+            femalechildpresent.setVisibility(View.GONE);
+        }
+        if(mc.maleChildCount>0){
+            malechildcount.setVisibility(View.VISIBLE);
+            malechildpresent.setVisibility(View.VISIBLE);
+            malechildcount.setText(""+mc.maleChildCount);
+        }else{
+            malechildcount.setVisibility(View.GONE);
+            malechildpresent.setVisibility(View.GONE);
+        }
+        if(mc.pregnantCount>0){
+            pregnantcountView.setVisibility(View.VISIBLE);
+            pregnantpresent.setVisibility(View.VISIBLE);
+            pregnantcountView.setText(""+mc.pregnantCount);
+        }else{
+            pregnantcountView.setVisibility(View.GONE);
+            pregnantpresent.setVisibility(View.GONE);
+        }
+
+    }
+
+    HashMap<String,MemberCount>memberCountHashMap = new HashMap<>();
     class MemberCountAsyncTask extends AsyncTask {
         CommonPersonObjectClient pc;
         int count = 0;
@@ -427,6 +483,12 @@ public class RegisterProvider implements RecyclerViewProvider<RegisterProvider.R
                 pregnantcountView.setVisibility(View.GONE);
                 pregnantpresent.setVisibility(View.GONE);
             }
+            MemberCount mc = new MemberCount();
+            mc.memberCount = count;
+            mc.pregnantCount = pregnantcount;
+            mc.maleChildCount = malechild;
+            mc.femaleChildCount = femalechild;
+            memberCountHashMap.put(pc.entityId(),mc);
         }
     }
 

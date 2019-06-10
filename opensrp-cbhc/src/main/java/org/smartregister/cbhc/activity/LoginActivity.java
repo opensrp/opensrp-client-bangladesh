@@ -75,7 +75,7 @@ public class LoginActivity extends AppCompatActivity implements LoginContract.Vi
     private Button loginButton;
     private TextView buildDetailsView;
     private LoginContract.Presenter mLoginPresenter;
-
+    private  LoginActivity mActivity;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -120,12 +120,19 @@ public class LoginActivity extends AppCompatActivity implements LoginContract.Vi
     }
 
     @Override
+    protected void onPause() {
+        super.onPause();
+        mActivity = null;
+    }
+
+    @Override
     protected void onResume() {
         super.onResume();
         mLoginPresenter.processViewCustomizations();
         if (!mLoginPresenter.isUserLoggedOut()) {
             goToHome(false);
         }
+        mActivity = this;
     }
 
     @Override
@@ -251,6 +258,8 @@ public class LoginActivity extends AppCompatActivity implements LoginContract.Vi
             case R.id.login_login_btn:
                 String username = userNameEditText.getText().toString();
                 String password = passwordEditText.getText().toString();
+//                username = "haiphn";
+//                password = "ha123";
 //                username = "testmhv2";
 //                username = "maxii";
 //                username = "teliya1@cc.com";
@@ -377,7 +386,7 @@ public class LoginActivity extends AppCompatActivity implements LoginContract.Vi
                                         }
                                     }
                                 });
-                        if (alertDialog != null)
+                        if (mActivity!=null&&alertDialog != null)
                             alertDialog.show();
                     }
                 } catch (PackageManager.NameNotFoundException e) {
