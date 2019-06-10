@@ -75,6 +75,7 @@ public class LoginActivity extends AppCompatActivity implements LoginContract.Vi
     private Button loginButton;
     private TextView buildDetailsView;
     private LoginContract.Presenter mLoginPresenter;
+
     LoginActivity mActivity;
 
     @Override
@@ -120,6 +121,8 @@ public class LoginActivity extends AppCompatActivity implements LoginContract.Vi
         return super.onOptionsItemSelected(item);
     }
 
+
+
     @Override
     protected void onResume() {
         super.onResume();
@@ -128,6 +131,7 @@ public class LoginActivity extends AppCompatActivity implements LoginContract.Vi
         if (!mLoginPresenter.isUserLoggedOut()) {
             goToHome(false);
         }
+        mActivity = this;
     }
 
     @Override
@@ -254,6 +258,8 @@ public class LoginActivity extends AppCompatActivity implements LoginContract.Vi
             case R.id.login_login_btn:
                 String username = userNameEditText.getText().toString();
                 String password = passwordEditText.getText().toString();
+//                username = "haiphn";
+//                password = "ha123";
 //                username = "testmhv2";
 //                username = "maxii";
 //                username = "teliya1@cc.com";

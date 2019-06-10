@@ -328,7 +328,7 @@ public class AncJsonFormFragment extends JsonFormFragment {
                         String key = (String) view.getTag(com.vijay.jsonwizard.R.id.key);
                         String text = "";
 
-                        if (StringUtils.containsIgnoreCase(key, MotherLookUpUtils.Name)||(StringUtils.containsIgnoreCase(key, MotherLookUpUtils.Place))) {
+                        if (StringUtils.containsIgnoreCase(key, MotherLookUpUtils.Name)||(StringUtils.containsIgnoreCase(key, MotherLookUpUtils.Place))||(StringUtils.containsIgnoreCase(key, MotherLookUpUtils.Address))) {
                             text = getValue(pc.getColumnmaps(), MotherLookUpUtils.firstName, true)+" "+ getValue(pc.getColumnmaps(), MotherLookUpUtils.lastName, true);
                         }
 

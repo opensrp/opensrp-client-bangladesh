@@ -15,10 +15,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
-        android:layout_marginBottom="15dp"
-        android:layout_marginLeft="20dp"
-        android:layout_marginTop="15dp"
-
+        android:padding="10dp"
         android:orientation="vertical">
 
 
@@ -29,9 +26,10 @@
             android:layout_height="wrap_content"
             android:paddingBottom="5dp"
             android:paddingTop="5dp"
+            android:maxLines="10"
             android:text="Name"
             android:textColor="@color/client_list_grey"
-            android:textSize="22sp" />
+            android:textSize="20sp" />
 
 
         <org.smartregister.view.customcontrols.CustomFontTextView

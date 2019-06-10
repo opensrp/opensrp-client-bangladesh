@@ -280,13 +280,13 @@ public class ProfileOverviewFragment extends BaseProfileFragment {
             TextView member_age = (TextView) view.findViewById(R.id.age_tv);
             ImageView pregnant_icon = (ImageView) view.findViewById(R.id.pregnant_woman_present);
             Button noOfUnregisterButton=view.findViewById(R.id.total_birth_btn);
-            String relation = personinlist.getColumnmaps().get("relation");
+            String relation = pClient.getColumnmaps().get("relation");
 
             ImageView profileImageIV = (ImageView)view.findViewById(R.id.profile_image_iv);
 
-            String pregnant_status = personinlist.getColumnmaps().get("PregnancyStatus");
-            String tasks_status = personinlist.getColumnmaps().get("tasks");
-            String gender = personinlist.getColumnmaps().get("gender");
+            String pregnant_status = pClient.getColumnmaps().get("PregnancyStatus");
+            String tasks_status = pClient.getColumnmaps().get("tasks");
+            String gender = pClient.getColumnmaps().get("gender");
             if(pregnant_status!=null && (pregnant_status.contains("Antenatal Period")||pregnant_status.contains("প্রসব পূর্ব"))) {
                 pregnant_icon.setImageResource(R.drawable.pregnant_woman);
                 pregnant_icon.setVisibility(View.VISIBLE);
@@ -360,7 +360,7 @@ public class ProfileOverviewFragment extends BaseProfileFragment {
             }
 
             //            String dobString = cursor.getString(cursor.getColumnIndex("dob"));
-            String dobString = getValue(personinlist.getColumnmaps(),"dob",true);
+            String dobString = getValue(pClient.getColumnmaps(),"dob",true);
             int age = 0;
 
             try {
