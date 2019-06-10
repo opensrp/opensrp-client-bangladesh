@@ -13,10 +13,13 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import net.sqlcipher.database.SQLiteDatabase;
+
 import org.apache.commons.lang3.text.WordUtils;
 import org.smartregister.cbhc.R;
 import org.smartregister.cbhc.application.AncApplication;
 import org.smartregister.cbhc.fragment.BaseRegisterFragment;
+import org.smartregister.cbhc.repository.AncRepository;
 import org.smartregister.cbhc.util.DBConstants;
 import org.smartregister.cbhc.util.Utils;
 import org.smartregister.commonregistry.CommonPersonObject;
@@ -34,6 +37,7 @@ import org.smartregister.view.viewholder.OnClickFormLauncher;
 
 import java.text.MessageFormat;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.Set;
 
 import static org.smartregister.util.Utils.getName;
@@ -72,11 +76,18 @@ public class RegisterProvider implements RecyclerViewProvider<RegisterProvider.R
 //        if(removeId.equalsIgnoreCase(213214)){
 //            return;
 //        }
+
         if (visibleColumns.isEmpty()) {
             populatePatientColumn(pc, client, viewHolder);
             populateIdentifierColumn(pc, viewHolder);
             populateLastColumn(pc, viewHolder);
-            (new MemberCountAsyncTask(pc,viewHolder)).execute();
+            MemberCount mc = memberCountHashMap.get(pc.entityId());
+            if(mc!=null){
+                populateMemberCountColumn(viewHolder,mc);
+            }else{
+                (new MemberCountAsyncTask(pc,viewHolder)).execute();
+            }
+
             return;
         }
 
@@ -102,6 +113,8 @@ public class RegisterProvider implements RecyclerViewProvider<RegisterProvider.R
         ConfigurableViewsLibrary.getInstance().getConfigurableViewsHelper().processRegisterColumns(mapping, convertView, visibleColumns, R.id.register_columns);
         */
     }
+
+
 
     private void populatePatientColumn(CommonPersonObjectClient pc, SmartRegisterClient client, RegisterViewHolder viewHolder) {
 
@@ -297,6 +310,52 @@ public class RegisterProvider implements RecyclerViewProvider<RegisterProvider.R
 
     }
 
+    class MemberCount {
+        int memberCount;
+        int femaleChildCount;
+        int maleChildCount;
+        int pregnantCount;
+    }
+    private void populateMemberCountColumn(RegisterViewHolder viewHolder, MemberCount mc){
+
+        TextView countView = viewHolder.memberCount;
+        TextView femalechildcount = viewHolder.femalechild;
+        TextView malechildcount = viewHolder.malechild;
+        TextView pregnantcountView = viewHolder.pregnantcount;
+
+        ImageView femalechildpresent = viewHolder.femalepresent;
+        ImageView malechildpresent = viewHolder.malepresent;
+        ImageView pregnantpresent = viewHolder.pregnantpresent;
+
+        countView.setText("Members: "+mc.memberCount);
+        if(mc.femaleChildCount>0){
+            femalechildcount.setVisibility(View.VISIBLE);
+            femalechildpresent.setVisibility(View.VISIBLE);
+            femalechildcount.setText(""+mc.femaleChildCount);
+        }else{
+            femalechildcount.setVisibility(View.GONE);
+            femalechildpresent.setVisibility(View.GONE);
+        }
+        if(mc.maleChildCount>0){
+            malechildcount.setVisibility(View.VISIBLE);
+            malechildpresent.setVisibility(View.VISIBLE);
+            malechildcount.setText(""+mc.maleChildCount);
+        }else{
+            malechildcount.setVisibility(View.GONE);
+            malechildpresent.setVisibility(View.GONE);
+        }
+        if(mc.pregnantCount>0){
+            pregnantcountView.setVisibility(View.VISIBLE);
+            pregnantpresent.setVisibility(View.VISIBLE);
+            pregnantcountView.setText(""+mc.pregnantCount);
+        }else{
+            pregnantcountView.setVisibility(View.GONE);
+            pregnantpresent.setVisibility(View.GONE);
+        }
+
+    }
+
+    HashMap<String,MemberCount>memberCountHashMap = new HashMap<>();
     class MemberCountAsyncTask extends AsyncTask {
         CommonPersonObjectClient pc;
         int count = 0;
@@ -327,29 +386,40 @@ public class RegisterProvider implements RecyclerViewProvider<RegisterProvider.R
         @Override
         protected Object doInBackground(Object[] objects) {
             Cursor cursor  ;
+//            try{
+//                cursor = AncApplication.getInstance().getContext().commonrepository("ec_member").rawCustomQueryForAdapter("Select Count(*) from ec_member where relational_id = '"+pc.getCaseId()+"' and date_removed IS NULL");
+//                cursor.moveToFirst();
+//                count = count+Integer.parseInt(cursor.getString(0));
+//                cursor.close();
+//            }catch (Exception e){
+//                Log.e("member error",e.getMessage());
+//            }
+//            try{
+//                cursor = AncApplication.getInstance().getContext().commonrepository("ec_child").rawCustomQueryForAdapter("Select Count(*) from ec_child where relational_id = '"+pc.getCaseId()+"' and date_removed IS NULL");
+//                cursor.moveToFirst();
+//                count = count+Integer.parseInt(cursor.getString(0));
+//                cursor.close();
+//            }catch (Exception e){
+//
+//            }
+//            try{
+//                cursor = AncApplication.getInstance().getContext().commonrepository("ec_woman").rawCustomQueryForAdapter("Select Count(*) from ec_woman where relational_id = '"+pc.getCaseId()+"' and date_removed IS NULL");
+//                cursor.moveToFirst();
+//                count = count+Integer.parseInt(cursor.getString(0));
+//                cursor.close();
+//            }catch (Exception e){
+//
+//            }
             try{
-                cursor = AncApplication.getInstance().getContext().commonrepository("ec_member").rawCustomQueryForAdapter("Select Count(*) from ec_member where relational_id = '"+pc.getCaseId()+"' and date_removed IS NULL");
-                cursor.moveToFirst();
-                count = count+Integer.parseInt(cursor.getString(0));
+                AncRepository repo = (AncRepository) AncApplication.getInstance().getRepository();
+                SQLiteDatabase db = repo.getReadableDatabase();
+                String sql = "Select base_entity_id from (Select base_entity_id from ec_member where relational_id='"+pc.getCaseId()+"' and date_removed IS NULL UNION Select base_entity_id from ec_woman where relational_id='"+pc.getCaseId()+"' and date_removed IS NULL UNION Select base_entity_id from ec_child where relational_id='"+pc.getCaseId()+"' and date_removed IS NULL " +") group by base_entity_id";
+                cursor = db.rawQuery(sql,new String[]{});
+//                cursor.moveToFirst();
+                count = cursor.getCount();
                 cursor.close();
-            }catch (Exception e){
-                Log.e("member error",e.getMessage());
-            }
-            try{
-                cursor = AncApplication.getInstance().getContext().commonrepository("ec_child").rawCustomQueryForAdapter("Select Count(*) from ec_child where relational_id = '"+pc.getCaseId()+"' and date_removed IS NULL");
-                cursor.moveToFirst();
-                count = count+Integer.parseInt(cursor.getString(0));
-                cursor.close();
-            }catch (Exception e){
-
-            }
-            try{
-                cursor = AncApplication.getInstance().getContext().commonrepository("ec_woman").rawCustomQueryForAdapter("Select Count(*) from ec_woman where relational_id = '"+pc.getCaseId()+"' and date_removed IS NULL");
-                cursor.moveToFirst();
-                count = count+Integer.parseInt(cursor.getString(0));
-                cursor.close();
-            }catch (Exception e){
-
+            }catch(Exception e){
+                    e.printStackTrace();
             }
             try{
                 cursor = AncApplication.getInstance().getContext().commonrepository("ec_child").rawCustomQueryForAdapter("Select Count(*) from ec_child where relational_id = '"+pc.getCaseId()+"'"
@@ -413,6 +483,12 @@ public class RegisterProvider implements RecyclerViewProvider<RegisterProvider.R
                 pregnantcountView.setVisibility(View.GONE);
                 pregnantpresent.setVisibility(View.GONE);
             }
+            MemberCount mc = new MemberCount();
+            mc.memberCount = count;
+            mc.pregnantCount = pregnantcount;
+            mc.maleChildCount = malechild;
+            mc.femaleChildCount = femalechild;
+            memberCountHashMap.put(pc.entityId(),mc);
         }
     }
 

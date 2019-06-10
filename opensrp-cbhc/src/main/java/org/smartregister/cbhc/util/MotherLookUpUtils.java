@@ -43,12 +43,14 @@ public class MotherLookUpUtils {
     public static HashMap<String,String> lookUpTableHash = new HashMap<String,String>();
     public static String Name = "name";
     public static String Place = "place";
+    public static String Address = "address";
 
     static {
         lookUpTableHash.put("Father_Guardian_First_Name_english",DBConstants.MEMBER_TABLE_NAME);
         lookUpTableHash.put("Mother_Guardian_First_Name_english",DBConstants.WOMAN_TABLE_NAME);
         lookUpTableHash.put("spouseName_english",DBConstants.MEMBER_TABLE_NAME+","+DBConstants.WOMAN_TABLE_NAME);
         lookUpTableHash.put("birthPlace",DBConstants.MEMBER_TABLE_NAME+","+DBConstants.WOMAN_TABLE_NAME);
+        lookUpTableHash.put("permanentAddress",DBConstants.MEMBER_TABLE_NAME+","+DBConstants.WOMAN_TABLE_NAME);
 
         //        lookUpTableHash.put(,DBConstants.CHILD_TABLE_NAME);
     }
@@ -82,6 +84,9 @@ public class MotherLookUpUtils {
     private static HashMap<CommonPersonObject, List<CommonPersonObject>> lookUp(Context context, EntityLookUp entityLookUp,String householdid, String lookuptype) {
         if(lookuptype.equals("birth_place")){
             return Jilla.getResults(entityLookUp.getMap().get("birth_place"));
+        }
+        if(lookuptype.equals("permanent_address")){
+            return Jilla.getResultsAddress(entityLookUp.getMap().get("permanent_address"));
         }
         HashMap<CommonPersonObject, List<CommonPersonObject>> results = new HashMap<>();
         if (context == null) {

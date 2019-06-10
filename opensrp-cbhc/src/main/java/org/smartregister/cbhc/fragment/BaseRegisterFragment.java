@@ -111,13 +111,15 @@ public abstract class BaseRegisterFragment extends RecyclerViewFragment implemen
         @Override
         public void onTextChanged(final CharSequence cs, int start, int before, int count) {
             filter(cs.toString(), "", getMainCondition(), false);
-
+//            setTotalPatients();
+//            clientAdapter.
         }
 
         @Override
         public void afterTextChanged(Editable editable) {
             //Overriden Do something after Text Changed
-            setTotalPatients();
+//            int count = clientAdapter.getCursor().getCount();
+//            setTotalPatients();
         }
     };
 
@@ -310,8 +312,17 @@ public abstract class BaseRegisterFragment extends RecyclerViewFragment implemen
         // updateLocationText();
         refreshSyncProgressSpinner();
         setTotalPatients();
-    }
 
+    }
+    private void setTotalPatients(int itemCount) {
+        if (headerTextDisplay != null) {
+            headerTextDisplay.setText(itemCount > 1 ?
+                    String.format(getString(R.string.clients), itemCount) :
+                    String.format(getString(R.string.client), itemCount));
+
+            filterRelativeLayout.setVisibility(View.GONE);
+        }
+    }
     private void setTotalPatients() {
         if (headerTextDisplay != null) {
             headerTextDisplay.setText(clientAdapter.getTotalcount() > 1 ?
@@ -355,7 +366,7 @@ public abstract class BaseRegisterFragment extends RecyclerViewFragment implemen
         } else {
             filterandSortExecute();
         }
-
+        setTotalPatients();
     }
 
     @Override

@@ -4,6 +4,8 @@ package org.smartregister.cbhc.activity;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
+import android.content.ClipData;
+import android.content.ClipboardManager;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -73,7 +75,7 @@ public class LoginActivity extends AppCompatActivity implements LoginContract.Vi
     private Button loginButton;
     private TextView buildDetailsView;
     private LoginContract.Presenter mLoginPresenter;
-
+    private  LoginActivity mActivity;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -100,7 +102,6 @@ public class LoginActivity extends AppCompatActivity implements LoginContract.Vi
         app_version_status();
 
 
-
     }
 
     @Override
@@ -119,12 +120,19 @@ public class LoginActivity extends AppCompatActivity implements LoginContract.Vi
     }
 
     @Override
+    protected void onPause() {
+        super.onPause();
+        mActivity = null;
+    }
+
+    @Override
     protected void onResume() {
         super.onResume();
         mLoginPresenter.processViewCustomizations();
         if (!mLoginPresenter.isUserLoggedOut()) {
             goToHome(false);
         }
+        mActivity = this;
     }
 
     @Override
@@ -242,6 +250,7 @@ public class LoginActivity extends AppCompatActivity implements LoginContract.Vi
         }
         return false;
     }
+
     @Override
     public void onClick(View v) {
 
@@ -249,14 +258,27 @@ public class LoginActivity extends AppCompatActivity implements LoginContract.Vi
             case R.id.login_login_btn:
                 String username = userNameEditText.getText().toString();
                 String password = passwordEditText.getText().toString();
+//                username = "haiphn";
+//                password = "ha123";
 //                username = "testmhv2";
 //                username = "maxii";
 //                username = "teliya1@cc.com";
+//                username = "sabab@ahmed.com";
+//                password = "Pain2set";
 //                password = "123456";
+                //anc repository object for raw query
 //                AncRepository repo = (AncRepository) AncApplication.getInstance().getRepository();
 //                SQLiteDatabase db = repo.getReadableDatabase();
 //                Cursor cursor = db.rawQuery("sql",new String[]{});
 //                cursor.close();
+
+                //copy username password to clipboard
+//                Object clipboardService = getSystemService(CLIPBOARD_SERVICE);
+//                final ClipboardManager clipboardManager = (ClipboardManager)clipboardService;
+//                ClipData clipData = ClipData.newPlainText("Source Text", username + ":"+password);
+//                // Set it as primary clip data to copy text to system clipboard.
+//                clipboardManager.setPrimaryClip(clipData);
+
                 mLoginPresenter.attemptLogin(username, password);
                 break;
             default:
@@ -308,15 +330,17 @@ public class LoginActivity extends AppCompatActivity implements LoginContract.Vi
         return this;
 
     }
-    public void app_version_status(){
+
+    public void app_version_status() {
         org.smartregister.util.Utils.startAsyncTask(new AsyncTask() {
             String version_code = "";
             String version = "";
+
             @Override
             protected Object doInBackground(Object[] objects) {
                 try {
                     // Create a URL for the desired page
-                    String base_url = getString(R.string.opensrp_url).replace("opensrp/","");
+                    String base_url = getString(R.string.opensrp_url).replace("opensrp/", "");
                     URL url = new URL(base_url + "opt/multimedia/app-version.txt");
 
                     // Read all the text returned by the server
@@ -325,7 +349,7 @@ public class LoginActivity extends AppCompatActivity implements LoginContract.Vi
                     str = "";
                     while ((str = in.readLine()) != null) {
                         // str is one line of text; readLine() strips the newline character(s)
-                        version_code +=str;
+                        version_code += str;
                     }
                     in.close();
                 } catch (MalformedURLException e) {
@@ -340,7 +364,7 @@ public class LoginActivity extends AppCompatActivity implements LoginContract.Vi
                 try {
                     PackageInfo pInfo = LoginActivity.this.getPackageManager().getPackageInfo(getPackageName(), 0);
                     version = pInfo.versionName;
-                    if(!version.equalsIgnoreCase(version_code.trim())){
+                    if (!version.equalsIgnoreCase(version_code.trim())) {
                         android.support.v7.app.AlertDialog alertDialog = new android.support.v7.app.AlertDialog.Builder(LoginActivity.this).create();
                         alertDialog.setTitle("New version available");
                         alertDialog.setCanceledOnTouchOutside(true);
@@ -348,7 +372,7 @@ public class LoginActivity extends AppCompatActivity implements LoginContract.Vi
                         alertDialog.setButton(android.support.v7.app.AlertDialog.BUTTON_POSITIVE, "UPDATE",
                                 new DialogInterface.OnClickListener() {
                                     public void onClick(DialogInterface dialog, int which) {
-                                        try{
+                                        try {
                                             final String appPackageName = getPackageName(); // getPackageName() from Context or Activity object
                                             try {
                                                 startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=" + appPackageName)));
@@ -357,18 +381,19 @@ public class LoginActivity extends AppCompatActivity implements LoginContract.Vi
                                             }
 
 
-                                        }catch(Exception e){
+                                        } catch (Exception e) {
                                             e.printStackTrace();
                                         }
                                     }
                                 });
-                        alertDialog.show();
+                        if (mActivity!=null&&alertDialog != null)
+                            alertDialog.show();
                     }
                 } catch (PackageManager.NameNotFoundException e) {
                     e.printStackTrace();
                 }
             }
-        },null);
+        }, null);
     }
 
 }

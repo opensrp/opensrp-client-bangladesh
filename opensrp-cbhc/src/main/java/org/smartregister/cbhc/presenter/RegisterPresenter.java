@@ -99,7 +99,7 @@ public class RegisterPresenter implements RegisterContract.Presenter, RegisterCo
 
     }
 
-    public void startMemberRegistrationForm(String formName, String entityId, String metadata, String currentLocationId,String householdID) throws Exception {
+    public void startMemberRegistrationForm(String formName, String entityId, String metadata, String currentLocationId, String householdID) throws Exception {
 
         if (StringUtils.isBlank(entityId)) {
 //            Triple<String, String, String> triple = Triple.of(formName, metadata, currentLocationId);

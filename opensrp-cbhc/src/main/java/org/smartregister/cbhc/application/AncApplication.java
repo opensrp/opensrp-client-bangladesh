@@ -126,7 +126,7 @@ public class AncApplication extends DrishtiApplication implements TimeChangedBro
 
         GrowthMonitoringLibrary.init(context, getRepository(), BuildConfig.VERSION_CODE, BuildConfig.DATABASE_VERSION);
 //        startZscoreRefreshService();
-        startPullConfigurableViewsIntentService(getApplicationContext());
+        startPullConfigurableViewsIntentService(this);
     }
 
     private AllSharedPreferences getSharedPreferences() {
@@ -214,7 +214,8 @@ public class AncApplication extends DrishtiApplication implements TimeChangedBro
 
     public void startPullConfigurableViewsIntentService(android.content.Context context) {
         Intent intent = new Intent(context, PullConfigurableViewsIntentService.class);
-        context.startService(intent);
+        if(context!=null)
+            context.startService(intent);
     }
 
     public static CommonFtsObject createCommonFtsObject() {

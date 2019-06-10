@@ -68,8 +68,6 @@
           "err": "Please enter the date of Followup."
         }
       },
-
-
       {
         "key": "Number_Of_PNC_Service",
         "openmrs_entity_parent": "",
@@ -154,7 +152,6 @@
           }
         }
       },
-
       {
         "key":"Place_of_Refer",
         "openmrs_entity_parent":"",
@@ -194,7 +191,6 @@
           "রেফার করা হয়নি ":"Not_referred"
         }
       }
-
     ]
   }
 }
