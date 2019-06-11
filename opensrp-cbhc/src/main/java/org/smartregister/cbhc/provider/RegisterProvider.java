@@ -83,7 +83,7 @@ public class RegisterProvider implements RecyclerViewProvider<RegisterProvider.R
             populateLastColumn(pc, viewHolder);
             MemberCount mc = memberCountHashMap.get(pc.entityId());
             if(mc!=null){
-                populateMemberCountColumn(viewHolder,mc);
+                populateMemberCountColumn(mc,viewHolder);
             }else{
                 (new MemberCountAsyncTask(pc,viewHolder)).execute();
             }
@@ -316,7 +316,7 @@ public class RegisterProvider implements RecyclerViewProvider<RegisterProvider.R
         int maleChildCount;
         int pregnantCount;
     }
-    private void populateMemberCountColumn(RegisterViewHolder viewHolder, MemberCount mc){
+    private void populateMemberCountColumn(MemberCount mc, RegisterViewHolder viewHolder){
 
         TextView countView = viewHolder.memberCount;
         TextView femalechildcount = viewHolder.femalechild;

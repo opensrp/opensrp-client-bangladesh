@@ -532,11 +532,61 @@ public class AncJsonFormFragment extends JsonFormFragment {
                 if (((MaterialSpinner) parent).getFloatingLabelText().toString().equalsIgnoreCase("লিঙ্গ")) {
                     processHeadOfHouseHoldRelation(position);
                 }
+                if (((MaterialSpinner) parent).getFloatingLabelText().toString().equalsIgnoreCase("স্থায়ী ঠিকানা কি একই")) {
+                    processPermanentAddressField(position);
+                }
             }
 
-//        if(countSelect++>20)
+    }
+    public void processPermanentAddressField(final int position){
+        Utils.startAsyncTask(new AsyncTask() {
+            String HIE_FACILITIES = "";
+            @Override
+            protected Object doInBackground(Object[] objects) {
+                JSONObject formObject = getJsonApi().getmJSONObject();
+                if (formObject.has("metadata")){
+                    try {
+                        JSONObject metadata = formObject.getJSONObject("metadata");
+                        if (metadata.has("look_up")) {
+                            JSONObject look_up = metadata.getJSONObject("look_up");
+                            if (look_up.has("entity_id") && look_up.getString("entity_id").equalsIgnoreCase("household")) {
+                                String relational_id = look_up.getString("value");
 
 
+                                Map<String,String>householdDetails = AncApplication.getInstance().getContext().detailsRepository().
+                                        getAllDetailsForClient(relational_id);
+                                HIE_FACILITIES = householdDetails.get("HIE_FACILITIES");
+                                HIE_FACILITIES = HIE_FACILITIES.replaceAll("\\[","");
+                                HIE_FACILITIES = HIE_FACILITIES.replaceAll("\\]","");
+                                HIE_FACILITIES = HIE_FACILITIES.replaceAll("\"","");
+
+                            }
+                        }
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                }
+                return null;
+            }
+
+            @Override
+            protected void onPostExecute(Object o) {
+                super.onPostExecute(o);
+                ArrayList<View> formdataviews = getJsonApi().getFormDataViews();
+                for (int i = 0; i < formdataviews.size(); i++) {
+                    if (formdataviews.get(i) instanceof MaterialEditText) {
+                        if (((MaterialEditText) formdataviews.get(i)).getFloatingLabelText().toString().trim().equalsIgnoreCase("স্থায়ী ঠিকানা(ইউনিয়ন)")) {
+                            if(position == 0)
+                                ((MaterialEditText) formdataviews.get(i)).setText(HIE_FACILITIES);
+                            else
+                                ((MaterialEditText) formdataviews.get(i)).setText("");
+                            break;
+                        }
+                    }
+                }
+
+            }
+        },null);
     }
     public void processHeadOfHouseHoldRelation(final int position){
 
