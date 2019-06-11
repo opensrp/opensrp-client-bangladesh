@@ -99,11 +99,6 @@ public class LoginActivity extends AppCompatActivity implements LoginContract.Vi
             preferences.edit().putString(DRISHTI_BASE_URL, getString(R.string.opensrp_url)).apply();
 
         }
-
-
-//        app_version_status();
-
-
     }
 
     @Override
@@ -337,69 +332,6 @@ public class LoginActivity extends AppCompatActivity implements LoginContract.Vi
 
     }
 
-    public void app_version_status() {
-        org.smartregister.util.Utils.startAsyncTask(new AsyncTask() {
-            String version_code = "";
-            String version = "";
 
-            @Override
-            protected Object doInBackground(Object[] objects) {
-                try {
-                    // Create a URL for the desired page
-                    String base_url = getString(R.string.opensrp_url).replace("opensrp/", "");
-                    URL url = new URL(base_url + "opt/multimedia/app-version.txt");
-
-                    // Read all the text returned by the server
-                    BufferedReader in = new BufferedReader(new InputStreamReader(url.openStream()));
-                    String str;
-                    str = "";
-                    while ((str = in.readLine()) != null) {
-                        // str is one line of text; readLine() strips the newline character(s)
-                        version_code += str;
-                    }
-                    in.close();
-                } catch (MalformedURLException e) {
-                } catch (IOException e) {
-                }
-                return null;
-            }
-
-            @Override
-            protected void onPostExecute(Object o) {
-                super.onPostExecute(o);
-                try {
-                    PackageInfo pInfo = LoginActivity.this.getPackageManager().getPackageInfo(getPackageName(), 0);
-                    version = pInfo.versionName;
-                    if (!version.equalsIgnoreCase(version_code.trim())) {
-                        android.support.v7.app.AlertDialog alertDialog = new android.support.v7.app.AlertDialog.Builder(LoginActivity.this).create();
-                        alertDialog.setTitle("New version available");
-                        alertDialog.setCanceledOnTouchOutside(true);
-
-                        alertDialog.setButton(android.support.v7.app.AlertDialog.BUTTON_POSITIVE, "UPDATE",
-                                new DialogInterface.OnClickListener() {
-                                    public void onClick(DialogInterface dialog, int which) {
-                                        try {
-                                            final String appPackageName = getPackageName(); // getPackageName() from Context or Activity object
-                                            try {
-                                                startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=" + appPackageName)));
-                                            } catch (android.content.ActivityNotFoundException anfe) {
-                                                startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/apps/details?id=" + appPackageName)));
-                                            }
-
-
-                                        } catch (Exception e) {
-                                            e.printStackTrace();
-                                        }
-                                    }
-                                });
-                        if (mActivity!=null&&alertDialog != null)
-                            alertDialog.show();
-                    }
-                } catch (PackageManager.NameNotFoundException e) {
-                    e.printStackTrace();
-                }
-            }
-        }, null);
-    }
 
 }

@@ -1,0 +1,252 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/canvasSV"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fillViewport="true"
+    android:isScrollContainer="false">
+
+    <RelativeLayout
+        android:id="@+id/login_layout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="1.0"
+        android:background="@color/customAppThemeBlue"
+        android:paddingBottom="@dimen/login_bottom_margin">
+
+
+        <!-- Top section -->
+        <LinearLayout
+            android:id="@+id/bottom_section"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_marginTop="10dp"
+            android:orientation="vertical"
+            android:paddingTop="5dp">
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:gravity="top"
+                android:orientation="vertical">
+
+                <ImageView
+                    android:id="@+id/imageView3"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:adjustViewBounds="false"
+                    android:cropToPadding="false"
+                    android:scaleType="fitCenter"
+                    app:srcCompat="@drawable/mhfw" />
+
+                <ImageView
+                    android:id="@+id/login_logo"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_weight="1"
+                    android:layout_marginTop="20dp"
+                    android:contentDescription="logo"
+                    android:scaleType="fitCenter"
+                    android:src="@drawable/cbhclogo" />
+                <com.vijay.jsonwizard.views.CustomTextView
+                    android:id="@+id/login_build_text_view"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="5dp"
+                    android:gravity="center_horizontal"
+                    android:text="build_number"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/login_build_text_view_textSize"
+                    android:typeface="sans" />
+            </LinearLayout>
+
+
+        </LinearLayout>
+
+        <!-- Middle section -->
+        <LinearLayout
+            android:id="@+id/middle_section"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:layout_centerVertical="true"
+            android:orientation="vertical"
+            android:layout_below="@+id/bottom_section"
+            android:paddingLeft="@dimen/login_horizontal_margin"
+            android:paddingRight="@dimen/login_horizontal_margin">
+
+            <EditText
+                android:id="@+id/login_user_name_edit_text"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/login_view_component_height"
+                android:layout_marginTop="@dimen/login_middle_section_padding_top"
+                android:layout_weight="8"
+                android:background="@drawable/rounded_corner_login_button"
+                android:cursorVisible="true"
+                android:ems="10"
+                android:hint="Username"
+                android:imeOptions="actionNext"
+                android:inputType="text"
+                android:lines="1"
+                android:paddingLeft="12dp"
+                android:textColor="#666666"
+                android:textColorHint="#6fc8e8"
+                android:textCursorDrawable="@null"
+                android:textSize="@dimen/login_edit_text_textSize"
+                android:typeface="sans" />
+
+            <EditText
+                android:id="@+id/login_password_edit_text"
+                style="@style/CustomFontTextViewStyle.ListView.Medium.NoPadding"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/login_view_component_height"
+                android:layout_gravity="center_horizontal"
+                android:layout_weight="8"
+                android:layout_marginTop="5dp"
+                android:background="@drawable/rounded_corner_login_button"
+                android:cursorVisible="true"
+                android:ems="10"
+                android:hint="Password"
+                android:imeActionId="@integer/login"
+                android:inputType="textPassword"
+                android:lines="1"
+                android:paddingLeft="12dp"
+                android:textColor="#666666"
+                android:textColorHint="#6fc8e8"
+                android:textCursorDrawable="@null"
+                android:textSize="@dimen/login_edit_text_textSize"
+                android:typeface="normal" />
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/client_profile_pic_margin_right">
+
+                <CheckBox
+                    android:id="@+id/login_show_password_checkbox"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginRight="5dp"
+                    android:layout_marginTop="15dp"
+                    android:button="@drawable/white_checkbox_bg_selector"
+                    android:scaleX="@dimen/checkbox_scale"
+                    android:scaleY="@dimen/checkbox_scale" />
+
+                <TextView
+                    android:id="@+id/login_show_password_text_view"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="10dp"
+                    android:layout_toRightOf="@id/login_show_password_checkbox"
+                    android:text="@string/show_password_text"
+                    android:textColor="@android:color/white"
+                    android:textSize="@dimen/login_edit_text_textSize" />
+            </RelativeLayout>
+
+            <Button
+                android:id="@+id/login_login_btn"
+                style="@style/CustomFontTextViewStyle.ClientList.Light"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/login_view_component_height"
+                android:layout_gravity="center_horizontal"
+                android:layout_weight="8"
+                android:background="@drawable/rounded_corner_login_button"
+                android:ems="10"
+                android:shadowColor="#ffffff"
+                android:shadowDx="0"
+                android:shadowDy="1"
+                android:shadowRadius="0.5"
+                android:text="LOGIN"
+                android:textAllCaps="true"
+                android:textColor="#6fc8e8"
+                android:textSize="18sp" />
+            <com.vijay.jsonwizard.views.CustomTextView
+                android:layout_marginTop="20dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="5dp"
+                android:gravity="center_horizontal"
+                android:text="Population Registration and Information Management Application - HA"
+                android:textColor="@color/white"
+                android:textSize="@dimen/login_build_text_view_textSize"
+                android:typeface="sans" />
+        </LinearLayout>
+        <!-- Bottom section -->
+
+        <LinearLayout
+            android:id="@+id/top_section"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+
+            android:orientation="horizontal"
+            android:gravity="bottom"
+            >
+            <LinearLayout
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_weight="1">
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:paddingBottom="3dp"
+                    android:paddingTop="3dp"
+                    android:text="Powered by"
+                    android:textAlignment="center"
+                    android:textColor="#A6ffffff" />
+
+                <ImageView
+                    android:id="@+id/opensrp_logo_image_view"
+                    android:layout_width="@dimen/login_opensrp_logo_powered_width"
+                    android:layout_height="@dimen/login_opensrp_logo_powered_height"
+                    android:layout_gravity="center_horizontal"
+                    android:adjustViewBounds="false"
+                    android:cropToPadding="false"
+                    android:scaleType="fitCenter"
+                    android:src="@drawable/ic_opensrp_logo_minified" />
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="1dp"
+                android:layout_height="fill_parent"
+                android:background="@android:color/white">
+
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_weight="1">
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:paddingBottom="3dp"
+                    android:paddingTop="3dp"
+                    android:text="Developed by"
+                    android:textAlignment="center"
+                    android:textColor="#A6ffffff" />
+
+                <ImageView
+
+                    android:layout_width="@dimen/login_opensrp_logo_powered_width"
+                    android:layout_height="@dimen/login_opensrp_logo_powered_height"
+                    android:layout_gravity="center_horizontal"
+                    android:adjustViewBounds="false"
+                    android:cropToPadding="false"
+                    android:scaleType="fitCenter"
+                    android:src="@drawable/mpower" />
+            </LinearLayout>
+
+        </LinearLayout>
+    </RelativeLayout>
+</ScrollView>
