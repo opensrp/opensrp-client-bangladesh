@@ -532,9 +532,9 @@ public class AncJsonFormFragment extends JsonFormFragment {
                 if (((MaterialSpinner) parent).getFloatingLabelText().toString().equalsIgnoreCase("লিঙ্গ")) {
                     processHeadOfHouseHoldRelation(position);
                 }
-                if (((MaterialSpinner) parent).getFloatingLabelText().toString().equalsIgnoreCase("স্থায়ী ঠিকানা কি একই")) {
-                    processPermanentAddressField(position);
-                }
+//                if (((MaterialSpinner) parent).getFloatingLabelText().toString().equalsIgnoreCase("স্থায়ী ঠিকানা কি একই")) {
+//                    processPermanentAddressField(position);
+//                }
             }
 
     }

@@ -20,14 +20,11 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import net.sqlcipher.Cursor;
 import net.sqlcipher.database.SQLiteDatabase;
-
 import org.apache.commons.lang3.StringUtils;
 import org.joda.time.DateTime;
 import org.json.JSONArray;
-import org.json.JSONException;
 import org.json.JSONObject;
 import org.smartregister.CoreLibrary;
 import org.smartregister.cbhc.R;
@@ -35,11 +32,8 @@ import org.smartregister.cbhc.adapter.ViewPagerAdapter;
 import org.smartregister.cbhc.application.AncApplication;
 import org.smartregister.cbhc.contract.ProfileContract;
 import org.smartregister.cbhc.domain.UniqueId;
-import org.smartregister.cbhc.fragment.ChildImmunizationFragment;
 import org.smartregister.cbhc.fragment.FollowupFragment;
-import org.smartregister.cbhc.fragment.GrowthFragment;
 import org.smartregister.cbhc.fragment.MemberProfileContactsFragment;
-import org.smartregister.cbhc.fragment.ProfileOverviewFragment;
 import org.smartregister.cbhc.fragment.ProfileTasksFragment;
 import org.smartregister.cbhc.helper.ECSyncHelper;
 import org.smartregister.cbhc.helper.ImageRenderHelper;
@@ -59,30 +53,21 @@ import org.smartregister.clientandeventmodel.Obs;
 import org.smartregister.commonregistry.CommonPersonObject;
 import org.smartregister.commonregistry.CommonPersonObjectClient;
 import org.smartregister.domain.ProfileImage;
-import org.smartregister.growthmonitoring.domain.WeightWrapper;
-import org.smartregister.growthmonitoring.listener.WeightActionListener;
-import org.smartregister.immunization.domain.ServiceWrapper;
-import org.smartregister.immunization.domain.VaccineWrapper;
-import org.smartregister.immunization.listener.ServiceActionListener;
-import org.smartregister.immunization.listener.VaccinationActionListener;
 import org.smartregister.repository.BaseRepository;
 import org.smartregister.repository.EventClientRepository;
 import org.smartregister.repository.ImageRepository;
 import org.smartregister.util.DateUtil;
 import org.smartregister.util.PermissionUtils;
-
 import java.io.Serializable;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
-
 import static org.smartregister.cbhc.fragment.ProfileOverviewFragment.EXTRA_HOUSEHOLD_DETAILS;
 import static org.smartregister.cbhc.util.Constants.EventType.PREGNANT_STATUS;
 import static org.smartregister.cbhc.util.Constants.FOLLOWUP_FORM.Followup_Form_MHV_Death;
 import static org.smartregister.cbhc.util.Constants.FOLLOWUP_FORM.Followup_Form_MHV_Delivery;
-
 import static org.smartregister.cbhc.util.Constants.FOLLOWUP_FORM.Followup_Form_MHV_Marital_F;
 import static org.smartregister.cbhc.util.Constants.FOLLOWUP_FORM.Followup_Form_MHV_Marital_M;
 import static org.smartregister.cbhc.util.Constants.FOLLOWUP_FORM.Followup_Form_MHV_Mobile_no;
@@ -96,7 +81,7 @@ import static org.smartregister.util.Utils.getValue;
 /**
  * Created by ndegwamartin on 10/07/2018.
  */
-public class MemberProfileActivity extends BaseProfileActivity implements ProfileContract.View, VaccinationActionListener, ServiceActionListener, WeightActionListener {
+public class MemberProfileActivity extends BaseProfileActivity implements ProfileContract.View {
 
     private TextView nameView;
     private TextView ageView;
@@ -366,8 +351,6 @@ public class MemberProfileActivity extends BaseProfileActivity implements Profil
         }
     }
 
-    ChildImmunizationFragment childImmunizationFragment;
-    GrowthFragment growthFragment;
 //    public ProfileOverviewFragment profileOverviewFragment;
     public MemberProfileContactsFragment profileOverviewFragment;
     FollowupFragment followupFragment;
@@ -378,10 +361,7 @@ public class MemberProfileActivity extends BaseProfileActivity implements Profil
         profileOverviewFragment = MemberProfileContactsFragment.newInstance(this.getIntent().getExtras());
         followupFragment = FollowupFragment.newInstance(this.getIntent().getExtras());
         ProfileTasksFragment profileTasksFragment = ProfileTasksFragment.newInstance(this.getIntent().getExtras());
-        growthFragment = GrowthFragment.newInstance(this.getIntent().getExtras());
-        growthFragment.setChildDetails(householdDetails);
-        childImmunizationFragment = ChildImmunizationFragment.newInstance(this.getIntent().getExtras());
-        childImmunizationFragment.setChildDetails(householdDetails);
+
 
 //        adapter.addFragment(profileOverviewFragment, this.getString(R.string.members));
         adapter.addFragment(profileOverviewFragment, this.getString(R.string.household_overview));
@@ -638,41 +618,6 @@ public class MemberProfileActivity extends BaseProfileActivity implements Profil
                 copyToClipboardDialog.show();
             }
         }
-    }
-
-    @Override
-    public void onGiveToday(ServiceWrapper serviceWrapper, View view) {
-        childImmunizationFragment.onGiveToday(serviceWrapper,view);
-    }
-
-    @Override
-    public void onGiveEarlier(ServiceWrapper serviceWrapper, View view) {
-        childImmunizationFragment.onGiveEarlier(serviceWrapper,view);
-    }
-
-    @Override
-    public void onUndoService(ServiceWrapper serviceWrapper, View view) {
-        childImmunizationFragment.onUndoService(serviceWrapper,view);
-    }
-
-    @Override
-    public void onVaccinateToday(ArrayList<VaccineWrapper> arrayList, View view) {
-        childImmunizationFragment.onVaccinateToday(arrayList,view);
-    }
-
-    @Override
-    public void onVaccinateEarlier(ArrayList<VaccineWrapper> arrayList, View view) {
-        childImmunizationFragment.onVaccinateEarlier(arrayList,view);
-    }
-
-    @Override
-    public void onUndoVaccination(VaccineWrapper vaccineWrapper, View view) {
-        childImmunizationFragment.onUndoVaccination(vaccineWrapper,view);
-    }
-
-    @Override
-    public void onWeightTaken(WeightWrapper weightWrapper) {
-        growthFragment.onWeightTaken(weightWrapper);
     }
 
     public int getGender(){

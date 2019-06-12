@@ -20,6 +20,14 @@ jacoco {
 
 
 android {
+    signingConfigs {
+        config {
+            keyAlias 'opensrp'
+            keyPassword 'opensrp'
+            storeFile file('/home/imran/db/opensrp.jks')
+            storePassword 'opensrp'
+        }
+    }
     compileSdkVersion 28
     buildToolsVersion '28.0.3'
     defaultConfig {
