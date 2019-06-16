@@ -123,6 +123,13 @@ public class ProfileOverviewFragment extends BaseProfileFragment {
     }
 
     @Override
+    public void onPause() {
+        super.onPause();
+        if(cursor!=null)
+            cursor.close();
+    }
+
+    @Override
     public void onAttach(Context context) {
         super.onAttach(context);
         mActivity = (Activity)context;
@@ -153,7 +160,7 @@ public class ProfileOverviewFragment extends BaseProfileFragment {
         super.onViewCreated(view, savedInstanceState);
         refreshadapter();
     }
-
+    Cursor cursor = null;
     public void refreshadapter() {
         if(fragmentView==null) return;
         (new AsyncTask(){
@@ -208,7 +215,7 @@ public class ProfileOverviewFragment extends BaseProfileFragment {
 //                if(cursor!=null&&!cursor.isClosed()){
 //                    cursor.close();
 //                }
-                Cursor cursor = null;
+
                 try{
                     cursor = db.rawQuery(rawQuery,new String[]{});
                 }catch(Exception e){
@@ -227,7 +234,7 @@ public class ProfileOverviewFragment extends BaseProfileFragment {
                 householdList = (ListView)fragmentView.findViewById(R.id.household_list);
                 profile_photo.clear();
                 if(o!=null && o instanceof Cursor){
-                    Cursor cursor = (Cursor)o;
+                    cursor = (Cursor)o;
                     HouseholdCursorAdpater cursorAdpater = new HouseholdCursorAdpater(getContext(),cursor);
 
                     householdList.setAdapter(cursorAdpater);

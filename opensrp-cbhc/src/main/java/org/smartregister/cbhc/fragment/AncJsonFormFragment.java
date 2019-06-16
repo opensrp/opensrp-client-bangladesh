@@ -52,6 +52,7 @@ import org.smartregister.cbhc.activity.AncJsonFormActivity;
 import org.smartregister.cbhc.application.AncApplication;
 import org.smartregister.cbhc.interactor.AncJsonFormInteractor;
 import org.smartregister.cbhc.provider.MotherLookUpSmartClientsProvider;
+import org.smartregister.cbhc.provider.RegisterProvider;
 import org.smartregister.cbhc.util.Constants;
 import org.smartregister.cbhc.util.DBConstants;
 import org.smartregister.cbhc.util.MotherLookUpUtils;
@@ -108,6 +109,7 @@ public class AncJsonFormFragment extends JsonFormFragment {
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        updateMemberCount();
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
@@ -588,6 +590,40 @@ public class AncJsonFormFragment extends JsonFormFragment {
             }
         },null);
     }
+
+    public void updateMemberCount(){
+        Utils.startAsyncTask(new AsyncTask() {
+
+            @Override
+            protected Object doInBackground(Object[] objects) {
+                JSONObject formObject = getJsonApi().getmJSONObject();
+                if (formObject.has("metadata")){
+                    try {
+                        JSONObject metadata = formObject.getJSONObject("metadata");
+                        if (metadata.has("look_up")) {
+                            JSONObject look_up = metadata.getJSONObject("look_up");
+                            if (look_up.has("entity_id") && look_up.getString("entity_id").equalsIgnoreCase("household")) {
+                                String relational_id = look_up.getString("value");
+                                CommonRepository commonRepository = AncApplication.getInstance().getContext().commonrepository("ec_household");
+                                CommonPersonObject household = commonRepository.findByBaseEntityId(relational_id);
+                                RegisterProvider.memberCountHashMap.put(household.getCaseId(),null);
+                            }
+                        }
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                }
+                return null;
+            }
+
+            @Override
+            protected void onPostExecute(Object o) {
+                super.onPostExecute(o);
+
+            }
+        },null);
+    }
+
     public void processHeadOfHouseHoldRelation(final int position){
 
             Utils.startAsyncTask(new AsyncTask() {

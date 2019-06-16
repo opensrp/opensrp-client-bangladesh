@@ -355,7 +355,7 @@ public class RegisterProvider implements RecyclerViewProvider<RegisterProvider.R
 
     }
 
-    HashMap<String, MemberCount> memberCountHashMap = new HashMap<>();
+    public static final HashMap<String, MemberCount> memberCountHashMap = new HashMap<>();
 
     class MemberCountAsyncTask extends AsyncTask {
         CommonPersonObjectClient pc;

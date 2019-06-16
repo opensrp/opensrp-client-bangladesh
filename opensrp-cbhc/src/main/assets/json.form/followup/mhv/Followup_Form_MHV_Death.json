@@ -84,15 +84,13 @@
         "openmrs_choice_ids": {
           "মৃত্যু হয়েছে": "death",
           "স্থানান্তরীত হয়েছে": "transfered",
-          "সদস্য পাওয়া যায়নি":"member not found"
+          "সদস্য পাওয়া যায়নি": "member not found"
         },
         "v_required": {
           "value": true,
           "err": "Please select member status"
         }
-
       },
-
       {
         "key": "Date_Of_Death",
         "openmrs_entity_parent": "",
@@ -103,7 +101,7 @@
         "hint": "মৃত্যুর  তারিখ ",
         "expanded": false,
         "v_required": {
-          "value": true,
+          "value": false,
           "err": "Please enter the date of death."
         },
         "relevance": {
@@ -113,30 +111,18 @@
           }
         }
       },
+
       {
-        "key": "Time_Of_Death",
+        "key": "Place_Of_Death",
         "openmrs_entity_parent": "",
         "openmrs_entity": "",
-        "openmrs_entity_id": "Time_Of_Death",
+        "openmrs_entity_id": "Place_Of_Death",
         "openmrs_data_type": "text",
-        "type": "time_picker",
-        "hint": "মৃত্যুর সময় ",
-        "expanded":false,
-        "v_required":{
-          "value":"false",
-          "err":"Please enter the date of Followup."
-        },
-        "v_numeric": {
-          "value": "true",
-          "err": "Number must be 4 digits in length"
-        },
-        "v_max_length": {
-          "value": "4",
-          "err": "Please Enter 4 digit Time"
-        },
-        "v_min_length": {
-          "value": "4",
-          "err": "Please Enter 4 digit Time"
+        "type": "edit_text",
+        "hint": "মৃত্যুর স্থান ",
+        "v_required": {
+          "value": true,
+          "err": "Please enter the place of death."
         },
         "relevance": {
           "step1:reason_invalid": {
@@ -146,29 +132,6 @@
         }
       },
       {
-        "key": "Place_Of_Death",
-        "openmrs_entity_parent": "",
-        "openmrs_entity": "",
-        "openmrs_entity_id": "Place_Of_Death",
-        "openmrs_data_type": "text",
-        "type": "edit_text",
-        "hint": "মৃত্যুর স্থান ",
-        "v_numeric": {
-          "value": "false",
-          "err": "Enter value"
-        },
-        "v_required": {
-        "value": true,
-        "err": "Please enter the place of death."
-        },
-        "relevance": {
-        "step1:reason_invalid": {
-          "type": "string",
-          "ex": "equalTo(., \"মৃত্যু হয়েছে\")"
-        }
-      }
-      },
-      {
         "key": "Cause_Of_Death",
         "openmrs_entity_parent": "",
         "openmrs_entity": "",
@@ -176,10 +139,6 @@
         "openmrs_data_type": "text",
         "type": "edit_text",
         "hint": "মৃত্যুর কারণ",
-        "v_numeric": {
-          "value": "false",
-          "err": "Enter value"
-        },
         "relevance": {
           "step1:reason_invalid": {
             "type": "string",
@@ -208,8 +167,8 @@
           "বিদেশে গমন": "international_transfered"
         },
         "v_required": {
-        "value": true,
-        "err": "Please enter transfer location."
+          "value": true,
+          "err": "Please enter transfer location."
         },
         "relevance": {
           "step1:reason_invalid": {
@@ -218,7 +177,6 @@
           }
         }
       },
-
       {
         "key": "jilla",
         "openmrs_entity_parent": "",

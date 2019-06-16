@@ -89,7 +89,6 @@
         "openmrs_entity_id": "postOfficePresent",
         "openmrs_data_type": "text",
         "type": "edit_text",
-        "look_up": "true",
         "hint": "ডাকঘর"
       },
       {
@@ -151,8 +150,7 @@
         "openmrs_entity_id": "postOfficePermanent",
         "openmrs_data_type": "text",
         "type": "edit_text",
-        "look_up": "true",
-        "hint": "ডাকঘর",
+        "hint": "ডাকঘর (স্থায়ী)",
         "relevance": {
           "step1:is_permanent_address": {
             "type": "string",

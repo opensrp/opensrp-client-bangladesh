@@ -62,7 +62,7 @@ android {
         release {
             minifyEnabled false
             debuggable false
-            resValue "string", 'opensrp_url', '"http://192.168.19.152:8080/opensrp/"'
+            resValue "string", 'opensrp_url', '"http://103.247.238.37:8080/opensrp/"'
             buildConfigField "int", "OPENMRS_UNIQUE_ID_INITIAL_BATCH_SIZE", '250'
             buildConfigField "int", "OPENMRS_UNIQUE_ID_BATCH_SIZE", '100'
             buildConfigField "int", "OPENMRS_UNIQUE_ID_SOURCE", '2'
@@ -128,7 +128,7 @@ android {
     flavorDimensions "baseDimension"
     productFlavors {
         iphn {
-            applicationId 'org.smartregister.iphn'
+            applicationId 'org.smartregister'
             versionCode 1
             versionName "1.1.1"
             dimension "baseDimension"
@@ -136,12 +136,12 @@ android {
             versionNameSuffix "-iphn"
         }
         cbhc {
-            applicationId "org.smartregister.cbhc"
-            versionCode 10
-            versionName "1.1.18"
+            applicationId "org.smartregister"
+            versionCode 11
+            versionName "1.2.0"
             dimension "baseDimension"
             applicationIdSuffix ".cbhc"
-            versionNameSuffix "-cbhc"
+            versionNameSuffix ""
 
         }
     }
