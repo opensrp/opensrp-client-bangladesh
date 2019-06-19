@@ -62,7 +62,7 @@ android {
         release {
             minifyEnabled false
             debuggable false
-            resValue "string", 'opensrp_url', '"http://103.247.238.37:8080/opensrp/"'
+            resValue "string", 'opensrp_url', '"http://103.247.238.36:8080/opensrp/"'
             buildConfigField "int", "OPENMRS_UNIQUE_ID_INITIAL_BATCH_SIZE", '250'
             buildConfigField "int", "OPENMRS_UNIQUE_ID_BATCH_SIZE", '100'
             buildConfigField "int", "OPENMRS_UNIQUE_ID_SOURCE", '2'
@@ -137,8 +137,8 @@ android {
         }
         cbhc {
             applicationId "org.smartregister"
-            versionCode 11
-            versionName "1.2.0"
+            versionCode 12
+            versionName "1.2.1"
             dimension "baseDimension"
             applicationIdSuffix ".cbhc"
             versionNameSuffix ""
@@ -166,12 +166,13 @@ dependencies {
         exclude group: 'org.smartregister', module: 'opensrp-client-native-form'
         exclude group: 'com.android.support', module: 'appcompat-v7'
     }
-    implementation('org.smartregister:opensrp-client-native-form:1.6.7-SNAPSHOT@aar') {
+    implementation('org.smartregister:opensrp-client-native-form:1.6.11-SNAPSHOT@aar') {
 
         transitive = true
         exclude group: 'com.android.support', module: 'recyclerview-v7'
         exclude group: 'com.android.support', module: 'appcompat-v7'
         exclude group: 'com.android.support', module: 'cardview-v7'
+        exclude group: 'io.ona.rdt-capture', module: 'lib'
     }
     //    use issue158 branch for local build
     implementation('org.smartregister:opensrp-client-core:2.5.14-SNAPSHOT') {

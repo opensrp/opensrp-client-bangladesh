@@ -125,8 +125,11 @@ public class ProfileOverviewFragment extends BaseProfileFragment {
     @Override
     public void onPause() {
         super.onPause();
-        if(cursor!=null)
-            cursor.close();
+//        if(cursor!=null){
+//            cursor.close();
+//            cursor = null;
+//        }
+
     }
 
     @Override
@@ -151,7 +154,7 @@ public class ProfileOverviewFragment extends BaseProfileFragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
         fragmentView = inflater.inflate(R.layout.fragment_profile_overview, container, false);
-        refreshadapter();
+//        refreshadapter();
         return fragmentView;
     }
 
@@ -160,7 +163,7 @@ public class ProfileOverviewFragment extends BaseProfileFragment {
         super.onViewCreated(view, savedInstanceState);
         refreshadapter();
     }
-    Cursor cursor = null;
+    HouseholdCursorAdpater cursorAdpater;
     public void refreshadapter() {
         if(fragmentView==null) return;
         (new AsyncTask(){
@@ -183,38 +186,18 @@ public class ProfileOverviewFragment extends BaseProfileFragment {
                 String tableName = DBConstants.WOMAN_TABLE_NAME;
                 String childtableName = DBConstants.CHILD_TABLE_NAME;
                 String membertablename = DBConstants.MEMBER_TABLE_NAME;
-
-//                SmartRegisterQueryBuilder queryBUilder = new SmartRegisterQueryBuilder();
-//                queryBUilder.SelectInitiateMainTable(tableName, new String[]{
-//                        tableName + ".relationalid",
-//                        tableName + ".details",
-//                        tableName + ".first_name",
-//                        tableName + "." + DBConstants.KEY.LAST_NAME,
-//                        tableName + ".dob"
-//                });
-//                String currentquery = queryBUilder.mainCondition("relational_id = '"+mother_id+"'").concat(" Union all ");
-//                SmartRegisterQueryBuilder queryBUilder2 = new SmartRegisterQueryBuilder();
-//                queryBUilder2.SelectInitiateMainTable(membertablename, new String[]{
-//                        membertablename + ".relationalid",
-//                        membertablename + ".details",
-//                        membertablename + ".first_name",
-//                        membertablename + "." + DBConstants.KEY.LAST_NAME,
-//                        membertablename + ".dob"
-//                });
-//                currentquery = currentquery.concat(queryBUilder2.mainCondition("relational_id = '"+mother_id+"'").concat(" Union all "));
-//                queryBUilder.SelectInitiateMainTable(childtableName, new String[]{
-//                        childtableName + ".relationalid",
-//                        childtableName + ".details",
-//                        childtableName + ".first_name",
-//                        childtableName + "." + DBConstants.KEY.LAST_NAME,
-//                        childtableName + ".dob"
-//                });
-
-//        cursor = db.rawQuery(currentquery.concat(queryBUilder.mainCondition("relational_id = ?")),new String[]{mother_id});
                 String rawQuery = queryfortheadapterthing(mother_id);
-//                if(cursor!=null&&!cursor.isClosed()){
-//                    cursor.close();
+                Cursor cursor = null;
+//                if(cursorAdpater!=null){
+//                    Cursor oldCursor = cursorAdpater.swapCursor(cursor);
+//                    if(oldCursor!=null){
+//                        oldCursor.close();
+//                    }
 //                }
+                if(cursor!=null&&!cursor.isClosed()){
+                    cursor.close();
+                    cursor = null;
+                }
 
                 try{
                     cursor = db.rawQuery(rawQuery,new String[]{});
@@ -234,8 +217,10 @@ public class ProfileOverviewFragment extends BaseProfileFragment {
                 householdList = (ListView)fragmentView.findViewById(R.id.household_list);
                 profile_photo.clear();
                 if(o!=null && o instanceof Cursor){
-                    cursor = (Cursor)o;
-                    HouseholdCursorAdpater cursorAdpater = new HouseholdCursorAdpater(getContext(),cursor);
+                    Cursor cursor = (Cursor)o;
+
+                    cursorAdpater = new HouseholdCursorAdpater(getContext(),cursor);
+
 
                     householdList.setAdapter(cursorAdpater);
                 }
@@ -315,40 +300,8 @@ public class ProfileOverviewFragment extends BaseProfileFragment {
 
             String patientName = getName(firstName, lastName);
 
-//            if(profile_photo.get(pClient.entityId())==null){
-//                ImageRepository imageRepo = CoreLibrary.getInstance().context().imageRepository();
-//                ProfileImage imageRecord = imageRepo.findByEntityId(pClient.entityId());
-//                if(imageRecord!=null){
-//                    profile_photo.put(pClient.entityId(),Drawable.createFromPath(imageRecord.getFilepath()));
-//                }
-//                else{
-//                    DrishtiApplication.getCachedImageLoaderInstance().getImageByClientId(pClient.entityId(), OpenSRPImageLoader.getStaticImageListener(profileImageIV, R.drawable.male_cbhc_placeholder, R.drawable.male_cbhc_placeholder));
-//                }
-//            }
-
-            ;
-//            int nameColumnIndex = cursor.getColumnIndex("first_name");
-//            member_name.setText("Name : " + cursor.getString(nameColumnIndex));
-//            member_name.setText(getValue(personinlist.getColumnmaps(),"first_name",true));
-
             member_name.setText(patientName);
 
-
-//            String noOfChild=getValue(detailmap,"Live Birth",true);
-//            if(!TextUtils.isEmpty(noOfChild)){
-//                int child=Integer.valueOf(noOfChild) - childCount(pClient.getCaseId());
-//                if(child>0){
-//                    noOfUnregisterButton.setVisibility(View.VISIBLE);
-//                    noOfUnregisterButton.setText(getString(R.string.total_unregister_child,child+""));
-//                }
-//                else {
-//                    noOfUnregisterButton.setVisibility(View.GONE);
-//                }
-//
-//
-//            }else{
-//                noOfUnregisterButton.setVisibility(View.GONE);
-//            }
             if(tasks_status!=null&&!tasks_status.isEmpty()){
                 try{
                     int tasks_count = Integer.valueOf(tasks_status);
@@ -397,15 +350,6 @@ public class ProfileOverviewFragment extends BaseProfileFragment {
                 }
             });
 
-
-//            new ProfilePhotoAsyncTask(pClient,age,profileImageIV,view,pregnant_icon).execute();
-//
-//            if (pClient.entityId() != null) {//image already in local storage most likey ):
-//                //set profile image by passing the client id.If the image doesn't exist in the image org.smartregister.cbhc.repository then download and save locally
-//                profileImageIV.setTag(org.smartregister.R.id.entity_id, pClient.entityId());
-//                DrishtiApplication.getCachedImageLoaderInstance().getImageByClientId(pClient.entityId(), OpenSRPImageLoader.getStaticImageListener((ImageView) profileImageIV, R.drawable.woman_placeholder, R.drawable.woman_placeholder));
-//
-//            }
             LinearLayout editButton = (LinearLayout)view.findViewById(R.id.edit_member);
             editButton.setTag(pClient);
             editButton.setOnClickListener((ProfileActivity)getActivity());
@@ -417,15 +361,8 @@ public class ProfileOverviewFragment extends BaseProfileFragment {
                     if (pClient.entityId() != null) {//image already in local storage most likey ):
                         //set profile image by passing the client id.If the image doesn't exist in the image org.smartregister.cbhc.repository then download and save locally
                         profileImageIV.setTag(org.smartregister.R.id.entity_id, pClient.entityId());
-//                        if(profile_photo.get(pClient.entityId())==null){
-////                            d = mActivity.getResources().getDrawable(R.drawable.child_boy_infant);
-////                            profile_photo.put(pClient.entityId(),d);
-//                            url = FileUtilities.getImageUrl(pClient.entityId()).replaceAll("///","/");
-//                            ImageLoaderByGlide.setImageAsTarget(url,profileImageIV,R.drawable.child_boy_infant);
-//
-//                        }else{
-                            DrishtiApplication.getCachedImageLoaderInstance().getImageByClientId(pClient.entityId(), OpenSRPImageLoader.getStaticImageListener(profileImageIV, R.drawable.child_boy_infant, R.drawable.child_boy_infant));
-//                        }
+
+                        DrishtiApplication.getCachedImageLoaderInstance().getImageByClientId(pClient.entityId(), OpenSRPImageLoader.getStaticImageListener(profileImageIV, R.drawable.child_boy_infant, R.drawable.child_boy_infant));
 
                         pregnant_icon.setVisibility(View.VISIBLE);
                         pregnant_icon.setImageResource(R.drawable.male_child_cbhc);
@@ -435,15 +372,8 @@ public class ProfileOverviewFragment extends BaseProfileFragment {
                     if (pClient.entityId() != null) {//image already in local storage most likey ):
                         //set profile image by passing the client id.If the image doesn't exist in the image org.smartregister.cbhc.repository then download and save locally
                         profileImageIV.setTag(org.smartregister.R.id.entity_id, pClient.entityId());
-//                        if(profile_photo.get(pClient.entityId())==null){
-////                            d = mActivity.getResources().getDrawable(R.drawable.child_girl_infant);
-////                            profile_photo.put(pClient.entityId(),d);
-//                            url = FileUtilities.getImageUrl(pClient.entityId()).replaceAll("///","/");
-//                            ImageLoaderByGlide.setImageAsTarget(url,profileImageIV,R.drawable.child_girl_infant);
-//
-//                        }else{
-                            DrishtiApplication.getCachedImageLoaderInstance().getImageByClientId(pClient.entityId(), OpenSRPImageLoader.getStaticImageListener(profileImageIV, R.drawable.child_girl_infant, R.drawable.child_girl_infant));
-//                        }
+
+                        DrishtiApplication.getCachedImageLoaderInstance().getImageByClientId(pClient.entityId(), OpenSRPImageLoader.getStaticImageListener(profileImageIV, R.drawable.child_girl_infant, R.drawable.child_girl_infant));
 
                         pregnant_icon.setVisibility(View.VISIBLE);
                         pregnant_icon.setImageResource(R.drawable.female_child_cbhc);
@@ -455,15 +385,8 @@ public class ProfileOverviewFragment extends BaseProfileFragment {
                     if (pClient.entityId() != null) {//image already in local storage most likey ):
                         //set profile image by passing the client id.If the image doesn't exist in the image org.smartregister.cbhc.repository then download and save locally
                         profileImageIV.setTag(org.smartregister.R.id.entity_id, pClient.entityId());
-//                        if(profile_photo.get(pClient.entityId())==null){
-////                            d = mActivity.getResources().getDrawable(R.drawable.male_cbhc_placeholder);
-////                            profile_photo.put(pClient.entityId(),d);
-//                            url = FileUtilities.getImageUrl(pClient.entityId()).replaceAll("///","/");
-//                            ImageLoaderByGlide.setImageAsTarget(url,profileImageIV,R.drawable.male_cbhc_placeholder);
-//
-//                        }else{
-                            DrishtiApplication.getCachedImageLoaderInstance().getImageByClientId(pClient.entityId(), OpenSRPImageLoader.getStaticImageListener(profileImageIV, R.drawable.male_cbhc_placeholder, R.drawable.male_cbhc_placeholder));
-//                        }
+
+                        DrishtiApplication.getCachedImageLoaderInstance().getImageByClientId(pClient.entityId(), OpenSRPImageLoader.getStaticImageListener(profileImageIV, R.drawable.male_cbhc_placeholder, R.drawable.male_cbhc_placeholder));
 
                         pregnant_icon.setVisibility(View.INVISIBLE);
                         clientype = "member";
@@ -472,24 +395,14 @@ public class ProfileOverviewFragment extends BaseProfileFragment {
                     if (pClient.entityId() != null) {//image already in local storage most likey ):
                         //set profile image by passing the client id.If the image doesn't exist in the image org.smartregister.cbhc.repository then download and save locally
                         profileImageIV.setTag(org.smartregister.R.id.entity_id, pClient.entityId());
-//                        if(profile_photo.get(pClient.entityId())==null){
-////                            d = mActivity.getResources().getDrawable(R.drawable.women_cbhc_placeholder);
-////                            profile_photo.put(pClient.entityId(),d);
-//                            url = FileUtilities.getImageUrl(pClient.entityId()).replaceAll("///","/");
-//                            ImageLoaderByGlide.setImageAsTarget(url,profileImageIV,R.drawable.women_cbhc_placeholder);
-//                        }else{
-                            DrishtiApplication.getCachedImageLoaderInstance().getImageByClientId(pClient.entityId(), OpenSRPImageLoader.getStaticImageListener(profileImageIV, R.drawable.women_cbhc_placeholder, R.drawable.women_cbhc_placeholder));
-//                        }
+
+                        DrishtiApplication.getCachedImageLoaderInstance().getImageByClientId(pClient.entityId(), OpenSRPImageLoader.getStaticImageListener(profileImageIV, R.drawable.women_cbhc_placeholder, R.drawable.women_cbhc_placeholder));
+
 
                         clientype = "woman";
                     }
                 }
             }
-
-//            if(profile_photo.get(pClient.entityId())!=null){
-//                profileImageIV.setImageDrawable(profile_photo.get(pClient.entityId()));
-//            }
-
 
             profileImageIV.setTag(R.id.typeofclientformemberprofile,clientype);
             profileImageIV.setTag(R.id.clientformemberprofile,pClient);
@@ -508,177 +421,9 @@ public class ProfileOverviewFragment extends BaseProfileFragment {
 
             return  view;
         }
-        class ProfilePhotoAsyncTask extends AsyncTask {
-            CommonPersonObjectClient pClient;
-            int age = 0;
-            ImageView profileImageIV;
-            View view;
-            ImageView pregnant_icon;
-            public ProfilePhotoAsyncTask(CommonPersonObjectClient pClient, int age,ImageView profileImageIV,View view,ImageView pregnant_icon){
-                this.pClient = pClient;
-                this.age = age;
-                this.profileImageIV = profileImageIV;
-                this.view = view;
-                this.pregnant_icon = pregnant_icon;
-            }
-            String gender;
-            String clientype = "";
-            @Override
-            protected Object doInBackground(Object[] objects) {
-                DetailsRepository detailsRepository = AncApplication.getInstance().getContext().detailsRepository();
-                Map<String, String> detailmap = detailsRepository.getAllDetailsForClient(pClient.getCaseId());
-                gender = detailmap.get("gender");
-                pClient.getColumnmaps().putAll(detailmap);
-
-                Map<String,Object> map = new HashMap<String,Object>();
-                        map.put("gender",gender);
-                map.put("pclient",pClient);
-                return map;
-            }
-
-            @Override
-            protected void onPostExecute(Object o) {
-                super.onPostExecute(o);
-                if(mActivity == null) return;
-                String gender = "";
-                CommonPersonObjectClient pClient = null;
-                if(o instanceof HashMap){
-
-                    gender = (String)((HashMap) o).get("gender");
-                    pClient = (CommonPersonObjectClient)((HashMap) o).get("pclient");
-                }
-
-            }
-        }
-        public int childCount(String motherId){
-            String tableName = DBConstants.CHILD_TABLE_NAME;
-            String parentTableName = DBConstants.WOMAN_TABLE_NAME;
-            SmartRegisterQueryBuilder queryBUilder = new SmartRegisterQueryBuilder();
-            queryBUilder.SelectInitiateMainTable(tableName, new String[]{
-                    tableName + ".relationalid",
-                    tableName + ".details",
-                    tableName + ".relational_id"
-            });
-            queryBUilder.customJoin("LEFT JOIN " + parentTableName + " ON  " + tableName + ".relational_id =  " + parentTableName + ".id");
-            String mainSelect = queryBUilder.mainCondition(" ");
-
-            AncRepository repo = (AncRepository) AncApplication.getInstance().getRepository();
-            net.sqlcipher.database.SQLiteDatabase db = repo.getReadableDatabase();
-
-            Cursor cursor = db.rawQuery(mainSelect+tableName+".relational_id = ?",new String[]{motherId});
-            if(cursor!=null && cursor.getCount()>0){
-                return cursor.getCount();
-
-            }
-            return 0;
-        }
-
-        public void addChild(LinearLayout household_details_list_row, String mother_id) {
-            Log.e("--------------",mother_id);
-
-
-            AncRepository repo = (AncRepository) AncApplication.getInstance().getRepository();
-            net.sqlcipher.database.SQLiteDatabase db = repo.getReadableDatabase();
-
-
-            String tableName = DBConstants.CHILD_TABLE_NAME;
-            String parentTableName = DBConstants.WOMAN_TABLE_NAME;
-            SmartRegisterQueryBuilder queryBUilder = new SmartRegisterQueryBuilder();
-            queryBUilder.SelectInitiateMainTable(tableName, new String[]{
-                    tableName + ".relationalid",
-                    tableName + ".details",
-                    tableName + ".openmrs_id",
-                    tableName + ".relational_id",
-                    tableName + ".first_name",
-                    tableName + ".last_name",
-                    tableName + ".gender",
-                    parentTableName + ".first_name as mother_first_name",
-                    parentTableName + ".last_name as mother_last_name",
-                    parentTableName + ".dob as mother_dob",
-                    parentTableName + ".nrc_number as mother_nrc_number",
-                    tableName + ".father_name",
-                    tableName + ".dob",
-                    tableName + ".epi_card_number",
-                    tableName + ".contact_phone_number",
-                    tableName + ".pmtct_status",
-                    tableName + ".provider_uc",
-                    tableName + ".provider_town",
-                    tableName + ".provider_id",
-                    tableName + ".provider_location_id",
-                    tableName + ".client_reg_date",
-                    tableName + ".last_interacted_with",
-                    tableName + ".inactive",
-                    tableName + ".lost_to_follow_up"
-            });
-            queryBUilder.customJoin("LEFT JOIN " + parentTableName + " ON  " + tableName + ".relational_id =  " + parentTableName + ".id");
-            String mainCondition = " (dod is NULL OR dod = '' )";
-            String mainSelect = queryBUilder.mainCondition(mainCondition);
 
 
 
-
-            Cursor cursor = db.rawQuery(mainSelect+ "and "+tableName+".relational_id = ?",new String[]{mother_id});
-            if(cursor!=null && cursor.getCount()>0){
-
-            }
-
-
-
-            cursor.moveToFirst();
-            while (cursor.isAfterLast() == false) {
-                CommonRepository commonRepository = org.smartregister.Context.getInstance().commonrepository(tableName);
-                CommonPersonObject personinlist = commonRepository.readAllcommonforCursorAdapter(cursor);
-                final CommonPersonObjectClient pClient = new CommonPersonObjectClient(personinlist.getCaseId(), personinlist.getDetails(), personinlist.getDetails().get("FWHOHFNAME"));
-                pClient.setColumnmaps(personinlist.getColumnmaps());
-                LinearLayout childrenLayout = (LinearLayout)inflater.inflate(R.layout.household_details_child_row, null);
-                ((TextView)childrenLayout.findViewById(R.id.name_tv)).setText("Name : " + cursor.getString(cursor.getColumnIndex("first_name")));
-
-                String dobString = cursor.getString(cursor.getColumnIndex("dob"));
-                String durationString = "";
-                if (StringUtils.isNotBlank(dobString)) {
-                    try {
-                        DateTime birthDateTime = new DateTime(dobString);
-                        String duration = DateUtil.getDuration(birthDateTime);
-                        if (duration != null) {
-                            durationString = duration;
-                        }
-                    } catch (Exception e) {
-                        Log.e(getClass().getName(), e.toString(), e);
-                    }
-                }
-                ((TextView)childrenLayout.findViewById(R.id.age_tv)).setText("Age : "+durationString);
-
-                Gender gender = Gender.UNKNOWN;
-                if (pClient != null && pClient.getDetails() != null) {
-                    String genderString = getValue(pClient, "gender", false);
-                    if (genderString != null && genderString.toLowerCase().equals("female")) {
-                        gender = Gender.FEMALE;
-                    } else if (genderString != null && genderString.toLowerCase().equals("male")) {
-                        gender = Gender.MALE;
-                    }
-                    ImageView profileImageIV = (ImageView)childrenLayout.findViewById(R.id.profile_image_iv);
-
-                    if (pClient.entityId() != null) {//image already in local storage most likey ):
-                        //set profile image by passing the client id.If the image doesn't exist in the image org.smartregister.cbhc.repository then download and save locally
-                        profileImageIV.setTag(org.smartregister.R.id.entity_id, pClient.entityId());
-                        //DrishtiApplication.getCachedImageLoaderInstance().getImageByClientId(pClient.entityId(), OpenSRPImageLoader.getStaticImageListener((ImageView) profileImageIV, ImageUtils.profileImageResourceByGender(gender), ImageUtils.profileImageResourceByGender(gender)));
-
-                    }
-                }
-
-
-                household_details_list_row.addView(childrenLayout);
-                childrenLayout.findViewById(R.id.profile_name_layout).setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-//                        ChildImmunizationActivity.launchActivity(HouseholdDetailActivity.this,pClient,null);
-                    }
-                });
-                cursor.moveToNext();
-            }
-            cursor.close();
-
-        }
 
     }
 

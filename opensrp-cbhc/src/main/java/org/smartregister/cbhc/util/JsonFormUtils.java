@@ -93,7 +93,7 @@ public class JsonFormUtils extends org.smartregister.util.JsonFormUtils {
 
     public static JSONObject getFormAsJson(JSONObject form,
                                            String formName, String id,
-                                           String currentLocationId,String HouseholdEnitityID) throws Exception {
+                                           String currentLocationId, String HouseholdEnitityID) throws Exception {
         if (form == null) {
             return null;
         }
@@ -120,7 +120,7 @@ public class JsonFormUtils extends org.smartregister.util.JsonFormUtils {
                 form.remove(JsonFormUtils.ENTITY_ID);
                 form.put(JsonFormUtils.ENTITY_ID, entityId);
             }
-        }else if (formName.contains(Constants.JSON_FORM.MEMBER_REGISTER)) {
+        } else if (formName.contains(Constants.JSON_FORM.MEMBER_REGISTER)) {
 
 
             if (StringUtils.isNotBlank(entityId)) {
@@ -129,7 +129,7 @@ public class JsonFormUtils extends org.smartregister.util.JsonFormUtils {
 
             // Inject opensrp id into the form
             JSONArray field = fields(form);
-            JSONObject ancId = getFieldJSONObject(field,"Patient_Identifier");
+            JSONObject ancId = getFieldJSONObject(field, "Patient_Identifier");
             if (ancId != null) {
                 ancId.remove(JsonFormUtils.VALUE);
                 ancId.put(JsonFormUtils.VALUE, entityId);
@@ -139,7 +139,7 @@ public class JsonFormUtils extends org.smartregister.util.JsonFormUtils {
             lookup.put("entity_id", "household");
             lookup.put("value", HouseholdEnitityID);
 
-        }else {
+        } else {
             Log.w(TAG, "Unsupported form requested for launch " + formName);
             if (StringUtils.isNotBlank(entityId)) {
                 entityId = entityId.replace("-", "");
@@ -155,20 +155,20 @@ public class JsonFormUtils extends org.smartregister.util.JsonFormUtils {
             JsonFormUtils.addWomanRegisterHierarchyQuestions(form);
 
         }
-        if(Constants.JSON_FORM.Household_REGISTER.equals(formName)){
+        if (Constants.JSON_FORM.Household_REGISTER.equals(formName)) {
             android.text.format.DateFormat df = new android.text.format.DateFormat();
 
             JSONArray field = fields(form);
-            JSONObject date_of_registration = getFieldJSONObject(field,"Date_Of_Reg");
+            JSONObject date_of_registration = getFieldJSONObject(field, "Date_Of_Reg");
             date_of_registration.remove(JsonFormUtils.VALUE);
-            date_of_registration.put(JsonFormUtils.VALUE,df.format("dd-MM-yyyy", new java.util.Date()));
-        }else if(Constants.JSON_FORM.MEMBER_REGISTER.equals(formName)){
+            date_of_registration.put(JsonFormUtils.VALUE, df.format("dd-MM-yyyy", new java.util.Date()));
+        } else if (Constants.JSON_FORM.MEMBER_REGISTER.equals(formName)) {
             android.text.format.DateFormat df = new android.text.format.DateFormat();
 
             JSONArray field = fields(form);
-            JSONObject date_of_registration = getFieldJSONObject(field,"member_Reg_Date");
+            JSONObject date_of_registration = getFieldJSONObject(field, "member_Reg_Date");
             date_of_registration.remove(JsonFormUtils.VALUE);
-            date_of_registration.put(JsonFormUtils.VALUE,df.format("dd-MM-yyyy", new java.util.Date()));
+            date_of_registration.put(JsonFormUtils.VALUE, df.format("dd-MM-yyyy", new java.util.Date()));
         }
 
 //        else if(formName.startsWith("Followup_Form")){
@@ -214,7 +214,7 @@ public class JsonFormUtils extends org.smartregister.util.JsonFormUtils {
 
             String encounterType = getString(jsonForm, ENCOUNTER_TYPE);
             JSONObject metadata = getJSONObject(jsonForm, METADATA);
-            if(!encounterType.contains("Household")) {
+            if (!encounterType.contains("Household")) {
                 fields = processAttributesWithChoiceIDs(fields);
             }
 
@@ -228,10 +228,10 @@ public class JsonFormUtils extends org.smartregister.util.JsonFormUtils {
             lastInteractedWith.put(Constants.KEY.VALUE, Calendar.getInstance().getTimeInMillis());
             fields.put(lastInteractedWith);
             Gender gender = null;
-            if(!(encounterType.equalsIgnoreCase(Constants.EventType.MemberREGISTRATION)
-            ||encounterType.equalsIgnoreCase(Constants.EventType.Child_REGISTRATION)
-            ||encounterType.equalsIgnoreCase(Constants.EventType.WomanMemberREGISTRATION)
-            || !Utils.notFollowUp(encounterType)
+            if (!(encounterType.equalsIgnoreCase(Constants.EventType.MemberREGISTRATION)
+                    || encounterType.equalsIgnoreCase(Constants.EventType.Child_REGISTRATION)
+                    || encounterType.equalsIgnoreCase(Constants.EventType.WomanMemberREGISTRATION)
+                    || !Utils.notFollowUp(encounterType)
             )) {
 
                 JSONObject dobUnknownObject = getFieldJSONObject(fields, DBConstants.KEY.DOB_UNKNOWN);
@@ -256,47 +256,47 @@ public class JsonFormUtils extends org.smartregister.util.JsonFormUtils {
 
                     }
                 }
-            }else if(Utils.notFollowUp(encounterType)){
-                String agestring ="";
+            } else if (Utils.notFollowUp(encounterType)) {
+                String agestring = "";
                 String dobstring = "";
                 JSONObject dobknownObject = getFieldJSONObject(fields, "member_birth_date_known");
                 String dobknownObjectvalue = dobknownObject.getString("value");
-                if(dobknownObjectvalue.equalsIgnoreCase("হ্যাঁ")||dobknownObjectvalue.equalsIgnoreCase("YES")){
+                if (dobknownObjectvalue.equalsIgnoreCase("হ্যাঁ") || dobknownObjectvalue.equalsIgnoreCase("YES")) {
                     dobstring = getFieldJSONObject(fields, "member_birth_date").getString("value");
                     DATE_FORMAT.parse(dobstring);
-                    agestring = ""+Utils.getAgeFromDate((new DateTime(DATE_FORMAT.parse(dobstring)).toString()));
-                    JSONObject ageJsonObject = getFieldJSONObject(fields,"age");
-                    ageJsonObject.put("value",agestring);
-                }else if(dobknownObjectvalue.equalsIgnoreCase("না")||dobknownObjectvalue.equalsIgnoreCase("NO")){
+                    agestring = "" + Utils.getAgeFromDate((new DateTime(DATE_FORMAT.parse(dobstring)).toString()));
+                    JSONObject ageJsonObject = getFieldJSONObject(fields, "age");
+                    ageJsonObject.put("value", agestring);
+                } else if (dobknownObjectvalue.equalsIgnoreCase("না") || dobknownObjectvalue.equalsIgnoreCase("NO")) {
                     agestring = getFieldJSONObject(fields, "age").getString("value");
-                    dobstring = ""+Utils.getDob(Integer.parseInt(agestring));
-                    JSONObject dobJsonObject = getFieldJSONObject(fields,"member_birth_date");
-                    dobJsonObject.put("value",dobstring);
+                    dobstring = "" + Utils.getDob(Integer.parseInt(agestring));
+                    JSONObject dobJsonObject = getFieldJSONObject(fields, "member_birth_date");
+                    dobJsonObject.put("value", dobstring);
                 }
                 int age = 0;
-                try{
+                try {
                     age = Integer.parseInt(agestring);
-                }catch(Exception e){
+                } catch (Exception e) {
 
                 }
 
 
-                String genderString = getFieldJSONObject(fields,"gender").getString("value");
-                if(genderString.equalsIgnoreCase("পুরুষ")||genderString.equalsIgnoreCase("M")){
+                String genderString = getFieldJSONObject(fields, "gender").getString("value");
+                if (genderString.equalsIgnoreCase("পুরুষ") || genderString.equalsIgnoreCase("M")) {
                     gender = Gender.MALE;
-                }else if(genderString.equalsIgnoreCase("মহিলা")||genderString.equalsIgnoreCase("F")){
+                } else if (genderString.equalsIgnoreCase("মহিলা") || genderString.equalsIgnoreCase("F")) {
                     gender = Gender.FEMALE;
-                }else{
+                } else {
                     gender = Gender.UNKNOWN;
                 }
 
-                if(age<5){
+                if (age < 5) {
                     encounterType = Constants.EventType.Child_REGISTRATION;
-                }else{
-                    if(gender.equals(Gender.FEMALE)){
+                } else {
+                    if (gender.equals(Gender.FEMALE)) {
                         encounterType = Constants.EventType.WomanMemberREGISTRATION;
 
-                    }else if(gender.equals(Gender.MALE)){
+                    } else if (gender.equals(Gender.MALE)) {
                         encounterType = Constants.EventType.MemberREGISTRATION;
                     }
                 }
@@ -304,7 +304,7 @@ public class JsonFormUtils extends org.smartregister.util.JsonFormUtils {
 
             }
 
-            if(encounterType.equalsIgnoreCase(Constants.EventType.HouseholdREGISTRATION)){
+            if (encounterType.equalsIgnoreCase(Constants.EventType.HouseholdREGISTRATION)) {
                 JSONObject dobJSONObject = getFieldJSONObject(fields, DBConstants.KEY.DOB);
                 //dobJSONObject.put("hidden",false);
                 dobJSONObject.put(VALUE, Utils.getDob(100));
@@ -317,23 +317,23 @@ public class JsonFormUtils extends org.smartregister.util.JsonFormUtils {
 
 
             Client baseClient = null;
-            if(Utils.notFollowUp(encounterType)) {
+            if (Utils.notFollowUp(encounterType)) {
                 getFieldJSONObject(fields, "Patient_Identifier").remove("hidden");
                 baseClient = org.smartregister.util.JsonFormUtils.createBaseClient(fields, formTag, entityId);
                 baseClient = updateClientDates(baseClient);
-            }else{
+            } else {
                 HashMap<String, String> check_box_in_forms = processCheckBoxForAttributes(fields);
-                updateFieldsWithCheckboxValues(fields,check_box_in_forms);
+                updateFieldsWithCheckboxValues(fields, check_box_in_forms);
                 JSONObject clientjsonFromForm = new JSONObject(gson.toJson(org.smartregister.util.JsonFormUtils.createBaseClient(fields, formTag, entityId)));
-                JSONObject clientJson = AncApplication.getInstance().getEventClientRepository().getClient(db,entityId);
-                updateClientAttributes(clientjsonFromForm,clientJson);
+                JSONObject clientJson = AncApplication.getInstance().getEventClientRepository().getClient(db, entityId);
+                updateClientAttributes(clientjsonFromForm, clientJson);
 
 
-                if(encounterType.equalsIgnoreCase("Followup HH Transfer"))
-                    clientJson.put("birthdate","1900-01-01");
+                if (encounterType.equalsIgnoreCase("Followup HH Transfer"))
+                    clientJson.put("birthdate", "1900-01-01");
                 baseClient = gson.fromJson(clientJson.toString(), Client.class);
                 baseClient = updateClientDates(baseClient);
-                if(encounterType.equalsIgnoreCase("Followup HH Transfer"))
+                if (encounterType.equalsIgnoreCase("Followup HH Transfer"))
                     baseClient.setBirthdate(timezoneformatDate("01-01-1900"));
 
 
@@ -344,15 +344,12 @@ public class JsonFormUtils extends org.smartregister.util.JsonFormUtils {
             }
 
 
-
-
-
-            if(Utils.notFollowUp(encounterType)) {
+            if (Utils.notFollowUp(encounterType)) {
                 ArrayList<Address> adresses = new ArrayList<Address>();
                 Address address1 = new Address();
                 try {
                     for (int i = 0; i < fields.length(); i++) {
-                        String key = fields.getJSONObject(i).getString("key");
+                        String key = fields.getJSONObject(i).optString("key");
 
                         if (key.equals("HIE_FACILITIES")) {
                             if (!TextUtils.isEmpty(fields.getJSONObject(i).getString("value"))) {
@@ -384,7 +381,7 @@ public class JsonFormUtils extends org.smartregister.util.JsonFormUtils {
 
                 try {
                     for (int i = 0; i < fields.length(); i++) {
-                        String key = fields.getJSONObject(i).getString("key");
+                        String key = fields.getJSONObject(i).optString("key");
 
                         if (key.equals("ADDRESS_LINE")) {
                             if (!TextUtils.isEmpty(fields.getJSONObject(i).getString("value"))) {
@@ -442,15 +439,15 @@ public class JsonFormUtils extends org.smartregister.util.JsonFormUtils {
             }
 
             String entitytypeName = "";
-            if(encounterType.equalsIgnoreCase(Constants.EventType.Child_REGISTRATION)){
+            if (encounterType.equalsIgnoreCase(Constants.EventType.Child_REGISTRATION)) {
                 entitytypeName = DBConstants.CHILD_TABLE_NAME;
-            }else if(encounterType.equalsIgnoreCase(Constants.EventType.HouseholdREGISTRATION)){
+            } else if (encounterType.equalsIgnoreCase(Constants.EventType.HouseholdREGISTRATION)) {
                 entitytypeName = DBConstants.HOUSEHOLD_TABLE_NAME;
-            }else if(encounterType.equalsIgnoreCase(Constants.EventType.UPDATE_Household_REGISTRATION)){
+            } else if (encounterType.equalsIgnoreCase(Constants.EventType.UPDATE_Household_REGISTRATION)) {
                 entitytypeName = DBConstants.HOUSEHOLD_TABLE_NAME;
-            }else if(encounterType.equalsIgnoreCase(Constants.EventType.MemberREGISTRATION)){
+            } else if (encounterType.equalsIgnoreCase(Constants.EventType.MemberREGISTRATION)) {
                 entitytypeName = DBConstants.MEMBER_TABLE_NAME;
-            }else if(encounterType.equalsIgnoreCase(Constants.EventType.WomanMemberREGISTRATION)){
+            } else if (encounterType.equalsIgnoreCase(Constants.EventType.WomanMemberREGISTRATION)) {
                 entitytypeName = DBConstants.WOMAN_TABLE_NAME;
             }
             String formSubmissionID = "";
@@ -468,8 +465,8 @@ public class JsonFormUtils extends org.smartregister.util.JsonFormUtils {
 //            }
 
             Event baseEvent = org.smartregister.util.JsonFormUtils.createEvent(fields, metadata, formTag, entityId, encounterType, entitytypeName);
-            if(!isBlank(formSubmissionID)){
-               baseEvent.setFormSubmissionId(formSubmissionID);
+            if (!isBlank(formSubmissionID)) {
+                baseEvent.setFormSubmissionId(formSubmissionID);
             }
             checkForAgeChangeToMemberType(fields, metadata, formTag, entityId, encounterType, entitytypeName);
 
@@ -478,15 +475,15 @@ public class JsonFormUtils extends org.smartregister.util.JsonFormUtils {
 
             try {
                 for (int i = 0; i < fields.length(); i++) {
-                    String key = fields.getJSONObject(i).getString("key");
-                    if(key.equalsIgnoreCase("Patient_Identifier")){
+                    String key = fields.getJSONObject(i).optString("key");
+                    if (key.equalsIgnoreCase("Patient_Identifier")) {
                         String identifier = fields.getJSONObject(i).getString("value");
                         AncApplication.getInstance().getHealthIdRepository().close(identifier);
 //                        AncApplication.getInstance().getUniqueIdRepository().close(identifier);
 
                     }
                 }
-            }catch (Exception e){
+            } catch (Exception e) {
                 Log.e(TAG, Log.getStackTraceString(e));
             }
 
@@ -500,13 +497,13 @@ public class JsonFormUtils extends org.smartregister.util.JsonFormUtils {
 
     private static void checkForAgeChangeToMemberType(JSONArray fields, JSONObject metadata, FormTag formTag, String entityId, String encounterType, String entitytypeName) {
 
-        if(entitytypeName.equalsIgnoreCase(DBConstants.MEMBER_TABLE_NAME)||entitytypeName.equalsIgnoreCase(DBConstants.WOMAN_TABLE_NAME)){
+        if (entitytypeName.equalsIgnoreCase(DBConstants.MEMBER_TABLE_NAME) || entitytypeName.equalsIgnoreCase(DBConstants.WOMAN_TABLE_NAME)) {
             CommonRepository commonRepository = AncApplication.getInstance().getContext().commonrepository(DBConstants.CHILD_TABLE_NAME);
             CommonPersonObject cpo = commonRepository.findByBaseEntityId(entityId);
-            if(cpo!=null){
+            if (cpo != null) {
                 ContentValues cv = new ContentValues();
-                cv.put("date_removed",""+System.currentTimeMillis());
-                commonRepository.updateColumn(DBConstants.CHILD_TABLE_NAME,cv,entityId);
+                cv.put("date_removed", "" + System.currentTimeMillis());
+                commonRepository.updateColumn(DBConstants.CHILD_TABLE_NAME, cv, entityId);
             }
         }
 
@@ -528,16 +525,16 @@ public class JsonFormUtils extends org.smartregister.util.JsonFormUtils {
 //        }
 //    }
 
-    private static void updateFieldsWithCheckboxValues(JSONArray fields,HashMap<String,String>attributes){
-        for(int i=0;i<fields.length();i++){
+    private static void updateFieldsWithCheckboxValues(JSONArray fields, HashMap<String, String> attributes) {
+        for (int i = 0; i < fields.length(); i++) {
             try {
                 //openmrs_entity_id
                 JSONObject obj = fields.getJSONObject(i);
-                if(attributes.get(obj.get("openmrs_entity_id"))!=null&&!attributes.get(obj.get("openmrs_entity_id")).isEmpty()){
-                    obj.put("value",attributes.get(obj.get("openmrs_entity_id")));
-                }else{
-                    if(attributes.get(obj.get("key"))!=null){
-                        obj.put("value",attributes.get(obj.get("key")));
+                if (attributes.get(obj.getString("openmrs_entity_id")) != null && !attributes.get(obj.getString("openmrs_entity_id")).isEmpty()) {
+                    obj.put("value", attributes.get(obj.getString("openmrs_entity_id")));
+                } else {
+                    if (attributes.get(obj.optString("key")) != null) {
+                        obj.put("value", attributes.get(obj.optString("key")));
                     }
                 }
 
@@ -548,16 +545,17 @@ public class JsonFormUtils extends org.smartregister.util.JsonFormUtils {
 
         }
     }
+
     private static Client updateClientDates(Client client) {
         try {
 
-            String lmp_date = (String)client.getAttribute("LMP");
-            String delivery_date = (String)client.getAttribute("delivery_date");
-            if(lmp_date!=null){
-                client.setAttributes((Map<String, Object>) client.getAttributes().put("LMP",(Object)timezonedateformat(lmp_date)));
+            String lmp_date = (String) client.getAttribute("LMP");
+            String delivery_date = (String) client.getAttribute("delivery_date");
+            if (lmp_date != null) {
+                client.setAttributes((Map<String, Object>) client.getAttributes().put("LMP", (Object) timezonedateformat(lmp_date)));
             }
-            if(delivery_date!=null){
-                client.setAttributes((Map<String, Object>) client.getAttributes().put("delivery_date",(Object)timezonedateformat(delivery_date)));
+            if (delivery_date != null) {
+                client.setAttributes((Map<String, Object>) client.getAttributes().put("delivery_date", (Object) timezonedateformat(delivery_date)));
             }
 
         } catch (Exception e) {
@@ -566,7 +564,8 @@ public class JsonFormUtils extends org.smartregister.util.JsonFormUtils {
 
         return client;
     }
-    public static Date timezoneformatDate(String dateString){
+
+    public static Date timezoneformatDate(String dateString) {
         final String OLD_FORMAT = "dd-MM-yyyy";
         final String NEW_FORMAT = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'";
 
@@ -586,7 +585,8 @@ public class JsonFormUtils extends org.smartregister.util.JsonFormUtils {
 
         return d;
     }
-    public static String timezonedateformat(String dateString){
+
+    public static String timezonedateformat(String dateString) {
         final String OLD_FORMAT = "dd-MM-yyyy";
         final String NEW_FORMAT = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'";
 
@@ -606,15 +606,16 @@ public class JsonFormUtils extends org.smartregister.util.JsonFormUtils {
 
         return newDateString;
     }
+
     private static void updateClientAttributes(JSONObject clientjsonFromForm, JSONObject clientJson) {
         try {
             JSONObject formAttributes = clientjsonFromForm.getJSONObject("attributes");
             JSONObject clientAttributes = clientJson.getJSONObject("attributes");
             Iterator<String> keys = formAttributes.keys();
 
-            while(keys.hasNext()) {
+            while (keys.hasNext()) {
                 String key = keys.next();
-                clientAttributes.put(key,formAttributes.get(key));
+                clientAttributes.put(key, formAttributes.get(key));
 
             }
 
@@ -625,48 +626,46 @@ public class JsonFormUtils extends org.smartregister.util.JsonFormUtils {
     }
 
 
-    private static HashMap<String,String> processCheckBoxForAttributes(JSONArray fields) {
-        HashMap<String,String> toReturn = new HashMap<String, String>();
+    private static HashMap<String, String> processCheckBoxForAttributes(JSONArray fields) {
+        HashMap<String, String> toReturn = new HashMap<String, String>();
         try {
 
             for (int i = 0; i < fields.length(); i++) {
                 JSONObject questionGroup = fields.getJSONObject(i);
                 String keyname = "";
-                if(questionGroup.has("openmrs_entity") && questionGroup.getString("openmrs_entity").equalsIgnoreCase("person_attribute")){
+                if (questionGroup.has("openmrs_entity") && questionGroup.getString("openmrs_entity").equalsIgnoreCase("person_attribute")) {
                     keyname = questionGroup.getString("openmrs_entity_id");
-                }else {
-                    keyname = questionGroup.getString("key");
+                } else {
+                    keyname = questionGroup.optString("key");
                 }
                 if (questionGroup.has("type") && questionGroup.getString("type").equalsIgnoreCase("check_box")) {
                     JSONArray checkBoxArray = questionGroup.getJSONArray("options");
                     ArrayList<String> selectedbox = new ArrayList<String>();
                     for (int j = 0; j < checkBoxArray.length(); j++) {
                         if (checkBoxArray.getJSONObject(j).getString("value").equalsIgnoreCase("true")) {
-                            String valueOFCheckbox = checkBoxArray.getJSONObject(j).getString("key");
+                            String valueOFCheckbox = checkBoxArray.getJSONObject(j).optString("key");
                             selectedbox.add(valueOFCheckbox);
                         }
                     }
                     String value = "";
-                    for(int j = 0;j<selectedbox.size();j++){
-                        if(j != 0){
-                            value = value+","+selectedbox.get(j);
-                        }else{
-                            value = value+selectedbox.get(j);
+                    for (int j = 0; j < selectedbox.size(); j++) {
+                        if (j != 0) {
+                            value = value + "," + selectedbox.get(j);
+                        } else {
+                            value = value + selectedbox.get(j);
                         }
                     }
-                    if(keyname.equalsIgnoreCase("Disease_status")&&!value.isEmpty()){
+                    if (keyname.equalsIgnoreCase("Disease_status") && !value.isEmpty()) {
 //                        if(!hasDisease(fields)){
 //                            value = "NULL";
 //                        }
-                        toReturn.put(keyname,value);
+                        toReturn.put(keyname, value);
 //                        updatePregnantStatus(fields,value);
-                    }
-
-                    else if (!keyname.equalsIgnoreCase("Disease_status"))
-                        toReturn.put(keyname,value);
+                    } else if (!keyname.equalsIgnoreCase("Disease_status"))
+                        toReturn.put(keyname, value);
                 }
             }
-        }catch (Exception e){
+        } catch (Exception e) {
 
         }
         return toReturn;
@@ -674,15 +673,15 @@ public class JsonFormUtils extends org.smartregister.util.JsonFormUtils {
 
 
     private static JSONArray processAttributesValueWithChoiceIDs(JSONArray fields) {
-        for(int i = 0;i<fields.length();i++){
+        for (int i = 0; i < fields.length(); i++) {
             try {
                 JSONObject fieldObject = fields.getJSONObject(i);
 //                if(fieldObject.has("openmrs_entity")){
 //                    if(fieldObject.getString("openmrs_entity").equalsIgnoreCase("person_attribute")){
-                if(fieldObject.has("openmrs_choice_ids")){
-                    if(fieldObject.has("value")){
+                if (fieldObject.has("openmrs_choice_ids")) {
+                    if (fieldObject.has("value")) {
                         String valueEntered = fieldObject.getString("value");
-                        fieldObject.put("value",fieldObject.getJSONObject("openmrs_choice_ids").get(valueEntered));
+                        fieldObject.put("value", fieldObject.getJSONObject("openmrs_choice_ids").get(valueEntered));
                     }
                 }
 //                    }
@@ -693,18 +692,19 @@ public class JsonFormUtils extends org.smartregister.util.JsonFormUtils {
         }
         return fields;
     }
+
     private static JSONArray processAttributesWithChoiceIDs(JSONArray fields) {
-        for(int i = 0;i<fields.length();i++){
+        for (int i = 0; i < fields.length(); i++) {
             try {
                 JSONObject fieldObject = fields.getJSONObject(i);
 //                if(fieldObject.has("openmrs_entity")){
 //                    if(fieldObject.getString("openmrs_entity").equalsIgnoreCase("person_attribute")){
-                        if(fieldObject.has("openmrs_choice_ids")){
-                            if(fieldObject.has("value")){
-                                String valueEntered = fieldObject.getString("value");
-                                fieldObject.put("value",fieldObject.getJSONObject("openmrs_choice_ids").get(valueEntered));
-                            }
-                        }
+                if (fieldObject.has("openmrs_choice_ids")) {
+                    if (fieldObject.has("value")) {
+                        String valueEntered = fieldObject.getString("value");
+                        fieldObject.put("value", fieldObject.getJSONObject("openmrs_choice_ids").get(valueEntered));
+                    }
+                }
 //                    }
 //                }
             } catch (JSONException e) {
@@ -718,17 +718,17 @@ public class JsonFormUtils extends org.smartregister.util.JsonFormUtils {
         ArrayList<Address> addresses = new ArrayList<Address>();
         try {
             JSONArray addressArray = clientjson.getJSONArray("addresses");
-            for(int i = 0 ;i<addressArray.length();i++){
+            for (int i = 0; i < addressArray.length(); i++) {
                 Address address = new Address();
                 address.setAddressType(addressArray.getJSONObject(i).getString("addressType"));
                 JSONObject addressfields = addressArray.getJSONObject(i).getJSONObject("addressFields");
 
                 Iterator<?> keys = addressfields.keys();
 
-                while( keys.hasNext() ) {
-                    String key = (String)keys.next();
-                    if ( addressfields.get(key) instanceof String ) {
-                        address.addAddressField(key,addressfields.getString(key));
+                while (keys.hasNext()) {
+                    String key = (String) keys.next();
+                    if (addressfields.get(key) instanceof String) {
+                        address.addAddressField(key, addressfields.getString(key));
                     }
                 }
                 addresses.add(address);
@@ -907,8 +907,8 @@ public class JsonFormUtils extends org.smartregister.util.JsonFormUtils {
         try {
 
             JSONObject form = FormUtils.getInstance(context).getFormJson(Constants.JSON_FORM.MEMBER_REGISTER);
-            form.put("relational_id",womanClient.get("relational_id"));
-            LookUpUtils.putRelationalIdInLookupObjects(form,womanClient.get("relational_id"));
+            form.put("relational_id", womanClient.get("relational_id"));
+            LookUpUtils.putRelationalIdInLookupObjects(form, womanClient.get("relational_id"));
 
 
             ///////////////////////[o-o]///put household id in metadata lookup//////////////////
@@ -992,10 +992,20 @@ public class JsonFormUtils extends org.smartregister.util.JsonFormUtils {
 
         return "";
     }
+
     public static void processPopulatableFieldsForHouseholds(Map<String, String> womanClient, JSONObject jsonObject) throws JSONException {
 
-
-        if ((jsonObject.getString(JsonFormUtils.KEY).equalsIgnoreCase("lmp_date"))) {
+        if ((jsonObject.getString(JsonFormUtils.KEY).equalsIgnoreCase("member_unique_ID"))){
+            String idtype = womanClient.get("idtype");
+            String tmp [] = idtype.split(",");
+            JSONArray idTypeArray = new JSONArray();
+            for(String t : tmp){
+                idTypeArray.put(t);
+            }
+            processValueWithChoiceIds(jsonObject, idTypeArray.toString());
+            jsonObject.put(JsonFormUtils.VALUE, idTypeArray);
+        }
+        else if ((jsonObject.getString(JsonFormUtils.KEY).equalsIgnoreCase("lmp_date"))) {
 
             String dobString = womanClient.get("LMP");
             Date dob = Utils.dobStringToDate(dobString);
@@ -1003,8 +1013,7 @@ public class JsonFormUtils extends org.smartregister.util.JsonFormUtils {
                 jsonObject.put(JsonFormUtils.VALUE, DATE_FORMAT.format(dob));
             }
 
-        }
-        else if ((jsonObject.getString(JsonFormUtils.KEY).equalsIgnoreCase("Delivery_date"))) {
+        } else if ((jsonObject.getString(JsonFormUtils.KEY).equalsIgnoreCase("Delivery_date"))) {
 
             String dobString = womanClient.get("delivery_date");
             Date dob = Utils.dobStringToDate(dobString);
@@ -1012,10 +1021,7 @@ public class JsonFormUtils extends org.smartregister.util.JsonFormUtils {
                 jsonObject.put(JsonFormUtils.VALUE, DATE_FORMAT.format(dob));
             }
 
-        }
-
-
-        else if ((jsonObject.getString(JsonFormUtils.KEY).equalsIgnoreCase(DBConstants.KEY.DOB)||jsonObject.getString(JsonFormUtils.KEY).equalsIgnoreCase(DBConstants.KEY.MEMBER_DOB)) && !Boolean.valueOf(womanClient.get(DBConstants.KEY.DOB_UNKNOWN))) {
+        } else if ((jsonObject.getString(JsonFormUtils.KEY).equalsIgnoreCase(DBConstants.KEY.DOB) || jsonObject.getString(JsonFormUtils.KEY).equalsIgnoreCase(DBConstants.KEY.MEMBER_DOB)) && !Boolean.valueOf(womanClient.get(DBConstants.KEY.DOB_UNKNOWN))) {
 
             String dobString = womanClient.get(DBConstants.KEY.DOB);
             Date dob = Utils.dobStringToDate(dobString);
@@ -1023,27 +1029,25 @@ public class JsonFormUtils extends org.smartregister.util.JsonFormUtils {
                 jsonObject.put(JsonFormUtils.VALUE, DATE_FORMAT.format(dob));
             }
 
-        }else if ((jsonObject.getString(JsonFormUtils.KEY).equalsIgnoreCase(DBConstants.KEY.member_Reg_Date))) {
+        } else if ((jsonObject.getString(JsonFormUtils.KEY).equalsIgnoreCase(DBConstants.KEY.member_Reg_Date))) {
             String reg_date = womanClient.get(DBConstants.KEY.member_Reg_Date);
-            if(reg_date!=null){
+            if (reg_date != null) {
                 jsonObject.put(JsonFormUtils.VALUE, reg_date);
                 jsonObject.put(JsonFormUtils.READ_ONLY, true);
             }
-        }else if ((jsonObject.getString(JsonFormUtils.KEY).equalsIgnoreCase(DBConstants.KEY.Patient_Identifier))) {
+        } else if ((jsonObject.getString(JsonFormUtils.KEY).equalsIgnoreCase(DBConstants.KEY.Patient_Identifier))) {
             String Patient_Identifier = womanClient.get(DBConstants.KEY.Patient_Identifier);
-            if(Patient_Identifier!=null){
+            if (Patient_Identifier != null) {
                 jsonObject.put(JsonFormUtils.VALUE, Patient_Identifier);
                 jsonObject.put(JsonFormUtils.READ_ONLY, true);
             }
-        }
-
-        else if(jsonObject.getString(JsonFormUtils.KEY).equalsIgnoreCase(DBConstants.KEY.CONTACT_PHONE_NUMBER)||jsonObject.getString(JsonFormUtils.KEY).equalsIgnoreCase(DBConstants.KEY.CONTACT_PHONE_NUMBER_BY_AGE)){
+        } else if (jsonObject.getString(JsonFormUtils.KEY).equalsIgnoreCase(DBConstants.KEY.CONTACT_PHONE_NUMBER) || jsonObject.getString(JsonFormUtils.KEY).equalsIgnoreCase(DBConstants.KEY.CONTACT_PHONE_NUMBER_BY_AGE)) {
             String phone_number = womanClient.get(DBConstants.KEY.PHONE_NUMBER);
 //            if(phone_number!=null&&phone_number.length()>11){
 //                phone_number = phone_number.substring(phone_number.length()-11);
 //            }
-            jsonObject.put(JsonFormUtils.VALUE,phone_number);
-        }else if (jsonObject.getString(JsonFormUtils.KEY).equalsIgnoreCase(DBConstants.KEY.HOME_ADDRESS)) {
+            jsonObject.put(JsonFormUtils.VALUE, phone_number);
+        } else if (jsonObject.getString(JsonFormUtils.KEY).equalsIgnoreCase(DBConstants.KEY.HOME_ADDRESS)) {
 
             String homeAddress = womanClient.get(DBConstants.KEY.HOME_ADDRESS);
             jsonObject.put(JsonFormUtils.VALUE, homeAddress);
@@ -1086,16 +1090,16 @@ public class JsonFormUtils extends org.smartregister.util.JsonFormUtils {
 
         } else if (womanClient.containsKey(jsonObject.getString(JsonFormUtils.KEY))) {
             String keyname = jsonObject.getString(JsonFormUtils.KEY);
-            keyname = processAttributesForEdit(jsonObject,keyname);
+            keyname = processAttributesForEdit(jsonObject, keyname);
             String value = womanClient.get(keyname);
-            value = processValueWithChoiceIds(jsonObject,value);
+            value = processValueWithChoiceIds(jsonObject, value);
             jsonObject.put(JsonFormUtils.READ_ONLY, false);
             jsonObject.put(JsonFormUtils.VALUE, value);
         } else {
             String keyname = jsonObject.getString(JsonFormUtils.KEY);
-            keyname = processAttributesForEdit(jsonObject,keyname);
+            keyname = processAttributesForEdit(jsonObject, keyname);
             String value = womanClient.get(keyname);
-            if(value!=null) {
+            if (value != null) {
                 value = processValueWithChoiceIds(jsonObject, value);
                 jsonObject.put(JsonFormUtils.READ_ONLY, false);
                 jsonObject.put(JsonFormUtils.VALUE, value);
@@ -1104,29 +1108,29 @@ public class JsonFormUtils extends org.smartregister.util.JsonFormUtils {
         }
     }
 
-    private static String processValueWithChoiceIds(JSONObject jsonObject,String value) {
+    private static String processValueWithChoiceIds(JSONObject jsonObject, String value) {
         try {
             //spinner
-        if(jsonObject.has("openmrs_choice_ids")){
-            JSONObject choiceObject = jsonObject.getJSONObject("openmrs_choice_ids");
+            if (jsonObject.has("openmrs_choice_ids")) {
+                JSONObject choiceObject = jsonObject.getJSONObject("openmrs_choice_ids");
 
-                for(int i = 0; i<choiceObject.names().length(); i++){
-                            if(value.equalsIgnoreCase(choiceObject.getString(choiceObject.names().getString(i)))){
+                for (int i = 0; i < choiceObject.names().length(); i++) {
+                    if (value.equalsIgnoreCase(choiceObject.getString(choiceObject.names().getString(i)))) {
                         value = choiceObject.names().getString(i);
                     }
                 }
 
 
-        }//checkbox
-        else if(jsonObject.has("options")){
-            JSONArray option_array = jsonObject.getJSONArray("options");
-            for(int i=0;i<option_array.length();i++){
-                JSONObject option = option_array.getJSONObject(i);
-                if(value.contains(option.getString("key"))){
-                    option.put("value","true");
+            }//checkbox
+            else if (jsonObject.has("options")) {
+                JSONArray option_array = jsonObject.getJSONArray("options");
+                for (int i = 0; i < option_array.length(); i++) {
+                    JSONObject option = option_array.getJSONObject(i);
+                    if (value.contains(option.optString("key"))) {
+                        option.put("value", "true");
+                    }
                 }
             }
-        }
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -1134,18 +1138,18 @@ public class JsonFormUtils extends org.smartregister.util.JsonFormUtils {
         return value;
     }
 
-    private static String processAttributesForEdit(JSONObject jsonObject,String keyname) {
-        if(jsonObject.has("openmrs_entity")){
+    private static String processAttributesForEdit(JSONObject jsonObject, String keyname) {
+        if (jsonObject.has("openmrs_entity")) {
             try {
-                if(jsonObject.getString("openmrs_entity").equalsIgnoreCase("person_attribute")
-                        ||jsonObject.getString("openmrs_entity").equalsIgnoreCase("person")
-                        ){
+                if (jsonObject.getString("openmrs_entity").equalsIgnoreCase("person_attribute")
+                        || jsonObject.getString("openmrs_entity").equalsIgnoreCase("person")
+                        ) {
                     String attributename = jsonObject.getString("openmrs_entity_id");
                     keyname = attributename;
                 }
-                if(jsonObject.getString("openmrs_entity").equalsIgnoreCase("person_address")
-                        &&jsonObject.getString("openmrs_entity_id").equalsIgnoreCase("address7")
-                        ){
+                if (jsonObject.getString("openmrs_entity").equalsIgnoreCase("person_address")
+                        && jsonObject.getString("openmrs_entity_id").equalsIgnoreCase("address7")
+                        ) {
                     String attributename = jsonObject.getString("openmrs_entity_id");
                     keyname = attributename;
                 }
@@ -1168,8 +1172,7 @@ public class JsonFormUtils extends org.smartregister.util.JsonFormUtils {
                 jsonObject.put(JsonFormUtils.VALUE, DATE_FORMAT.format(dob));
             }
 
-        }
-        else if (jsonObject.getString(JsonFormUtils.KEY).equalsIgnoreCase("Delivery_date")) {
+        } else if (jsonObject.getString(JsonFormUtils.KEY).equalsIgnoreCase("Delivery_date")) {
 
             String dobString = womanClient.get("Delivery_date");
             Date dob = Utils.dobStringToDate(dobString);
@@ -1177,10 +1180,7 @@ public class JsonFormUtils extends org.smartregister.util.JsonFormUtils {
                 jsonObject.put(JsonFormUtils.VALUE, DATE_FORMAT.format(dob));
             }
 
-        }
-
-
-        else if (jsonObject.getString(JsonFormUtils.KEY).equalsIgnoreCase(DBConstants.KEY.DOB) && !Boolean.valueOf(womanClient.get(DBConstants.KEY.DOB_UNKNOWN))) {
+        } else if (jsonObject.getString(JsonFormUtils.KEY).equalsIgnoreCase(DBConstants.KEY.DOB) && !Boolean.valueOf(womanClient.get(DBConstants.KEY.DOB_UNKNOWN))) {
 
             String dobString = womanClient.get(DBConstants.KEY.DOB);
             Date dob = Utils.dobStringToDate(dobString);
@@ -1311,29 +1311,29 @@ public class JsonFormUtils extends org.smartregister.util.JsonFormUtils {
 
     private static String processDefaultValueArray(JSONArray defaultvalueArray) throws JSONException {
         String toreturn = "[]";
-        for(int i = 0;i<defaultvalueArray.length();i++){
+        for (int i = 0; i < defaultvalueArray.length(); i++) {
             JSONArray nodes = defaultvalueArray.getJSONObject(i).getJSONArray("nodes");
             JSONArray nodeStringArray = new JSONArray();
-            for(int j = 0;j<nodes.length();j++){
-                nodeStringArray.put(nodes.getJSONObject(i).getString("key"));
-                return_JSON_RECURSIVELY(nodes.getJSONObject(j).getJSONArray("nodes"),nodeStringArray);
+            for (int j = 0; j < nodes.length(); j++) {
+                nodeStringArray.put(nodes.getJSONObject(i).optString("key"));
+                return_JSON_RECURSIVELY(nodes.getJSONObject(j).getJSONArray("nodes"), nodeStringArray);
             }
             toreturn = nodeStringArray.toString();
         }
         return toreturn;
     }
 
-    private static String return_JSON_RECURSIVELY(JSONArray nodes,JSONArray nodestring)throws  JSONException{
+    private static String return_JSON_RECURSIVELY(JSONArray nodes, JSONArray nodestring) throws JSONException {
         String toreturn = null;
-        for(int j = 0;j<nodes.length();j++) {
+        for (int j = 0; j < nodes.length(); j++) {
 
-            toreturn = nodes.getJSONObject(j).getString("key");
+            toreturn = nodes.getJSONObject(j).optString("key");
             nodestring.put(toreturn);
-            if(nodes.getJSONObject(j).has("nodes")) {
+            if (nodes.getJSONObject(j).has("nodes")) {
                 return_JSON_RECURSIVELY(nodes.getJSONObject(j).getJSONArray("nodes"), nodestring);
             }
-            }
-        return  toreturn;
+        }
+        return toreturn;
     }
 
     public static void startFormForEdit(Activity context, int jsonFormActivityRequestCode, String metaData) {
@@ -1544,6 +1544,7 @@ public class JsonFormUtils extends org.smartregister.util.JsonFormUtils {
             Log.e(TAG, e.getMessage());
         }
     }
+
     public static void launchFollowUpForm(Activity activity) {
         try {
             Intent intent = new Intent(activity, AncJsonFormActivity.class);
@@ -1559,12 +1560,12 @@ public class JsonFormUtils extends org.smartregister.util.JsonFormUtils {
         }
     }
 
-    public static void launchFollowUpForm(Activity activity, final Map<String,String>column_maps, final String form_name) {
+    public static void launchFollowUpForm(Activity activity, final Map<String, String> column_maps, final String form_name) {
         try {
             Intent intent = new Intent(activity, AncJsonFormActivity.class);
 
             JSONObject form = FormUtils.getInstance(activity).getFormJson(form_name);
-            followupPopulateFields(form,column_maps);
+            followupPopulateFields(form, column_maps);
             if (form != null) {
                 form.put(Constants.JSON_FORM_KEY.ENTITY_ID, activity.getIntent().getStringExtra(Constants.INTENT_KEY.BASE_ENTITY_ID));
                 intent.putExtra(Constants.INTENT_KEY.JSON, form.toString());
@@ -1575,14 +1576,14 @@ public class JsonFormUtils extends org.smartregister.util.JsonFormUtils {
         }
     }
 
-    public static void followupPopulateFields(JSONObject form,final Map<String,String>column_maps) {
+    public static void followupPopulateFields(JSONObject form, final Map<String, String> column_maps) {
 
         JSONArray field = fields(form);
-        JSONObject followup_date = getFieldJSONObject(field,"followup_Date");
+        JSONObject followup_date = getFieldJSONObject(field, "followup_Date");
 
-        if(followup_date!=null){
+        if (followup_date != null) {
             try {
-                followup_date.put(JsonFormUtils.VALUE,Utils.getDateByFormat(new Date()));
+                followup_date.put(JsonFormUtils.VALUE, Utils.getDateByFormat(new Date()));
             } catch (JSONException e) {
                 e.printStackTrace();
             }
@@ -1590,21 +1591,21 @@ public class JsonFormUtils extends org.smartregister.util.JsonFormUtils {
         String KEY = "key";
         String VALUE = "value";
         String openmrs_entity_id = "openmrs_entity_id";
-        for(int i=0;i<field.length();i++){
+        for (int i = 0; i < field.length(); i++) {
             try {
                 JSONObject object = field.getJSONObject(i);
-                if(object.has(KEY)){
-                    String key = object.getString("key");
-                    if(key!=null&&!key.startsWith("followup_Date")){
+                if (object.has(KEY)) {
+                    String key = object.optString("key");
+                    if (key != null && !key.startsWith("followup_Date")) {
                         String openmrs_key = object.getString(openmrs_entity_id);
                         String value = column_maps.get(openmrs_key);
-                        if(value==null||(value!=null&&value.isEmpty()))
+                        if (value == null || (value != null && value.isEmpty()))
                             value = column_maps.get(key);
 
-                        if(value!=null){
+                        if (value != null) {
 
-                            value = processValueWithChoiceIds(object,value);
-                            object.put(VALUE,value);
+                            value = processValueWithChoiceIds(object, value);
+                            object.put(VALUE, value);
                         }
                     }
                 }

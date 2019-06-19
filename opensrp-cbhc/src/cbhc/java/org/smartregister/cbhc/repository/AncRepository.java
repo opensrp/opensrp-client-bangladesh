@@ -50,8 +50,7 @@ public class AncRepository extends Repository {
 
         HealthIdRepository.createTable(database);
         UniqueIdRepository.createTable(database);
-        RecurringServiceTypeRepository.createTable(database);
-        RecurringServiceRecordRepository.createTable(database);
+
         //onUpgrade(database, 1, 2);
 
         onUpgrade(database, 1, 5);
@@ -142,18 +141,11 @@ public class AncRepository extends Repository {
     }
     private void upgradeToVersion2(SQLiteDatabase db) {
         try {
-            db.execSQL(VaccineRepository.UPDATE_TABLE_ADD_EVENT_ID_COL);
-            db.execSQL(VaccineRepository.EVENT_ID_INDEX);
-            db.execSQL(VaccineRepository.UPDATE_TABLE_ADD_FORMSUBMISSION_ID_COL);
-            db.execSQL(VaccineRepository.FORMSUBMISSION_INDEX);
 
-            db.execSQL(VaccineRepository.UPDATE_TABLE_ADD_OUT_OF_AREA_COL);
-            db.execSQL(VaccineRepository.UPDATE_TABLE_ADD_OUT_OF_AREA_COL_INDEX);
 
 //            EventClientRepository.createTable(db, EventClientRepository.Table.path_reports, EventClientRepository.report_column.values());
-            db.execSQL(VaccineRepository.UPDATE_TABLE_ADD_HIA2_STATUS_COL);
 
-            IMDatabaseUtils.accessAssetsAndFillDataBaseForVaccineTypes(context, db);
+
 
         } catch (Exception e) {
             Log.e(TAG, "upgradeToVersion2 " + Log.getStackTraceString(e));
@@ -166,11 +158,6 @@ public class AncRepository extends Repository {
             Column[] columns = {EventClientRepository.event_column.formSubmissionId};
             EventClientRepository.createIndex(db, EventClientRepository.Table.event, columns);
 
-            db.execSQL(VaccineRepository.ALTER_ADD_CREATED_AT_COLUMN);
-            VaccineRepository.migrateCreatedAt(db);
-
-            db.execSQL(RecurringServiceRecordRepository.ALTER_ADD_CREATED_AT_COLUMN);
-            RecurringServiceRecordRepository.migrateCreatedAt(db);
         } catch (Exception e) {
             Log.e(TAG, "upgradeToVersion3 " + Log.getStackTraceString(e));
         }
@@ -185,24 +172,12 @@ public class AncRepository extends Repository {
     }
 
     private void upgradeToVersion4(SQLiteDatabase db) {
-        try {
-            db.execSQL(VaccineRepository.UPDATE_TABLE_ADD_TEAM_COL);
-            db.execSQL(VaccineRepository.UPDATE_TABLE_ADD_TEAM_ID_COL);
-            db.execSQL(RecurringServiceRecordRepository.UPDATE_TABLE_ADD_TEAM_COL);
-            db.execSQL(RecurringServiceRecordRepository.UPDATE_TABLE_ADD_TEAM_ID_COL);
-        } catch (Exception e) {
-            Log.e(TAG, "upgradeToVersion4 " + Log.getStackTraceString(e));
-        }
+
 
     }
 
     private void upgradeToVersion5(SQLiteDatabase db) {
-        try {
-            db.execSQL(VaccineRepository.UPDATE_TABLE_ADD_CHILD_LOCATION_ID_COL);
-            db.execSQL(RecurringServiceRecordRepository.UPDATE_TABLE_ADD_CHILD_LOCATION_ID_COL);
-        } catch (Exception e) {
-            Log.e(TAG, "upgradeToVersion5 " + Log.getStackTraceString(e));
-        }
+
     }
 }
 
