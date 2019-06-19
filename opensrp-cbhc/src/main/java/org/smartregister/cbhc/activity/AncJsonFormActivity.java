@@ -87,9 +87,10 @@ public class AncJsonFormActivity extends JsonFormActivity {
 
     @Override
     public void onBackPressed() {
+        final String dialog_message = getConfirmCloseMessage().replace("cleared","saved in Draft");
         AlertDialog dialog = new AlertDialog.Builder(this, com.vijay.jsonwizard.R.style.AppThemeAlertDialog)
                 .setTitle(getConfirmCloseTitle())
-                .setMessage(getConfirmCloseMessage())
+                .setMessage(dialog_message)
                 .setNegativeButton(com.vijay.jsonwizard.R.string.yes, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
