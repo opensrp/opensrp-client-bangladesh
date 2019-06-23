@@ -27,6 +27,7 @@ import net.sqlcipher.database.SQLiteDatabase;
 import org.apache.commons.lang3.StringUtils;
 import org.joda.time.DateTime;
 import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 import org.smartregister.CoreLibrary;
 import org.smartregister.cbhc.R;
@@ -55,6 +56,7 @@ import org.smartregister.clientandeventmodel.Obs;
 import org.smartregister.commonregistry.CommonPersonObject;
 import org.smartregister.commonregistry.CommonPersonObjectClient;
 import org.smartregister.domain.ProfileImage;
+import org.smartregister.repository.AllSharedPreferences;
 import org.smartregister.repository.BaseRepository;
 import org.smartregister.repository.EventClientRepository;
 import org.smartregister.repository.ImageRepository;
@@ -327,28 +329,35 @@ public class MemberProfileActivity extends BaseProfileActivity implements Profil
         org.smartregister.util.Utils.showShortToast(this, this.getString(resourceId));
     }
 
+    public void launchFormEdit() {
+        String formMetadataformembers = JsonFormUtils.getMemberJsonEditFormString(this, householdDetails.getColumnmaps());
+        try {
+            JsonFormUtils.startFormForEdit(this, JsonFormUtils.REQUEST_CODE_GET_JSON, formMetadataformembers);
+        } catch (Exception e) {
+
+        }
+    }
+
     @Override
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.btn_profile_registration_info:
                 householdDetails.getColumnmaps().putAll(AncApplication.getInstance().getContext().detailsRepository().getAllDetailsForClient(householdDetails.entityId()));
+//                householdDetails.getColumnmaps().put("Patient_Identifier", null);
                 String patient_identifier = householdDetails.getColumnmaps().get("Patient_Identifier");
 
                 if (patient_identifier == null || (patient_identifier != null && patient_identifier.isEmpty()) || patient_identifier.equalsIgnoreCase("null")) {
-                    UniqueId uniqueId = getHealthIdRepository().getNextUniqueId();
-                    final String entityId = uniqueId != null ? uniqueId.getOpenmrsId() : "";
-                    if (StringUtils.isBlank(entityId)) {
-                        displayShortToast(R.string.no_openmrs_id);
+                    Long unUsedIds = getHealthIdRepository().countUnUsedIds();
+                    if (unUsedIds > 0l) {
+                        householdDetails.getColumnmaps().put("Patient_Identifier", Utils.DEFAULT_IDENTIFIER);
+                        launchFormEdit();
                     } else {
-                        householdDetails.getColumnmaps().put("Patient_Identifier", entityId);
+                        displayShortToast(R.string.no_openmrs_id);
                     }
+                } else {
+                    launchFormEdit();
                 }
-                String formMetadataformembers = JsonFormUtils.getMemberJsonEditFormString(this, householdDetails.getColumnmaps());
-                try {
-                    JsonFormUtils.startFormForEdit(this, JsonFormUtils.REQUEST_CODE_GET_JSON, formMetadataformembers);
-                } catch (Exception e) {
 
-                }
                 break;
             case R.id.edit_member:
 //                CommonPersonObjectClient pclient  = (CommonPersonObjectClient) view.getTag();
@@ -723,16 +732,51 @@ public class MemberProfileActivity extends BaseProfileActivity implements Profil
             Log.e(TAG, e.getMessage());
         }
     }
+    public void updatePatientIdentifier(JSONObject jsonForm){
+        try {
+            if(jsonForm.has("step1")){
+                JSONObject step1 = jsonForm.getJSONObject("step1");
+                if(step1.has("fields")){
+                    JSONArray flds = step1.getJSONArray("fields");
+                    updatePatientIdentifier(flds);
+                }
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+    }
+    public void updatePatientIdentifier(JSONArray fields ){
+        for(int i=0;i<fields.length();i++){
+            try {
+                JSONObject fieldObject = fields.getJSONObject(i);
+                if("Patient_Identifier".equalsIgnoreCase(fieldObject.optString("key"))){
+                    String value = fieldObject.optString("value");
+                    if(Utils.DEFAULT_IDENTIFIER.equalsIgnoreCase(value)){
 
+                        UniqueId uniqueId = getHealthIdRepository().getNextUniqueId();
+                        final String entityId = uniqueId != null ? uniqueId.getOpenmrsId() : "";
+                        if (!StringUtils.isBlank(entityId)) {
+                            fieldObject.put("value",entityId);
+                        }
+                        break;
+                    }
+                }
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
+    }
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
+
         householdDetails.getColumnmaps().putAll(AncApplication.getInstance().getContext().detailsRepository().getAllDetailsForClient(householdDetails.entityId()));
         followupFragment.notifyAdapter();
         if (requestCode == JsonFormUtils.REQUEST_CODE_GET_JSON && resultCode == RESULT_OK) {
             try {
                 String jsonString = data.getStringExtra("json");
                 final JSONObject form = new JSONObject(jsonString);
+//                updatePatientIdentifier(form);
+//                final String jsonString = form.toString();
                 if (form.getString(JsonFormUtils.ENCOUNTER_TYPE).equals("Followup Delivery")) {
                     android.support.v7.app.AlertDialog alertDialog = new android.support.v7.app.AlertDialog.Builder(this).create();
                     alertDialog.setTitle("Add Child");
@@ -783,6 +827,8 @@ public class MemberProfileActivity extends BaseProfileActivity implements Profil
                     updateScheduledTasks(form);
                 } else if (form.getString(JsonFormUtils.ENCOUNTER_TYPE).equals(Constants.EventType.MemberREGISTRATION)) {
                     mProfilePresenter.saveForm(jsonString, false);
+                }else{
+                    super.onActivityResult(requestCode, resultCode, data);
                 }
 
             } catch (Exception e) {

@@ -101,7 +101,7 @@
         "hint": "মৃত্যুর  তারিখ ",
         "expanded": false,
         "v_required": {
-          "value": false,
+          "value": true,
           "err": "Please enter the date of death."
         },
         "relevance": {
@@ -111,7 +111,39 @@
           }
         }
       },
-
+      {
+        "key": "Time_Of_Death",
+        "openmrs_entity_parent": "",
+        "openmrs_entity": "",
+        "openmrs_entity_id": "Time_Of_Death",
+        "openmrs_data_type": "text",
+        "type": "time_picker",
+        "value":"00:00",
+        "hint": "মৃত্যুর সময় ",
+        "expanded":false,
+        "v_required":{
+          "value":true,
+          "err":"Please enter the date of Followup."
+        },
+        "v_numeric": {
+          "value": "true",
+          "err": "Number must be 4 digits in length"
+        },
+        "v_max_length": {
+          "value": "4",
+          "err": "Please Enter 4 digit Time"
+        },
+        "v_min_length": {
+          "value": "4",
+          "err": "Please Enter 4 digit Time"
+        },
+        "relevance": {
+          "step1:reason_invalid": {
+            "type": "string",
+            "ex": "equalTo(., \"মৃত্যু হয়েছে\")"
+          }
+        }
+      },
       {
         "key": "Place_Of_Death",
         "openmrs_entity_parent": "",

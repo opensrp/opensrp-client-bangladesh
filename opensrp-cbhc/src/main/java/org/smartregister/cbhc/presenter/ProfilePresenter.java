@@ -81,20 +81,22 @@ public class ProfilePresenter implements ProfileContract.Presenter, RegisterCont
             return null;
         }
     }
+
     @Override
 
-    public void startMemberRegistrationForm(String formName, String entityId, String metadata, String currentLocationId,String householdID) throws Exception {
+    public void startMemberRegistrationForm(String formName, String entityId, String metadata, String currentLocationId, String householdID) throws Exception {
 
         if (StringUtils.isBlank(entityId)) {
 //            Triple<String, String, String> triple = Triple.of(formName, metadata, currentLocationId);
 //            Triple<String, String, String> triple = Triple.of(formName, metadata, currentLocationId);
 //            interactor.getNextUniqueId(triple, this);
-            interactor.getNextHealthId(formName, metadata, currentLocationId,householdID, this);
+            interactor.getNextHealthId(formName, metadata, currentLocationId, householdID, this);
 //            return;
         }
 
 
     }
+
     @Override
     public void saveForm(String jsonString, boolean isEditMode) {
 
@@ -113,12 +115,14 @@ public class ProfilePresenter implements ProfileContract.Presenter, RegisterCont
             Log.e(TAG, Log.getStackTraceString(e));
         }
     }
+
     private ProfileContract.View getView() {
         if (mProfileView != null)
             return mProfileView.get();
         else
             return null;
     }
+
     @Override
     public void processFormDetailsSave(Intent data, AllSharedPreferences allSharedPreferences) {
         try {
@@ -139,29 +143,29 @@ public class ProfilePresenter implements ProfileContract.Presenter, RegisterCont
                 Pair<Client, Event> values = JsonFormUtils.processRegistrationForm(allSharedPreferences, jsonString);
                 mRegisterInteractor.saveRegistration(values, jsonString, true, this);
 
-            }else if (form.getString(JsonFormUtils.ENCOUNTER_TYPE).equals(Constants.EventType.HouseholdREGISTRATION)) {
+            } else if (form.getString(JsonFormUtils.ENCOUNTER_TYPE).equals(Constants.EventType.HouseholdREGISTRATION)) {
                 Pair<Client, Event> values = JsonFormUtils.processRegistrationForm(allSharedPreferences, jsonString);
                 mRegisterInteractor.saveRegistration(values, jsonString, true, this);
 
-            }else if (form.getString(JsonFormUtils.ENCOUNTER_TYPE).equals(Constants.EventType.MemberREGISTRATION)) {
+            } else if (form.getString(JsonFormUtils.ENCOUNTER_TYPE).equals(Constants.EventType.MemberREGISTRATION)) {
                 Pair<Client, Event> values = JsonFormUtils.processRegistrationForm(allSharedPreferences, jsonString);
                 mRegisterInteractor.saveRegistration(values, jsonString, true, this);
 
-            }else if (form.getString(JsonFormUtils.ENCOUNTER_TYPE).equals(Constants.EventType.WomanMemberREGISTRATION)) {
+            } else if (form.getString(JsonFormUtils.ENCOUNTER_TYPE).equals(Constants.EventType.WomanMemberREGISTRATION)) {
                 Pair<Client, Event> values = JsonFormUtils.processRegistrationForm(allSharedPreferences, jsonString);
                 mRegisterInteractor.saveRegistration(values, jsonString, true, this);
 
-            }else if (form.getString(JsonFormUtils.ENCOUNTER_TYPE).equals(Constants.EventType.Child_REGISTRATION)) {
+            } else if (form.getString(JsonFormUtils.ENCOUNTER_TYPE).equals(Constants.EventType.Child_REGISTRATION)) {
                 Pair<Client, Event> values = JsonFormUtils.processRegistrationForm(allSharedPreferences, jsonString);
                 mRegisterInteractor.saveRegistration(values, jsonString, true, this);
 
-            }else if (form.getString(JsonFormUtils.ENCOUNTER_TYPE).equals(Constants.EventType.CLOSE)) {
+            } else if (form.getString(JsonFormUtils.ENCOUNTER_TYPE).equals(Constants.EventType.CLOSE)) {
 
                 mRegisterInteractor.removeWomanFromANCRegister(jsonString, allSharedPreferences.fetchRegisteredANM());
 
-            }else if (!Utils.notFollowUp(form.getString(JsonFormUtils.ENCOUNTER_TYPE))) {
-            Pair<Client, Event> values = JsonFormUtils.processRegistrationForm(allSharedPreferences, jsonString);
-            mRegisterInteractor.saveRegistration(values, jsonString, true, this);
+            } else if (!Utils.notFollowUp(form.getString(JsonFormUtils.ENCOUNTER_TYPE))) {
+                Pair<Client, Event> values = JsonFormUtils.processRegistrationForm(allSharedPreferences, jsonString);
+                mRegisterInteractor.saveRegistration(values, jsonString, true, this);
             } else {
                 getProfileView().hideProgressDialog();
             }
@@ -180,9 +184,9 @@ public class ProfilePresenter implements ProfileContract.Presenter, RegisterCont
         JSONObject form;
         try {
             form = FormUtils.getInstance(AncApplication.getInstance().getApplicationContext()).getFormJson(Constants.JSON_FORM.MEMBER_REGISTER);
-            form = JsonFormUtils.getFormAsJson(form,formName, entityId, currentLocationId,householdID);
-            form.put("relational_id",householdID);
-            LookUpUtils.putRelationalIdInLookupObjects(form,householdID);
+            form = JsonFormUtils.getFormAsJson(form, formName, entityId, currentLocationId, householdID);
+            form.put("relational_id", householdID);
+            LookUpUtils.putRelationalIdInLookupObjects(form, householdID);
 
             getView().startFormActivity(form);
         } catch (Exception e) {
@@ -200,19 +204,19 @@ public class ProfilePresenter implements ProfileContract.Presenter, RegisterCont
     @Override
     public void onRegistrationSaved(boolean isEdit) {
 
-        if(getProfileView()==null) return;
+        if (getProfileView() == null) return;
 
         this.refreshProfileView(getProfileView().getIntentString(Constants.INTENT_KEY.BASE_ENTITY_ID));
 
-        if(profileActivity instanceof ProfileActivity)
-            ((ProfileActivity)profileActivity).refreshProfileViews();
-        if(profileActivity instanceof MemberProfileActivity)
-            ((MemberProfileActivity)profileActivity).refreshProfileViews();
+        if (profileActivity instanceof ProfileActivity)
+            ((ProfileActivity) profileActivity).refreshProfileViews();
+        if (profileActivity instanceof MemberProfileActivity)
+            ((MemberProfileActivity) profileActivity).refreshProfileViews();
         getProfileView().hideProgressDialog();
 
         getProfileView().displayToast(isEdit ? R.string.registration_info_updated : R.string.new_registration_saved);
-        if(profileActivity instanceof ProfileActivity)
-            ((ProfileActivity)profileActivity).profileOverviewFragment.refreshadapter();
+        if (profileActivity instanceof ProfileActivity)
+            ((ProfileActivity) profileActivity).profileOverviewFragment.refreshadapter();
 //        if(profileActivity!=null&&profileActivity instanceof MemberProfileActivity)
 //            ((MemberProfileActivity)profileActivity).profileOverviewFragment.refreshadapter(((MemberProfileActivity)profileActivity).profileOverviewFragment.getFragmentView());
 

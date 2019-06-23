@@ -24,13 +24,16 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.smartregister.cbhc.BuildConfig;
+import org.smartregister.cbhc.R;
 import org.smartregister.cbhc.activity.AncJsonFormActivity;
 import org.smartregister.cbhc.application.AncApplication;
 import org.smartregister.cbhc.domain.FormLocation;
 import org.smartregister.cbhc.domain.QuickCheck;
+import org.smartregister.cbhc.domain.UniqueId;
 import org.smartregister.cbhc.helper.ECSyncHelper;
 import org.smartregister.cbhc.helper.LocationHelper;
 import org.smartregister.cbhc.repository.AncRepository;
+import org.smartregister.cbhc.repository.HealthIdRepository;
 import org.smartregister.cbhc.view.LocationPickerView;
 import org.smartregister.clientandeventmodel.Address;
 import org.smartregister.clientandeventmodel.Client;
@@ -191,6 +194,50 @@ public class JsonFormUtils extends org.smartregister.util.JsonFormUtils {
         return registrationFormParams;
     }
 
+    public static void updatePatientIdentifier(JSONObject jsonForm,JSONArray fields){
+        try {
+            UniqueId uniqueId = null;
+            if(jsonForm.has("step1")){
+                JSONObject step1 = jsonForm.getJSONObject("step1");
+                if(step1.has("fields")){
+                    JSONArray flds = step1.getJSONArray("fields");
+                    uniqueId = updatePatientIdentifier(flds,uniqueId);
+                }
+            }
+            updatePatientIdentifier(fields,uniqueId);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+    }
+    private static HealthIdRepository healthIdRepository;
+    public static HealthIdRepository getHealthIdRepository() {
+        if (healthIdRepository == null) {
+            healthIdRepository = AncApplication.getInstance().getHealthIdRepository();
+        }
+        return healthIdRepository;
+    }
+    public static UniqueId updatePatientIdentifier(JSONArray fields,UniqueId uniqueId){
+        for(int i=0;i<fields.length();i++){
+            try {
+                JSONObject fieldObject = fields.getJSONObject(i);
+                if("Patient_Identifier".equalsIgnoreCase(fieldObject.optString("key"))){
+                    String value = fieldObject.optString("value");
+                    if(Utils.DEFAULT_IDENTIFIER.equalsIgnoreCase(value)){
+                        if(uniqueId == null)
+                            uniqueId = getHealthIdRepository().getNextUniqueId();
+                        final String entityId = uniqueId != null ? uniqueId.getOpenmrsId() : "";
+                        if (!StringUtils.isBlank(entityId)) {
+                            fieldObject.put("value",entityId);
+                        }
+                        break;
+                    }
+                }
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
+        return uniqueId;
+    }
     public static Pair<Client, Event> processRegistrationForm(AllSharedPreferences allSharedPreferences, String jsonString) {
         SQLiteDatabase db = AncApplication.getInstance().getRepository().getReadableDatabase();
 
@@ -215,6 +262,7 @@ public class JsonFormUtils extends org.smartregister.util.JsonFormUtils {
             String encounterType = getString(jsonForm, ENCOUNTER_TYPE);
             JSONObject metadata = getJSONObject(jsonForm, METADATA);
             if (!encounterType.contains("Household")) {
+                updatePatientIdentifier(jsonForm,fields);
                 fields = processAttributesWithChoiceIDs(fields);
             }
 
@@ -997,13 +1045,16 @@ public class JsonFormUtils extends org.smartregister.util.JsonFormUtils {
 
         if ((jsonObject.getString(JsonFormUtils.KEY).equalsIgnoreCase("member_unique_ID"))){
             String idtype = womanClient.get("idtype");
-            String tmp [] = idtype.split(",");
-            JSONArray idTypeArray = new JSONArray();
-            for(String t : tmp){
-                idTypeArray.put(t);
+            if(idtype!=null){
+                String tmp [] = idtype.split(",");
+                JSONArray idTypeArray = new JSONArray();
+                for(String t : tmp){
+                    idTypeArray.put(t);
+                }
+                processValueWithChoiceIds(jsonObject, idTypeArray.toString());
+                jsonObject.put(JsonFormUtils.VALUE, idTypeArray);
             }
-            processValueWithChoiceIds(jsonObject, idTypeArray.toString());
-            jsonObject.put(JsonFormUtils.VALUE, idTypeArray);
+
         }
         else if ((jsonObject.getString(JsonFormUtils.KEY).equalsIgnoreCase("lmp_date"))) {
 

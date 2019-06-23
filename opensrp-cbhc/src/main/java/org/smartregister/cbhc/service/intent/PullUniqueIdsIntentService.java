@@ -35,11 +35,14 @@ public class PullUniqueIdsIntentService extends IntentService {
     protected void onHandleIntent(Intent intent) {
         try {
             int numberToGenerate;
-            if (uniqueIdRepo.countUnUsedIds() == 0) { // first time pull no ids at all
-                numberToGenerate = Constants.OPENMRS_UNIQUE_ID_INITIAL_BATCH_SIZE;
-            } else if (uniqueIdRepo.countUnUsedIds() <= 250) { //maintain a minimum of 250 else skip this pull
+            if (uniqueIdRepo.countUnUsedIds() <= 10) { // first time pull no ids at all
+//                numberToGenerate = Constants.OPENMRS_UNIQUE_ID_INITIAL_BATCH_SIZE;
                 numberToGenerate = Constants.OPENMRS_UNIQUE_ID_BATCH_SIZE;
-            } else {
+            }
+//            else if (uniqueIdRepo.countUnUsedIds() <= 250) { //maintain a minimum of 250 else skip this pull
+//                numberToGenerate = Constants.OPENMRS_UNIQUE_ID_BATCH_SIZE;
+//            }
+            else {
                 return;
             }
             JSONObject ids = fetchOpenMRSIds(Constants.OPENMRS_UNIQUE_ID_SOURCE, numberToGenerate);

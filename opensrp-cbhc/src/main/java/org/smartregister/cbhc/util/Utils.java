@@ -51,6 +51,8 @@ import static org.smartregister.util.Log.logError;
 
 public class Utils {
 
+    public static final String DEFAULT_IDENTIFIER = "88888888";
+
     private static final String TAG = Utils.class.getCanonicalName();
 
     private static final SimpleDateFormat DB_DF = new SimpleDateFormat(Constants.SQLITE_DATE_TIME_FORMAT);

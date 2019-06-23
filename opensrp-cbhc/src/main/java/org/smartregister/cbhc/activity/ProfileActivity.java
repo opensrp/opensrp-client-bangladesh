@@ -29,6 +29,7 @@ import net.sqlcipher.database.SQLiteDatabase;
 import org.apache.commons.lang3.StringUtils;
 import org.joda.time.DateTime;
 import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 import org.smartregister.CoreLibrary;
 import org.smartregister.cbhc.R;
@@ -134,14 +135,14 @@ public class ProfileActivity extends BaseProfileActivity implements ProfileContr
 
         String firstName = org.smartregister.util.Utils.getValue(householdDetails.getColumnmaps(), DBConstants.KEY.FIRST_NAME, true);
         String lastName = org.smartregister.util.Utils.getValue(householdDetails.getColumnmaps(), DBConstants.KEY.LAST_NAME, true);
-        if(lastName.equalsIgnoreCase("null")||lastName==null){
+        if (lastName.equalsIgnoreCase("null") || lastName == null) {
             lastName = "";
         }
         String patientName = getName(firstName, lastName);
 
         patientName = patientName + " (খানা প্রধান)";
         setProfileName(patientName);
-        String dobString = getValue(householdDetails.getColumnmaps(),"dob",true);
+        String dobString = getValue(householdDetails.getColumnmaps(), "dob", true);
         String durationString = "";
         if (StringUtils.isNotBlank(dobString)) {
             try {
@@ -157,27 +158,27 @@ public class ProfileActivity extends BaseProfileActivity implements ProfileContr
         }
         ImageRepository imageRepo = CoreLibrary.getInstance().context().imageRepository();
         ProfileImage imageRecord = imageRepo.findByEntityId(householdDetails.entityId());
-        if(imageRecord!=null)
-            ImageLoaderByGlide.setImageAsTarget(imageRecord.getFilepath(),imageView,0);
-       // DrishtiApplication.getCachedImageLoaderInstance().getImageByClientId(householdDetails.entityId(), OpenSRPImageLoader.getStaticImageListener((ImageView)findViewById(R.id.imageview_profile), 0, 0));
+        if (imageRecord != null)
+            ImageLoaderByGlide.setImageAsTarget(imageRecord.getFilepath(), imageView, 0);
+        // DrishtiApplication.getCachedImageLoaderInstance().getImageByClientId(householdDetails.entityId(), OpenSRPImageLoader.getStaticImageListener((ImageView)findViewById(R.id.imageview_profile), 0, 0));
         setProfileAge(durationString);
-        setProfileID(getValue(householdDetails.getColumnmaps(),"Patient_Identifier",true));
+        setProfileID(getValue(householdDetails.getColumnmaps(), "Patient_Identifier", true));
         gestationAgeView.setVisibility(View.GONE);
     }
 
-    public void refreshProfileViews(){
+    public void refreshProfileViews() {
         householdDetails = CommonPersonObjectToClient(AncApplication.getInstance().getContext().commonrepository(DBConstants.HOUSEHOLD_TABLE_NAME).findByBaseEntityId(householdDetails.entityId()));
 
         String firstName = org.smartregister.util.Utils.getValue(householdDetails.getColumnmaps(), DBConstants.KEY.FIRST_NAME, true);
         String lastName = org.smartregister.util.Utils.getValue(householdDetails.getColumnmaps(), DBConstants.KEY.LAST_NAME, true);
-        if(lastName.equalsIgnoreCase("null")||lastName==null){
+        if (lastName.equalsIgnoreCase("null") || lastName == null) {
             lastName = "";
         }
         String patientName = getName(firstName, lastName);
         patientName = patientName + " (খানা প্রধান)";
 
         setProfileName(patientName);
-        String dobString = getValue(householdDetails.getColumnmaps(),"dob",true);
+        String dobString = getValue(householdDetails.getColumnmaps(), "dob", true);
         String durationString = "";
         if (StringUtils.isNotBlank(dobString)) {
             try {
@@ -192,32 +193,36 @@ public class ProfileActivity extends BaseProfileActivity implements ProfileContr
             }
         }
         setProfileAge(durationString);
-        setProfileID(getValue(householdDetails.getColumnmaps(),"Patient_Identifier",true));
+        setProfileID(getValue(householdDetails.getColumnmaps(), "Patient_Identifier", true));
         gestationAgeView.setVisibility(View.GONE);
 
     }
 
     private CommonPersonObjectClient CommonPersonObjectToClient(CommonPersonObject commonPersonObject) {
-        CommonPersonObjectClient commonPersonObjectClient = new CommonPersonObjectClient(commonPersonObject.getCaseId(),commonPersonObject.getDetails(),DBConstants.HOUSEHOLD_TABLE_NAME);
+        CommonPersonObjectClient commonPersonObjectClient = new CommonPersonObjectClient(commonPersonObject.getCaseId(), commonPersonObject.getDetails(), DBConstants.HOUSEHOLD_TABLE_NAME);
         commonPersonObjectClient.setColumnmaps(commonPersonObject.getColumnmaps());
         return commonPersonObjectClient;
     }
 
     private UniqueIdRepository uniqueIdRepository;
     private HealthIdRepository healthIdRepository;
+
     public UniqueIdRepository getUniqueIdRepository() {
         if (uniqueIdRepository == null) {
             uniqueIdRepository = AncApplication.getInstance().getUniqueIdRepository();
         }
         return uniqueIdRepository;
     }
+
     String patient_identifier;
+
     public HealthIdRepository getHealthIdRepository() {
         if (healthIdRepository == null) {
             healthIdRepository = AncApplication.getInstance().getHealthIdRepository();
         }
         return healthIdRepository;
     }
+
     @Override
     public void onClick(View view) {
         switch (view.getId()) {
@@ -225,13 +230,13 @@ public class ProfileActivity extends BaseProfileActivity implements ProfileContr
                 householdDetails.getColumnmaps().putAll(AncApplication.getInstance().getContext().detailsRepository().getAllDetailsForClient(householdDetails.entityId()));
                 patient_identifier = householdDetails.getColumnmaps().get("Patient_Identifier");
 
-                if(patient_identifier == null || (patient_identifier!=null && patient_identifier.isEmpty()) || patient_identifier.equalsIgnoreCase("null")){
+                if (patient_identifier == null || (patient_identifier != null && patient_identifier.isEmpty()) || patient_identifier.equalsIgnoreCase("null")) {
                     UniqueId uniqueId = getUniqueIdRepository().getNextUniqueId();
                     final String entityId = uniqueId != null ? uniqueId.getOpenmrsId() : "";
                     if (StringUtils.isBlank(entityId)) {
                         displayShortToast(R.string.no_openmrs_id);
                     } else {
-                        householdDetails.getColumnmaps().put("Patient_Identifier",entityId);
+                        householdDetails.getColumnmaps().put("Patient_Identifier", entityId);
                     }
                 }
 
@@ -244,44 +249,41 @@ public class ProfileActivity extends BaseProfileActivity implements ProfileContr
                 }
                 break;
             case R.id.edit_member:
-                CommonPersonObjectClient pclient  = (CommonPersonObjectClient) view.getTag();
+                CommonPersonObjectClient pclient = (CommonPersonObjectClient) view.getTag();
                 pclient.getColumnmaps().putAll(AncApplication.getInstance().getContext().detailsRepository().getAllDetailsForClient(pclient.entityId()));
                 patient_identifier = pclient.getColumnmaps().get("Patient_Identifier");
-
-                if(patient_identifier == null || (patient_identifier!=null && patient_identifier.isEmpty()) || patient_identifier.equalsIgnoreCase("null")){
-                    UniqueId uniqueId = getHealthIdRepository().getNextUniqueId();
-                    final String entityId = uniqueId != null ? uniqueId.getOpenmrsId() : "";
-                    if (StringUtils.isBlank(entityId)) {
-                        displayShortToast(R.string.no_openmrs_id);
+                pclient.getColumnmaps().put("relational_id", householdDetails.getCaseId());
+                if (patient_identifier == null || (patient_identifier != null && patient_identifier.isEmpty()) || patient_identifier.equalsIgnoreCase("null")) {
+                    Long unUsedIds = getHealthIdRepository().countUnUsedIds();
+                    if (unUsedIds > 0l) {
+                        householdDetails.getColumnmaps().put("Patient_Identifier", Utils.DEFAULT_IDENTIFIER);
+                        launchFormEdit(pclient);
                     } else {
-                        pclient.getColumnmaps().put("Patient_Identifier",entityId);
+                        displayShortToast(R.string.no_openmrs_id);
                     }
+                } else {
+                    launchFormEdit(pclient);
                 }
-                pclient.getColumnmaps().put("relational_id",householdDetails.getCaseId());
-                String formMetadataformembers = JsonFormUtils.getMemberJsonEditFormString(this, pclient.getColumnmaps());
-                try {
-                    JsonFormUtils.startFormForEdit(this, JsonFormUtils.REQUEST_CODE_GET_JSON, formMetadataformembers);
-                } catch (Exception e) {
 
-                }
+
                 break;
             case R.id.profile_image_iv:
-                CommonPersonObjectClient memberclient  = (CommonPersonObjectClient) view.getTag(R.id.clientformemberprofile);
-                memberclient.getColumnmaps().put("relational_id",householdDetails.getCaseId());
-                String clienttype = (String)view.getTag(R.id.typeofclientformemberprofile);
+                CommonPersonObjectClient memberclient = (CommonPersonObjectClient) view.getTag(R.id.clientformemberprofile);
+                memberclient.getColumnmaps().put("relational_id", householdDetails.getCaseId());
+                String clienttype = (String) view.getTag(R.id.typeofclientformemberprofile);
                 Intent intent = new Intent(this, MemberProfileActivity.class);
                 intent.putExtra(Constants.INTENT_KEY.BASE_ENTITY_ID, memberclient.getCaseId());
-                intent.putExtra(ProfileOverviewFragment.EXTRA_HOUSEHOLD_DETAILS,memberclient);
-                intent.putExtra("type_of_member",clienttype);
-                startActivityForResult(intent,1002);
+                intent.putExtra(ProfileOverviewFragment.EXTRA_HOUSEHOLD_DETAILS, memberclient);
+                intent.putExtra("type_of_member", clienttype);
+                startActivityForResult(intent, 1002);
                 break;
             case R.id.total_birth_btn:
-                CommonPersonObjectClient pClient  = (CommonPersonObjectClient) view.getTag(R.id.clientformemberprofile);
+                CommonPersonObjectClient pClient = (CommonPersonObjectClient) view.getTag(R.id.clientformemberprofile);
                 String firstNameEnglish = org.smartregister.util.Utils.getValue(pClient.getColumnmaps(), DBConstants.KEY.FIRST_NAME, true);
                 String lastNameEnglish = org.smartregister.util.Utils.getValue(pClient.getColumnmaps(), DBConstants.KEY.LAST_NAME, true);
-                motherNameEnglish=getName(firstNameEnglish, lastNameEnglish);
+                motherNameEnglish = getName(firstNameEnglish, lastNameEnglish);
                 try {
-                    presenter.startMemberRegistrationForm(Constants.JSON_FORM.MEMBER_REGISTER,null,null,null,householdDetails.entityId());
+                    presenter.startMemberRegistrationForm(Constants.JSON_FORM.MEMBER_REGISTER, null, null, null, householdDetails.entityId());
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -289,32 +291,76 @@ public class ProfileActivity extends BaseProfileActivity implements ProfileContr
                 break;
         }
     }
-    private String motherNameEnglish;
 
+    private void launchFormEdit(CommonPersonObjectClient pclient) {
+        String formMetadataformembers = JsonFormUtils.getMemberJsonEditFormString(this, pclient.getColumnmaps());
+        try {
+            JsonFormUtils.startFormForEdit(this, JsonFormUtils.REQUEST_CODE_GET_JSON, formMetadataformembers);
+        } catch (Exception e) {
+
+        }
+    }
+
+    private String motherNameEnglish;
+    public void updatePatientIdentifier(JSONObject jsonForm){
+        try {
+            if(jsonForm.has("step1")){
+                JSONObject step1 = jsonForm.getJSONObject("step1");
+                if(step1.has("fields")){
+                    JSONArray flds = step1.getJSONArray("fields");
+                    updatePatientIdentifier(flds);
+                }
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+    }
+    public void updatePatientIdentifier(JSONArray fields ){
+        for(int i=0;i<fields.length();i++){
+            try {
+                JSONObject fieldObject = fields.getJSONObject(i);
+                if("Patient_Identifier".equalsIgnoreCase(fieldObject.optString("key"))){
+                    String value = fieldObject.optString("value");
+                    if(Utils.DEFAULT_IDENTIFIER.equalsIgnoreCase(value)){
+
+                        UniqueId uniqueId = getHealthIdRepository().getNextUniqueId();
+                        final String entityId = uniqueId != null ? uniqueId.getOpenmrsId() : "";
+                        if (!StringUtils.isBlank(entityId)) {
+                            fieldObject.put("value",entityId);
+                        }
+                        break;
+                    }
+                }
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
+    }
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-          super.onActivityResult(requestCode, resultCode, data);
-        motherNameEnglish="";
-        if(requestCode == 1002){
+
+        motherNameEnglish = "";
+        if (requestCode == 1002) {
             refreshList(null);
             refreshProfileViews();
-        }
-        else if (requestCode == JsonFormUtils.REQUEST_CODE_GET_JSON && resultCode == RESULT_OK) {
+        } else if (requestCode == JsonFormUtils.REQUEST_CODE_GET_JSON && resultCode == RESULT_OK) {
             try {
                 final String jsonString = data.getStringExtra("json");
                 final JSONObject form = new JSONObject(jsonString);
+//                updatePatientIdentifier(form);
+//                final String jsonString = form.toString();
                 if (form.getString(JsonFormUtils.ENCOUNTER_TYPE).equals(Constants.EventType.REGISTRATION)) {
                     presenter.saveForm(jsonString, false);
-                }else if (form.getString(JsonFormUtils.ENCOUNTER_TYPE).equals(Constants.EventType.HouseholdREGISTRATION)) {
+                } else if (form.getString(JsonFormUtils.ENCOUNTER_TYPE).equals(Constants.EventType.HouseholdREGISTRATION)) {
                     presenter.saveForm(jsonString, false);
-                }else if (form.getString(JsonFormUtils.ENCOUNTER_TYPE).equals(Constants.EventType.UPDATE_Household_REGISTRATION)) {
+                } else if (form.getString(JsonFormUtils.ENCOUNTER_TYPE).equals(Constants.EventType.UPDATE_Household_REGISTRATION)) {
                     presenter.saveForm(jsonString, true);
-                }else if (form.getString(JsonFormUtils.ENCOUNTER_TYPE).equals(Constants.EventType.MemberREGISTRATION)) {
+                } else if (form.getString(JsonFormUtils.ENCOUNTER_TYPE).equals(Constants.EventType.MemberREGISTRATION)) {
                     presenter.saveForm(jsonString, false);
                     updateScheduledTasks(form);
                 } else if (form.getString(JsonFormUtils.ENCOUNTER_TYPE).equals(Constants.EventType.CLOSE)) {
                     presenter.closeAncRecord(jsonString);
-                }else if (form.getString(JsonFormUtils.ENCOUNTER_TYPE).equals("Followup HH Transfer")){
+                } else if (form.getString(JsonFormUtils.ENCOUNTER_TYPE).equals("Followup HH Transfer")) {
                     android.support.v7.app.AlertDialog alertDialog = new android.support.v7.app.AlertDialog.Builder(this).create();
                     alertDialog.setTitle("Are you confirm about the action?");
                     alertDialog.setCanceledOnTouchOutside(false);
@@ -327,17 +373,20 @@ public class ProfileActivity extends BaseProfileActivity implements ProfileContr
                     alertDialog.setButton(android.support.v7.app.AlertDialog.BUTTON_POSITIVE, "CONFIRM",
                             new DialogInterface.OnClickListener() {
                                 public void onClick(DialogInterface dialog, int which) {
-                                    try{
+                                    try {
                                         String entity_id = form.getString("entity_id");
                                         removeMember(entity_id);
-//                                        presenter.saveForm(jsonString, false);
+                                        presenter.saveForm(jsonString, false);
 
-                                    }catch(Exception e){
+                                    } catch (Exception e) {
                                         e.printStackTrace();
                                     }
                                 }
                             });
                     alertDialog.show();
+                }
+                else{
+                    super.onActivityResult(requestCode, resultCode, data);
                 }
             } catch (Exception e) {
                 Log.e(TAG, Log.getStackTraceString(e));
@@ -365,11 +414,11 @@ public class ProfileActivity extends BaseProfileActivity implements ProfileContr
                     String mother_name = "";
                     String entity_id = householdDetails.entityId();
 
-                    for(int i=0;i<fields.length();i++) {
+                    for (int i = 0; i < fields.length(); i++) {
                         JSONObject field_object = fields.getJSONObject(i);
-                        if(field_object.getString("key").equalsIgnoreCase("Mother_Guardian_First_Name_english")) {
+                        if (field_object.getString("key").equalsIgnoreCase("Mother_Guardian_First_Name_english")) {
                             String value = field_object.getString("value");
-                            if(value!=null&&!StringUtils.isEmpty(value)){
+                            if (value != null && !StringUtils.isEmpty(value)) {
                                 mother_name = value;
                                 mother_name = mother_name.split(" ")[0];
                                 break;
@@ -377,7 +426,7 @@ public class ProfileActivity extends BaseProfileActivity implements ProfileContr
                         }
 
                     }
-                    String sql = "UPDATE ec_woman SET tasks = tasks-1 WHERE relational_id = '"+entity_id+"' AND first_name like '%"+mother_name+"%' AND tasks IS NOT NULL;";
+                    String sql = "UPDATE ec_woman SET tasks = tasks-1 WHERE relational_id = '" + entity_id + "' AND first_name like '%" + mother_name + "%' AND tasks IS NOT NULL;";
                     db.execSQL(sql);
 
                 } catch (Exception e) {
@@ -385,10 +434,11 @@ public class ProfileActivity extends BaseProfileActivity implements ProfileContr
                 }
                 return null;
             }
-        }),null);
+        }), null);
     }
 
     ProfileContactsFragment profileContactsFragment;
+
     private ViewPager setupViewPager(ViewPager viewPager) {
         ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
 
@@ -402,7 +452,6 @@ public class ProfileActivity extends BaseProfileActivity implements ProfileContr
 //        adapter.addFragment(profileTasksFragment, this.getString(R.string.tasks));
 
         viewPager.setAdapter(adapter);
-
 
 
         return viewPager;
@@ -433,14 +482,14 @@ public class ProfileActivity extends BaseProfileActivity implements ProfileContr
                     String textClicked = arrayAdapter.getItem(which);
                     switch (textClicked) {
                         case "খানার অবস্থান":
-                            getIntent().putExtra(Constants.INTENT_KEY.BASE_ENTITY_ID,householdDetails.getCaseId());
-                            JsonFormUtils.launchFollowUpForm(ProfileActivity.this,householdDetails.getColumnmaps(),Followup_Form_MHV_Transfer);
+                            getIntent().putExtra(Constants.INTENT_KEY.BASE_ENTITY_ID, householdDetails.getCaseId());
+                            JsonFormUtils.launchFollowUpForm(ProfileActivity.this, householdDetails.getColumnmaps(), Followup_Form_MHV_Transfer);
                             break;
                         case "[+] নতুন সদস্য":
-                            try{
+                            try {
 
-                                presenter.startMemberRegistrationForm(Constants.JSON_FORM.MEMBER_REGISTER,null,null,null,householdDetails.entityId());
-                            }catch(Exception e){
+                                presenter.startMemberRegistrationForm(Constants.JSON_FORM.MEMBER_REGISTER, null, null, null, householdDetails.entityId());
+                            } catch (Exception e) {
                                 e.printStackTrace();
                             }
 
@@ -449,8 +498,8 @@ public class ProfileActivity extends BaseProfileActivity implements ProfileContr
 //                            startActivityForResult(intent, JsonFormUtils.REQUEST_CODE_GET_JSON);
                             break;
                         case "খানা স্থানান্তর":
-                            getIntent().putExtra(Constants.INTENT_KEY.BASE_ENTITY_ID,householdDetails.getCaseId());
-                            JsonFormUtils.launchFollowUpForm(ProfileActivity.this,householdDetails.getColumnmaps(),Followup_Form_MHV_Transfer);
+                            getIntent().putExtra(Constants.INTENT_KEY.BASE_ENTITY_ID, householdDetails.getCaseId());
+                            JsonFormUtils.launchFollowUpForm(ProfileActivity.this, householdDetails.getColumnmaps(), Followup_Form_MHV_Transfer);
                             break;
                         case "খানা পাওয়া যায়নি":
                             removeHHAlertDialog();
@@ -497,6 +546,7 @@ public class ProfileActivity extends BaseProfileActivity implements ProfileContr
     }
 
     RegisterPresenter presenter;
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
@@ -562,7 +612,7 @@ public class ProfileActivity extends BaseProfileActivity implements ProfileContr
     @Override
     public String getIntentString(String intentKey) {
 
-        return this.getIntent().getStringExtra(intentKey)==null ?"":this.getIntent().getStringExtra(intentKey);
+        return this.getIntent().getStringExtra(intentKey) == null ? "" : this.getIntent().getStringExtra(intentKey);
     }
 
     @Override
@@ -598,15 +648,15 @@ public class ProfileActivity extends BaseProfileActivity implements ProfileContr
 
     @Override
     public void startFormActivity(JSONObject form) {
-        try{
+        try {
             Intent intent = new Intent(this, AncJsonFormActivity.class);
-            if(!TextUtils.isEmpty(motherNameEnglish)){
-                LookUpUtils.putMotherName(form,motherNameEnglish);
+            if (!TextUtils.isEmpty(motherNameEnglish)) {
+                LookUpUtils.putMotherName(form, motherNameEnglish);
             }
             intent.putExtra("json", form.toString());
             startActivityForResult(intent, JsonFormUtils.REQUEST_CODE_GET_JSON);
 
-        }catch(Exception e){
+        } catch (Exception e) {
 
         }
 
@@ -648,6 +698,7 @@ public class ProfileActivity extends BaseProfileActivity implements ProfileContr
             }
         }
     }
+
     public void removeMember(final String entity_id) {
         org.smartregister.util.Utils.startAsyncTask((new AsyncTask() {
 
@@ -661,27 +712,24 @@ public class ProfileActivity extends BaseProfileActivity implements ProfileContr
             protected Object doInBackground(Object[] objects) {
                 AncRepository repo = (AncRepository) AncApplication.getInstance().getRepository();
                 SQLiteDatabase db = repo.getReadableDatabase();
-                String tables[] = {"ec_household","ec_member","ec_child","ec_woman","ec_household_search","ec_member_search","ec_child_search","ec_woman_search"};
+                String tables[] = {"ec_household", "ec_member", "ec_child", "ec_woman", "ec_household_search", "ec_member_search", "ec_child_search", "ec_woman_search"};
 
-                try{
-                    for(int i=0;i<tables.length;i++) {
-                        String sql = "select * from "+tables[i]+" where base_entity_id = '"+entity_id+"';";
-                        Cursor cursor = db.rawQuery(sql,new String[]{});
-                        if(cursor!=null&&cursor.getCount()!=0) {
-                            sql = "UPDATE "+tables[i]+" SET date_removed = '01-01-1000' WHERE base_entity_id = '"+entity_id+"';";
+                try {
+                    for (int i = 0; i < tables.length; i++) {
+                        String sql = "select * from " + tables[i] + " where base_entity_id = '" + entity_id + "';";
+                        Cursor cursor = db.rawQuery(sql, new String[]{});
+                        if (cursor != null && cursor.getCount() != 0) {
+                            sql = "UPDATE " + tables[i] + " SET date_removed = '01-01-1000' WHERE base_entity_id = '" + entity_id + "';";
                             db.execSQL(sql);
 //                        db.rawQuery(sql,new String[]{});
 
                         }
-                        if(cursor!=null)
+                        if (cursor != null)
                             cursor.close();
                     }
-                }catch(Exception e){
+                } catch (Exception e) {
 
                 }
-
-
-
 
 
                 return null;
