@@ -216,6 +216,7 @@ public class JsonFormUtils extends org.smartregister.util.JsonFormUtils {
         }
         return healthIdRepository;
     }
+
     public static UniqueId updatePatientIdentifier(JSONArray fields,UniqueId uniqueId){
         for(int i=0;i<fields.length();i++){
             try {
@@ -238,6 +239,7 @@ public class JsonFormUtils extends org.smartregister.util.JsonFormUtils {
         }
         return uniqueId;
     }
+
     public static Pair<Client, Event> processRegistrationForm(AllSharedPreferences allSharedPreferences, String jsonString) {
         SQLiteDatabase db = AncApplication.getInstance().getRepository().getReadableDatabase();
 
@@ -1055,6 +1057,92 @@ public class JsonFormUtils extends org.smartregister.util.JsonFormUtils {
                 jsonObject.put(JsonFormUtils.VALUE, idTypeArray);
             }
 
+        }else if ((jsonObject.getString(JsonFormUtils.KEY).equalsIgnoreCase("Communicable Disease"))){
+            String Communicable_Disease = womanClient.get("Communicable Disease");
+            if(Communicable_Disease!=null){
+                String tmp [] = Communicable_Disease.split(",");
+                JSONArray Disease_TypeArray = new JSONArray();
+                for(String t : tmp){
+                    Disease_TypeArray.put(t);
+                }
+                processValueWithChoiceIds(jsonObject, Disease_TypeArray.toString());
+                jsonObject.put(JsonFormUtils.VALUE, Disease_TypeArray);
+            }
+
+        }else if ((jsonObject.getString(JsonFormUtils.KEY).equalsIgnoreCase("Non Communicable Disease"))){
+            String Non_Communicable_Disease = womanClient.get("Non Communicable Disease");
+            if(Non_Communicable_Disease!=null){
+                String tmp [] = Non_Communicable_Disease.split(",");
+                JSONArray Disease_TypeArray = new JSONArray();
+                for(String t : tmp){
+                    Disease_TypeArray.put(t);
+                }
+                processValueWithChoiceIds(jsonObject, Disease_TypeArray.toString());
+                jsonObject.put(JsonFormUtils.VALUE, Disease_TypeArray);
+            }
+
+        }else if ((jsonObject.getString(JsonFormUtils.KEY).equalsIgnoreCase("Disease_status_zero_to_two_month_by_age"))){
+            String Disease_status_zero_to_two_month_by_age = womanClient.get("Disease_Below_2Month_Age");
+            if(Disease_status_zero_to_two_month_by_age!=null){
+                String tmp [] = Disease_status_zero_to_two_month_by_age.split(",");
+                JSONArray Disease_TypeArray = new JSONArray();
+                for(String t : tmp){
+                    Disease_TypeArray.put(t);
+                }
+                processValueWithChoiceIds(jsonObject, Disease_TypeArray.toString());
+                jsonObject.put(JsonFormUtils.VALUE, Disease_TypeArray);
+            }
+
+        }else if ((jsonObject.getString(JsonFormUtils.KEY).equalsIgnoreCase("Disease_status_two_month_to_five_year_by_age"))){
+            String Disease_2Month_5Years = womanClient.get("Disease_2Month_5Years");
+            if(Disease_2Month_5Years!=null){
+                String tmp [] = Disease_2Month_5Years.split(",");
+                JSONArray Disease_TypeArray = new JSONArray();
+                for(String t : tmp){
+                    Disease_TypeArray.put(t);
+                }
+                processValueWithChoiceIds(jsonObject, Disease_TypeArray.toString());
+                jsonObject.put(JsonFormUtils.VALUE, Disease_TypeArray);
+            }
+
+        }
+        else if ((jsonObject.getString(JsonFormUtils.KEY).equalsIgnoreCase("Disease_Type"))){
+            String Disease_Type = womanClient.get("Disease Type");
+            if(Disease_Type!=null){
+                String tmp [] = Disease_Type.split(",");
+                JSONArray Disease_TypeArray = new JSONArray();
+                for(String t : tmp){
+                    Disease_TypeArray.put(t);
+                }
+                processValueWithChoiceIds(jsonObject, Disease_TypeArray.toString());
+                jsonObject.put(JsonFormUtils.VALUE, Disease_TypeArray);
+            }
+
+        }else if ((jsonObject.getString(JsonFormUtils.KEY).equalsIgnoreCase("illness_information"))){
+            String family_diseases_details = womanClient.get("family_diseases_details");
+            if(family_diseases_details!=null){
+                String tmp [] = family_diseases_details.split(",");
+                JSONArray family_diseases_detailsArray = new JSONArray();
+                for(String t : tmp){
+                    family_diseases_detailsArray.put(t);
+                }
+                processValueWithChoiceIds(jsonObject, family_diseases_detailsArray.toString());
+                jsonObject.put(JsonFormUtils.VALUE, family_diseases_detailsArray);
+            }
+
+        }
+        else if ((jsonObject.getString(JsonFormUtils.KEY).equalsIgnoreCase("risky_habits"))){
+            String RiskyHabit = womanClient.get("RiskyHabit");
+            if(RiskyHabit!=null){
+                String tmp [] = RiskyHabit.split(",");
+                JSONArray RiskyHabitArray = new JSONArray();
+                for(String t : tmp){
+                    RiskyHabitArray.put(t);
+                }
+                processValueWithChoiceIds(jsonObject, RiskyHabitArray.toString());
+                jsonObject.put(JsonFormUtils.VALUE, RiskyHabitArray);
+            }
+
         }
         else if ((jsonObject.getString(JsonFormUtils.KEY).equalsIgnoreCase("lmp_date"))) {
 
@@ -1647,6 +1735,19 @@ public class JsonFormUtils extends org.smartregister.util.JsonFormUtils {
                 JSONObject object = field.getJSONObject(i);
                 if (object.has(KEY)) {
                     String key = object.optString("key");
+                    if ((key.equalsIgnoreCase("Outcome of delivery"))){
+                        String idtype = column_maps.get("Outcome of delivery");
+                        if(idtype!=null){
+                            String tmp [] = idtype.split(",");
+                            JSONArray idTypeArray = new JSONArray();
+                            for(String t : tmp){
+                                idTypeArray.put(t);
+                            }
+                            processValueWithChoiceIds(object, idTypeArray.toString());
+                            object.put(JsonFormUtils.VALUE, idTypeArray);
+                        }
+
+                    }else
                     if (key != null && !key.startsWith("followup_Date")) {
                         String openmrs_key = object.getString(openmrs_entity_id);
                         String value = column_maps.get(openmrs_key);
@@ -1659,6 +1760,7 @@ public class JsonFormUtils extends org.smartregister.util.JsonFormUtils {
                             object.put(VALUE, value);
                         }
                     }
+
                 }
 
             } catch (JSONException e) {

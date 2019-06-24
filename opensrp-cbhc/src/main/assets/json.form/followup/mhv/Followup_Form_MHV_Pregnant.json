@@ -136,31 +136,7 @@
           }
         }
       },
-      {
-        "key":"Delivery_time",
-        "openmrs_entity_parent":"",
-        "openmrs_entity":"person_attribute",
-        "openmrs_entity_id":"Delivery_time",
-        "openmrs_data_type":"text",
-        "type":"time_picker",
-        "hint":"প্রসবের সময়",
-        "expanded":false,
-        "v_required":{
-          "value":"false",
-          "err":"Please enter the date of Followup."
-        },
-        "v_numeric": {
-          "value": "true",
-          "err": "Number must be 4 digits in length"
-        },
-        
-        "relevance": {
-          "step1:pregnant_status": {
-            "type": "string",
-            "ex": "regex(., \"(প্রসবোত্তর)\")"
-          }
-        }
-      },
+
       {
         "key": "Date_Of_Abortion",
         "openmrs_entity_parent": "",

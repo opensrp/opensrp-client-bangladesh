@@ -56,7 +56,8 @@ public class BirthDateTextWatcher implements TextWatcher {
 
 
         String key = (String) mView.getTag(R.id.key);
-        ((AncJsonFormFragment)formFragment).setAgeFromBirthDate(text);
+        if (!StringUtils.isEmpty(text))
+            ((AncJsonFormFragment) formFragment).setAgeFromBirthDate(text);
     }
 
 }

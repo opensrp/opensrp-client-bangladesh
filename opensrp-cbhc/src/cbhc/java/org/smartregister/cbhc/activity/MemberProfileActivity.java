@@ -767,7 +767,7 @@ public class MemberProfileActivity extends BaseProfileActivity implements Profil
         }
     }
     @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+    protected void onActivityResult(final int requestCode, final int resultCode, final Intent data) {
 
         householdDetails.getColumnmaps().putAll(AncApplication.getInstance().getContext().detailsRepository().getAllDetailsForClient(householdDetails.entityId()));
         followupFragment.notifyAdapter();
@@ -815,7 +815,7 @@ public class MemberProfileActivity extends BaseProfileActivity implements Profil
                                     try {
                                         String entity_id = form.getString("entity_id");
                                         removeMember(entity_id);
-
+                                        MemberProfileActivity.super.onActivityResult(requestCode, resultCode, data);
 
                                     } catch (Exception e) {
                                         e.printStackTrace();
@@ -824,7 +824,9 @@ public class MemberProfileActivity extends BaseProfileActivity implements Profil
                             });
                     alertDialog.show();
                 } else if (form.getString(JsonFormUtils.ENCOUNTER_TYPE).equals("Followup Pregnant Status")) {
+                    super.onActivityResult(requestCode, resultCode, data);
                     updateScheduledTasks(form);
+
                 } else if (form.getString(JsonFormUtils.ENCOUNTER_TYPE).equals(Constants.EventType.MemberREGISTRATION)) {
                     mProfilePresenter.saveForm(jsonString, false);
                 }else{

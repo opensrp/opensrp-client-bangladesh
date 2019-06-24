@@ -87,7 +87,7 @@
           "সদস্য পাওয়া যায়নি": "member not found"
         },
         "v_required": {
-          "value": true,
+          "value": false,
           "err": "Please select member status"
         }
       },
@@ -101,7 +101,7 @@
         "hint": "মৃত্যুর  তারিখ ",
         "expanded": false,
         "v_required": {
-          "value": true,
+          "value": false,
           "err": "Please enter the date of death."
         },
         "relevance": {
@@ -120,23 +120,11 @@
         "type": "time_picker",
         "value":"00:00",
         "hint": "মৃত্যুর সময় ",
-        "expanded":false,
         "v_required":{
-          "value":true,
+          "value":false,
           "err":"Please enter the date of Followup."
         },
-        "v_numeric": {
-          "value": "true",
-          "err": "Number must be 4 digits in length"
-        },
-        "v_max_length": {
-          "value": "4",
-          "err": "Please Enter 4 digit Time"
-        },
-        "v_min_length": {
-          "value": "4",
-          "err": "Please Enter 4 digit Time"
-        },
+
         "relevance": {
           "step1:reason_invalid": {
             "type": "string",
@@ -153,7 +141,7 @@
         "type": "edit_text",
         "hint": "মৃত্যুর স্থান ",
         "v_required": {
-          "value": true,
+          "value": false,
           "err": "Please enter the place of death."
         },
         "relevance": {
@@ -178,7 +166,7 @@
           }
         },
         "v_required": {
-          "value": true,
+          "value": false,
           "err": "Please enter the cause of death."
         }
       },
