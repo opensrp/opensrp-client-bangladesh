@@ -732,11 +732,12 @@ public class MemberProfileActivity extends BaseProfileActivity implements Profil
             Log.e(TAG, e.getMessage());
         }
     }
-    public void updatePatientIdentifier(JSONObject jsonForm){
+
+    public void updatePatientIdentifier(JSONObject jsonForm) {
         try {
-            if(jsonForm.has("step1")){
+            if (jsonForm.has("step1")) {
                 JSONObject step1 = jsonForm.getJSONObject("step1");
-                if(step1.has("fields")){
+                if (step1.has("fields")) {
                     JSONArray flds = step1.getJSONArray("fields");
                     updatePatientIdentifier(flds);
                 }
@@ -745,18 +746,19 @@ public class MemberProfileActivity extends BaseProfileActivity implements Profil
             e.printStackTrace();
         }
     }
-    public void updatePatientIdentifier(JSONArray fields ){
-        for(int i=0;i<fields.length();i++){
+
+    public void updatePatientIdentifier(JSONArray fields) {
+        for (int i = 0; i < fields.length(); i++) {
             try {
                 JSONObject fieldObject = fields.getJSONObject(i);
-                if("Patient_Identifier".equalsIgnoreCase(fieldObject.optString("key"))){
+                if ("Patient_Identifier".equalsIgnoreCase(fieldObject.optString("key"))) {
                     String value = fieldObject.optString("value");
-                    if(Utils.DEFAULT_IDENTIFIER.equalsIgnoreCase(value)){
+                    if (Utils.DEFAULT_IDENTIFIER.equalsIgnoreCase(value)) {
 
                         UniqueId uniqueId = getHealthIdRepository().getNextUniqueId();
                         final String entityId = uniqueId != null ? uniqueId.getOpenmrsId() : "";
                         if (!StringUtils.isBlank(entityId)) {
-                            fieldObject.put("value",entityId);
+                            fieldObject.put("value", entityId);
                         }
                         break;
                     }
@@ -766,6 +768,7 @@ public class MemberProfileActivity extends BaseProfileActivity implements Profil
             }
         }
     }
+
     @Override
     protected void onActivityResult(final int requestCode, final int resultCode, final Intent data) {
 
@@ -829,7 +832,7 @@ public class MemberProfileActivity extends BaseProfileActivity implements Profil
 
                 } else if (form.getString(JsonFormUtils.ENCOUNTER_TYPE).equals(Constants.EventType.MemberREGISTRATION)) {
                     mProfilePresenter.saveForm(jsonString, false);
-                }else{
+                } else {
                     super.onActivityResult(requestCode, resultCode, data);
                 }
 

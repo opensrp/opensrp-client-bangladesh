@@ -87,7 +87,7 @@
           "সদস্য পাওয়া যায়নি": "member not found"
         },
         "v_required": {
-          "value": false,
+          "value": true,
           "err": "Please select member status"
         }
       },
@@ -99,7 +99,7 @@
         "openmrs_data_type": "text",
         "type": "date_picker",
         "hint": "মৃত্যুর  তারিখ ",
-        "expanded": false,
+        "expanded": true,
         "v_required": {
           "value": false,
           "err": "Please enter the date of death."
@@ -117,14 +117,17 @@
         "openmrs_entity": "",
         "openmrs_entity_id": "Time_Of_Death",
         "openmrs_data_type": "text",
-        "type": "time_picker",
+        "type": "edit_text",
         "value":"00:00",
-        "hint": "মৃত্যুর সময় ",
+        "hint": "মৃত্যুর সময়",
         "v_required":{
           "value":false,
           "err":"Please enter the date of Followup."
         },
-
+        "v_numeric": {
+          "value": true,
+          "err": "Enter a valid Time in 00:00 format"
+        },
         "relevance": {
           "step1:reason_invalid": {
             "type": "string",

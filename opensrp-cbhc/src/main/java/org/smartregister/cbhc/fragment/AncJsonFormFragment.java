@@ -115,7 +115,7 @@ public class AncJsonFormFragment extends JsonFormFragment {
             public void run() {
                 isPressed = true;
             }
-        },10000);
+        }, 10000);
     }
 
     @Override
@@ -127,10 +127,6 @@ public class AncJsonFormFragment extends JsonFormFragment {
     protected JsonFormFragmentPresenter createPresenter() {
         return new JsonFormFragmentPresenter(this, AncJsonFormInteractor.getInstance());
     }
-
-
-
-
 
 
     ///////////////////////////from path json fragment ////////////////////////////////
@@ -330,8 +326,8 @@ public class AncJsonFormFragment extends JsonFormFragment {
                         String key = (String) view.getTag(com.vijay.jsonwizard.R.id.key);
                         String text = "";
 
-                        if (StringUtils.containsIgnoreCase(key, MotherLookUpUtils.Name)||(StringUtils.containsIgnoreCase(key, MotherLookUpUtils.Place))||(StringUtils.containsIgnoreCase(key, MotherLookUpUtils.Address))) {
-                            text = getValue(pc.getColumnmaps(), MotherLookUpUtils.firstName, true)+" "+ getValue(pc.getColumnmaps(), MotherLookUpUtils.lastName, true);
+                        if (StringUtils.containsIgnoreCase(key, MotherLookUpUtils.Name) || (StringUtils.containsIgnoreCase(key, MotherLookUpUtils.Place)) || (StringUtils.containsIgnoreCase(key, MotherLookUpUtils.Address))) {
+                            text = getValue(pc.getColumnmaps(), MotherLookUpUtils.firstName, true) + " " + getValue(pc.getColumnmaps(), MotherLookUpUtils.lastName, true);
                         }
 
 //                        if (StringUtils.containsIgnoreCase(key, MotherLookUpUtils.lastName)) {
@@ -407,19 +403,19 @@ public class AncJsonFormFragment extends JsonFormFragment {
         editText.setInputType(InputType.TYPE_CLASS_TEXT);
     }
 
-    public void setAgeFromBirthDate(String text){
+    public void setAgeFromBirthDate(String text) {
         getJsonApi().getmJSONObject();
         ArrayList<View> formdataviews = getJsonApi().getFormDataViews();
-        for(int i = 0;i<formdataviews.size();i++){
-            if(formdataviews.get(i) instanceof MaterialEditText){
-                if(((MaterialEditText)formdataviews.get(i)).getFloatingLabelText().toString().trim().equalsIgnoreCase("না জানলে বয়স লিখুন (বছর)")){
+        for (int i = 0; i < formdataviews.size(); i++) {
+            if (formdataviews.get(i) instanceof MaterialEditText) {
+                if (((MaterialEditText) formdataviews.get(i)).getFloatingLabelText().toString().trim().equalsIgnoreCase("না জানলে বয়স লিখুন (বছর)")) {
                     Date date = com.vijay.jsonwizard.utils.Utils.getDateFromString(text);
-                    if(date!=null){
+                    if (date != null) {
                         DateTime dateTime = new DateTime(date);
 
                         int age = Utils.getAgeFromDate(dateTime.toString());
 
-                        ((MaterialEditText) formdataviews.get(i)).setText(""+age);
+                        ((MaterialEditText) formdataviews.get(i)).setText("" + age);
                     }
 
                 }
@@ -430,7 +426,8 @@ public class AncJsonFormFragment extends JsonFormFragment {
     }
 
 
-     boolean flag=false;
+    boolean flag = false;
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
 
@@ -447,18 +444,17 @@ public class AncJsonFormFragment extends JsonFormFragment {
                     try {
                         Boolean skipValidation = ((JsonFormActivity) mMainView.getContext()).getIntent().getBooleanExtra(JsonFormConstants.SKIP_VALIDATION,
                                 false);
-                        flag=save(skipValidation);
+                        flag = save(skipValidation);
                     } catch (Exception e) {
-                        flag=save(false);
+                        flag = save(false);
                     }
                 }
-            },500);
+            }, 500);
             return flag;
 
         }
         return super.onOptionsItemSelected(item);
     }
-
 
 
     @Override
@@ -504,64 +500,138 @@ public class AncJsonFormFragment extends JsonFormFragment {
         getActivity().finish();
     }
 
-    public void showform(){
-        validationProgressdialog =  new ProgressDialog(this.getActivity());
+    public void showform() {
+        validationProgressdialog = new ProgressDialog(this.getActivity());
         validationProgressdialog.setTitle("Processing");
         validationProgressdialog.setMessage("Checking Validations");
         validationProgressdialog.show();
-       // show(Snackbar.make(mMainView, "Checking Validations", Snackbar.LENGTH_LONG),Snackbar.LENGTH_LONG);
+        // show(Snackbar.make(mMainView, "Checking Validations", Snackbar.LENGTH_LONG),Snackbar.LENGTH_LONG);
     }
 
     public void dissmissForm() {
-        if(validationProgressdialog!=null) {
-            if(validationProgressdialog.isShowing()) {
+        if (validationProgressdialog != null) {
+            if (validationProgressdialog.isShowing()) {
                 validationProgressdialog.dismiss();
             }
         }
     }
-    private boolean isPressed =false;
+
+    private boolean isPressed = false;
     private int countSelect = 0;
 
     @Override
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-        if(presenter !=null&&parent!=null&&view!=null)
+        if (presenter != null && parent != null && view != null)
             presenter.onItemSelected(parent, view, position, id);
 //        JSONObject currentObject = get
-            if(parent instanceof MaterialSpinner) {
-                if (((MaterialSpinner) parent).getFloatingLabelText().toString().equalsIgnoreCase("খানা প্রধানের সাথে সম্পর্ক")) {
-                    processHeadOfHouseHoldAsMember(position);
-                }
-                if (((MaterialSpinner) parent).getFloatingLabelText().toString().equalsIgnoreCase("লিঙ্গ")) {
-                    processHeadOfHouseHoldRelation(position);
-                }
+        if (parent instanceof MaterialSpinner) {
+            if (((MaterialSpinner) parent).getFloatingLabelText().toString().equalsIgnoreCase("খানা প্রধানের সাথে সম্পর্ক")) {
+                processHeadOfHouseHoldAsMember(position);
+            }
+            if (((MaterialSpinner) parent).getFloatingLabelText().toString().equalsIgnoreCase("লিঙ্গ")) {
+                processHeadOfHouseHoldRelation(position);
+            }
 //                if (((MaterialSpinner) parent).getFloatingLabelText().toString().equalsIgnoreCase("স্থায়ী ঠিকানা কি একই")) {
 //                    processPermanentAddressField(position);
 //                }
+        }
+//        processTimeField(0);
+    }
+
+    public void processTimeField(final int position) {
+        Utils.startAsyncTask(new AsyncTask() {
+
+            @Override
+            protected Object doInBackground(Object[] objects) {
+
+                return null;
             }
 
+            @Override
+            protected void onPostExecute(Object o) {
+                super.onPostExecute(o);
+                ArrayList<View> formdataviews = getJsonApi().getFormDataViews();
+                for (int i = 0; i < formdataviews.size(); i++) {
+                    if (formdataviews.get(i) instanceof MaterialEditText) {
+                        if (((MaterialEditText) formdataviews.get(i)).getFloatingLabelText().
+                                toString().trim().equalsIgnoreCase("মৃত্যুর সময়") ||
+                                ((MaterialEditText) formdataviews.get(i)).getFloatingLabelText().
+                                        toString().trim().equalsIgnoreCase("প্রসবের সময়")) {
+                            if (((MaterialEditText) formdataviews.get(i)).getText().toString().isEmpty())
+                                ((MaterialEditText) formdataviews.get(i)).setText("00:00");
+
+                            break;
+                        }
+                    }
+                }
+
+            }
+        }, null);
     }
-    public void processPermanentAddressField(final int position){
+
+    public void updateMemberCount() {
         Utils.startAsyncTask(new AsyncTask() {
-            String HIE_FACILITIES = "";
+
             @Override
             protected Object doInBackground(Object[] objects) {
                 JSONObject formObject = getJsonApi().getmJSONObject();
-                if (formObject.has("metadata")){
+                if (formObject.has("metadata")) {
                     try {
                         JSONObject metadata = formObject.getJSONObject("metadata");
                         if (metadata.has("look_up")) {
                             JSONObject look_up = metadata.getJSONObject("look_up");
                             if (look_up.has("entity_id") && look_up.getString("entity_id").equalsIgnoreCase("household")) {
                                 String relational_id = look_up.getString("value");
+                                CommonRepository commonRepository = AncApplication.getInstance().getContext().commonrepository("ec_household");
+                                CommonPersonObject household = commonRepository.findByBaseEntityId(relational_id);
+                                RegisterProvider.memberCountHashMap.put(household.getCaseId(), null);
+                            }
+                        }
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                }
+                return null;
+            }
 
+            @Override
+            protected void onPostExecute(Object o) {
+                super.onPostExecute(o);
 
-                                Map<String,String>householdDetails = AncApplication.getInstance().getContext().detailsRepository().
-                                        getAllDetailsForClient(relational_id);
-                                HIE_FACILITIES = householdDetails.get("HIE_FACILITIES");
-                                HIE_FACILITIES = HIE_FACILITIES.replaceAll("\\[","");
-                                HIE_FACILITIES = HIE_FACILITIES.replaceAll("\\]","");
-                                HIE_FACILITIES = HIE_FACILITIES.replaceAll("\"","");
+            }
+        }, null);
+    }
 
+    public void processHeadOfHouseHoldRelation(final int position) {
+
+        Utils.startAsyncTask(new AsyncTask() {
+            ProfileImage imageRecord;
+            String headOfHouseholdFirstName = "";
+            String headOfHouseholdLastName = "";
+            String headOfHouseholdMobileNumber = "";
+            String headOfHouseholdDOB = "";
+            String headOfHouseholdDOBUnknown = "";
+            String headOfHouseholdage = "";
+
+            @Override
+            protected Object doInBackground(Object[] objects) {
+                JSONObject formObject = getJsonApi().getmJSONObject();
+                if (formObject.has("metadata")) {
+                    try {
+                        JSONObject metadata = formObject.getJSONObject("metadata");
+                        if (metadata.has("look_up")) {
+                            JSONObject look_up = metadata.getJSONObject("look_up");
+                            if (look_up.has("entity_id") && look_up.getString("entity_id").equalsIgnoreCase("household")) {
+                                String relational_id = look_up.getString("value");
+                                CommonRepository commonRepository = AncApplication.getInstance().getContext().commonrepository("ec_household");
+                                CommonPersonObject household = commonRepository.findByBaseEntityId(relational_id);
+                                headOfHouseholdFirstName = getValue(household.getColumnmaps(), "first_name", false);
+                                headOfHouseholdLastName = getValue(household.getColumnmaps(), "last_name", false);
+                                headOfHouseholdMobileNumber = getValue(household.getColumnmaps(), "phone_number", false);
+                                headOfHouseholdDOB = getValue(household.getColumnmaps(), "dob", false);
+                                headOfHouseholdDOBUnknown = getValue(household.getColumnmaps(), "dob_unknown", false);
+                                ImageRepository imageRepo = CoreLibrary.getInstance().context().imageRepository();
+                                imageRecord = imageRepo.findByEntityId(relational_id);
                             }
                         }
                     } catch (JSONException e) {
@@ -575,107 +645,18 @@ public class AncJsonFormFragment extends JsonFormFragment {
             protected void onPostExecute(Object o) {
                 super.onPostExecute(o);
                 ArrayList<View> formdataviews = getJsonApi().getFormDataViews();
-                for (int i = 0; i < formdataviews.size(); i++) {
-                    if (formdataviews.get(i) instanceof MaterialEditText) {
-                        if (((MaterialEditText) formdataviews.get(i)).getFloatingLabelText().toString().trim().equalsIgnoreCase("স্থায়ী ঠিকানা(ইউনিয়ন)")) {
-                            if(position == 0)
-                                ((MaterialEditText) formdataviews.get(i)).setText(HIE_FACILITIES);
-                            else
-                                ((MaterialEditText) formdataviews.get(i)).setText("");
-                            break;
-                        }
-                    }
-                }
+
+                update_spouse_hint(formdataviews, position + 1, headOfHouseholdFirstName + " " + headOfHouseholdLastName);
 
             }
-        },null);
+        }, null);
     }
 
-    public void updateMemberCount(){
-        Utils.startAsyncTask(new AsyncTask() {
-
-            @Override
-            protected Object doInBackground(Object[] objects) {
-                JSONObject formObject = getJsonApi().getmJSONObject();
-                if (formObject.has("metadata")){
-                    try {
-                        JSONObject metadata = formObject.getJSONObject("metadata");
-                        if (metadata.has("look_up")) {
-                            JSONObject look_up = metadata.getJSONObject("look_up");
-                            if (look_up.has("entity_id") && look_up.getString("entity_id").equalsIgnoreCase("household")) {
-                                String relational_id = look_up.getString("value");
-                                CommonRepository commonRepository = AncApplication.getInstance().getContext().commonrepository("ec_household");
-                                CommonPersonObject household = commonRepository.findByBaseEntityId(relational_id);
-                                RegisterProvider.memberCountHashMap.put(household.getCaseId(),null);
-                            }
-                        }
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                    }
-                }
-                return null;
-            }
-
-            @Override
-            protected void onPostExecute(Object o) {
-                super.onPostExecute(o);
-
-            }
-        },null);
-    }
-
-    public void processHeadOfHouseHoldRelation(final int position){
-
-            Utils.startAsyncTask(new AsyncTask() {
-                ProfileImage imageRecord;
-                String headOfHouseholdFirstName = "";
-                String headOfHouseholdLastName = "";
-                String headOfHouseholdMobileNumber = "";
-                String headOfHouseholdDOB = "";
-                String headOfHouseholdDOBUnknown = "";
-                String headOfHouseholdage = "";
-                @Override
-                protected Object doInBackground(Object[] objects) {
-                    JSONObject formObject = getJsonApi().getmJSONObject();
-                    if (formObject.has("metadata")){
-                        try {
-                            JSONObject metadata = formObject.getJSONObject("metadata");
-                            if (metadata.has("look_up")) {
-                                JSONObject look_up = metadata.getJSONObject("look_up");
-                                if (look_up.has("entity_id") && look_up.getString("entity_id").equalsIgnoreCase("household")) {
-                                    String relational_id = look_up.getString("value");
-                                    CommonRepository commonRepository = AncApplication.getInstance().getContext().commonrepository("ec_household");
-                                    CommonPersonObject household = commonRepository.findByBaseEntityId(relational_id);
-                                    headOfHouseholdFirstName = getValue(household.getColumnmaps(), "first_name", false);
-                                    headOfHouseholdLastName = getValue(household.getColumnmaps(), "last_name", false);
-                                    headOfHouseholdMobileNumber = getValue(household.getColumnmaps(),"phone_number",false);
-                                    headOfHouseholdDOB = getValue(household.getColumnmaps(),"dob",false);
-                                    headOfHouseholdDOBUnknown = getValue(household.getColumnmaps(),"dob_unknown",false);
-                                    ImageRepository imageRepo = CoreLibrary.getInstance().context().imageRepository();
-                                    imageRecord = imageRepo.findByEntityId(relational_id);
-                                }
-                            }
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        }
-                    }
-                    return null;
-                }
-
-                @Override
-                protected void onPostExecute(Object o) {
-                    super.onPostExecute(o);
-                    ArrayList<View> formdataviews = getJsonApi().getFormDataViews();
-
-                    update_spouse_hint(formdataviews,position+1,headOfHouseholdFirstName+" "+headOfHouseholdLastName);
-
-                }
-            },null);
-    }
     public static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("dd-MM-yyyy");
     public static Drawable default_drawable;
+
     private void processHeadOfHouseHoldAsMember(final int position) {
-        if (position == 0||position == 1||position == 2) {
+        if (position == 0 || position == 1 || position == 2) {
             Utils.startAsyncTask(new AsyncTask() {
                 ProfileImage imageRecord;
                 String headOfHouseholdFirstName = "";
@@ -684,10 +665,11 @@ public class AncJsonFormFragment extends JsonFormFragment {
                 String headOfHouseholdDOB = "";
                 String headOfHouseholdDOBUnknown = "";
                 String headOfHouseholdage = "";
+
                 @Override
                 protected Object doInBackground(Object[] objects) {
                     JSONObject formObject = getJsonApi().getmJSONObject();
-                    if (formObject.has("metadata")){
+                    if (formObject.has("metadata")) {
                         try {
                             JSONObject metadata = formObject.getJSONObject("metadata");
                             if (metadata.has("look_up")) {
@@ -698,9 +680,9 @@ public class AncJsonFormFragment extends JsonFormFragment {
                                     CommonPersonObject household = commonRepository.findByBaseEntityId(relational_id);
                                     headOfHouseholdFirstName = getValue(household.getColumnmaps(), "first_name", false);
                                     headOfHouseholdLastName = getValue(household.getColumnmaps(), "last_name", false);
-                                    headOfHouseholdMobileNumber = getValue(household.getColumnmaps(),"phone_number",false);
-                                    headOfHouseholdDOB = getValue(household.getColumnmaps(),"dob",false);
-                                    headOfHouseholdDOBUnknown = getValue(household.getColumnmaps(),"dob_unknown",false);
+                                    headOfHouseholdMobileNumber = getValue(household.getColumnmaps(), "phone_number", false);
+                                    headOfHouseholdDOB = getValue(household.getColumnmaps(), "dob", false);
+                                    headOfHouseholdDOBUnknown = getValue(household.getColumnmaps(), "dob_unknown", false);
                                     ImageRepository imageRepo = CoreLibrary.getInstance().context().imageRepository();
                                     imageRecord = imageRepo.findByEntityId(relational_id);
                                 }
@@ -716,7 +698,7 @@ public class AncJsonFormFragment extends JsonFormFragment {
                 protected void onPostExecute(Object o) {
                     super.onPostExecute(o);
                     ArrayList<View> formdataviews = getJsonApi().getFormDataViews();
-                    if(position == 0) {
+                    if (position == 0) {
 
                         for (int i = 0; i < formdataviews.size(); i++) {
                             if (formdataviews.get(i) instanceof MaterialEditText) {
@@ -756,7 +738,7 @@ public class AncJsonFormFragment extends JsonFormFragment {
                                     BitmapFactory.Options bmOptions = new BitmapFactory.Options();
                                     Bitmap bitmap = BitmapFactory.decodeFile(image.getAbsolutePath(), bmOptions);
 //                            bitmap = Bitmap.createScaledBitmap(bitmap,imageView.getWidth(),imageView.getHeight(),true);
-                                    default_drawable =  imageView.getDrawable();
+                                    default_drawable = imageView.getDrawable();
                                     updateRelevantImageView(bitmap, imageRecord.getFilepath(), (String) imageView.getTag(com.vijay.jsonwizard.R.id.key));
 
                                 } catch (Exception e) {
@@ -765,38 +747,38 @@ public class AncJsonFormFragment extends JsonFormFragment {
                             }
                         }
 
-                    }else{
-                        update_spouse_hint(formdataviews,position,headOfHouseholdFirstName+" "+headOfHouseholdLastName);
+                    } else {
+                        update_spouse_hint(formdataviews, position, headOfHouseholdFirstName + " " + headOfHouseholdLastName);
 
                     }
 //
                 }
-            },null);
+            }, null);
         }
-        if(position >0 && isPressed){
+        if (position > 0 && isPressed) {
             ArrayList<View> formdataviews = getJsonApi().getFormDataViews();
 
 
-                for (int i = 0; i < formdataviews.size(); i++) {
-                    if (formdataviews.get(i) instanceof MaterialEditText) {
+            for (int i = 0; i < formdataviews.size(); i++) {
+                if (formdataviews.get(i) instanceof MaterialEditText) {
 
-                        if (((MaterialEditText) formdataviews.get(i)).getFloatingLabelText().toString().trim().equalsIgnoreCase("নামের প্রথম অংশ (ইংরেজীতে)")) {
-                            ((MaterialEditText) formdataviews.get(i)).setText("");
-                        }
-
-                        if (((MaterialEditText) formdataviews.get(i)).getFloatingLabelText().toString().trim().equalsIgnoreCase("নামের শেষ অংশ (ইংরেজীতে)")) {
-                            ((MaterialEditText) formdataviews.get(i)).setText("");
-                        }
-
-                        if (((MaterialEditText) formdataviews.get(i)).getFloatingLabelText().toString().trim().equalsIgnoreCase("মোবাইল নম্বর (ইংরেজীতে)")) {
-                            ((MaterialEditText) formdataviews.get(i)).setText("");
-                        }
-
+                    if (((MaterialEditText) formdataviews.get(i)).getFloatingLabelText().toString().trim().equalsIgnoreCase("নামের প্রথম অংশ (ইংরেজীতে)")) {
+                        ((MaterialEditText) formdataviews.get(i)).setText("");
                     }
-                    if (formdataviews.get(i) instanceof ImageView) {
-                        try {
-                            ImageView imageView = (ImageView) formdataviews.get(i);
-                            String filePath = "";
+
+                    if (((MaterialEditText) formdataviews.get(i)).getFloatingLabelText().toString().trim().equalsIgnoreCase("নামের শেষ অংশ (ইংরেজীতে)")) {
+                        ((MaterialEditText) formdataviews.get(i)).setText("");
+                    }
+
+                    if (((MaterialEditText) formdataviews.get(i)).getFloatingLabelText().toString().trim().equalsIgnoreCase("মোবাইল নম্বর (ইংরেজীতে)")) {
+                        ((MaterialEditText) formdataviews.get(i)).setText("");
+                    }
+
+                }
+                if (formdataviews.get(i) instanceof ImageView) {
+                    try {
+                        ImageView imageView = (ImageView) formdataviews.get(i);
+                        String filePath = "";
 
 //                            File sd = Environment.getExternalStorageDirectory();
 //
@@ -805,27 +787,28 @@ public class AncJsonFormFragment extends JsonFormFragment {
 //                            Bitmap bitmap = BitmapFactory.decodeFile(image.getAbsolutePath(), bmOptions);
 //                            bitmap = Bitmap.createScaledBitmap(bitmap,imageView.getWidth(),imageView.getHeight(),true);
 
-                            updateRelevantImageView(drawableToBitmap(default_drawable), "", (String) imageView.getTag(com.vijay.jsonwizard.R.id.key));
+                        updateRelevantImageView(drawableToBitmap(default_drawable), "", (String) imageView.getTag(com.vijay.jsonwizard.R.id.key));
 
-                        } catch (Exception e) {
+                    } catch (Exception e) {
 
-                        }
                     }
                 }
+            }
         }
 
     }
-    public static Bitmap drawableToBitmap (Drawable drawable) {
+
+    public static Bitmap drawableToBitmap(Drawable drawable) {
         Bitmap bitmap = null;
 
         if (drawable instanceof BitmapDrawable) {
             BitmapDrawable bitmapDrawable = (BitmapDrawable) drawable;
-            if(bitmapDrawable.getBitmap() != null) {
+            if (bitmapDrawable.getBitmap() != null) {
                 return bitmapDrawable.getBitmap();
             }
         }
 
-        if(drawable.getIntrinsicWidth() <= 0 || drawable.getIntrinsicHeight() <= 0) {
+        if (drawable.getIntrinsicWidth() <= 0 || drawable.getIntrinsicHeight() <= 0) {
             bitmap = Bitmap.createBitmap(1, 1, Bitmap.Config.ARGB_8888); // Single color bitmap will be created of 1x1 pixel
         } else {
             bitmap = Bitmap.createBitmap(drawable.getIntrinsicWidth(), drawable.getIntrinsicHeight(), Bitmap.Config.ARGB_8888);
@@ -836,10 +819,11 @@ public class AncJsonFormFragment extends JsonFormFragment {
         drawable.draw(canvas);
         return bitmap;
     }
-    public void update_spouse_hint(ArrayList<View> formdataviews,int position,String headOfHouseholdName){
+
+    public void update_spouse_hint(ArrayList<View> formdataviews, int position, String headOfHouseholdName) {
         for (int i = 0; i < formdataviews.size(); i++) {
             if (formdataviews.get(i) instanceof MaterialEditText) {
-                if (position==1) {
+                if (position == 1) {
                     if (((MaterialEditText) formdataviews.get(i)).getFloatingLabelText().toString().trim().equalsIgnoreCase("স্বামী/স্ত্রীর নাম (ইংরেজীতে)")) {
                         ((MaterialEditText) formdataviews.get(i)).setHint("স্ত্রীর নাম (ইংরেজীতে)");
                         ((MaterialEditText) formdataviews.get(i)).setFloatingLabelText("স্ত্রীর নাম (ইংরেজীতে)");
@@ -887,7 +871,6 @@ public class AncJsonFormFragment extends JsonFormFragment {
                     }
 
                 }
-
 
 
 //                            if (((MaterialEditText) formdataviews.get(i)).getFloatingLabelText().toString().trim().equalsIgnoreCase("‘হ্যাঁ’ হলে জন্ম তারিখ")) {
