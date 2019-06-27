@@ -79,6 +79,7 @@ public class SyncStatusBroadcastReceiver extends BroadcastReceiver {
     @Override
     public void onReceive(Context context, Intent intent) {
         Bundle data = intent.getExtras();
+
         if (data != null) {
             try {
                 Serializable fetchStatusSerializable = data.getSerializable(EXTRA_FETCH_STATUS);
