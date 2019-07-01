@@ -302,11 +302,12 @@ public class ProfileActivity extends BaseProfileActivity implements ProfileContr
     }
 
     private String motherNameEnglish;
-    public void updatePatientIdentifier(JSONObject jsonForm){
+
+    public void updatePatientIdentifier(JSONObject jsonForm) {
         try {
-            if(jsonForm.has("step1")){
+            if (jsonForm.has("step1")) {
                 JSONObject step1 = jsonForm.getJSONObject("step1");
-                if(step1.has("fields")){
+                if (step1.has("fields")) {
                     JSONArray flds = step1.getJSONArray("fields");
                     updatePatientIdentifier(flds);
                 }
@@ -315,18 +316,19 @@ public class ProfileActivity extends BaseProfileActivity implements ProfileContr
             e.printStackTrace();
         }
     }
-    public void updatePatientIdentifier(JSONArray fields ){
-        for(int i=0;i<fields.length();i++){
+
+    public void updatePatientIdentifier(JSONArray fields) {
+        for (int i = 0; i < fields.length(); i++) {
             try {
                 JSONObject fieldObject = fields.getJSONObject(i);
-                if("Patient_Identifier".equalsIgnoreCase(fieldObject.optString("key"))){
+                if ("Patient_Identifier".equalsIgnoreCase(fieldObject.optString("key"))) {
                     String value = fieldObject.optString("value");
-                    if(Utils.DEFAULT_IDENTIFIER.equalsIgnoreCase(value)){
+                    if (Utils.DEFAULT_IDENTIFIER.equalsIgnoreCase(value)) {
 
                         UniqueId uniqueId = getHealthIdRepository().getNextUniqueId();
                         final String entityId = uniqueId != null ? uniqueId.getOpenmrsId() : "";
                         if (!StringUtils.isBlank(entityId)) {
-                            fieldObject.put("value",entityId);
+                            fieldObject.put("value", entityId);
                         }
                         break;
                     }
@@ -336,14 +338,13 @@ public class ProfileActivity extends BaseProfileActivity implements ProfileContr
             }
         }
     }
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 
         motherNameEnglish = "";
-        if (requestCode == 1002) {
-            refreshList(null);
-            refreshProfileViews();
-        } else if (requestCode == JsonFormUtils.REQUEST_CODE_GET_JSON && resultCode == RESULT_OK) {
+
+        if (requestCode == JsonFormUtils.REQUEST_CODE_GET_JSON && resultCode == RESULT_OK) {
             try {
                 final String jsonString = data.getStringExtra("json");
                 final JSONObject form = new JSONObject(jsonString);
@@ -368,6 +369,7 @@ public class ProfileActivity extends BaseProfileActivity implements ProfileContr
                             new DialogInterface.OnClickListener() {
                                 public void onClick(DialogInterface dialog, int which) {
                                     dialog.dismiss();
+                                    Utils.HH_REMOVED = false;
                                 }
                             });
                     alertDialog.setButton(android.support.v7.app.AlertDialog.BUTTON_POSITIVE, "CONFIRM",
@@ -377,19 +379,21 @@ public class ProfileActivity extends BaseProfileActivity implements ProfileContr
                                         String entity_id = form.getString("entity_id");
                                         removeMember(entity_id);
                                         presenter.saveForm(jsonString, false);
-
+                                        Utils.HH_REMOVED = true;
                                     } catch (Exception e) {
                                         e.printStackTrace();
                                     }
                                 }
                             });
                     alertDialog.show();
-                }
-                else{
+                } else {
                     super.onActivityResult(requestCode, resultCode, data);
                 }
             } catch (Exception e) {
                 Log.e(TAG, Log.getStackTraceString(e));
+            } finally {
+                refreshList(null);
+                refreshProfileViews();
             }
 
         } else if (requestCode == BarcodeIntentIntegrator.REQUEST_CODE && resultCode == RESULT_OK) {
@@ -557,8 +561,8 @@ public class ProfileActivity extends BaseProfileActivity implements ProfileContr
     @Override
     public void onResume() {
         super.onResume();
-        String baseEntityId = getIntent().getStringExtra(Constants.INTENT_KEY.BASE_ENTITY_ID);
-        mProfilePresenter.refreshProfileView(baseEntityId);
+//        String baseEntityId = getIntent().getStringExtra(Constants.INTENT_KEY.BASE_ENTITY_ID);
+//        mProfilePresenter.refreshProfileView(baseEntityId);
     }
 
     @Override

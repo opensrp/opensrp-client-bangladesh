@@ -37,7 +37,7 @@ public abstract class BaseProfileActivity extends SecuredActivity implements App
     protected AppBarLayout appBarLayout;
     protected ProgressDialog progressDialog;
     protected ProfileContract.Presenter mProfilePresenter;
-
+    protected BaseProfileActivity mActivity;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -59,6 +59,8 @@ public abstract class BaseProfileActivity extends SecuredActivity implements App
         collapsingToolbarLayout = appBarLayout.findViewById(R.id.collapsing_toolbar_layout);
 
         appBarLayout.addOnOffsetChangedListener(this);
+
+        mActivity = this;
     }
 
     @Override
@@ -103,11 +105,13 @@ public abstract class BaseProfileActivity extends SecuredActivity implements App
     @Override
     public void onResume() {
         super.onResume();
+        mActivity = this;
         registerEventBus();
     }
 
     @Override
     public void onPause() {
+        mActivity = null;
         EventBus.getDefault().unregister(this);
         super.onPause();
     }
@@ -138,7 +142,6 @@ public abstract class BaseProfileActivity extends SecuredActivity implements App
         AllSharedPreferences allSharedPreferences = AncApplication.getInstance().getContext().allSharedPreferences();
         if (requestCode == JsonFormUtils.REQUEST_CODE_GET_JSON && resultCode == RESULT_OK) {
             mProfilePresenter.processFormDetailsSave(data, allSharedPreferences);
-
         }
     }
 
@@ -154,7 +157,7 @@ public abstract class BaseProfileActivity extends SecuredActivity implements App
     }
 
     public void hideProgressDialog() {
-        if (progressDialog != null) {
+        if (mActivity!=null&&progressDialog != null) {
             progressDialog.dismiss();
         }
     }

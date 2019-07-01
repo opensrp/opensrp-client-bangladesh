@@ -175,6 +175,7 @@ public abstract class BaseRegisterFragment extends RecyclerViewFragment implemen
         activity.getSupportActionBar().setDisplayShowTitleEnabled(false);
         unsyncView = (TextView)toolbar.findViewById(R.id.unsync_count);
         setupViews(view);
+        renderView();
         return view;
     }
 
@@ -294,9 +295,23 @@ public abstract class BaseRegisterFragment extends RecyclerViewFragment implemen
     @Override
     protected void onResumption() {
         super.onResumption();
-        renderView();
-    }
 
+    }
+    public void refreshViews(){
+        try{
+            setRefreshList(true);
+
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        try{
+
+            renderView();
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+
+    }
     private void renderView() {
         getDefaultOptionsProvider();
         if (isPausedOrRefreshList()) {
@@ -443,7 +458,7 @@ public abstract class BaseRegisterFragment extends RecyclerViewFragment implemen
         Intent intent = new Intent(getActivity(), ProfileActivity.class);
         intent.putExtra(Constants.INTENT_KEY.BASE_ENTITY_ID, patient.getCaseId());
         intent.putExtra(ProfileOverviewFragment.EXTRA_HOUSEHOLD_DETAILS,patient);
-        startActivity(intent);
+        startActivityForResult(intent,Utils.NOFILTER);
     }
 
     /*protected void updateLocationText() {

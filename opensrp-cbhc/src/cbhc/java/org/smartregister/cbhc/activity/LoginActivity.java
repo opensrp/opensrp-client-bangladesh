@@ -262,6 +262,7 @@ public class LoginActivity extends AppCompatActivity implements LoginContract.Vi
 //                username = "teliya1@cc.com";
 //                username = "sabab@ahmed.com";
 //                password = "Pain2set";
+//                username = "cc100@mhv.100";
 //                password = "123456";
                 //anc repository object for raw query
 //                AncRepository repo = (AncRepository) AncApplication.getInstance().getRepository();

@@ -322,6 +322,12 @@ public abstract class BaseRegisterActivity extends SecuredNativeSmartRegisterAct
         progressDialog.setMessage(getString(R.string.please_wait_message));
         if (!isFinishing())
             progressDialog.show();
+        progressDialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
+            @Override
+            public void onDismiss(DialogInterface dialog) {
+                mBaseFragment.clearSortAndFilter();
+            }
+        });
     }
 
     @Override
@@ -379,7 +385,13 @@ public abstract class BaseRegisterActivity extends SecuredNativeSmartRegisterAct
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if(data==null&&Utils.HH_REMOVED){
+            mBaseFragment.clearSortAndFilter();
+            Utils.HH_REMOVED = false;
+            return;
+        }
         if (requestCode == JsonFormUtils.REQUEST_CODE_GET_JSON && resultCode == RESULT_OK) {
+
             try {
                 String jsonString = data.getStringExtra("json");
                 Log.d("JSONResult", jsonString);
@@ -408,6 +420,7 @@ public abstract class BaseRegisterActivity extends SecuredNativeSmartRegisterAct
                 mBaseFragment.setSearchTerm(res.getContents());
             } else
                 Log.i("", "NO RESULT FOR QR CODE");
+            mBaseFragment.clearSortAndFilter();
         }
     }
     private void updateScheduledTasks(final JSONObject form) {

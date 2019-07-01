@@ -171,7 +171,7 @@ public class ProfileOverviewFragment extends BaseProfileFragment {
             @Override
             protected void onPreExecute() {
                 super.onPreExecute();
-
+                if(mActivity == null) return;
                 dialog = ProgressDialog.show(ProfileOverviewFragment.this.getActivity(),"processing","please wait");
                 setRelationMap();
             }
