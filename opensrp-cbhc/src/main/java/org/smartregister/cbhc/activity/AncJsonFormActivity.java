@@ -21,6 +21,7 @@ import org.smartregister.cbhc.repository.HealthIdRepository;
 import org.smartregister.cbhc.repository.UniqueIdRepository;
 import org.smartregister.cbhc.util.DBConstants;
 import org.smartregister.cbhc.util.JsonFormUtils;
+import org.smartregister.cbhc.util.Utils;
 
 import static org.apache.commons.lang3.StringUtils.isBlank;
 import static org.smartregister.cbhc.util.JsonFormUtils.METADATA;
@@ -156,9 +157,9 @@ public class AncJsonFormActivity extends JsonFormActivity {
             if(formname.contains("Household")){
                 uniqueIdRepository = getUniqueIdRepository();
                 uniqueIdRepository.close(newOpenSRPId);
-            }else{
-                healthIdRepository = getHealthIdRepository();
-                healthIdRepository.close(newOpenSRPId);
+            }else {
+//                healthIdRepository = getHealthIdRepository();
+//                healthIdRepository.close(newOpenSRPId);
             }
 
         } catch (JSONException e) {
