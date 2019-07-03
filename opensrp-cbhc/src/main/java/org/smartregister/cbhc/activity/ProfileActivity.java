@@ -21,7 +21,6 @@ import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import net.sqlcipher.Cursor;
 import net.sqlcipher.database.SQLiteDatabase;
@@ -36,7 +35,6 @@ import org.smartregister.cbhc.R;
 import org.smartregister.cbhc.adapter.ViewPagerAdapter;
 import org.smartregister.cbhc.application.AncApplication;
 import org.smartregister.cbhc.barcode.BarcodeIntentIntegrator;
-import org.smartregister.cbhc.barcode.BarcodeIntentResult;
 import org.smartregister.cbhc.contract.ProfileContract;
 import org.smartregister.cbhc.contract.RegisterContract;
 import org.smartregister.cbhc.domain.AttentionFlag;
@@ -51,7 +49,6 @@ import org.smartregister.cbhc.presenter.RegisterPresenter;
 import org.smartregister.cbhc.repository.AncRepository;
 import org.smartregister.cbhc.repository.HealthIdRepository;
 import org.smartregister.cbhc.repository.UniqueIdRepository;
-import org.smartregister.cbhc.task.FetchProfileDataTask;
 import org.smartregister.cbhc.util.Constants;
 import org.smartregister.cbhc.util.DBConstants;
 import org.smartregister.cbhc.util.ImageLoaderByGlide;
@@ -63,17 +60,11 @@ import org.smartregister.commonregistry.CommonPersonObject;
 import org.smartregister.commonregistry.CommonPersonObjectClient;
 import org.smartregister.domain.FetchStatus;
 import org.smartregister.domain.ProfileImage;
-import org.smartregister.repository.DetailsRepository;
 import org.smartregister.repository.ImageRepository;
 import org.smartregister.util.DateUtil;
-import org.smartregister.util.FileUtilities;
-import org.smartregister.util.OpenSRPImageLoader;
 import org.smartregister.util.PermissionUtils;
-import org.smartregister.view.activity.DrishtiApplication;
 
-import java.io.File;
 import java.io.Serializable;
-import java.text.SimpleDateFormat;
 import java.util.List;
 
 import static org.smartregister.cbhc.fragment.ProfileOverviewFragment.EXTRA_HOUSEHOLD_DETAILS;
@@ -369,7 +360,7 @@ public class ProfileActivity extends BaseProfileActivity implements ProfileContr
                             new DialogInterface.OnClickListener() {
                                 public void onClick(DialogInterface dialog, int which) {
                                     dialog.dismiss();
-                                    Utils.HH_REMOVED = false;
+                                    Utils.VIEWREFRESH = false;
                                 }
                             });
                     alertDialog.setButton(android.support.v7.app.AlertDialog.BUTTON_POSITIVE, "CONFIRM",
@@ -379,7 +370,7 @@ public class ProfileActivity extends BaseProfileActivity implements ProfileContr
                                         String entity_id = form.getString("entity_id");
                                         removeMember(entity_id);
                                         presenter.saveForm(jsonString, false);
-                                        Utils.HH_REMOVED = true;
+                                        Utils.VIEWREFRESH = true;
                                     } catch (Exception e) {
                                         e.printStackTrace();
                                     }
@@ -394,6 +385,7 @@ public class ProfileActivity extends BaseProfileActivity implements ProfileContr
             } finally {
                 refreshList(null);
                 refreshProfileViews();
+                Utils.VIEWREFRESH = true;
             }
 
         } else if (requestCode == BarcodeIntentIntegrator.REQUEST_CODE && resultCode == RESULT_OK) {

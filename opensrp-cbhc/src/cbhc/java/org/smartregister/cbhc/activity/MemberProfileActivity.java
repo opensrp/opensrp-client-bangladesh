@@ -839,6 +839,7 @@ public class MemberProfileActivity extends BaseProfileActivity implements Profil
             } catch (Exception e) {
                 Log.e(TAG, Log.getStackTraceString(e));
             }
+            Utils.VIEWREFRESH = true;
         }
 
     }

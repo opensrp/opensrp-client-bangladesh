@@ -402,6 +402,7 @@ public abstract class BaseRegisterFragment extends RecyclerViewFragment implemen
         presenter.initializeQueries(getMainCondition());
         filter(this.filters,this.joinTable,this.mainCondition,false);
         setTotalPatients();
+//        clientAdapter.notifyDataSetChanged();
     }
 
     public void updateSortAndFilter(List<Field> filterList, Field sortField) {

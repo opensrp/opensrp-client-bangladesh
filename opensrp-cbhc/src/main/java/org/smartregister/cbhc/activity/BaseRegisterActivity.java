@@ -4,8 +4,6 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.pm.PackageInfo;
-import android.content.pm.PackageManager;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
@@ -61,11 +59,6 @@ import org.smartregister.provider.SmartRegisterClientsProvider;
 import org.smartregister.view.activity.SecuredNativeSmartRegisterActivity;
 import org.smartregister.view.viewpager.OpenSRPViewPager;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.net.MalformedURLException;
-import java.net.URL;
 import java.text.SimpleDateFormat;
 import java.util.List;
 
@@ -385,9 +378,9 @@ public abstract class BaseRegisterActivity extends SecuredNativeSmartRegisterAct
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if(data==null&&Utils.HH_REMOVED){
+        if(data==null&&Utils.VIEWREFRESH){
             mBaseFragment.clearSortAndFilter();
-            Utils.HH_REMOVED = false;
+            Utils.VIEWREFRESH = false;
             return;
         }
         if (requestCode == JsonFormUtils.REQUEST_CODE_GET_JSON && resultCode == RESULT_OK) {
@@ -411,7 +404,7 @@ public abstract class BaseRegisterActivity extends SecuredNativeSmartRegisterAct
             } catch (Exception e) {
                 Log.e(TAG, Log.getStackTraceString(e));
             }
-
+            mBaseFragment.clearSortAndFilter();
         } else if (requestCode == BarcodeIntentIntegrator.REQUEST_CODE && resultCode == RESULT_OK) {
             BarcodeIntentResult res = BarcodeIntentIntegrator.parseActivityResult(requestCode, resultCode, data);
             if (StringUtils.isNotBlank(res.getContents())) {
@@ -422,6 +415,7 @@ public abstract class BaseRegisterActivity extends SecuredNativeSmartRegisterAct
                 Log.i("", "NO RESULT FOR QR CODE");
             mBaseFragment.clearSortAndFilter();
         }
+
     }
     private void updateScheduledTasks(final JSONObject form) {
         org.smartregister.util.Utils.startAsyncTask((new AsyncTask() {
