@@ -397,9 +397,13 @@
         "openmrs_data_type": "text",
         "type": "edit_text",
         "hint": "সম্পূর্ণ নাম (বাংলায়)",
+        "v_regex": {
+          "value": "[^A-Za-z0-9\\s\.\-]*",
+          "err": "Please enter a valid name"
+        },
         "expanded": false,
         "v_required": {
-          "value": "false",
+          "value": "true",
           "err": "Please Enter a Valid Name"
         }
       },
@@ -431,8 +435,12 @@
         "type": "edit_text",
         "hint": "মাতার নাম (বাংলায়)",
         "edit_type": "name",
+        "v_regex": {
+          "value": "[^A-Za-z0-9\\s\.\-]*",
+          "err": "Please enter a valid name"
+        },
         "v_required": {
-          "value": "false",
+          "value": "true",
           "err": "Please enter the mother/guardian's first name"
         }
       },
@@ -464,8 +472,12 @@
         "type": "edit_text",
         "hint": "পিতার নাম (বাংলায়)",
         "edit_type": "name",
+        "v_regex": {
+          "value": "[^A-Za-z0-9\\s\.\-]*",
+          "err": "Please enter a valid name"
+        },
         "v_required": {
-          "value": false,
+          "value": true,
           "err": "Please enter the mother/guardian's first name"
         }
       },
@@ -682,6 +694,10 @@
         "openmrs_data_type": "text",
         "type": "edit_text",
         "hint": "স্বামী/স্ত্রীর নাম (বাংলায়)",
+        "v_regex": {
+          "value": "[^A-Za-z0-9\\s\.\-]*",
+          "err": "Please enter a valid name"
+        },
         "v_required": {
           "value": "false",
           "err": "Please enter the mother/guardian's first name"
@@ -736,7 +752,11 @@
         "openmrs_data_type": "text",
         "type": "edit_text",
         "look_up": "true",
-        "hint": "জন্মস্থান (জেলা)"
+        "hint": "জন্মস্থান (জেলা)",
+        "v_regex": {
+          "value": "[A-Za-z\\s\.\-]*",
+          "err": "Please enter a valid Place"
+        }
       },
       {
         "key": "disability",
@@ -852,6 +872,10 @@
           "value": true,
           "err": "Please Type Other Ethnicity"
         },
+        "v_regex": {
+          "value": "[A-Za-z\\s\.\-]*",
+          "err": "Please enter a valid Ethnicity"
+        },
         "relevance": {
           "step1:ethnicity": {
             "type": "string",
@@ -927,6 +951,10 @@
         "openmrs_entity_id": "",
         "type": "edit_text",
         "hint": "অন্যান্য শিক্ষাগত যোগ্যতা",
+        "v_regex": {
+          "value": "[A-Za-z\\s\.\-]*",
+          "err": "Please enter a valid Qualification"
+        },
         "v_required": {
           "value": true,
           "err": "Please Type Other Qualification"
@@ -1289,6 +1317,10 @@
         "v_required": {
           "value": true,
           "err": "Please Type Other Religion"
+        },
+        "v_regex": {
+          "value": "[A-Za-z\\s\.\-]*",
+          "err": "Please enter a valid Religion"
         },
         "relevance": {
           "step1:religion": {
@@ -1853,6 +1885,10 @@
           "value": true,
           "err": "Please Type Other disease"
         },
+        "v_regex": {
+          "value": "[A-Za-z\\s\.\-]*",
+          "err": "Please enter a valid Disease"
+        },
         "relevance": {
           "step1:Disease_status": {
             "ex-checkbox": [
@@ -1943,6 +1979,10 @@
         "v_required": {
           "value": true,
           "err": "Please Type Other Conditions"
+        },
+        "v_regex": {
+          "value": "[A-Za-z\\s\.\-]*",
+          "err": "Please enter a valid Condition"
         },
         "relevance": {
           "step1:illness_information": {
@@ -2036,6 +2076,10 @@
           "value": true,
           "err": "Please Type Other Habits"
         },
+        "v_regex": {
+          "value": "[A-Za-z\\s\.\-]*",
+          "err": "Please enter a valid Habits"
+        },
         "relevance": {
           "step1:risky_habits": {
             "ex-checkbox": [
@@ -2055,6 +2099,10 @@
         "openmrs_entity_id": "",
         "openmrs_data_type": "",
         "type": "edit_text",
+        "v_regex": {
+          "value": "[A-Za-z\\s\.\-]*",
+          "err": "Please enter a valid comment"
+        },
         "hint": "মন্তব্য"
       },
       {

@@ -365,6 +365,9 @@ public class JsonFormUtils extends org.smartregister.util.JsonFormUtils {
             formTag.appVersion = BuildConfig.VERSION_CODE;
             formTag.databaseVersion = BuildConfig.DATABASE_VERSION;
 
+            if (encounterType.contains("Household")){
+
+            }
 
             Client baseClient = null;
             if (Utils.notFollowUp(encounterType)) {
@@ -537,7 +540,37 @@ public class JsonFormUtils extends org.smartregister.util.JsonFormUtils {
                 Log.e(TAG, Log.getStackTraceString(e));
             }
 
+            List<Obs>observations = baseEvent.getObs();
+            String is_permanent_address = "";
+            String HIE_FACILITIES = "";
+            String ADDRESS_LINE = "";
+            for(Obs obs:observations){
+                if(obs.getFieldCode().equalsIgnoreCase("is_permanent_address")){
+                    if(obs.getValues()!=null&&!obs.getValues().isEmpty()){
+                        is_permanent_address = (String)obs.getValues().get(0);
 
+                    }
+                }
+                if(obs.getFieldCode().equalsIgnoreCase("HIE_FACILITIES")){
+                    if(obs.getValues()!=null&&!obs.getValues().isEmpty()){
+                        HIE_FACILITIES = (String)obs.getValues().get(0);
+                        HIE_FACILITIES = HIE_FACILITIES.replaceAll("\"","");
+                        HIE_FACILITIES = HIE_FACILITIES.replaceAll("\\[","");
+                        HIE_FACILITIES = HIE_FACILITIES.replaceAll("]","");
+                    }
+                }
+                if(obs.getFieldCode().equalsIgnoreCase("ADDRESS_LINE")){
+                    if(obs.getValues()!=null&&!obs.getValues().isEmpty()){
+                        ADDRESS_LINE = (String)obs.getValues().get(0);
+
+                    }
+                }
+            }
+            if(is_permanent_address.equalsIgnoreCase("হ্যাঁ")||is_permanent_address.equalsIgnoreCase("yes")){
+                baseClient.getAttributes().put("permanentAddress",HIE_FACILITIES);
+                baseClient.getAttributes().put("village",ADDRESS_LINE);
+                baseClient.getAttributes().put("postOfficePermanent",baseClient.getAttribute("postOfficePresent"));
+            }
             return Pair.create(baseClient, baseEvent);
         } catch (Exception e) {
             Log.e(TAG, Log.getStackTraceString(e));
@@ -1258,8 +1291,6 @@ public class JsonFormUtils extends org.smartregister.util.JsonFormUtils {
                         value = choiceObject.names().getString(i);
                     }
                 }
-
-
             }//checkbox
             else if (jsonObject.has("options")) {
                 JSONArray option_array = jsonObject.getJSONArray("options");

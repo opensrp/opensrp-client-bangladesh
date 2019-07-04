@@ -543,8 +543,8 @@ public class MemberProfileActivity extends BaseProfileActivity implements Profil
     @Override
     public void onResume() {
         super.onResume();
-        String baseEntityId = getIntent().getStringExtra(Constants.INTENT_KEY.BASE_ENTITY_ID);
-        mProfilePresenter.refreshProfileView(baseEntityId);
+//        String baseEntityId = getIntent().getStringExtra(Constants.INTENT_KEY.BASE_ENTITY_ID);
+//        mProfilePresenter.refreshProfileView(baseEntityId);
 //        refreshProfileViews();
     }
 
