@@ -368,7 +368,7 @@
           "err": "Please Enter a Valid Name"
         },
         "v_regex": {
-          "value": "[A-Za-z\\s\.\-]*",
+          "value": "[^A-Za-z\\s\.\-]*",
           "err": "Please Enter a Valid Name"
         }
       },
@@ -385,7 +385,7 @@
           "err": "Please enter the last name"
         },
         "v_regex": {
-          "value": "[A-Za-z\\s\.\-]*",
+          "value": "[^A-Za-z\\s\.\-]*",
           "err": "Please enter a valid name"
         }
       },
@@ -399,7 +399,7 @@
         "hint": "সম্পূর্ণ নাম (বাংলায়)",
         "v_regex": {
           "value": "[^A-Za-z0-9\\s\.\-]*",
-          "err": "Please enter a valid name"
+          "err": "বাংলায় লিখুন"
         },
         "expanded": false,
         "v_required": {
@@ -437,7 +437,7 @@
         "edit_type": "name",
         "v_regex": {
           "value": "[^A-Za-z0-9\\s\.\-]*",
-          "err": "Please enter a valid name"
+          "err": "বাংলায় লিখুন"
         },
         "v_required": {
           "value": "true",
@@ -474,7 +474,7 @@
         "edit_type": "name",
         "v_regex": {
           "value": "[^A-Za-z0-9\\s\.\-]*",
-          "err": "Please enter a valid name"
+          "err": "বাংলায় লিখুন"
         },
         "v_required": {
           "value": true,
@@ -754,7 +754,7 @@
         "look_up": "true",
         "hint": "জন্মস্থান (জেলা)",
         "v_regex": {
-          "value": "[A-Za-z\\s\.\-]*",
+          "value": "[^A-Za-z\\s\.\-]*",
           "err": "Please enter a valid Place"
         }
       },
@@ -872,10 +872,6 @@
           "value": true,
           "err": "Please Type Other Ethnicity"
         },
-        "v_regex": {
-          "value": "[A-Za-z\\s\.\-]*",
-          "err": "Please enter a valid Ethnicity"
-        },
         "relevance": {
           "step1:ethnicity": {
             "type": "string",
@@ -951,10 +947,6 @@
         "openmrs_entity_id": "",
         "type": "edit_text",
         "hint": "অন্যান্য শিক্ষাগত যোগ্যতা",
-        "v_regex": {
-          "value": "[A-Za-z\\s\.\-]*",
-          "err": "Please enter a valid Qualification"
-        },
         "v_required": {
           "value": true,
           "err": "Please Type Other Qualification"
@@ -1317,10 +1309,6 @@
         "v_required": {
           "value": true,
           "err": "Please Type Other Religion"
-        },
-        "v_regex": {
-          "value": "[A-Za-z\\s\.\-]*",
-          "err": "Please enter a valid Religion"
         },
         "relevance": {
           "step1:religion": {
@@ -1886,7 +1874,7 @@
           "err": "Please Type Other disease"
         },
         "v_regex": {
-          "value": "[A-Za-z\\s\.\-]*",
+          "value": "[^A-Za-z\\s\.\-]*",
           "err": "Please enter a valid Disease"
         },
         "relevance": {
@@ -1981,7 +1969,7 @@
           "err": "Please Type Other Conditions"
         },
         "v_regex": {
-          "value": "[A-Za-z\\s\.\-]*",
+          "value": "[^A-Za-z\\s\.\-]*",
           "err": "Please enter a valid Condition"
         },
         "relevance": {
@@ -2077,7 +2065,7 @@
           "err": "Please Type Other Habits"
         },
         "v_regex": {
-          "value": "[A-Za-z\\s\.\-]*",
+          "value": "[^A-Za-z\\s\.\-]*",
           "err": "Please enter a valid Habits"
         },
         "relevance": {
@@ -2100,7 +2088,7 @@
         "openmrs_data_type": "",
         "type": "edit_text",
         "v_regex": {
-          "value": "[A-Za-z\\s\.\-]*",
+          "value": "[^A-Za-z\\s\.\-]*",
           "err": "Please enter a valid comment"
         },
         "hint": "মন্তব্য"
