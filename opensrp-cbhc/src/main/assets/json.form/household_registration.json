@@ -78,8 +78,8 @@
         "type": "edit_text",
         "hint": "বর্তমান ঠিকানা",
         "v_regex": {
-          "value": "[^A-Za-z\\s\.\-]*",
-          "err": "Please enter a valid address"
+          "value": "[^A-Za-z0-9]*",
+          "err": "বাংলায় লিখুন"
         },
         "v_required": {
           "value": true,
@@ -94,8 +94,8 @@
         "openmrs_data_type": "text",
         "type": "edit_text",
         "v_regex": {
-          "value": "[^A-Za-z\\s\.\-]*",
-          "err": "Please enter a valid post office"
+          "value": "[^A-Za-z0-9]{1,40}$",
+          "err": "৪০ অক্ষরের ভিতরে বাংলায় লিখুন"
         },
         "hint": "ডাকঘর",
         "v_required": {
@@ -132,14 +132,14 @@
         "openmrs_data_type": "text",
         "type": "edit_text",
         "look_up": "true",
-        "v_regex": {
-          "value": "[^A-Za-z\\s\.\-]*",
-          "err": "Please enter a valid address"
-        },
         "hint": "স্থায়ী ঠিকানা(ইউনিয়ন)",
         "v_required": {
           "value": true,
           "err": "Please enter a valid address"
+        },
+        "v_regex": {
+          "value": "[A-Za-z0-9.,() ]*",
+          "err": "Please select from the list"
         },
         "relevance": {
           "step1:is_permanent_address": {
@@ -160,8 +160,8 @@
           "err": "Please enter village"
         },
         "v_regex": {
-          "value": "[^A-Za-z\\s\.\-]*",
-          "err": "Please enter a valid village"
+          "value": "[^A-Za-z0-9]{1,40}$",
+          "err": "৪০ অক্ষরের ভিতরে বাংলায় লিখুন"
         },
         "hint": "গ্রাম",
         "relevance": {
@@ -184,8 +184,8 @@
           "err": "Please enter post office"
         },
         "v_regex": {
-          "value": "[^A-Za-z\\s\.\-]*",
-          "err": "Please enter a valid post office"
+          "value": "[^A-Za-z0-9]{1,40}$",
+          "err": "৪০ অক্ষরের ভিতরে বাংলায় লিখুন"
         },
         "relevance": {
           "step1:is_permanent_address": {
@@ -211,7 +211,7 @@
         "hint": "পরিবারের প্রধানের নাম এর \nপ্রথম অংশ",
         "edit_type": "name",
         "v_regex": {
-          "value": "[^A-Za-z\\s\.\-]*",
+          "value": "[A-Za-z]*",
           "err": "Please enter a valid name"
         },
         "v_required": {
@@ -232,7 +232,7 @@
           "err": "Please enter the last name"
         },
         "v_regex": {
-          "value": "[^A-Za-z\\s\.\-]*",
+          "value": "[A-Za-z]*",
           "err": "Please enter a valid name"
         }
       },
@@ -439,10 +439,6 @@
           "value": true,
           "err": "Please Type Latrin Type"
         },
-        "v_regex": {
-          "value": "[^A-Za-z\\s\.\-]*",
-          "err": "Please enter a valid Latrin Type"
-        },
         "relevance": {
           "step1:latrine_structure": {
             "type": "string",
@@ -496,10 +492,6 @@
           "value": true,
           "err": "Please Type Water Source"
         },
-        "v_regex": {
-          "value": "[^A-Za-z\\s\.\-]*",
-          "err": "Please enter a valid Water Source"
-        },
         "relevance": {
           "step1:water_source": {
             "type": "string",
@@ -547,10 +539,6 @@
         "v_required": {
           "value": true,
           "err": "Please Type Financial Status"
-        },
-        "v_regex": {
-          "value": "[^A-Za-z\\s\.\-]*",
-          "err": "Please enter a valid Financial Status"
         },
         "relevance": {
           "step1:financial_status": {
@@ -629,10 +617,6 @@
         "v_required": {
           "value": true,
           "err": "Please Type Facility Name"
-        },
-        "v_regex": {
-          "value": "[^A-Za-z\\s\.\-]*",
-          "err": "Please enter a valid Facility Name"
         },
         "relevance": {
           "step1:Nearby_Health_Facility": {
@@ -725,7 +709,7 @@
           "err": "Please Type Facility Name"
         },
         "v_regex": {
-          "value": "[^A-Za-z\\s\.\-]*",
+          "value": "[^A-Za-z0-9]*",
           "err": "Please enter a valid Facility Name"
         },
         "relevance": {
@@ -745,10 +729,6 @@
         "v_required": {
           "value": "true",
           "err": "Please enter the value"
-        },
-        "v_regex": {
-          "value": "[^A-Za-z\\s\.\-]*",
-          "err": "Please enter a valid Clinic"
         }
       },
       {
@@ -788,10 +768,6 @@
         "v_required": {
           "value": "true",
           "err": "Please enter the value"
-        },
-        "v_regex": {
-          "value": "[^A-Za-z\\s\.\-]*",
-          "err": "Please enter a valid Provider"
         }
       },
       {

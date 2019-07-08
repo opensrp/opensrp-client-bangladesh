@@ -31,6 +31,7 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.rengwuxian.materialedittext.MaterialEditText;
 import com.vijay.jsonwizard.activities.JsonFormActivity;
@@ -43,6 +44,7 @@ import com.vijay.jsonwizard.widgets.DatePickerFactory;
 
 import org.apache.commons.lang3.StringUtils;
 import org.joda.time.DateTime;
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.smartregister.Context;
@@ -55,6 +57,7 @@ import org.smartregister.cbhc.provider.MotherLookUpSmartClientsProvider;
 import org.smartregister.cbhc.provider.RegisterProvider;
 import org.smartregister.cbhc.util.Constants;
 import org.smartregister.cbhc.util.DBConstants;
+import org.smartregister.cbhc.util.Jilla;
 import org.smartregister.cbhc.util.MotherLookUpUtils;
 import org.smartregister.cbhc.viewstate.AncJsonFormFragmentViewState;
 import org.smartregister.commonregistry.CommonPersonObject;
@@ -403,6 +406,37 @@ public class AncJsonFormFragment extends JsonFormFragment {
         editText.setInputType(InputType.TYPE_CLASS_TEXT);
     }
 
+    public boolean isValidPermanentAddress(String value) {
+        try{
+
+            for(String address: Jilla.getPermanentAddressFields()){
+                if(value!=null&&!value.isEmpty()&&address.trim().equalsIgnoreCase(value.trim())){
+                    return true;
+                }
+            }
+        }catch(Exception e){
+
+        }
+        return false;
+    }
+    boolean permanentAddressFound = false;
+    public String getPermanentAddress() {
+        getJsonApi().getmJSONObject();
+        ArrayList<View> formdataviews = getJsonApi().getFormDataViews();
+
+        for (int i = 0; i < formdataviews.size(); i++) {
+            if (formdataviews.get(i) instanceof MaterialEditText) {
+                if (((MaterialEditText) formdataviews.get(i)).getFloatingLabelText().toString()
+                        .trim().equalsIgnoreCase("স্থায়ী ঠিকানা(ইউনিয়ন)")) {
+                String text = ((MaterialEditText) formdataviews.get(i)).getText().toString();
+                permanentAddressFound = true;
+                return text;
+                }
+            }
+        }
+        formdataviews.get(0);
+        return "";
+    }
     public void setAgeFromBirthDate(String text) {
         getJsonApi().getmJSONObject();
         ArrayList<View> formdataviews = getJsonApi().getFormDataViews();
@@ -437,21 +471,26 @@ public class AncJsonFormFragment extends JsonFormFragment {
         } else if (item.getItemId() == com.vijay.jsonwizard.R.id.action_next) {
             return next();
         } else if (item.getItemId() == com.vijay.jsonwizard.R.id.action_save) {
-            showform();
-            new Handler().postDelayed(new Runnable() {
-                @Override
-                public void run() {
-                    try {
-                        Boolean skipValidation = ((JsonFormActivity) mMainView.getContext()).getIntent().getBooleanExtra(JsonFormConstants.SKIP_VALIDATION,
-                                false);
-                        flag = save(skipValidation);
-                    } catch (Exception e) {
-                        flag = save(false);
+            if(isValidPermanentAddress(getPermanentAddress())||!permanentAddressFound) {
+                showform();
+                new Handler().postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        try {
+                            Boolean skipValidation = ((JsonFormActivity) mMainView.getContext()).getIntent().getBooleanExtra(JsonFormConstants.SKIP_VALIDATION,
+                                    false);
+                            flag = save(skipValidation);
+                        } catch (Exception e) {
+                            flag = save(false);
+                        }
                     }
-                }
-            }, 500);
-            return flag;
+                }, 500);
+                return flag;
+            }else{
+                Toast.makeText((JsonFormActivity) mMainView.getContext(), "Please select permanent address from the list", Toast.LENGTH_LONG).show();
 
+                return false;
+            }
         }
         return super.onOptionsItemSelected(item);
     }
@@ -461,10 +500,13 @@ public class AncJsonFormFragment extends JsonFormFragment {
     public boolean save(boolean skipValidation) {
 
         try {
-            mMainView.setTag(com.vijay.jsonwizard.R.id.skip_validation, skipValidation);
-            presenter.onSaveClick(mMainView);
 
-            return true;
+                mMainView.setTag(com.vijay.jsonwizard.R.id.skip_validation, skipValidation);
+                presenter.onSaveClick(mMainView);
+
+                return true;
+
+
         } catch (Exception e) {
             dissmissForm();
         }

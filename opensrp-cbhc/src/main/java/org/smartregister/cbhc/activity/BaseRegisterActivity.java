@@ -23,6 +23,7 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import net.sqlcipher.database.SQLiteDatabase;
 
@@ -50,6 +51,7 @@ import org.smartregister.cbhc.presenter.RegisterPresenter;
 import org.smartregister.cbhc.repository.AncRepository;
 import org.smartregister.cbhc.util.Constants;
 import org.smartregister.cbhc.util.DBConstants;
+import org.smartregister.cbhc.util.Jilla;
 import org.smartregister.cbhc.util.JsonFormUtils;
 import org.smartregister.cbhc.util.Utils;
 import org.smartregister.commonregistry.CommonPersonObjectClient;
@@ -392,7 +394,9 @@ public abstract class BaseRegisterActivity extends SecuredNativeSmartRegisterAct
                 if (form.getString(JsonFormUtils.ENCOUNTER_TYPE).equals(Constants.EventType.REGISTRATION)) {
                     presenter.saveForm(jsonString, false);
                 }else if (form.getString(JsonFormUtils.ENCOUNTER_TYPE).equals(Constants.EventType.HouseholdREGISTRATION)) {
-                    presenter.saveForm(jsonString, false);
+
+                        presenter.saveForm(jsonString, false);
+
                 }else if (form.getString(JsonFormUtils.ENCOUNTER_TYPE).equals(Constants.EventType.UPDATE_Household_REGISTRATION)) {
                     presenter.saveForm(jsonString, true);
                 }else if (form.getString(JsonFormUtils.ENCOUNTER_TYPE).equals(Constants.EventType.MemberREGISTRATION)) {
@@ -417,6 +421,30 @@ public abstract class BaseRegisterActivity extends SecuredNativeSmartRegisterAct
         }
 
     }
+
+    public boolean isValidPermanentAddress(JSONObject hhObject) {
+        try{
+
+            JSONObject step1 = hhObject.getJSONObject("step1");
+            JSONArray fields = step1.getJSONArray("fields");
+            for(int i=0;i<fields.length();i++){
+                JSONObject fieldObject = fields.getJSONObject(i);
+                String key = fieldObject.getString("key");
+                if(key.equalsIgnoreCase("permanent_address")){
+                    String value = fieldObject.getString("value");
+                    for(String address:Jilla.getPermanentAddressFields()){
+                        if(value!=null&&!value.isEmpty()&&address.trim().equalsIgnoreCase(value.trim())){
+                            return true;
+                        }
+                    }
+                }
+            }
+        }catch(Exception e){
+
+        }
+        return false;
+    }
+
     private void updateScheduledTasks(final JSONObject form) {
         org.smartregister.util.Utils.startAsyncTask((new AsyncTask() {
             @Override

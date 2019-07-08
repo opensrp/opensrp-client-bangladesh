@@ -63,6 +63,9 @@ public class Jilla {
 
         return results;
     }
+    public static final String[] getPermanentAddressFields(){
+        return jilla_list;
+    }
     private static final String [] jilla_list = {
             "RANGPUR,PANCHAGARH,ATWARI,ALOWA KHOWA",
             "RANGPUR,PANCHAGARH,ATWARI,BALARAMPUR",

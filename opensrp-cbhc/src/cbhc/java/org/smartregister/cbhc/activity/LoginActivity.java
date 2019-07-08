@@ -261,6 +261,10 @@ public class LoginActivity extends AppCompatActivity implements LoginContract.Vi
 //                username = "maxii";
 //                username = "teliya1@cc.com";
 //                username = "sabab@ahmed.com";
+                //cc10006952@mhv.4
+//                username = "cc10006955@mhv.4";
+//                  username = "cc10006953@test.1";
+//                  password = "mpower@123";
 //                password = "Pain2set";
 //                username = "cc100@mhv.100";
 //                password = "123456";
@@ -367,10 +371,10 @@ public class LoginActivity extends AppCompatActivity implements LoginContract.Vi
                 try {
                     PackageInfo pInfo = LoginActivity.this.getPackageManager().getPackageInfo(getPackageName(), 0);
                     version = pInfo.versionName;
-                    if (!version.equalsIgnoreCase(version_code.trim())) {
+                    if (!version_code.trim().isEmpty()&&!version.equalsIgnoreCase(version_code.trim())) {
                         android.support.v7.app.AlertDialog alertDialog = new android.support.v7.app.AlertDialog.Builder(LoginActivity.this).create();
                         alertDialog.setTitle("New version available");
-                        alertDialog.setCanceledOnTouchOutside(true);
+                        alertDialog.setCanceledOnTouchOutside(false);
 
                         alertDialog.setButton(android.support.v7.app.AlertDialog.BUTTON_POSITIVE, "UPDATE",
                                 new DialogInterface.OnClickListener() {

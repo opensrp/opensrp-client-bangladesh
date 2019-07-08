@@ -368,7 +368,7 @@
           "err": "Please Enter a Valid Name"
         },
         "v_regex": {
-          "value": "[^A-Za-z\\s\.\-]*",
+          "value": "[A-Za-z .]*",
           "err": "Please Enter a Valid Name"
         }
       },
@@ -385,7 +385,7 @@
           "err": "Please enter the last name"
         },
         "v_regex": {
-          "value": "[^A-Za-z\\s\.\-]*",
+          "value": "[A-Za-z .]*",
           "err": "Please enter a valid name"
         }
       },
@@ -398,7 +398,7 @@
         "type": "edit_text",
         "hint": "সম্পূর্ণ নাম (বাংলায়)",
         "v_regex": {
-          "value": "[^A-Za-z0-9\\s\.\-]*",
+          "value": "[^A-Za-z0-9]*",
           "err": "বাংলায় লিখুন"
         },
         "expanded": false,
@@ -422,7 +422,7 @@
           "err": "Please enter the mother/guardian's first name"
         },
         "v_regex": {
-          "value": "[A-Za-z\\s\.\-]*",
+          "value": "[A-Za-z .]*",
           "err": "Please enter a valid name"
         }
       },
@@ -436,7 +436,7 @@
         "hint": "মাতার নাম (বাংলায়)",
         "edit_type": "name",
         "v_regex": {
-          "value": "[^A-Za-z0-9\\s\.\-]*",
+          "value": "[^A-Za-z0-9]*",
           "err": "বাংলায় লিখুন"
         },
         "v_required": {
@@ -459,7 +459,7 @@
           "err": "Please enter the mother/guardian's first name"
         },
         "v_regex": {
-          "value": "[A-Za-z\\s\.\-]*",
+          "value": "[A-Za-z .]*",
           "err": "Please enter a valid name"
         }
       },
@@ -473,7 +473,7 @@
         "hint": "পিতার নাম (বাংলায়)",
         "edit_type": "name",
         "v_regex": {
-          "value": "[^A-Za-z0-9\\s\.\-]*",
+          "value": "[^A-Za-z0-9]*",
           "err": "বাংলায় লিখুন"
         },
         "v_required": {
@@ -676,7 +676,7 @@
         "look_up": "true",
         "hint": "স্বামী/স্ত্রীর নাম (ইংরেজীতে)",
         "v_regex": {
-          "value": "[A-Za-z\\s\.\-]*",
+          "value": "[A-Za-z]*",
           "err": "Please Enter a Valid Name"
         },
         "relevance": {
@@ -695,7 +695,7 @@
         "type": "edit_text",
         "hint": "স্বামী/স্ত্রীর নাম (বাংলায়)",
         "v_regex": {
-          "value": "[^A-Za-z0-9\\s\.\-]*",
+          "value": "[^A-Za-z0-9]*",
           "err": "Please enter a valid name"
         },
         "v_required": {
@@ -754,8 +754,8 @@
         "look_up": "true",
         "hint": "জন্মস্থান (জেলা)",
         "v_regex": {
-          "value": "[^A-Za-z\\s\.\-]*",
-          "err": "Please enter a valid Place"
+          "value": "[A-Za-z0-9,() ]*",
+          "err": "Please select from the list"
         }
       },
       {
@@ -1873,10 +1873,6 @@
           "value": true,
           "err": "Please Type Other disease"
         },
-        "v_regex": {
-          "value": "[^A-Za-z\\s\.\-]*",
-          "err": "Please enter a valid Disease"
-        },
         "relevance": {
           "step1:Disease_status": {
             "ex-checkbox": [
@@ -1967,10 +1963,6 @@
         "v_required": {
           "value": true,
           "err": "Please Type Other Conditions"
-        },
-        "v_regex": {
-          "value": "[^A-Za-z\\s\.\-]*",
-          "err": "Please enter a valid Condition"
         },
         "relevance": {
           "step1:illness_information": {
@@ -2064,10 +2056,6 @@
           "value": true,
           "err": "Please Type Other Habits"
         },
-        "v_regex": {
-          "value": "[^A-Za-z\\s\.\-]*",
-          "err": "Please enter a valid Habits"
-        },
         "relevance": {
           "step1:risky_habits": {
             "ex-checkbox": [
@@ -2087,10 +2075,6 @@
         "openmrs_entity_id": "",
         "openmrs_data_type": "",
         "type": "edit_text",
-        "v_regex": {
-          "value": "[^A-Za-z\\s\.\-]*",
-          "err": "Please enter a valid comment"
-        },
         "hint": "মন্তব্য"
       },
       {

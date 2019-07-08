@@ -21,6 +21,7 @@ import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import net.sqlcipher.Cursor;
 import net.sqlcipher.database.SQLiteDatabase;
@@ -52,6 +53,7 @@ import org.smartregister.cbhc.repository.UniqueIdRepository;
 import org.smartregister.cbhc.util.Constants;
 import org.smartregister.cbhc.util.DBConstants;
 import org.smartregister.cbhc.util.ImageLoaderByGlide;
+import org.smartregister.cbhc.util.Jilla;
 import org.smartregister.cbhc.util.JsonFormUtils;
 import org.smartregister.cbhc.util.LookUpUtils;
 import org.smartregister.cbhc.util.Utils;
@@ -344,9 +346,13 @@ public class ProfileActivity extends BaseProfileActivity implements ProfileContr
                 if (form.getString(JsonFormUtils.ENCOUNTER_TYPE).equals(Constants.EventType.REGISTRATION)) {
                     presenter.saveForm(jsonString, false);
                 } else if (form.getString(JsonFormUtils.ENCOUNTER_TYPE).equals(Constants.EventType.HouseholdREGISTRATION)) {
-                    presenter.saveForm(jsonString, false);
+
+                        presenter.saveForm(jsonString, false);
+
                 } else if (form.getString(JsonFormUtils.ENCOUNTER_TYPE).equals(Constants.EventType.UPDATE_Household_REGISTRATION)) {
-                    presenter.saveForm(jsonString, true);
+
+                        presenter.saveForm(jsonString, true);
+
                 } else if (form.getString(JsonFormUtils.ENCOUNTER_TYPE).equals(Constants.EventType.MemberREGISTRATION)) {
                     presenter.saveForm(jsonString, false);
                     updateScheduledTasks(form);
