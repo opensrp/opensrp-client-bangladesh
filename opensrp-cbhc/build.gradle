@@ -137,8 +137,8 @@ android {
         }
         cbhc {
             applicationId "org.smartregister"
-            versionCode 14
-            versionName "1.2.3"
+            versionCode 16
+            versionName "1.2.5"
             dimension "baseDimension"
             applicationIdSuffix ".cbhc"
             versionNameSuffix ""

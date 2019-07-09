@@ -420,6 +420,24 @@ public class AncJsonFormFragment extends JsonFormFragment {
         return false;
     }
     boolean permanentAddressFound = false;
+    public int getIsPermanentAddress() {
+        getJsonApi().getmJSONObject();
+        ArrayList<View> formdataviews = getJsonApi().getFormDataViews();
+
+        for (int i = 0; i < formdataviews.size(); i++) {
+            if (formdataviews.get(i) instanceof MaterialSpinner) {
+                if (((MaterialSpinner) formdataviews.get(i)).getFloatingLabelText().toString()
+                        .trim().equalsIgnoreCase("স্থায়ী ঠিকানা কি একই")) {
+                    int position = ((MaterialSpinner) formdataviews.get(i)).getSelectedItemPosition();
+                    //1==yes
+                    //2==no
+                    return position;
+                }
+            }
+        }
+        formdataviews.get(0);
+        return 1;
+    }
     public String getPermanentAddress() {
         getJsonApi().getmJSONObject();
         ArrayList<View> formdataviews = getJsonApi().getFormDataViews();
@@ -471,7 +489,8 @@ public class AncJsonFormFragment extends JsonFormFragment {
         } else if (item.getItemId() == com.vijay.jsonwizard.R.id.action_next) {
             return next();
         } else if (item.getItemId() == com.vijay.jsonwizard.R.id.action_save) {
-            if(isValidPermanentAddress(getPermanentAddress())||!permanentAddressFound) {
+
+            if(getIsPermanentAddress()==1||isValidPermanentAddress(getPermanentAddress())||!permanentAddressFound) {
                 showform();
                 new Handler().postDelayed(new Runnable() {
                     @Override

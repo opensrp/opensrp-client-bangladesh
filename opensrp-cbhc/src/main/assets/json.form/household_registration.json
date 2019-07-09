@@ -135,7 +135,7 @@
         "hint": "স্থায়ী ঠিকানা(ইউনিয়ন)",
         "v_required": {
           "value": true,
-          "err": "Please enter a valid address"
+          "err": "ইউনিয়ন এর নামের অক্ষর ইংরেজিতে লিখুন "
         },
         "v_regex": {
           "value": "[A-Za-z0-9.,() ]*",
