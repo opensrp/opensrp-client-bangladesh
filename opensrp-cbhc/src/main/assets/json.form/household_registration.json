@@ -211,7 +211,7 @@
         "hint": "পরিবারের প্রধানের নাম এর \nপ্রথম অংশ",
         "edit_type": "name",
         "v_regex": {
-          "value": "[A-Za-z]*",
+          "value": "[A-Za-z .]*",
           "err": "Please enter a valid name"
         },
         "v_required": {
@@ -232,7 +232,7 @@
           "err": "Please enter the last name"
         },
         "v_regex": {
-          "value": "[A-Za-z]*",
+          "value": "[A-Za-z .]*",
           "err": "Please enter a valid name"
         }
       },
@@ -776,7 +776,11 @@
         "openmrs_entity": "",
         "openmrs_entity_id": "",
         "type": "choose_image",
-        "uploadButtonText": "পরিবারের প্রধানের ছবি তুলুন "
+        "uploadButtonText": "পরিবারের প্রধানের ছবি তুলুন*",
+        "v_required": {
+          "value": true,
+          "err": "Please take household picture"
+        }
       },
       {
         "key": "gps",
