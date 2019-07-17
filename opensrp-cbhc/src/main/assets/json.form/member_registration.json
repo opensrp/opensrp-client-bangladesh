@@ -681,7 +681,7 @@
         },
         "v_required": {
           "value": true,
-          "err": "Please take household picture"
+          "err": "Please enter spouse name"
         },
         "relevance": {
           "step1:marital_status": {
@@ -704,7 +704,7 @@
         },
         "v_required": {
           "value": true,
-          "err": "Please enter the mother/guardian's first name"
+          "err": "Please enter spouse name"
         },
         "relevance": {
           "step1:marital_status": {

@@ -1,8 +1,12 @@
 package org.smartregister.cbhc.task;
 
+import android.content.DialogInterface;
+import android.content.Intent;
+import android.net.Uri;
 import android.os.AsyncTask;
 
 import org.smartregister.Context;
+import org.smartregister.cbhc.activity.LoginActivity;
 import org.smartregister.cbhc.application.AncApplication;
 import org.smartregister.cbhc.contract.LoginContract;
 import org.smartregister.domain.LoginResponse;
@@ -57,6 +61,8 @@ public class RemoteLoginTask extends AsyncTask<Void, Void, LoginResponse> {
         mLoginView.showProgress(false);
         if (loginResponse != null)
             afterLoginCheck.onEvent(loginResponse);
+        else
+            afterLoginCheck.onEvent(LoginResponse.SUCCESS_WITHOUT_USER_DETAILS);
     }
 
     @Override

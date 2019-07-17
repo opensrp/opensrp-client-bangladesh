@@ -2,10 +2,18 @@ package org.smartregister.cbhc.activity;
 
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
+import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
+import android.os.Environment;
 import android.support.v7.app.AlertDialog;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.Window;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 
 import com.vijay.jsonwizard.activities.JsonFormActivity;
 import com.vijay.jsonwizard.constants.JsonFormConstants;
@@ -13,6 +21,7 @@ import com.vijay.jsonwizard.constants.JsonFormConstants;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.smartregister.cbhc.R;
 import org.smartregister.cbhc.application.AncApplication;
 import org.smartregister.cbhc.domain.draft_form_object;
 import org.smartregister.cbhc.fragment.AncJsonFormFragment;
@@ -22,6 +31,8 @@ import org.smartregister.cbhc.repository.UniqueIdRepository;
 import org.smartregister.cbhc.util.DBConstants;
 import org.smartregister.cbhc.util.JsonFormUtils;
 import org.smartregister.cbhc.util.Utils;
+
+import java.io.File;
 
 import static org.apache.commons.lang3.StringUtils.isBlank;
 import static org.smartregister.cbhc.util.JsonFormUtils.METADATA;
@@ -50,7 +61,7 @@ public class AncJsonFormActivity extends JsonFormActivity {
     @Override
     public void writeValue(String stepName, String key, String value, String openMrsEntityParent, String openMrsEntity, String openMrsEntityId) throws JSONException {
         callSuperWriteValue(stepName, key, value, openMrsEntityParent, openMrsEntity, openMrsEntityId);
-        calculateAgeFromBirthDate(key,value);
+        calculateAgeFromBirthDate(key, value);
     }
 
     @Override
@@ -68,9 +79,8 @@ public class AncJsonFormActivity extends JsonFormActivity {
     }
 
 
-
     private void calculateAgeFromBirthDate(String key, String value) {
-        if(key.equalsIgnoreCase("member_birth_date")&& value!=null){
+        if (key.equalsIgnoreCase("member_birth_date") && value != null) {
             JSONObject currentFormState = getmJSONObject();
             try {
                 currentFormState.getJSONObject("step1");
@@ -88,7 +98,7 @@ public class AncJsonFormActivity extends JsonFormActivity {
 
     @Override
     public void onBackPressed() {
-        final String dialog_message = getConfirmCloseMessage().replace("cleared","saved in Draft");
+        final String dialog_message = getConfirmCloseMessage().replace("cleared", "saved in Draft");
         AlertDialog dialog = new AlertDialog.Builder(this, com.vijay.jsonwizard.R.style.AppThemeAlertDialog)
                 .setTitle(getConfirmCloseTitle())
                 .setMessage(dialog_message)
@@ -111,34 +121,38 @@ public class AncJsonFormActivity extends JsonFormActivity {
 
         dialog.show();
     }
+
     private UniqueIdRepository uniqueIdRepository;
     private HealthIdRepository healthIdRepository;
+
     private void saveDraft() {
         JSONObject partialform = getmJSONObject();
 
         DraftFormRepository draftFormRepository = new DraftFormRepository(AncApplication.getInstance().getRepository());
         draft_form_object draftFormObject = new draft_form_object();
         draftFormObject.setDraftFormJson(currentJsonState());
-        processDraftForm(partialform,draftFormObject);
+        processDraftForm(partialform, draftFormObject);
         draftFormRepository.add(draftFormObject);
     }
+
     public UniqueIdRepository getUniqueIdRepository() {
         if (uniqueIdRepository == null) {
             uniqueIdRepository = AncApplication.getInstance().getUniqueIdRepository();
         }
         return uniqueIdRepository;
     }
+
     public HealthIdRepository getHealthIdRepository() {
         if (healthIdRepository == null) {
             healthIdRepository = AncApplication.getInstance().getHealthIdRepository();
         }
         return healthIdRepository;
     }
+
     private void processDraftForm(JSONObject partialform, draft_form_object draftFormObject) {
         try {
             String formname = partialform.getString("encounter_type");
             draftFormObject.setFormNAME(formname);
-
 
 
             JSONObject metadata = getJSONObject(partialform, METADATA);
@@ -149,15 +163,15 @@ public class AncJsonFormActivity extends JsonFormActivity {
                 lookUpEntityId = JsonFormUtils.getString(lookUpJSONObject, "entity_id");
                 lookUpBaseEntityId = JsonFormUtils.getString(lookUpJSONObject, "value");
             }
-            if(!isBlank(lookUpEntityId)&& !isBlank(lookUpBaseEntityId)){
+            if (!isBlank(lookUpEntityId) && !isBlank(lookUpBaseEntityId)) {
                 draftFormObject.setHousehold_BASE_ENTITY_ID(lookUpBaseEntityId);
             }
             String newOpenSRPId = getPatientIdentifier(partialform);
 
-            if(formname.contains("Household")){
+            if (formname.contains("Household")) {
                 uniqueIdRepository = getUniqueIdRepository();
                 uniqueIdRepository.close(newOpenSRPId);
-            }else {
+            } else {
 //                healthIdRepository = getHealthIdRepository();
 //                healthIdRepository.close(newOpenSRPId);
             }
@@ -167,22 +181,22 @@ public class AncJsonFormActivity extends JsonFormActivity {
         }
     }
 
-    public String getPatientIdentifier(JSONObject formobject){
+    public String getPatientIdentifier(JSONObject formobject) {
         String identifier = "";
-        try{
+        try {
 
             JSONArray jsonArray = formobject.getJSONObject("step1").getJSONArray("fields");
-            for(int i=0;i<jsonArray.length();i++){
+            for (int i = 0; i < jsonArray.length(); i++) {
                 JSONObject jsonObject = jsonArray.getJSONObject(i);
                 String key = jsonObject.getString("key");
 
-                if(key.equalsIgnoreCase("Patient_Identifier")){
+                if (key.equalsIgnoreCase("Patient_Identifier")) {
                     identifier = jsonObject.getString("value");
                     break;
                 }
 
             }
-        }catch(Exception e){
+        } catch (Exception e) {
 
         }
         return identifier;

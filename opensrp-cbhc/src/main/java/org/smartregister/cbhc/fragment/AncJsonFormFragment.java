@@ -3,6 +3,7 @@ package org.smartregister.cbhc.fragment;
 import android.app.Activity;
 import android.app.Dialog;
 import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -26,8 +27,10 @@ import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
 import android.widget.AdapterView;
 import android.widget.BaseAdapter;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -112,6 +115,7 @@ public class AncJsonFormFragment extends JsonFormFragment {
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+
         updateMemberCount();
         new Handler().postDelayed(new Runnable() {
             @Override
@@ -126,9 +130,12 @@ public class AncJsonFormFragment extends JsonFormFragment {
         return new AncJsonFormFragmentViewState();
     }
 
+    JsonFormFragmentPresenter presenter;
+
     @Override
     protected JsonFormFragmentPresenter createPresenter() {
-        return new JsonFormFragmentPresenter(this, AncJsonFormInteractor.getInstance());
+        presenter = new JsonFormFragmentPresenter(this, AncJsonFormInteractor.getInstance());
+        return presenter;
     }
 
 
@@ -248,6 +255,40 @@ public class AncJsonFormFragment extends JsonFormFragment {
             }
         });
         show(snackbar, 30000);
+
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        showPreviewDialog();
+    }
+
+    public void showPreviewDialog() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+        builder.setPositiveButton("ঠিক আছে", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+            }
+        }).setNegativeButton("বাতিল করুন", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                triggerCameraIntent();
+                dialog.dismiss();
+            }
+        });
+        final AlertDialog dialog = builder.create();
+        LayoutInflater inflater = getLayoutInflater();
+        View dialogLayout = inflater.inflate(R.layout.go_preview_dialog_layout, null);
+        dialog.setView(dialogLayout);
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        ImageView image = (ImageView) dialogLayout.findViewById(R.id.goProDialogImage);
+        Bitmap myBitmap = BitmapFactory.decodeFile(presenter.getmCurrentPhotoPath());
+        if (myBitmap != null) {
+            image.setImageBitmap(myBitmap);
+            dialog.show();
+        }
 
     }
 
@@ -407,19 +448,28 @@ public class AncJsonFormFragment extends JsonFormFragment {
     }
 
     public boolean isValidPermanentAddress(String value) {
-        try{
+        try {
 
-            for(String address: Jilla.getPermanentAddressFields()){
-                if(value!=null&&!value.isEmpty()&&address.trim().equalsIgnoreCase(value.trim())){
+            for (String address : Jilla.getPermanentAddressFields()) {
+                if (value != null && !value.isEmpty() && address.trim().equalsIgnoreCase(value.trim())) {
                     return true;
                 }
             }
-        }catch(Exception e){
+        } catch (Exception e) {
 
         }
         return false;
     }
+
     boolean permanentAddressFound = false;
+
+    public void triggerCameraIntent() {
+
+
+        presenter.onClickCameraIcon("household_photo", JsonFormConstants.CHOOSE_IMAGE);
+
+    }
+
     public int getIsPermanentAddress() {
         getJsonApi().getmJSONObject();
         ArrayList<View> formdataviews = getJsonApi().getFormDataViews();
@@ -438,6 +488,7 @@ public class AncJsonFormFragment extends JsonFormFragment {
         formdataviews.get(0);
         return 1;
     }
+
     public String getPermanentAddress() {
         getJsonApi().getmJSONObject();
         ArrayList<View> formdataviews = getJsonApi().getFormDataViews();
@@ -446,15 +497,16 @@ public class AncJsonFormFragment extends JsonFormFragment {
             if (formdataviews.get(i) instanceof MaterialEditText) {
                 if (((MaterialEditText) formdataviews.get(i)).getFloatingLabelText().toString()
                         .trim().equalsIgnoreCase("স্থায়ী ঠিকানা(ইউনিয়ন)")) {
-                String text = ((MaterialEditText) formdataviews.get(i)).getText().toString();
-                permanentAddressFound = true;
-                return text;
+                    String text = ((MaterialEditText) formdataviews.get(i)).getText().toString();
+                    permanentAddressFound = true;
+                    return text;
                 }
             }
         }
         formdataviews.get(0);
         return "";
     }
+
     public void setAgeFromBirthDate(String text) {
         getJsonApi().getmJSONObject();
         ArrayList<View> formdataviews = getJsonApi().getFormDataViews();
@@ -490,7 +542,7 @@ public class AncJsonFormFragment extends JsonFormFragment {
             return next();
         } else if (item.getItemId() == com.vijay.jsonwizard.R.id.action_save) {
 
-            if(getIsPermanentAddress()==1||isValidPermanentAddress(getPermanentAddress())||!permanentAddressFound) {
+            if (getIsPermanentAddress() == 1 || isValidPermanentAddress(getPermanentAddress()) || !permanentAddressFound) {
                 showform();
                 new Handler().postDelayed(new Runnable() {
                     @Override
@@ -505,7 +557,7 @@ public class AncJsonFormFragment extends JsonFormFragment {
                     }
                 }, 500);
                 return flag;
-            }else{
+            } else {
                 Toast.makeText((JsonFormActivity) mMainView.getContext(), "Please select permanent address from the list", Toast.LENGTH_LONG).show();
 
                 return false;
@@ -520,10 +572,10 @@ public class AncJsonFormFragment extends JsonFormFragment {
 
         try {
 
-                mMainView.setTag(com.vijay.jsonwizard.R.id.skip_validation, skipValidation);
-                presenter.onSaveClick(mMainView);
+            mMainView.setTag(com.vijay.jsonwizard.R.id.skip_validation, skipValidation);
+            presenter.onSaveClick(mMainView);
 
-                return true;
+            return true;
 
 
         } catch (Exception e) {
