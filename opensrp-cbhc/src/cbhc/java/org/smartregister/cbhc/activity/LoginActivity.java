@@ -100,7 +100,7 @@ public class LoginActivity extends AppCompatActivity implements LoginContract.Vi
 
         }
 
-        app_version_status();
+//        app_version_status();
     }
 
     @Override
@@ -264,11 +264,15 @@ public class LoginActivity extends AppCompatActivity implements LoginContract.Vi
                 //cc10006952@mhv.4
 //                username = "cc10006955@mhv.4";
 //                username = "cc10006953@test.1";
-//////
+////////
+//                username = "aminulislamovi.48@gmail.com";
+
 //                password = "mpower@123";
 //                password = "Pain2set";
+                username = "robinuthappa@gmail.com";
 //                username = "cc100@mhv.100";
-//                password = "123456";
+                password = "123456";
+
                 //anc repository object for raw query
 //                AncRepository repo = (AncRepository) AncApplication.getInstance().getRepository();
 //                SQLiteDatabase db = repo.getReadableDatabase();

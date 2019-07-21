@@ -778,7 +778,7 @@
         "type": "choose_image",
         "uploadButtonText": "পরিবারের প্রধানের ছবি তুলুন*",
         "v_required": {
-          "value": true,
+          "value": false,
           "err": "Please take household picture"
         }
       },

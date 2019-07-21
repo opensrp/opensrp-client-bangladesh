@@ -1,7 +1,6 @@
 package org.smartregister.cbhc.fragment;
 
 import android.app.Activity;
-import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -18,7 +17,6 @@ import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.AppCompatButton;
-import android.support.v7.widget.AppCompatTextView;
 import android.text.InputType;
 import android.util.Log;
 import android.util.TypedValue;
@@ -30,12 +28,10 @@ import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.AdapterView;
 import android.widget.BaseAdapter;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import com.rengwuxian.materialedittext.MaterialEditText;
 import com.vijay.jsonwizard.activities.JsonFormActivity;
 import com.vijay.jsonwizard.constants.JsonFormConstants;
@@ -44,10 +40,8 @@ import com.vijay.jsonwizard.fragments.JsonFormFragment;
 import com.vijay.jsonwizard.presenters.JsonFormFragmentPresenter;
 import com.vijay.jsonwizard.utils.FormUtils;
 import com.vijay.jsonwizard.widgets.DatePickerFactory;
-
 import org.apache.commons.lang3.StringUtils;
 import org.joda.time.DateTime;
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.smartregister.Context;
@@ -58,7 +52,6 @@ import org.smartregister.cbhc.application.AncApplication;
 import org.smartregister.cbhc.interactor.AncJsonFormInteractor;
 import org.smartregister.cbhc.provider.MotherLookUpSmartClientsProvider;
 import org.smartregister.cbhc.provider.RegisterProvider;
-import org.smartregister.cbhc.util.Constants;
 import org.smartregister.cbhc.util.DBConstants;
 import org.smartregister.cbhc.util.Jilla;
 import org.smartregister.cbhc.util.MotherLookUpUtils;
@@ -69,10 +62,7 @@ import org.smartregister.commonregistry.CommonRepository;
 import org.smartregister.domain.ProfileImage;
 import org.smartregister.event.Listener;
 import org.smartregister.repository.ImageRepository;
-import org.smartregister.util.DatePickerUtils;
-import org.smartregister.util.DateUtil;
 import org.smartregister.util.Utils;
-
 import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -80,7 +70,6 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
 import static org.smartregister.cbhc.util.Constants.JSON_FORM_KEY.ENTITY_ID;
 import static org.smartregister.cbhc.util.Constants.KEY.VALUE;
 import static org.smartregister.util.Utils.getValue;

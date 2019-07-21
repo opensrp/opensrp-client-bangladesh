@@ -6,6 +6,8 @@ import android.content.Intent;
 import android.util.Log;
 import android.util.Pair;
 
+import net.sqlcipher.database.SQLiteDatabase;
+
 import org.apache.commons.lang3.StringUtils;
 import org.joda.time.DateTime;
 import org.json.JSONArray;
@@ -21,6 +23,7 @@ import org.smartregister.cbhc.job.ImageUploadServiceJob;
 import org.smartregister.cbhc.job.PullHealthIdsServiceJob;
 import org.smartregister.cbhc.job.PullUniqueIdsServiceJob;
 import org.smartregister.cbhc.receiver.SyncStatusBroadcastReceiver;
+import org.smartregister.cbhc.repository.AncRepository;
 import org.smartregister.cbhc.sync.AncClientProcessorForJava;
 import org.smartregister.cbhc.util.Constants;
 import org.smartregister.cbhc.util.NetworkUtils;
@@ -162,9 +165,34 @@ public class SyncIntentService extends IntentService {
             DeleteIntentServiceJob.scheduleJobImmediately(DeleteIntentServiceJob.TAG);
             PullHealthIdsServiceJob.scheduleJobImmediately(PullHealthIdsServiceJob.TAG);
             PullUniqueIdsServiceJob.scheduleJobImmediately(PullUniqueIdsServiceJob.TAG);
+            new DetailsStatusUpdate().start();
         }
     }
+    class DetailsStatusUpdate extends Thread {
+        @Override
+        public void run() {
+            String tablename[] = {"ec_household","ec_woman","ec_child","ec_member"};
+            AncRepository repo = (AncRepository) AncApplication.getInstance().getRepository();
+            SQLiteDatabase db = repo.getReadableDatabase();
+            for(int i=0;i<tablename.length;i++) {
+                String update1 = "update "+tablename[i]+" set details = 'rejected' " +
+                        "where "+tablename[i]+".base_entity_id in " +
+                        "(select client.baseEntityId from client " +
+                        "where json_extract(client.json,'$.dataApprovalStatus') = '0')";
+                db.execSQL(update1);
 
+                String update2 = "update "+tablename[i]+" set " +
+                        "details = 'approved' where " +
+                        tablename[i]+".base_entity_id in " +
+                        "(select client.baseEntityId from " +
+                        "client where json_extract(client.json,'$.dataApprovalStatus')" +
+                        " != '0' or json_extract(client.json,'$.dataApprovalStatus') " +
+                        "is null) ;";
+                db.execSQL(update2);
+
+            }
+        }
+    }
     class ClientInsertThread extends Thread {
         ECSyncHelper ecSyncUpdater;
         JSONObject jsonObject;
