@@ -101,7 +101,7 @@ public abstract class BaseRegisterFragment extends RecyclerViewFragment implemen
     private ImageView qrCodeScanImageView;
     private ProgressBar syncProgressBar;
     private boolean globalQrSearch = false;
-    private String default_sort_query = DBConstants.KEY.LAST_INTERACTED_WITH + " DESC";
+    private String default_sort_query = DBConstants.KEY.DETAILS + " DESC, "+ DBConstants.KEY.LAST_INTERACTED_WITH + " DESC";
     protected final TextWatcher textWatcher = new TextWatcher() {
         @Override
         public void beforeTextChanged(CharSequence charSequence, int i, int i2, int i3) {
@@ -708,6 +708,7 @@ public abstract class BaseRegisterFragment extends RecyclerViewFragment implemen
                 tableName + "." + DBConstants.KEY.DOB,
                 tableName + "." + "Patient_Identifier",
                 tableName + "." + DBConstants.KEY.PHONE_NUMBER,
+                tableName + "." + DBConstants.KEY.DETAILS,
                 "(select ec_details.value from ec_details where ec_details.key='address7' and ec_details.base_entity_id=ec_household.id) as para"
                 };
 
@@ -721,6 +722,7 @@ public abstract class BaseRegisterFragment extends RecyclerViewFragment implemen
                     tableName + "." + DBConstants.KEY.DOB,
                     tableName + "." + "Patient_Identifier",
                     tableName + "." + DBConstants.KEY.PHONE_NUMBER,
+                    tableName + "." + DBConstants.KEY.DETAILS,
                     "(select ec_woman.PregnancyStatus from ec_woman where (ec_woman.PregnancyStatus = 'Antenatal Period' or ec_woman.PregnancyStatus like '%প্রসব পূর্ব%') and ec_household.id=ec_woman.relational_id) as PregnancyStatus"
                     };
             //"(select ec_details.value from ec_details where ec_details.key='Disease_status' and ec_details.value = 'Antenatal Period' and ec_details.base_entity_id=(select ec_woman.id from ec_woman where  ec_household.id=ec_woman.relational_id )) as Disease_status"
@@ -735,7 +737,7 @@ public abstract class BaseRegisterFragment extends RecyclerViewFragment implemen
                     tableName + "." + DBConstants.KEY.DOB,
                     tableName + "." + "Patient_Identifier",
                     tableName + "." + DBConstants.KEY.PHONE_NUMBER,
-
+                    tableName + "." + DBConstants.KEY.DETAILS,
                     "(select ec_child.dob from ec_child where ec_child.relational_id = ec_household.id and ec_child.dob > DATE('"+TWO_MONTHS+"')) as child_dob"
             };
             registerCondition = " child_dob IS NOT NULL";
@@ -749,7 +751,7 @@ public abstract class BaseRegisterFragment extends RecyclerViewFragment implemen
                     tableName + "." + DBConstants.KEY.DOB,
                     tableName + "." + "Patient_Identifier",
                     tableName + "." + DBConstants.KEY.PHONE_NUMBER,
-
+                    tableName + "." + DBConstants.KEY.DETAILS,
                     "(select ec_child.dob from ec_child where ec_child.relational_id = ec_household.id and (ec_child.dob < DATE('"+TWO_MONTHS+"') and ec_child.dob > DATE('"+FIVE_YEAR+"'))) as child_dob"
             };
             registerCondition = " child_dob IS NOT NULL";
@@ -763,7 +765,7 @@ public abstract class BaseRegisterFragment extends RecyclerViewFragment implemen
                     tableName + "." + DBConstants.KEY.DOB,
                     tableName + "." + "Patient_Identifier",
                     tableName + "." + DBConstants.KEY.PHONE_NUMBER,
-
+                    tableName + "." + DBConstants.KEY.DETAILS,
                     "(select ec_member.dob from ec_member where (ec_member.relational_id = ec_household.id and ec_member.dob < DATE('"+FIFTY_YEAR+"'))) as member_dob" ,
                             "(select ec_woman.dob from ec_woman where (ec_woman.relational_id = ec_household.id and ec_woman.dob < DATE('"+FIFTY_YEAR+"'))) as  woman_dob" ,
                             "(select ec_child.dob from ec_child where (ec_child.relational_id = ec_household.id and ec_child.dob < DATE('"+FIFTY_YEAR+"'))) as child_dob"

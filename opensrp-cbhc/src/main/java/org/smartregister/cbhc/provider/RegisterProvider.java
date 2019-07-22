@@ -81,6 +81,7 @@ public class RegisterProvider implements RecyclerViewProvider<RegisterProvider.R
             populatePatientColumn(pc, client, viewHolder);
             populateIdentifierColumn(pc, viewHolder);
             populateLastColumn(pc, viewHolder);
+            populateRejectedViews(pc,viewHolder);
             MemberCount mc = memberCountHashMap.get(pc.entityId());
             if (mc != null) {
                 populateMemberCountColumn(mc, viewHolder);
@@ -114,7 +115,12 @@ public class RegisterProvider implements RecyclerViewProvider<RegisterProvider.R
         */
     }
 
-
+    private void populateRejectedViews(CommonPersonObjectClient pc,RegisterViewHolder viewHolder){
+       String detailsStatus =  org.smartregister.util.Utils.getValue(pc.getColumnmaps(),DBConstants.KEY.DETAILS,false);
+       if("rejected".equalsIgnoreCase(detailsStatus)){
+           viewHolder.register_columns.setBackgroundColor(context.getResources().getColor(android.R.color.holo_orange_light));
+       }
+    }
     private void populatePatientColumn(CommonPersonObjectClient pc, SmartRegisterClient client, RegisterViewHolder viewHolder) {
 
         String firstName = org.smartregister.util.Utils.getValue(pc.getColumnmaps(), DBConstants.KEY.FIRST_NAME, true);
@@ -515,7 +521,7 @@ public class RegisterProvider implements RecyclerViewProvider<RegisterProvider.R
         public ImageView dueButton;
         public Button sync;
         public View patientColumn;
-
+        public View register_columns;
         public RegisterViewHolder(View itemView) {
             super(itemView);
             registericon = itemView.findViewById(R.id.imageViewregistericon);
@@ -537,6 +543,7 @@ public class RegisterProvider implements RecyclerViewProvider<RegisterProvider.R
 
             patientColumn = itemView.findViewById(R.id.patient_column);
             last_interacted_with = itemView.findViewById(R.id.last_interacted_with);
+            register_columns = itemView.findViewById(R.id.register_columns);
         }
     }
 

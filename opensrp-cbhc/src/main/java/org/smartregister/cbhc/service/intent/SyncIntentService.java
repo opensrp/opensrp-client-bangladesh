@@ -171,7 +171,7 @@ public class SyncIntentService extends IntentService {
     class DetailsStatusUpdate extends Thread {
         @Override
         public void run() {
-            String tablename[] = {"ec_household","ec_woman","ec_child","ec_member"};
+            String tablename[] = {"ec_woman","ec_child","ec_member"};
             AncRepository repo = (AncRepository) AncApplication.getInstance().getRepository();
             SQLiteDatabase db = repo.getReadableDatabase();
             for(int i=0;i<tablename.length;i++) {
@@ -190,6 +190,17 @@ public class SyncIntentService extends IntentService {
                         "is null) ;";
                 db.execSQL(update2);
 
+                String update3 = "update ec_household set details = 'rejected' " +
+                        "where ec_household.base_entity_id in " +
+                        "(select "+tablename[i]+".relational_id from "+tablename[i]+" " +
+                        "where "+tablename[i]+".details = 'rejected')";
+                db.execSQL(update3);
+
+                String update4 = "update ec_household set details = 'approved' " +
+                        "where ec_household.base_entity_id in " +
+                        "(select "+tablename[i]+".relational_id from "+tablename[i]+" " +
+                        "where "+tablename[i]+".details = 'approved')";
+                db.execSQL(update4);
             }
         }
     }
