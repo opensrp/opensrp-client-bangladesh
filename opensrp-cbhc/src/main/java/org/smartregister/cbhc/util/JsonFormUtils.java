@@ -958,12 +958,14 @@ public class JsonFormUtils extends org.smartregister.util.JsonFormUtils {
             Log.d(TAG, "Form is " + form.toString());
             if (form != null) {
                 form.put(JsonFormUtils.ENTITY_ID, womanClient.get(DBConstants.KEY.BASE_ENTITY_ID));
+
                 form.put(JsonFormUtils.ENCOUNTER_TYPE, Constants.EventType.UPDATE_REGISTRATION);
 
                 JSONObject metadata = form.getJSONObject(JsonFormUtils.METADATA);
                 String lastLocationId = LocationHelper.getInstance().getOpenMrsLocationId(lpv.getSelectedItem());
 
                 metadata.put(JsonFormUtils.ENCOUNTER_LOCATION, lastLocationId);
+
 
                 form.put(JsonFormUtils.CURRENT_OPENSRP_ID, womanClient.get(DBConstants.KEY.ANC_ID).replace("-", ""));
 
@@ -991,6 +993,8 @@ public class JsonFormUtils extends org.smartregister.util.JsonFormUtils {
 
             JSONObject form = FormUtils.getInstance(context).getFormJson(Constants.JSON_FORM.MEMBER_REGISTER);
             form.put("relational_id", womanClient.get("relational_id"));
+
+            form.put("comments", womanClient.get("dataApprovalComments"));
             LookUpUtils.putRelationalIdInLookupObjects(form, womanClient.get("relational_id"));
 
 

@@ -233,14 +233,14 @@ public class ProfileOverviewFragment extends BaseProfileFragment {
 
     public String queryfortheadapterthing(String id) {
         String query = "SELECT * FROM "  +
-                "        (select woman.id as _id , woman.relationalid , woman.Patient_Identifier, woman.details , woman.first_name , woman.last_name , woman.dob , woman.gender, woman.details, woman.PregnancyStatus, woman.tasks, details.value as relation " +
+                "        (select woman.id as _id , woman.relationalid , woman.Patient_Identifier, woman.dataApprovalStatus, woman.dataApprovalComments, woman.first_name , woman.last_name , woman.dob , woman.gender, woman.details, woman.PregnancyStatus, woman.tasks, details.value as relation " +
                 "FROM ec_woman as woman left join ec_details as details on (details.base_entity_id = woman.id and details.key = 'Realtion_With_Household_Head') " +
                 "WHERE (woman.relational_id = '</>' and woman.date_removed IS NULL)" +
-                " " +                "Union all  Select member.id as _id , member.relationalid , member.Patient_Identifier, member.details , member.first_name , member.last_name , member.dob,member.gender, member.details, member.PregnancyStatus, member.tasks, details.value as relation " +
+                " " +                "Union all  Select member.id as _id , member.relationalid , member.Patient_Identifier, member.dataApprovalStatus, member.dataApprovalComments, member.first_name , member.last_name , member.dob,member.gender, member.details, member.PregnancyStatus, member.tasks, details.value as relation " +
                 "FROM ec_member as member left join ec_details as details on (details.base_entity_id = member.id and details.key = 'Realtion_With_Household_Head') " +
                 "WHERE (member.relational_id = '</>' and member.date_removed IS NULL)" +
                 " " +
-                "Union all Select child.id as _id , child.relationalid , child.Patient_Identifier, child.details , child.first_name , child.last_name , child.dob ,child.gender, child.details, child.PregnancyStatus, child.tasks, details.value as relation " +
+                "Union all Select child.id as _id , child.relationalid , child.Patient_Identifier, child.dataApprovalStatus, child.dataApprovalComments, child.first_name , child.last_name , child.dob ,child.gender, child.details, child.PregnancyStatus, child.tasks, details.value as relation " +
                 "FROM ec_child as child left join ec_details as details on (details.base_entity_id = child.id and details.key = 'Realtion_With_Household_Head') " +
                 "WHERE (child.relational_id = '</>' and child.date_removed IS NULL)) group by _id" +
                 " ORDER BY CASE WHEN relation = 'খানা প্রধান' THEN 1 " +
@@ -273,9 +273,9 @@ public class ProfileOverviewFragment extends BaseProfileFragment {
             ImageView pregnant_icon = (ImageView) view.findViewById(R.id.pregnant_woman_present);
             Button noOfUnregisterButton=view.findViewById(R.id.total_birth_btn);
             View listrow = view.findViewById(R.id.household_details_listitem_row);
-            String detailsStatus = pClient.getColumnmaps().get("details");
+            String detailsStatus = pClient.getColumnmaps().get(DBConstants.KEY.DETAILSSTATUS);
 
-            if("rejected".equalsIgnoreCase(detailsStatus)){
+            if("0".equalsIgnoreCase(detailsStatus)){
                 listrow.setBackgroundColor(context.getResources().getColor(android.R.color.holo_orange_light));
             }
             String relation = pClient.getColumnmaps().get("relation");

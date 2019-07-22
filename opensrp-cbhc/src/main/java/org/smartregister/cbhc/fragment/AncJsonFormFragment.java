@@ -9,6 +9,7 @@ import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Environment;
@@ -53,6 +54,7 @@ import org.smartregister.Context;
 import org.smartregister.CoreLibrary;
 import org.smartregister.cbhc.R;
 import org.smartregister.cbhc.activity.AncJsonFormActivity;
+import org.smartregister.cbhc.activity.LoginActivity;
 import org.smartregister.cbhc.application.AncApplication;
 import org.smartregister.cbhc.interactor.AncJsonFormInteractor;
 import org.smartregister.cbhc.provider.MotherLookUpSmartClientsProvider;
@@ -112,7 +114,7 @@ public class AncJsonFormFragment extends JsonFormFragment {
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-
+        showCommentsDialog();
         updateMemberCount();
         new Handler().postDelayed(new Runnable() {
             @Override
@@ -735,13 +737,16 @@ public class AncJsonFormFragment extends JsonFormFragment {
                                 String relational_id = look_up.getString("value");
                                 CommonRepository commonRepository = AncApplication.getInstance().getContext().commonrepository("ec_household");
                                 CommonPersonObject household = commonRepository.findByBaseEntityId(relational_id);
-                                headOfHouseholdFirstName = getValue(household.getColumnmaps(), "first_name", false);
-                                headOfHouseholdLastName = getValue(household.getColumnmaps(), "last_name", false);
-                                headOfHouseholdMobileNumber = getValue(household.getColumnmaps(), "phone_number", false);
-                                headOfHouseholdDOB = getValue(household.getColumnmaps(), "dob", false);
-                                headOfHouseholdDOBUnknown = getValue(household.getColumnmaps(), "dob_unknown", false);
-                                ImageRepository imageRepo = CoreLibrary.getInstance().context().imageRepository();
-                                imageRecord = imageRepo.findByEntityId(relational_id);
+                                if(household!=null){
+                                    headOfHouseholdFirstName = getValue(household.getColumnmaps(), "first_name", false);
+                                    headOfHouseholdLastName = getValue(household.getColumnmaps(), "last_name", false);
+                                    headOfHouseholdMobileNumber = getValue(household.getColumnmaps(), "phone_number", false);
+                                    headOfHouseholdDOB = getValue(household.getColumnmaps(), "dob", false);
+                                    headOfHouseholdDOBUnknown = getValue(household.getColumnmaps(), "dob_unknown", false);
+                                    ImageRepository imageRepo = CoreLibrary.getInstance().context().imageRepository();
+                                    imageRecord = imageRepo.findByEntityId(relational_id);
+                                }
+
                             }
                         }
                     } catch (JSONException e) {
@@ -771,28 +776,10 @@ public class AncJsonFormFragment extends JsonFormFragment {
             @Override
             protected Object doInBackground(Object[] objects) {
                 JSONObject formObject = getJsonApi().getmJSONObject();
-                if (formObject.has("metadata")) {
-                    try {
-                        JSONObject metadata = formObject.getJSONObject("metadata");
-                        if (metadata.has("look_up")) {
-                            JSONObject look_up = metadata.getJSONObject("look_up");
-                            if (look_up.has("entity_id")) {
-                                String entity_id = look_up.getString("entity_id");
-                                AncRepository repo = (AncRepository) AncApplication.getInstance().getRepository();
-                                SQLiteDatabase db = repo.getReadableDatabase();
-                                String sql = "select json_extract(client.json,'$.dataApprovalComments') as dataApprovalComments " +
-                                        "from client where client.baseEntityId = '"+entity_id+"' and dataApprovalComments is not null;";
-                                Cursor cursor = db.rawQuery(sql, new String[]{});
-                                if(cursor!=null&&cursor.getCount()!=0){
-                                    cursor.moveToFirst();
-                                    comment = cursor.getString(0);
-                                }
-                                cursor.close();
-                            }
-                        }
-                    } catch (Exception e) {
+                try{
+                    comment = formObject.getString("comments");
+                }catch (Exception e){
 
-                    }
                 }
                 return null;
             }
@@ -800,6 +787,21 @@ public class AncJsonFormFragment extends JsonFormFragment {
             @Override
             protected void onPostExecute(Object o) {
                 super.onPostExecute(o);
+
+                android.support.v7.app.AlertDialog alertDialog = new android.support.v7.app.AlertDialog.Builder(getActivity()).create();
+                alertDialog.setTitle(comment);
+                alertDialog.setCanceledOnTouchOutside(true);
+
+                alertDialog.setButton(android.support.v7.app.AlertDialog.BUTTON_POSITIVE, "ok",
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int which) {
+
+                            }
+                        });
+                if(comment!=null&&!comment.isEmpty()){
+                    if (alertDialog != null)
+                        alertDialog.show();
+                }
 
             }
         }, null);
