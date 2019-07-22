@@ -32,6 +32,7 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
+
 import com.rengwuxian.materialedittext.MaterialEditText;
 import com.vijay.jsonwizard.activities.JsonFormActivity;
 import com.vijay.jsonwizard.constants.JsonFormConstants;
@@ -40,6 +41,10 @@ import com.vijay.jsonwizard.fragments.JsonFormFragment;
 import com.vijay.jsonwizard.presenters.JsonFormFragmentPresenter;
 import com.vijay.jsonwizard.utils.FormUtils;
 import com.vijay.jsonwizard.widgets.DatePickerFactory;
+
+import net.sqlcipher.Cursor;
+import net.sqlcipher.database.SQLiteDatabase;
+
 import org.apache.commons.lang3.StringUtils;
 import org.joda.time.DateTime;
 import org.json.JSONException;
@@ -52,6 +57,7 @@ import org.smartregister.cbhc.application.AncApplication;
 import org.smartregister.cbhc.interactor.AncJsonFormInteractor;
 import org.smartregister.cbhc.provider.MotherLookUpSmartClientsProvider;
 import org.smartregister.cbhc.provider.RegisterProvider;
+import org.smartregister.cbhc.repository.AncRepository;
 import org.smartregister.cbhc.util.DBConstants;
 import org.smartregister.cbhc.util.Jilla;
 import org.smartregister.cbhc.util.MotherLookUpUtils;
@@ -63,6 +69,7 @@ import org.smartregister.domain.ProfileImage;
 import org.smartregister.event.Listener;
 import org.smartregister.repository.ImageRepository;
 import org.smartregister.util.Utils;
+
 import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -70,6 +77,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
 import static org.smartregister.cbhc.util.Constants.JSON_FORM_KEY.ENTITY_ID;
 import static org.smartregister.cbhc.util.Constants.KEY.VALUE;
 import static org.smartregister.util.Utils.getValue;
@@ -756,6 +764,46 @@ public class AncJsonFormFragment extends JsonFormFragment {
 
     public static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("dd-MM-yyyy");
     public static Drawable default_drawable;
+
+    private void showCommentsDialog() {
+        Utils.startAsyncTask(new AsyncTask() {
+            String comment = "";
+            @Override
+            protected Object doInBackground(Object[] objects) {
+                JSONObject formObject = getJsonApi().getmJSONObject();
+                if (formObject.has("metadata")) {
+                    try {
+                        JSONObject metadata = formObject.getJSONObject("metadata");
+                        if (metadata.has("look_up")) {
+                            JSONObject look_up = metadata.getJSONObject("look_up");
+                            if (look_up.has("entity_id")) {
+                                String entity_id = look_up.getString("entity_id");
+                                AncRepository repo = (AncRepository) AncApplication.getInstance().getRepository();
+                                SQLiteDatabase db = repo.getReadableDatabase();
+                                String sql = "select json_extract(client.json,'$.dataApprovalComments') as dataApprovalComments " +
+                                        "from client where client.baseEntityId = '"+entity_id+"' and dataApprovalComments is not null;";
+                                Cursor cursor = db.rawQuery(sql, new String[]{});
+                                if(cursor!=null&&cursor.getCount()!=0){
+                                    cursor.moveToFirst();
+                                    comment = cursor.getString(0);
+                                }
+                                cursor.close();
+                            }
+                        }
+                    } catch (Exception e) {
+
+                    }
+                }
+                return null;
+            }
+
+            @Override
+            protected void onPostExecute(Object o) {
+                super.onPostExecute(o);
+
+            }
+        }, null);
+    }
 
     private void processHeadOfHouseHoldAsMember(final int position) {
         if (position == 0 || position == 1 || position == 2) {

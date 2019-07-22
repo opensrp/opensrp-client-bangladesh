@@ -56,6 +56,7 @@ public class AncJsonFormActivity extends JsonFormActivity {
     @Override
     public void initializeFormFragment() {
         initializeFormFragmentCore();
+
     }
 
     @Override
