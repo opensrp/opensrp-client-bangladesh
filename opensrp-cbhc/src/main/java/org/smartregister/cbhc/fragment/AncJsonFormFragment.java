@@ -9,6 +9,7 @@ import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Environment;
@@ -53,6 +54,7 @@ import org.smartregister.Context;
 import org.smartregister.CoreLibrary;
 import org.smartregister.cbhc.R;
 import org.smartregister.cbhc.activity.AncJsonFormActivity;
+import org.smartregister.cbhc.activity.LoginActivity;
 import org.smartregister.cbhc.application.AncApplication;
 import org.smartregister.cbhc.interactor.AncJsonFormInteractor;
 import org.smartregister.cbhc.provider.MotherLookUpSmartClientsProvider;
@@ -801,6 +803,18 @@ public class AncJsonFormFragment extends JsonFormFragment {
             protected void onPostExecute(Object o) {
                 super.onPostExecute(o);
 
+                android.support.v7.app.AlertDialog alertDialog = new android.support.v7.app.AlertDialog.Builder(getActivity()).create();
+                alertDialog.setTitle(comment);
+                alertDialog.setCanceledOnTouchOutside(false);
+
+                alertDialog.setButton(android.support.v7.app.AlertDialog.BUTTON_POSITIVE, "OK",
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int which) {
+
+                            }
+                        });
+                if (alertDialog != null&&comment!=null&&!comment.isEmpty())
+                    alertDialog.show();
             }
         }, null);
     }
