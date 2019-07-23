@@ -30,7 +30,7 @@ public class ConfigHelper {
         filers.add(new Field("Child(0-2 Month)", "infant"));
         filers.add(new Field("Child(2 Month - 5 Years)", "toddler"));
         filers.add(new Field("Adult (Above 50 Years)", "adult"));
-        filers.add(new Field("Rejected Forms", "rejected forms"));
+        filers.add(new Field("Rejected Forms", "rejected"));
         config.setFilterFields(filers);
 
         List<Field> sortFields = new ArrayList<>();

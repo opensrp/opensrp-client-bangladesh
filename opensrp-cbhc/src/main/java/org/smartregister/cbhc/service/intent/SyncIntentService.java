@@ -187,10 +187,10 @@ public class SyncIntentService extends IntentService {
             try {
                 if (obj != null && obj.has("clients")) {
                     String tablenames[] = {"ec_household", "ec_woman", "ec_child", "ec_member"};
-                    for (String table : tablenames) {
-                        String setDefaultQuery = "update " + table + " set dataApprovalStatus = '1' where dataApprovalStatus!='1'";
-                        db.execSQL(setDefaultQuery);
-                    }
+//                    for (String table : tablenames) {
+//                        String setDefaultQuery = "update " + table + " set dataApprovalStatus = '1' where dataApprovalStatus!='1'";
+//                        db.execSQL(setDefaultQuery);
+//                    }
                     JSONArray clients = obj.getJSONArray("clients");
                     String rejected_ids = "";
                     if (clients != null && clients.length() != 0) {
@@ -201,14 +201,14 @@ public class SyncIntentService extends IntentService {
                                 String dataApprovalComments = clientObject.getString("dataApprovalComments");
                                 String baseEntityId = clientObject.getString("baseEntityId");
                                 if ("0".equals(dataApprovalStatus)) {
-                        String[] tablename = {"ec_woman", "ec_child", "ec_member"};
-                        for (String table : tablename) {
-                            String update1 = "update " + table + " set " +
-                                    "dataApprovalStatus = '0', dataApprovalComments = '" +dataApprovalComments+"' "+
-                                    "where " + table + ".base_entity_id = '"+baseEntityId+"'";
-                            db.execSQL(update1);
+                                    String[] tablename = {"ec_woman", "ec_child", "ec_member"};
+                                    for (String table : tablename) {
+                                        String update1 = "update " + table + " set " +
+                                                "dataApprovalStatus = '0', dataApprovalComments = '" + dataApprovalComments + "' " +
+                                                "where " + table + ".base_entity_id = '" + baseEntityId + "'";
+                                        db.execSQL(update1);
 
-                        }
+                                    }
 //                                    rejected_ids += "'" + baseEntityId + "',";
                                 }
 
@@ -237,14 +237,14 @@ public class SyncIntentService extends IntentService {
             for (int i = 0; i < tablename.length; i++) {
 
 //
-//                String update2 = "update " + tablename[i] + " set " +
-//                        "dataApprovalStatus = '1' where " +
-//                        tablename[i] + ".base_entity_id in " +
-//                        "(select client.baseEntityId from " +
-//                        "client where json_extract(client.json,'$.dataApprovalStatus')" +
-//                        " != '0' or json_extract(client.json,'$.dataApprovalStatus') " +
-//                        "is null) ;";
-//                db.execSQL(update2);
+                String update2 = "update " + tablename[i] + " set " +
+                        "dataApprovalStatus = '1' where " +
+                        tablename[i] + ".base_entity_id in " +
+                        "(select client.baseEntityId from " +
+                        "client where json_extract(client.json,'$.dataApprovalStatus')" +
+                        " != '0' or json_extract(client.json,'$.dataApprovalStatus') " +
+                        "is null) ;";
+                db.execSQL(update2);
 
                 String update3 = "update ec_household set dataApprovalStatus = '0' " +
                         "where ec_household.base_entity_id in " +

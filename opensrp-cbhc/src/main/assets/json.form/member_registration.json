@@ -2090,7 +2090,7 @@
         "type": "choose_image",
         "uploadButtonText": "ছবি তুলুন*",
         "v_required": {
-          "value": false,
+          "value": true,
           "err": "Please take household picture"
         }
       }

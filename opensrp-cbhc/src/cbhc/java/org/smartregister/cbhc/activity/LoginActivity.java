@@ -100,7 +100,7 @@ public class LoginActivity extends AppCompatActivity implements LoginContract.Vi
 
         }
 
-//        app_version_status();
+        app_version_status();
     }
 
     @Override
@@ -269,9 +269,9 @@ public class LoginActivity extends AppCompatActivity implements LoginContract.Vi
 
 //                password = "mpower@123";
 //                password = "Pain2set";
-                username = "robinuthappa@gmail.com";
+//                username = "robinuthappa@gmail.com";
 //                username = "cc100@mhv.100";
-                password = "123456";
+//                password = "123456";
 
                 //anc repository object for raw query
 //                AncRepository repo = (AncRepository) AncApplication.getInstance().getRepository();

@@ -789,7 +789,8 @@ public class AncJsonFormFragment extends JsonFormFragment {
                 super.onPostExecute(o);
 
                 android.support.v7.app.AlertDialog alertDialog = new android.support.v7.app.AlertDialog.Builder(getActivity()).create();
-                alertDialog.setTitle(comment);
+                alertDialog.setTitle("তথ্য পরিবর্তন করুন");
+                alertDialog.setMessage(comment);
                 alertDialog.setCanceledOnTouchOutside(true);
                 alertDialog.setButton(android.support.v7.app.AlertDialog.BUTTON_POSITIVE, "OK",
 
