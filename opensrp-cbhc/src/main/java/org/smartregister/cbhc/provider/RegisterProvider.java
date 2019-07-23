@@ -116,8 +116,8 @@ public class RegisterProvider implements RecyclerViewProvider<RegisterProvider.R
     }
 
     private void populateRejectedViews(CommonPersonObjectClient pc,RegisterViewHolder viewHolder){
-       String detailsStatus =  org.smartregister.util.Utils.getValue(pc.getColumnmaps(),DBConstants.KEY.DETAILS,false);
-       if("rejected".equalsIgnoreCase(detailsStatus)){
+       String detailsStatus =  org.smartregister.util.Utils.getValue(pc.getColumnmaps(),DBConstants.KEY.DETAILSSTATUS,false);
+       if("0".equalsIgnoreCase(detailsStatus)){
            viewHolder.register_columns.setBackgroundColor(context.getResources().getColor(android.R.color.holo_orange_light));
        }
     }

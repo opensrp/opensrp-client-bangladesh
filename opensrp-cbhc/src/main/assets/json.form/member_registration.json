@@ -3,6 +3,7 @@
   "encounter_type": "Member Registration",
   "entity_id": "",
   "relational_id": "",
+  "comments": "",
   "metadata": {
     "start": {
       "openmrs_entity_parent": "",

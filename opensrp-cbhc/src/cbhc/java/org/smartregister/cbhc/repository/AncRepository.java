@@ -4,6 +4,7 @@ import android.content.Context;
 import android.util.Log;
 import net.sqlcipher.database.SQLiteDatabase;
 import org.smartregister.AllConstants;
+import org.smartregister.cbhc.BuildConfig;
 import org.smartregister.cbhc.application.AncApplication;
 import org.smartregister.configurableviews.repository.ConfigurableViewsRepository;
 import org.smartregister.domain.db.Column;
@@ -24,9 +25,10 @@ public class AncRepository extends Repository {
     private static final String TAG = AncRepository.class.getCanonicalName();
     protected SQLiteDatabase readableDatabase;
     protected SQLiteDatabase writableDatabase;
+
     private Context context;
     public AncRepository(Context context, org.smartregister.Context openSRPContext) {
-        super(context, AllConstants.DATABASE_NAME, AllConstants.DATABASE_VERSION, openSRPContext.session(), AncApplication.createCommonFtsObject(), openSRPContext.sharedRepositoriesArray());
+        super(context, AllConstants.DATABASE_NAME, BuildConfig.DATABASE_VERSION, openSRPContext.session(), AncApplication.createCommonFtsObject(), openSRPContext.sharedRepositoriesArray());
         this.context = context;
     }
 
@@ -53,7 +55,7 @@ public class AncRepository extends Repository {
 
         //onUpgrade(database, 1, 2);
 
-        onUpgrade(database, 1, 5);
+        onUpgrade(database, 1, 6);
     }
 
     @Override
@@ -61,6 +63,9 @@ public class AncRepository extends Repository {
         Log.w(AncRepository.class.getName(),
                 "Upgrading database from version " + oldVersion + " to "
                         + newVersion + ", which will destroy all old data");
+        if(oldVersion<newVersion&&newVersion==6){
+            upgradeToVersion6(db);
+        }
         int upgradeTo = oldVersion + 1;
         while (upgradeTo <= newVersion) {
             switch (upgradeTo) {
@@ -75,6 +80,9 @@ public class AncRepository extends Repository {
                     break;
                 case 5:
                     upgradeToVersion5(db);
+                    break;
+                case 6:
+                    upgradeToVersion6(db);
                     break;
                 default:
                     break;
@@ -176,7 +184,23 @@ public class AncRepository extends Repository {
 
     }
 
+    private void upgradeToVersion6(SQLiteDatabase db) {
+        try{
+            db.execSQL("ALTER TABLE ec_member ADD COLUMN dataApprovalStatus INTEGER DEFAULT 1");
+            db.execSQL("ALTER TABLE ec_member ADD COLUMN dataApprovalComments VARCHAR DEFAULT 1");
+            db.execSQL("ALTER TABLE ec_woman ADD COLUMN dataApprovalStatus INTEGER DEFAULT 1");
+            db.execSQL("ALTER TABLE ec_woman ADD COLUMN dataApprovalComments VARCHAR DEFAULT 1");
+            db.execSQL("ALTER TABLE ec_child ADD COLUMN dataApprovalStatus INTEGER DEFAULT 1");
+            db.execSQL("ALTER TABLE ec_child ADD COLUMN dataApprovalComments VARCHAR DEFAULT 1");
+            db.execSQL("ALTER TABLE ec_household ADD COLUMN dataApprovalStatus INTEGER DEFAULT 1");
+
+        }catch(Exception e){
+
+        }
+
+    }
     private void upgradeToVersion5(SQLiteDatabase db) {
+
 
     }
 }
