@@ -127,6 +127,14 @@ android {
     }
     flavorDimensions "baseDimension"
     productFlavors {
+        ha {
+            applicationId 'org.smartregister'
+            versionCode 1
+            versionName "1.1.1"
+            dimension "baseDimension"
+            applicationIdSuffix ".ha"
+            versionNameSuffix ""
+        }
         iphn {
             applicationId 'org.smartregister'
             versionCode 1
@@ -153,7 +161,7 @@ tasks.withType(Test) {
 
 dependencies {
     implementation 'com.github.bumptech.glide:glide:3.8.0'
-    implementation('org.smartregister:opensrp-client-growth-monitoring:1.1.1-SNAPSHOT@aar') {
+    implementation('org.smartregister:opensrp-client-growth-monitoring:2.1.601984-SNAPSHOT') {
         transitive = true
         exclude group: 'org.smartregister', module: 'opensrp-client-core'
         exclude group: 'com.android.support', module: 'design'
