@@ -15,6 +15,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 import org.smartregister.cbhc.BuildConfig;
 import org.smartregister.cbhc.R;
+
 import org.smartregister.cbhc.application.AncApplication;
 import org.smartregister.cbhc.helper.ECSyncHelper;
 import org.smartregister.cbhc.helper.LocationHelper;
@@ -192,6 +193,8 @@ public class SyncIntentService extends IntentService {
 //                        db.execSQL(setDefaultQuery);
 //                    }
                     JSONArray clients = obj.getJSONArray("clients");
+                    EventClientRepository ec = AncApplication.getInstance().getEventClientRepository();
+                    ec.batchInsertClients(clients);
                     String rejected_ids = "";
                     if (clients != null && clients.length() != 0) {
                         for (int i = 0; i < clients.length(); i++) {
@@ -246,17 +249,19 @@ public class SyncIntentService extends IntentService {
                         "is null) ;";
                 db.execSQL(update2);
 
+                String update4 = "update ec_household set dataApprovalStatus = '1' " +
+                        "where ec_household.base_entity_id in " +
+                        "(select " + tablename[i] + ".relational_id from " + tablename[i] + " " +
+                        "where " + tablename[i] + ".dataApprovalStatus = '1')";
+                db.execSQL(update4);
+
                 String update3 = "update ec_household set dataApprovalStatus = '0' " +
                         "where ec_household.base_entity_id in " +
                         "(select " + tablename[i] + ".relational_id from " + tablename[i] + " " +
                         "where " + tablename[i] + ".dataApprovalStatus = '0')";
                 db.execSQL(update3);
 
-                String update4 = "update ec_household set dataApprovalStatus = '1' " +
-                        "where ec_household.base_entity_id in " +
-                        "(select " + tablename[i] + ".relational_id from " + tablename[i] + " " +
-                        "where " + tablename[i] + ".dataApprovalStatus = '1')";
-                db.execSQL(update4);
+
             }
         }
     }
