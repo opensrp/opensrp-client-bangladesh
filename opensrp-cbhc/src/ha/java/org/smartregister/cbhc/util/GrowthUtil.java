@@ -54,6 +54,8 @@ public class GrowthUtil {
     public static String GENDER = (new Random()).nextBoolean() ? "male" : "female";
     public static String DOB_STRING = "2012-01-01T00:00:00.000Z";
     public static CommonPersonObjectClient childDetails;
+    private static String KG_FORMAT = "%s kg";
+    private static String CM_FORMAT = "%s cm";
     public static void showWeightDialog(FragmentActivity context, View view, String tag) {
         WeightWrapper weightWrapper = view.getTag() != null ? (WeightWrapper) view.getTag() : new WeightWrapper();
         HeightWrapper heightWrapper = view.getTag() != null ? (HeightWrapper) view.getTag() : new HeightWrapper();
@@ -235,5 +237,20 @@ public class GrowthUtil {
         label.setText(labelString);
         value.setText(valueString);
         return rows;
+    }
+    public static String kgStringSuffix(Float weight) {
+        return String.format(KG_FORMAT, weight);
+    }
+
+    public static String kgStringSuffix(String weight) {
+        return String.format(KG_FORMAT, weight);
+    }
+
+    public static String cmStringSuffix(Float height) {
+        return String.format(CM_FORMAT, height);
+    }
+
+    public static String cmStringSuffix(String height) {
+        return String.format(CM_FORMAT, height);
     }
 }

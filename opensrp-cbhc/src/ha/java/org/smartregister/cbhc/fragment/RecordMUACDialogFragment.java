@@ -19,6 +19,7 @@ import android.widget.TextView;
 
 import org.apache.commons.lang3.StringUtils;
 import org.joda.time.DateTime;
+import org.smartregister.cbhc.R;
 import org.smartregister.cbhc.util.GrowthUtil;
 import org.smartregister.util.DatePickerUtils;
 import org.smartregister.util.DateUtil;
@@ -54,9 +55,9 @@ public class RecordMUACDialogFragment extends DialogFragment {
     public View onCreateView(final LayoutInflater inflater, final ViewGroup container,
                              Bundle savedInstanceState) {
 
-        dateOfBirth = GrowthUtil.dateOfBirth();
+        dateOfBirth = GrowthUtil.getDateOfBirth();
 
-        ViewGroup dialogView = (ViewGroup) inflater.inflate(org.smartregister.growthmonitoring.R.layout.record_weight_dialog_view, container, false);
+        ViewGroup dialogView = (ViewGroup) inflater.inflate(R.layout.record_muac_dialog_view, container, false);
 
         final EditText editMUAC = (EditText) dialogView.findViewById(org.smartregister.growthmonitoring.R.id.edit_weight);
         CustomFontTextView titleView = dialogView.findViewById(org.smartregister.growthmonitoring.R.id.record_weight);

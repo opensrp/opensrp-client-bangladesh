@@ -59,8 +59,9 @@ import org.smartregister.clientandeventmodel.Obs;
 import org.smartregister.commonregistry.CommonPersonObject;
 import org.smartregister.commonregistry.CommonPersonObjectClient;
 import org.smartregister.domain.ProfileImage;
+import org.smartregister.growthmonitoring.domain.HeightWrapper;
 import org.smartregister.growthmonitoring.domain.WeightWrapper;
-import org.smartregister.growthmonitoring.listener.WeightActionListener;
+import org.smartregister.growthmonitoring.listener.GMActionListener;
 import org.smartregister.immunization.domain.ServiceWrapper;
 import org.smartregister.immunization.domain.VaccineWrapper;
 import org.smartregister.immunization.listener.ServiceActionListener;
@@ -96,7 +97,7 @@ import static org.smartregister.util.Utils.getValue;
 /**
  * Created by ndegwamartin on 10/07/2018.
  */
-public class MemberProfileActivity extends BaseProfileActivity implements ProfileContract.View, VaccinationActionListener, ServiceActionListener, WeightActionListener {
+public class MemberProfileActivity extends BaseProfileActivity implements ProfileContract.View, VaccinationActionListener, ServiceActionListener, GMActionListener {
 
     private TextView nameView;
     private TextView ageView;
@@ -679,6 +680,10 @@ public class MemberProfileActivity extends BaseProfileActivity implements Profil
     @Override
     public void onWeightTaken(WeightWrapper weightWrapper) {
         growthFragment.onWeightTaken(weightWrapper);
+    }
+    @Override
+    public void onHeightTaken(HeightWrapper heightWrapper) {
+        growthFragment.onHeightTaken(heightWrapper);
     }
 
     public int getGender(){

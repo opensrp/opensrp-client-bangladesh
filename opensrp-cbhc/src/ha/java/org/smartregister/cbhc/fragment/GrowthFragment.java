@@ -19,12 +19,14 @@ import org.smartregister.cbhc.util.GrowthUtil;
 import org.smartregister.commonregistry.CommonPersonObjectClient;
 import org.smartregister.growthmonitoring.GrowthMonitoringLibrary;
 import org.smartregister.growthmonitoring.domain.Height;
+import org.smartregister.growthmonitoring.domain.HeightWrapper;
 import org.smartregister.growthmonitoring.domain.Weight;
 import org.smartregister.growthmonitoring.domain.WeightWrapper;
 import org.smartregister.growthmonitoring.fragment.GrowthDialogFragment;
 import org.smartregister.growthmonitoring.repository.HeightRepository;
 import org.smartregister.growthmonitoring.repository.WeightRepository;
 import org.smartregister.growthmonitoring.service.intent.WeightIntentService;
+import org.smartregister.growthmonitoring.util.HeightUtils;
 import org.smartregister.growthmonitoring.util.WeightUtils;
 import org.smartregister.util.DateUtil;
 import org.smartregister.util.Utils;
@@ -36,6 +38,8 @@ import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+
+import timber.log.Timber;
 
 import static org.smartregister.cbhc.task.RemoteLoginTask.getOpenSRPContext;
 
@@ -65,36 +69,17 @@ public class GrowthFragment extends BaseProfileFragment {
     @Override
     protected void onResumption() {
         //Overriden
-        View recordWeight = fragmentView.findViewById(R.id.record_weight);
-        recordWeight.setClickable(true);
-        recordWeight.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                view.setEnabled(false);
-                GrowthUtil.showWeightDialog(getActivity(), view, DIALOG_TAG);
-                view.setEnabled(true);
-            }
-        });
-        View recordHeight = fragmentView.findViewById(R.id.recordHeight);
-        recordHeight.setClickable(true);
-        recordHeight.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
 
-                RecordHeightDialogFragment recordHeightDialogFragment = RecordHeightDialogFragment.newInstance();
-                recordHeightDialogFragment.show(GrowthUtil.initFragmentTransaction(getActivity(), DIALOG_TAG), DIALOG_TAG);
-            }
-        });
-        View recordMUAC = fragmentView.findViewById(R.id.recordMUAC);
-        recordMUAC.setClickable(true);
-        recordMUAC.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-
-                RecordMUACDialogFragment recordMUACDialogFragment = RecordMUACDialogFragment.newInstance();
-                recordMUACDialogFragment.show(GrowthUtil.initFragmentTransaction(getActivity(), DIALOG_TAG), DIALOG_TAG);
-            }
-        });
+//        View recordMUAC = fragmentView.findViewById(R.id.recordMUAC);
+//        recordMUAC.setClickable(true);
+//        recordMUAC.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//
+//                RecordMUACDialogFragment recordMUACDialogFragment = RecordMUACDialogFragment.newInstance();
+//                recordMUACDialogFragment.show(GrowthUtil.initFragmentTransaction(getActivity(), DIALOG_TAG), DIALOG_TAG);
+//            }
+//        });
         ImageButton growthChartButton = (ImageButton) fragmentView.findViewById(R.id.growth_chart_button);
         growthChartButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -210,6 +195,102 @@ public class GrowthFragment extends BaseProfileFragment {
             GrowthUtil.GENDER = Gender.MALE.name().toLowerCase();
         }
     }
+    private void refreshEditHeightLayout() {
+        View heightWidget = fragmentView.findViewById(R.id.height_widget);
+
+        LinkedHashMap<Long, Pair<String, String>> heightmap = new LinkedHashMap<>();
+        ArrayList<Boolean> heightEditMode = new ArrayList<>();
+        ArrayList<View.OnClickListener> listeners = new ArrayList<>();
+
+        HeightRepository wp = GrowthMonitoringLibrary.getInstance().heightRepository();
+        List<Height> heightList = wp.findLast5(GrowthUtil.ENTITY_ID);
+
+        for (int i = 0; i < heightList.size(); i++) {
+            Height height = heightList.get(i);
+            String formattedAge = "";
+            if (height.getDate() != null) {
+
+                Date heightDate = height.getDate();
+                DateTime birthday = new DateTime(GrowthUtil.getDateOfBirth());
+                Date birth = birthday.toDate();
+                long timeDiff = heightDate.getTime() - birth.getTime();
+                Timber.v("%s", timeDiff);
+                if (timeDiff >= 0) {
+                    formattedAge = DateUtil.getDuration(timeDiff);
+                    Timber.v(formattedAge);
+                }
+            }
+            if (!formattedAge.equalsIgnoreCase("0d")) {
+                heightmap.put(height.getId(), Pair.create(formattedAge, GrowthUtil.cmStringSuffix(height.getCm())));
+
+                boolean lessThanThreeMonthsEventCreated = HeightUtils.lessThanThreeMonths(height);
+                heightEditMode.add(lessThanThreeMonthsEventCreated);
+
+                final int finalI = i;
+                View.OnClickListener onClickListener = new View.OnClickListener() {
+
+                    @Override
+                    public void onClick(View v) {
+                        v.setEnabled(false);
+                        GrowthUtil.showEditGrowthMonitoringDialog(getActivity(), finalI, DIALOG_TAG);
+                        v.setEnabled(true);
+                    }
+                };
+                listeners.add(onClickListener);
+            }
+
+        }
+        if (heightmap.size() < 5) {
+            heightmap.put(0l, Pair.create(DateUtil.getDuration(0), GrowthUtil.BIRTH_HEIGHT + " cm"));
+            heightEditMode.add(false);
+            listeners.add(null);
+        }
+
+        if (heightmap.size() > 0) {
+            GrowthUtil.createHeightWidget(getActivity(), heightWidget, heightmap, listeners, heightEditMode);
+        }
+    }
+
+    public void onHeightTaken(HeightWrapper heightWrapper) {
+        if (heightWrapper != null) {
+            final HeightRepository heightRepository = GrowthMonitoringLibrary.getInstance().heightRepository();
+            Height height = new Height();
+            if (heightWrapper.getDbKey() != null) {
+                height = heightRepository.find(heightWrapper.getDbKey());
+            }
+            height.setBaseEntityId(GrowthUtil.ENTITY_ID);
+            height.setCm(heightWrapper.getHeight());
+            height.setDate(heightWrapper.getUpdatedHeightDate().toDate());
+            height.setAnmId("sample");
+            height.setLocationId("Kenya");
+            height.setTeam("testTeam");
+            height.setTeamId("testTeamId");
+            height.setChildLocationId("testChildLocationId");
+
+            Gender gender = Gender.UNKNOWN;
+
+            String genderString = GrowthUtil.GENDER;
+
+            if (genderString != null && genderString.toLowerCase().equals("female")) {
+                gender = Gender.FEMALE;
+            } else if (genderString != null && genderString.toLowerCase().equals("male")) {
+                gender = Gender.MALE;
+            }
+
+            Date dob = GrowthUtil.getDateOfBirth();
+
+            if (dob != null && gender != Gender.UNKNOWN) {
+                heightRepository.add(dob, gender, height);
+            } else {
+                heightRepository.add(height);
+            }
+
+            heightWrapper.setDbKey(height.getId());
+
+        }
+
+        refreshEditHeightLayout();
+    }
     public void onWeightTaken(WeightWrapper tag) {
         if (tag != null) {
             final WeightRepository weightRepository = GrowthMonitoringLibrary.getInstance().weightRepository();
@@ -264,7 +345,7 @@ public class GrowthFragment extends BaseProfileFragment {
     }
 
     private void refreshEditWeightLayout() {
-        View weightWidget = getActivity().findViewById(R.id.weight_widget);
+        View weightWidget = fragmentView.findViewById(R.id.weight_widget);
 
         LinkedHashMap<Long, Pair<String, String>> weightmap = new LinkedHashMap<>();
         ArrayList<Boolean> weighteditmode = new ArrayList<Boolean>();
