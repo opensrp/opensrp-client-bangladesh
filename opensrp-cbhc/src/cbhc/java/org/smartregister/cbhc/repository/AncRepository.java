@@ -63,9 +63,9 @@ public class AncRepository extends Repository {
         Log.w(AncRepository.class.getName(),
                 "Upgrading database from version " + oldVersion + " to "
                         + newVersion + ", which will destroy all old data");
-        if(oldVersion<newVersion&&newVersion==6){
-            upgradeToVersion6(db);
-        }
+//        if(oldVersion<newVersion&&newVersion==6){
+//            upgradeToVersion6(db);
+//        }
         int upgradeTo = oldVersion + 1;
         while (upgradeTo <= newVersion) {
             switch (upgradeTo) {

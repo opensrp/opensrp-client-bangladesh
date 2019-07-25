@@ -260,13 +260,14 @@ public class LoginActivity extends AppCompatActivity implements LoginContract.Vi
 //                username = "teliya1@cc.com";
 //                username = "sabab@ahmed.com";
 //                password = "Pain2set";
-//                password = "123456";
+
                 //anc repository object for raw query
 //                AncRepository repo = (AncRepository) AncApplication.getInstance().getRepository();
 //                SQLiteDatabase db = repo.getReadableDatabase();
 //                Cursor cursor = db.rawQuery("sql",new String[]{});
 //                cursor.close();
-
+                username = "robinuthappa@gmail.com";
+                password = "123456";
                 //copy username password to clipboard
 //                Object clipboardService = getSystemService(CLIPBOARD_SERVICE);
 //                final ClipboardManager clipboardManager = (ClipboardManager)clipboardService;
