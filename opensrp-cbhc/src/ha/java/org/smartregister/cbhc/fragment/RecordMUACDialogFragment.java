@@ -21,6 +21,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.joda.time.DateTime;
 import org.smartregister.cbhc.R;
 import org.smartregister.cbhc.util.GrowthUtil;
+import org.smartregister.growthmonitoring.fragment.GrowthDialogFragment;
 import org.smartregister.util.DatePickerUtils;
 import org.smartregister.util.DateUtil;
 import org.smartregister.util.Utils;
@@ -32,7 +33,7 @@ import java.util.Date;
 import static org.smartregister.util.Utils.getName;
 import static org.smartregister.util.Utils.getValue;
 
-public class RecordMUACDialogFragment extends DialogFragment {
+public class RecordMUACDialogFragment extends GrowthDialogFragment {
 
 
     private Date dateOfBirth;

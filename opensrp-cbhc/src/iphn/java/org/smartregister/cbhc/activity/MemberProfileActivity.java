@@ -39,7 +39,6 @@ import org.smartregister.cbhc.fragment.ChildImmunizationFragment;
 import org.smartregister.cbhc.fragment.FollowupFragment;
 import org.smartregister.cbhc.fragment.GrowthFragment;
 import org.smartregister.cbhc.fragment.MemberProfileContactsFragment;
-import org.smartregister.cbhc.fragment.ProfileOverviewFragment;
 import org.smartregister.cbhc.fragment.ProfileTasksFragment;
 import org.smartregister.cbhc.helper.ECSyncHelper;
 import org.smartregister.cbhc.helper.ImageRenderHelper;

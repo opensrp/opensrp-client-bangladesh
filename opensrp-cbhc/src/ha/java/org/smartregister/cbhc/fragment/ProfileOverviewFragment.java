@@ -20,46 +20,28 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import com.android.volley.VolleyError;
-import com.android.volley.toolbox.ImageLoader;
-
 import net.sqlcipher.database.SQLiteDatabase;
 
-import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.joda.time.DateTime;
-import org.opensrp.api.constants.Gender;
-import org.smartregister.CoreLibrary;
 import org.smartregister.cbhc.R;
 import org.smartregister.cbhc.activity.ProfileActivity;
 import org.smartregister.cbhc.application.AncApplication;
 import org.smartregister.cbhc.repository.AncRepository;
-import org.smartregister.cbhc.util.Constants;
 import org.smartregister.cbhc.util.DBConstants;
-import org.smartregister.cbhc.util.ImageLoaderByGlide;
-import org.smartregister.cbhc.util.ImageUtils;
 import org.smartregister.cbhc.util.JsonFormUtils;
-import org.smartregister.cbhc.util.Utils;
 import org.smartregister.commonregistry.CommonPersonObject;
 import org.smartregister.commonregistry.CommonPersonObjectClient;
 import org.smartregister.commonregistry.CommonRepository;
-import org.smartregister.cursoradapter.SmartRegisterQueryBuilder;
-import org.smartregister.domain.ProfileImage;
-import org.smartregister.repository.DetailsRepository;
-import org.smartregister.repository.ImageRepository;
 import org.smartregister.util.DateUtil;
-import org.smartregister.util.FileUtilities;
-import org.smartregister.util.OpenSRPImageListener;
 import org.smartregister.util.OpenSRPImageLoader;
 import org.smartregister.view.activity.DrishtiApplication;
 
 import java.io.Serializable;
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.Map;
 
 import static org.smartregister.util.Utils.getName;
 import static org.smartregister.util.Utils.getValue;
@@ -233,14 +215,14 @@ public class ProfileOverviewFragment extends BaseProfileFragment {
 
     public String queryfortheadapterthing(String id) {
         String query = "SELECT * FROM "  +
-                "        (select woman.id as _id , woman.relationalid , woman.Patient_Identifier, woman.dataApprovalStatus, woman.dataApprovalComments, woman.first_name , woman.last_name , woman.dob , woman.gender, woman.details, woman.PregnancyStatus, woman.tasks, details.value as relation " +
+                "        (select woman.id as _id , woman.relationalid , woman.Patient_Identifier, woman.first_name , woman.last_name , woman.dob , woman.gender, woman.details, woman.PregnancyStatus, woman.tasks, details.value as relation " +
                 "FROM ec_woman as woman left join ec_details as details on (details.base_entity_id = woman.id and details.key = 'Realtion_With_Household_Head') " +
                 "WHERE (woman.relational_id = '</>' and woman.date_removed IS NULL)" +
-                " " +                "Union all  Select member.id as _id , member.relationalid , member.Patient_Identifier, member.dataApprovalStatus, member.dataApprovalComments, member.first_name , member.last_name , member.dob,member.gender, member.details, member.PregnancyStatus, member.tasks, details.value as relation " +
+                " " +                "Union all  Select member.id as _id , member.relationalid , member.Patient_Identifier, member.first_name , member.last_name , member.dob,member.gender, member.details, member.PregnancyStatus, member.tasks, details.value as relation " +
                 "FROM ec_member as member left join ec_details as details on (details.base_entity_id = member.id and details.key = 'Realtion_With_Household_Head') " +
                 "WHERE (member.relational_id = '</>' and member.date_removed IS NULL)" +
                 " " +
-                "Union all Select child.id as _id , child.relationalid , child.Patient_Identifier, child.dataApprovalStatus, child.dataApprovalComments, child.first_name , child.last_name , child.dob ,child.gender, child.details, child.PregnancyStatus, child.tasks, details.value as relation " +
+                "Union all Select child.id as _id , child.relationalid , child.Patient_Identifier, child.first_name , child.last_name , child.dob ,child.gender, child.details, child.PregnancyStatus, child.tasks, details.value as relation " +
                 "FROM ec_child as child left join ec_details as details on (details.base_entity_id = child.id and details.key = 'Realtion_With_Household_Head') " +
                 "WHERE (child.relational_id = '</>' and child.date_removed IS NULL)) group by _id" +
                 " ORDER BY CASE WHEN relation = 'খানা প্রধান' THEN 1 " +

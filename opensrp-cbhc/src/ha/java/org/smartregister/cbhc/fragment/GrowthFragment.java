@@ -70,17 +70,28 @@ public class GrowthFragment extends BaseProfileFragment {
     protected void onResumption() {
         //Overriden
 
-//        View recordMUAC = fragmentView.findViewById(R.id.recordMUAC);
-//        recordMUAC.setClickable(true);
-//        recordMUAC.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//
-//                RecordMUACDialogFragment recordMUACDialogFragment = RecordMUACDialogFragment.newInstance();
-//                recordMUACDialogFragment.show(GrowthUtil.initFragmentTransaction(getActivity(), DIALOG_TAG), DIALOG_TAG);
-//            }
-//        });
-        ImageButton growthChartButton = (ImageButton) fragmentView.findViewById(R.id.growth_chart_button);
+        View recordMUAC = fragmentView.findViewById(R.id.recordMUAC);
+        recordMUAC.setClickable(true);
+        recordMUAC.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                RecordMUACDialogFragment recordMUACDialogFragment = RecordMUACDialogFragment.newInstance();
+                recordMUACDialogFragment.show(GrowthUtil.initFragmentTransaction(getActivity(), DIALOG_TAG),DIALOG_TAG);
+            }
+        });
+        View recordWeight = fragmentView.findViewById(R.id.record_weight);
+        recordWeight.setClickable(true);
+        recordWeight.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                view.setEnabled(false);
+                GrowthUtil.showGrowthDialog(getActivity(), view, DIALOG_TAG);
+                view.setEnabled(true);
+            }
+        });
+
+
+        ImageButton growthChartButton = fragmentView.findViewById(R.id.growth_chart_button);
         growthChartButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -313,11 +324,7 @@ public class GrowthFragment extends BaseProfileFragment {
             GrowthUtil.DOB_STRING = dobstring;
             Gender gender = Gender.UNKNOWN;
 
-
-
             String genderString = g;
-
-
 
             if (genderString != null && genderString.toLowerCase().equals("F")) {
                 gender = Gender.FEMALE;

@@ -63,9 +63,6 @@ import java.util.Date;
 import java.util.List;
 import java.util.Set;
 
-import static android.text.TextUtils.isEmpty;
-import static org.apache.commons.lang3.StringUtils.isEmpty;
-
 /**
  * Created by keyman on 26/06/2018.
  */

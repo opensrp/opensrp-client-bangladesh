@@ -56,7 +56,7 @@ public class GrowthUtil {
     public static CommonPersonObjectClient childDetails;
     private static String KG_FORMAT = "%s kg";
     private static String CM_FORMAT = "%s cm";
-    public static void showWeightDialog(FragmentActivity context, View view, String tag) {
+    public static void showGrowthDialog(FragmentActivity context, View view, String tag) {
         WeightWrapper weightWrapper = view.getTag() != null ? (WeightWrapper) view.getTag() : new WeightWrapper();
         HeightWrapper heightWrapper = view.getTag() != null ? (HeightWrapper) view.getTag() : new HeightWrapper();
         RecordGrowthDialogFragment recordGrowthDialogFragment = RecordGrowthDialogFragment

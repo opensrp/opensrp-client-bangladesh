@@ -75,7 +75,6 @@ public class RegisterFramentModel implements RegisterFragmentContract.Model {
                 tableName + "." + DBConstants.KEY.DOB,
                 tableName + "." + "Patient_Identifier",
                 tableName + "." + DBConstants.KEY.PHONE_NUMBER,
-                tableName + "." + DBConstants.KEY.DETAILSSTATUS,
                 "(select ec_details.value from ec_details where ec_details.key='address7' and ec_details.base_entity_id=ec_household.id) as para"};
         queryBUilder.SelectInitiateMainTable(tableName, columns);
         return queryBUilder.mainCondition(mainCondition);
