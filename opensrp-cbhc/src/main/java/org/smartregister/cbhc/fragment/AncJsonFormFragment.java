@@ -776,10 +776,28 @@ public class AncJsonFormFragment extends JsonFormFragment {
             @Override
             protected Object doInBackground(Object[] objects) {
                 JSONObject formObject = getJsonApi().getmJSONObject();
-                try{
-                    comment = formObject.getString("comments");
-                }catch (Exception e){
+                if (formObject.has("metadata")) {
+                    try {
+                        JSONObject metadata = formObject.getJSONObject("metadata");
+                        if (metadata.has("look_up")) {
+                            JSONObject look_up = metadata.getJSONObject("look_up");
+                            if (look_up.has("entity_id")) {
+                                String entity_id = look_up.getString("entity_id");
+                                AncRepository repo = (AncRepository) AncApplication.getInstance().getRepository();
+                                SQLiteDatabase db = repo.getReadableDatabase();
+                                String sql = "select json_extract(client.json,'$.dataApprovalComments') as dataApprovalComments " +
+                                        "from client where client.baseEntityId = '"+entity_id+"' and dataApprovalComments is not null;";
+                                Cursor cursor = db.rawQuery(sql, new String[]{});
+                                if(cursor!=null&&cursor.getCount()!=0){
+                                    cursor.moveToFirst();
+                                    comment = cursor.getString(0);
+                                }
+                                cursor.close();
+                            }
+                        }
+                    } catch (Exception e) {
 
+                    }
                 }
                 return null;
             }
@@ -787,7 +805,7 @@ public class AncJsonFormFragment extends JsonFormFragment {
             @Override
             protected void onPostExecute(Object o) {
                 super.onPostExecute(o);
-
+                if(comment!=null&&!comment.isEmpty()){
                 android.support.v7.app.AlertDialog alertDialog = new android.support.v7.app.AlertDialog.Builder(getActivity()).create();
                 alertDialog.setTitle("তথ্য পরিবর্তন করুন");
                 alertDialog.setMessage(comment);
@@ -799,15 +817,15 @@ public class AncJsonFormFragment extends JsonFormFragment {
 
                             }
                         });
-                if(comment!=null&&!comment.isEmpty()){
+
                     if (alertDialog != null)
                         alertDialog.show();
                 }
 
-
             }
         }, null);
     }
+
 
     private void processHeadOfHouseHoldAsMember(final int position) {
         if (position == 0 || position == 1 || position == 2) {
