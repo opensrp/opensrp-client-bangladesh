@@ -1,7 +1,6 @@
 package org.smartregister.cbhc.interactor;
 
 import android.content.ContentValues;
-import android.content.Intent;
 import android.support.annotation.VisibleForTesting;
 import android.util.Log;
 import android.util.Pair;
@@ -15,12 +14,9 @@ import org.smartregister.cbhc.domain.FollowupForm;
 import org.smartregister.cbhc.domain.UniqueId;
 import org.smartregister.cbhc.event.PatientRemovedEvent;
 import org.smartregister.cbhc.helper.ECSyncHelper;
-import org.smartregister.cbhc.repository.DraftFormRepository;
 import org.smartregister.cbhc.repository.FollowupRepository;
 import org.smartregister.cbhc.repository.HealthIdRepository;
 import org.smartregister.cbhc.repository.UniqueIdRepository;
-import org.smartregister.cbhc.service.intent.SyncIntentService;
-import org.smartregister.cbhc.sync.AncClientProcessorForJava;
 import org.smartregister.cbhc.util.AppExecutors;
 import org.smartregister.cbhc.util.Constants;
 import org.smartregister.cbhc.util.DBConstants;
@@ -29,14 +25,11 @@ import org.smartregister.cbhc.util.Utils;
 import org.smartregister.clientandeventmodel.Client;
 import org.smartregister.clientandeventmodel.Event;
 import org.smartregister.commonregistry.AllCommonsRepository;
-import org.smartregister.domain.db.EventClient;
 import org.smartregister.repository.AllSharedPreferences;
 import org.smartregister.repository.BaseRepository;
 import org.smartregister.sync.ClientProcessorForJava;
 
 import java.util.Date;
-import java.util.List;
-
 
 
 /**

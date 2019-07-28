@@ -3,7 +3,6 @@ package org.smartregister.cbhc.job;
 import android.content.Intent;
 import android.support.annotation.NonNull;
 
-import org.smartregister.cbhc.service.intent.DeleteIntentService;
 import org.smartregister.cbhc.service.intent.SyncIntentService;
 import org.smartregister.cbhc.util.Constants;
 

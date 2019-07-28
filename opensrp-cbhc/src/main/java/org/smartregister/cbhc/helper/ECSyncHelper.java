@@ -16,7 +16,6 @@ import org.smartregister.domain.Response;
 import org.smartregister.domain.db.EventClient;
 import org.smartregister.repository.EventClientRepository;
 import org.smartregister.service.HTTPAgent;
-import org.smartregister.util.Utils;
 
 import java.util.ArrayList;
 import java.util.Date;
