@@ -104,6 +104,7 @@ public class GrowthFragment extends BaseProfileFragment {
         refreshEditWeightLayout();
 
         startServices();
+
     }
     View fragmentView;
     @Override

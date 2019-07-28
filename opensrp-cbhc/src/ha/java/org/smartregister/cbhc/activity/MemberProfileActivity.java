@@ -210,6 +210,7 @@ public class MemberProfileActivity extends BaseProfileActivity implements Profil
         setProfileID(getValue(householdDetails.getColumnmaps(),"Patient_Identifier",true));
         gestationAgeView.setVisibility(View.GONE);
     }
+
     public void updateEDD(final String entity_id){
         org.smartregister.util.Utils.startAsyncTask(new AsyncTask() {
 
@@ -385,7 +386,10 @@ public class MemberProfileActivity extends BaseProfileActivity implements Profil
 //        adapter.addFragment(profileOverviewFragment, this.getString(R.string.members));
         adapter.addFragment(profileOverviewFragment, this.getString(R.string.household_overview));
         adapter.addFragment(followupFragment, "FOLLOWUP");
-        if((typeofMember.equalsIgnoreCase("malechild")||(typeofMember.equalsIgnoreCase("femalechild")))&&getAge()<=5){
+        String delivery_status = householdDetails.getColumnmaps().get(PREGNANT_STATUS);
+        delivery_status = delivery_status==null?"":delivery_status;
+        if(((typeofMember.equalsIgnoreCase("malechild")||(typeofMember.equalsIgnoreCase("femalechild")))&&getAge()<=5)||(delivery_status.equalsIgnoreCase("প্রসব পূর্ব")||delivery_status.equalsIgnoreCase("Antenatal Period"))){
+
             adapter.addFragment(childImmunizationFragment, "IMMUNIZATION");
             adapter.addFragment(growthFragment, "GROWTH");
             tabLayout.setTabMode(TabLayout.MODE_SCROLLABLE);

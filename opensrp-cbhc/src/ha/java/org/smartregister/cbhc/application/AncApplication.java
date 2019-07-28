@@ -142,6 +142,7 @@ public class AncApplication extends DrishtiApplication implements TimeChangedBro
             List<VaccineGroup> childVaccines = VaccinatorUtils.getSupportedVaccines(this);
             List<Vaccine> specialVaccines = VaccinatorUtils.getSpecialVaccines(this);
             VaccineSchedule.init(childVaccines, specialVaccines, "child");
+            VaccineSchedule.init(childVaccines, specialVaccines, "mother");
         } catch (Exception e) {
             Log.e(TAG, Log.getStackTraceString(e));
         }

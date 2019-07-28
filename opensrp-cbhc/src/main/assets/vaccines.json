@@ -1,5 +1,160 @@
 [
   {
+    "name": "Tetanus",
+    "id": "Tetanus",
+    "days_after_birth_due": 0,
+    "vaccines": [
+      {
+        "name": "TT 1",
+        "type": "TT",
+        "openmrs_date": {
+          "parent_entity": "783AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+          "entity": "concept",
+          "entity_id": "1410AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
+        },
+        "openmrs_calculate": {
+          "parent_entity": "783AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+          "entity": "concept",
+          "entity_id": "1418AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+          "calculation": 0
+        },
+        "schedule": {
+          "due": [
+            {
+              "reference": "dob",
+              "offset": "+15y",
+              "window": "+12w"
+            }
+          ]
+        }
+      },
+      {
+        "name": "TT 2",
+        "type": "TT",
+        "openmrs_date": {
+          "parent_entity": "783AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+          "entity": "concept",
+          "entity_id": "1410AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
+        },
+        "openmrs_calculate": {
+          "parent_entity": "783AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+          "entity": "concept",
+          "entity_id": "1418AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+          "calculation": 0
+        },
+        "schedule": {
+          "due": [
+            {
+              "reference": "prerequisite",
+              "prerequisite": "TT 1",
+              "offset": "+0d",
+              "window": "+6w"
+            }
+          ],
+          "conditions": [
+            {
+              "type": "not_given",
+              "vaccine": "TT 1"
+            }
+          ]
+        }
+      },
+      {
+        "name": "TT 3",
+        "type": "TT",
+        "openmrs_date": {
+          "parent_entity": "783AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+          "entity": "concept",
+          "entity_id": "1410AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
+        },
+        "openmrs_calculate": {
+          "parent_entity": "783AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+          "entity": "concept",
+          "entity_id": "1418AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+          "calculation": 0
+        },
+        "schedule": {
+          "due": [
+            {
+              "reference": "prerequisite",
+              "prerequisite": "TT 1",
+              "offset": "+0d",
+              "window": "+28w"
+            }
+          ],
+          "conditions": [
+            {
+              "type": "not_given",
+              "vaccine": "TT 2"
+            }
+          ]
+        }
+      },
+      {
+        "name": "TT 4",
+        "type": "TT",
+        "openmrs_date": {
+          "parent_entity": "783AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+          "entity": "concept",
+          "entity_id": "1410AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
+        },
+        "openmrs_calculate": {
+          "parent_entity": "783AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+          "entity": "concept",
+          "entity_id": "1418AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+          "calculation": 0
+        },
+        "schedule": {
+          "due": [
+            {
+              "reference": "prerequisite",
+              "prerequisite": "TT 1",
+              "offset": "+0d",
+              "window": "+54w"
+            }
+          ],
+          "conditions": [
+            {
+              "type": "not_given",
+              "vaccine": "TT 3"
+            }
+          ]
+        }
+      },
+      {
+        "name": "TT 5",
+        "type": "TT",
+        "openmrs_date": {
+          "parent_entity": "783AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+          "entity": "concept",
+          "entity_id": "1410AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
+        },
+        "openmrs_calculate": {
+          "parent_entity": "783AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+          "entity": "concept",
+          "entity_id": "1418AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+          "calculation": 0
+        },
+        "schedule": {
+          "due": [
+            {
+              "reference": "prerequisite",
+              "prerequisite": "TT 1",
+              "offset": "+0d",
+              "window": "+54w"
+            }
+          ],
+          "conditions": [
+            {
+              "type": "not_given",
+              "vaccine": "TT 3"
+            }
+          ]
+        }
+      }
+    ]
+  },
+  {
     "name": "Birth",
     "id": "Birth",
     "days_after_birth_due": 0,

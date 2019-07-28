@@ -356,8 +356,184 @@
         }
       }
     ]
+  },
+  {
+    "type": "ITN",
+    "service_logic": "",
+    "units": "",
+    "openmrs_service_name": {
+      "parent_entity": "",
+      "entity": "concept",
+      "entity_id": "159855AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
+    },
+    "openmrs_date": {
+      "parent_entity": "",
+      "entity": "date",
+      "entity_id": "159432AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
+    },
+    "services": [
+      {
+        "id": "21",
+        "name": "ITN 1",
+        "dose": "",
+        "schedule": {
+          "due": {
+            "reference": "dob",
+            "offset": "+0d"
+          },
+          "expiry": {
+            "reference": "dob",
+            "offset": "+5y"
+          }
+        }
+      },
+      {
+        "id": "22",
+        "name": "ITN 2",
+        "dose": "",
+        "schedule": {
+          "due": {
+            "reference": "prerequisite",
+            "prerequisite": "ITN 1",
+            "offset": "+12m"
+          },
+          "expiry": {
+            "reference": "dob",
+            "offset": "+5y"
+          }
+        }
+      },
+      {
+        "id": "23",
+        "name": "ITN 3",
+        "dose": "",
+        "schedule": {
+          "due": {
+            "reference": "prerequisite",
+            "prerequisite": "ITN 2",
+            "offset": "+12m"
+          },
+          "expiry": {
+            "reference": "dob",
+            "offset": "+5y"
+          }
+        }
+      },
+      {
+        "id": "24",
+        "name": "ITN 4",
+        "dose": "",
+        "schedule": {
+          "due": {
+            "reference": "prerequisite",
+            "prerequisite": "ITN 3",
+            "offset": "+12m"
+          },
+          "expiry": {
+            "reference": "dob",
+            "offset": "+5y"
+          }
+        }
+      },
+      {
+        "id": "25",
+        "name": "ITN 5",
+        "dose": "",
+        "schedule": {
+          "due": {
+            "reference": "prerequisite",
+            "prerequisite": "ITN 4",
+            "offset": "+12m"
+          },
+          "expiry": {
+            "reference": "dob",
+            "offset": "+5y"
+          }
+        }
+      }
+    ]
+  },
+  {
+    "type": "TT",
+    "service_logic": "",
+    "units": "IU",
+    "openmrs_service_name": {
+      "parent_entity": "",
+      "entity": "concept",
+      "entity_id": "161534AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
+    },
+    "openmrs_date": {
+      "parent_entity": "",
+      "entity": "encounter",
+      "entity_id": "encounter_date"
+    },
+    "services": [
+      {
+        "id": "w01",
+        "name": "TT 1",
+        "dose": "1",
+        "schedule": {
+          "due": {
+            "reference": "dob",
+            "offset": "+15y"
+          }
+        }
+      },
+      {
+        "id": "w02",
+        "name": "TT 2",
+        "dose": "1",
+        "schedule": {
+          "due": {
+            "reference": "multiple",
+            "multiple": {
+              "condition": "OR",
+              "prerequisites": [
+                "TT 1",
+                "dob"
+              ]
+            },
+            "offset": "+1m"
+          }
+        }
+      },
+      {
+        "id": "w03",
+        "name": "TT 3",
+        "dose": "1",
+        "schedule": {
+          "due": {
+            "reference": "prerequisite",
+            "prerequisite": "TT 2",
+            "offset": "+2y"
+          }
+        }
+      },
+      {
+        "id": "w04",
+        "name": "TT 4",
+        "dose": "1",
+        "schedule": {
+          "due": {
+            "reference": "prerequisite",
+            "prerequisite": "TT 3",
+            "offset": "+4y"
+          }
+        }
+      },
+      {
+        "id": "w05",
+        "name": "TT 5",
+        "dose": "1",
+        "schedule": {
+          "due": {
+            "reference": "prerequisite",
+            "prerequisite": "TT 4",
+            "offset": "+4y"
+          }
+        }
+      }
+
+    ]
   }
-
-
-
 ]
