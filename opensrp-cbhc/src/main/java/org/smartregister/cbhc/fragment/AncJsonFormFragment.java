@@ -773,11 +773,13 @@ public class AncJsonFormFragment extends JsonFormFragment {
     private void showCommentsDialog() {
         Utils.startAsyncTask(new AsyncTask() {
             String comment = "";
+            String status = "";
             @Override
             protected Object doInBackground(Object[] objects) {
                 JSONObject formObject = getJsonApi().getmJSONObject();
                 try{
-                    comment = formObject.getString("comments");
+                    comment = formObject.getString("dataApprovalComments");
+                    status =  formObject.getString("dataApprovalStatus");
                 }catch (Exception e){
 
                 }
@@ -787,22 +789,24 @@ public class AncJsonFormFragment extends JsonFormFragment {
             @Override
             protected void onPostExecute(Object o) {
                 super.onPostExecute(o);
+                if("0".equals(status)&&(!"".equals(comment)&&!"1".equals(comment))){
+                    android.support.v7.app.AlertDialog alertDialog = new android.support.v7.app.AlertDialog.Builder(getActivity()).create();
+                    alertDialog.setTitle("তথ্য পরিবর্তন করুন");
+                    alertDialog.setMessage(comment);
+                    alertDialog.setCanceledOnTouchOutside(true);
+                    alertDialog.setButton(android.support.v7.app.AlertDialog.BUTTON_POSITIVE, "OK",
 
-                android.support.v7.app.AlertDialog alertDialog = new android.support.v7.app.AlertDialog.Builder(getActivity()).create();
-                alertDialog.setTitle("তথ্য পরিবর্তন করুন");
-                alertDialog.setMessage(comment);
-                alertDialog.setCanceledOnTouchOutside(true);
-                alertDialog.setButton(android.support.v7.app.AlertDialog.BUTTON_POSITIVE, "OK",
+                            new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int which) {
 
-                        new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int which) {
-
-                            }
-                        });
-                if(comment!=null&&!comment.isEmpty()){
-                    if (alertDialog != null)
-                        alertDialog.show();
+                                }
+                            });
+                    if(comment!=null&&!comment.isEmpty()){
+                        if (alertDialog != null)
+                            alertDialog.show();
+                    }
                 }
+
 
 
             }

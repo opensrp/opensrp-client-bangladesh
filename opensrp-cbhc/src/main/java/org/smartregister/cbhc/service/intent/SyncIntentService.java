@@ -140,7 +140,7 @@ public class SyncIntentService extends IntentService {
 
             if (eCount == 0) {
                 complete(FetchStatus.nothingFetched);
-                new DetailsStatusUpdate(jsonObject).start();
+                new DetailsStatusUpdate(jsonObject,eCount).start();
             } else if (eCount < 0) {
                 fetchFailed(count);
             } else if (eCount > 0) {
@@ -158,7 +158,7 @@ public class SyncIntentService extends IntentService {
                 // long end = System.currentTimeMillis();
                 //  long diff = end - start;
                 //System.out.println(diff);
-                new DetailsStatusUpdate(jsonObject).start();
+                new DetailsStatusUpdate(jsonObject,eCount).start();
                 fetchRetry(0);
             }
         } catch (Exception e) {
@@ -175,9 +175,10 @@ public class SyncIntentService extends IntentService {
     class DetailsStatusUpdate extends Thread {
 
         JSONObject obj;
-
-        public DetailsStatusUpdate(JSONObject obj) {
+        int eCount = 0;
+        public DetailsStatusUpdate(JSONObject obj,int eCount) {
             DetailsStatusUpdate.this.obj = obj;
+            DetailsStatusUpdate.this.eCount = eCount;
         }
 
         @Override
@@ -193,8 +194,11 @@ public class SyncIntentService extends IntentService {
 //                        db.execSQL(setDefaultQuery);
 //                    }
                     JSONArray clients = obj.getJSONArray("clients");
-                    EventClientRepository ec = AncApplication.getInstance().getEventClientRepository();
-                    ec.batchInsertClients(clients);
+                    if(DetailsStatusUpdate.this.eCount==0){
+                        EventClientRepository ec = AncApplication.getInstance().getEventClientRepository();
+                        ec.batchInsertClients(clients);
+                    }
+
                     String rejected_ids = "";
                     if (clients != null && clients.length() != 0) {
                         for (int i = 0; i < clients.length(); i++) {

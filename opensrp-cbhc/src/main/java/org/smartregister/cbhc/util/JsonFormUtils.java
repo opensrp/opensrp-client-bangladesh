@@ -993,8 +993,11 @@ public class JsonFormUtils extends org.smartregister.util.JsonFormUtils {
 
             JSONObject form = FormUtils.getInstance(context).getFormJson(Constants.JSON_FORM.MEMBER_REGISTER);
             form.put("relational_id", womanClient.get("relational_id"));
+            if(womanClient.get("dataApprovalStatus")!=null&&womanClient.get("dataApprovalComments")!=null){
+                form.put("dataApprovalStatus", womanClient.get("dataApprovalStatus"));
+                form.put("dataApprovalComments", womanClient.get("dataApprovalComments"));
+            }
 
-            form.put("comments", womanClient.get("dataApprovalComments"));
             LookUpUtils.putRelationalIdInLookupObjects(form, womanClient.get("relational_id"));
 
 
