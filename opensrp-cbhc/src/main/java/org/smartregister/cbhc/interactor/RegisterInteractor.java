@@ -9,6 +9,7 @@ import android.util.Pair;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.tuple.Triple;
 import org.json.JSONObject;
+import org.smartregister.CoreLibrary;
 import org.smartregister.cbhc.application.AncApplication;
 import org.smartregister.cbhc.contract.RegisterContract;
 import org.smartregister.cbhc.domain.FollowupForm;
@@ -225,7 +226,9 @@ public class RegisterInteractor implements RegisterContract.Interactor {
     private void saveRegistration(Pair<Client, Event> pair, String jsonString, boolean isEditMode) {
 
         try {
-
+            if(CoreLibrary.getInstance()==null){
+                CoreLibrary.init(AncApplication.getInstance().getContext());
+            }
             Client baseClient = pair.first;
             Event baseEvent = pair.second;
 //            if(jsonString.contains("Followup HH Transfer")){
