@@ -97,7 +97,13 @@ public class LoginActivity extends AppCompatActivity implements LoginContract.Vi
 
         }
 
-        app_version_status();
+
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (alertDialog==null || (alertDialog != null && !alertDialog.isShowing()))
+            super.onBackPressed();
     }
 
     @Override
@@ -116,7 +122,6 @@ public class LoginActivity extends AppCompatActivity implements LoginContract.Vi
     }
 
 
-
     @Override
     protected void onResume() {
         super.onResume();
@@ -126,6 +131,7 @@ public class LoginActivity extends AppCompatActivity implements LoginContract.Vi
             goToHome(false);
         }
         mActivity = this;
+//        app_version_status();
     }
 
     @Override
@@ -340,6 +346,9 @@ public class LoginActivity extends AppCompatActivity implements LoginContract.Vi
         return this;
 
     }
+
+    android.support.v7.app.AlertDialog alertDialog;
+
     public void app_version_status() {
         org.smartregister.util.Utils.startAsyncTask(new AsyncTask() {
             String version_code = "";
@@ -373,8 +382,8 @@ public class LoginActivity extends AppCompatActivity implements LoginContract.Vi
                 try {
                     PackageInfo pInfo = LoginActivity.this.getPackageManager().getPackageInfo(getPackageName(), 0);
                     version = pInfo.versionName;
-                    if (!version_code.trim().isEmpty()&&!version.equalsIgnoreCase(version_code.trim())) {
-                        android.support.v7.app.AlertDialog alertDialog = new android.support.v7.app.AlertDialog.Builder(LoginActivity.this).create();
+                    if (!version_code.trim().isEmpty() && !version.equalsIgnoreCase(version_code.trim())) {
+                        alertDialog = new android.support.v7.app.AlertDialog.Builder(LoginActivity.this).create();
                         alertDialog.setTitle("New version available");
                         alertDialog.setCanceledOnTouchOutside(false);
 
@@ -395,7 +404,7 @@ public class LoginActivity extends AppCompatActivity implements LoginContract.Vi
                                         }
                                     }
                                 });
-                        if (mActivity!=null&&alertDialog != null)
+                        if (mActivity != null && alertDialog != null)
                             alertDialog.show();
                     }
                 } catch (PackageManager.NameNotFoundException e) {

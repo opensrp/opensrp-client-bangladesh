@@ -14,6 +14,7 @@ import org.smartregister.cbhc.util.Constants;
 import org.smartregister.configurableviews.helper.PrefsHelper;
 import org.smartregister.domain.Response;
 import org.smartregister.domain.db.EventClient;
+import org.smartregister.repository.BaseRepository;
 import org.smartregister.repository.EventClientRepository;
 import org.smartregister.service.HTTPAgent;
 import org.smartregister.util.Utils;
@@ -81,6 +82,9 @@ public class ECSyncHelper implements PrefsHelper {
 
     public List<EventClient> getEvents(Date lastSyncDate, String syncStatus) {
         try {
+            if(syncStatus.equalsIgnoreCase(BaseRepository.TYPE_Task_Unprocessed)){
+                syncStatus = BaseRepository.TYPE_Unsynced;
+            }
             return eventClientRepository.fetchEventClients(lastSyncDate, syncStatus);
         } catch (Exception e) {
             Log.e(getClass().getName(), "Exception", e);

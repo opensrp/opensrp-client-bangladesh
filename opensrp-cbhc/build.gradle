@@ -175,7 +175,7 @@ dependencies {
         exclude group: 'io.ona.rdt-capture', module: 'lib'
     }
     //    use issue158 branch for local build
-    implementation('org.smartregister:opensrp-client-core:2.5.18-SNAPSHOT') {
+    implementation('org.smartregister:opensrp-client-core:2.6.48-SNAPSHOT') {
         transitive = true
         exclude group: 'com.github.bmelnychuk', module: 'atv'
         exclude group: 'com.google.guava', module: 'guava'
