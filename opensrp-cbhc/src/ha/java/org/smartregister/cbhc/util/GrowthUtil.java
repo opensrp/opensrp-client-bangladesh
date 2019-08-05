@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentTransaction;
+import android.text.format.DateUtils;
 import android.util.Log;
 import android.util.Pair;
 import android.view.View;
@@ -59,6 +60,20 @@ public class GrowthUtil {
     public static void showGrowthDialog(FragmentActivity context, View view, String tag) {
         WeightWrapper weightWrapper = view.getTag() != null ? (WeightWrapper) view.getTag() : new WeightWrapper();
         HeightWrapper heightWrapper = view.getTag() != null ? (HeightWrapper) view.getTag() : new HeightWrapper();
+
+        weightWrapper.setPatientName(childDetails.getColumnmaps().get("first_name")+" "+childDetails.getColumnmaps().get("last_name"));
+        heightWrapper.setPatientName(childDetails.getColumnmaps().get("first_name")+" "+childDetails.getColumnmaps().get("last_name"));
+
+        String dob = childDetails.getColumnmaps().get("dob");
+        if(dob!=null){
+//            dob = dob.substring(0,dob.indexOf("T"));
+            String duration = DateUtil.getDuration(new DateTime().getMillis()-new DateTime(dob).getMillis());
+            weightWrapper.setPatientAge(duration);
+            heightWrapper.setPatientAge(duration);
+        }
+
+
+
         RecordGrowthDialogFragment recordGrowthDialogFragment = RecordGrowthDialogFragment
                 .newInstance(getDateOfBirth(), weightWrapper, heightWrapper);
         recordGrowthDialogFragment.show(initFragmentTransaction(context, tag), tag);
@@ -68,7 +83,9 @@ public class GrowthUtil {
         LocalDate localDate = new LocalDate();
         //DOB for sample app needs to ba dynamic
         DateTime dateTime = localDate.minusYears(5).plusMonths(2).toDateTime(LocalTime.now());
+        dateTime = new DateTime(DOB_STRING);
         Date dob = dateTime.toDate();
+
         return dob;
     }
 
@@ -82,8 +99,9 @@ public class GrowthUtil {
         return ft;
     }
 
-    public static void showEditGrowthMonitoringDialog(FragmentActivity context, int i, String tag) {
-        CommonPersonObjectClient childDetails = dummydetails();
+    public static void showEditGrowthMonitoringDialog(FragmentActivity context, CommonPersonObjectClient childDetails, int i, String tag) {
+
+//        CommonPersonObjectClient childDetails = dummydetails();
 
         String firstName = Utils.getValue(childDetails.getColumnmaps(), "first_name", true);
         String lastName = Utils.getValue(childDetails.getColumnmaps(), "last_name", true);
@@ -110,22 +128,23 @@ public class GrowthUtil {
 
     }
 
-    public static CommonPersonObjectClient dummydetails() {
-        HashMap<String, String> columnMap = new HashMap<>();
-        columnMap.put("first_name", "Test");
-        columnMap.put("last_name", "Doe");
-        columnMap.put("zeir_id", "1");
-        columnMap.put("dob", StringUtils.reverseDelimited(
-                new SimpleDateFormat(DateUtil.DATE_FORMAT_FOR_TIMELINE_EVENT, new Locale("en"))
-                        .format(GrowthUtil.getDateOfBirth()), '-'));
-        columnMap.put("gender", GENDER);
 
-
-        CommonPersonObjectClient personDetails = new CommonPersonObjectClient(ENTITY_ID, columnMap, "Test");
-        personDetails.setColumnmaps(columnMap);
-
-        return personDetails;
-    }
+//    public static CommonPersonObjectClient dummydetails() {
+//        HashMap<String, String> columnMap = new HashMap<>();
+//        columnMap.put("first_name", "Test");
+//        columnMap.put("last_name", "Doe");
+//        columnMap.put("zeir_id", "1");
+//        columnMap.put("dob", StringUtils.reverseDelimited(
+//                new SimpleDateFormat(DateUtil.DATE_FORMAT_FOR_TIMELINE_EVENT, new Locale("en"))
+//                        .format(GrowthUtil.getDateOfBirth()), '-'));
+//        columnMap.put("gender", GENDER);
+//
+//
+//        CommonPersonObjectClient personDetails = new CommonPersonObjectClient(ENTITY_ID, columnMap, "Test");
+//        personDetails.setColumnmaps(columnMap);
+//
+//        return personDetails;
+//    }
 
     private static WeightWrapper getWeightWrapper(int i, CommonPersonObjectClient childDetails, String childName,
                                                   String gender, String zeirId, String duration, Photo photo) {

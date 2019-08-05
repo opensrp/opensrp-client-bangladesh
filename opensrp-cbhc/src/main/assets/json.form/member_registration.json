@@ -404,7 +404,7 @@
         },
         "expanded": false,
         "v_required": {
-          "value": "true",
+          "value": false,
           "err": "Please Enter a Valid Name"
         }
       },
@@ -441,7 +441,7 @@
           "err": "বাংলায় লিখুন"
         },
         "v_required": {
-          "value": "true",
+          "value": false,
           "err": "Please enter the mother/guardian's first name"
         }
       },
@@ -478,7 +478,7 @@
           "err": "বাংলায় লিখুন"
         },
         "v_required": {
-          "value": true,
+          "value": false,
           "err": "Please enter the mother/guardian's first name"
         }
       },
@@ -704,7 +704,7 @@
           "err": "Please enter a valid name"
         },
         "v_required": {
-          "value": true,
+          "value": false,
           "err": "Please enter spouse name"
         },
         "relevance": {

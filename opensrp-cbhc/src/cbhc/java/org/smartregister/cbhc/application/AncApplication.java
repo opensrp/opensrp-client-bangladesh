@@ -112,7 +112,6 @@ public class AncApplication extends DrishtiApplication implements TimeChangedBro
         String groupId = getPassword();
         if(groupId!=null&&!groupId.isEmpty()){
             initLibraries();
-
         }
 
 

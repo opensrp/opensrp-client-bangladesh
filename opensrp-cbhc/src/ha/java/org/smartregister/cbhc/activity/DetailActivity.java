@@ -217,7 +217,7 @@ public class DetailActivity extends AppCompatActivity implements VaccinationActi
     private void setupViewPager(ViewPager viewPager) {
         adapter = new ViewPagerAdapter(getSupportFragmentManager());
 
-        adapter.addFragment(immunizationFragment, "Under Five History");
+        //adapter.addFragment(immunizationFragment, "Under Five History");
         viewPager.setAdapter(adapter);
     }
 

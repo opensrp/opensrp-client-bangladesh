@@ -5,6 +5,7 @@ import android.util.Log;
 
 import com.evernote.android.job.JobManager;
 
+import org.apache.commons.lang3.StringUtils;
 import org.joda.time.DateTime;
 import org.smartregister.cbhc.BuildConfig;
 import org.smartregister.cbhc.R;

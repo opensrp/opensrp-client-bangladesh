@@ -7,15 +7,17 @@ import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
+
 import com.evernote.android.job.JobManager;
+
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
+import org.smartregister.cbhc.CBHCEventBusIndex;
+import org.smartregister.cbhc.R;
 import org.smartregister.Context;
 import org.smartregister.CoreLibrary;
 import org.smartregister.cbhc.BuildConfig;
-import org.smartregister.cbhc.CBHCEventBusIndex;
-import org.smartregister.cbhc.R;
 import org.smartregister.cbhc.activity.LoginActivity;
 import org.smartregister.cbhc.event.TriggerSyncEvent;
 import org.smartregister.cbhc.event.ViewConfigurationSyncCompleteEvent;
@@ -42,6 +44,7 @@ import org.smartregister.immunization.domain.VaccineSchedule;
 import org.smartregister.immunization.domain.jsonmapping.Vaccine;
 import org.smartregister.immunization.domain.jsonmapping.VaccineGroup;
 import org.smartregister.immunization.util.VaccinatorUtils;
+import org.smartregister.location.helper.LocationHelper;
 import org.smartregister.repository.AllSharedPreferences;
 import org.smartregister.repository.EventClientRepository;
 import org.smartregister.repository.Repository;
@@ -49,10 +52,14 @@ import org.smartregister.sync.ClientProcessorForJava;
 import org.smartregister.sync.DrishtiSyncScheduler;
 import org.smartregister.view.activity.DrishtiApplication;
 import org.smartregister.view.receiver.TimeChangedBroadcastReceiver;
+
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.List;
+
 import id.zelory.compressor.Compressor;
+
 import static org.smartregister.util.Log.logError;
 import static org.smartregister.util.Log.logInfo;
 
@@ -60,7 +67,6 @@ import static org.smartregister.util.Log.logInfo;
  * Created by ndegwamartin on 21/06/2018.
  */
 public class AncApplication extends DrishtiApplication implements TimeChangedBroadcastReceiver.OnTimeChangedListener {
-
 
 
     private static JsonSpecHelper jsonSpecHelper;
@@ -78,6 +84,15 @@ public class AncApplication extends DrishtiApplication implements TimeChangedBro
 
     private static final String TAG = AncApplication.class.getCanonicalName();
     private String password;
+    public static final ArrayList<String> ALLOWED_LEVELS;
+    public static final String DEFAULT_LOCATION_LEVEL = "Health Facility";
+    public static final String FACILITY = "Dispensary";
+
+    static {
+        ALLOWED_LEVELS = new ArrayList<>();
+        ALLOWED_LEVELS.add(DEFAULT_LOCATION_LEVEL);
+        ALLOWED_LEVELS.add(FACILITY);
+    }
 
     @Override
     public void onCreate() {
@@ -92,7 +107,7 @@ public class AncApplication extends DrishtiApplication implements TimeChangedBro
         //Initialize Modules
         CoreLibrary.init(context);
 
-
+        LocationHelper.init(ALLOWED_LEVELS, DEFAULT_LOCATION_LEVEL);
 
         SyncStatusBroadcastReceiver.init(this);
         TimeChangedBroadcastReceiver.init(this);
@@ -104,18 +119,17 @@ public class AncApplication extends DrishtiApplication implements TimeChangedBro
         } catch (Exception e) {
             Log.e(TAG, e.getMessage());
         }
-//        initLibraries();
-//        initOfflineSchedules();
+        initLibraries();
+        initOfflineSchedules();
 // Initialize JsonSpec Helper
         this.jsonSpecHelper = new JsonSpecHelper(this);
 
         setUpEventHandling();
         String groupId = getPassword();
-        if(groupId!=null&&!groupId.isEmpty()){
-            initLibraries();
-            initOfflineSchedules();
-        }
-
+//        if (groupId != null && !groupId.isEmpty()) {
+//            initLibraries();
+//            initOfflineSchedules();
+//        }
 
 
     }
@@ -136,13 +150,14 @@ public class AncApplication extends DrishtiApplication implements TimeChangedBro
     }
 
 
-
     public void initOfflineSchedules() {
         try {
             List<VaccineGroup> childVaccines = VaccinatorUtils.getSupportedVaccines(this);
+            List<VaccineGroup> womanVaccines = VaccinatorUtils.getSupportedWomanVaccines(this);
             List<Vaccine> specialVaccines = VaccinatorUtils.getSpecialVaccines(this);
             VaccineSchedule.init(childVaccines, specialVaccines, "child");
-            VaccineSchedule.init(childVaccines, specialVaccines, "mother");
+            VaccineSchedule.init(womanVaccines, null, "woman");
+
         } catch (Exception e) {
             Log.e(TAG, Log.getStackTraceString(e));
         }
@@ -166,13 +181,15 @@ public class AncApplication extends DrishtiApplication implements TimeChangedBro
         }
         return repository;
     }
+
     private String DEFAULT_PASSWORD = "1e815e13-f6ca-42ef-97c8-83394c201a47";
+
     public String getPassword() {
         if (password == null) {
             String username = getContext().userService().getAllSharedPreferences().fetchRegisteredANM();
             password = getContext().userService().getGroupId(username);
         }
-
+//        return "";
         return password;
 
     }
@@ -215,7 +232,7 @@ public class AncApplication extends DrishtiApplication implements TimeChangedBro
 
     public void startPullConfigurableViewsIntentService(android.content.Context context) {
         Intent intent = new Intent(context, PullConfigurableViewsIntentService.class);
-        if(context!=null)
+        if (context != null)
             context.startService(intent);
     }
 
@@ -231,12 +248,12 @@ public class AncApplication extends DrishtiApplication implements TimeChangedBro
     }
 
     private static String[] getFtsTables() {
-        return new String[]{DBConstants.HOUSEHOLD_TABLE_NAME,DBConstants.WOMAN_TABLE_NAME,DBConstants.MEMBER_TABLE_NAME,DBConstants.CHILD_TABLE_NAME};
+        return new String[]{DBConstants.HOUSEHOLD_TABLE_NAME, DBConstants.WOMAN_TABLE_NAME, DBConstants.MEMBER_TABLE_NAME, DBConstants.CHILD_TABLE_NAME};
     }
 
     private static String[] getFtsSearchFields() {
 //        return new String[]{DBConstants.KEY.BASE_ENTITY_ID, DBConstants.KEY.FIRST_NAME, DBConstants.KEY.LAST_NAME, DBConstants.KEY.ANC_ID, DBConstants.KEY.DATE_REMOVED, DBConstants.KEY.PHONE_NUMBER};
-        return new String[]{DBConstants.KEY.FIRST_NAME, DBConstants.KEY.LAST_NAME, DBConstants.KEY.PHONE_NUMBER, DBConstants.KEY.DATE_REMOVED, "person_nid","person_brid","person_epi","person_address"};
+        return new String[]{DBConstants.KEY.FIRST_NAME, DBConstants.KEY.LAST_NAME, DBConstants.KEY.PHONE_NUMBER, DBConstants.KEY.DATE_REMOVED, "person_nid", "person_brid", "person_epi", "person_address"};
 
     }
 
@@ -264,12 +281,14 @@ public class AncApplication extends DrishtiApplication implements TimeChangedBro
         }
         return uniqueIdRepository;
     }
+
     public HealthIdRepository getHealthIdRepository() {
         if (healthIdRepository == null) {
             healthIdRepository = new HealthIdRepository((AncRepository) getRepository());
         }
         return healthIdRepository;
     }
+
     public ConfigurableViewsHelper getConfigurableViewsHelper() {
         if (configurableViewsHelper == null) {
             configurableViewsHelper = new ConfigurableViewsHelper(getConfigurableViewsRepository(),
@@ -307,7 +326,7 @@ public class AncApplication extends DrishtiApplication implements TimeChangedBro
             LocalBroadcastManager.getInstance(this).registerReceiver(syncCompleteMessageReceiver, new IntentFilter(PullConfigurableViewsIntentService.EVENT_SYNC_COMPLETE));
 
         } catch
-                (Exception e) {
+        (Exception e) {
             Log.e(TAG, e.getMessage());
         }
 
@@ -350,6 +369,7 @@ public class AncApplication extends DrishtiApplication implements TimeChangedBro
         Intent intent = new Intent(getApplicationContext(), PullHealthIdsIntentService.class);
         getApplicationContext().startService(intent);
     }
+
     public void startPullUniqueIdsService() {
         Intent intent = new Intent(getApplicationContext(), PullUniqueIdsIntentService.class);
         getApplicationContext().startService(intent);
@@ -368,9 +388,6 @@ public class AncApplication extends DrishtiApplication implements TimeChangedBro
 //        context.userService().forceRemoteLogin();
 //        logoutCurrentUser();
     }
-
-
-
 
 
     public void startZscoreRefreshService() {

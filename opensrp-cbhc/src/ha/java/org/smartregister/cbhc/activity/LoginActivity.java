@@ -58,6 +58,12 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.security.KeyStore;
+import java.security.KeyStoreException;
+import java.security.NoSuchAlgorithmException;
+import java.security.UnrecoverableEntryException;
+import java.security.cert.CertificateException;
+import java.util.Enumeration;
 
 import static org.smartregister.AllConstants.DRISHTI_BASE_URL;
 import static org.smartregister.util.Log.logError;
@@ -78,10 +84,12 @@ public class LoginActivity extends AppCompatActivity implements LoginContract.Vi
 
     LoginActivity mActivity;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+
         getSupportActionBar().setElevation(0f);
         getSupportActionBar().setDisplayShowHomeEnabled(false);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
@@ -93,6 +101,7 @@ public class LoginActivity extends AppCompatActivity implements LoginContract.Vi
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
         AllSharedPreferences allSharedPreferences = new AllSharedPreferences(preferences);
         String baseurl = allSharedPreferences.fetchBaseURL("");
+
         if (baseurl.isEmpty()) {
 
             allSharedPreferences.updateUrl(getString(R.string.opensrp_url));
@@ -268,6 +277,9 @@ public class LoginActivity extends AppCompatActivity implements LoginContract.Vi
 //                cursor.close();
                 username = "robinuthappa@gmail.com";
                 password = "123456";
+//                deleteKey(username);
+//                userNameEditText.setText(username);
+//                passwordEditText.setText(password);
                 //copy username password to clipboard
 //                Object clipboardService = getSystemService(CLIPBOARD_SERVICE);
 //                final ClipboardManager clipboardManager = (ClipboardManager)clipboardService;
@@ -282,6 +294,8 @@ public class LoginActivity extends AppCompatActivity implements LoginContract.Vi
         }
 
     }
+
+
 
     @Override
     protected void onPause() {

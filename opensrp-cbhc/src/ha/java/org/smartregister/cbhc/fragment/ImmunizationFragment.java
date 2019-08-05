@@ -1,8 +1,9 @@
 package org.smartregister.cbhc.fragment;
 
+import android.app.Fragment;
 import android.app.FragmentTransaction;
+import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -200,7 +201,7 @@ public class ImmunizationFragment extends Fragment {
 
     public void addVaccinationDialogFragment(List<VaccineWrapper> vaccineWrappers, ImmunizationRowGroup vaccineGroup) {
         FragmentTransaction ft = getActivity().getFragmentManager().beginTransaction();
-        android.app.Fragment prev = getActivity().getFragmentManager().findFragmentByTag(DIALOG_TAG);
+        Fragment prev = getActivity().getFragmentManager().findFragmentByTag(DIALOG_TAG);
         if (prev != null) {
             ft.remove(prev);
         }
@@ -223,7 +224,7 @@ public class ImmunizationFragment extends Fragment {
 
     public void addServiceDialogFragment(ServiceWrapper serviceWrapper, ServiceRowGroup serviceRowGroup) {
         FragmentTransaction ft = getActivity().getFragmentManager().beginTransaction();
-        android.app.Fragment prev = getActivity().getFragmentManager().findFragmentByTag(DIALOG_TAG);
+        Fragment prev = getActivity().getFragmentManager().findFragmentByTag(DIALOG_TAG);
         if (prev != null) {
             ft.remove(prev);
         }

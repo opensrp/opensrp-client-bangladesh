@@ -2,6 +2,8 @@ package org.smartregister.cbhc.fragment;
 
 import android.app.Fragment;
 import android.app.FragmentTransaction;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
@@ -165,7 +167,7 @@ public class ChildImmunizationFragment extends BaseProfileFragment {
 
         updateAgeViews();
         updateChildIdViews();
-
+//        org.smartregister.util.Utils.startAsyncTask(new UpdateOfflineAlerts(), null);
         VaccineRepository vaccineRepository = ImmunizationLibrary.getInstance().vaccineRepository();
 
         RecurringServiceTypeRepository recurringServiceTypeRepository = ImmunizationLibrary.getInstance().recurringServiceTypeRepository();
@@ -180,6 +182,9 @@ public class ChildImmunizationFragment extends BaseProfileFragment {
         updateViewTask.setRecurringServiceRecordRepository(recurringServiceRecordRepository);
         updateViewTask.setAlertService(alertService);
         org.smartregister.util.Utils.startAsyncTask(updateViewTask, null);
+
+
+
     }
 
     private void updateChildIdViews() {
@@ -296,7 +301,18 @@ public class ChildImmunizationFragment extends BaseProfileFragment {
         }
     }
 
-
+    private class UpdateOfflineAlerts extends AsyncTask<Void,Void,Void>{
+        @Override
+        protected Void doInBackground(Void... voids) {
+            String dobString = org.smartregister.util.Utils.getValue(childDetails.getColumnmaps(), "dob", false);
+            if (!TextUtils.isEmpty(dobString)) {
+                DateTime dateTime = new DateTime(dobString);
+                VaccineSchedule.updateOfflineAlerts(childDetails.entityId(), dateTime, "child");
+                ServiceSchedule.updateOfflineAlerts(childDetails.entityId(), dateTime);
+            }
+            return null;
+        }
+    }
     private void addVaccineGroup(int canvasId, org.smartregister.immunization.domain.jsonmapping.VaccineGroup vaccineGroupData, List<Vaccine> vaccineList, List<Alert> alerts) {
         LinearLayout vaccineGroupCanvasLL = (LinearLayout) view.findViewById(R.id.vaccine_group_canvas_ll);
         VaccineGroup curGroup = new VaccineGroup(getActivity());

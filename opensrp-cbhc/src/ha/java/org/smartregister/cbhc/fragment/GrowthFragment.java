@@ -84,7 +84,10 @@ public class GrowthFragment extends BaseProfileFragment {
         recordWeight.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
+
                 view.setEnabled(false);
+
                 GrowthUtil.showGrowthDialog(getActivity(), view, DIALOG_TAG);
                 view.setEnabled(true);
             }
@@ -102,15 +105,24 @@ public class GrowthFragment extends BaseProfileFragment {
         });
 
         refreshEditWeightLayout();
-
+        refreshEditHeightLayout();
         startServices();
 
     }
     View fragmentView;
+    boolean isChild = true;
+
+    public void setIsChild(boolean iChild){
+        this.isChild = iChild;
+    }
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
         fragmentView = inflater.inflate(R.layout.growth_activity_main, container, false);
+        if(!isChild){
+            fragmentView.findViewById(R.id.growth_chart_button).setVisibility(View.GONE);
+        }
         return fragmentView;
     }
     public void startServices() {
@@ -131,11 +143,11 @@ public class GrowthFragment extends BaseProfileFragment {
             WeightRepository weightRepository = GrowthMonitoringLibrary.getInstance().weightRepository();
             List<Weight> allWeights = weightRepository.findByEntityId(GrowthUtil.ENTITY_ID);
             try {
-                DateTime dateTime = new DateTime(GrowthUtil.getDateOfBirth());
-
-                Weight weight = new Weight(-1l, null, (float) GrowthUtil.BIRTH_WEIGHT, dateTime.toDate(), null, null, null,
-                        Calendar.getInstance().getTimeInMillis(), null, null, 0);
-                allWeights.add(weight);
+//                DateTime dateTime = new DateTime(GrowthUtil.getDateOfBirth());
+//
+//                Weight weight = new Weight(-1l, null, (float) GrowthUtil.BIRTH_WEIGHT, dateTime.toDate(), null, null, null,
+//                        Calendar.getInstance().getTimeInMillis(), null, null, 0);
+//                allWeights.add(weight);
             } catch (Exception e) {
                 Log.e(TAG, Log.getStackTraceString(e));
             }
@@ -146,11 +158,11 @@ public class GrowthFragment extends BaseProfileFragment {
             HeightRepository heightRepository = GrowthMonitoringLibrary.getInstance().heightRepository();
             List<Height> allHeights = heightRepository.findByEntityId(GrowthUtil.ENTITY_ID);
             try {
-                DateTime dateTime = new DateTime(GrowthUtil.getDateOfBirth());
-
-                Height height = new Height(-1l, null, (float) GrowthUtil.BIRTH_HEIGHT, dateTime.toDate(), null, null, null,
-                        Calendar.getInstance().getTimeInMillis(), null, null, 0);
-                allHeights.add(height);
+//                DateTime dateTime = new DateTime(GrowthUtil.getDateOfBirth());
+//
+//                Height height = new Height(-1l, null, (float) GrowthUtil.BIRTH_HEIGHT, dateTime.toDate(), null, null, null,
+//                        Calendar.getInstance().getTimeInMillis(), null, null, 0);
+//                allHeights.add(height);
             } catch (Exception e) {
                 Log.e(TAG, Log.getStackTraceString(e));
             }
@@ -183,9 +195,12 @@ public class GrowthFragment extends BaseProfileFragment {
                 }else if(childDetails.getColumnmaps().get("gender").equals("F")){
                     childDetails.getDetails().put("gender","female");
                 }
-
+                String first_name = childDetails.getDetails().get("first_name");
+                String last_name = childDetails.getDetails().get("last_name");
+                String dob = childDetails.getDetails().get("dob");
+                String gender = childDetails.getDetails().get("gender");
                 GrowthDialogFragment growthDialogFragment = GrowthDialogFragment
-                        .newInstance(GrowthUtil.dummydetails(), weights, heights);
+                        .newInstance(childDetails, weights, heights);
                 growthDialogFragment.show(GrowthUtil.initFragmentTransaction(getActivity(), DIALOG_TAG), DIALOG_TAG);
             }
         }
@@ -215,7 +230,7 @@ public class GrowthFragment extends BaseProfileFragment {
         ArrayList<View.OnClickListener> listeners = new ArrayList<>();
 
         HeightRepository wp = GrowthMonitoringLibrary.getInstance().heightRepository();
-        List<Height> heightList = wp.findLast5(GrowthUtil.ENTITY_ID);
+        List<Height> heightList = wp.findLast5(childDetails.entityId());
 
         for (int i = 0; i < heightList.size(); i++) {
             Height height = heightList.get(i);
@@ -244,7 +259,7 @@ public class GrowthFragment extends BaseProfileFragment {
                     @Override
                     public void onClick(View v) {
                         v.setEnabled(false);
-                        GrowthUtil.showEditGrowthMonitoringDialog(getActivity(), finalI, DIALOG_TAG);
+                        GrowthUtil.showEditGrowthMonitoringDialog(getActivity(), childDetails, finalI, DIALOG_TAG);
                         v.setEnabled(true);
                     }
                 };
@@ -253,7 +268,7 @@ public class GrowthFragment extends BaseProfileFragment {
 
         }
         if (heightmap.size() < 5) {
-            heightmap.put(0l, Pair.create(DateUtil.getDuration(0), GrowthUtil.BIRTH_HEIGHT + " cm"));
+//            heightmap.put(0l, Pair.create(DateUtil.getDuration(0), GrowthUtil.BIRTH_HEIGHT + " cm"));
             heightEditMode.add(false);
             listeners.add(null);
         }
@@ -270,26 +285,34 @@ public class GrowthFragment extends BaseProfileFragment {
             if (heightWrapper.getDbKey() != null) {
                 height = heightRepository.find(heightWrapper.getDbKey());
             }
-            height.setBaseEntityId(GrowthUtil.ENTITY_ID);
+            height.setBaseEntityId(childDetails.entityId());
             height.setCm(heightWrapper.getHeight());
             height.setDate(heightWrapper.getUpdatedHeightDate().toDate());
-            height.setAnmId("sample");
-            height.setLocationId("Kenya");
-            height.setTeam("testTeam");
-            height.setTeamId("testTeamId");
-            height.setChildLocationId("testChildLocationId");
+            String anm = getOpenSRPContext().allSharedPreferences().fetchRegisteredANM();
+            height.setAnmId(getOpenSRPContext().allSharedPreferences().fetchRegisteredANM());
+            height.setLocationId(getOpenSRPContext().allSharedPreferences().fetchDefaultLocalityId(anm));
+            height.setTeam(getOpenSRPContext().allSharedPreferences().fetchDefaultTeam(anm));
+            height.setTeamId(getOpenSRPContext().allSharedPreferences().fetchDefaultTeamId(anm));
 
+
+            String g = childDetails.getColumnmaps().get("gender");
+            String dobstring = childDetails.getColumnmaps().get("dob");
+            GrowthUtil.DOB_STRING = dobstring;
             Gender gender = Gender.UNKNOWN;
 
-            String genderString = GrowthUtil.GENDER;
+            String genderString = g;
 
-            if (genderString != null && genderString.toLowerCase().equals("female")) {
+            if (genderString != null && genderString.equalsIgnoreCase("F")) {
                 gender = Gender.FEMALE;
-            } else if (genderString != null && genderString.toLowerCase().equals("male")) {
+            } else if (genderString != null && genderString.equalsIgnoreCase("M")) {
                 gender = Gender.MALE;
             }
 
-            Date dob = GrowthUtil.getDateOfBirth();
+            Date dob = null;
+            if (!TextUtils.isEmpty(GrowthUtil.DOB_STRING)) {
+                DateTime dateTime = new DateTime(GrowthUtil.DOB_STRING);
+                dob = dateTime.toDate();
+            }
 
             if (dob != null && gender != Gender.UNKNOWN) {
                 heightRepository.add(dob, gender, height);
@@ -327,9 +350,9 @@ public class GrowthFragment extends BaseProfileFragment {
 
             String genderString = g;
 
-            if (genderString != null && genderString.toLowerCase().equals("F")) {
+            if (genderString != null && genderString.equalsIgnoreCase("F")) {
                 gender = Gender.FEMALE;
-            } else if (genderString != null && genderString.toLowerCase().equals("M")) {
+            } else if (genderString != null && genderString.equalsIgnoreCase("M")) {
                 gender = Gender.MALE;
             }
 
@@ -360,7 +383,7 @@ public class GrowthFragment extends BaseProfileFragment {
         ArrayList<View.OnClickListener> listeners = new ArrayList<>();
 
         WeightRepository wp = GrowthMonitoringLibrary.getInstance().weightRepository();
-        List<Weight> weightlist = wp.findLast5(GrowthUtil.ENTITY_ID);
+        List<Weight> weightlist = wp.findLast5(childDetails.entityId());
 
         for (int i = 0; i < weightlist.size(); i++) {
             Weight weight = weightlist.get(i);
@@ -393,7 +416,7 @@ public class GrowthFragment extends BaseProfileFragment {
                     @Override
                     public void onClick(View v) {
                         v.setEnabled(false);
-                        GrowthUtil.showEditGrowthMonitoringDialog(getActivity(), finalI, DIALOG_TAG);
+                        GrowthUtil.showEditGrowthMonitoringDialog(getActivity(),childDetails, finalI, DIALOG_TAG);
                         v.setEnabled(true);
                     }
                 };
@@ -402,7 +425,7 @@ public class GrowthFragment extends BaseProfileFragment {
 
         }
         if (weightmap.size() < 5) {
-            weightmap.put(0l, Pair.create(DateUtil.getDuration(0), GrowthUtil.BIRTH_WEIGHT + " kg"));
+//            weightmap.put(0l, Pair.create(DateUtil.getDuration(0), GrowthUtil.BIRTH_WEIGHT + " kg"));
             weighteditmode.add(false);
             listeners.add(null);
         }

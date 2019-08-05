@@ -13,6 +13,7 @@ import org.joda.time.DateTime;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.smartregister.CoreLibrary;
 import org.smartregister.cbhc.BuildConfig;
 import org.smartregister.cbhc.R;
 import org.smartregister.cbhc.application.AncApplication;
@@ -57,6 +58,7 @@ public class SyncIntentService extends IntentService {
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         context = getBaseContext();
+        CoreLibrary.init(AncApplication.getInstance().getContext());
         httpAgent = AncApplication.getInstance().getContext().getHttpAgent();
         return super.onStartCommand(intent, flags, startId);
     }
@@ -139,7 +141,6 @@ public class SyncIntentService extends IntentService {
 
             if (eCount == 0) {
                 complete(FetchStatus.nothingFetched);
-
             } else if (eCount < 0) {
                 fetchFailed(count);
             } else if (eCount > 0) {

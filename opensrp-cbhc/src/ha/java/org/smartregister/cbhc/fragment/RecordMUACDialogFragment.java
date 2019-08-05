@@ -6,6 +6,7 @@ import android.content.Context;
 import android.os.Bundle;
 import android.os.Handler;
 import android.text.Selection;
+import android.util.Pair;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -29,6 +30,8 @@ import org.smartregister.view.customcontrols.CustomFontTextView;
 
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Random;
 
 import static org.smartregister.util.Utils.getName;
 import static org.smartregister.util.Utils.getValue;
@@ -40,6 +43,12 @@ public class RecordMUACDialogFragment extends GrowthDialogFragment {
 
     public static final String WRAPPER_TAG = "tag";
     public static final String DATE_OF_BIRTH_TAG = "dob";
+    public static final HashMap<Long, Pair<String, String>>muacmap = new HashMap<>();
+
+    class MUAC{
+        String duration;
+        String muac;
+    }
 
     public static RecordMUACDialogFragment newInstance() {
         RecordMUACDialogFragment recordMUACDialogFragment = new RecordMUACDialogFragment();
@@ -133,9 +142,8 @@ public class RecordMUACDialogFragment extends GrowthDialogFragment {
                 dismiss();
 
                 Calendar calendar = Calendar.getInstance();
-
-
                 Float height = Float.valueOf(heightString);
+//                muacmap.put(muacmap.size()+1,Pair.create())
 
             }
         });

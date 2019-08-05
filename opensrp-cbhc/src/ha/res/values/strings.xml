@@ -4,7 +4,7 @@
     <string name="action_language">Language</string>
 
     <!-- General -->
-    <string name="app_name">PRIMA-HA</string>
+    <string name="app_name">OPENSRP-HA</string>
     <string name="saving_dialog_title">Saving…</string>
     <string name="removing_dialog_title">Removing…</string>
     <string name="please_wait_message">Please wait</string>
