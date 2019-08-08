@@ -29,6 +29,7 @@ import org.smartregister.cbhc.repository.HealthIdRepository;
 import org.smartregister.cbhc.repository.UniqueIdRepository;
 import org.smartregister.cbhc.service.intent.PullHealthIdsIntentService;
 import org.smartregister.cbhc.service.intent.PullUniqueIdsIntentService;
+import org.smartregister.cbhc.util.Constants;
 import org.smartregister.cbhc.util.DBConstants;
 import org.smartregister.cbhc.util.Utils;
 import org.smartregister.commonregistry.CommonFtsObject;
@@ -105,7 +106,8 @@ public class AncApplication extends DrishtiApplication implements TimeChangedBro
         context.updateCommonFtsObject(createCommonFtsObject());
 
         //Initialize Modules
-        CoreLibrary.init(context);
+        CoreLibrary.init(context, new AncSyncConfiguration(), BuildConfig.BUILD_TIMESTAMP, null);
+        CoreLibrary.getInstance().setEcClientFieldsFile(Constants.EC_CLIENT_FIELDS);
 
         LocationHelper.init(ALLOWED_LEVELS, DEFAULT_LOCATION_LEVEL);
 

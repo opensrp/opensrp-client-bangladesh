@@ -554,6 +554,8 @@ public abstract class BaseRegisterFragment extends RecyclerViewFragment implemen
         super.onResume();
         registerSyncStatusBroadcastReceiver();
         updateUnsyncCount();
+        if (clientAdapter != null)
+            clientAdapter.notifyDataSetChanged();
     }
 
     @Override

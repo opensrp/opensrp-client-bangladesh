@@ -152,7 +152,9 @@ public abstract class BaseRegisterFragment extends RecyclerViewFragment implemen
             }
         };
     }
+
     TextView unsyncView;
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -170,7 +172,7 @@ public abstract class BaseRegisterFragment extends RecyclerViewFragment implemen
         activity.getSupportActionBar().setLogo(R.drawable.round_white_background);
         activity.getSupportActionBar().setDisplayUseLogoEnabled(false);
         activity.getSupportActionBar().setDisplayShowTitleEnabled(false);
-        unsyncView = (TextView)toolbar.findViewById(R.id.unsync_count);
+        unsyncView = (TextView) toolbar.findViewById(R.id.unsync_count);
         setupViews(view);
         renderView();
         return view;
@@ -185,7 +187,6 @@ public abstract class BaseRegisterFragment extends RecyclerViewFragment implemen
             getSearchView().setOnKeyListener(hideKeyboard);
         }
     }
-
 
 
     @Override
@@ -223,7 +224,7 @@ public abstract class BaseRegisterFragment extends RecyclerViewFragment implemen
         clientsProgressView.setVisibility(View.INVISIBLE);
         try {
             presenter.processViewConfigurations();
-        }catch (Exception e){
+        } catch (Exception e) {
 
         }
         this.registerCondition = "";
@@ -254,7 +255,7 @@ public abstract class BaseRegisterFragment extends RecyclerViewFragment implemen
                     //Todo implement sync
                     Intent intent = new Intent(getActivity().getApplicationContext(), SyncIntentService.class);
                     getActivity().getApplicationContext().startService(intent);
-                    Intent intent1= new Intent(getActivity().getApplicationContext(), ImageUploadSyncService.class);
+                    Intent intent1 = new Intent(getActivity().getApplicationContext(), ImageUploadSyncService.class);
                     getActivity().getApplicationContext().startService(intent1);
                 }
             });
@@ -294,21 +295,23 @@ public abstract class BaseRegisterFragment extends RecyclerViewFragment implemen
         super.onResumption();
 
     }
-    public void refreshViews(){
-        try{
+
+    public void refreshViews() {
+        try {
             setRefreshList(true);
 
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
-        try{
+        try {
 
             renderView();
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
 
     }
+
     private void renderView() {
         getDefaultOptionsProvider();
         if (isPausedOrRefreshList()) {
@@ -318,7 +321,7 @@ public abstract class BaseRegisterFragment extends RecyclerViewFragment implemen
         updateSearchView();
         try {
             presenter.processViewConfigurations();
-        }catch (Exception e){
+        } catch (Exception e) {
 
         }
         // updateLocationText();
@@ -326,6 +329,7 @@ public abstract class BaseRegisterFragment extends RecyclerViewFragment implemen
         setTotalPatients();
 
     }
+
     private void setTotalPatients(int itemCount) {
         if (headerTextDisplay != null) {
             headerTextDisplay.setText(itemCount > 1 ?
@@ -335,6 +339,7 @@ public abstract class BaseRegisterFragment extends RecyclerViewFragment implemen
             filterRelativeLayout.setVisibility(View.GONE);
         }
     }
+
     private void setTotalPatients() {
         if (headerTextDisplay != null) {
             headerTextDisplay.setText(clientAdapter.getTotalcount() > 1 ?
@@ -351,7 +356,7 @@ public abstract class BaseRegisterFragment extends RecyclerViewFragment implemen
         this.mainCondition = getMainCondition();
         this.countSelect = countSelect;
         this.mainSelect = mainSelect;
-        if(StringUtils.isBlank(this.Sortqueries))
+        if (StringUtils.isBlank(this.Sortqueries))
             this.Sortqueries = DBConstants.KEY.LAST_INTERACTED_WITH + " DESC";
     }
 
@@ -369,7 +374,7 @@ public abstract class BaseRegisterFragment extends RecyclerViewFragment implemen
         this.filters = filterString;
         this.joinTable = joinTableString;
         this.mainCondition = mainConditionString;
-        this.joinTables = new String[]{"ec_woman","ec_child","ec_member"};
+        this.joinTables = new String[]{"ec_woman", "ec_child", "ec_member"};
         countExecute();
 
         if (qrCode && StringUtils.isNotBlank(filterString) && clientAdapter.getTotalcount() == 0 && NetworkUtils.isNetworkAvailable()) {
@@ -393,25 +398,25 @@ public abstract class BaseRegisterFragment extends RecyclerViewFragment implemen
         }
     }
 
-    public void clearSortAndFilter(){
+    public void clearSortAndFilter() {
         this.Sortqueries = default_sort_query;
         this.registerCondition = "";
         presenter.initializeQueries(getMainCondition());
-        filter(this.filters,this.joinTable,this.mainCondition,false);
+        filter(this.filters, this.joinTable, this.mainCondition, false);
         setTotalPatients();
 //        clientAdapter.notifyDataSetChanged();
     }
 
     public void updateSortAndFilter(List<Field> filterList, Field sortField) {
 //        presenter.updateSortAndFilter(filterList, sortField);
-        if(filterList.size()==0){
+        if (filterList.size() == 0) {
             this.registerCondition = "";
             presenter.initializeQueries(getMainCondition());
-        }else{
+        } else {
             mainSelect = filterSelect(filterList.get(0).getDbAlias());
         }
         this.Sortqueries = sortField.getDbAlias();
-        filter(this.filters,this.joinTable,this.mainCondition,false);
+        filter(this.filters, this.joinTable, this.mainCondition, false);
         setTotalPatients();
     }
 
@@ -455,8 +460,8 @@ public abstract class BaseRegisterFragment extends RecyclerViewFragment implemen
 
         Intent intent = new Intent(getActivity(), ProfileActivity.class);
         intent.putExtra(Constants.INTENT_KEY.BASE_ENTITY_ID, patient.getCaseId());
-        intent.putExtra(ProfileOverviewFragment.EXTRA_HOUSEHOLD_DETAILS,patient);
-        startActivityForResult(intent,Utils.NOFILTER);
+        intent.putExtra(ProfileOverviewFragment.EXTRA_HOUSEHOLD_DETAILS, patient);
+        startActivityForResult(intent, Utils.NOFILTER);
     }
 
     /*protected void updateLocationText() {
@@ -500,7 +505,7 @@ public abstract class BaseRegisterFragment extends RecyclerViewFragment implemen
     }
 
     private void refreshSyncStatusViews(FetchStatus fetchStatus) {
-        Log.d("sync_status","refreshSyncStatusViews>>"+SyncStatusBroadcastReceiver.getInstance().isSyncing()+":fetchStatus:"+fetchStatus);
+        Log.d("sync_status", "refreshSyncStatusViews>>" + SyncStatusBroadcastReceiver.getInstance().isSyncing() + ":fetchStatus:" + fetchStatus);
 
         if (SyncStatusBroadcastReceiver.getInstance().isSyncing()) {
             if (syncStatusSnackbar != null) syncStatusSnackbar.dismiss();
@@ -522,16 +527,16 @@ public abstract class BaseRegisterFragment extends RecyclerViewFragment implemen
                 } else if (fetchStatus.equals(FetchStatus.fetched)
                         || fetchStatus.equals(FetchStatus.nothingFetched)) {
 
-                    try{
+                    try {
                         setRefreshList(true);
 
-                    }catch (Exception e){
+                    } catch (Exception e) {
                         e.printStackTrace();
                     }
-                    try{
+                    try {
 
                         renderView();
-                    }catch (Exception e){
+                    } catch (Exception e) {
                         e.printStackTrace();
                     }
 
@@ -554,6 +559,8 @@ public abstract class BaseRegisterFragment extends RecyclerViewFragment implemen
         super.onResume();
         registerSyncStatusBroadcastReceiver();
         updateUnsyncCount();
+        if (clientAdapter != null)
+            clientAdapter.notifyDataSetChanged();
     }
 
     @Override
@@ -568,7 +575,7 @@ public abstract class BaseRegisterFragment extends RecyclerViewFragment implemen
     }
 
     private void refreshSyncProgressSpinner() {
-        if(syncProgressBar == null){
+        if (syncProgressBar == null) {
             syncProgressBar = rootView.findViewById(R.id.sync_progress_bar);
         }
         if (SyncStatusBroadcastReceiver.getInstance().isSyncing()) {
@@ -588,23 +595,24 @@ public abstract class BaseRegisterFragment extends RecyclerViewFragment implemen
 
         }
     }
-    public void updateUnsyncCount(){
+
+    public void updateUnsyncCount() {
         org.smartregister.util.Utils.startAsyncTask(new AsyncTask() {
 
             int count = 0;
 
             @Override
             protected Object doInBackground(Object[] objects) {
-                try{
+                try {
                     AncRepository repo = (AncRepository) AncApplication.getInstance().getRepository();
                     SQLiteDatabase db = repo.getReadableDatabase();
-                    Cursor cursor = db.rawQuery("SELECT * FROM event WHERE syncStatus='Unsynced'",new String[]{});
-                    if(cursor!=null&&cursor.getCount()>0){
+                    Cursor cursor = db.rawQuery("SELECT * FROM event WHERE syncStatus='Unsynced'", new String[]{});
+                    if (cursor != null && cursor.getCount() > 0) {
                         count = cursor.getCount();
                     }
 
                     cursor.close();
-                }catch(Exception e){
+                } catch (Exception e) {
 
                 }
 
@@ -614,19 +622,20 @@ public abstract class BaseRegisterFragment extends RecyclerViewFragment implemen
             @Override
             protected void onPostExecute(Object o) {
                 super.onPostExecute(o);
-                if(unsyncView!=null){
-                    if(count!=0){
+                if (unsyncView != null) {
+                    if (count != 0) {
                         unsyncView.setVisibility(View.VISIBLE);
-                        unsyncView.setText(count+"");
-                    }else{
+                        unsyncView.setText(count + "");
+                    } else {
                         unsyncView.setVisibility(View.GONE);
                     }
                 }
 
             }
 
-        },null);
+        }, null);
     }
+
     @Override
     public void recalculatePagination(AdvancedMatrixCursor matrixCursor) {
         clientAdapter.setTotalcount(matrixCursor.getCount());
@@ -689,10 +698,10 @@ public abstract class BaseRegisterFragment extends RecyclerViewFragment implemen
 
     public String filterSelect(String filter) {
         SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
-        String dateString = format.format( new Date() );
-        String TWO_MONTHS = format.format( new Date(new Date().getTime()-2l*32l*24l*60l*60l*1000l));
-        String FIVE_YEAR = format.format( new Date(new Date().getTime()-5l*12l*30l*24l*60l*60l*1000l));
-        String FIFTY_YEAR = format.format( new Date(new Date().getTime()-50l*12l*30l*24l*60l*60l*1000l));
+        String dateString = format.format(new Date());
+        String TWO_MONTHS = format.format(new Date(new Date().getTime() - 2l * 32l * 24l * 60l * 60l * 1000l));
+        String FIVE_YEAR = format.format(new Date(new Date().getTime() - 5l * 12l * 30l * 24l * 60l * 60l * 1000l));
+        String FIFTY_YEAR = format.format(new Date(new Date().getTime() - 50l * 12l * 30l * 24l * 60l * 60l * 1000l));
 
         SmartRegisterQueryBuilder queryBUilder = new SmartRegisterQueryBuilder();
         String tableName = "ec_household";
@@ -707,9 +716,9 @@ public abstract class BaseRegisterFragment extends RecyclerViewFragment implemen
                 tableName + "." + DBConstants.KEY.PHONE_NUMBER,
                 tableName + "." + DBConstants.KEY.DETAILSSTATUS,
                 "(select ec_details.value from ec_details where ec_details.key='address7' and ec_details.base_entity_id=ec_household.id) as para"
-                };
+        };
 
-        if(filter.equals("pregnant")){
+        if (filter.equals("pregnant")) {
             columns = new String[]{
                     tableName + ".relationalid",
                     tableName + "." + DBConstants.KEY.LAST_INTERACTED_WITH,
@@ -721,10 +730,10 @@ public abstract class BaseRegisterFragment extends RecyclerViewFragment implemen
                     tableName + "." + DBConstants.KEY.PHONE_NUMBER,
                     tableName + "." + DBConstants.KEY.DETAILSSTATUS,
                     "(select ec_woman.PregnancyStatus from ec_woman where (ec_woman.PregnancyStatus = 'Antenatal Period' or ec_woman.PregnancyStatus like '%প্রসব পূর্ব%') and ec_household.id=ec_woman.relational_id) as PregnancyStatus"
-                    };
+            };
             //"(select ec_details.value from ec_details where ec_details.key='Disease_status' and ec_details.value = 'Antenatal Period' and ec_details.base_entity_id=(select ec_woman.id from ec_woman where  ec_household.id=ec_woman.relational_id )) as Disease_status"
             registerCondition = " PregnancyStatus IS NOT NULL";
-        }else if(filter.equals("infant")){
+        } else if (filter.equals("infant")) {
             columns = new String[]{
                     tableName + ".relationalid",
                     tableName + "." + DBConstants.KEY.LAST_INTERACTED_WITH,
@@ -735,10 +744,10 @@ public abstract class BaseRegisterFragment extends RecyclerViewFragment implemen
                     tableName + "." + "Patient_Identifier",
                     tableName + "." + DBConstants.KEY.PHONE_NUMBER,
                     tableName + "." + DBConstants.KEY.DETAILSSTATUS,
-                    "(select ec_child.dob from ec_child where ec_child.relational_id = ec_household.id and ec_child.dob > DATE('"+TWO_MONTHS+"')) as child_dob"
+                    "(select ec_child.dob from ec_child where ec_child.relational_id = ec_household.id and ec_child.dob > DATE('" + TWO_MONTHS + "')) as child_dob"
             };
             registerCondition = " child_dob IS NOT NULL";
-        }else if(filter.equals("toddler")){
+        } else if (filter.equals("toddler")) {
             columns = new String[]{
                     tableName + ".relationalid",
                     tableName + "." + DBConstants.KEY.LAST_INTERACTED_WITH,
@@ -749,10 +758,10 @@ public abstract class BaseRegisterFragment extends RecyclerViewFragment implemen
                     tableName + "." + "Patient_Identifier",
                     tableName + "." + DBConstants.KEY.PHONE_NUMBER,
                     tableName + "." + DBConstants.KEY.DETAILSSTATUS,
-                    "(select ec_child.dob from ec_child where ec_child.relational_id = ec_household.id and (ec_child.dob < DATE('"+TWO_MONTHS+"') and ec_child.dob > DATE('"+FIVE_YEAR+"'))) as child_dob"
+                    "(select ec_child.dob from ec_child where ec_child.relational_id = ec_household.id and (ec_child.dob < DATE('" + TWO_MONTHS + "') and ec_child.dob > DATE('" + FIVE_YEAR + "'))) as child_dob"
             };
             registerCondition = " child_dob IS NOT NULL";
-        }else if(filter.equals("adult")){
+        } else if (filter.equals("adult")) {
             columns = new String[]{
                     tableName + ".relationalid",
                     tableName + "." + DBConstants.KEY.LAST_INTERACTED_WITH,
@@ -763,13 +772,13 @@ public abstract class BaseRegisterFragment extends RecyclerViewFragment implemen
                     tableName + "." + "Patient_Identifier",
                     tableName + "." + DBConstants.KEY.PHONE_NUMBER,
                     tableName + "." + DBConstants.KEY.DETAILSSTATUS,
-                    "(select ec_member.dob from ec_member where (ec_member.relational_id = ec_household.id and ec_member.dob < DATE('"+FIFTY_YEAR+"'))) as member_dob" ,
-                            "(select ec_woman.dob from ec_woman where (ec_woman.relational_id = ec_household.id and ec_woman.dob < DATE('"+FIFTY_YEAR+"'))) as  woman_dob" ,
-                            "(select ec_child.dob from ec_child where (ec_child.relational_id = ec_household.id and ec_child.dob < DATE('"+FIFTY_YEAR+"'))) as child_dob"
+                    "(select ec_member.dob from ec_member where (ec_member.relational_id = ec_household.id and ec_member.dob < DATE('" + FIFTY_YEAR + "'))) as member_dob",
+                    "(select ec_woman.dob from ec_woman where (ec_woman.relational_id = ec_household.id and ec_woman.dob < DATE('" + FIFTY_YEAR + "'))) as  woman_dob",
+                    "(select ec_child.dob from ec_child where (ec_child.relational_id = ec_household.id and ec_child.dob < DATE('" + FIFTY_YEAR + "'))) as child_dob"
             };
             registerCondition = "(child_dob IS NOT NULL OR member_dob IS NOT NULL OR woman_dob IS NOT NULL ) ";
 
-        }else if(filter.equals("rejected")){
+        } else if (filter.equals("rejected")) {
             columns = new String[]{
                     tableName + ".relationalid",
                     tableName + "." + DBConstants.KEY.LAST_INTERACTED_WITH,
@@ -786,10 +795,9 @@ public abstract class BaseRegisterFragment extends RecyclerViewFragment implemen
         }
 
 
-
         queryBUilder.SelectInitiateMainTable(tableName, columns);
         String query = queryBUilder.mainCondition(mainCondition);
-        this.countSelect = "SELECT COUNT(*) FROM ( "+ query +" AND "+registerCondition +" ) ";
+        this.countSelect = "SELECT COUNT(*) FROM ( " + query + " AND " + registerCondition + " ) ";
 //        this.countSelect = query;
         return query;
     }

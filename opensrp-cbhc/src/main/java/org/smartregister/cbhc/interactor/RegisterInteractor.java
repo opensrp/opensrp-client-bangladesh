@@ -226,9 +226,7 @@ public class RegisterInteractor implements RegisterContract.Interactor {
     private void saveRegistration(Pair<Client, Event> pair, String jsonString, boolean isEditMode) {
 
         try {
-            if(CoreLibrary.getInstance()==null){
-                CoreLibrary.init(AncApplication.getInstance().getContext());
-            }
+
             Client baseClient = pair.first;
             Event baseEvent = pair.second;
 //            if(jsonString.contains("Followup HH Transfer")){
@@ -281,6 +279,7 @@ public class RegisterInteractor implements RegisterContract.Interactor {
 
             long lastSyncTimeStamp = getAllSharedPreferences().fetchLastUpdatedAtDate(0);
             Date lastSyncDate = new Date(lastSyncTimeStamp);
+
 
             getClientProcessorForJava().processClient(getSyncHelper().getEvents(lastSyncDate, BaseRepository.TYPE_Task_Unprocessed));
             getAllSharedPreferences().saveLastUpdatedAtDate(lastSyncDate.getTime());

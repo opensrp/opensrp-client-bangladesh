@@ -275,8 +275,8 @@ public class LoginActivity extends AppCompatActivity implements LoginContract.Vi
 //                SQLiteDatabase db = repo.getReadableDatabase();
 //                Cursor cursor = db.rawQuery("sql",new String[]{});
 //                cursor.close();
-                username = "robinuthappa@gmail.com";
-                password = "123456";
+//                username = "robinuthappa@gmail.com";
+//                password = "123456";
 //                deleteKey(username);
 //                userNameEditText.setText(username);
 //                passwordEditText.setText(password);

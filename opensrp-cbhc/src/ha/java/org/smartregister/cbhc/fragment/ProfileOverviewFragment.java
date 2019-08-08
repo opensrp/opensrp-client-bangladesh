@@ -102,6 +102,9 @@ public class ProfileOverviewFragment extends BaseProfileFragment {
 //            },1000);
 //
 //        }
+    if(cursorAdpater!=null){
+        cursorAdpater.notifyDataSetChanged();
+    }
     }
 
     @Override

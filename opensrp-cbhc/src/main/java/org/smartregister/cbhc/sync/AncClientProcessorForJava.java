@@ -7,6 +7,7 @@ import android.preference.PreferenceManager;
 import android.util.Log;
 
 import org.slf4j.helpers.Util;
+import org.smartregister.CoreLibrary;
 import org.smartregister.cbhc.application.AncApplication;
 import org.smartregister.cbhc.helper.ECSyncHelper;
 import org.smartregister.cbhc.util.Constants;

@@ -345,11 +345,11 @@ public class ProfileActivity extends BaseProfileActivity implements ProfileContr
                     presenter.saveForm(jsonString, false);
                 } else if (form.getString(JsonFormUtils.ENCOUNTER_TYPE).equals(Constants.EventType.HouseholdREGISTRATION)) {
 
-                        presenter.saveForm(jsonString, false);
+                    presenter.saveForm(jsonString, false);
 
                 } else if (form.getString(JsonFormUtils.ENCOUNTER_TYPE).equals(Constants.EventType.UPDATE_Household_REGISTRATION)) {
 
-                        presenter.saveForm(jsonString, true);
+                    presenter.saveForm(jsonString, true);
 
                 } else if (form.getString(JsonFormUtils.ENCOUNTER_TYPE).equals(Constants.EventType.MemberREGISTRATION)) {
                     presenter.saveForm(jsonString, false);

@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
+import android.graphics.Matrix;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
@@ -279,13 +280,21 @@ public class AncJsonFormFragment extends JsonFormFragment {
         });
         final AlertDialog dialog = builder.create();
         LayoutInflater inflater = getLayoutInflater();
+        Window window = dialog.getWindow();
+        window.setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
+        window.setGravity(Gravity.CENTER);
         View dialogLayout = inflater.inflate(R.layout.go_preview_dialog_layout, null);
         dialog.setView(dialogLayout);
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         ImageView image = (ImageView) dialogLayout.findViewById(R.id.goProDialogImage);
         Bitmap myBitmap = BitmapFactory.decodeFile(presenter.getmCurrentPhotoPath());
         if (myBitmap != null) {
-            image.setImageBitmap(myBitmap);
+            Matrix matrix = new Matrix();
+            matrix.postRotate(-90);
+            Bitmap rotatedBitmap = Bitmap.createBitmap(myBitmap,
+                    0, 0, myBitmap.getWidth(), myBitmap.getHeight(),
+                    matrix, true);
+            image.setImageBitmap(rotatedBitmap);
             dialog.show();
         }
 
@@ -696,7 +705,8 @@ public class AncJsonFormFragment extends JsonFormFragment {
                                 String relational_id = look_up.getString("value");
                                 CommonRepository commonRepository = AncApplication.getInstance().getContext().commonrepository("ec_household");
                                 CommonPersonObject household = commonRepository.findByBaseEntityId(relational_id);
-                                RegisterProvider.memberCountHashMap.put(household.getCaseId(), null);
+                                if (RegisterProvider.memberCountHashMap != null && RegisterProvider.memberCountHashMap.containsKey(household.getCaseId()))
+                                    RegisterProvider.memberCountHashMap.remove(household.getCaseId());
                             }
                         }
                     } catch (JSONException e) {
@@ -737,7 +747,7 @@ public class AncJsonFormFragment extends JsonFormFragment {
                                 String relational_id = look_up.getString("value");
                                 CommonRepository commonRepository = AncApplication.getInstance().getContext().commonrepository("ec_household");
                                 CommonPersonObject household = commonRepository.findByBaseEntityId(relational_id);
-                                if(household!=null){
+                                if (household != null) {
                                     headOfHouseholdFirstName = getValue(household.getColumnmaps(), "first_name", false);
                                     headOfHouseholdLastName = getValue(household.getColumnmaps(), "last_name", false);
                                     headOfHouseholdMobileNumber = getValue(household.getColumnmaps(), "phone_number", false);
@@ -774,13 +784,14 @@ public class AncJsonFormFragment extends JsonFormFragment {
         Utils.startAsyncTask(new AsyncTask() {
             String comment = "";
             String status = "";
+
             @Override
             protected Object doInBackground(Object[] objects) {
                 JSONObject formObject = getJsonApi().getmJSONObject();
-                try{
+                try {
                     comment = formObject.getString("dataApprovalComments");
-                    status =  formObject.getString("dataApprovalStatus");
-                }catch (Exception e){
+                    status = formObject.getString("dataApprovalStatus");
+                } catch (Exception e) {
 
                 }
                 return null;
@@ -789,7 +800,7 @@ public class AncJsonFormFragment extends JsonFormFragment {
             @Override
             protected void onPostExecute(Object o) {
                 super.onPostExecute(o);
-                if("0".equals(status)&&(!"".equals(comment)&&!"1".equals(comment))){
+                if ("0".equals(status) && (!"".equals(comment) && !"1".equals(comment))) {
                     android.support.v7.app.AlertDialog alertDialog = new android.support.v7.app.AlertDialog.Builder(getActivity()).create();
                     alertDialog.setTitle("তথ্য পরিবর্তন করুন");
                     alertDialog.setMessage(comment);
@@ -801,12 +812,11 @@ public class AncJsonFormFragment extends JsonFormFragment {
 
                                 }
                             });
-                    if(comment!=null&&!comment.isEmpty()){
+                    if (comment != null && !comment.isEmpty()) {
                         if (alertDialog != null)
                             alertDialog.show();
                     }
                 }
-
 
 
             }

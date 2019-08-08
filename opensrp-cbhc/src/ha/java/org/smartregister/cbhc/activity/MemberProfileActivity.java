@@ -271,10 +271,13 @@ public class MemberProfileActivity extends BaseProfileActivity implements Profil
             @Override
             protected void onPostExecute(Object o) {
                 super.onPostExecute(o);
-                if (delivery_status.equalsIgnoreCase("প্রসব পূর্ব") || delivery_status.equalsIgnoreCase("Antenatal Period")) {
-                    pregnant_statusView.setVisibility(View.VISIBLE);
-                    pregnant_statusView.setText("EDD: " + lmp_date);
+                if(delivery_status!=null) {
+                    if (delivery_status.equalsIgnoreCase("প্রসব পূর্ব") || delivery_status.equalsIgnoreCase("Antenatal Period")) {
+                        pregnant_statusView.setVisibility(View.VISIBLE);
+                        pregnant_statusView.setText("EDD: " + lmp_date);
+                    }
                 }
+
 //                if(Patient_identifier!=null){
 //                    ancIdView.setText("ID: " + Patient_identifier);
 //                }

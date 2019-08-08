@@ -48,8 +48,6 @@ public class AncRepository extends Repository {
         //////////////////FollowupRepository////////////////
         FollowupRepository.createTable(database);
 
-
-
         HealthIdRepository.createTable(database);
         UniqueIdRepository.createTable(database);
 

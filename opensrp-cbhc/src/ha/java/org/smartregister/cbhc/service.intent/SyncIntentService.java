@@ -58,7 +58,7 @@ public class SyncIntentService extends IntentService {
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         context = getBaseContext();
-        CoreLibrary.init(AncApplication.getInstance().getContext());
+
         httpAgent = AncApplication.getInstance().getContext().getHttpAgent();
         return super.onStartCommand(intent, flags, startId);
     }

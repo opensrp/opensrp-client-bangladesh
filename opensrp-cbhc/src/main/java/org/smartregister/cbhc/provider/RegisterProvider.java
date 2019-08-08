@@ -360,7 +360,7 @@ public class RegisterProvider implements RecyclerViewProvider<RegisterProvider.R
     }
 
     public static final HashMap<String, MemberCount> memberCountHashMap = new HashMap<>();
-
+    public static final HashMap<String, RegisterViewHolder> countViewHashMap = new HashMap<>();
     class MemberCountAsyncTask extends AsyncTask {
         CommonPersonObjectClient pc;
         int count = 0;
@@ -375,7 +375,7 @@ public class RegisterProvider implements RecyclerViewProvider<RegisterProvider.R
         ImageView femalechildpresent;
         ImageView malechildpresent;
         ImageView pregnantpresent;
-
+        RegisterViewHolder viewHolder;
         public MemberCountAsyncTask(CommonPersonObjectClient pc, RegisterViewHolder viewHolder) {
             this.pc = pc;
             this.countView = viewHolder.memberCount;
@@ -386,6 +386,8 @@ public class RegisterProvider implements RecyclerViewProvider<RegisterProvider.R
             this.femalechildpresent = viewHolder.femalepresent;
             this.malechildpresent = viewHolder.malepresent;
             this.pregnantpresent = viewHolder.pregnantpresent;
+
+            this.viewHolder = viewHolder;
         }
 
         @Override
@@ -494,6 +496,7 @@ public class RegisterProvider implements RecyclerViewProvider<RegisterProvider.R
             mc.maleChildCount = malechild;
             mc.femaleChildCount = femalechild;
             memberCountHashMap.put(pc.entityId(), mc);
+            countViewHashMap.put(pc.entityId(),viewHolder);
         }
     }
 
