@@ -19,6 +19,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ArrayAdapter;
+import android.widget.CursorAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -46,6 +47,7 @@ import org.smartregister.cbhc.fragment.QuickCheckFragment;
 import org.smartregister.cbhc.helper.ImageRenderHelper;
 import org.smartregister.cbhc.presenter.ProfilePresenter;
 import org.smartregister.cbhc.presenter.RegisterPresenter;
+import org.smartregister.cbhc.provider.RegisterProvider;
 import org.smartregister.cbhc.repository.AncRepository;
 import org.smartregister.cbhc.repository.HealthIdRepository;
 import org.smartregister.cbhc.repository.UniqueIdRepository;
@@ -99,6 +101,8 @@ public class ProfileActivity extends BaseProfileActivity implements ProfileContr
             Serializable serializable = extras.getSerializable(EXTRA_HOUSEHOLD_DETAILS);
             if (serializable != null && serializable instanceof CommonPersonObjectClient) {
                 householdDetails = (CommonPersonObjectClient) serializable;
+                if(RegisterProvider.memberCountHashMap.containsKey(householdDetails.entityId()))
+                RegisterProvider.memberCountHashMap.remove(householdDetails.entityId());
             }
         }
         setUpViews();
@@ -375,6 +379,7 @@ public class ProfileActivity extends BaseProfileActivity implements ProfileContr
                                         removeMember(entity_id);
                                         presenter.saveForm(jsonString, false);
                                         Utils.VIEWREFRESH = true;
+
                                     } catch (Exception e) {
                                         e.printStackTrace();
                                     }
@@ -400,6 +405,9 @@ public class ProfileActivity extends BaseProfileActivity implements ProfileContr
 //                mBaseFragment.setSearchTerm(res.getContents());
 //            } else
 //                Log.i("", "NO RESULT FOR QR CODE");
+        } else {
+            Utils.VIEWREFRESH = true;
+            refreshList(null);
         }
     }
 

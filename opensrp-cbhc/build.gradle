@@ -168,12 +168,14 @@ dependencies {
         exclude group: 'com.android.support', module: 'design'
         exclude group: 'com.android.support', module: 'appcompat-v7'
     }
+
     implementation('org.smartregister:opensrp-client-immunization:2.4.6-SNAPSHOT') {
         transitive = true
         exclude group: 'org.smartregister', module: 'opensrp-client-core'
         exclude group: 'org.smartregister', module: 'opensrp-client-native-form'
         exclude group: 'com.android.support', module: 'appcompat-v7'
     }
+
     implementation('org.smartregister:opensrp-client-native-form:6.6.26-SNAPSHOT@aar') {
 
         transitive = true

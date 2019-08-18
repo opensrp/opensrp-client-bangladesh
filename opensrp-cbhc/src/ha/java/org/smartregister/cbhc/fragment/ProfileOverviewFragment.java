@@ -25,7 +25,6 @@ import net.sqlcipher.database.SQLiteDatabase;
 import org.apache.commons.lang3.StringUtils;
 import org.joda.time.DateTime;
 import org.smartregister.cbhc.R;
-import org.smartregister.cbhc.activity.ProfileActivity;
 import org.smartregister.cbhc.application.AncApplication;
 import org.smartregister.cbhc.repository.AncRepository;
 import org.smartregister.cbhc.util.DBConstants;
@@ -102,9 +101,7 @@ public class ProfileOverviewFragment extends BaseProfileFragment {
 //            },1000);
 //
 //        }
-    if(cursorAdpater!=null){
-        cursorAdpater.notifyDataSetChanged();
-    }
+//
     }
 
     @Override
@@ -148,7 +145,8 @@ public class ProfileOverviewFragment extends BaseProfileFragment {
         super.onViewCreated(view, savedInstanceState);
         refreshadapter();
     }
-    HouseholdCursorAdpater cursorAdpater;
+
+
     public void refreshadapter() {
         if(fragmentView==null) return;
         (new AsyncTask(){
@@ -203,7 +201,7 @@ public class ProfileOverviewFragment extends BaseProfileFragment {
                 profile_photo.clear();
                 if(o!=null && o instanceof Cursor){
                     Cursor cursor = (Cursor)o;
-
+                    HouseholdCursorAdpater cursorAdpater;
                     cursorAdpater = new HouseholdCursorAdpater(getContext(),cursor);
 
 

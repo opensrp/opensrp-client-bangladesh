@@ -3,10 +3,7 @@ package org.smartregister.cbhc.contract;
 import android.app.Activity;
 import android.content.Intent;
 
-import org.apache.commons.lang3.tuple.Triple;
 import org.json.JSONObject;
-import org.smartregister.cbhc.activity.BaseProfileActivity;
-import org.smartregister.cbhc.activity.ProfileActivity;
 import org.smartregister.repository.AllSharedPreferences;
 
 import java.util.Map;
