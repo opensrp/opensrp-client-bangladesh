@@ -16,10 +16,10 @@
 
     <application
         android:name=".application.AncApplication"
-        android:debuggable="false"
         android:icon="@drawable/community_clinic_rounded"
         android:label="@string/app_name"
         android:supportsRtl="true"
+        android:usesCleartextTraffic="true"
         android:theme="@style/AncAppTheme"
         android:fullBackupContent="@xml/backup_config">
         <activity
