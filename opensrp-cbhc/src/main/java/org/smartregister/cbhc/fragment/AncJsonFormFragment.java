@@ -20,6 +20,7 @@ import android.support.design.widget.Snackbar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.AppCompatButton;
 import android.text.InputType;
+import android.text.TextUtils;
 import android.util.Log;
 import android.util.TypedValue;
 import android.view.Gravity;
@@ -42,6 +43,7 @@ import com.vijay.jsonwizard.customviews.MaterialSpinner;
 import com.vijay.jsonwizard.fragments.JsonFormFragment;
 import com.vijay.jsonwizard.presenters.JsonFormFragmentPresenter;
 import com.vijay.jsonwizard.utils.FormUtils;
+import com.vijay.jsonwizard.utils.ImageUtils;
 import com.vijay.jsonwizard.widgets.DatePickerFactory;
 
 import net.sqlcipher.Cursor;
@@ -81,6 +83,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import static com.vijay.jsonwizard.utils.FormUtils.dpToPixels;
 import static org.smartregister.cbhc.util.Constants.JSON_FORM_KEY.ENTITY_ID;
 import static org.smartregister.cbhc.util.Constants.KEY.VALUE;
 import static org.smartregister.util.Utils.getValue;
@@ -265,38 +268,46 @@ public class AncJsonFormFragment extends JsonFormFragment {
     }
 
     public void showPreviewDialog() {
-        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-        builder.setPositiveButton("ঠিক আছে", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                dialog.dismiss();
+        if(!TextUtils.isEmpty(presenter.getmCurrentPhotoPath())){
+            AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+            builder.setPositiveButton("ঠিক আছে", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    dialog.dismiss();
+                }
+            }).setNegativeButton("বাতিল করুন", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    triggerCameraIntent();
+                    dialog.dismiss();
+                }
+            });
+            final AlertDialog dialog = builder.create();
+            LayoutInflater inflater = getLayoutInflater();
+            Window window = dialog.getWindow();
+            window.setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
+            window.setGravity(Gravity.CENTER);
+            View dialogLayout = inflater.inflate(R.layout.go_preview_dialog_layout, null);
+            dialog.setView(dialogLayout);
+            dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+            try{
+
+                ImageView image = (ImageView) dialogLayout.findViewById(R.id.goProDialogImage);
+                Bitmap myBitmap = ImageUtils
+                        .loadBitmapFromFile(getView().getContext(), presenter.getmCurrentPhotoPath(),
+                                ImageUtils.getDeviceWidth(getView().getContext()),
+                                dpToPixels(getView().getContext(), 200));
+                if (myBitmap != null) {
+
+                    image.setImageBitmap(myBitmap);
+                    dialog.show();
+                }
+            }catch (Exception e){
+
             }
-        }).setNegativeButton("বাতিল করুন", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                triggerCameraIntent();
-                dialog.dismiss();
-            }
-        });
-        final AlertDialog dialog = builder.create();
-        LayoutInflater inflater = getLayoutInflater();
-        Window window = dialog.getWindow();
-        window.setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
-        window.setGravity(Gravity.CENTER);
-        View dialogLayout = inflater.inflate(R.layout.go_preview_dialog_layout, null);
-        dialog.setView(dialogLayout);
-        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-        ImageView image = (ImageView) dialogLayout.findViewById(R.id.goProDialogImage);
-        Bitmap myBitmap = BitmapFactory.decodeFile(presenter.getmCurrentPhotoPath());
-        if (myBitmap != null) {
-            Matrix matrix = new Matrix();
-            matrix.postRotate(-90);
-            Bitmap rotatedBitmap = Bitmap.createBitmap(myBitmap,
-                    0, 0, myBitmap.getWidth(), myBitmap.getHeight(),
-                    matrix, true);
-            image.setImageBitmap(rotatedBitmap);
-            dialog.show();
+
         }
+
 
     }
 

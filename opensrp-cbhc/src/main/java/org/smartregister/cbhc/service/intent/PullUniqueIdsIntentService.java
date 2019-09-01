@@ -5,6 +5,7 @@ package org.smartregister.cbhc.service.intent;
  */
 
 import android.app.IntentService;
+import android.app.Notification;
 import android.content.Intent;
 import android.util.Log;
 
@@ -26,7 +27,11 @@ public class PullUniqueIdsIntentService extends IntentService {
     private static final String TAG = PullUniqueIdsIntentService.class.getCanonicalName();
     private UniqueIdRepository uniqueIdRepo;
 
-
+//    @Override
+//    public void onCreate() {
+//        super.onCreate();
+//        startForeground(1,new Notification());
+//    }
     public PullUniqueIdsIntentService() {
         super("PullUniqueOpenMRSUniqueIdsService");
     }

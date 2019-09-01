@@ -4,6 +4,7 @@ import android.content.BroadcastReceiver;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
+import android.os.Build;
 import android.preference.PreferenceManager;
 import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
@@ -21,6 +22,7 @@ import org.smartregister.cbhc.event.TriggerSyncEvent;
 import org.smartregister.cbhc.event.ViewConfigurationSyncCompleteEvent;
 import org.smartregister.cbhc.helper.ECSyncHelper;
 import org.smartregister.cbhc.job.AncJobCreator;
+import org.smartregister.cbhc.job.ViewConfigurationsServiceJob;
 import org.smartregister.cbhc.receiver.SyncStatusBroadcastReceiver;
 import org.smartregister.cbhc.repository.AncRepository;
 import org.smartregister.cbhc.repository.HealthIdRepository;
@@ -202,9 +204,12 @@ public class AncApplication extends DrishtiApplication implements TimeChangedBro
     }
 
     public void startPullConfigurableViewsIntentService(android.content.Context context) {
-        Intent intent = new Intent(context, PullConfigurableViewsIntentService.class);
-        if(context!=null)
-            context.startService(intent);
+//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+//            context.startForegroundService(new Intent(context, PullConfigurableViewsIntentService.class));
+//        } else {
+//            context.startService(new Intent(context, PullConfigurableViewsIntentService.class));
+//        }
+        ViewConfigurationsServiceJob.scheduleJobImmediately(ViewConfigurationsServiceJob.TAG);
     }
 
     public static CommonFtsObject createCommonFtsObject() {
@@ -335,12 +340,19 @@ public class AncApplication extends DrishtiApplication implements TimeChangedBro
     };
 
     public void startPullHealthIdsService() {
-        Intent intent = new Intent(getApplicationContext(), PullHealthIdsIntentService.class);
-        getApplicationContext().startService(intent);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            getApplicationContext().startForegroundService(new Intent(getApplicationContext(), PullHealthIdsIntentService.class));
+        } else {
+            getApplicationContext().startService(new Intent(getApplicationContext(), PullHealthIdsIntentService.class));
+        }
     }
+
     public void startPullUniqueIdsService() {
-        Intent intent = new Intent(getApplicationContext(), PullUniqueIdsIntentService.class);
-        getApplicationContext().startService(intent);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            getApplicationContext().startForegroundService(new Intent(getApplicationContext(), PullUniqueIdsIntentService.class));
+        } else {
+            getApplicationContext().startService(new Intent(getApplicationContext(), PullUniqueIdsIntentService.class));
+        }
     }
 
     @Override

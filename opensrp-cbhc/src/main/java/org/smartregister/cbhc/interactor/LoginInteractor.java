@@ -152,9 +152,8 @@ public class LoginInteractor implements LoginContract.Interactor {
                                             loginResponse.payload());
 
                                     scheduleJobs();
-                                    AncApplication.getInstance().startPullUniqueIdsService();
-                                    AncApplication.getInstance().startPullHealthIdsService();
-
+                                    PullHealthIdsServiceJob.scheduleJobImmediately(PullHealthIdsServiceJob.TAG);
+                                    PullUniqueIdsServiceJob.scheduleJobImmediately(PullUniqueIdsServiceJob.TAG);
                                 } else {
                                     if (timeStatus.equals(TimeStatus.TIMEZONE_MISMATCH)) {
                                         TimeZone serverTimeZone = mLoginPresenter.getOpenSRPContext().userService()

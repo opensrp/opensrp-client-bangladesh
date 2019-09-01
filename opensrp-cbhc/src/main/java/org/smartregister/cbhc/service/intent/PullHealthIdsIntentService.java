@@ -2,6 +2,7 @@ package org.smartregister.cbhc.service.intent;
 
 
 import android.app.IntentService;
+import android.app.Notification;
 import android.content.Intent;
 import android.util.Log;
 
@@ -22,6 +23,11 @@ public class PullHealthIdsIntentService extends IntentService {
     public static final String IDENTIFIERS = "identifiers";
     private static final String TAG = PullHealthIdsIntentService.class.getCanonicalName();
     private HealthIdRepository healthIdRepo;
+//    @Override
+//    public void onCreate() {
+//        super.onCreate();
+//        startForeground(1,new Notification());
+//    }
 
 
     public PullHealthIdsIntentService() {

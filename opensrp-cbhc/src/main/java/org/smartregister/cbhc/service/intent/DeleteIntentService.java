@@ -192,7 +192,9 @@ public class DeleteIntentService extends IntentService {
                         if(condition.length()>4)
                             condition = condition.substring(0,condition.length()-4);
                         sql = sql + condition + ";";
-                        db.execSQL(sql);
+
+                        if(db!=null)
+                            db.execSQL(sql);
                     }
 
                     tablename = new String[2];
@@ -209,7 +211,9 @@ public class DeleteIntentService extends IntentService {
                         if(condition.length()>4)
                             condition = condition.substring(0,condition.length()-4);
                         sql = sql + condition + ";";
-                        db.execSQL(sql);
+
+                        if(db!=null)
+                            db.execSQL(sql);
                     }
 
                 }

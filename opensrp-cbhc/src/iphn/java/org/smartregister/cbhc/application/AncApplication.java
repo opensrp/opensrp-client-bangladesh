@@ -213,9 +213,7 @@ public class AncApplication extends DrishtiApplication implements TimeChangedBro
     }
 
     public void startPullConfigurableViewsIntentService(android.content.Context context) {
-        Intent intent = new Intent(context, PullConfigurableViewsIntentService.class);
-        if(context!=null)
-            context.startService(intent);
+        ViewConfigurationsServiceJob.scheduleJobImmediately(ViewConfigurationsServiceJob.TAG);
     }
 
     public static CommonFtsObject createCommonFtsObject() {
@@ -346,12 +344,19 @@ public class AncApplication extends DrishtiApplication implements TimeChangedBro
     };
 
     public void startPullHealthIdsService() {
-        Intent intent = new Intent(getApplicationContext(), PullHealthIdsIntentService.class);
-        getApplicationContext().startService(intent);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            getApplicationContext().startForegroundService(new Intent(getApplicationContext(), PullHealthIdsIntentService.class));
+        } else {
+            getApplicationContext().startService(new Intent(getApplicationContext(), PullHealthIdsIntentService.class));
+        }
     }
+
     public void startPullUniqueIdsService() {
-        Intent intent = new Intent(getApplicationContext(), PullUniqueIdsIntentService.class);
-        getApplicationContext().startService(intent);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            getApplicationContext().startForegroundService(new Intent(getApplicationContext(), PullUniqueIdsIntentService.class));
+        } else {
+            getApplicationContext().startService(new Intent(getApplicationContext(), PullUniqueIdsIntentService.class));
+        }
     }
 
     @Override

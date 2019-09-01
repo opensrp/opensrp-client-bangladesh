@@ -131,7 +131,7 @@ public class LoginActivity extends AppCompatActivity implements LoginContract.Vi
             goToHome(false);
         }
         mActivity = this;
-//        app_version_status();
+        app_version_status();
     }
 
     @Override
@@ -272,7 +272,7 @@ public class LoginActivity extends AppCompatActivity implements LoginContract.Vi
 //                password = "mpower@123";
 //                password = "Pain2set";
 //                username = "robinuthappa@gmail.com";
-//                username = "cc100@mhv.100";
+//                username = "cc10006955@mhv.1";
 //                password = "123456";
 
                 //anc repository object for raw query
@@ -384,8 +384,7 @@ public class LoginActivity extends AppCompatActivity implements LoginContract.Vi
                     if (!version_code.trim().isEmpty() && !version.equalsIgnoreCase(version_code.trim())) {
                         alertDialog = new android.support.v7.app.AlertDialog.Builder(LoginActivity.this).create();
                         alertDialog.setTitle("New version available");
-                        alertDialog.setCanceledOnTouchOutside(false);
-
+                        alertDialog.setCancelable(false);
                         alertDialog.setButton(android.support.v7.app.AlertDialog.BUTTON_POSITIVE, "UPDATE",
                                 new DialogInterface.OnClickListener() {
                                     public void onClick(DialogInterface dialog, int which) {

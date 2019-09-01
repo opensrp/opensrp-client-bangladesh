@@ -38,6 +38,8 @@ import org.smartregister.cbhc.contract.RegisterFragmentContract;
 import org.smartregister.cbhc.cursor.AdvancedMatrixCursor;
 import org.smartregister.cbhc.domain.AttentionFlag;
 import org.smartregister.cbhc.event.SyncEvent;
+import org.smartregister.cbhc.job.ImageUploadServiceJob;
+import org.smartregister.cbhc.job.SyncServiceJob;
 import org.smartregister.cbhc.provider.RegisterProvider;
 import org.smartregister.cbhc.receiver.SyncStatusBroadcastReceiver;
 import org.smartregister.cbhc.repository.AncRepository;
@@ -253,10 +255,12 @@ public abstract class BaseRegisterFragment extends RecyclerViewFragment implemen
                 @Override
                 public void onClick(View view) {
                     //Todo implement sync
-                    Intent intent = new Intent(getActivity().getApplicationContext(), SyncIntentService.class);
-                    getActivity().getApplicationContext().startService(intent);
-                    Intent intent1 = new Intent(getActivity().getApplicationContext(), ImageUploadSyncService.class);
-                    getActivity().getApplicationContext().startService(intent1);
+                    SyncServiceJob.scheduleJobImmediately(SyncServiceJob.TAG);
+                    ImageUploadServiceJob.scheduleJobImmediately(ImageUploadServiceJob.TAG);
+//                    Intent intent = new Intent(getActivity().getApplicationContext(), SyncIntentService.class);
+//                    getActivity().getApplicationContext().startService(intent);
+//                    Intent intent1= new Intent(getActivity().getApplicationContext(), ImageUploadSyncService.class);
+//                    getActivity().getApplicationContext().startService(intent1);
                 }
             });
         }
