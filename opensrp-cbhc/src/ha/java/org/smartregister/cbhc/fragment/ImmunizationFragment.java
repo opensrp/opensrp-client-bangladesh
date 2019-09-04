@@ -16,6 +16,7 @@ import org.smartregister.cbhc.R;
 import org.smartregister.cbhc.activity.DetailActivity;
 import org.smartregister.commonregistry.CommonPersonObjectClient;
 import org.smartregister.domain.Alert;
+import org.smartregister.domain.AlertStatus;
 import org.smartregister.immunization.ImmunizationLibrary;
 import org.smartregister.immunization.domain.ServiceRecord;
 import org.smartregister.immunization.domain.ServiceType;
@@ -115,6 +116,12 @@ public class ImmunizationFragment extends Fragment {
         if (alertService != null) {
             alertList = alertService.findByEntityIdAndAlertNames(childDetails.entityId(),
                     VaccinateActionUtils.allAlertNames("child"));
+            for(Alert alert : alertList){
+                if(alert.status().value().equalsIgnoreCase(AlertStatus.expired.value())){
+                    Alert o = new Alert(alert.caseId(),alert.scheduleName(),alert.visitCode(),AlertStatus.upcoming,alert.startDate(),alert.expiryDate());
+                   alertList.set(alertList.indexOf(alert),o);
+                }
+            }
         }
 
         List<VaccineGroup> supportedVaccines = VaccinatorUtils.getSupportedVaccines(getActivity());

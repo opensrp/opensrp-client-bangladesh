@@ -29,6 +29,7 @@ import org.smartregister.cbhc.activity.DetailActivity;
 import org.smartregister.cbhc.util.Utils;
 import org.smartregister.commonregistry.CommonPersonObjectClient;
 import org.smartregister.domain.Alert;
+import org.smartregister.domain.AlertStatus;
 import org.smartregister.immunization.ImmunizationLibrary;
 import org.smartregister.immunization.domain.ServiceRecord;
 import org.smartregister.immunization.domain.ServiceSchedule;
@@ -56,6 +57,8 @@ import org.smartregister.immunization.view.VaccineGroup;
 import org.smartregister.service.AlertService;
 import org.smartregister.util.DateUtil;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -68,9 +71,10 @@ import java.util.Random;
 import static org.smartregister.util.Utils.getName;
 
 public class ChildImmunizationFragment extends BaseProfileFragment {
-    public void setChildDetails(CommonPersonObjectClient childDetails){
+    public void setChildDetails(CommonPersonObjectClient childDetails) {
         this.childDetails = childDetails;
     }
+
     public static ChildImmunizationFragment newInstance(Bundle bundle) {
         Bundle args = bundle;
 
@@ -122,6 +126,7 @@ public class ChildImmunizationFragment extends BaseProfileFragment {
 //        cia = new ChildImmunizationFragment(fragmentView,getActivity());
         return fragmentView;
     }
+
     // Data
 //    private CommonPersonObjectClient childDetails = Utils.dummyDetatils();
     private CommonPersonObjectClient childDetails;
@@ -184,7 +189,6 @@ public class ChildImmunizationFragment extends BaseProfileFragment {
         org.smartregister.util.Utils.startAsyncTask(updateViewTask, null);
 
 
-
     }
 
     private void updateChildIdViews() {
@@ -201,6 +205,8 @@ public class ChildImmunizationFragment extends BaseProfileFragment {
         childIdTV.setText(String.format("%s: %s", "ID", childId));
     }
 
+    long timeDiff = 0l;
+
     private void updateAgeViews() {
         String formattedAge = "";
         String formattedDob = "";
@@ -210,7 +216,7 @@ public class ChildImmunizationFragment extends BaseProfileFragment {
                 DateTime dateTime = new DateTime(dobString);
                 Date dob = dateTime.toDate();
                 formattedDob = Utils.DATE_FORMAT.format(dob);
-                long timeDiff = Calendar.getInstance().getTimeInMillis() - dob.getTime();
+                timeDiff = Calendar.getInstance().getTimeInMillis() - dob.getTime();
 
                 if (timeDiff >= 0) {
                     formattedAge = DateUtil.getDuration(timeDiff);
@@ -291,17 +297,47 @@ public class ChildImmunizationFragment extends BaseProfileFragment {
             vaccineGroups = new ArrayList<>();
             List<org.smartregister.immunization.domain.jsonmapping.VaccineGroup> supportedVaccines =
                     VaccinatorUtils.getSupportedVaccines(getActivity());
+            final long two_years = 2 * 365 * 24 * 60 * 60 * 1000l;
+            for (Alert alert : alerts) {
+                String alert_name = alert.scheduleName();
+                for (Vaccine vaccine : vaccineList) {
+                    String vaccine_name = vaccine.getName();
 
+                    if (!alert_name.equalsIgnoreCase(vaccine_name)) {
+                        try {
+
+                            if (timeDiff > two_years) {
+                                Alert o = new Alert(alert.caseId(), alert.scheduleName(), alert.visitCode(), AlertStatus.upcoming, alert.startDate(), alert.expiryDate());
+                                alerts.set(alerts.indexOf(alert), o);
+                            }
+                        } catch (Exception e) {
+
+                        }
+                    }
+                }
+                try {
+
+                    if (timeDiff > two_years) {
+                        Alert o = new Alert(alert.caseId(), alert.scheduleName(), alert.visitCode(), AlertStatus.upcoming, alert.startDate(), alert.expiryDate());
+                        alerts.set(alerts.indexOf(alert), o);
+                    }
+                } catch (Exception e) {
+
+                }
+            }
             for (org.smartregister.immunization.domain.jsonmapping.VaccineGroup vaccineGroupObject : supportedVaccines) {
                 //Add BCG2 special vaccine to birth vaccine group
                 VaccinateActionUtils.addBcg2SpecialVaccine(getActivity(), vaccineGroupObject, vaccineList);
 
                 addVaccineGroup(-1, vaccineGroupObject, vaccineList, alerts);
             }
+
+
+
         }
     }
 
-    private class UpdateOfflineAlerts extends AsyncTask<Void,Void,Void>{
+    private class UpdateOfflineAlerts extends AsyncTask<Void, Void, Void> {
         @Override
         protected Void doInBackground(Void... voids) {
             String dobString = org.smartregister.util.Utils.getValue(childDetails.getColumnmaps(), "dob", false);
@@ -313,6 +349,7 @@ public class ChildImmunizationFragment extends BaseProfileFragment {
             return null;
         }
     }
+
     private void addVaccineGroup(int canvasId, org.smartregister.immunization.domain.jsonmapping.VaccineGroup vaccineGroupData, List<Vaccine> vaccineList, List<Alert> alerts) {
         LinearLayout vaccineGroupCanvasLL = (LinearLayout) view.findViewById(R.id.vaccine_group_canvas_ll);
         VaccineGroup curGroup = new VaccineGroup(getActivity());

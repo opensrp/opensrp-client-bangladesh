@@ -293,37 +293,49 @@ public class MemberProfileActivity extends BaseProfileActivity implements Profil
 //        }else if(typeofMember.equalsIgnoreCase("member")){
 //            householdDetails = CommonPersonObjectToClient(AncApplication.getInstance().getContext().commonrepository(DBConstants.MEMBER_TABLE_NAME).findByBaseEntityId(householdDetails.entityId()));
 //        }
-
-        householdDetails.getColumnmaps().putAll(AncApplication.getInstance().getContext().detailsRepository().getAllDetailsForClient(householdDetails.entityId()));
-        String firstName = org.smartregister.util.Utils.getValue(householdDetails.getColumnmaps(), DBConstants.KEY.FIRST_NAME, true);
-        String lastName = org.smartregister.util.Utils.getValue(householdDetails.getColumnmaps(), DBConstants.KEY.LAST_NAME, true);
-        if (lastName.equalsIgnoreCase("null") || lastName == null) {
-            lastName = "";
-        }
-        String patientName = getName(firstName, lastName);
-
-
-        setProfileName(patientName);
-
-        String dobString = getValue(householdDetails.getColumnmaps(), "dob", true);
-        String durationString = "";
-        if (StringUtils.isNotBlank(dobString)) {
-            try {
-                DateTime birthDateTime = new DateTime(dobString);
-
-                String duration = DateUtil.getDuration(birthDateTime);
-                if (duration != null) {
-                    durationString = duration;
-                }
-            } catch (Exception e) {
-                Log.e(getClass().getName(), e.toString(), e);
+        org.smartregister.util.Utils.startAsyncTask(new AsyncTask(){
+            @Override
+            protected Object doInBackground(Object[] objects) {
+                householdDetails.getColumnmaps().putAll(AncApplication.getInstance().getContext().detailsRepository().getAllDetailsForClient(householdDetails.entityId()));
+                return null;
             }
-        }
-        setProfileAge(durationString);
-        setProfileID(getValue(householdDetails.getColumnmaps(), "Patient_Identifier", true));
-        gestationAgeView.setVisibility(View.GONE);
-        followupFragment.notifyAdapter();
-        profileOverviewFragment.reloadView();
+
+            @Override
+            protected void onPostExecute(Object o) {
+                super.onPostExecute(o);
+                String firstName = org.smartregister.util.Utils.getValue(householdDetails.getColumnmaps(), DBConstants.KEY.FIRST_NAME, true);
+                String lastName = org.smartregister.util.Utils.getValue(householdDetails.getColumnmaps(), DBConstants.KEY.LAST_NAME, true);
+                if (lastName.equalsIgnoreCase("null") || lastName == null) {
+                    lastName = "";
+                }
+                String patientName = getName(firstName, lastName);
+
+
+                setProfileName(patientName);
+
+                String dobString = getValue(householdDetails.getColumnmaps(), "dob", true);
+                String durationString = "";
+                if (StringUtils.isNotBlank(dobString)) {
+                    try {
+                        DateTime birthDateTime = new DateTime(dobString);
+
+                        String duration = DateUtil.getDuration(birthDateTime);
+                        if (duration != null) {
+                            durationString = duration;
+                        }
+                    } catch (Exception e) {
+                        Log.e(getClass().getName(), e.toString(), e);
+                    }
+                }
+                setProfileAge(durationString);
+                setProfileID(getValue(householdDetails.getColumnmaps(), "Patient_Identifier", true));
+                gestationAgeView.setVisibility(View.GONE);
+                followupFragment.notifyAdapter();
+                profileOverviewFragment.reloadView();
+            }
+        }, null);
+
+
     }
 
     private CommonPersonObjectClient CommonPersonObjectToClient(CommonPersonObject commonPersonObject) {
@@ -585,7 +597,7 @@ public class MemberProfileActivity extends BaseProfileActivity implements Profil
         super.onResume();
         String baseEntityId = getIntent().getStringExtra(Constants.INTENT_KEY.BASE_ENTITY_ID);
         mProfilePresenter.refreshProfileView(baseEntityId);
-//        refreshProfileViews();
+        refreshProfileViews();
     }
 
     @Override
@@ -790,47 +802,6 @@ public class MemberProfileActivity extends BaseProfileActivity implements Profil
 
         //"বিবাহিত"
         return maritalStatus != null && (maritalStatus.equals("Married") || maritalStatus.equalsIgnoreCase("বিবাহিত")) ? 1 : 0;
-    }
-
-    public void updateClientStatusAsEvent(String attributeName, Object attributeValue, String entityType) {
-        try {
-
-            ECSyncHelper syncHelper = AncApplication.getInstance().getEcSyncHelper();
-
-
-            Date date = new Date();
-            EventClientRepository db = (EventClientRepository) AncApplication.getInstance().getEventClientRepository();
-
-
-            JSONObject client = db.getClientByBaseEntityId(householdDetails.entityId());
-
-
-            Event event = (Event) new Event()
-                    .withBaseEntityId(householdDetails.entityId())
-                    .withEventDate(new Date())
-                    .withEventType("")
-                    .withLocationId(context().allSharedPreferences().fetchCurrentLocality())
-                    .withProviderId(context().allSharedPreferences().fetchRegisteredANM())
-                    .withEntityType(entityType)
-                    .withFormSubmissionId(JsonFormUtils.generateRandomUUIDString())
-                    .withDateCreated(new Date());
-            event.addObs((new Obs()).withFormSubmissionField(attributeName).withValue(attributeValue).withFieldCode(attributeName).withFieldType("formsubmissionField").withFieldDataType("text").withParentCode("").withHumanReadableValues(new ArrayList<Object>()));
-
-
-            addMetaData(this, event, date);
-            JSONObject eventJson = new JSONObject(JsonFormUtils.gson.toJson(event));
-            db.addEvent(householdDetails.entityId(), eventJson);
-            long lastSyncTimeStamp = context().allSharedPreferences().fetchLastUpdatedAtDate(0);
-            Date lastSyncDate = new Date(lastSyncTimeStamp);
-            AncClientProcessorForJava.getInstance(this).processClient(syncHelper.getEvents(lastSyncDate, BaseRepository.TYPE_Task_Unprocessed));
-            context().allSharedPreferences().saveLastUpdatedAtDate(lastSyncDate.getTime());
-
-            //update details
-
-
-        } catch (Exception e) {
-            Log.e(TAG, e.getMessage());
-        }
     }
 
     @Override

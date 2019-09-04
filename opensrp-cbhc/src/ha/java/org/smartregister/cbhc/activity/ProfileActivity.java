@@ -161,35 +161,55 @@ public class ProfileActivity extends BaseProfileActivity implements ProfileContr
         gestationAgeView.setVisibility(View.GONE);
     }
 
+    @Override
+    public void onWindowFocusChanged(boolean hasFocus) {
+        super.onWindowFocusChanged(hasFocus);
+    }
+
     public void refreshProfileViews() {
-        householdDetails = CommonPersonObjectToClient(AncApplication.getInstance().getContext().commonrepository(DBConstants.HOUSEHOLD_TABLE_NAME).findByBaseEntityId(householdDetails.entityId()));
-
-        String firstName = org.smartregister.util.Utils.getValue(householdDetails.getColumnmaps(), DBConstants.KEY.FIRST_NAME, true);
-        String lastName = org.smartregister.util.Utils.getValue(householdDetails.getColumnmaps(), DBConstants.KEY.LAST_NAME, true);
-        if (lastName.equalsIgnoreCase("null") || lastName == null) {
-            lastName = "";
-        }
-        String patientName = getName(firstName, lastName);
-        patientName = patientName + " (খানা প্রধান)";
-
-        setProfileName(patientName);
-        String dobString = getValue(householdDetails.getColumnmaps(), "dob", true);
-        String durationString = "";
-        if (StringUtils.isNotBlank(dobString)) {
-            try {
-                DateTime birthDateTime = new DateTime(dobString);
-
-                String duration = DateUtil.getDuration(birthDateTime);
-                if (duration != null) {
-                    durationString = duration;
-                }
-            } catch (Exception e) {
-                Log.e(getClass().getName(), e.toString(), e);
+        org.smartregister.util.Utils.startAsyncTask(new AsyncTask() {
+            @Override
+            protected Object doInBackground(Object[] objects) {
+//                householdDetails = CommonPersonObjectToClient(AncApplication.getInstance().getContext().commonrepository(DBConstants.HOUSEHOLD_TABLE_NAME).findByBaseEntityId(householdDetails.entityId()));
+                householdDetails.getColumnmaps().putAll(AncApplication.getInstance().getContext().detailsRepository().getAllDetailsForClient(householdDetails.entityId()));
+                return null;
             }
-        }
-        setProfileAge(durationString);
-        setProfileID(getValue(householdDetails.getColumnmaps(), "Patient_Identifier", true));
-        gestationAgeView.setVisibility(View.GONE);
+
+            @Override
+            protected void onPostExecute(Object o) {
+                super.onPostExecute(o);
+                String firstName = org.smartregister.util.Utils.getValue(householdDetails.getColumnmaps(), DBConstants.KEY.FIRST_NAME, true);
+                String lastName = org.smartregister.util.Utils.getValue(householdDetails.getColumnmaps(), DBConstants.KEY.LAST_NAME, true);
+                if (lastName.equalsIgnoreCase("null") || lastName == null) {
+                    lastName = "";
+                }
+                String patientName = getName(firstName, lastName);
+                patientName = patientName + " (খানা প্রধান)";
+
+                setProfileName(patientName);
+                String dobString = getValue(householdDetails.getColumnmaps(), "dob", true);
+                String durationString = "";
+                if (StringUtils.isNotBlank(dobString)) {
+                    try {
+                        DateTime birthDateTime = new DateTime(dobString);
+
+                        String duration = DateUtil.getDuration(birthDateTime);
+                        if (duration != null) {
+                            durationString = duration;
+                        }
+                    } catch (Exception e) {
+                        Log.e(getClass().getName(), e.toString(), e);
+                    }
+                }
+                setProfileAge(durationString);
+                setProfileID(getValue(householdDetails.getColumnmaps(), "Patient_Identifier", true));
+                gestationAgeView.setVisibility(View.GONE);
+            }
+        },null);
+
+
+
+
 
     }
 
@@ -393,7 +413,7 @@ public class ProfileActivity extends BaseProfileActivity implements ProfileContr
                 Log.e(TAG, Log.getStackTraceString(e));
             } finally {
                 refreshList(null);
-                refreshProfileViews();
+//                refreshProfileViews();
                 Utils.VIEWREFRESH = true;
             }
 
@@ -408,6 +428,7 @@ public class ProfileActivity extends BaseProfileActivity implements ProfileContr
         } else {
             Utils.VIEWREFRESH = true;
             refreshList(null);
+//            refreshProfileViews();
         }
     }
 
@@ -567,6 +588,7 @@ public class ProfileActivity extends BaseProfileActivity implements ProfileContr
         super.onResume();
 //        String baseEntityId = getIntent().getStringExtra(Constants.INTENT_KEY.BASE_ENTITY_ID);
 //        mProfilePresenter.refreshProfileView(baseEntityId);
+//        refreshProfileViews();
     }
 
     @Override

@@ -26,6 +26,7 @@ import org.smartregister.cbhc.activity.DetailActivity;
 import org.smartregister.cbhc.util.Utils;
 import org.smartregister.commonregistry.CommonPersonObjectClient;
 import org.smartregister.domain.Alert;
+import org.smartregister.domain.AlertStatus;
 import org.smartregister.immunization.ImmunizationLibrary;
 import org.smartregister.immunization.domain.ServiceRecord;
 import org.smartregister.immunization.domain.ServiceSchedule;
@@ -193,7 +194,7 @@ public class WomanImmunizationFragment extends BaseProfileFragment {
         TextView childIdTV = (TextView) view.findViewById(R.id.child_id_tv);
         childIdTV.setText(String.format("%s: %s", "ID", childId));
     }
-
+    long timeDiff = 0l;
     private void updateAgeViews() {
         String formattedAge = "";
         String formattedDob = "";
@@ -203,7 +204,7 @@ public class WomanImmunizationFragment extends BaseProfileFragment {
                 DateTime dateTime = new DateTime(dobString);
                 Date dob = dateTime.toDate();
                 formattedDob = Utils.DATE_FORMAT.format(dob);
-                long timeDiff = Calendar.getInstance().getTimeInMillis() - dob.getTime();
+                timeDiff = Calendar.getInstance().getTimeInMillis() - dob.getTime();
 
                 if (timeDiff >= 0) {
                     formattedAge = DateUtil.getDuration(timeDiff);
@@ -284,7 +285,35 @@ public class WomanImmunizationFragment extends BaseProfileFragment {
             vaccineGroups = new ArrayList<>();
             List<org.smartregister.immunization.domain.jsonmapping.VaccineGroup> supportedVaccines =
                     VaccinatorUtils.getSupportedWomanVaccines(getActivity());
+            final long fifteen_years = 15 * 365 * 24 * 60 * 60 * 1000l;
+            final long fiftifive_years = 55 * 365 * 24 * 60 * 60 * 1000l;
+            for (Alert alert : alerts) {
+                String alert_name = alert.scheduleName();
+                for (Vaccine vaccine : vaccineList) {
+                    String vaccine_name = vaccine.getName();
 
+                    if (!alert_name.equalsIgnoreCase(vaccine_name)) {
+                        try {
+
+                            if (timeDiff > fifteen_years && timeDiff < fiftifive_years) {
+                                Alert o = new Alert(alert.caseId(), alert.scheduleName(), alert.visitCode(), AlertStatus.upcoming, alert.startDate(), alert.expiryDate());
+                                alerts.set(alerts.indexOf(alert), o);
+                            }
+                        } catch (Exception e) {
+
+                        }
+                    }
+                }
+                try {
+
+                    if (timeDiff > fifteen_years && timeDiff < fiftifive_years) {
+                        Alert o = new Alert(alert.caseId(), alert.scheduleName(), alert.visitCode(), AlertStatus.upcoming, alert.startDate(), alert.expiryDate());
+                        alerts.set(alerts.indexOf(alert), o);
+                    }
+                } catch (Exception e) {
+
+                }
+            }
             for (org.smartregister.immunization.domain.jsonmapping.VaccineGroup vaccineGroupObject : supportedVaccines) {
                 //Add BCG2 special vaccine to birth vaccine group
                 VaccinateActionUtils.addBcg2SpecialVaccine(getActivity(), vaccineGroupObject, vaccineList);

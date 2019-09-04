@@ -270,7 +270,7 @@ public class LoginActivity extends AppCompatActivity implements LoginContract.Vi
 //                username = "sabab@ahmed.com";
 //                password = "Pain2set";
 
-                //anc repository object for raw query
+                  //anc repository object for raw query
 //                AncRepository repo = (AncRepository) AncApplication.getInstance().getRepository();
 //                SQLiteDatabase db = repo.getReadableDatabase();
 //                Cursor cursor = db.rawQuery("sql",new String[]{});
