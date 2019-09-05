@@ -306,7 +306,7 @@ public class ChildImmunizationFragment extends BaseProfileFragment {
                     if (!alert_name.equalsIgnoreCase(vaccine_name)) {
                         try {
 
-                            if (timeDiff > two_years) {
+                            if (timeDiff >= two_years) {
                                 Alert o = new Alert(alert.caseId(), alert.scheduleName(), alert.visitCode(), AlertStatus.upcoming, alert.startDate(), alert.expiryDate());
                                 alerts.set(alerts.indexOf(alert), o);
                             }
@@ -317,7 +317,7 @@ public class ChildImmunizationFragment extends BaseProfileFragment {
                 }
                 try {
 
-                    if (timeDiff > two_years) {
+                    if (timeDiff >= two_years) {
                         Alert o = new Alert(alert.caseId(), alert.scheduleName(), alert.visitCode(), AlertStatus.upcoming, alert.startDate(), alert.expiryDate());
                         alerts.set(alerts.indexOf(alert), o);
                     }

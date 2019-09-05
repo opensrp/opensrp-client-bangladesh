@@ -295,7 +295,7 @@ public class WomanImmunizationFragment extends BaseProfileFragment {
                     if (!alert_name.equalsIgnoreCase(vaccine_name)) {
                         try {
 
-                            if (timeDiff > fifteen_years && timeDiff < fiftifive_years) {
+                            if (!(timeDiff >= fifteen_years && timeDiff <= fiftifive_years)) {
                                 Alert o = new Alert(alert.caseId(), alert.scheduleName(), alert.visitCode(), AlertStatus.upcoming, alert.startDate(), alert.expiryDate());
                                 alerts.set(alerts.indexOf(alert), o);
                             }
@@ -306,7 +306,7 @@ public class WomanImmunizationFragment extends BaseProfileFragment {
                 }
                 try {
 
-                    if (timeDiff > fifteen_years && timeDiff < fiftifive_years) {
+                    if (!(timeDiff >= fifteen_years && timeDiff <= fiftifive_years)) {
                         Alert o = new Alert(alert.caseId(), alert.scheduleName(), alert.visitCode(), AlertStatus.upcoming, alert.startDate(), alert.expiryDate());
                         alerts.set(alerts.indexOf(alert), o);
                     }
