@@ -7,6 +7,7 @@ import com.google.gson.reflect.TypeToken;
 
 import org.smartregister.cbhc.application.AncApplication;
 import org.smartregister.cbhc.domain.Characteristic;
+import org.smartregister.cbhc.util.Utils;
 import org.smartregister.util.AssetHandler;
 
 import java.lang.reflect.Type;
@@ -18,16 +19,9 @@ import java.util.List;
 public class CharacteristicsHelper {
 
     private static final String TAG = CharacteristicsHelper.class.getCanonicalName();
-
-    public List<Characteristic> populationCharacteristics;
-
     private static final Type CHARACTERISTIC_TYPE = new TypeToken<List<Characteristic>>() {
     }.getType();
-
-    public List<Characteristic> getPopulationCharacteristics() {
-        return populationCharacteristics;
-    }
-
+    public List<Characteristic> populationCharacteristics;
 
     public CharacteristicsHelper() {
 
@@ -38,9 +32,14 @@ public class CharacteristicsHelper {
             populationCharacteristics = gson.fromJson(jsonstring, CHARACTERISTIC_TYPE); // contains the whole reviews list
 
         } catch (Exception e) {
+            Utils.appendLog(getClass().getName(), e);
             Log.e(TAG, e.getMessage());
         }
 
+    }
+
+    public List<Characteristic> getPopulationCharacteristics() {
+        return populationCharacteristics;
     }
 
 }

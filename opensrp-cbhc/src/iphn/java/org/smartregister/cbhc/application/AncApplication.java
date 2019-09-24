@@ -102,6 +102,7 @@ public class AncApplication extends DrishtiApplication implements TimeChangedBro
         try {
             Utils.saveLanguage("en");
         } catch (Exception e) {
+Utils.appendLog(getClass().getName(),e);
             Log.e(TAG, e.getMessage());
         }
 //        initLibraries();
@@ -143,6 +144,7 @@ public class AncApplication extends DrishtiApplication implements TimeChangedBro
             List<Vaccine> specialVaccines = VaccinatorUtils.getSpecialVaccines(this);
             VaccineSchedule.init(childVaccines, specialVaccines, "child");
         } catch (Exception e) {
+Utils.appendLog(getClass().getName(),e);
             Log.e(TAG, Log.getStackTraceString(e));
         }
     }
@@ -200,6 +202,7 @@ public class AncApplication extends DrishtiApplication implements TimeChangedBro
             DrishtiSyncScheduler.stop(getApplicationContext());
             context.allSharedPreferences().saveIsSyncInProgress(false);
         } catch (Exception e) {
+Utils.appendLog(getClass().getName(),e);
             Log.e(TAG, e.getMessage());
         }
     }
@@ -305,6 +308,7 @@ public class AncApplication extends DrishtiApplication implements TimeChangedBro
 
         } catch
                 (Exception e) {
+Utils.appendLog(getClass().getName(),e);
             Log.e(TAG, e.getMessage());
         }
 

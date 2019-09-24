@@ -3,25 +3,20 @@ package org.smartregister.cbhc.interactor;
 import android.content.Context;
 import android.util.Log;
 
-import com.evernote.android.job.JobManager;
-
-import org.apache.commons.lang3.StringUtils;
 import org.joda.time.DateTime;
 import org.smartregister.cbhc.BuildConfig;
 import org.smartregister.cbhc.R;
 import org.smartregister.cbhc.application.AncApplication;
 import org.smartregister.cbhc.contract.LoginContract;
-import org.smartregister.cbhc.job.AncJobCreator;
-import org.smartregister.cbhc.job.DeleteIntentServiceJob;
 import org.smartregister.cbhc.job.ImageUploadServiceJob;
 import org.smartregister.cbhc.job.PullHealthIdsServiceJob;
 import org.smartregister.cbhc.job.PullUniqueIdsServiceJob;
 import org.smartregister.cbhc.job.SyncServiceJob;
 import org.smartregister.cbhc.job.ViewConfigurationsServiceJob;
-import org.smartregister.cbhc.service.intent.DeleteIntentService;
 import org.smartregister.cbhc.task.RemoteLoginTask;
 import org.smartregister.cbhc.util.Constants;
 import org.smartregister.cbhc.util.NetworkUtils;
+import org.smartregister.cbhc.util.Utils;
 import org.smartregister.domain.LoginResponse;
 import org.smartregister.domain.TimeStatus;
 import org.smartregister.domain.jsonmapping.LoginResponseData;
@@ -42,11 +37,10 @@ import static org.smartregister.domain.LoginResponse.UNKNOWN_RESPONSE;
  */
 public class LoginInteractor implements LoginContract.Interactor {
 
-    private LoginContract.Presenter mLoginPresenter;
-
-    private RemoteLoginTask remoteLoginTask;
-
     private static final String TAG = LoginInteractor.class.getCanonicalName();
+    private static final int MINIMUM_JOB_FLEX_VALUE = 1;
+    private LoginContract.Presenter mLoginPresenter;
+    private RemoteLoginTask remoteLoginTask;
 
     public LoginInteractor(LoginContract.Presenter loginPresenter) {
         this.mLoginPresenter = loginPresenter;
@@ -69,19 +63,17 @@ public class LoginInteractor implements LoginContract.Interactor {
         //init Job Manager
 
 
-
         //schedule jobs
-        SyncServiceJob.scheduleJob(SyncServiceJob.TAG, TimeUnit.MINUTES.toMillis(BuildConfig.DATA_SYNC_DURATION_MINUTES), getFlexValue(BuildConfig.DATA_SYNC_DURATION_MINUTES));
+        //SyncServiceJob.scheduleJob(SyncServiceJob.TAG, TimeUnit.MINUTES.toMillis(BuildConfig.DATA_SYNC_DURATION_MINUTES), getFlexValue(BuildConfig.DATA_SYNC_DURATION_MINUTES));
         PullUniqueIdsServiceJob.scheduleJob(PullUniqueIdsServiceJob.TAG, TimeUnit.MINUTES.toMillis(BuildConfig.PULL_UNIQUE_IDS_MINUTES), getFlexValue(BuildConfig.PULL_UNIQUE_IDS_MINUTES));
         PullHealthIdsServiceJob.scheduleJob(PullHealthIdsServiceJob.TAG, TimeUnit.MINUTES.toMillis(BuildConfig.PULL_UNIQUE_IDS_MINUTES), getFlexValue(BuildConfig.PULL_UNIQUE_IDS_MINUTES));
         ImageUploadServiceJob.scheduleJob(ImageUploadServiceJob.TAG, TimeUnit.MINUTES.toMillis(BuildConfig.IMAGE_UPLOAD_MINUTES), getFlexValue(BuildConfig.IMAGE_UPLOAD_MINUTES));
         ViewConfigurationsServiceJob.scheduleJob(ViewConfigurationsServiceJob.TAG, TimeUnit.MINUTES.toMillis(BuildConfig.VIEW_SYNC_CONFIGURATIONS_MINUTES), getFlexValue(BuildConfig.VIEW_SYNC_CONFIGURATIONS_MINUTES));
-        DeleteIntentServiceJob.scheduleJob(DeleteIntentServiceJob.TAG, TimeUnit.MINUTES.toMillis(BuildConfig.DATA_SYNC_DURATION_MINUTES), getFlexValue(BuildConfig.DATA_SYNC_DURATION_MINUTES));
+        //DeleteIntentServiceJob.scheduleJob(DeleteIntentServiceJob.TAG, TimeUnit.MINUTES.toMillis(BuildConfig.DATA_SYNC_DURATION_MINUTES), getFlexValue(BuildConfig.DATA_SYNC_DURATION_MINUTES));
 //        ZJob.scheduleJob(SyncServiceJob.TAG, TimeUnit.MINUTES.toMillis(BuildConfig.VIEW_SYNC_CONFIGURATIONS_MINUTES), getFlexValue(BuildConfig.VIEW_SYNC_CONFIGURATIONS_MINUTES));
 
     }
 
-    private static final int MINIMUM_JOB_FLEX_VALUE = 1;
     private long getFlexValue(int value) {
         int minutes = MINIMUM_JOB_FLEX_VALUE;
 
@@ -117,7 +109,7 @@ public class LoginInteractor implements LoginContract.Interactor {
     }
 
     private void localLoginWith(String userName, String password) {
-        if(getUserService()!=null&&userName!=null&&password!=null){
+        if (getUserService() != null && userName != null && password != null) {
             getUserService().localLogin(userName, password);
             getLoginView().goToHome(false);
             new Thread(new Runnable() {
@@ -190,6 +182,7 @@ public class LoginInteractor implements LoginContract.Interactor {
                 getLoginView().showErrorDialog("OpenSRP Base URL is missing. Please add it in Setting and try again");
             }
         } catch (Exception e) {
+            Utils.appendLog(getClass().getName(), e);
             Log.e(TAG, e.getMessage());
 
             getLoginView().showErrorDialog("Error occurred trying to loginWithLocalFlag in. Please try again...");

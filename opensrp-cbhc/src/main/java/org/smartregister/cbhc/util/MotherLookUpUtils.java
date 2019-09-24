@@ -9,7 +9,6 @@ import android.widget.ProgressBar;
 import org.apache.commons.lang3.StringUtils;
 import org.smartregister.Context;
 import org.smartregister.cbhc.domain.EntityLookUp;
-import org.smartregister.cbhc.util.DBConstants;
 import org.smartregister.clientandeventmodel.DateUtil;
 import org.smartregister.commonregistry.CommonPersonObject;
 import org.smartregister.commonregistry.CommonRepository;
@@ -23,7 +22,6 @@ import java.util.List;
 import java.util.Map;
 
 import static android.view.View.VISIBLE;
-import static android.view.View.combineMeasuredStates;
 import static org.apache.commons.lang3.StringUtils.isBlank;
 import static org.smartregister.util.Utils.getValue;
 import static org.smartregister.util.Utils.startAsyncTask;
@@ -32,25 +30,23 @@ import static org.smartregister.util.Utils.startAsyncTask;
  * Created by keyman on 26/01/2017.
  */
 public class MotherLookUpUtils {
-    private static final String TAG = MotherLookUpUtils.class.getName();
-
     public static final String firstName = "first_name";
     public static final String lastName = "last_name";
     public static final String birthDate = "date_birth";
     public static final String dob = "dob";
     public static final String baseEntityId = "base_entity_id";
-
-    public static HashMap<String,String> lookUpTableHash = new HashMap<String,String>();
+    private static final String TAG = MotherLookUpUtils.class.getName();
+    public static HashMap<String, String> lookUpTableHash = new HashMap<String, String>();
     public static String Name = "name";
     public static String Place = "place";
     public static String Address = "address";
 
     static {
-        lookUpTableHash.put("Father_Guardian_First_Name_english",DBConstants.MEMBER_TABLE_NAME);
-        lookUpTableHash.put("Mother_Guardian_First_Name_english",DBConstants.WOMAN_TABLE_NAME);
-        lookUpTableHash.put("spouseName_english",DBConstants.MEMBER_TABLE_NAME+","+DBConstants.WOMAN_TABLE_NAME);
-        lookUpTableHash.put("birthPlace",DBConstants.MEMBER_TABLE_NAME+","+DBConstants.WOMAN_TABLE_NAME);
-        lookUpTableHash.put("permanentAddress",DBConstants.MEMBER_TABLE_NAME+","+DBConstants.WOMAN_TABLE_NAME);
+        lookUpTableHash.put("Father_Guardian_First_Name_english", DBConstants.MEMBER_TABLE_NAME);
+        lookUpTableHash.put("Mother_Guardian_First_Name_english", DBConstants.WOMAN_TABLE_NAME);
+        lookUpTableHash.put("spouseName_english", DBConstants.MEMBER_TABLE_NAME + "," + DBConstants.WOMAN_TABLE_NAME);
+        lookUpTableHash.put("birthPlace", DBConstants.MEMBER_TABLE_NAME + "," + DBConstants.WOMAN_TABLE_NAME);
+        lookUpTableHash.put("permanentAddress", DBConstants.MEMBER_TABLE_NAME + "," + DBConstants.WOMAN_TABLE_NAME);
 
         //        lookUpTableHash.put(,DBConstants.CHILD_TABLE_NAME);
     }
@@ -61,7 +57,7 @@ public class MotherLookUpUtils {
             @Override
             protected HashMap<CommonPersonObject, List<CommonPersonObject>> doInBackground(Void... params) {
                 publishProgress();
-                return lookUp(context, entityLookUp,householdID, lookuptype);
+                return lookUp(context, entityLookUp, householdID, lookuptype);
             }
 
             @Override
@@ -81,11 +77,11 @@ public class MotherLookUpUtils {
         }, null);
     }
 
-    private static HashMap<CommonPersonObject, List<CommonPersonObject>> lookUp(Context context, EntityLookUp entityLookUp,String householdid, String lookuptype) {
-        if(lookuptype.equals("birth_place")){
+    private static HashMap<CommonPersonObject, List<CommonPersonObject>> lookUp(Context context, EntityLookUp entityLookUp, String householdid, String lookuptype) {
+        if (lookuptype.equals("birth_place")) {
             return Jilla.getResults(entityLookUp.getMap().get("birth_place"));
         }
-        if(lookuptype.equals("permanent_address")){
+        if (lookuptype.equals("permanent_address")) {
             return Jilla.getResultsAddress(entityLookUp.getMap().get("permanent_address"));
         }
         HashMap<CommonPersonObject, List<CommonPersonObject>> results = new HashMap<>();
@@ -106,7 +102,7 @@ public class MotherLookUpUtils {
         List<CommonPersonObject> motherList = new ArrayList<CommonPersonObject>();
 
         CommonRepository commonRepository = context.commonrepository(DBConstants.HOUSEHOLD_TABLE_NAME);
-        String query = lookUpQuery(entityLookUp.getMap(), tableName,householdid);
+        String query = lookUpQuery(entityLookUp.getMap(), tableName, householdid);
 
         Cursor cursor = null;
         try {
@@ -125,6 +121,7 @@ public class MotherLookUpUtils {
 
 
         } catch (Exception e) {
+            Utils.appendLog(MotherLookUpUtils.class.getName(), e);
             Log.e(TAG, e.getMessage(), e);
         } finally {
             if (cursor != null) {
@@ -161,27 +158,27 @@ public class MotherLookUpUtils {
 
     }
 
-    private static String lookUpQuery(Map<String, String> entityMap, String tableName , String relationalid) {
-        if(!tableName.contains(",")){
-        SmartRegisterQueryBuilder queryBUilder = new SmartRegisterQueryBuilder();
-        queryBUilder.SelectInitiateMainTable(tableName, new String[]
+    private static String lookUpQuery(Map<String, String> entityMap, String tableName, String relationalid) {
+        if (!tableName.contains(",")) {
+            SmartRegisterQueryBuilder queryBUilder = new SmartRegisterQueryBuilder();
+            queryBUilder.SelectInitiateMainTable(tableName, new String[]
 
-                        {
-                                tableName + ".relationalid",
-                                tableName + ".details",
-                                tableName + ".first_name",
-                                tableName + "." + DBConstants.KEY.LAST_NAME,
-                                tableName + ".dob"
-                        }
+                    {
+                            tableName + ".relationalid",
+                            tableName + ".details",
+                            tableName + ".first_name",
+                            tableName + "." + DBConstants.KEY.LAST_NAME,
+                            tableName + ".dob"
+                    }
 
-        );
-        queryBUilder.mainCondition(getMainConditionString(entityMap));
-        if(!isBlank(relationalid)){
-            queryBUilder.addCondition("and relational_id = '"+relationalid+"'");
-        }
-        String query = queryBUilder.getSelectquery();
-        return queryBUilder.Endquery(query);
-        }else{
+            );
+            queryBUilder.mainCondition(getMainConditionString(entityMap));
+            if (!isBlank(relationalid)) {
+                queryBUilder.addCondition("and relational_id = '" + relationalid + "'");
+            }
+            String query = queryBUilder.getSelectquery();
+            return queryBUilder.Endquery(query);
+        } else {
             SmartRegisterQueryBuilder queryBUilder = new SmartRegisterQueryBuilder();
             queryBUilder.SelectInitiateMainTable(tableName.split(",")[0], new String[]{
                     tableName.split(",")[0] + ".relationalid",
@@ -190,8 +187,8 @@ public class MotherLookUpUtils {
                     tableName.split(",")[0] + "." + DBConstants.KEY.LAST_NAME,
                     tableName.split(",")[0] + ".dob"
             });
-            if(!isBlank(relationalid)){
-                queryBUilder.addCondition("where "+tableName.split(",")[0]+".relational_id = '"+relationalid+"'");
+            if (!isBlank(relationalid)) {
+                queryBUilder.addCondition("where " + tableName.split(",")[0] + ".relational_id = '" + relationalid + "'");
             }
             String currentquery = queryBUilder.getSelectquery().concat(" Union all ");
             SmartRegisterQueryBuilder queryBUilder2 = new SmartRegisterQueryBuilder();
@@ -202,8 +199,8 @@ public class MotherLookUpUtils {
                     tableName.split(",")[1] + "." + DBConstants.KEY.LAST_NAME,
                     tableName.split(",")[1] + ".dob"
             });
-            if(!isBlank(relationalid)){
-                queryBUilder2.addCondition("where "+tableName.split(",")[1]+".relational_id = '"+relationalid+"'");
+            if (!isBlank(relationalid)) {
+                queryBUilder2.addCondition("where " + tableName.split(",")[1] + ".relational_id = '" + relationalid + "'");
             }
             currentquery = currentquery.concat(queryBUilder2.getSelectquery());
             return queryBUilder.Endquery(currentquery);
@@ -259,6 +256,7 @@ public class MotherLookUpUtils {
             DateUtil.yyyyMMdd.parse(dobString);
             return true;
         } catch (ParseException e) {
+            Utils.appendLog(MotherLookUpUtils.class.getName(), e);
             return false;
         }
 

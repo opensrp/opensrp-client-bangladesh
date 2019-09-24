@@ -29,11 +29,18 @@ import java.util.regex.Pattern;
  */
 
 public class LocationHelper {
-    private static final String TAG = LocationHelper.class.getCanonicalName();
-
     public static final ArrayList<String> ALLOWED_LEVELS;
+    public static final String FACILITY = "Facility";
+    public static final String HOME_ADDRESS = "Home Address";
+    private static final String TAG = LocationHelper.class.getCanonicalName();
     private static final String DEFAULT_LOCATION_LEVEL = "Country";
     private static LocationHelper instance;
+
+    static {
+        ALLOWED_LEVELS = new ArrayList<>();
+        ALLOWED_LEVELS.add(DEFAULT_LOCATION_LEVEL);
+        ALLOWED_LEVELS.add(FACILITY);
+    }
 
     private String childLocationId;
     private String parentLocationId;
@@ -43,15 +50,6 @@ public class LocationHelper {
     private HashMap<String, Pair<String, String>> childAndParentLocationIds;
     private String defaultLocation;
     private AncApplication application;
-
-    public static final String FACILITY = "Facility";
-    public static final String HOME_ADDRESS = "Home Address";
-
-    static {
-        ALLOWED_LEVELS = new ArrayList<>();
-        ALLOWED_LEVELS.add(DEFAULT_LOCATION_LEVEL);
-        ALLOWED_LEVELS.add(FACILITY);
-    }
 
     private LocationHelper() {
 
@@ -64,6 +62,10 @@ public class LocationHelper {
             instance = new LocationHelper();
         }
         return instance;
+    }
+
+    public static void setInstance(LocationHelper locationHelper) {
+        instance = locationHelper;
     }
 
     public String locationIdsFromHierarchy() {
@@ -97,6 +99,7 @@ public class LocationHelper {
                 }
             }
         } catch (Exception e) {
+            Utils.appendLog(getClass().getName(), e);
             Log.e(Utils.class.getCanonicalName(), Log.getStackTraceString(e));
         }
         return locations;
@@ -132,6 +135,7 @@ public class LocationHelper {
                 }
             }
         } catch (Exception e) {
+            Utils.appendLog(getClass().getName(), e);
             Log.e(TAG, Log.getStackTraceString(e));
         }
         return response;
@@ -158,6 +162,7 @@ public class LocationHelper {
                 Log.e(TAG, "locationData doesn't have locationHierarchy");
             }
         } catch (Exception e) {
+            Utils.appendLog(getClass().getName(), e);
             Log.e(TAG, Log.getStackTraceString(e));
         }
 
@@ -167,9 +172,8 @@ public class LocationHelper {
     /**
      * This method returns the name hierarchy of a location given it's id
      *
-     * @param locationId The ID for the location we want the hierarchy for
-     * @param  onlyAllowedLevels Restrict the location name hierarchy to only the allowed levels
-     *
+     * @param locationId        The ID for the location we want the hierarchy for
+     * @param onlyAllowedLevels Restrict the location name hierarchy to only the allowed levels
      * @return The name hierarchy (starting with the top-most parent) for the location or {@code NULL} if location id is not found
      */
     public List<String> getOpenMrsLocationHierarchy(String locationId, boolean onlyAllowedLevels) {
@@ -193,6 +197,7 @@ public class LocationHelper {
                 Log.e(TAG, "locationData doesn't have locationHierarchy");
             }
         } catch (Exception e) {
+            Utils.appendLog(getClass().getName(), e);
             Log.e(TAG, Log.getStackTraceString(e));
         }
         return response;
@@ -218,6 +223,7 @@ public class LocationHelper {
                 }
             }
         } catch (Exception e) {
+            Utils.appendLog(getClass().getName(), e);
             Log.e(TAG, Log.getStackTraceString(e));
         }
         return null;
@@ -243,6 +249,7 @@ public class LocationHelper {
 
             formLocationList = sortTreeViewQuestionOptions(formLocationList);
         } catch (Exception e) {
+            Utils.appendLog(getClass().getName(), e);
             Log.e(TAG, Log.getStackTraceString(e));
         }
 
@@ -276,6 +283,7 @@ public class LocationHelper {
             }
 
         } catch (Exception e) {
+            Utils.appendLog(getClass().getName(), e);
             Log.e(TAG, Log.getStackTraceString(e));
         }
         return readableName;
@@ -317,6 +325,7 @@ public class LocationHelper {
                 }
             }
         } catch (Exception e) {
+            Utils.appendLog(getClass().getName(), e);
             Log.e(TAG, Log.getStackTraceString(e));
         }
 
@@ -348,6 +357,7 @@ public class LocationHelper {
                 }
             }
         } catch (Exception e) {
+            Utils.appendLog(getClass().getName(), e);
             Log.e(TAG, Log.getStackTraceString(e));
         }
         return null;
@@ -382,6 +392,7 @@ public class LocationHelper {
             }
 
         } catch (Exception e) {
+            Utils.appendLog(getClass().getName(), e);
             Log.e(TAG, Log.getStackTraceString(e));
         }
         return null;
@@ -423,6 +434,7 @@ public class LocationHelper {
                 }
             }
         } catch (Exception e) {
+            Utils.appendLog(getClass().getName(), e);
             Log.e(TAG, Log.getStackTraceString(e));
         }
         return null;
@@ -482,6 +494,7 @@ public class LocationHelper {
                 }
             }
         } catch (Exception e) {
+            Utils.appendLog(getClass().getName(), e);
             Log.e(TAG, Log.getStackTraceString(e));
         }
 
@@ -521,12 +534,12 @@ public class LocationHelper {
     }
 
     /**
-     *  Maps location name {@param currLocation} to both its parent and child (self) OpenMRS location ids
+     * Maps location name {@param currLocation} to both its parent and child (self) OpenMRS location ids
+     * <p>
+     * The child location is taken to be the {@param currLocation} and the method attempts to find
+     * its location id and that of its parent
      *
-     *  The child location is taken to be the {@param currLocation} and the method attempts to find
-     *  its location id and that of its parent
-     *
-     *  @return a  {@link Pair} representing the parent and child OpenMRS location ids
+     * @return a  {@link Pair} representing the parent and child OpenMRS location ids
      */
     private Pair<String, String> getParentAndChildLocationIds(String currLocation) {
 
@@ -544,7 +557,7 @@ public class LocationHelper {
             String childLocationName = locationNameHierarchy.get(locationNameHierarchy.size() - 1);
             String parentLocationName = locationNameHierarchy.get(locationNameHierarchy.size() - 1);
             if (locationNameHierarchy.size() > 1) {
-               parentLocationName = locationNameHierarchy.get(locationNameHierarchy.size() - 2);
+                parentLocationName = locationNameHierarchy.get(locationNameHierarchy.size() - 2);
             }
 
             childLocationId = getOpenMrsLocationId(childLocationName);
@@ -569,14 +582,14 @@ public class LocationHelper {
         return parentLocationId;
     }
 
+    public void setParentLocationId(String parentId) {
+
+        parentLocationId = parentId;
+    }
+
     public String getChildLocationId() {
 
         return childLocationId;
-    }
-
-    public void setParentLocationId(String parentId) {
-
-        parentLocationId =  parentId;
     }
 
     public void setChildLocationId(String childId) {

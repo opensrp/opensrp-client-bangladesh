@@ -7,10 +7,8 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
-import android.graphics.Matrix;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
-import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Environment;
@@ -46,9 +44,6 @@ import com.vijay.jsonwizard.utils.FormUtils;
 import com.vijay.jsonwizard.utils.ImageUtils;
 import com.vijay.jsonwizard.widgets.DatePickerFactory;
 
-import net.sqlcipher.Cursor;
-import net.sqlcipher.database.SQLiteDatabase;
-
 import org.apache.commons.lang3.StringUtils;
 import org.joda.time.DateTime;
 import org.json.JSONException;
@@ -57,12 +52,10 @@ import org.smartregister.Context;
 import org.smartregister.CoreLibrary;
 import org.smartregister.cbhc.R;
 import org.smartregister.cbhc.activity.AncJsonFormActivity;
-import org.smartregister.cbhc.activity.LoginActivity;
 import org.smartregister.cbhc.application.AncApplication;
 import org.smartregister.cbhc.interactor.AncJsonFormInteractor;
 import org.smartregister.cbhc.provider.MotherLookUpSmartClientsProvider;
 import org.smartregister.cbhc.provider.RegisterProvider;
-import org.smartregister.cbhc.repository.AncRepository;
 import org.smartregister.cbhc.util.DBConstants;
 import org.smartregister.cbhc.util.Jilla;
 import org.smartregister.cbhc.util.MotherLookUpUtils;
@@ -94,13 +87,43 @@ import static org.smartregister.util.Utils.getValue;
  */
 public class AncJsonFormFragment extends JsonFormFragment {
 
+    public static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("dd-MM-yyyy");
+    public static String lookuptype = "";
+    public static Drawable default_drawable;
+    AncJsonFormActivity activity;
+    JsonFormFragmentPresenter presenter;
+    boolean permanentAddressFound = false;
+    boolean flag = false;
     private Snackbar snackbar = null;
     private AlertDialog alertDialog = null;
-    private boolean lookedUp = true;
-    public static String lookuptype = "";
-    private ProgressDialog validationProgressdialog;
+    private final View.OnClickListener lookUpRecordOnClickLister = new View.OnClickListener() {
+        @Override
+        public void onClick(View view) {
+            if (alertDialog != null && alertDialog.isShowing()) {
+                alertDialog.dismiss();
+                CommonPersonObjectClient client = null;
+                if (view.getTag() != null && view.getTag() instanceof CommonPersonObjectClient) {
+                    client = (CommonPersonObjectClient) view.getTag();
+                }
 
-    AncJsonFormActivity activity;
+                if (client != null) {
+                    lookupDialogDismissed(client);
+                }
+            }
+        }
+    };
+    private boolean lookedUp = true;
+    private ProgressDialog validationProgressdialog;
+    private boolean isPressed = false;
+    private final Listener<HashMap<CommonPersonObject, List<CommonPersonObject>>> motherLookUpListener = new Listener<HashMap<CommonPersonObject, List<CommonPersonObject>>>() {
+        @Override
+        public void onEvent(HashMap<CommonPersonObject, List<CommonPersonObject>> data) {
+            if (lookedUp && isPressed) {
+                showMotherLookUp(data);
+            }
+        }
+    };
+    private int countSelect = 0;
 
     public static AncJsonFormFragment getFormFragment(String stepName) {
         AncJsonFormFragment jsonFormFragment = new AncJsonFormFragment();
@@ -108,6 +131,28 @@ public class AncJsonFormFragment extends JsonFormFragment {
         bundle.putString(DBConstants.KEY.STEPNAME, stepName);
         jsonFormFragment.setArguments(bundle);
         return jsonFormFragment;
+    }
+
+    public static Bitmap drawableToBitmap(Drawable drawable) {
+        Bitmap bitmap = null;
+
+        if (drawable instanceof BitmapDrawable) {
+            BitmapDrawable bitmapDrawable = (BitmapDrawable) drawable;
+            if (bitmapDrawable.getBitmap() != null) {
+                return bitmapDrawable.getBitmap();
+            }
+        }
+
+        if (drawable.getIntrinsicWidth() <= 0 || drawable.getIntrinsicHeight() <= 0) {
+            bitmap = Bitmap.createBitmap(1, 1, Bitmap.Config.ARGB_8888); // Single color bitmap will be created of 1x1 pixel
+        } else {
+            bitmap = Bitmap.createBitmap(drawable.getIntrinsicWidth(), drawable.getIntrinsicHeight(), Bitmap.Config.ARGB_8888);
+        }
+
+        Canvas canvas = new Canvas(bitmap);
+        drawable.setBounds(0, 0, canvas.getWidth(), canvas.getHeight());
+        drawable.draw(canvas);
+        return bitmap;
     }
 
     @Override
@@ -133,20 +178,16 @@ public class AncJsonFormFragment extends JsonFormFragment {
         return new AncJsonFormFragmentViewState();
     }
 
-    JsonFormFragmentPresenter presenter;
-
     @Override
     protected JsonFormFragmentPresenter createPresenter() {
         presenter = new JsonFormFragmentPresenter(this, AncJsonFormInteractor.getInstance());
         return presenter;
     }
 
-
     ///////////////////////////from path json fragment ////////////////////////////////
     public Context context() {
         return AncApplication.getInstance().getContext();
     }
-
 
     public Listener<HashMap<CommonPersonObject, List<CommonPersonObject>>> motherLookUpListener() {
         return motherLookUpListener;
@@ -166,7 +207,7 @@ public class AncJsonFormFragment extends JsonFormFragment {
         LayoutInflater inflater = getActivity().getLayoutInflater();
         View view = inflater.inflate(R.layout.mother_lookup_results, null);
 
-        ListView listView = (ListView) view.findViewById(R.id.list_view);
+        ListView listView = view.findViewById(R.id.list_view);
 
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity(), R.style.PathDialog);
         builder.setView(view).setNegativeButton(R.string.dismiss, null);
@@ -268,7 +309,7 @@ public class AncJsonFormFragment extends JsonFormFragment {
     }
 
     public void showPreviewDialog() {
-        if(!TextUtils.isEmpty(presenter.getmCurrentPhotoPath())){
+        if (!TextUtils.isEmpty(presenter.getmCurrentPhotoPath())) {
             AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
             builder.setPositiveButton("ঠিক আছে", new DialogInterface.OnClickListener() {
                 @Override
@@ -290,19 +331,19 @@ public class AncJsonFormFragment extends JsonFormFragment {
             View dialogLayout = inflater.inflate(R.layout.go_preview_dialog_layout, null);
             dialog.setView(dialogLayout);
             dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-            try{
+            try {
 
-                ImageView image = (ImageView) dialogLayout.findViewById(R.id.goProDialogImage);
+                ImageView image = dialogLayout.findViewById(R.id.goProDialogImage);
                 Bitmap myBitmap = ImageUtils
                         .loadBitmapFromFile(getView().getContext(), presenter.getmCurrentPhotoPath(),
                                 ImageUtils.getDeviceWidth(getView().getContext()),
-                                dpToPixels(getView().getContext(), 200));
+                                dpToPixels(getView().getContext(), 100));
                 if (myBitmap != null) {
-
                     image.setImageBitmap(myBitmap);
                     dialog.show();
                 }
-            }catch (Exception e){
+            } catch (Exception e) {
+                org.smartregister.cbhc.util.Utils.appendLog(getClass().getName(), e);
 
             }
 
@@ -338,12 +379,12 @@ public class AncJsonFormFragment extends JsonFormFragment {
         snackbarView.setMinimumHeight(Float.valueOf(textSize).intValue());
         snackbarView.setBackgroundResource(R.color.snackbar_background_yellow);
 
-        final AppCompatButton actionView = (AppCompatButton) snackbarView.findViewById(android.support.design.R.id.snackbar_action);
+        final AppCompatButton actionView = snackbarView.findViewById(android.support.design.R.id.snackbar_action);
         actionView.setTextSize(TypedValue.COMPLEX_UNIT_PX, textSize);
         actionView.setGravity(Gravity.CENTER);
         actionView.setTextColor(getResources().getColor(R.color.text_black));
 
-        TextView textView = (TextView) snackbarView.findViewById(android.support.design.R.id.snackbar_text);
+        TextView textView = snackbarView.findViewById(android.support.design.R.id.snackbar_text);
         textView.setTextSize(TypedValue.COMPLEX_UNIT_PX, textSize);
         textView.setGravity(Gravity.CENTER);
         textView.setOnClickListener(new View.OnClickListener() {
@@ -404,6 +445,7 @@ public class AncJsonFormFragment extends JsonFormFragment {
                                     DateTime birthDateTime = new DateTime(dobString);
                                     text = DatePickerFactory.DATE_FORMAT.format(birthDateTime.toDate());
                                 } catch (Exception e) {
+                                    org.smartregister.cbhc.util.Utils.appendLog(getClass().getName(), e);
                                     Log.e(getClass().getName(), e.toString(), e);
                                 }
                             }
@@ -432,32 +474,6 @@ public class AncJsonFormFragment extends JsonFormFragment {
         }
     }
 
-    private final Listener<HashMap<CommonPersonObject, List<CommonPersonObject>>> motherLookUpListener = new Listener<HashMap<CommonPersonObject, List<CommonPersonObject>>>() {
-        @Override
-        public void onEvent(HashMap<CommonPersonObject, List<CommonPersonObject>> data) {
-            if (lookedUp && isPressed) {
-                showMotherLookUp(data);
-            }
-        }
-    };
-
-    private final View.OnClickListener lookUpRecordOnClickLister = new View.OnClickListener() {
-        @Override
-        public void onClick(View view) {
-            if (alertDialog != null && alertDialog.isShowing()) {
-                alertDialog.dismiss();
-                CommonPersonObjectClient client = null;
-                if (view.getTag() != null && view.getTag() instanceof CommonPersonObjectClient) {
-                    client = (CommonPersonObjectClient) view.getTag();
-                }
-
-                if (client != null) {
-                    lookupDialogDismissed(client);
-                }
-            }
-        }
-    };
-
     private void disableEditText(MaterialEditText editText) {
         editText.setInputType(InputType.TYPE_NULL);
     }
@@ -475,12 +491,11 @@ public class AncJsonFormFragment extends JsonFormFragment {
                 }
             }
         } catch (Exception e) {
+            org.smartregister.cbhc.util.Utils.appendLog(getClass().getName(), e);
 
         }
         return false;
     }
-
-    boolean permanentAddressFound = false;
 
     public void triggerCameraIntent() {
 
@@ -548,9 +563,6 @@ public class AncJsonFormFragment extends JsonFormFragment {
 
     }
 
-
-    boolean flag = false;
-
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
 
@@ -571,20 +583,20 @@ public class AncJsonFormFragment extends JsonFormFragment {
                                     false);
                             flag = save(skipValidation);
                         } catch (Exception e) {
+                            org.smartregister.cbhc.util.Utils.appendLog(getClass().getName(), e);
                             flag = save(false);
                         }
                     }
                 }, 500);
                 return flag;
             } else {
-                Toast.makeText((JsonFormActivity) mMainView.getContext(), "Please select permanent address from the list", Toast.LENGTH_LONG).show();
+                Toast.makeText(mMainView.getContext(), "Please select permanent address from the list", Toast.LENGTH_LONG).show();
 
                 return false;
             }
         }
         return super.onOptionsItemSelected(item);
     }
-
 
     @Override
     public boolean save(boolean skipValidation) {
@@ -598,6 +610,7 @@ public class AncJsonFormFragment extends JsonFormFragment {
 
 
         } catch (Exception e) {
+            org.smartregister.cbhc.util.Utils.appendLog(getClass().getName(), e);
             dissmissForm();
         }
         //dissmissForm();
@@ -647,9 +660,6 @@ public class AncJsonFormFragment extends JsonFormFragment {
             }
         }
     }
-
-    private boolean isPressed = false;
-    private int countSelect = 0;
 
     @Override
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
@@ -716,11 +726,12 @@ public class AncJsonFormFragment extends JsonFormFragment {
                                 String relational_id = look_up.getString("value");
                                 CommonRepository commonRepository = AncApplication.getInstance().getContext().commonrepository("ec_household");
                                 CommonPersonObject household = commonRepository.findByBaseEntityId(relational_id);
-                                if (RegisterProvider.memberCountHashMap != null && RegisterProvider.memberCountHashMap.containsKey(household.getCaseId()))
+                                if (RegisterProvider.memberCountHashMap != null)
                                     RegisterProvider.memberCountHashMap.remove(household.getCaseId());
                             }
                         }
                     } catch (JSONException e) {
+                        org.smartregister.cbhc.util.Utils.appendLog(getClass().getName(), e);
                         e.printStackTrace();
                     }
                 }
@@ -771,6 +782,7 @@ public class AncJsonFormFragment extends JsonFormFragment {
                             }
                         }
                     } catch (JSONException e) {
+                        org.smartregister.cbhc.util.Utils.appendLog(getClass().getName(), e);
                         e.printStackTrace();
                     }
                 }
@@ -788,9 +800,6 @@ public class AncJsonFormFragment extends JsonFormFragment {
         }, null);
     }
 
-    public static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("dd-MM-yyyy");
-    public static Drawable default_drawable;
-
     private void showCommentsDialog() {
         Utils.startAsyncTask(new AsyncTask() {
             String comment = "";
@@ -803,6 +812,7 @@ public class AncJsonFormFragment extends JsonFormFragment {
                     comment = formObject.getString("dataApprovalComments");
                     status = formObject.getString("dataApprovalStatus");
                 } catch (Exception e) {
+                    org.smartregister.cbhc.util.Utils.appendLog(getClass().getName(), e);
 
                 }
                 return null;
@@ -867,6 +877,7 @@ public class AncJsonFormFragment extends JsonFormFragment {
                                 }
                             }
                         } catch (JSONException e) {
+                            org.smartregister.cbhc.util.Utils.appendLog(getClass().getName(), e);
                             e.printStackTrace();
                         }
                     }
@@ -921,6 +932,7 @@ public class AncJsonFormFragment extends JsonFormFragment {
                                     updateRelevantImageView(bitmap, imageRecord.getFilepath(), (String) imageView.getTag(com.vijay.jsonwizard.R.id.key));
 
                                 } catch (Exception e) {
+                                    org.smartregister.cbhc.util.Utils.appendLog(getClass().getName(), e);
 
                                 }
                             }
@@ -969,34 +981,13 @@ public class AncJsonFormFragment extends JsonFormFragment {
                         updateRelevantImageView(drawableToBitmap(default_drawable), "", (String) imageView.getTag(com.vijay.jsonwizard.R.id.key));
 
                     } catch (Exception e) {
+                        org.smartregister.cbhc.util.Utils.appendLog(getClass().getName(), e);
 
                     }
                 }
             }
         }
 
-    }
-
-    public static Bitmap drawableToBitmap(Drawable drawable) {
-        Bitmap bitmap = null;
-
-        if (drawable instanceof BitmapDrawable) {
-            BitmapDrawable bitmapDrawable = (BitmapDrawable) drawable;
-            if (bitmapDrawable.getBitmap() != null) {
-                return bitmapDrawable.getBitmap();
-            }
-        }
-
-        if (drawable.getIntrinsicWidth() <= 0 || drawable.getIntrinsicHeight() <= 0) {
-            bitmap = Bitmap.createBitmap(1, 1, Bitmap.Config.ARGB_8888); // Single color bitmap will be created of 1x1 pixel
-        } else {
-            bitmap = Bitmap.createBitmap(drawable.getIntrinsicWidth(), drawable.getIntrinsicHeight(), Bitmap.Config.ARGB_8888);
-        }
-
-        Canvas canvas = new Canvas(bitmap);
-        drawable.setBounds(0, 0, canvas.getWidth(), canvas.getHeight());
-        drawable.draw(canvas);
-        return bitmap;
     }
 
     public void update_spouse_hint(ArrayList<View> formdataviews, int position, String headOfHouseholdName) {

@@ -24,8 +24,8 @@ public class AncJobCreator implements JobCreator {
                 return new PullUniqueIdsServiceJob();
             case PullHealthIdsServiceJob.TAG:
                 return new PullHealthIdsServiceJob();
-            case ValidateSyncDataServiceJob.TAG:
-                return new ValidateSyncDataServiceJob();
+//            case ValidateSyncDataServiceJob.TAG:
+//                return new ValidateSyncDataServiceJob();
             case ViewConfigurationsServiceJob.TAG:
                 return new ViewConfigurationsServiceJob();
             case DeleteIntentServiceJob.TAG:

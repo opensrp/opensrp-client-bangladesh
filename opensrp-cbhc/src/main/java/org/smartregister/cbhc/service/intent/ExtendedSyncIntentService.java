@@ -4,16 +4,19 @@ import android.app.IntentService;
 import android.content.Intent;
 import android.util.Log;
 
+import com.evernote.android.job.JobManager;
+
 import org.smartregister.cbhc.application.AncApplication;
 import org.smartregister.cbhc.job.ValidateSyncDataServiceJob;
 import org.smartregister.cbhc.util.NetworkUtils;
+import org.smartregister.cbhc.util.Utils;
 import org.smartregister.service.ActionService;
 
 
 public class ExtendedSyncIntentService extends IntentService {
 
-    private ActionService actionService;
     private static final String TAG = ExtendedSyncIntentService.class.getCanonicalName();
+    private ActionService actionService;
 
     public ExtendedSyncIntentService() {
         super("ExtendedSyncIntentService");
@@ -36,12 +39,17 @@ public class ExtendedSyncIntentService extends IntentService {
             }
 
         } catch (Exception e) {
+            Utils.appendLog(getClass().getName(), e);
             Log.e(TAG, e.getMessage(), e);
         }
     }
 
+
     private void startSyncValidation() {
-        ValidateSyncDataServiceJob.scheduleJobImmediately(ValidateSyncDataServiceJob.TAG);
+        if (JobManager.instance().getAllJobRequestsForTag(ValidateSyncDataServiceJob.TAG).isEmpty()) {
+            ValidateSyncDataServiceJob.scheduleJobImmediately(ValidateSyncDataServiceJob.TAG);
+
+        }
     }
 
 

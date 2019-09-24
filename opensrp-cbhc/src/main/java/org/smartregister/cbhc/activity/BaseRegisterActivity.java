@@ -364,6 +364,7 @@ public abstract class BaseRegisterActivity extends SecuredNativeSmartRegisterAct
                 presenter.startForm(formName, entityId, metaData, "");
             }
         } catch (Exception e) {
+            Utils.appendLog(getClass().getName(), e);
             Log.e(TAG, Log.getStackTraceString(e));
             displayToast(getString(R.string.error_unable_to_start_form));
         }
@@ -379,7 +380,7 @@ public abstract class BaseRegisterActivity extends SecuredNativeSmartRegisterAct
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if(data==null&&Utils.VIEWREFRESH){
+        if (data == null && Utils.VIEWREFRESH) {
             mBaseFragment.clearSortAndFilter();
             Utils.VIEWREFRESH = false;
             return;
@@ -392,19 +393,20 @@ public abstract class BaseRegisterActivity extends SecuredNativeSmartRegisterAct
                 JSONObject form = new JSONObject(jsonString);
                 if (form.getString(JsonFormUtils.ENCOUNTER_TYPE).equals(Constants.EventType.REGISTRATION)) {
                     presenter.saveForm(jsonString, false);
-                }else if (form.getString(JsonFormUtils.ENCOUNTER_TYPE).equals(Constants.EventType.HouseholdREGISTRATION)) {
+                } else if (form.getString(JsonFormUtils.ENCOUNTER_TYPE).equals(Constants.EventType.HouseholdREGISTRATION)) {
 
-                        presenter.saveForm(jsonString, false);
+                    presenter.saveForm(jsonString, false);
 
-                }else if (form.getString(JsonFormUtils.ENCOUNTER_TYPE).equals(Constants.EventType.UPDATE_Household_REGISTRATION)) {
+                } else if (form.getString(JsonFormUtils.ENCOUNTER_TYPE).equals(Constants.EventType.UPDATE_Household_REGISTRATION)) {
                     presenter.saveForm(jsonString, true);
-                }else if (form.getString(JsonFormUtils.ENCOUNTER_TYPE).equals(Constants.EventType.MemberREGISTRATION)) {
+                } else if (form.getString(JsonFormUtils.ENCOUNTER_TYPE).equals(Constants.EventType.MemberREGISTRATION)) {
                     presenter.saveForm(jsonString, false);
                     updateScheduledTasks(form);
                 } else if (form.getString(JsonFormUtils.ENCOUNTER_TYPE).equals(Constants.EventType.CLOSE)) {
                     presenter.closeAncRecord(jsonString);
                 }
             } catch (Exception e) {
+                Utils.appendLog(getClass().getName(), e);
                 Log.e(TAG, Log.getStackTraceString(e));
             }
             mBaseFragment.clearSortAndFilter();
@@ -422,23 +424,24 @@ public abstract class BaseRegisterActivity extends SecuredNativeSmartRegisterAct
     }
 
     public boolean isValidPermanentAddress(JSONObject hhObject) {
-        try{
+        try {
 
             JSONObject step1 = hhObject.getJSONObject("step1");
             JSONArray fields = step1.getJSONArray("fields");
-            for(int i=0;i<fields.length();i++){
+            for (int i = 0; i < fields.length(); i++) {
                 JSONObject fieldObject = fields.getJSONObject(i);
                 String key = fieldObject.getString("key");
-                if(key.equalsIgnoreCase("permanent_address")){
+                if (key.equalsIgnoreCase("permanent_address")) {
                     String value = fieldObject.getString("value");
-                    for(String address:Jilla.getPermanentAddressFields()){
-                        if(value!=null&&!value.isEmpty()&&address.trim().equalsIgnoreCase(value.trim())){
+                    for (String address : Jilla.getPermanentAddressFields()) {
+                        if (value != null && !value.isEmpty() && address.trim().equalsIgnoreCase(value.trim())) {
                             return true;
                         }
                     }
                 }
             }
-        }catch(Exception e){
+        } catch (Exception e) {
+            Utils.appendLog(getClass().getName(), e);
 
         }
         return false;
@@ -455,11 +458,11 @@ public abstract class BaseRegisterActivity extends SecuredNativeSmartRegisterAct
                     String mother_name = "";
                     String entity_id = form.getString("relational_id");
 
-                    for(int i=0;i<fields.length();i++) {
+                    for (int i = 0; i < fields.length(); i++) {
                         JSONObject field_object = fields.getJSONObject(i);
-                        if(field_object.getString("key").equalsIgnoreCase("Mother_Guardian_First_Name_english")) {
+                        if (field_object.getString("key").equalsIgnoreCase("Mother_Guardian_First_Name_english")) {
                             String value = field_object.getString("value");
-                            if(value!=null&&!StringUtils.isEmpty(value)){
+                            if (value != null && !StringUtils.isEmpty(value)) {
                                 mother_name = value;
                                 mother_name = mother_name.split(" ")[0];
                                 break;
@@ -467,16 +470,18 @@ public abstract class BaseRegisterActivity extends SecuredNativeSmartRegisterAct
                         }
 
                     }
-                    String sql = "UPDATE ec_woman SET tasks = tasks-1 WHERE relational_id = '"+entity_id+"' AND first_name like '%"+mother_name+"%' AND tasks IS NOT NULL;";
+                    String sql = "UPDATE ec_woman SET tasks = tasks-1 WHERE relational_id = '" + entity_id + "' AND first_name like '%" + mother_name + "%' AND tasks IS NOT NULL;";
                     db.execSQL(sql);
 
                 } catch (Exception e) {
+                    Utils.appendLog(getClass().getName(), e);
                     e.printStackTrace();
                 }
                 return null;
             }
-        }),null);
+        }), null);
     }
+
     public void switchToFragment(final int position) {
         Log.v("we are here", "switchtofragragment");
         try {
@@ -491,6 +496,7 @@ public abstract class BaseRegisterActivity extends SecuredNativeSmartRegisterAct
                 });
             }
         } catch (Exception e) {
+            Utils.appendLog(getClass().getName(), e);
             Log.e(TAG, e.getMessage(), e);
         }
     }
@@ -500,7 +506,8 @@ public abstract class BaseRegisterActivity extends SecuredNativeSmartRegisterAct
 //
         try {
             getPresenter().startMemberRegistrationForm(Constants.JSON_FORM.MEMBER_REGISTER, null, null, null, client.getColumnmaps().get(DBConstants.KEY.BASE_ENTITY_ID));
-        }catch (Exception e){
+        } catch (Exception e) {
+            Utils.appendLog(getClass().getName(), e);
 
         }
 
@@ -534,7 +541,8 @@ public abstract class BaseRegisterActivity extends SecuredNativeSmartRegisterAct
                         JsonFormUtils.launchANCCloseForm(BaseRegisterActivity.this);
                         try {
                             getPresenter().startMemberRegistrationForm(Constants.JSON_FORM.MEMBER_REGISTER, null, null, null, getIntent().getExtras().getString(Constants.INTENT_KEY.BASE_ENTITY_ID));
-                        }catch (Exception e){
+                        } catch (Exception e) {
+                            Utils.appendLog(getClass().getName(), e);
 
                         }
                     }
@@ -542,7 +550,7 @@ public abstract class BaseRegisterActivity extends SecuredNativeSmartRegisterAct
         return alertDialog;
     }
 
-    public RegisterPresenter getPresenter(){
+    public RegisterPresenter getPresenter() {
         return presenter;
     }
 
@@ -603,7 +611,6 @@ public abstract class BaseRegisterActivity extends SecuredNativeSmartRegisterAct
     public void setSelectedBottomBarMenuItem(int itemId) {
         bottomNavigationView.setSelectedItemId(itemId);
     }
-
 
 
 }

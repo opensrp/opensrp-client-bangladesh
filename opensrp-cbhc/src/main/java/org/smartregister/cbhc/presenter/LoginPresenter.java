@@ -29,7 +29,6 @@ import org.smartregister.cbhc.util.ImageLoaderRequest;
 import org.smartregister.configurableviews.model.LoginConfiguration;
 import org.smartregister.configurableviews.model.ViewConfiguration;
 import org.smartregister.repository.AllSharedPreferences;
-import org.smartregister.util.Utils;
 
 import java.lang.ref.WeakReference;
 import java.util.Locale;
@@ -191,6 +190,7 @@ public class LoginPresenter implements LoginContract.Presenter {
             }
 
         } catch (Exception e) {
+            org.smartregister.cbhc.util.Utils.appendLog(getClass().getName(), e);
             Log.d(TAG, e.getMessage());
         }
     }

@@ -9,6 +9,7 @@ import com.evernote.android.job.JobRequest;
 import com.evernote.android.job.util.support.PersistableBundleCompat;
 
 import org.smartregister.cbhc.util.Constants;
+import org.smartregister.cbhc.util.Utils;
 
 import java.util.concurrent.TimeUnit;
 
@@ -20,7 +21,7 @@ public abstract class BaseJob extends Job {
     private static final String TAG = BaseJob.class.getCanonicalName();
 
     public static void scheduleJob(String jobTag, Long start, Long flex) {
-        if(JobManager.instance().getAllJobRequestsForTag(jobTag).isEmpty()) {
+        if (JobManager.instance().getAllJobRequestsForTag(jobTag).isEmpty()) {
 
             boolean toReschedule = start < TimeUnit.MINUTES.toMillis(15); //evernote doesn't allow less than 15 mins periodic schedule, keep flag ref for workaround
 
@@ -44,6 +45,7 @@ public abstract class BaseJob extends Job {
                 Log.d(TAG, "Scheduling job with name " + jobTag + " periodically with JOB ID " + jobId);
 
             } catch (Exception e) {
+                Utils.appendLog(BaseJob.class.getName(), e);
                 Log.e(TAG, e.getMessage());
             }
         }

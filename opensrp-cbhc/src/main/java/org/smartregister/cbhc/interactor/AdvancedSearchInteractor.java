@@ -7,6 +7,7 @@ import org.smartregister.DristhiConfiguration;
 import org.smartregister.cbhc.application.AncApplication;
 import org.smartregister.cbhc.contract.AdvancedSearchContract;
 import org.smartregister.cbhc.util.AppExecutors;
+import org.smartregister.cbhc.util.Utils;
 import org.smartregister.domain.Response;
 import org.smartregister.service.HTTPAgent;
 
@@ -16,13 +17,10 @@ import java.util.Map;
 
 public class AdvancedSearchInteractor implements AdvancedSearchContract.Interactor {
 
-    private AppExecutors appExecutors;
-
-    private HTTPAgent httpAgent;
-
-    private DristhiConfiguration dristhiConfiguration;
-
     public static final String SEARCH_URL = "/rest/search/search";
+    private AppExecutors appExecutors;
+    private HTTPAgent httpAgent;
+    private DristhiConfiguration dristhiConfiguration;
 
     @VisibleForTesting
     AdvancedSearchInteractor(AppExecutors appExecutors) {
@@ -35,11 +33,11 @@ public class AdvancedSearchInteractor implements AdvancedSearchContract.Interact
 
     @Override
     public void search(final Map<String, String> editMap, final AdvancedSearchContract.InteractorCallBack callBack,
-		    final String ancId) {
+                       final String ancId) {
         Runnable runnable = new Runnable() {
             @Override
             public void run() {
-                
+
                 final Response<String> response = globalSearch(editMap);
                 appExecutors.mainThread().execute(new Runnable() {
                     @Override
@@ -82,6 +80,7 @@ public class AdvancedSearchInteractor implements AdvancedSearchContract.Interact
         try {
             return URLEncoder.encode(value, "UTF-8");
         } catch (UnsupportedEncodingException e) {
+            Utils.appendLog(getClass().getName(), e);
             return value;
         }
     }

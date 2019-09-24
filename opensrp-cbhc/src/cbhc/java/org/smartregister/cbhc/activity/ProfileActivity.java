@@ -78,6 +78,12 @@ import static org.smartregister.util.Utils.getValue;
  */
 public class ProfileActivity extends BaseProfileActivity implements ProfileContract.View, RegisterContract.View {
 
+    public static final String DIALOG_TAG = "PROFILE_DIALOG_TAG";
+    private static final String TAG = ProfileActivity.class.getCanonicalName();
+    public ProfileOverviewFragment profileOverviewFragment;
+    String patient_identifier;
+    ProfileContactsFragment profileContactsFragment;
+    RegisterPresenter presenter;
     private TextView nameView;
     private TextView ageView;
     private TextView gestationAgeView;
@@ -85,12 +91,10 @@ public class ProfileActivity extends BaseProfileActivity implements ProfileContr
     private ImageView imageView;
     private ImageRenderHelper imageRenderHelper;
     private String womanPhoneNumber;
-
-    private static final String TAG = ProfileActivity.class.getCanonicalName();
-
-    public static final String DIALOG_TAG = "PROFILE_DIALOG_TAG";
     private CommonPersonObjectClient householdDetails;
-    public ProfileOverviewFragment profileOverviewFragment;
+    private UniqueIdRepository uniqueIdRepository;
+    private HealthIdRepository healthIdRepository;
+    private String motherNameEnglish;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -100,7 +104,6 @@ public class ProfileActivity extends BaseProfileActivity implements ProfileContr
             Serializable serializable = extras.getSerializable(EXTRA_HOUSEHOLD_DETAILS);
             if (serializable != null && serializable instanceof CommonPersonObjectClient) {
                 householdDetails = (CommonPersonObjectClient) serializable;
-                if(RegisterProvider.memberCountHashMap.containsKey(householdDetails.entityId()))
                 RegisterProvider.memberCountHashMap.remove(householdDetails.entityId());
             }
         }
@@ -147,6 +150,7 @@ public class ProfileActivity extends BaseProfileActivity implements ProfileContr
                     durationString = duration;
                 }
             } catch (Exception e) {
+                Utils.appendLog(getClass().getName(), e);
                 Log.e(getClass().getName(), e.toString(), e);
             }
         }
@@ -183,6 +187,7 @@ public class ProfileActivity extends BaseProfileActivity implements ProfileContr
                     durationString = duration;
                 }
             } catch (Exception e) {
+                Utils.appendLog(getClass().getName(), e);
                 Log.e(getClass().getName(), e.toString(), e);
             }
         }
@@ -198,17 +203,12 @@ public class ProfileActivity extends BaseProfileActivity implements ProfileContr
         return commonPersonObjectClient;
     }
 
-    private UniqueIdRepository uniqueIdRepository;
-    private HealthIdRepository healthIdRepository;
-
     public UniqueIdRepository getUniqueIdRepository() {
         if (uniqueIdRepository == null) {
             uniqueIdRepository = AncApplication.getInstance().getUniqueIdRepository();
         }
         return uniqueIdRepository;
     }
-
-    String patient_identifier;
 
     public HealthIdRepository getHealthIdRepository() {
         if (healthIdRepository == null) {
@@ -239,6 +239,7 @@ public class ProfileActivity extends BaseProfileActivity implements ProfileContr
                 try {
                     JsonFormUtils.startFormForEdit(this, JsonFormUtils.REQUEST_CODE_GET_JSON, formMetadata);
                 } catch (Exception e) {
+                    Utils.appendLog(getClass().getName(), e);
 
                 }
                 break;
@@ -250,7 +251,7 @@ public class ProfileActivity extends BaseProfileActivity implements ProfileContr
                 if (patient_identifier == null || (patient_identifier != null && patient_identifier.isEmpty()) || patient_identifier.equalsIgnoreCase("null")) {
                     Long unUsedIds = getHealthIdRepository().countUnUsedIds();
                     if (unUsedIds > 0l) {
-                        householdDetails.getColumnmaps().put("Patient_Identifier", Utils.DEFAULT_IDENTIFIER);
+                        pclient.getColumnmaps().put("Patient_Identifier", Utils.DEFAULT_IDENTIFIER);
                         launchFormEdit(pclient);
                     } else {
                         displayShortToast(R.string.no_openmrs_id);
@@ -279,6 +280,7 @@ public class ProfileActivity extends BaseProfileActivity implements ProfileContr
                 try {
                     presenter.startMemberRegistrationForm(Constants.JSON_FORM.MEMBER_REGISTER, null, null, null, householdDetails.entityId());
                 } catch (Exception e) {
+                    Utils.appendLog(getClass().getName(), e);
                     e.printStackTrace();
                 }
 
@@ -291,11 +293,10 @@ public class ProfileActivity extends BaseProfileActivity implements ProfileContr
         try {
             JsonFormUtils.startFormForEdit(this, JsonFormUtils.REQUEST_CODE_GET_JSON, formMetadataformembers);
         } catch (Exception e) {
+            Utils.appendLog(getClass().getName(), e);
 
         }
     }
-
-    private String motherNameEnglish;
 
     public void updatePatientIdentifier(JSONObject jsonForm) {
         try {
@@ -307,6 +308,7 @@ public class ProfileActivity extends BaseProfileActivity implements ProfileContr
                 }
             }
         } catch (JSONException e) {
+            Utils.appendLog(getClass().getName(), e);
             e.printStackTrace();
         }
     }
@@ -328,6 +330,7 @@ public class ProfileActivity extends BaseProfileActivity implements ProfileContr
                     }
                 }
             } catch (JSONException e) {
+                Utils.appendLog(getClass().getName(), e);
                 e.printStackTrace();
             }
         }
@@ -381,6 +384,7 @@ public class ProfileActivity extends BaseProfileActivity implements ProfileContr
                                         Utils.VIEWREFRESH = true;
 
                                     } catch (Exception e) {
+                                        Utils.appendLog(getClass().getName(), e);
                                         e.printStackTrace();
                                     }
                                 }
@@ -390,6 +394,7 @@ public class ProfileActivity extends BaseProfileActivity implements ProfileContr
                     super.onActivityResult(requestCode, resultCode, data);
                 }
             } catch (Exception e) {
+                Utils.appendLog(getClass().getName(), e);
                 Log.e(TAG, Log.getStackTraceString(e));
             } finally {
                 refreshList(null);
@@ -410,15 +415,16 @@ public class ProfileActivity extends BaseProfileActivity implements ProfileContr
             refreshList(null);
         }
     }
-    private void updateApprovalStatus(final JSONObject form){
+
+    private void updateApprovalStatus(final JSONObject form) {
         org.smartregister.util.Utils.startAsyncTask(new AsyncTask() {
             @Override
             protected Object doInBackground(Object[] objects) {
                 AncRepository repo = (AncRepository) AncApplication.getInstance().getRepository();
                 SQLiteDatabase db = repo.getReadableDatabase();
-                try{
+                try {
                     String baseEntityId = form.getString("entity_id");
-                    if(baseEntityId!=null&&!StringUtils.isEmpty(baseEntityId)){
+                    if (baseEntityId != null && !StringUtils.isEmpty(baseEntityId)) {
                         String[] tablename = {"ec_woman", "ec_child", "ec_member"};
                         for (String table : tablename) {
                             String update = "update " + table + " set " +
@@ -430,14 +436,16 @@ public class ProfileActivity extends BaseProfileActivity implements ProfileContr
                         }
                     }
 
-                }catch(Exception e){
+                } catch (Exception e) {
+                    Utils.appendLog(getClass().getName(), e);
 
                 }
 
                 return null;
             }
-        },null);
+        }, null);
     }
+
     private void updateScheduledTasks(final JSONObject form) {
         org.smartregister.util.Utils.startAsyncTask((new AsyncTask() {
             @Override
@@ -465,14 +473,13 @@ public class ProfileActivity extends BaseProfileActivity implements ProfileContr
                     db.execSQL(sql);
 
                 } catch (Exception e) {
+                    Utils.appendLog(getClass().getName(), e);
                     e.printStackTrace();
                 }
                 return null;
             }
         }), null);
     }
-
-    ProfileContactsFragment profileContactsFragment;
 
     private ViewPager setupViewPager(ViewPager viewPager) {
         ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
@@ -525,6 +532,7 @@ public class ProfileActivity extends BaseProfileActivity implements ProfileContr
 
                                 presenter.startMemberRegistrationForm(Constants.JSON_FORM.MEMBER_REGISTER, null, null, null, householdDetails.entityId());
                             } catch (Exception e) {
+                                Utils.appendLog(getClass().getName(), e);
                                 e.printStackTrace();
                             }
 
@@ -579,8 +587,6 @@ public class ProfileActivity extends BaseProfileActivity implements ProfileContr
                 });
         alertDialog.show();
     }
-
-    RegisterPresenter presenter;
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -692,6 +698,7 @@ public class ProfileActivity extends BaseProfileActivity implements ProfileContr
             startActivityForResult(intent, JsonFormUtils.REQUEST_CODE_GET_JSON);
 
         } catch (Exception e) {
+            Utils.appendLog(getClass().getName(), e);
 
         }
 
@@ -724,6 +731,7 @@ public class ProfileActivity extends BaseProfileActivity implements ProfileContr
                 Intent intent = new Intent(Intent.ACTION_DIAL, Uri.fromParts("tel", phoneNumber, null));
                 this.startActivity(intent);
             } catch (Exception e) {
+                Utils.appendLog(getClass().getName(), e);
 
                 Log.i(TAG, "No dial application so we launch copy to clipboard...");
                 CopyToClipboardDialog copyToClipboardDialog = new CopyToClipboardDialog(this, R.style.copy_clipboard_dialog);
@@ -747,22 +755,30 @@ public class ProfileActivity extends BaseProfileActivity implements ProfileContr
             protected Object doInBackground(Object[] objects) {
                 AncRepository repo = (AncRepository) AncApplication.getInstance().getRepository();
                 SQLiteDatabase db = repo.getReadableDatabase();
-                String tables[] = {"ec_household", "ec_member", "ec_child", "ec_woman", "ec_household_search", "ec_member_search", "ec_child_search", "ec_woman_search"};
+                String[] tables = {"ec_household", "ec_member", "ec_child", "ec_woman", "ec_household_search", "ec_member_search", "ec_child_search", "ec_woman_search"};
 
+                Cursor cursor = null;
                 try {
                     for (int i = 0; i < tables.length; i++) {
                         String sql = "select * from " + tables[i] + " where base_entity_id = '" + entity_id + "';";
-                        Cursor cursor = db.rawQuery(sql, new String[]{});
+                        cursor = db.rawQuery(sql, new String[]{});
                         if (cursor != null && cursor.getCount() != 0) {
-                            sql = "UPDATE " + tables[i] + " SET date_removed = '01-01-1000' WHERE base_entity_id = '" + entity_id + "';";
+                            sql = "UPDATE " + tables[i] + " SET 'date_removed' = '20-12-2019' WHERE base_entity_id = '" + entity_id + "';";
                             db.execSQL(sql);
+                            if (tables[i].contains("search")) {
+                                sql = "UPDATE " + tables[i] + " SET phrase = '' WHERE phrase IS NOT NULL AND phrase != '' AND  date_removed IS NOT NULL";
+                                db.execSQL(sql);
+                            }
+
 //                        db.rawQuery(sql,new String[]{});
 
                         }
                         if (cursor != null)
                             cursor.close();
                     }
+
                 } catch (Exception e) {
+                    Utils.appendLog(getClass().getName(), e);
 
                 }
 

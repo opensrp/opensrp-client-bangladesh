@@ -32,6 +32,7 @@ public class RegisterModel implements RegisterContract.Model {
             ConfigurableViewsLibrary.getInstance().getConfigurableViewsHelper().registerViewConfigurations(viewIdentifiers);
 
         } catch (Exception e) {
+Utils.appendLog(getClass().getName(),e);
         }
     }
 
@@ -75,6 +76,7 @@ public class RegisterModel implements RegisterContract.Model {
             try {
                 formUtils = FormUtils.getInstance(AncApplication.getInstance().getApplicationContext());
             } catch (Exception e) {
+Utils.appendLog(getClass().getName(),e);
                 Log.e(RegisterModel.class.getCanonicalName(), e.getMessage(), e);
             }
         }

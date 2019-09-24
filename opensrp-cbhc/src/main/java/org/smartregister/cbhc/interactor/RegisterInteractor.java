@@ -1,7 +1,6 @@
 package org.smartregister.cbhc.interactor;
 
 import android.content.ContentValues;
-import android.content.Intent;
 import android.support.annotation.VisibleForTesting;
 import android.util.Log;
 import android.util.Pair;
@@ -9,19 +8,15 @@ import android.util.Pair;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.tuple.Triple;
 import org.json.JSONObject;
-import org.smartregister.CoreLibrary;
 import org.smartregister.cbhc.application.AncApplication;
 import org.smartregister.cbhc.contract.RegisterContract;
 import org.smartregister.cbhc.domain.FollowupForm;
 import org.smartregister.cbhc.domain.UniqueId;
 import org.smartregister.cbhc.event.PatientRemovedEvent;
 import org.smartregister.cbhc.helper.ECSyncHelper;
-import org.smartregister.cbhc.repository.DraftFormRepository;
 import org.smartregister.cbhc.repository.FollowupRepository;
 import org.smartregister.cbhc.repository.HealthIdRepository;
 import org.smartregister.cbhc.repository.UniqueIdRepository;
-import org.smartregister.cbhc.service.intent.SyncIntentService;
-import org.smartregister.cbhc.sync.AncClientProcessorForJava;
 import org.smartregister.cbhc.util.AppExecutors;
 import org.smartregister.cbhc.util.Constants;
 import org.smartregister.cbhc.util.DBConstants;
@@ -30,14 +25,11 @@ import org.smartregister.cbhc.util.Utils;
 import org.smartregister.clientandeventmodel.Client;
 import org.smartregister.clientandeventmodel.Event;
 import org.smartregister.commonregistry.AllCommonsRepository;
-import org.smartregister.domain.db.EventClient;
 import org.smartregister.repository.AllSharedPreferences;
 import org.smartregister.repository.BaseRepository;
 import org.smartregister.sync.ClientProcessorForJava;
 
 import java.util.Date;
-import java.util.List;
-
 
 
 /**
@@ -47,21 +39,12 @@ public class RegisterInteractor implements RegisterContract.Interactor {
 
 
     public static final String TAG = RegisterInteractor.class.getName();
-
-    public enum type {SAVED, UPDATED}
-
-
     private AppExecutors appExecutors;
-
     private UniqueIdRepository uniqueIdRepository;
     private HealthIdRepository healthIdRepository;
-
     private ECSyncHelper syncHelper;
-
     private AllSharedPreferences allSharedPreferences;
-
     private ClientProcessorForJava clientProcessorForJava;
-
     private AllCommonsRepository allCommonsRepository;
 
     @VisibleForTesting
@@ -98,7 +81,7 @@ public class RegisterInteractor implements RegisterContract.Interactor {
     }
 
     @Override
-    public void getNextUniqueId(final String formName,final String metadata,final String currentLocationId,final String householdID, final RegisterContract.InteractorCallBack callBack) {
+    public void getNextUniqueId(final String formName, final String metadata, final String currentLocationId, final String householdID, final RegisterContract.InteractorCallBack callBack) {
 
         Runnable runnable = new Runnable() {
             @Override
@@ -111,7 +94,7 @@ public class RegisterInteractor implements RegisterContract.Interactor {
                         if (StringUtils.isBlank(entityId)) {
                             callBack.onNoUniqueId();
                         } else {
-                            callBack.onUniqueIdFetched(formName, metadata, currentLocationId,householdID, entityId);
+                            callBack.onUniqueIdFetched(formName, metadata, currentLocationId, householdID, entityId);
                         }
                     }
                 });
@@ -120,22 +103,23 @@ public class RegisterInteractor implements RegisterContract.Interactor {
 
         appExecutors.diskIO().execute(runnable);
     }
+
     @Override
-    public void getNextHealthId(final String formName,final String metadata,final String currentLocationId,final String householdID, final RegisterContract.InteractorCallBack callBack) {
+    public void getNextHealthId(final String formName, final String metadata, final String currentLocationId, final String householdID, final RegisterContract.InteractorCallBack callBack) {
 
         Runnable runnable = new Runnable() {
             @Override
             public void run() {
 //                UniqueId uniqueId = getHealthIdRepository().getNextUniqueId();
 //                final String entityId = uniqueId != null ? uniqueId.getOpenmrsId() : "";
-                final boolean uniqueIdFound = getHealthIdRepository().countUnUsedIds()>0;
+                final boolean uniqueIdFound = getHealthIdRepository().countUnUsedIds() > 0;
                 appExecutors.mainThread().execute(new Runnable() {
                     @Override
                     public void run() {
                         if (!uniqueIdFound) {
                             callBack.onNoUniqueId();
                         } else {
-                            callBack.onUniqueIdFetched(formName, metadata, currentLocationId,householdID, Utils.DEFAULT_IDENTIFIER);
+                            callBack.onUniqueIdFetched(formName, metadata, currentLocationId, householdID, Utils.DEFAULT_IDENTIFIER);
                         }
                     }
                 });
@@ -144,7 +128,6 @@ public class RegisterInteractor implements RegisterContract.Interactor {
 
         appExecutors.diskIO().execute(runnable);
     }
-
 
     @Override
     public void saveRegistration(final Pair<Client, Event> pair, final String jsonString, final boolean isEditMode, final RegisterContract.InteractorCallBack callBack) {
@@ -213,6 +196,7 @@ public class RegisterInteractor implements RegisterContract.Interactor {
 
                     }
                 } catch (Exception e) {
+                    Utils.appendLog(getClass().getName(), e);
                     Log.e(TAG, "", e);
                 } finally {
                     Utils.postStickyEvent(new PatientRemovedEvent());
@@ -246,7 +230,7 @@ public class RegisterInteractor implements RegisterContract.Interactor {
                 getSyncHelper().addEvent(baseEvent.getBaseEntityId(), eventJson);
             }
 
-            if(Utils.notFollowUp(baseEvent.getEventType())) {
+            if (Utils.notFollowUp(baseEvent.getEventType())) {
 
                 if (isEditMode) {
                     // Unassign current OPENSRP ID
@@ -291,11 +275,11 @@ public class RegisterInteractor implements RegisterContract.Interactor {
 
             ////////////////////////////////////////////////////////////////
             //now save followup form here
-            try{
+            try {
                 JSONObject formObject = new JSONObject(jsonString);
                 String encounter_type = formObject.getString("encounter_type");
                 String base_entity_id = formObject.getString("entity_id");
-                if(encounter_type!=null&&!Utils.notFollowUp(encounter_type)){
+                if (encounter_type != null && !Utils.notFollowUp(encounter_type)) {
                     //time to save followup jinish
                     FollowupForm followupForm = new FollowupForm();
                     followupForm.setBase_entity_id(base_entity_id);
@@ -305,11 +289,13 @@ public class RegisterInteractor implements RegisterContract.Interactor {
                     FollowupRepository followupFormRepository = new FollowupRepository(AncApplication.getInstance().getRepository());
                     followupFormRepository.saveForm(followupForm);
                 }
-            }catch(Exception e){
+            } catch (Exception e) {
+                Utils.appendLog(getClass().getName(), e);
 
             }
 
         } catch (Exception e) {
+            Utils.appendLog(getClass().getName(), e);
             Log.e(TAG, Log.getStackTraceString(e));
         }
     }
@@ -325,14 +311,16 @@ public class RegisterInteractor implements RegisterContract.Interactor {
         }
         return uniqueIdRepository;
     }
+
+    public void setUniqueIdRepository(UniqueIdRepository uniqueIdRepository) {
+        this.uniqueIdRepository = uniqueIdRepository;
+    }
+
     public HealthIdRepository getHealthIdRepository() {
         if (healthIdRepository == null) {
             healthIdRepository = AncApplication.getInstance().getHealthIdRepository();
         }
         return healthIdRepository;
-    }
-    public void setUniqueIdRepository(UniqueIdRepository uniqueIdRepository) {
-        this.uniqueIdRepository = uniqueIdRepository;
     }
 
     public ECSyncHelper getSyncHelper() {
@@ -378,4 +366,6 @@ public class RegisterInteractor implements RegisterContract.Interactor {
     public void setAllCommonsRepository(AllCommonsRepository allCommonsRepository) {
         this.allCommonsRepository = allCommonsRepository;
     }
+
+    public enum type {SAVED, UPDATED}
 }

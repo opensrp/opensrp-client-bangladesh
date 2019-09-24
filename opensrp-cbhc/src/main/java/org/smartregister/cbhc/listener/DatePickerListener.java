@@ -9,6 +9,7 @@ import android.widget.EditText;
 
 import com.vijay.jsonwizard.utils.DatePickerUtils;
 
+import org.smartregister.cbhc.util.Utils;
 import org.smartregister.clientandeventmodel.DateUtil;
 
 import java.text.ParseException;
@@ -43,6 +44,7 @@ public class DatePickerListener implements View.OnClickListener {
                     Date previouslySelectedDate = DateUtil.yyyyMMdd.parse(previouslySelectedDateString);
                     mcurrentDate.setTime(previouslySelectedDate);
                 } catch (ParseException e) {
+                    Utils.appendLog(getClass().getName(), e);
                     e.printStackTrace();
                 }
             }
@@ -73,6 +75,7 @@ public class DatePickerListener implements View.OnClickListener {
         try {
             DatePickerUtils.themeDatePicker(mDatePicker, new char[]{'d', 'm', 'y'});
         } catch (Exception e) {
+            Utils.appendLog(getClass().getName(), e);
             Log.e(TAG, e.getMessage());
         }
     }

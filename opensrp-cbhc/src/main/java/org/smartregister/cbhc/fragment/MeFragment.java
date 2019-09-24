@@ -12,6 +12,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
 
+import org.apache.commons.lang3.StringUtils;
 import org.smartregister.cbhc.R;
 import org.smartregister.cbhc.application.AncApplication;
 import org.smartregister.cbhc.contract.MeContract;
@@ -31,14 +32,27 @@ public class MeFragment extends Fragment implements MeContract.View {
 		View view = inflater.inflate(R.layout.fragment_me, container, false);
 		TextView username = (TextView)view.findViewById(R.id.username);
 		Button Logout = (Button)view.findViewById(R.id.logout);
+		Button Force_Logout = (Button)view.findViewById(R.id.force_logout);
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
         AllSharedPreferences allSharedPreferences = new AllSharedPreferences(preferences);
         String anm_name = allSharedPreferences.fetchRegisteredANM();
-        username.setText(anm_name);
+        String provider_name = allSharedPreferences.getPreference(anm_name);
+        String user_details = anm_name;
+        if(!StringUtils.isEmpty(provider_name)){
+			user_details = provider_name + "\n" + anm_name;
+		}
+        username.setText(user_details);
+
 		Logout.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
 				AncApplication.getInstance().logoutCurrentUser();
+			}
+		});
+		Force_Logout.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				AncApplication.getInstance().forcelogoutCurrentUser();
 			}
 		});
 		return view;

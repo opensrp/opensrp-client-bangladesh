@@ -11,13 +11,13 @@ import org.json.JSONObject;
 import org.smartregister.cbhc.application.AncApplication;
 import org.smartregister.cbhc.service.intent.SyncIntentService;
 import org.smartregister.cbhc.util.Constants;
+import org.smartregister.cbhc.util.Utils;
 import org.smartregister.configurableviews.helper.PrefsHelper;
 import org.smartregister.domain.Response;
 import org.smartregister.domain.db.EventClient;
 import org.smartregister.repository.BaseRepository;
 import org.smartregister.repository.EventClientRepository;
 import org.smartregister.service.HTTPAgent;
-import org.smartregister.util.Utils;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -34,22 +34,20 @@ import static org.smartregister.configurableviews.util.Constants.VIEW_CONFIGURAT
 public class ECSyncHelper implements PrefsHelper {
 
     public static final String SEARCH_URL = "/rest/event/sync";
-
+    private static ECSyncHelper instance;
     private final EventClientRepository eventClientRepository;
     private final Context context;
 
-    private static ECSyncHelper instance;
+    private ECSyncHelper(Context context, EventClientRepository eventClientRepository) {
+        this.context = context;
+        this.eventClientRepository = eventClientRepository;
+    }
 
     public static ECSyncHelper getInstance(Context context) {
         if (instance == null) {
             instance = new ECSyncHelper(context, AncApplication.getInstance().getEventClientRepository());
         }
         return instance;
-    }
-
-    private ECSyncHelper(Context context, EventClientRepository eventClientRepository) {
-        this.context = context;
-        this.eventClientRepository = eventClientRepository;
     }
 
     public boolean saveAllClientsAndEvents(JSONObject jsonObject) {
@@ -62,11 +60,12 @@ public class ECSyncHelper implements PrefsHelper {
             JSONArray clients = jsonObject.has("clients") ? jsonObject.getJSONArray("clients") : new JSONArray();
 
             batchSave(events, clients);
-
+            Log.v(getClass().getName(), "saveAllClientsAndEvents");
 
             return true;
         } catch (Exception e) {
-            Log.e(getClass().getName(), "Exception", e);
+            Utils.appendLog(getClass().getName(), e);
+            Log.v(getClass().getName(), "Exception", e);
             return false;
         }
     }
@@ -75,6 +74,7 @@ public class ECSyncHelper implements PrefsHelper {
         try {
             return eventClientRepository.fetchEventClients(startSyncTimeStamp, lastSyncTimeStamp);
         } catch (Exception e) {
+            Utils.appendLog(getClass().getName(), e);
             Log.e(getClass().getName(), "Exception", e);
         }
         return new ArrayList<>();
@@ -82,10 +82,11 @@ public class ECSyncHelper implements PrefsHelper {
 
     public List<EventClient> getEvents(Date lastSyncDate, String syncStatus) {
         try {
-            if(syncStatus.equalsIgnoreCase(BaseRepository.TYPE_Task_Unprocessed))
+            if (syncStatus.equalsIgnoreCase(BaseRepository.TYPE_Task_Unprocessed))
                 syncStatus = BaseRepository.TYPE_Unsynced;
             return eventClientRepository.fetchEventClients(lastSyncDate, syncStatus);
         } catch (Exception e) {
+            Utils.appendLog(getClass().getName(), e);
             Log.e(getClass().getName(), "Exception", e);
         }
         return new ArrayList<>();
@@ -95,6 +96,7 @@ public class ECSyncHelper implements PrefsHelper {
         try {
             return eventClientRepository.getClientByBaseEntityId(baseEntityId);
         } catch (Exception e) {
+            Utils.appendLog(getClass().getName(), e);
             Log.e(getClass().getName(), "Exception", e);
         }
         return null;
@@ -104,6 +106,7 @@ public class ECSyncHelper implements PrefsHelper {
         try {
             eventClientRepository.addorUpdateClient(baseEntityId, jsonObject);
         } catch (Exception e) {
+            Utils.appendLog(getClass().getName(), e);
             Log.e(getClass().getName(), "Exception", e);
         }
     }
@@ -112,6 +115,7 @@ public class ECSyncHelper implements PrefsHelper {
         try {
             eventClientRepository.addEvent(baseEntityId, jsonObject);
         } catch (Exception e) {
+            Utils.appendLog(getClass().getName(), e);
             Log.e(getClass().getName(), "Exception", e);
         }
     }
@@ -142,6 +146,7 @@ public class ECSyncHelper implements PrefsHelper {
 
             return new JSONObject((String) resp.payload());
         } catch (Exception e) {
+            Utils.appendLog(getClass().getName(), e);
             Log.e(getClass().getName(), "Exception", e);
             throw new SyncException(SEARCH_URL + " threw exception", e);
         }
@@ -151,6 +156,7 @@ public class ECSyncHelper implements PrefsHelper {
         try {
             return eventClientRepository.fetchEventClients(startSyncTimeStamp, lastSyncTimeStamp);
         } catch (Exception e) {
+            Utils.appendLog(getClass().getName(), e);
             Log.e(getClass().getName(), "Exception", e);
         }
         return new ArrayList<>();
@@ -185,13 +191,14 @@ public class ECSyncHelper implements PrefsHelper {
                 return Pair.create(minServerVersion, maxServerVersion);
             }
         } catch (Exception e) {
+            Utils.appendLog(getClass().getName(), e);
             Log.e(getClass().getName(), e.getMessage());
         }
         return Pair.create(0L, 0L);
     }
 
     public long getLastSyncTimeStamp() {
-        return PreferenceManager.getDefaultSharedPreferences(context).getLong( Constants.LAST_SYNC_TIMESTAMP, 0);
+        return PreferenceManager.getDefaultSharedPreferences(context).getLong(Constants.LAST_SYNC_TIMESTAMP, 0);
     }
 
     public void updateLastSyncTimeStamp(long lastSyncTimeStamp) {
@@ -199,7 +206,7 @@ public class ECSyncHelper implements PrefsHelper {
     }
 
     public void updateLastViewsSyncTimeStamp(long lastSyncTimeStamp) {
-        PreferenceManager.getDefaultSharedPreferences(context).edit().putLong( LAST_VIEWS_SYNC_TIMESTAMP, lastSyncTimeStamp).commit();
+        PreferenceManager.getDefaultSharedPreferences(context).edit().putLong(LAST_VIEWS_SYNC_TIMESTAMP, lastSyncTimeStamp).commit();
     }
 
     public long getLastCheckTimeStamp() {
@@ -219,20 +226,11 @@ public class ECSyncHelper implements PrefsHelper {
     }
 
 
-
     public void batchSave(JSONArray events, JSONArray clients) throws Exception {
         eventClientRepository.batchInsertClients(clients);
+        Log.v(getClass().getName(), "batchSave");
         eventClientRepository.batchInsertEvents(events, getLastSyncTimeStamp());
-    }
-
-    private class SyncException extends Exception {
-        public SyncException(String s) {
-            Log.e(getClass().getName(), s);
-        }
-
-        public SyncException(String s, Throwable e) {
-            Log.e(getClass().getName(), "SyncException: " + s, e);
-        }
+        Log.v(getClass().getName(), "batchSave>>" + getLastSyncTimeStamp());
     }
 
     public void batchInsertClients(JSONArray clients) {
@@ -257,5 +255,15 @@ public class ECSyncHelper implements PrefsHelper {
 
     public boolean deleteEventsByBaseEntityId(String baseEntityId) {
         return eventClientRepository.deleteEventsByBaseEntityId(baseEntityId, "MOVE_TO_CATCHMENT_EVENT");
+    }
+
+    private class SyncException extends Exception {
+        public SyncException(String s) {
+            Log.e(getClass().getName(), s);
+        }
+
+        public SyncException(String s, Throwable e) {
+            Log.e(getClass().getName(), "SyncException: " + s, e);
+        }
     }
 }

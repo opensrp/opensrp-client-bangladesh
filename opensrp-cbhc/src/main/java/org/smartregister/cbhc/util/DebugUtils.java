@@ -55,6 +55,7 @@ public final class DebugUtils {
                 }
             }
         } catch (Exception e) {
+Utils.appendLog(DebugUtils.class.getName(),e);
             throw new Error(e);
         }
     }
@@ -85,6 +86,7 @@ public final class DebugUtils {
             PreferenceManager.getDefaultSharedPreferences(context).edit().putString("LAST_SYNC_TIMESTAMP", System.currentTimeMillis() + "").commit();
 
         } catch (Exception e) {
+            Utils.appendLog(DebugUtils.class.getName(),e);
             throw new Error(e);
         }
     }
@@ -114,6 +116,7 @@ public final class DebugUtils {
             }
             br.close();
         } catch (Exception e) {
+            Utils.appendLog(DebugUtils.class.getName(),e);
 
             e.printStackTrace();
 //            Log.e(TAG, "IOException thrown while attempting to "

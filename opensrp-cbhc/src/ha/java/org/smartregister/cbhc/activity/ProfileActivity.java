@@ -148,6 +148,7 @@ public class ProfileActivity extends BaseProfileActivity implements ProfileContr
                     durationString = duration;
                 }
             } catch (Exception e) {
+Utils.appendLog(getClass().getName(),e);
                 Log.e(getClass().getName(), e.toString(), e);
             }
         }
@@ -198,6 +199,7 @@ public class ProfileActivity extends BaseProfileActivity implements ProfileContr
                             durationString = duration;
                         }
                     } catch (Exception e) {
+Utils.appendLog(getClass().getName(),e);
                         Log.e(getClass().getName(), e.toString(), e);
                     }
                 }
@@ -260,6 +262,7 @@ public class ProfileActivity extends BaseProfileActivity implements ProfileContr
                 try {
                     JsonFormUtils.startFormForEdit(this, JsonFormUtils.REQUEST_CODE_GET_JSON, formMetadata);
                 } catch (Exception e) {
+Utils.appendLog(getClass().getName(),e);
 
                 }
                 break;
@@ -300,6 +303,7 @@ public class ProfileActivity extends BaseProfileActivity implements ProfileContr
                 try {
                     presenter.startMemberRegistrationForm(Constants.JSON_FORM.MEMBER_REGISTER, null, null, null, householdDetails.entityId());
                 } catch (Exception e) {
+Utils.appendLog(getClass().getName(),e);
                     e.printStackTrace();
                 }
 
@@ -312,6 +316,7 @@ public class ProfileActivity extends BaseProfileActivity implements ProfileContr
         try {
             JsonFormUtils.startFormForEdit(this, JsonFormUtils.REQUEST_CODE_GET_JSON, formMetadataformembers);
         } catch (Exception e) {
+Utils.appendLog(getClass().getName(),e);
 
         }
     }
@@ -328,6 +333,7 @@ public class ProfileActivity extends BaseProfileActivity implements ProfileContr
                 }
             }
         } catch (JSONException e) {
+Utils.appendLog(getClass().getName(),e);
             e.printStackTrace();
         }
     }
@@ -349,6 +355,7 @@ public class ProfileActivity extends BaseProfileActivity implements ProfileContr
                     }
                 }
             } catch (JSONException e) {
+Utils.appendLog(getClass().getName(),e);
                 e.printStackTrace();
             }
         }
@@ -401,6 +408,7 @@ public class ProfileActivity extends BaseProfileActivity implements ProfileContr
                                         Utils.VIEWREFRESH = true;
 
                                     } catch (Exception e) {
+Utils.appendLog(getClass().getName(),e);
                                         e.printStackTrace();
                                     }
                                 }
@@ -410,6 +418,7 @@ public class ProfileActivity extends BaseProfileActivity implements ProfileContr
                     super.onActivityResult(requestCode, resultCode, data);
                 }
             } catch (Exception e) {
+Utils.appendLog(getClass().getName(),e);
                 Log.e(TAG, Log.getStackTraceString(e));
             } finally {
                 refreshList(null);
@@ -459,6 +468,7 @@ public class ProfileActivity extends BaseProfileActivity implements ProfileContr
                     db.execSQL(sql);
 
                 } catch (Exception e) {
+Utils.appendLog(getClass().getName(),e);
                     e.printStackTrace();
                 }
                 return null;
@@ -519,6 +529,7 @@ public class ProfileActivity extends BaseProfileActivity implements ProfileContr
 
                                 presenter.startMemberRegistrationForm(Constants.JSON_FORM.MEMBER_REGISTER, null, null, null, householdDetails.entityId());
                             } catch (Exception e) {
+Utils.appendLog(getClass().getName(),e);
                                 e.printStackTrace();
                             }
 
@@ -687,6 +698,7 @@ public class ProfileActivity extends BaseProfileActivity implements ProfileContr
             startActivityForResult(intent, JsonFormUtils.REQUEST_CODE_GET_JSON);
 
         } catch (Exception e) {
+Utils.appendLog(getClass().getName(),e);
 
         }
 
@@ -719,6 +731,7 @@ public class ProfileActivity extends BaseProfileActivity implements ProfileContr
                 Intent intent = new Intent(Intent.ACTION_DIAL, Uri.fromParts("tel", phoneNumber, null));
                 this.startActivity(intent);
             } catch (Exception e) {
+Utils.appendLog(getClass().getName(),e);
 
                 Log.i(TAG, "No dial application so we launch copy to clipboard...");
                 CopyToClipboardDialog copyToClipboardDialog = new CopyToClipboardDialog(this, R.style.copy_clipboard_dialog);
@@ -758,6 +771,7 @@ public class ProfileActivity extends BaseProfileActivity implements ProfileContr
                             cursor.close();
                     }
                 } catch (Exception e) {
+Utils.appendLog(getClass().getName(),e);
 
                 }
 

@@ -141,6 +141,7 @@ public class GrowthUtil {
         try {
             return simpleDateFormat.parse(DOB_STRING);
         } catch (ParseException e) {
+Utils.appendLog(getClass().getName(),e);
             Log.e(GrowthUtil.class.getName(), e.getMessage(), e);
         }
         return null;

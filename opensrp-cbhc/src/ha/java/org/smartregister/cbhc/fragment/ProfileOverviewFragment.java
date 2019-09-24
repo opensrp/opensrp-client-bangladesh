@@ -185,7 +185,8 @@ public class ProfileOverviewFragment extends BaseProfileFragment {
 
                 try{
                     cursor = db.rawQuery(rawQuery,new String[]{});
-                }catch(Exception e){
+                }catch(Exception e) {
+Utils.appendLog(getClass().getName(),e);
 
                 }
 
@@ -301,7 +302,8 @@ public class ProfileOverviewFragment extends BaseProfileFragment {
                     }else{
                         noOfUnregisterButton.setVisibility(View.GONE);
                     }
-                }catch(Exception e){
+                }catch(Exception e) {
+Utils.appendLog(getClass().getName(),e);
 
                 }
 
@@ -316,6 +318,7 @@ public class ProfileOverviewFragment extends BaseProfileFragment {
             try {
                 age =   getAge((new DateTime(dobString)));
             } catch (Exception e) {
+Utils.appendLog(getClass().getName(),e);
                 e.printStackTrace();
             }
 
@@ -329,6 +332,7 @@ public class ProfileOverviewFragment extends BaseProfileFragment {
                         durationString = duration;
                     }
                 } catch (Exception e) {
+Utils.appendLog(getClass().getName(),e);
                     Log.e(getClass().getName(), e.toString(), e);
                 }
             }
@@ -429,6 +433,7 @@ public class ProfileOverviewFragment extends BaseProfileFragment {
         try {
             convertedDate = dateOfBirth.toDate();
         } catch (Exception e) {
+Utils.appendLog(getClass().getName(),e);
             // TODO Auto-generated catch block
             e.printStackTrace();
         }

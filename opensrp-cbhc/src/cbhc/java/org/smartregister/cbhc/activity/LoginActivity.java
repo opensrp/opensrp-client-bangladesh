@@ -1,25 +1,22 @@
 package org.smartregister.cbhc.activity;
 
 
+import android.Manifest;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
-import android.content.ClipData;
-import android.content.ClipboardManager;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
-import android.database.Cursor;
 import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.preference.Preference;
-import android.preference.PreferenceFragment;
 import android.preference.PreferenceManager;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.text.method.HideReturnsTransformationMethod;
 import android.text.method.PasswordTransformationMethod;
@@ -35,12 +32,9 @@ import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.TextView;
 
-import net.sqlcipher.database.SQLiteDatabase;
-
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 import org.joda.time.DateTime;
-import org.smartregister.cbhc.BuildConfig;
 import org.smartregister.cbhc.R;
 import org.smartregister.cbhc.contract.LoginContract;
 import org.smartregister.cbhc.event.ViewConfigurationSyncCompleteEvent;
@@ -65,6 +59,9 @@ import static org.smartregister.util.Log.logInfo;
  */
 public class LoginActivity extends AppCompatActivity implements LoginContract.View, TextView.OnEditorActionListener, View.OnClickListener {
 
+    private static final int REQUEST_WRITE_STORAGE = 112;
+    LoginActivity mActivity;
+    android.support.v7.app.AlertDialog alertDialog;
     private EditText userNameEditText;
     private EditText passwordEditText;
     private CheckBox showPasswordCheckBox;
@@ -72,8 +69,6 @@ public class LoginActivity extends AppCompatActivity implements LoginContract.Vi
     private Button loginButton;
     private TextView buildDetailsView;
     private LoginContract.Presenter mLoginPresenter;
-
-    LoginActivity mActivity;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -96,13 +91,19 @@ public class LoginActivity extends AppCompatActivity implements LoginContract.Vi
             preferences.edit().putString(DRISHTI_BASE_URL, getString(R.string.opensrp_url)).apply();
 
         }
-
+        boolean hasPermission = (ContextCompat.checkSelfPermission(this,
+                Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED);
+        if (!hasPermission) {
+            ActivityCompat.requestPermissions(this,
+                    new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_EXTERNAL_STORAGE},
+                    REQUEST_WRITE_STORAGE);
+        }
 
     }
 
     @Override
     public void onBackPressed() {
-        if (alertDialog==null || (alertDialog != null && !alertDialog.isShowing()))
+        if (alertDialog == null || (alertDialog != null && !alertDialog.isShowing()))
             super.onBackPressed();
     }
 
@@ -120,7 +121,6 @@ public class LoginActivity extends AppCompatActivity implements LoginContract.Vi
         }
         return super.onOptionsItemSelected(item);
     }
-
 
     @Override
     protected void onResume() {
@@ -172,6 +172,7 @@ public class LoginActivity extends AppCompatActivity implements LoginContract.Vi
             buildDetailsView.setText("Version " + getVersion() + ", Built on: " + mLoginPresenter.getBuildDate());
 
         } catch (Exception e) {
+            org.smartregister.cbhc.util.Utils.appendLog(getClass().getName(), e);
             logError("Error fetching build details: " + e);
         }
     }
@@ -201,7 +202,6 @@ public class LoginActivity extends AppCompatActivity implements LoginContract.Vi
 
         finish();
     }
-
 
     @Override
     public void showErrorDialog(String message) {
@@ -256,8 +256,8 @@ public class LoginActivity extends AppCompatActivity implements LoginContract.Vi
 
         switch (v.getId()) {
             case R.id.login_login_btn:
-                String username = userNameEditText.getText().toString();
-                String password = passwordEditText.getText().toString();
+                String username = userNameEditText.getText().toString().trim();
+                String password = passwordEditText.getText().toString().trim();
 //                username = "haiphn";
 //                password = "ha123";
 //                username = "testmhv2";
@@ -346,8 +346,6 @@ public class LoginActivity extends AppCompatActivity implements LoginContract.Vi
 
     }
 
-    android.support.v7.app.AlertDialog alertDialog;
-
     public void app_version_status() {
         org.smartregister.util.Utils.startAsyncTask(new AsyncTask() {
             String version_code = "";
@@ -370,7 +368,9 @@ public class LoginActivity extends AppCompatActivity implements LoginContract.Vi
                     }
                     in.close();
                 } catch (MalformedURLException e) {
+                    org.smartregister.cbhc.util.Utils.appendLog(getClass().getName(), e);
                 } catch (IOException e) {
+                    org.smartregister.cbhc.util.Utils.appendLog(getClass().getName(), e);
                 }
                 return null;
             }
@@ -398,6 +398,7 @@ public class LoginActivity extends AppCompatActivity implements LoginContract.Vi
 
 
                                         } catch (Exception e) {
+                                            org.smartregister.cbhc.util.Utils.appendLog(getClass().getName(), e);
                                             e.printStackTrace();
                                         }
                                     }
@@ -406,6 +407,7 @@ public class LoginActivity extends AppCompatActivity implements LoginContract.Vi
                             alertDialog.show();
                     }
                 } catch (PackageManager.NameNotFoundException e) {
+                    org.smartregister.cbhc.util.Utils.appendLog(getClass().getName(), e);
                     e.printStackTrace();
                 }
             }

@@ -10,6 +10,7 @@ import org.smartregister.cbhc.domain.QuickCheck;
 import org.smartregister.cbhc.helper.ECSyncHelper;
 import org.smartregister.cbhc.util.AppExecutors;
 import org.smartregister.cbhc.util.JsonFormUtils;
+import org.smartregister.cbhc.util.Utils;
 import org.smartregister.clientandeventmodel.Event;
 import org.smartregister.repository.AllSharedPreferences;
 
@@ -48,6 +49,7 @@ public class QuickCheckInteractor implements QuickCheckContract.Interactor {
                     getSyncHelper().addEvent(baseEntityId, eventJson);
                     isSaved = true;
                 } catch (Exception e) {
+                    Utils.appendLog(getClass().getName(), e);
                     Log.e(TAG, Log.getStackTraceString(e));
                 } finally {
                     final boolean finalIsSaved = isSaved;
@@ -64,10 +66,6 @@ public class QuickCheckInteractor implements QuickCheckContract.Interactor {
         appExecutors.diskIO().execute(runnable);
     }
 
-    public void setSyncHelper(ECSyncHelper syncHelper) {
-        this.syncHelper = syncHelper;
-    }
-
     public ECSyncHelper getSyncHelper() {
         if (syncHelper == null) {
             syncHelper = ECSyncHelper.getInstance(AncApplication.getInstance().getApplicationContext());
@@ -75,8 +73,8 @@ public class QuickCheckInteractor implements QuickCheckContract.Interactor {
         return syncHelper;
     }
 
-    public void setAllSharedPreferences(AllSharedPreferences allSharedPreferences) {
-        this.allSharedPreferences = allSharedPreferences;
+    public void setSyncHelper(ECSyncHelper syncHelper) {
+        this.syncHelper = syncHelper;
     }
 
     public AllSharedPreferences getAllSharedPreferences() {
@@ -84,5 +82,9 @@ public class QuickCheckInteractor implements QuickCheckContract.Interactor {
             allSharedPreferences = AncApplication.getInstance().getContext().allSharedPreferences();
         }
         return allSharedPreferences;
+    }
+
+    public void setAllSharedPreferences(AllSharedPreferences allSharedPreferences) {
+        this.allSharedPreferences = allSharedPreferences;
     }
 }

@@ -90,6 +90,7 @@ public class MuacRepository extends BaseRepository {
                     " WHERE " + CREATED_AT + " is null ";
             database.execSQL(sql);
         } catch (Exception e) {
+Utils.appendLog(getClass().getName(),e);
             Log.e(TAG, Log.getStackTraceString(e));
         }
     }
@@ -150,6 +151,7 @@ public class MuacRepository extends BaseRepository {
                 update(database, muac);
             }
         } catch (Exception e) {
+Utils.appendLog(getClass().getName(),e);
             Log.e(TAG, Log.getStackTraceString(e));
         }
     }
@@ -187,6 +189,7 @@ public class MuacRepository extends BaseRepository {
                 return muacList.get(0);
             }
         } catch (Exception e) {
+Utils.appendLog(getClass().getName(),e);
             Log.e(TAG, Log.getStackTraceString(e));
         }
 
@@ -209,6 +212,7 @@ public class MuacRepository extends BaseRepository {
             String idSelection = ID_COLUMN + " = ?";
             db.update(MUAC_TABLE_NAME, createValuesFor(muac), idSelection, new String[] {muac.getId().toString()});
         } catch (Exception e) {
+Utils.appendLog(getClass().getName(),e);
             Log.e(TAG, Log.getStackTraceString(e));
         }
     }
@@ -252,6 +256,7 @@ public class MuacRepository extends BaseRepository {
                         try {
                             createdAt = EventClientRepository.dateFormat.parse(dateCreatedString);
                         } catch (ParseException e) {
+Utils.appendLog(getClass().getName(),e);
                             Log.e(TAG, Log.getStackTraceString(e));
                         }
                     }
@@ -281,6 +286,7 @@ public class MuacRepository extends BaseRepository {
                 }
             }
         } catch (Exception e) {
+Utils.appendLog(getClass().getName(),e);
             Log.e(TAG, e.getMessage());
         } finally {
             if (cursor != null) {
@@ -306,6 +312,7 @@ public class MuacRepository extends BaseRepository {
                     new String[] {time.toString(), TYPE_Unsynced}, null, null, null, null);
             muacs = readAllMuacs(cursor);
         } catch (Exception e) {
+Utils.appendLog(getClass().getName(),e);
             Log.e(TAG, Log.getStackTraceString(e));
         } finally {
             if (cursor != null) {
@@ -328,6 +335,7 @@ public class MuacRepository extends BaseRepository {
                 muac = muacs.get(0);
             }
         } catch (Exception e) {
+Utils.appendLog(getClass().getName(),e);
             Log.e(TAG, Log.getStackTraceString(e));
         } finally {
             if (cursor != null) {
@@ -346,6 +354,7 @@ public class MuacRepository extends BaseRepository {
                             new String[] {entityId}, null, null, null, null);
             muacs = readAllMuacs(cursor);
         } catch (Exception e) {
+Utils.appendLog(getClass().getName(),e);
             Log.e(TAG, Log.getStackTraceString(e));
         } finally {
             if (cursor != null) {
@@ -364,6 +373,7 @@ public class MuacRepository extends BaseRepository {
                     MUAC_TABLE_COLUMNS, Z_SCORE + " = " + DEFAULT_Z_SCORE, null, null, null, null, null);
             result = readAllMuacs(cursor);
         } catch (Exception e) {
+Utils.appendLog(getClass().getName(),e);
             Log.e(TAG, Log.getStackTraceString(e));
         } finally {
             if (cursor != null) {
@@ -386,6 +396,7 @@ public class MuacRepository extends BaseRepository {
                 muac = muacs.get(0);
             }
         } catch (Exception e) {
+Utils.appendLog(getClass().getName(),e);
             Log.e(TAG, Log.getStackTraceString(e));
         } finally {
             if (cursor != null) {
@@ -404,6 +415,7 @@ public class MuacRepository extends BaseRepository {
                             new String[] {entityid}, null, null, UPDATED_AT_COLUMN + COLLATE_NOCASE + " DESC", null);
             muacList = readAllMuacs(cursor);
         } catch (Exception e) {
+Utils.appendLog(getClass().getName(),e);
             Log.e(TAG, Log.getStackTraceString(e));
         } finally {
             if (cursor != null) {
@@ -419,6 +431,7 @@ public class MuacRepository extends BaseRepository {
                     .delete(MUAC_TABLE_NAME, ID_COLUMN + " = ? " + COLLATE_NOCASE + " AND " + SYNC_STATUS + " = ? ",
                             new String[] {id, TYPE_Unsynced});
         } catch (Exception e) {
+Utils.appendLog(getClass().getName(),e);
             Log.e(TAG, Log.getStackTraceString(e));
         }
     }
@@ -430,6 +443,7 @@ public class MuacRepository extends BaseRepository {
             getRepository().getWritableDatabase()
                     .update(MUAC_TABLE_NAME, values, ID_COLUMN + " = ?", new String[] {caseId.toString()});
         } catch (Exception e) {
+Utils.appendLog(getClass().getName(),e);
             Log.e(TAG, Log.getStackTraceString(e));
         }
     }

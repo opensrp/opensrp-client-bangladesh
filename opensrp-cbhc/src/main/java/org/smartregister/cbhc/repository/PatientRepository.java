@@ -7,6 +7,7 @@ import net.sqlcipher.database.SQLiteDatabase;
 
 import org.smartregister.cbhc.application.AncApplication;
 import org.smartregister.cbhc.util.DBConstants;
+import org.smartregister.cbhc.util.Utils;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -46,6 +47,7 @@ public class PatientRepository {
             }
             return detailsMap;
         } catch (Exception e) {
+            Utils.appendLog(PatientRepository.class.getName(), e);
             Log.e(TAG, e.toString(), e);
         } finally {
             if (cursor != null) {

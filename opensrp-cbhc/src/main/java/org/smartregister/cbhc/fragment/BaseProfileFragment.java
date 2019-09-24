@@ -55,6 +55,7 @@ public abstract class BaseProfileFragment extends SecuredFragment implements Vie
                     ((BaseProfileActivity) getActivity()).getProfileAppBarLayout().setExpanded(true, true);
                 }
             } catch (Exception e) {
+                org.smartregister.cbhc.util.Utils.appendLog(getClass().getName(), e);
                 // nothing
             }
             return super.onFling(event1, event2, velocityX, velocityY);

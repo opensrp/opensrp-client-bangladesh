@@ -223,7 +223,8 @@ public abstract class BaseRegisterFragment extends RecyclerViewFragment implemen
         clientsProgressView.setVisibility(View.INVISIBLE);
         try {
             presenter.processViewConfigurations();
-        }catch (Exception e){
+        }catch (Exception e) {
+Utils.appendLog(getClass().getName(),e);
 
         }
         this.registerCondition = "";
@@ -298,13 +299,15 @@ public abstract class BaseRegisterFragment extends RecyclerViewFragment implemen
         try{
             setRefreshList(true);
 
-        }catch (Exception e){
+        }catch (Exception e) {
+Utils.appendLog(getClass().getName(),e);
             e.printStackTrace();
         }
         try{
 
             renderView();
-        }catch (Exception e){
+        }catch (Exception e) {
+Utils.appendLog(getClass().getName(),e);
             e.printStackTrace();
         }
 
@@ -318,7 +321,8 @@ public abstract class BaseRegisterFragment extends RecyclerViewFragment implemen
         updateSearchView();
         try {
             presenter.processViewConfigurations();
-        }catch (Exception e){
+        }catch (Exception e) {
+Utils.appendLog(getClass().getName(),e);
 
         }
         // updateLocationText();
@@ -525,13 +529,15 @@ public abstract class BaseRegisterFragment extends RecyclerViewFragment implemen
                     try{
                         setRefreshList(true);
 
-                    }catch (Exception e){
+                    }catch (Exception e) {
+Utils.appendLog(getClass().getName(),e);
                         e.printStackTrace();
                     }
                     try{
 
                         renderView();
-                    }catch (Exception e){
+                    }catch (Exception e) {
+Utils.appendLog(getClass().getName(),e);
                         e.printStackTrace();
                     }
 
@@ -606,7 +612,8 @@ public abstract class BaseRegisterFragment extends RecyclerViewFragment implemen
                     }
 
                     cursor.close();
-                }catch(Exception e){
+                }catch(Exception e) {
+Utils.appendLog(getClass().getName(),e);
 
                 }
 

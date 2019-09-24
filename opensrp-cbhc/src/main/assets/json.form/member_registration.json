@@ -233,7 +233,7 @@
         "openmrs_entity": "person_identifier",
         "openmrs_entity_id": "Patient_Identifier",
         "type": "edit_text",
-        "hint": "সিস্টেম নম্বর ",
+        "hint": "সিস্টেম নম্বর",
         "read_only": "true",
         "value": "0",
         "v_numeric": {
@@ -404,7 +404,7 @@
         },
         "expanded": false,
         "v_required": {
-          "value": false,
+          "value": true,
           "err": "Please Enter a Valid Name"
         }
       },
@@ -441,7 +441,7 @@
           "err": "বাংলায় লিখুন"
         },
         "v_required": {
-          "value": false,
+          "value": true,
           "err": "Please enter the mother/guardian's first name"
         }
       },
@@ -478,7 +478,7 @@
           "err": "বাংলায় লিখুন"
         },
         "v_required": {
-          "value": false,
+          "value": true,
           "err": "Please enter the mother/guardian's first name"
         }
       },
@@ -534,7 +534,6 @@
         "openmrs_entity_id": "",
         "openmrs_data_type": "text",
         "type": "edit_text",
-        "value": "0",
         "hint": "না জানলে বয়স লিখুন (বছর)",
         "v_numeric": {
           "value": "true",
@@ -575,7 +574,7 @@
         "openmrs_entity_id": "1e58da4d-60b9-4c60-a079-9a5371d3cfa9",
         "openmrs_data_type": "text",
         "type": "spinner",
-        "hint": "বাচ্চার জন্মকালীন ওজন ",
+        "hint": "বাচ্চার জন্মকালীন ওজন",
         "values": [
           "হ্যাঁ",
           "না"
@@ -619,7 +618,7 @@
         "openmrs_entity_id": "1f011039-e2dc-49a0-8804-1a96d1d5ba49",
         "openmrs_data_type": "text",
         "type": "spinner",
-        "hint": "৭.১% ক্লোরোহেক্সিডিন এর ব্যবহার ",
+        "hint": "৭.১% ক্লোরোহেক্সিডিন এর ব্যবহার",
         "values": [
           "হ্যাঁ",
           "না"
@@ -704,7 +703,7 @@
           "err": "Please enter a valid name"
         },
         "v_required": {
-          "value": false,
+          "value": true,
           "err": "Please enter spouse name"
         },
         "relevance": {
@@ -796,7 +795,7 @@
           "অটিজম বৈশিষ্ট্য সম্পন্ন ব্যাক্তি",
           "শারীরিক প্রতিবন্ধিতা",
           "দৃষ্টি ও শ্রবণ প্রতিবন্ধিতা",
-          "বাক ও শ্রবণ প্রতিবন্ধিতা ",
+          "বাক ও শ্রবণ প্রতিবন্ধিতা",
           "মানসিক প্রতিবন্ধিতা",
           "বুদ্ধি প্রতিবন্ধিতা",
           "সেরিব্রাল পালসিজনিত প্রতিবন্ধিতা",
@@ -807,7 +806,7 @@
           "অটিজম বৈশিষ্ট্য সম্পন্ন ব্যাক্তি": "Autism",
           "শারীরিক প্রতিবন্ধিতা": "Physical Disability",
           "দৃষ্টি ও শ্রবণ প্রতিবন্ধিতা": "Auditory Disability",
-          "বাক ও শ্রবণ প্রতিবন্ধিতা ": "Mute and Hearing Disability",
+          "বাক ও শ্রবণ প্রতিবন্ধিতা": "Mute and Hearing Disability",
           "মানসিক প্রতিবন্ধিতা": "Mental Disability",
           "বুদ্ধি প্রতিবন্ধিতা": "Mentally Challenged",
           "সেরিব্রাল পালসিজনিত প্রতিবন্ধিতা": "Cerebral Palsy",
@@ -1011,42 +1010,42 @@
         "type": "spinner",
         "hint": "কারিগরী পেশা",
         "values": [
-          "ইঞ্জিনিয়ার ",
-          "বিজ্ঞানী ",
-          "অর্থনীতিবিদ ",
-          "পরিসংখ্যানবিদ, গণিতবিদ, সিস্টেম এনালিস্ট এবং এতদসম্পকিত কর্মী ",
-          "লেখক, সাংবাদিক এবং এতদসম্পর্কিত কর্মী ",
-          "বিমান এবং জাহাজের কর্মকর্তা ",
-          "চিকিৎসক, দন্ত চিকিৎসক ও প্রাণী চিকিৎসক ",
-          "নার্স এবং চিকিৎসা-সংক্রান্ত অন্যান্য কর্মী ",
-          "অভিনয়, কণ্ঠশিল্পী এবং নৃত্য শিল্পী ",
-          "খেলোয়াড় এবং এতদসম্পর্কিত কর্মী ",
-          "হিসাব রক্ষক ",
-          "বিচারক ",
-          "শিক্ষক ",
-          "আইনজীবী ",
-          "ম্যানেজার ",
-          "সরকারী কর্মকর্তা ",
-          "কৃষি খামার ব্যবস্থাপক ও তত্বাবধায়ক "
+          "ইঞ্জিনিয়ার",
+          "বিজ্ঞানী",
+          "অর্থনীতিবিদ",
+          "পরিসংখ্যানবিদ, গণিতবিদ, সিস্টেম এনালিস্ট এবং এতদসম্পকিত কর্মী",
+          "লেখক, সাংবাদিক এবং এতদসম্পর্কিত কর্মী",
+          "বিমান এবং জাহাজের কর্মকর্তা",
+          "চিকিৎসক, দন্ত চিকিৎসক ও প্রাণী চিকিৎসক",
+          "নার্স এবং চিকিৎসা-সংক্রান্ত অন্যান্য কর্মী",
+          "অভিনয়, কণ্ঠশিল্পী এবং নৃত্য শিল্পী",
+          "খেলোয়াড় এবং এতদসম্পর্কিত কর্মী",
+          "হিসাব রক্ষক",
+          "বিচারক",
+          "শিক্ষক",
+          "আইনজীবী",
+          "ম্যানেজার",
+          "সরকারী কর্মকর্তা",
+          "কৃষি খামার ব্যবস্থাপক ও তত্বাবধায়ক"
         ],
         "openmrs_choice_ids": {
-          "ইঞ্জিনিয়ার ": "Engineer",
-          "বিজ্ঞানী ": "Physical scientist and relevant technicians",
-          "অর্থনীতিবিদ ": "Economist",
-          "পরিসংখ্যানবিদ, গণিতবিদ, সিস্টেম এনালিস্ট এবং এতদসম্পকিত কর্মী ": "Statistician, Mathematician, System Analyst and Relevant",
-          "লেখক, সাংবাদিক এবং এতদসম্পর্কিত কর্মী ": "Writer, Journalist and Relevant",
-          "বিমান এবং জাহাজের কর্মকর্তা ": "Officer of Airplane and Ship",
-          "চিকিৎসক, দন্ত চিকিৎসক ও প্রাণী চিকিৎসক ": "Medical doctor, Dentist & Veterinary",
-          "নার্স এবং চিকিৎসা-সংক্রান্ত অন্যান্য কর্মী ": " Nurse and treatment related other stuffs",
-          "অভিনয়, কণ্ঠশিল্পী এবং নৃত্য শিল্পী ": "Acting, Singing and Dancing",
-          "খেলোয়াড় এবং এতদসম্পর্কিত কর্মী ": "Player and Relevant",
-          "হিসাব রক্ষক ": "Accountant",
-          "বিচারক ": "Judge",
-          "শিক্ষক ": "Teacher",
-          "আইনজীবী ": "Lawyer",
-          "ম্যানেজার ": "Manager",
-          "সরকারী কর্মকর্তা ": "Government Executive Officer",
-          "কৃষি খামার ব্যবস্থাপক ও তত্বাবধায়ক ": "Agricultural Farm Manager and Supervisor"
+          "ইঞ্জিনিয়ার": "Engineer",
+          "বিজ্ঞানী": "Physical scientist and relevant technicians",
+          "অর্থনীতিবিদ": "Economist",
+          "পরিসংখ্যানবিদ, গণিতবিদ, সিস্টেম এনালিস্ট এবং এতদসম্পকিত কর্মী": "Statistician, Mathematician, System Analyst and Relevant",
+          "লেখক, সাংবাদিক এবং এতদসম্পর্কিত কর্মী": "Writer, Journalist and Relevant",
+          "বিমান এবং জাহাজের কর্মকর্তা": "Officer of Airplane and Ship",
+          "চিকিৎসক, দন্ত চিকিৎসক ও প্রাণী চিকিৎসক": "Medical doctor, Dentist & Veterinary",
+          "নার্স এবং চিকিৎসা-সংক্রান্ত অন্যান্য কর্মী": " Nurse and treatment related other stuffs",
+          "অভিনয়, কণ্ঠশিল্পী এবং নৃত্য শিল্পী": "Acting, Singing and Dancing",
+          "খেলোয়াড় এবং এতদসম্পর্কিত কর্মী": "Player and Relevant",
+          "হিসাব রক্ষক": "Accountant",
+          "বিচারক": "Judge",
+          "শিক্ষক": "Teacher",
+          "আইনজীবী": "Lawyer",
+          "ম্যানেজার": "Manager",
+          "সরকারী কর্মকর্তা": "Government Executive Officer",
+          "কৃষি খামার ব্যবস্থাপক ও তত্বাবধায়ক": "Agricultural Farm Manager and Supervisor"
         },
         "relevance": {
           "step1:Occupation_Category": {
@@ -1064,42 +1063,42 @@
         "type": "spinner",
         "hint": "অশ্রেনীভুক্ত পেশা",
         "values": [
-          "করণীক (কেরাণী) ",
-          "টাইপিস্ট/স্টেনোগ্রাফার/কম্পিউটার অপারেটর ",
-          "রেকর্ড কিপার,ক্যাশিয়ার এবং এতদসম্পর্কিত কর্মী ",
-          "কম্পিউটার সম্পর্কিত কর্মী ",
-          "পেশাগত, কারিগরি এবং অন্যান্য অশ্রেণীভুক্ত এতদসম্পর্কিত কর্মী ",
-          "চিঠিপত্র বিলিকারী ",
-          "টেলিফোন ও টেলিগ্রাফ অপারেটর ",
-          "অশ্রেণীভুক্ত দাপ্তরিক কাজ ",
-          "ভ্রমণ সংক্রান্ত কাজে নিয়োজিত কর্মী ",
-          "উৎপাদন তত্ত্বাবধায়ক এবং ফোরম্যান ",
-          "ধর্মীয় কর্মী ",
-          "অশ্রেণীভুক্ত সেবা কর্মী ",
-          "বনকর্মী ",
-          "বৈদ্যুতিক কর্মী ",
-          "বৈদ্যুতিক ব্যতীত অন্যান্য মেশিন কর্মী ",
-          "স্বর্ণকার ",
-          "গাড়ির চালক "
+          "করণীক (কেরাণী)",
+          "টাইপিস্ট/স্টেনোগ্রাফার/কম্পিউটার অপারেটর",
+          "রেকর্ড কিপার,ক্যাশিয়ার এবং এতদসম্পর্কিত কর্মী",
+          "কম্পিউটার সম্পর্কিত কর্মী",
+          "পেশাগত, কারিগরি এবং অন্যান্য অশ্রেণীভুক্ত এতদসম্পর্কিত কর্মী",
+          "চিঠিপত্র বিলিকারী",
+          "টেলিফোন ও টেলিগ্রাফ অপারেটর",
+          "অশ্রেণীভুক্ত দাপ্তরিক কাজ",
+          "ভ্রমণ সংক্রান্ত কাজে নিয়োজিত কর্মী",
+          "উৎপাদন তত্ত্বাবধায়ক এবং ফোরম্যান",
+          "ধর্মীয় কর্মী",
+          "অশ্রেণীভুক্ত সেবা কর্মী",
+          "বনকর্মী",
+          "বৈদ্যুতিক কর্মী",
+          "বৈদ্যুতিক ব্যতীত অন্যান্য মেশিন কর্মী",
+          "স্বর্ণকার",
+          "গাড়ির চালক"
         ],
         "openmrs_choice_ids": {
-          "করণীক (কেরাণী) ": "Clerk",
-          "টাইপিস্ট/স্টেনোগ্রাফার/কম্পিউটার অপারেটর ": "Typist, Stenographer & Computer Operator",
-          "রেকর্ড কিপার,ক্যাশিয়ার এবং এতদসম্পর্কিত কর্মী ": "Record Keeper, Cashier & Relevant",
-          "কম্পিউটার সম্পর্কিত কর্মী ": "Computer Relevant Worker",
-          "পেশাগত, কারিগরি এবং অন্যান্য অশ্রেণীভুক্ত এতদসম্পর্কিত কর্মী ": "Occupational, Technical and other non categorized worker",
-          "চিঠিপত্র বিলিকারী ": "Postman",
-          "টেলিফোন ও টেলিগ্রাফ অপারেটর ": "Telephone and Telegraph Operator",
-          "অশ্রেণীভুক্ত দাপ্তরিক কাজ ": "Non-categorized Clerical Worker",
-          "ভ্রমণ সংক্রান্ত কাজে নিয়োজিত কর্মী ": "Travelling Related Worker",
-          "উৎপাদন তত্ত্বাবধায়ক এবং ফোরম্যান ": "Production Supervisor & Foreman",
-          "ধর্মীয় কর্মী ": "Religious Worker",
-          "অশ্রেণীভুক্ত সেবা কর্মী ": "Non-categorized Service Provider",
-          "বনকর্মী ": "Forester",
-          "বৈদ্যুতিক কর্মী ": "Electrician",
-          "বৈদ্যুতিক ব্যতীত অন্যান্য মেশিন কর্মী ": "Machine Worker Other Then Electric",
-          "স্বর্ণকার ": "Goldsmith",
-          "গাড়ির চালক ": "Driver"
+          "করণীক (কেরাণী)": "Clerk",
+          "টাইপিস্ট/স্টেনোগ্রাফার/কম্পিউটার অপারেটর": "Typist, Stenographer & Computer Operator",
+          "রেকর্ড কিপার,ক্যাশিয়ার এবং এতদসম্পর্কিত কর্মী": "Record Keeper, Cashier & Relevant",
+          "কম্পিউটার সম্পর্কিত কর্মী": "Computer Relevant Worker",
+          "পেশাগত, কারিগরি এবং অন্যান্য অশ্রেণীভুক্ত এতদসম্পর্কিত কর্মী": "Occupational, Technical and other non categorized worker",
+          "চিঠিপত্র বিলিকারী": "Postman",
+          "টেলিফোন ও টেলিগ্রাফ অপারেটর": "Telephone and Telegraph Operator",
+          "অশ্রেণীভুক্ত দাপ্তরিক কাজ": "Non-categorized Clerical Worker",
+          "ভ্রমণ সংক্রান্ত কাজে নিয়োজিত কর্মী": "Travelling Related Worker",
+          "উৎপাদন তত্ত্বাবধায়ক এবং ফোরম্যান": "Production Supervisor & Foreman",
+          "ধর্মীয় কর্মী": "Religious Worker",
+          "অশ্রেণীভুক্ত সেবা কর্মী": "Non-categorized Service Provider",
+          "বনকর্মী": "Forester",
+          "বৈদ্যুতিক কর্মী": "Electrician",
+          "বৈদ্যুতিক ব্যতীত অন্যান্য মেশিন কর্মী": "Machine Worker Other Then Electric",
+          "স্বর্ণকার": "Goldsmith",
+          "গাড়ির চালক": "Driver"
         },
         "relevance": {
           "step1:Occupation_Category": {
@@ -1115,26 +1114,26 @@
         "openmrs_entity_id": "Unskilled labor",
         "openmrs_data_type": "text",
         "type": "spinner",
-        "hint": "অদক্ষ শ্রমিক ",
+        "hint": "অদক্ষ শ্রমিক",
         "values": [
-          "বাবুর্চি, হোটেল বয় এবং এতদসম্পর্কিত সম্পর্কিত কর্মী ",
-          "অশ্রেণীভুক্ত বিক্রয় কর্মী ",
-          "যানবাহন ও যোগাযোগ তত্ত্বাবধায়ক ",
-          "গাড়ির কন্ডাক্টর ",
-          "শব্দ প্রচারকর্মী ও চলচ্চিত্র প্রদর্শনকারী ",
-          "নিরাপত্তা কর্মী ",
-          "দোকানদার ",
-          "ধোপার কাজ "
+          "বাবুর্চি, হোটেল বয় এবং এতদসম্পর্কিত সম্পর্কিত কর্মী",
+          "অশ্রেণীভুক্ত বিক্রয় কর্মী",
+          "যানবাহন ও যোগাযোগ তত্ত্বাবধায়ক",
+          "গাড়ির কন্ডাক্টর",
+          "শব্দ প্রচারকর্মী ও চলচ্চিত্র প্রদর্শনকারী",
+          "নিরাপত্তা কর্মী",
+          "দোকানদার",
+          "ধোপার কাজ"
         ],
         "openmrs_choice_ids": {
-          "বাবুর্চি, হোটেল বয় এবং এতদসম্পর্কিত সম্পর্কিত কর্মী ": "Cook, Waiter & Relevant Worker",
-          "অশ্রেণীভুক্ত বিক্রয় কর্মী ": "Non-categorized Sales Worker",
-          "যানবাহন ও যোগাযোগ তত্ত্বাবধায়ক ": "Vehicle & Communication Supervisor",
-          "গাড়ির কন্ডাক্টর ": "Car conductor",
-          "শব্দ প্রচারকর্মী ও চলচ্চিত্র প্রদর্শনকারী ": "Announcer & Cinema Exhibitor",
-          "নিরাপত্তা কর্মী ": "Guard",
-          "দোকানদার ": "Shopkeeper",
-          "ধোপার কাজ ": "Fuller"
+          "বাবুর্চি, হোটেল বয় এবং এতদসম্পর্কিত সম্পর্কিত কর্মী": "Cook, Waiter & Relevant Worker",
+          "অশ্রেণীভুক্ত বিক্রয় কর্মী": "Non-categorized Sales Worker",
+          "যানবাহন ও যোগাযোগ তত্ত্বাবধায়ক": "Vehicle & Communication Supervisor",
+          "গাড়ির কন্ডাক্টর": "Car conductor",
+          "শব্দ প্রচারকর্মী ও চলচ্চিত্র প্রদর্শনকারী": "Announcer & Cinema Exhibitor",
+          "নিরাপত্তা কর্মী": "Guard",
+          "দোকানদার": "Shopkeeper",
+          "ধোপার কাজ": "Fuller"
         },
         "relevance": {
           "step1:Occupation_Category": {
@@ -1152,42 +1151,42 @@
         "type": "spinner",
         "hint": "দৈনিক ভিত্তিক শ্রমিক",
         "values": [
-          "খনন কর্মী ও খননকারী ",
-          "ধাতু প্রক্রিয়াকারী ",
-          "রাসায়নিক দ্রব্য প্রক্রিয়াকারী ",
-          "খাদ্য ও পানীয় প্রক্রিয়া কারী ",
-          "তামাক প্রক্রিয়াকারী ",
-          "চামড়া প্রক্রিয়াকরণ ",
-          "জুতা ও চামড়াজাত দ্রব্য প্রস্তুতকারী ",
-          "রাবার ও প্লাস্টিক দ্রব্য প্রস্তুতকারী ",
-          "কাগজ ও কাগজের বোর্ড প্রস্তুতকারী ",
-          "মুদ্রণ কাজ ",
-          "কর্মকার, ঢালাই কর্মী ও যন্ত্রাংশ প্রস্তুতকারী ",
-          "পাথর কাটা ও প্রক্রিয়কারী ",
-          "পানি ও পয়ঃনিষ্কাশন কাঠামো নির্মাণকারী ",
-          "বজ্য ব্যবস্থাপনা কর্মী ",
-          "ধাতু ঝালাইকারী ",
-          "অকৃষি শ্রমিক ",
-          "কৃষি শ্রমিক "
+          "খনন কর্মী ও খননকারী",
+          "ধাতু প্রক্রিয়াকারী",
+          "রাসায়নিক দ্রব্য প্রক্রিয়াকারী",
+          "খাদ্য ও পানীয় প্রক্রিয়া কারী",
+          "তামাক প্রক্রিয়াকারী",
+          "চামড়া প্রক্রিয়াকরণ",
+          "জুতা ও চামড়াজাত দ্রব্য প্রস্তুতকারী",
+          "রাবার ও প্লাস্টিক দ্রব্য প্রস্তুতকারী",
+          "কাগজ ও কাগজের বোর্ড প্রস্তুতকারী",
+          "মুদ্রণ কাজ",
+          "কর্মকার, ঢালাই কর্মী ও যন্ত্রাংশ প্রস্তুতকারী",
+          "পাথর কাটা ও প্রক্রিয়কারী",
+          "পানি ও পয়ঃনিষ্কাশন কাঠামো নির্মাণকারী",
+          "বজ্য ব্যবস্থাপনা কর্মী",
+          "ধাতু ঝালাইকারী",
+          "অকৃষি শ্রমিক",
+          "কৃষি শ্রমিক"
         ],
         "openmrs_choice_ids": {
-          "খনন কর্মী ও খননকারী ": "Excavation and Digging",
-          "ধাতু প্রক্রিয়াকারী ": "Metal Processing",
-          "রাসায়নিক দ্রব্য প্রক্রিয়াকারী ": "Chemical Material Processing",
-          "খাদ্য ও পানীয় প্রক্রিয়া কারী ": "Food & Drink Processing",
-          "তামাক প্রক্রিয়াকারী ": "Tobacco Processing",
-          "চামড়া প্রক্রিয়াকরণ ": " Leather Processing",
-          "জুতা ও চামড়াজাত দ্রব্য প্রস্তুতকারী ": "Shoe & Lather Product Producer",
-          "রাবার ও প্লাস্টিক দ্রব্য প্রস্তুতকারী ": "Rubber & Plastic Material Producer",
-          "কাগজ ও কাগজের বোর্ড প্রস্তুতকারী ": "Paper & Paper Board Producer",
-          "মুদ্রণ কাজ ": "Printing",
-          "কর্মকার, ঢালাই কর্মী ও যন্ত্রাংশ প্রস্তুতকারী ": "Smith, Welding Worker & Machinery Parts Producer",
-          "পাথর কাটা ও প্রক্রিয়কারী ": "Mason",
-          "পানি ও পয়ঃনিষ্কাশন কাঠামো নির্মাণকারী ": "Plumber",
-          "বজ্য ব্যবস্থাপনা কর্মী ": "Corporate management staff",
-          "ধাতু ঝালাইকারী ": "Metal Welder",
-          "অকৃষি শ্রমিক ": "Non-agricultural Worker",
-          "কৃষি শ্রমিক ": "Agricultural Worker"
+          "খনন কর্মী ও খননকারী": "Excavation and Digging",
+          "ধাতু প্রক্রিয়াকারী": "Metal Processing",
+          "রাসায়নিক দ্রব্য প্রক্রিয়াকারী": "Chemical Material Processing",
+          "খাদ্য ও পানীয় প্রক্রিয়া কারী": "Food & Drink Processing",
+          "তামাক প্রক্রিয়াকারী": "Tobacco Processing",
+          "চামড়া প্রক্রিয়াকরণ": " Leather Processing",
+          "জুতা ও চামড়াজাত দ্রব্য প্রস্তুতকারী": "Shoe & Lather Product Producer",
+          "রাবার ও প্লাস্টিক দ্রব্য প্রস্তুতকারী": "Rubber & Plastic Material Producer",
+          "কাগজ ও কাগজের বোর্ড প্রস্তুতকারী": "Paper & Paper Board Producer",
+          "মুদ্রণ কাজ": "Printing",
+          "কর্মকার, ঢালাই কর্মী ও যন্ত্রাংশ প্রস্তুতকারী": "Smith, Welding Worker & Machinery Parts Producer",
+          "পাথর কাটা ও প্রক্রিয়কারী": "Mason",
+          "পানি ও পয়ঃনিষ্কাশন কাঠামো নির্মাণকারী": "Plumber",
+          "বজ্য ব্যবস্থাপনা কর্মী": "Corporate management staff",
+          "ধাতু ঝালাইকারী": "Metal Welder",
+          "অকৃষি শ্রমিক": "Non-agricultural Worker",
+          "কৃষি শ্রমিক": "Agricultural Worker"
         },
         "relevance": {
           "step1:Occupation_Category": {
@@ -1205,20 +1204,20 @@
         "type": "spinner",
         "hint": "কুঠির শিল্প",
         "values": [
-          "কাঠ মিস্ত্রি ",
-          "দর্জি ও অন্যান্য সেলাই কর্মী ",
-          "গ্লাস ও মাটির জিনিস প্রস্তুতকারী ",
-          "তাঁতি কাপড় বোনা ও রং করা ",
-          "জেলে, শিকারী এবং এতদসম্পর্কিত কর্মী ",
-          "ফেরিওয়ালা "
+          "কাঠ মিস্ত্রি",
+          "দর্জি ও অন্যান্য সেলাই কর্মী",
+          "গ্লাস ও মাটির জিনিস প্রস্তুতকারী",
+          "তাঁতি কাপড় বোনা ও রং করা",
+          "জেলে, শিকারী এবং এতদসম্পর্কিত কর্মী",
+          "ফেরিওয়ালা"
         ],
         "openmrs_choice_ids": {
-          "কাঠ মিস্ত্রি ": "Carpenter",
-          "দর্জি ও অন্যান্য সেলাই কর্মী ": "Tailor & Relevant",
-          "গ্লাস ও মাটির জিনিস প্রস্তুতকারী ": "Glass Maker & Potter",
-          "তাঁতি কাপড় বোনা ও রং করা ": "Weaving & Painting",
-          "জেলে, শিকারী এবং এতদসম্পর্কিত কর্মী ": "Fisherman, Hunter and Relevant",
-          "ফেরিওয়ালা ": "Hawker"
+          "কাঠ মিস্ত্রি": "Carpenter",
+          "দর্জি ও অন্যান্য সেলাই কর্মী": "Tailor & Relevant",
+          "গ্লাস ও মাটির জিনিস প্রস্তুতকারী": "Glass Maker & Potter",
+          "তাঁতি কাপড় বোনা ও রং করা": "Weaving & Painting",
+          "জেলে, শিকারী এবং এতদসম্পর্কিত কর্মী": "Fisherman, Hunter and Relevant",
+          "ফেরিওয়ালা": "Hawker"
         },
         "relevance": {
           "step1:Occupation_Category": {
@@ -1236,16 +1235,16 @@
         "type": "spinner",
         "hint": "ব্যবসা",
         "values": [
-          "পাইকারী ও খুচরা ব্যবসা ",
-          "বীমা, রিয়েল এস্টেট ব্যবসা এবং এতদসম্পর্কিত সেবা বিক্রেতা ",
-          "হোটেল মালিক ",
+          "পাইকারী ও খুচরা ব্যবসা",
+          "বীমা, রিয়েল এস্টেট ব্যবসা এবং এতদসম্পর্কিত সেবা বিক্রেতা",
+          "হোটেল মালিক",
           "পোল্ট্রি মালিক "
         ],
         "openmrs_choice_ids": {
-          "পাইকারী ও খুচরা ব্যবসা ": "Retail & Wholesale",
-          "বীমা, রিয়েল এস্টেট ব্যবসা এবং এতদসম্পর্কিত সেবা বিক্রেতা ": "Insurance, Real State and Relevant Service Seller",
-          "হোটেল মালিক ": "Hotel Owner",
-          "পোল্ট্রি মালিক ": "Poultry owner"
+          "পাইকারী ও খুচরা ব্যবসা": "Retail & Wholesale",
+          "বীমা, রিয়েল এস্টেট ব্যবসা এবং এতদসম্পর্কিত সেবা বিক্রেতা": "Insurance, Real State and Relevant Service Seller",
+          "হোটেল মালিক": "Hotel Owner",
+          "পোল্ট্রি মালিক": "Poultry owner"
         },
         "relevance": {
           "step1:Occupation_Category": {
@@ -1263,12 +1262,12 @@
         "type": "spinner",
         "hint": "গৃহস্থালীর পরিচারক",
         "values": [
-          "অশ্রেণীভুক্ত গৃহপরিচারিকা ",
-          "বাড়ির কেয়ারটেকার, ঝাড়ুদার এবং এতদসম্পর্কিত কর্মী "
+          "অশ্রেণীভুক্ত গৃহপরিচারিকা",
+          "বাড়ির কেয়ারটেকার, ঝাড়ুদার এবং এতদসম্পর্কিত কর্মী"
         ],
         "openmrs_choice_ids": {
-          "অশ্রেণীভুক্ত গৃহপরিচারিকা ": "Non-categorized Housemaid",
-          "বাড়ির কেয়ারটেকার, ঝাড়ুদার এবং এতদসম্পর্কিত কর্মী ": "House Caretaker, Sweeper & Relevant Worker"
+          "অশ্রেণীভুক্ত গৃহপরিচারিকা": "Non-categorized Housemaid",
+          "বাড়ির কেয়ারটেকার, ঝাড়ুদার এবং এতদসম্পর্কিত কর্মী": "House Caretaker, Sweeper & Relevant Worker"
         },
         "relevance": {
           "step1:Occupation_Category": {
@@ -1382,7 +1381,7 @@
         "key": "Disease_Type",
         "openmrs_entity_parent": "",
         "openmrs_entity": "person_attribute",
-        "openmrs_entity_id": "Disease Type",
+        "openmrs_entity_id": "DiseaseType",
         "openmrs_data_type": "text",
         "type": "check_box",
         "label": "রোগের ধরণ",
@@ -1391,16 +1390,16 @@
         ],
         "options": [
           {
-            "key": "Communicable Disease",
+            "key": "Communicable",
             "text": "সংক্রামক রোগ",
             "value": false,
-            "openmrs_choice_id": "Communicable Disease"
+            "openmrs_choice_id": "Communicable"
           },
           {
-            "key": "Non Communicable Disease",
+            "key": "NonContaminable",
             "text": "অসংক্রামক রোগ",
             "value": false,
-            "openmrs_choice_id": "Non Communicable Disease"
+            "openmrs_choice_id": "NonContaminable"
           }
         ],
         "relevance": {
@@ -1412,7 +1411,7 @@
         }
       },
       {
-        "key": "Communicable Disease",
+        "key": "Comm_Disease",
         "openmrs_entity_parent": "",
         "openmrs_entity": "person_attribute",
         "openmrs_entity_id": "Communicable Disease",
@@ -1437,55 +1436,55 @@
           },
           {
             "key": "Leprosy",
-            "text": "কুষ্ঠ ",
+            "text": "কুষ্ঠ",
             "value": false,
             "openmrs_choice_id": "Leprosy"
           },
           {
             "key": "Tuberculosis",
-            "text": "যক্ষ্মা  ",
+            "text": "যক্ষ্মা",
             "value": false,
             "openmrs_choice_id": "Tuberculosis"
           },
           {
             "key": "Rabies",
-            "text": "জলাতঙ্ক ",
+            "text": "জলাতঙ্ক",
             "value": false,
             "openmrs_choice_id": "Rabies"
           },
           {
             "key": "Avian Flu",
-            "text": "এভিয়েন ইনফ্লুয়েঞ্জা  ",
+            "text": "এভিয়েন ইনফ্লুয়েঞ্জা",
             "value": false,
             "openmrs_choice_id": "Avian Flu"
           },
           {
             "key": "Swine Flu",
-            "text": "সোয়াইন ফ্লু ",
+            "text": "সোয়াইন ফ্লু",
             "value": false,
             "openmrs_choice_id": "Swine Flu"
           },
           {
             "key": "Nipah",
-            "text": "নিপাহ  ",
+            "text": "নিপাহ",
             "value": false,
             "openmrs_choice_id": "Nipah"
           },
           {
             "key": "Acute Viral Hepatitis",
-            "text": "যকৃতের ভাইরাস জনিত প্রদাহ ",
+            "text": "যকৃতের ভাইরাস জনিত প্রদাহ",
             "value": false,
             "openmrs_choice_id": "Acute Viral Hepatitis"
           },
           {
             "key": "Diarrhoea",
-            "text": "ডায়ারিয়া  ",
+            "text": "ডায়ারিয়া",
             "value": false,
             "openmrs_choice_id": "Diarrhoea"
           },
           {
             "key": "Worms Infection",
-            "text": "কৃমি সংক্রামণ   ",
+            "text": "কৃমি সংক্রামণ",
             "value": false,
             "openmrs_choice_id": "Worms Infection"
           },
@@ -1501,7 +1500,7 @@
             "ex-checkbox": [
               {
                 "or": [
-                  "Communicable Disease"
+                  "Communicable"
                 ]
               }
             ]
@@ -1509,7 +1508,7 @@
         }
       },
       {
-        "key": "Non Communicable Disease",
+        "key": "NonComnta_Disease",
         "openmrs_entity_parent": "",
         "openmrs_entity": "person_attribute",
         "openmrs_entity_id": "Non Communicable Disease",
@@ -1534,25 +1533,25 @@
           },
           {
             "key": "Diabetes",
-            "text": "ডায়াবেটিস  ",
+            "text": "ডায়াবেটিস",
             "value": false,
             "openmrs_choice_id": "Diabetes"
           },
           {
             "key": "High Blood Pressure",
-            "text": "উচ্চ রক্তচাপ  ",
+            "text": "উচ্চ রক্তচাপ",
             "value": false,
             "openmrs_choice_id": "High Blood Pressure"
           },
           {
             "key": "Stroke",
-            "text": "স্ট্রোক ",
+            "text": "স্ট্রোক",
             "value": false,
             "openmrs_choice_id": "Stroke"
           },
           {
             "key": "Tumor or Cancer",
-            "text": "টিউমার বা ক্যানসার ",
+            "text": "টিউমার বা ক্যানসার",
             "value": false,
             "openmrs_choice_id": "Tumor or Cancer"
           }
@@ -1562,7 +1561,7 @@
             "ex-checkbox": [
               {
                 "or": [
-                  "Non Communicable Disease"
+                  "NonContaminable"
                 ]
               }
             ]
@@ -1669,13 +1668,13 @@
           },
           {
             "key": "Diarrhoea_No_Dehydration",
-            "text": "পানি স্বল্পতাহীন ডায়রিয়া ",
+            "text": "পানি স্বল্পতাহীন ডায়রিয়া",
             "value": false,
             "openmrs_choice_id": "Diarrhoea_No_Dehydration"
           },
           {
             "key": "Bellybutton_infection",
-            "text": "নাভিতে সংক্রামন ",
+            "text": "নাভিতে সংক্রামন",
             "value": false,
             "openmrs_choice_id": "Bellybutton_infection"
           },
@@ -1780,7 +1779,7 @@
           },
           {
             "key": "Bellybutton_infection",
-            "text": "নাভিতে সংক্রামন ",
+            "text": "নাভিতে সংক্রামন",
             "value": false,
             "openmrs_choice_id": "Bellybutton_infection"
           },
@@ -1839,25 +1838,25 @@
         "hint": "পরিবার পরিকল্পনা",
         "values": [
           "খাবার বড়ি",
-          "কনডম ",
-          "ইনজেক্টবল ",
-          "আই ইউ ডি ",
-          "ইমপ্লান্ট ",
-          "স্থায়ী পদ্ধতি ",
-          "অন্যান্য পদ্ধতি ",
-          "বন্ধ্যা দম্পতি ",
-          "পদ্ধতি ব্যবহার করে না "
+          "কনডম",
+          "ইনজেক্টবল",
+          "আই ইউ ডি",
+          "ইমপ্লান্ট",
+          "স্থায়ী পদ্ধতি",
+          "অন্যান্য পদ্ধতি",
+          "বন্ধ্যা দম্পতি",
+          "পদ্ধতি ব্যবহার করে না"
         ],
         "openmrs_choice_ids": {
           "খাবার বড়ি": "Oral_Contraceptives",
-          "কনডম ": "Condoms",
-          "ইনজেক্টবল ": "Injectable",
-          "আই ইউ ডি ": "IUD",
-          "ইমপ্লান্ট ": "Implant",
-          "স্থায়ী পদ্ধতি ": "Permanent_FP_Method",
-          "অন্যান্য পদ্ধতি ": "Other_Method",
-          "বন্ধ্যা দম্পতি ": "Infertility",
-          "পদ্ধতি ব্যবহার করে না ": "No_Method_Usage"
+          "কনডম": "Condoms",
+          "ইনজেক্টবল": "Injectable",
+          "আই ইউ ডি": "IUD",
+          "ইমপ্লান্ট": "Implant",
+          "স্থায়ী পদ্ধতি": "Permanent_FP_Method",
+          "অন্যান্য পদ্ধতি": "Other_Method",
+          "বন্ধ্যা দম্পতি": "Infertility",
+          "পদ্ধতি ব্যবহার করে না": "No_Method_Usage"
         },
         "relevance": {
           "rules-engine": {
@@ -1904,7 +1903,7 @@
         "options": [
           {
             "key": "Leprosy",
-            "text": "কুষ্ঠ ",
+            "text": "কুষ্ঠ",
             "value": false,
             "openmrs_choice_id": "Leprosy"
           },
@@ -2090,7 +2089,7 @@
         "type": "choose_image",
         "uploadButtonText": "ছবি তুলুন*",
         "v_required": {
-          "value": false,
+          "value": true,
           "err": "Please take household picture"
         }
       }

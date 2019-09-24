@@ -6,8 +6,6 @@ import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 import android.util.Log;
 
-import org.slf4j.helpers.Util;
-import org.smartregister.CoreLibrary;
 import org.smartregister.cbhc.application.AncApplication;
 import org.smartregister.cbhc.helper.ECSyncHelper;
 import org.smartregister.cbhc.util.Constants;
@@ -76,23 +74,23 @@ public class AncClientProcessorForJava extends ClientProcessorForJava {
                         || eventType.equals(Constants.EventType.Child_REGISTRATION)
                         || eventType.equals(Constants.EventType.UPDATE_REGISTRATION)
                         || !Utils.notFollowUp(eventType)
-                        ) {
+                ) {
                     if (clientClassification == null) {
                         continue;
                     }
 
                     Client client = eventClient.getClient();
-                    if(!eventType.contains("Household")){
-                        String log = "client: "+client.getRelationships();
+                    if (!eventType.contains("Household")) {
+                        String log = "client: " + client.getRelationships();
                         System.out.println(log);
                     }
                     //iterate through the events
                     if (client != null && event != null && clientClassification != null) {
-                        if(!eventType.contains("Household")){
-                            if(client.getRelationships()!=null){
+                        if (!eventType.contains("Household")) {
+                            if (client.getRelationships() != null) {
                                 processEvent(event, client, clientClassification);
                             }
-                        }else{
+                        } else {
                             processEvent(event, client, clientClassification);
                         }
 
@@ -113,6 +111,7 @@ public class AncClientProcessorForJava extends ClientProcessorForJava {
             try {
                 return Integer.valueOf(string);
             } catch (NumberFormatException e) {
+Utils.appendLog(getClass().getName(),e);
                 Log.e(TAG, e.toString(), e);
             }
             return null;
@@ -129,6 +128,7 @@ public class AncClientProcessorForJava extends ClientProcessorForJava {
 
                 return contentValues;
             } catch (Exception e) {
+Utils.appendLog(getClass().getName(),e);
                 Log.e(TAG, e.toString(), e);
             }
             return null;
@@ -141,6 +141,7 @@ public class AncClientProcessorForJava extends ClientProcessorForJava {
                     DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZZZZZ");
                     date = dateFormat.parse(eventDateStr);
                 } catch (ParseException e) {
+Utils.appendLog(getClass().getName(),e);
                     try {
                         DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS");
                         date = dateFormat.parse(eventDateStr);
@@ -181,6 +182,7 @@ public class AncClientProcessorForJava extends ClientProcessorForJava {
                 return true;
             }
         } catch (Exception e) {
+            Utils.appendLog(getClass().getName(), e);
             Log.e(TAG, e.toString(), e);
         }
         return false;
@@ -213,6 +215,7 @@ public class AncClientProcessorForJava extends ClientProcessorForJava {
             return true;
 
         } catch (Exception e) {
+            Utils.appendLog(getClass().getName(), e);
             Log.e(TAG, e.toString(), e);
         }
 

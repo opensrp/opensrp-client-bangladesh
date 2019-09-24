@@ -12,6 +12,7 @@ import android.view.Window;
 import android.widget.TextView;
 
 import org.smartregister.cbhc.R;
+import org.smartregister.cbhc.util.Utils;
 
 
 /**
@@ -19,9 +20,9 @@ import org.smartregister.cbhc.R;
  */
 
 public class CopyToClipboardDialog extends Dialog implements View.OnClickListener {
+    private static final String TAG = CopyToClipboardDialog.class.getCanonicalName();
     private Context context;
     private String content;
-    private static final String TAG = CopyToClipboardDialog.class.getCanonicalName();
 
     public CopyToClipboardDialog(@NonNull Context context) {
         super(context);
@@ -51,6 +52,7 @@ public class CopyToClipboardDialog extends Dialog implements View.OnClickListene
 
             dismiss();
         } catch (Exception e) {
+            Utils.appendLog(getClass().getName(), e);
             Log.e(TAG, e.getMessage());
         }
     }

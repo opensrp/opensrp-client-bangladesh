@@ -3,24 +3,21 @@ package org.smartregister.cbhc.service.intent;
 import android.app.IntentService;
 import android.content.Context;
 import android.content.Intent;
+import android.os.Environment;
 import android.util.Log;
 import android.util.Pair;
 
 import net.sqlcipher.database.SQLiteDatabase;
 
 import org.apache.commons.lang3.StringUtils;
-import org.joda.time.DateTime;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.smartregister.cbhc.BuildConfig;
 import org.smartregister.cbhc.R;
-
 import org.smartregister.cbhc.application.AncApplication;
 import org.smartregister.cbhc.helper.ECSyncHelper;
-import org.smartregister.cbhc.helper.LocationHelper;
 import org.smartregister.cbhc.job.DeleteIntentServiceJob;
-import org.smartregister.cbhc.job.ImageUploadServiceJob;
 import org.smartregister.cbhc.job.PullHealthIdsServiceJob;
 import org.smartregister.cbhc.job.PullUniqueIdsServiceJob;
 import org.smartregister.cbhc.receiver.SyncStatusBroadcastReceiver;
@@ -28,28 +25,29 @@ import org.smartregister.cbhc.repository.AncRepository;
 import org.smartregister.cbhc.sync.AncClientProcessorForJava;
 import org.smartregister.cbhc.util.Constants;
 import org.smartregister.cbhc.util.NetworkUtils;
+import org.smartregister.cbhc.util.Utils;
 import org.smartregister.domain.FetchStatus;
 import org.smartregister.domain.Response;
-import org.smartregister.domain.db.Client;
 import org.smartregister.domain.db.EventClient;
 import org.smartregister.repository.AllSharedPreferences;
 import org.smartregister.repository.EventClientRepository;
 import org.smartregister.service.HTTPAgent;
 
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileWriter;
 import java.text.MessageFormat;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
 public class SyncIntentService extends IntentService {
-    private static final String ADD_URL = "/rest/event/add";
     public static final String SYNC_URL = "/rest/event/sync";
-
+    public static final int EVENT_PULL_LIMIT = 250;
+    private static final String ADD_URL = "/rest/event/add";
+    private static final int EVENT_PUSH_LIMIT = 50;
     private Context context;
     private HTTPAgent httpAgent;
-
-    public static final int EVENT_PULL_LIMIT = 250;
-    private static final int EVENT_PUSH_LIMIT = 50;
 
     public SyncIntentService() {
         super("SyncIntentService");
@@ -85,6 +83,7 @@ public class SyncIntentService extends IntentService {
             pullECFromServer();
 
         } catch (Exception e) {
+            Utils.appendLog(getClass().getName(), e);
             Log.e(getClass().getName(), e.getMessage(), e);
             complete(FetchStatus.fetchedFailed);
         }
@@ -116,13 +115,27 @@ public class SyncIntentService extends IntentService {
             }
 
             Long lastSyncDatetime = ecSyncUpdater.getLastSyncTimeStamp();
-            Log.i(SyncIntentService.class.getName(), "LAST SYNC DT :" + new DateTime(lastSyncDatetime));
+            Log.v("REQUEST_URL", "LAST SYNC DT :" + lastSyncDatetime);
+            if (BuildConfig.DEBUG) {
+                try {
+                    File f = new File(Environment.getExternalStorageDirectory() + "/cbhc_log/request/");
+                    if (!f.exists()) {
+                        f.mkdirs();
+                    }
+                    BufferedWriter writer = new BufferedWriter(new FileWriter(Environment.getExternalStorageDirectory() + "/cbhc_log/request/" + lastSyncDatetime + ".json"));
+                    writer.write("REQUEST_URL :" + lastSyncDatetime);
+                    writer.close();
+                } catch (Exception e) {
+                    Utils.appendLog(getClass().getName(), e);
+                    e.printStackTrace();
+                }
+            }
             lastSyncDatetime = lastSyncDatetime;
 //            String url = baseUrl + SYNC_URL + "?" + Constants.SyncFilters.FILTER_TEAM_ID + "=" + teamId + "&serverVersion=" + lastSyncDatetime + "&limit=" + SyncIntentService.EVENT_PULL_LIMIT;
 //            String url = baseUrl + SYNC_URL + "?" + Constants.SyncFilters.PROVIDER_ID + "=" + providerID + "&serverVersion=" + lastSyncDatetime + "&limit=" + SyncIntentService.EVENT_PULL_LIMIT;
             String url = baseUrl + SYNC_URL + "?" + Constants.SyncFilters.LOCATION_ID + "=" + locationid + "&serverVersion=" + lastSyncDatetime + "&limit=" + SyncIntentService.EVENT_PULL_LIMIT;
 
-            Log.i(SyncIntentService.class.getName(), "URL: " + url);
+            Log.v(getClass().getName(), "URL: " + url);
 
             if (httpAgent == null) {
                 complete(FetchStatus.fetchedFailed);
@@ -134,13 +147,28 @@ public class SyncIntentService extends IntentService {
             }
 
             JSONObject jsonObject = new JSONObject((String) resp.payload());
+            if (BuildConfig.DEBUG) {
+                try {
+                    File f = new File(Environment.getExternalStorageDirectory() + "/cbhc_log/response/");
+                    if (!f.exists()) {
+                        f.mkdirs();
+                    }
+                    BufferedWriter writer = new BufferedWriter(new FileWriter(Environment.getExternalStorageDirectory() + "/cbhc_log/response/" + lastSyncDatetime + ".json"));
+                    writer.write(jsonObject.toString());
+                    writer.close();
+                } catch (Exception e) {
+                    Utils.appendLog(getClass().getName(), e);
+
+                    e.printStackTrace();
+                }
+            }
 
             int eCount = fetchNumberOfEvents(jsonObject);
-            Log.i(getClass().getName(), "Parse Network Event Count: " + eCount);
+            Log.v(getClass().getName(), "Parse Network Event Count: " + eCount);
 
             if (eCount == 0) {
                 complete(FetchStatus.nothingFetched);
-                new DetailsStatusUpdate(jsonObject,eCount).start();
+                new DetailsStatusUpdate(jsonObject, eCount).start();
             } else if (eCount < 0) {
                 fetchFailed(count);
             } else if (eCount > 0) {
@@ -158,10 +186,11 @@ public class SyncIntentService extends IntentService {
                 // long end = System.currentTimeMillis();
                 //  long diff = end - start;
                 //System.out.println(diff);
-                new DetailsStatusUpdate(jsonObject,eCount).start();
+                new DetailsStatusUpdate(jsonObject, eCount).start();
                 fetchRetry(0);
             }
         } catch (Exception e) {
+            Utils.appendLog(getClass().getName(), e);
             Log.e(getClass().getName(), "Fetch Retry Exception: " + e.getMessage(), e.getCause());
             fetchFailed(count);
         } finally {
@@ -170,81 +199,6 @@ public class SyncIntentService extends IntentService {
             PullUniqueIdsServiceJob.scheduleJobImmediately(PullUniqueIdsServiceJob.TAG);
 
         }
-    }
-
-    class DetailsStatusUpdate extends Thread {
-
-        JSONObject obj;
-        int eCount = 0;
-        public DetailsStatusUpdate(JSONObject obj,int eCount) {
-            DetailsStatusUpdate.this.obj = obj;
-            DetailsStatusUpdate.this.eCount = eCount;
-        }
-
-        @Override
-        public void run() {
-
-            AncRepository repo = (AncRepository) AncApplication.getInstance().getRepository();
-            SQLiteDatabase db = repo.getReadableDatabase();
-            try {
-                if (obj != null && obj.has("clients")) {
-                    String tablenames[] = {"ec_household", "ec_woman", "ec_child", "ec_member"};
-//                    for (String table : tablenames) {
-//                        String setDefaultQuery = "update " + table + " set dataApprovalStatus = '1' where dataApprovalStatus!='1'";
-//                        db.execSQL(setDefaultQuery);
-//                    }
-                    JSONArray clients = obj.getJSONArray("clients");
-
-                    String rejected_ids = "";
-                    if (clients != null && clients.length() != 0) {
-                        for (int i = 0; i < clients.length(); i++) {
-                            JSONObject clientObject = clients.getJSONObject(i);
-                            if (clientObject != null && clientObject.has("dataApprovalStatus")) {
-                                String dataApprovalStatus = clientObject.getString("dataApprovalStatus");
-                                String dataApprovalComments = clientObject.getString("dataApprovalComments");
-                                String baseEntityId = clientObject.getString("baseEntityId");
-                                if ("0".equals(dataApprovalStatus)) {
-                                    String[] tablename = {"ec_woman", "ec_child", "ec_member"};
-                                    for (String table : tablename) {
-                                        String update = "update " + table + " set " +
-                                                "dataApprovalStatus = '0', dataApprovalComments = '" + dataApprovalComments + "' " +
-                                                "where " + table + ".base_entity_id = '" + baseEntityId + "'";
-                                        db.execSQL(update);
-
-                                    }
-//                                    rejected_ids += "'" + baseEntityId + "',";
-                                }
-
-                            }
-
-                        }
-                    }
-
-                }
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-
-        }
-    }
-
-    class ClientInsertThread extends Thread {
-        ECSyncHelper ecSyncUpdater;
-        JSONObject jsonObject;
-        long lastServerVersion;
-
-        public ClientInsertThread(ECSyncHelper ecSyncUpdater, JSONObject jsonObject, long lastServerVersion) {
-            this.ecSyncUpdater = ecSyncUpdater;
-            this.jsonObject = jsonObject;
-            this.lastServerVersion = lastServerVersion;
-        }
-
-        @Override
-        public void run() {
-            ecSyncUpdater.saveAllClientsAndEvents(jsonObject);
-            ecSyncUpdater.updateLastSyncTimeStamp(lastServerVersion);
-        }
-
     }
 
     public void fetchFailed(int count) {
@@ -264,27 +218,8 @@ public class SyncIntentService extends IntentService {
             AncClientProcessorForJava.getInstance(context).processClient(events);
             sendSyncStatusBroadcastMessage(FetchStatus.fetched);
         } catch (Exception e) {
-            Log.e(getClass().getName(), "Process Client Exception: " + e.getMessage(), e.getCause());
-        }
-    }
-
-    class ClientEventThread extends Thread {
-        Pair<Long, Long> serverVersionPair;
-
-        public ClientEventThread(Pair<Long, Long> serverVersionPair) {
-            this.serverVersionPair = serverVersionPair;
-        }
-
-        @Override
-        public void run() {
-            try {
-                ECSyncHelper ecUpdater = ECSyncHelper.getInstance(context);
-                List<EventClient> events = ecUpdater.allEventClients(serverVersionPair.first - 1, serverVersionPair.second);
-                AncClientProcessorForJava.getInstance(context).processClient(events);
-                sendSyncStatusBroadcastMessage(FetchStatus.fetched);
-            } catch (Exception e) {
-                Log.e(getClass().getName(), "Process Client Exception: " + e.getMessage(), e.getCause());
-            }
+            Utils.appendLog(getClass().getName(), e);
+            Log.v(getClass().getName(), "Process Client Exception: " + e.getMessage(), e.getCause());
         }
     }
 
@@ -330,6 +265,7 @@ public class SyncIntentService extends IntentService {
                 db.markEventsAsSynced(pendingEvents);
                 Log.i(getClass().getName(), "Events synced successfully.");
             } catch (Exception e) {
+                Utils.appendLog(getClass().getName(), e);
                 Log.e(getClass().getName(), e.getMessage(), e);
             }
         }
@@ -384,7 +320,8 @@ public class SyncIntentService extends IntentService {
                 return Pair.create(minServerVersion, maxServerVersion);
             }
         } catch (Exception e) {
-            Log.e(getClass().getName(), e.getMessage(), e);
+            Utils.appendLog(getClass().getName(), e);
+            Log.v(getClass().getName(), e.getMessage(), e);
         }
         return Pair.create(0L, 0L);
     }
@@ -397,9 +334,108 @@ public class SyncIntentService extends IntentService {
                 count = jsonObject.getInt(NO_OF_EVENTS);
             }
         } catch (JSONException e) {
+            Utils.appendLog(getClass().getName(), e);
             Log.e(getClass().getName(), e.getMessage(), e);
         }
         return count;
+    }
+
+    class DetailsStatusUpdate extends Thread {
+
+        JSONObject obj;
+        int eCount = 0;
+
+        public DetailsStatusUpdate(JSONObject obj, int eCount) {
+            DetailsStatusUpdate.this.obj = obj;
+            DetailsStatusUpdate.this.eCount = eCount;
+        }
+
+        @Override
+        public void run() {
+
+            AncRepository repo = (AncRepository) AncApplication.getInstance().getRepository();
+            SQLiteDatabase db = repo.getReadableDatabase();
+            try {
+                if (obj != null && obj.has("clients")) {
+                    String[] tablenames = {"ec_household", "ec_woman", "ec_child", "ec_member"};
+//                    for (String table : tablenames) {
+//                        String setDefaultQuery = "update " + table + " set dataApprovalStatus = '1' where dataApprovalStatus!='1'";
+//                        db.execSQL(setDefaultQuery);
+//                    }
+                    JSONArray clients = obj.getJSONArray("clients");
+
+                    String rejected_ids = "";
+                    if (clients != null && clients.length() != 0) {
+                        for (int i = 0; i < clients.length(); i++) {
+                            JSONObject clientObject = clients.getJSONObject(i);
+                            if (clientObject != null && clientObject.has("dataApprovalStatus")) {
+                                String dataApprovalStatus = clientObject.getString("dataApprovalStatus");
+                                String dataApprovalComments = clientObject.getString("dataApprovalComments");
+                                String baseEntityId = clientObject.getString("baseEntityId");
+                                if ("0".equals(dataApprovalStatus)) {
+                                    String[] tablename = {"ec_woman", "ec_child", "ec_member"};
+                                    for (String table : tablename) {
+                                        String update = "update " + table + " set " +
+                                                "dataApprovalStatus = '0', dataApprovalComments = '" + dataApprovalComments + "' " +
+                                                "where " + table + ".base_entity_id = '" + baseEntityId + "'";
+                                        db.execSQL(update);
+
+                                    }
+//                                    rejected_ids += "'" + baseEntityId + "',";
+                                }
+
+                            }
+
+                        }
+                    }
+
+                }
+            } catch (Exception e) {
+                Utils.appendLog(getClass().getName(), e);
+                e.printStackTrace();
+            }
+
+        }
+    }
+
+    class ClientInsertThread extends Thread {
+        ECSyncHelper ecSyncUpdater;
+        JSONObject jsonObject;
+        long lastServerVersion;
+
+        public ClientInsertThread(ECSyncHelper ecSyncUpdater, JSONObject jsonObject, long lastServerVersion) {
+            this.ecSyncUpdater = ecSyncUpdater;
+            this.jsonObject = jsonObject;
+            this.lastServerVersion = lastServerVersion;
+        }
+
+        @Override
+        public void run() {
+            ecSyncUpdater.saveAllClientsAndEvents(jsonObject);
+            ecSyncUpdater.updateLastSyncTimeStamp(lastServerVersion);
+        }
+
+    }
+
+    class ClientEventThread extends Thread {
+        Pair<Long, Long> serverVersionPair;
+
+        public ClientEventThread(Pair<Long, Long> serverVersionPair) {
+            this.serverVersionPair = serverVersionPair;
+        }
+
+        @Override
+        public void run() {
+            try {
+                ECSyncHelper ecUpdater = ECSyncHelper.getInstance(context);
+                List<EventClient> events = ecUpdater.allEventClients(serverVersionPair.first - 1, serverVersionPair.second);
+                AncClientProcessorForJava.getInstance(context).processClient(events);
+                sendSyncStatusBroadcastMessage(FetchStatus.fetched);
+            } catch (Exception e) {
+                Utils.appendLog(getClass().getName(), e);
+                Log.e(getClass().getName(), "Process Client Exception: " + e.getMessage(), e.getCause());
+            }
+        }
     }
 
 }

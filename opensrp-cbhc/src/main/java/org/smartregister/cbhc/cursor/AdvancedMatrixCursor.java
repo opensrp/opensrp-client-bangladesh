@@ -1,5 +1,7 @@
 package org.smartregister.cbhc.cursor;
 
+import org.smartregister.cbhc.util.Utils;
+
 import java.util.Date;
 
 public class AdvancedMatrixCursor extends net.sqlcipher.MatrixCursor {
@@ -12,6 +14,7 @@ public class AdvancedMatrixCursor extends net.sqlcipher.MatrixCursor {
         try {
             return super.getLong(column);
         } catch (NumberFormatException e) {
+            Utils.appendLog(getClass().getName(), e);
             return (new Date()).getTime();
         }
     }

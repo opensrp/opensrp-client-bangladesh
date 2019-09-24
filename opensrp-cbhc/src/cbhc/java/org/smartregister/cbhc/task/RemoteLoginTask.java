@@ -4,6 +4,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.AsyncTask;
+import android.util.Log;
 
 import org.smartregister.Context;
 import org.smartregister.cbhc.activity.LoginActivity;
@@ -42,6 +43,7 @@ public class RemoteLoginTask extends AsyncTask<Void, Void, LoginResponse> {
         LoginResponse loginResponse = null;
         if (getOpenSRPContext() != null && getOpenSRPContext().userService() != null)
             loginResponse = getOpenSRPContext().userService().isValidRemoteLogin(mUsername, mPassword);
+//        Log.d("LOGINREPONSE",loginResponse.getRawData().toString());
         if (loginResponse != null && loginResponse.equals(LoginResponse.SUCCESS)) {
             getOpenSRPContext().userService().getAllSharedPreferences().updateANMUserName(mUsername);
             String password = getOpenSRPContext().userService().getGroupId(mUsername);

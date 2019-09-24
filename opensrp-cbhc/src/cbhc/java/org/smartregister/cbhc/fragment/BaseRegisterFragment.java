@@ -43,7 +43,6 @@ import org.smartregister.cbhc.job.SyncServiceJob;
 import org.smartregister.cbhc.provider.RegisterProvider;
 import org.smartregister.cbhc.receiver.SyncStatusBroadcastReceiver;
 import org.smartregister.cbhc.repository.AncRepository;
-import org.smartregister.cbhc.service.intent.SyncIntentService;
 import org.smartregister.cbhc.util.Constants;
 import org.smartregister.cbhc.util.DBConstants;
 import org.smartregister.cbhc.util.NetworkUtils;
@@ -55,7 +54,6 @@ import org.smartregister.cursoradapter.RecyclerViewPaginatedAdapter;
 import org.smartregister.cursoradapter.SmartRegisterQueryBuilder;
 import org.smartregister.domain.FetchStatus;
 import org.smartregister.provider.SmartRegisterClientsProvider;
-import org.smartregister.service.ImageUploadSyncService;
 import org.smartregister.view.activity.SecuredNativeSmartRegisterActivity;
 import org.smartregister.view.dialog.DialogOption;
 
@@ -96,11 +94,11 @@ public abstract class BaseRegisterFragment extends RecyclerViewFragment implemen
             return false;
         }
     };
+    TextView unsyncView;
     private Snackbar syncStatusSnackbar;
     private ImageView qrCodeScanImageView;
     private ProgressBar syncProgressBar;
     private boolean globalQrSearch = false;
-    private String default_sort_query = DBConstants.KEY.LAST_INTERACTED_WITH + " DESC";
     protected final TextWatcher textWatcher = new TextWatcher() {
         @Override
         public void beforeTextChanged(CharSequence charSequence, int i, int i2, int i3) {
@@ -121,6 +119,7 @@ public abstract class BaseRegisterFragment extends RecyclerViewFragment implemen
 //            setTotalPatients();
         }
     };
+    private String default_sort_query = DBConstants.KEY.LAST_INTERACTED_WITH + " DESC";
 
     @Override
     protected SecuredNativeSmartRegisterActivity.DefaultOptionsProvider getDefaultOptionsProvider() {
@@ -155,8 +154,6 @@ public abstract class BaseRegisterFragment extends RecyclerViewFragment implemen
         };
     }
 
-    TextView unsyncView;
-
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -174,7 +171,7 @@ public abstract class BaseRegisterFragment extends RecyclerViewFragment implemen
         activity.getSupportActionBar().setLogo(R.drawable.round_white_background);
         activity.getSupportActionBar().setDisplayUseLogoEnabled(false);
         activity.getSupportActionBar().setDisplayShowTitleEnabled(false);
-        unsyncView = (TextView) toolbar.findViewById(R.id.unsync_count);
+        unsyncView = toolbar.findViewById(R.id.unsync_count);
         setupViews(view);
         renderView();
         return view;
@@ -227,6 +224,7 @@ public abstract class BaseRegisterFragment extends RecyclerViewFragment implemen
         try {
             presenter.processViewConfigurations();
         } catch (Exception e) {
+            Utils.appendLog(getClass().getName(), e);
 
         }
         this.registerCondition = "";
@@ -305,12 +303,14 @@ public abstract class BaseRegisterFragment extends RecyclerViewFragment implemen
             setRefreshList(true);
 
         } catch (Exception e) {
+            Utils.appendLog(getClass().getName(), e);
             e.printStackTrace();
         }
         try {
 
             renderView();
         } catch (Exception e) {
+            Utils.appendLog(getClass().getName(), e);
             e.printStackTrace();
         }
 
@@ -326,6 +326,7 @@ public abstract class BaseRegisterFragment extends RecyclerViewFragment implemen
         try {
             presenter.processViewConfigurations();
         } catch (Exception e) {
+            Utils.appendLog(getClass().getName(), e);
 
         }
         // updateLocationText();
@@ -516,6 +517,7 @@ public abstract class BaseRegisterFragment extends RecyclerViewFragment implemen
             syncStatusSnackbar = Snackbar.make(rootView, R.string.syncing,
                     Snackbar.LENGTH_LONG);
             syncStatusSnackbar.show();
+            clearSortAndFilter();
         } else {
             if (fetchStatus != null) {
                 if (syncStatusSnackbar != null) syncStatusSnackbar.dismiss();
@@ -535,12 +537,14 @@ public abstract class BaseRegisterFragment extends RecyclerViewFragment implemen
                         setRefreshList(true);
 
                     } catch (Exception e) {
+                        Utils.appendLog(getClass().getName(), e);
                         e.printStackTrace();
                     }
                     try {
 
                         renderView();
                     } catch (Exception e) {
+                        Utils.appendLog(getClass().getName(), e);
                         e.printStackTrace();
                     }
 
@@ -617,6 +621,7 @@ public abstract class BaseRegisterFragment extends RecyclerViewFragment implemen
 
                     cursor.close();
                 } catch (Exception e) {
+                    Utils.appendLog(getClass().getName(), e);
 
                 }
 
@@ -677,28 +682,6 @@ public abstract class BaseRegisterFragment extends RecyclerViewFragment implemen
     ////////////////////////////////////////////////////////////////
     // Inner classes
     ////////////////////////////////////////////////////////////////
-
-    private class RegisterActionHandler implements View.OnClickListener {
-
-        @Override
-        public void onClick(View view) {
-            if (view.getTag() != null && view.getTag(R.id.VIEW_ID) == CLICK_VIEW_NORMAL) {
-                goToPatientDetailActivity((CommonPersonObjectClient) view.getTag(), false);
-            } else if (view.getTag() != null && view.getTag(R.id.VIEW_ID) == CLICK_VIEW_DOSAGE_STATUS) {
-
-                ((HomeRegisterActivity) getActivity()).showRecordBirthPopUp((CommonPersonObjectClient) view.getTag());
-
-            } else if (view.getTag() != null && view.getTag(R.id.VIEW_ID) == CLICK_VIEW_ATTENTION_FLAG) {
-                //Temporary for testing UI , To remove for real dynamic data
-                List<AttentionFlag> dummyAttentionFlags = Arrays.asList(new AttentionFlag[]{new AttentionFlag("Red Flag 1", true), new AttentionFlag("Red Flag 2", true), new AttentionFlag("Yellow Flag 1", false), new AttentionFlag("Yellow Flag 2", false)});
-                ((HomeRegisterActivity) getActivity()).showAttentionFlagsDialog(dummyAttentionFlags);
-            } else if (view.getTag() != null && view.getTag(R.id.VIEW_ID) == CLICK_VIEW_SYNC) { // Need to implement move to catchment
-                // TODO Move to catchment
-            } else {
-                onViewClicked(view);
-            }
-        }
-    }
 
     public String filterSelect(String filter) {
         SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
@@ -804,6 +787,28 @@ public abstract class BaseRegisterFragment extends RecyclerViewFragment implemen
         this.countSelect = "SELECT COUNT(*) FROM ( " + query + " AND " + registerCondition + " ) ";
 //        this.countSelect = query;
         return query;
+    }
+
+    private class RegisterActionHandler implements View.OnClickListener {
+
+        @Override
+        public void onClick(View view) {
+            if (view.getTag() != null && view.getTag(R.id.VIEW_ID) == CLICK_VIEW_NORMAL) {
+                goToPatientDetailActivity((CommonPersonObjectClient) view.getTag(), false);
+            } else if (view.getTag() != null && view.getTag(R.id.VIEW_ID) == CLICK_VIEW_DOSAGE_STATUS) {
+
+                ((HomeRegisterActivity) getActivity()).showRecordBirthPopUp((CommonPersonObjectClient) view.getTag());
+
+            } else if (view.getTag() != null && view.getTag(R.id.VIEW_ID) == CLICK_VIEW_ATTENTION_FLAG) {
+                //Temporary for testing UI , To remove for real dynamic data
+                List<AttentionFlag> dummyAttentionFlags = Arrays.asList(new AttentionFlag("Red Flag 1", true), new AttentionFlag("Red Flag 2", true), new AttentionFlag("Yellow Flag 1", false), new AttentionFlag("Yellow Flag 2", false));
+                ((HomeRegisterActivity) getActivity()).showAttentionFlagsDialog(dummyAttentionFlags);
+            } else if (view.getTag() != null && view.getTag(R.id.VIEW_ID) == CLICK_VIEW_SYNC) { // Need to implement move to catchment
+                // TODO Move to catchment
+            } else {
+                onViewClicked(view);
+            }
+        }
     }
 }
 

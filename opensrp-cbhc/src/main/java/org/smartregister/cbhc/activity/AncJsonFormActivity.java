@@ -1,19 +1,9 @@
 package org.smartregister.cbhc.activity;
 
-import android.app.ProgressDialog;
 import android.content.DialogInterface;
-import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.os.Bundle;
-import android.os.Environment;
 import android.support.v7.app.AlertDialog;
 import android.util.Log;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.Window;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
 
 import com.vijay.jsonwizard.activities.JsonFormActivity;
 import com.vijay.jsonwizard.constants.JsonFormConstants;
@@ -21,18 +11,15 @@ import com.vijay.jsonwizard.constants.JsonFormConstants;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-import org.smartregister.cbhc.R;
 import org.smartregister.cbhc.application.AncApplication;
 import org.smartregister.cbhc.domain.draft_form_object;
 import org.smartregister.cbhc.fragment.AncJsonFormFragment;
 import org.smartregister.cbhc.repository.DraftFormRepository;
 import org.smartregister.cbhc.repository.HealthIdRepository;
 import org.smartregister.cbhc.repository.UniqueIdRepository;
-import org.smartregister.cbhc.util.DBConstants;
 import org.smartregister.cbhc.util.JsonFormUtils;
 import org.smartregister.cbhc.util.Utils;
-
-import java.io.File;
+import org.smartregister.util.OpenSRPImageLoader;
 
 import static org.apache.commons.lang3.StringUtils.isBlank;
 import static org.smartregister.cbhc.util.JsonFormUtils.METADATA;
@@ -45,11 +32,13 @@ import static org.smartregister.util.JsonFormUtils.getJSONObject;
 public class AncJsonFormActivity extends JsonFormActivity {
 
     private static final String TAG = AncJsonFormActivity.class.getSimpleName();
+    private UniqueIdRepository uniqueIdRepository;
+    private HealthIdRepository healthIdRepository;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
+        OpenSRPImageLoader.IMAGE_QUALITY = 10;
 //        showform();
     }
 
@@ -79,13 +68,13 @@ public class AncJsonFormActivity extends JsonFormActivity {
 
     }
 
-
     private void calculateAgeFromBirthDate(String key, String value) {
         if (key.equalsIgnoreCase("member_birth_date") && value != null) {
             JSONObject currentFormState = getmJSONObject();
             try {
                 currentFormState.getJSONObject("step1");
             } catch (JSONException e) {
+                Utils.appendLog(getClass().getName(), e);
                 e.printStackTrace();
             }
         }
@@ -122,9 +111,6 @@ public class AncJsonFormActivity extends JsonFormActivity {
 
         dialog.show();
     }
-
-    private UniqueIdRepository uniqueIdRepository;
-    private HealthIdRepository healthIdRepository;
 
     private void saveDraft() {
         JSONObject partialform = getmJSONObject();
@@ -178,6 +164,7 @@ public class AncJsonFormActivity extends JsonFormActivity {
             }
 
         } catch (JSONException e) {
+            Utils.appendLog(getClass().getName(), e);
             e.printStackTrace();
         }
     }
@@ -198,6 +185,7 @@ public class AncJsonFormActivity extends JsonFormActivity {
 
             }
         } catch (Exception e) {
+            Utils.appendLog(getClass().getName(), e);
 
         }
         return identifier;

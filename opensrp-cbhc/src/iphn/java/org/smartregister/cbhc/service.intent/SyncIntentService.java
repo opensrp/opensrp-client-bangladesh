@@ -84,6 +84,7 @@ public class SyncIntentService extends IntentService {
             pullECFromServer();
 
         } catch (Exception e) {
+Utils.appendLog(getClass().getName(),e);
             Log.e(getClass().getName(), e.getMessage(), e);
             complete(FetchStatus.fetchedFailed);
         }
@@ -161,6 +162,7 @@ public class SyncIntentService extends IntentService {
                 fetchRetry(0);
             }
         } catch (Exception e) {
+Utils.appendLog(getClass().getName(),e);
             Log.e(getClass().getName(), "Fetch Retry Exception: " + e.getMessage(), e.getCause());
             fetchFailed(count);
         } finally {
@@ -230,6 +232,7 @@ public class SyncIntentService extends IntentService {
 
                 }
             } catch (Exception e) {
+Utils.appendLog(getClass().getName(),e);
                 e.printStackTrace();
             }
 
@@ -297,6 +300,7 @@ public class SyncIntentService extends IntentService {
             AncClientProcessorForJava.getInstance(context).processClient(events);
             sendSyncStatusBroadcastMessage(FetchStatus.fetched);
         } catch (Exception e) {
+Utils.appendLog(getClass().getName(),e);
             Log.e(getClass().getName(), "Process Client Exception: " + e.getMessage(), e.getCause());
         }
     }
@@ -316,6 +320,7 @@ public class SyncIntentService extends IntentService {
                 AncClientProcessorForJava.getInstance(context).processClient(events);
                 sendSyncStatusBroadcastMessage(FetchStatus.fetched);
             } catch (Exception e) {
+Utils.appendLog(getClass().getName(),e);
                 Log.e(getClass().getName(), "Process Client Exception: " + e.getMessage(), e.getCause());
             }
         }
@@ -363,6 +368,7 @@ public class SyncIntentService extends IntentService {
                 db.markEventsAsSynced(pendingEvents);
                 Log.i(getClass().getName(), "Events synced successfully.");
             } catch (Exception e) {
+Utils.appendLog(getClass().getName(),e);
                 Log.e(getClass().getName(), e.getMessage(), e);
             }
         }
@@ -417,6 +423,7 @@ public class SyncIntentService extends IntentService {
                 return Pair.create(minServerVersion, maxServerVersion);
             }
         } catch (Exception e) {
+Utils.appendLog(getClass().getName(),e);
             Log.e(getClass().getName(), e.getMessage(), e);
         }
         return Pair.create(0L, 0L);
@@ -430,6 +437,7 @@ public class SyncIntentService extends IntentService {
                 count = jsonObject.getInt(NO_OF_EVENTS);
             }
         } catch (JSONException e) {
+Utils.appendLog(getClass().getName(),e);
             Log.e(getClass().getName(), e.getMessage(), e);
         }
         return count;

@@ -2,16 +2,15 @@ package org.smartregister.cbhc.repository;
 
 import android.content.Context;
 import android.util.Log;
+
 import net.sqlcipher.database.SQLiteDatabase;
+
 import org.smartregister.AllConstants;
 import org.smartregister.cbhc.BuildConfig;
 import org.smartregister.cbhc.application.AncApplication;
+import org.smartregister.cbhc.util.Utils;
 import org.smartregister.configurableviews.repository.ConfigurableViewsRepository;
 import org.smartregister.domain.db.Column;
-import org.smartregister.immunization.repository.RecurringServiceRecordRepository;
-import org.smartregister.immunization.repository.RecurringServiceTypeRepository;
-import org.smartregister.immunization.repository.VaccineRepository;
-import org.smartregister.immunization.util.IMDatabaseUtils;
 import org.smartregister.repository.EventClientRepository;
 import org.smartregister.repository.Repository;
 
@@ -27,6 +26,7 @@ public class AncRepository extends Repository {
     protected SQLiteDatabase writableDatabase;
 
     private Context context;
+
     public AncRepository(Context context, org.smartregister.Context openSRPContext) {
         super(context, AllConstants.DATABASE_NAME, BuildConfig.DATABASE_VERSION, openSRPContext.session(), AncApplication.createCommonFtsObject(), openSRPContext.sharedRepositoriesArray());
         this.context = context;
@@ -111,6 +111,7 @@ public class AncRepository extends Repository {
             }
             return readableDatabase;
         } catch (Exception e) {
+            Utils.appendLog(getClass().getName(), e);
             Log.e(TAG, "Database Error. " + e.getMessage());
             return null;
         }
@@ -120,7 +121,7 @@ public class AncRepository extends Repository {
     @Override
     public synchronized SQLiteDatabase getWritableDatabase(String password) {
 
-        try{
+        try {
             if (writableDatabase == null || !writableDatabase.isOpen()) {
                 if (writableDatabase != null) {
                     writableDatabase.close();
@@ -129,6 +130,7 @@ public class AncRepository extends Repository {
             }
             return writableDatabase;
         } catch (Exception e) {
+            Utils.appendLog(getClass().getName(), e);
             Log.e(TAG, "Database Error. " + e.getMessage());
             return null;
         }
@@ -145,6 +147,7 @@ public class AncRepository extends Repository {
         }
         super.close();
     }
+
     private void upgradeToVersion2(SQLiteDatabase db) {
         try {
 
@@ -152,8 +155,8 @@ public class AncRepository extends Repository {
 //            EventClientRepository.createTable(db, EventClientRepository.Table.path_reports, EventClientRepository.report_column.values());
 
 
-
         } catch (Exception e) {
+            Utils.appendLog(getClass().getName(), e);
             Log.e(TAG, "upgradeToVersion2 " + Log.getStackTraceString(e));
         }
 
@@ -165,6 +168,7 @@ public class AncRepository extends Repository {
             EventClientRepository.createIndex(db, EventClientRepository.Table.event, columns);
 
         } catch (Exception e) {
+            Utils.appendLog(getClass().getName(), e);
             Log.e(TAG, "upgradeToVersion3 " + Log.getStackTraceString(e));
         }
         try {
@@ -173,6 +177,7 @@ public class AncRepository extends Repository {
 
 
         } catch (Exception e) {
+            Utils.appendLog(getClass().getName(), e);
             Log.e(TAG, "upgradeToVersion3 " + e.getMessage());
         }
     }
@@ -183,7 +188,7 @@ public class AncRepository extends Repository {
     }
 
     private void upgradeToVersion6(SQLiteDatabase db) {
-        try{
+        try {
             db.execSQL("ALTER TABLE ec_member ADD COLUMN dataApprovalStatus INTEGER DEFAULT 1");
             db.execSQL("ALTER TABLE ec_member ADD COLUMN dataApprovalComments VARCHAR DEFAULT 1");
             db.execSQL("ALTER TABLE ec_woman ADD COLUMN dataApprovalStatus INTEGER DEFAULT 1");
@@ -192,11 +197,13 @@ public class AncRepository extends Repository {
             db.execSQL("ALTER TABLE ec_child ADD COLUMN dataApprovalComments VARCHAR DEFAULT 1");
             db.execSQL("ALTER TABLE ec_household ADD COLUMN dataApprovalStatus INTEGER DEFAULT 1");
 
-        }catch(Exception e){
+        } catch (Exception e) {
+            Utils.appendLog(getClass().getName(), e);
 
         }
 
     }
+
     private void upgradeToVersion5(SQLiteDatabase db) {
 
 

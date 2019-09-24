@@ -35,11 +35,10 @@ import java.util.Map;
 public class ProfilePresenter implements ProfileContract.Presenter, RegisterContract.InteractorCallBack {
 
     private static final String TAG = ProfilePresenter.class.getCanonicalName();
-
+    Activity profileActivity;
     private WeakReference<ProfileContract.View> mProfileView;
     private ProfileContract.Interactor mProfileInteractor;
     private RegisterContract.Interactor mRegisterInteractor;
-    Activity profileActivity;
     private RegisterContract.Model model;
     private RegisterContract.Interactor interactor;
 
@@ -112,6 +111,7 @@ public class ProfilePresenter implements ProfileContract.Presenter, RegisterCont
             interactor.saveRegistration(pair, jsonString, isEditMode, this);
 
         } catch (Exception e) {
+            Utils.appendLog(getClass().getName(), e);
             Log.e(TAG, Log.getStackTraceString(e));
         }
     }
@@ -170,6 +170,7 @@ public class ProfilePresenter implements ProfileContract.Presenter, RegisterCont
                 getProfileView().hideProgressDialog();
             }
         } catch (Exception e) {
+            Utils.appendLog(getClass().getName(), e);
             Log.e(TAG, Log.getStackTraceString(e));
         }
     }
@@ -190,6 +191,7 @@ public class ProfilePresenter implements ProfileContract.Presenter, RegisterCont
 
             getView().startFormActivity(form);
         } catch (Exception e) {
+            Utils.appendLog(getClass().getName(), e);
             e.printStackTrace();
         }
     }

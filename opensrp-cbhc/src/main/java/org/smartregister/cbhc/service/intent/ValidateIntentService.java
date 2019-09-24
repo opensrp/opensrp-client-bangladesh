@@ -10,6 +10,7 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 import org.smartregister.cbhc.R;
 import org.smartregister.cbhc.application.AncApplication;
+import org.smartregister.cbhc.util.Utils;
 import org.smartregister.domain.Response;
 import org.smartregister.repository.EventClientRepository;
 import org.smartregister.service.HTTPAgent;
@@ -23,10 +24,10 @@ import java.util.List;
  */
 public class ValidateIntentService extends IntentService {
 
-    private Context context;
-    private HTTPAgent httpAgent;
     private static final int FETCH_LIMIT = 100;
     private static final String VALIDATE_SYNC_PATH = "rest/validate/sync";
+    private Context context;
+    private HTTPAgent httpAgent;
 
     public ValidateIntentService() {
         super("ValidateIntentService");
@@ -86,9 +87,7 @@ public class ValidateIntentService extends IntentService {
 
                 for (int i = 0; i < inValidClients.length(); i++) {
                     String inValidClientId = inValidClients.getString(i);
-                    if (clientIds.contains(inValidClientId)) {
-                        clientIds.remove(inValidClientId);
-                    }
+                    clientIds.remove(inValidClientId);
                     db.markClientValidationStatus(inValidClientId, false);
                 }
 
@@ -101,9 +100,7 @@ public class ValidateIntentService extends IntentService {
                 JSONArray inValidEvents = results.getJSONArray(getString(R.string.events_key));
                 for (int i = 0; i < inValidEvents.length(); i++) {
                     String inValidEventId = inValidEvents.getString(i);
-                    if (eventIds.contains(inValidEventId)) {
-                        eventIds.remove(inValidEventId);
-                    }
+                    eventIds.remove(inValidEventId);
                     db.markEventValidationStatus(inValidEventId, false);
                 }
 
@@ -113,6 +110,7 @@ public class ValidateIntentService extends IntentService {
             }
 
         } catch (Exception e) {
+            Utils.appendLog(getClass().getName(), e);
             Log.e(getClass().getName(), "", e);
         }
     }
@@ -145,6 +143,7 @@ public class ValidateIntentService extends IntentService {
             }
 
         } catch (Exception e) {
+            Utils.appendLog(getClass().getName(), e);
             Log.e(getClass().getName(), "", e);
         }
         return null;

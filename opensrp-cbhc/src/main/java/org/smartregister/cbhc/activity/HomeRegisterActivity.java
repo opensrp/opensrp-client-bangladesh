@@ -20,6 +20,7 @@ import org.smartregister.cbhc.presenter.RegisterPresenter;
 import org.smartregister.cbhc.repository.DraftFormRepository;
 import org.smartregister.cbhc.util.Constants;
 import org.smartregister.cbhc.util.DBConstants;
+import org.smartregister.cbhc.util.Utils;
 import org.smartregister.commonregistry.CommonPersonObjectClient;
 import org.smartregister.configurableviews.model.Field;
 
@@ -31,14 +32,15 @@ import java.util.List;
  */
 
 public class HomeRegisterActivity extends BaseRegisterActivity {
-	
-	public static final int ADVANCED_SEARCH_POSITION = 1;
-	
+
+    public static final int ADVANCED_SEARCH_POSITION = 1;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         try {
             super.onCreate(savedInstanceState);
         } catch (Exception e) {
+            Utils.appendLog(getClass().getName(), e);
             Log.e(TAG, e.getMessage());
         }
 
@@ -79,39 +81,41 @@ public class HomeRegisterActivity extends BaseRegisterActivity {
         switchToBaseFragment();
     }
 
-	public void clearFilter() {
+    public void clearFilter() {
         mBaseFragment.clearSortAndFilter();
         switchToBaseFragment();
     }
 
-	public void startAdvancedSearch() {
-		try {
-			mPager.setCurrentItem(ADVANCED_SEARCH_POSITION, false);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		
-	}
+    public void startAdvancedSearch() {
+        try {
+            mPager.setCurrentItem(ADVANCED_SEARCH_POSITION, false);
+        } catch (Exception e) {
+            Utils.appendLog(getClass().getName(), e);
+            e.printStackTrace();
+        }
+
+    }
 
     @Override
     public void startRegistration() {
         List<draft_form_object> draftFormObjects = checkForDraft();
-        if(draftFormObjects.size()>0){
+        if (draftFormObjects.size() > 0) {
             try {
 //                JSONObject form = new JSONObject(draftFormObjects.get(0).getDraftFormJson());
 //                startFormActivity(form);
 
-                FragmentTransaction ft = ((HomeRegisterActivity)getContext()).getFragmentManager().beginTransaction();
+                FragmentTransaction ft = ((HomeRegisterActivity) getContext()).getFragmentManager().beginTransaction();
                 DraftFormSelectorFragment draftFormSelectorFragment = DraftFormSelectorFragment.newInstance();
                 draftFormSelectorFragment.setContext(getContext());
                 draftFormSelectorFragment.setDraftForms(draftFormObjects);
-                draftFormSelectorFragment.show(((HomeRegisterActivity)getContext()).getFragmentManager(),DIALOG_TAG);
+                draftFormSelectorFragment.show(((HomeRegisterActivity) getContext()).getFragmentManager(), DIALOG_TAG);
 
 
             } catch (Exception e) {
+                Utils.appendLog(getClass().getName(), e);
                 e.printStackTrace();
             }
-        }else {
+        } else {
             startFormActivity(Constants.JSON_FORM.Household_REGISTER, null, null);
         }
     }
@@ -120,7 +124,7 @@ public class HomeRegisterActivity extends BaseRegisterActivity {
         DraftFormRepository draftFormRepository = new DraftFormRepository(AncApplication.getInstance().getRepository());
         List<draft_form_object> draftFormObjects = draftFormRepository.findUnusedDraftWithoutEntityID(0);
         return draftFormObjects;
-	}
+    }
 
     public List<draft_form_object> checkForDraftWithEntityId(String entityID) {
         DraftFormRepository draftFormRepository = new DraftFormRepository(AncApplication.getInstance().getRepository());
@@ -128,38 +132,41 @@ public class HomeRegisterActivity extends BaseRegisterActivity {
         return draftFormObjects;
     }
 
-	@Override
+    @Override
     public void showRecordBirthPopUp(CommonPersonObjectClient client) {
         getIntent().putExtra(Constants.INTENT_KEY.BASE_ENTITY_ID, client.getColumnmaps().get(DBConstants.KEY.BASE_ENTITY_ID));
 
         List<draft_form_object> draftFormObjects = checkForDraftWithEntityId(client.getColumnmaps().get(DBConstants.KEY.BASE_ENTITY_ID));
-        if(draftFormObjects.size()>0){
+        if (draftFormObjects.size() > 0) {
             try {
 //                JSONObject form = new JSONObject(draftFormObjects.get(0).getDraftFormJson());
 //                startFormActivity(form);
 
-                FragmentTransaction ft = ((HomeRegisterActivity)getContext()).getFragmentManager().beginTransaction();
+                FragmentTransaction ft = ((HomeRegisterActivity) getContext()).getFragmentManager().beginTransaction();
                 DraftFormSelectorFragment draftFormSelectorFragment = DraftFormSelectorFragment.newInstance();
                 draftFormSelectorFragment.setContext(getContext());
                 draftFormSelectorFragment.setFamilyBaseEntityId(client.getColumnmaps().get(DBConstants.KEY.BASE_ENTITY_ID));
                 draftFormSelectorFragment.setDraftForms(draftFormObjects);
-                draftFormSelectorFragment.show(((HomeRegisterActivity)getContext()).getFragmentManager(),DIALOG_TAG);
+                draftFormSelectorFragment.show(((HomeRegisterActivity) getContext()).getFragmentManager(), DIALOG_TAG);
 
 
             } catch (Exception e) {
+                Utils.appendLog(getClass().getName(), e);
                 e.printStackTrace();
             }
-        }else {
+        } else {
             //
             startMemberRegistrationForm(client.getColumnmaps().get(DBConstants.KEY.BASE_ENTITY_ID));
 
         }
 
     }
-    public void startMemberRegistrationForm(String householdEntityID){
+
+    public void startMemberRegistrationForm(String householdEntityID) {
         try {
             getPresenter().startMemberRegistrationForm(Constants.JSON_FORM.MEMBER_REGISTER, null, null, null, householdEntityID);
         } catch (Exception e) {
+            Utils.appendLog(getClass().getName(), e);
             e.printStackTrace();
         }
     }
@@ -180,11 +187,12 @@ public class HomeRegisterActivity extends BaseRegisterActivity {
         alertDialog.setButton(android.support.v7.app.AlertDialog.BUTTON_POSITIVE, "EXIT",
                 new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
-                        try{
+                        try {
                             finish();
 
 
-                        }catch(Exception e){
+                        } catch (Exception e) {
+                            Utils.appendLog(getClass().getName(), e);
                             e.printStackTrace();
                         }
                     }

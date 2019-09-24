@@ -137,6 +137,7 @@ public class GrowthFragment extends BaseProfileFragment {
 //                Weight weight = new Weight(-1l, null, (float) GrowthUtil.BIRTH_WEIGHT, dateTime.toDate(), null, null, null, Calendar.getInstance().getTimeInMillis(), null, null, 0);
 //                allWeights.add(weight);
             } catch (Exception e) {
+Utils.appendLog(getClass().getName(),e);
                 Log.e(TAG, Log.getStackTraceString(e));
             }
 

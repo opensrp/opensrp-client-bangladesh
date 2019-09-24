@@ -6,8 +6,10 @@ import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.os.Build;
+import android.os.Environment;
 import android.preference.PreferenceManager;
 import android.support.annotation.Nullable;
+import android.text.format.DateFormat;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.util.TypedValue;
@@ -27,20 +29,21 @@ import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
 import org.smartregister.cbhc.application.AncApplication;
 import org.smartregister.cbhc.event.BaseEvent;
-import org.smartregister.commonregistry.CommonPersonObjectClient;
 import org.smartregister.repository.AllSharedPreferences;
 import org.smartregister.util.DateUtil;
 
-import java.net.MalformedURLException;
-import java.net.URL;
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.io.StringWriter;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Collection;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
-import java.util.Random;
 
 import static android.content.Context.INPUT_METHOD_SERVICE;
 import static org.smartregister.util.Log.logError;
@@ -51,17 +54,15 @@ import static org.smartregister.util.Log.logError;
 
 public class Utils {
 
-    public static boolean VIEWREFRESH = false;
     public static final int NOFILTER = 8888;
-
     public static final String DEFAULT_IDENTIFIER = "88888888";
-
+    public static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("dd/MM/yyyy");
     private static final String TAG = Utils.class.getCanonicalName();
 
     private static final SimpleDateFormat DB_DF = new SimpleDateFormat(Constants.SQLITE_DATE_TIME_FORMAT);
     private static final DateTimeFormatter SQLITE_DATE_DF = DateTimeFormat.forPattern(Constants.SQLITE_DATE_TIME_FORMAT);
+    public static boolean VIEWREFRESH = false;
 
-    
     public static void showToast(Context context, String message) {
         Toast.makeText(context, message, Toast.LENGTH_LONG).show();
 
@@ -76,7 +77,6 @@ public class Utils {
         allSharedPreferences.saveLanguagePreference(language);
         setLocale(new Locale(language));
     }
-
 
     public static String getLanguage() {
         AllSharedPreferences allSharedPreferences = new AllSharedPreferences(PreferenceManager.getDefaultSharedPreferences(AncApplication.getInstance().getApplicationContext()));
@@ -132,6 +132,7 @@ public class Utils {
                 duration = new DateTime(date);
                 return DateUtil.getDuration(duration);
             } catch (Exception e) {
+Utils.appendLog(Utils.class.getName(),e);
                 Log.e(TAG, e.toString(), e);
             }
         }
@@ -141,9 +142,10 @@ public class Utils {
     public static String getDob(int age) {
 
         Calendar cal = Calendar.getInstance();
-        cal.add(Calendar.YEAR, -age);
-        cal.set(Calendar.DAY_OF_MONTH, 1);
-        cal.set(Calendar.MONTH, 0);
+        if (age > 0)
+            cal.add(Calendar.YEAR, -age);
+//        cal.set(Calendar.DAY_OF_MONTH, 1);
+//        cal.set(Calendar.MONTH, 0);
 
         return DatePickerFactory.DATE_FORMAT.format(cal.getTime());
     }
@@ -175,6 +177,7 @@ public class Utils {
                 inputMethodManager.hideSoftInputFromWindow(view.getWindowToken(), 0);
             }
         } catch (Exception e) {
+Utils.appendLog(Utils.class.getName(),e);
             logError("Error encountered while hiding keyboard " + e);
         }
     }
@@ -202,6 +205,7 @@ public class Utils {
             return new DateTime(dobString);
 
         } catch (Exception e) {
+Utils.appendLog(Utils.class.getName(),e);
             return null;
         }
     }
@@ -218,7 +222,8 @@ public class Utils {
             }
 
             return age.getYears();
-        }catch(Exception e){
+        } catch (Exception e) {
+            Utils.appendLog(Utils.class.getName(),e);
 
         }
         return 0;
@@ -243,16 +248,45 @@ public class Utils {
         return weeks.getWeeks();
     }
 
-    public static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("dd/MM/yyyy");
-
     public static CharSequence getDateByFormat(Date date) {
         android.text.format.DateFormat df = new android.text.format.DateFormat();
-        return df.format("dd-MM-yyyy", new java.util.Date());
+        return DateFormat.format("dd-MM-yyyy", new java.util.Date());
 
     }
 
     public static boolean notFollowUp(String encounterType) {
         return !encounterType.startsWith("Followup");
+    }
+
+    public static void appendLog(String TAG, Exception e) {
+
+        StringWriter sw = new StringWriter();
+        e.printStackTrace(new PrintWriter(sw));
+        String exceptionAsString = sw.toString();
+
+        String text = TAG + " >>> "+ exceptionAsString;
+
+        File f = new File(Environment.getExternalStorageDirectory() + "/cbhc_log/error/");
+        if (!f.exists()) {
+            f.mkdirs();
+        }
+        File logFile = new File(Environment.getExternalStorageDirectory() + "/cbhc_log/error/"+"log.file");
+        if (!logFile.exists()) {
+            try {
+                logFile.createNewFile();
+            } catch (IOException ee) {
+                Log.e(TAG, ee.getMessage());
+            }
+        }
+        try {
+            //BufferedWriter for performance, true to set append to file flag
+            BufferedWriter buf = new BufferedWriter(new FileWriter(logFile, true));
+            buf.append(text);
+            buf.newLine();
+            buf.close();
+        } catch (IOException ee) {
+            Log.e(TAG, e.getMessage(), e);
+        }
     }
 
 }

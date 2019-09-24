@@ -4,21 +4,13 @@ package org.smartregister.cbhc.activity;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
-import android.content.ClipData;
-import android.content.ClipboardManager;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
-import android.database.Cursor;
 import android.graphics.drawable.ColorDrawable;
-import android.net.Uri;
-import android.os.AsyncTask;
 import android.os.Bundle;
-import android.preference.Preference;
-import android.preference.PreferenceFragment;
 import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.text.method.HideReturnsTransformationMethod;
@@ -35,35 +27,17 @@ import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.TextView;
 
-import net.sqlcipher.database.SQLiteDatabase;
-
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 import org.joda.time.DateTime;
-import org.smartregister.cbhc.BuildConfig;
 import org.smartregister.cbhc.R;
-import org.smartregister.cbhc.application.AncApplication;
 import org.smartregister.cbhc.contract.LoginContract;
 import org.smartregister.cbhc.event.ViewConfigurationSyncCompleteEvent;
 import org.smartregister.cbhc.presenter.LoginPresenter;
-import org.smartregister.cbhc.repository.AncRepository;
 import org.smartregister.cbhc.task.SaveTeamLocationsTask;
 import org.smartregister.cbhc.util.Constants;
-import org.smartregister.commonregistry.CommonRepository;
 import org.smartregister.repository.AllSharedPreferences;
 import org.smartregister.util.Utils;
-
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.net.MalformedURLException;
-import java.net.URL;
-import java.security.KeyStore;
-import java.security.KeyStoreException;
-import java.security.NoSuchAlgorithmException;
-import java.security.UnrecoverableEntryException;
-import java.security.cert.CertificateException;
-import java.util.Enumeration;
 
 import static org.smartregister.AllConstants.DRISHTI_BASE_URL;
 import static org.smartregister.util.Log.logError;
@@ -74,6 +48,7 @@ import static org.smartregister.util.Log.logInfo;
  */
 public class LoginActivity extends AppCompatActivity implements LoginContract.View, TextView.OnEditorActionListener, View.OnClickListener {
 
+    LoginActivity mActivity;
     private EditText userNameEditText;
     private EditText passwordEditText;
     private CheckBox showPasswordCheckBox;
@@ -81,9 +56,6 @@ public class LoginActivity extends AppCompatActivity implements LoginContract.Vi
     private Button loginButton;
     private TextView buildDetailsView;
     private LoginContract.Presenter mLoginPresenter;
-
-    LoginActivity mActivity;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -124,7 +96,6 @@ public class LoginActivity extends AppCompatActivity implements LoginContract.Vi
         }
         return super.onOptionsItemSelected(item);
     }
-
 
 
     @Override
@@ -176,6 +147,7 @@ public class LoginActivity extends AppCompatActivity implements LoginContract.Vi
             buildDetailsView.setText("Version " + getVersion() + ", Built on: " + mLoginPresenter.getBuildDate());
 
         } catch (Exception e) {
+Utils.appendLog(getClass().getName(),e);
             logError("Error fetching build details: " + e);
         }
     }
@@ -270,14 +242,14 @@ public class LoginActivity extends AppCompatActivity implements LoginContract.Vi
 //                username = "sabab@ahmed.com";
 //                password = "Pain2set";
 
-                  //anc repository object for raw query
+                //anc repository object for raw query
 //                AncRepository repo = (AncRepository) AncApplication.getInstance().getRepository();
 //                SQLiteDatabase db = repo.getReadableDatabase();
 //                Cursor cursor = db.rawQuery("sql",new String[]{});
 //                cursor.close();
 //                username = "robinuthappa@gmail.com";
-                username = "test@ha.4";
-                password = "123456";
+//                username = "test@ha.4";
+//                password = "123456";
 //                deleteKey(username);
 //                userNameEditText.setText(username);
 //                passwordEditText.setText(password);
@@ -295,7 +267,6 @@ public class LoginActivity extends AppCompatActivity implements LoginContract.Vi
         }
 
     }
-
 
 
     @Override
@@ -347,7 +318,6 @@ public class LoginActivity extends AppCompatActivity implements LoginContract.Vi
         return this;
 
     }
-
 
 
 }

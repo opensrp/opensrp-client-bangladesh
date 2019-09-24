@@ -108,6 +108,7 @@ public class DraftFormSelectorFragment extends DialogFragment implements View.On
 //            // Instantiate the WeightActionListener so we can send events to the host
 //            listener = (WeightActionListener) activity;
 //        } catch (ClassCastException e) {
+//org.smartregister.cbhc.util.Utils.appendLog(getClass().getName(),e);
 //            // The activity doesn't implement the interface, throw exception
 //            throw new ClassCastException(activity.toString()
 //                    + " must implement WeightActionListener");
@@ -164,6 +165,7 @@ public class DraftFormSelectorFragment extends DialogFragment implements View.On
                     draftFormRepository.deleteDraftForms(((draft_form_object)v.getTag()).getID_COLUMN());
                     ((HomeRegisterActivity)context).startFormActivity(new JSONObject((draftForm)));
                 } catch (JSONException e) {
+org.smartregister.cbhc.util.Utils.appendLog(getClass().getName(),e);
                     e.printStackTrace();
                 }
                 dismiss();
@@ -243,6 +245,7 @@ public class DraftFormSelectorFragment extends DialogFragment implements View.On
 
                 strDate = dateFormat.format(date);
             } catch (Exception e) {
+org.smartregister.cbhc.util.Utils.appendLog(getClass().getName(),e);
                 e.printStackTrace();
             }
             ((TextView)rowView.findViewById(R.id.form_date)).setText(strDate);

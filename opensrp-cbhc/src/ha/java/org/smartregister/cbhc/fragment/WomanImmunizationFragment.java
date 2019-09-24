@@ -300,6 +300,7 @@ public class WomanImmunizationFragment extends BaseProfileFragment {
                                 alerts.set(alerts.indexOf(alert), o);
                             }
                         } catch (Exception e) {
+Utils.appendLog(getClass().getName(),e);
 
                         }
                     }
@@ -311,6 +312,7 @@ public class WomanImmunizationFragment extends BaseProfileFragment {
                         alerts.set(alerts.indexOf(alert), o);
                     }
                 } catch (Exception e) {
+Utils.appendLog(getClass().getName(),e);
 
                 }
             }
@@ -872,6 +874,7 @@ public class WomanImmunizationFragment extends BaseProfileFragment {
                             curGroup.getVaccineData(),
                             vaccineList, alerts);
                 } catch (Exception e) {
+Utils.appendLog(getClass().getName(),e);
                     Log.e(TAG, Log.getStackTraceString(e));
                 }
             }

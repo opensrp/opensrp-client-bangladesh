@@ -2,7 +2,6 @@ package org.smartregister.cbhc.service.intent;
 
 
 import android.app.IntentService;
-import android.app.Notification;
 import android.content.Intent;
 import android.util.Log;
 
@@ -12,6 +11,7 @@ import org.smartregister.cbhc.application.AncApplication;
 import org.smartregister.cbhc.exception.PullUniqueIdsException;
 import org.smartregister.cbhc.repository.HealthIdRepository;
 import org.smartregister.cbhc.util.Constants;
+import org.smartregister.cbhc.util.Utils;
 import org.smartregister.domain.Response;
 import org.smartregister.service.HTTPAgent;
 
@@ -53,6 +53,7 @@ public class PullHealthIdsIntentService extends IntentService {
                 parseResponse(ids);
             }
         } catch (Exception e) {
+            Utils.appendLog(getClass().getName(), e);
             Log.e(TAG, e.getMessage(), e);
         }
     }

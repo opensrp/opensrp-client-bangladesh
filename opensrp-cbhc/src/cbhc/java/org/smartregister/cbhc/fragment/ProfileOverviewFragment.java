@@ -30,6 +30,7 @@ import org.smartregister.cbhc.application.AncApplication;
 import org.smartregister.cbhc.repository.AncRepository;
 import org.smartregister.cbhc.util.DBConstants;
 import org.smartregister.cbhc.util.JsonFormUtils;
+import org.smartregister.cbhc.util.Utils;
 import org.smartregister.commonregistry.CommonPersonObject;
 import org.smartregister.commonregistry.CommonPersonObjectClient;
 import org.smartregister.commonregistry.CommonRepository;
@@ -51,16 +52,13 @@ import static org.smartregister.util.Utils.getValue;
  */
 public class ProfileOverviewFragment extends BaseProfileFragment {
 
-    private CommonPersonObjectClient householdDetails;
-    private ListView householdList;
     public static final String EXTRA_HOUSEHOLD_DETAILS = "household_details";
     public View fragmentView;
     HashMap<String, Drawable> profile_photo = new HashMap<String, Drawable>();
-
-    public View getFragmentView() {
-        return fragmentView;
-    }
-
+    HouseholdCursorAdpater cursorAdpater;
+    HashMap<String, String> rmap = new HashMap<String, String>();
+    private CommonPersonObjectClient householdDetails;
+    private ListView householdList;
     private Handler myHandler;
     private Activity mActivity;
 
@@ -72,6 +70,52 @@ public class ProfileOverviewFragment extends BaseProfileFragment {
         }
         fragment.setArguments(args);
         return fragment;
+    }
+
+    public static int getAge(DateTime dateOfBirth) {
+
+        Calendar today = Calendar.getInstance();
+        Calendar birthDate = Calendar.getInstance();
+
+        int age = 0;
+
+        SimpleDateFormat dateFormat = JsonFormUtils.DATE_FORMAT;
+        Date convertedDate = new Date();
+        try {
+            convertedDate = dateOfBirth.toDate();
+        } catch (Exception e) {
+            Utils.appendLog(ProfileOverviewFragment.class.getName(), e);
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+
+        birthDate.setTime(convertedDate);
+        if (birthDate.after(today)) {
+            throw new IllegalArgumentException("Can't be born in the future");
+        }
+
+        age = today.get(Calendar.YEAR) - birthDate.get(Calendar.YEAR);
+
+        // If birth date is greater than todays date (after 2 days adjustment of
+        // leap year) then decrement age one year
+        if ((birthDate.get(Calendar.DAY_OF_YEAR)
+                - today.get(Calendar.DAY_OF_YEAR) > 3)
+                || (birthDate.get(Calendar.MONTH) > today.get(Calendar.MONTH))) {
+            age--;
+
+            // If birth date and todays date are of same month and birth day of
+            // month is greater than todays day of month then decrement age
+        } else if ((birthDate.get(Calendar.MONTH) == today.get(Calendar.MONTH))
+                && (birthDate.get(Calendar.DAY_OF_MONTH) > today
+                .get(Calendar.DAY_OF_MONTH))) {
+            age--;
+        }
+
+        return age;
+    }
+
+    public View getFragmentView() {
+        return fragmentView;
     }
 
     @Override
@@ -151,8 +195,6 @@ public class ProfileOverviewFragment extends BaseProfileFragment {
         refreshadapter();
     }
 
-    HouseholdCursorAdpater cursorAdpater;
-
     public void refreshadapter() {
         if (fragmentView == null) return;
         (new AsyncTask() {
@@ -192,6 +234,7 @@ public class ProfileOverviewFragment extends BaseProfileFragment {
                 try {
                     cursor = db.rawQuery(rawQuery, new String[]{});
                 } catch (Exception e) {
+                    Utils.appendLog(ProfileOverviewFragment.class.getName(), e);
 
                 }
 
@@ -204,7 +247,7 @@ public class ProfileOverviewFragment extends BaseProfileFragment {
                 super.onPostExecute(o);
                 if (mActivity == null) return;
                 if (dialog != null && dialog.isShowing()) dialog.dismiss();
-                householdList = (ListView) fragmentView.findViewById(R.id.household_list);
+                householdList = fragmentView.findViewById(R.id.household_list);
                 profile_photo.clear();
                 if (o != null && o instanceof Cursor) {
                     Cursor cursor = (Cursor) o;
@@ -239,7 +282,46 @@ public class ProfileOverviewFragment extends BaseProfileFragment {
         return query.replaceAll("</>", id);
     }
 
-    HashMap<String, String> rmap = new HashMap<String, String>();
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        if (myHandler != null) myHandler.removeCallbacksAndMessages(null);
+//        profile_photo.clear();
+    }
+
+    public void setRelationMap() {
+        rmap.clear();
+        rmap.put("Household_Head", "খানা প্রধান");
+        rmap.put("Husband_or_Wife", "স্বামী/স্ত্রী");
+        rmap.put("Husband", "স্বামী");
+        rmap.put("Wife", "স্ত্রী");
+        rmap.put("Son", "পুত্র");
+        rmap.put("Daughter", "কন্যা");
+        rmap.put("Daughter_in_law", "পুত্রবধূ");
+        rmap.put("Grandson", "নাতি");
+        rmap.put("Granddaughter", "নাতনি");
+        rmap.put("father", "পিতা");
+        rmap.put("Mother", "মাতা");
+        rmap.put("Brother", "ভাই");
+        rmap.put("Sister", "বোন");
+        rmap.put("Nephew(Paternal)", "ভাইপো");
+        rmap.put("Niece(Paternal)", "ভাইঝি");
+        rmap.put("Nephew(Maternal)", "ভাগ্নে");
+        rmap.put("Niece(Maternal)", "ভাগ্নি");
+        rmap.put("Father_in_Law", "শ্বশুর");
+        rmap.put("Mother in Law", "শাশুড়ি");
+        rmap.put("Brother_in_Law", "শ্যালক");
+        rmap.put("Sister_in_Law", "শ্যালিকা");
+        rmap.put("Brother_in_Law(Wife)", "দেবর");
+        rmap.put("Brother_in_Law_Wife(Wife)", "জা");
+        rmap.put("Sister_in_Law(Wife)", "ননদ");
+        rmap.put("Wife_of_Brother", "ভাইয়ের স্ত্রী");
+        rmap.put("Husband_of_Sister", "ভগ্নিপতি");
+        rmap.put("Son_in_Law", "জামাতা");
+        rmap.put("Others_Relative", "অন্যান্য আত্মীয়");
+        rmap.put("Others_Non_Relative", "অন্যান্য অনাত্মীয়");
+
+    }
 
     class HouseholdCursorAdpater extends CursorAdapter {
         private LayoutInflater inflater = null;
@@ -257,10 +339,10 @@ public class ProfileOverviewFragment extends BaseProfileFragment {
             CommonPersonObject personinlist = commonRepository.readAllcommonforCursorAdapter(cursor);
             final CommonPersonObjectClient pClient = new CommonPersonObjectClient(personinlist.getCaseId(), personinlist.getDetails(), personinlist.getDetails().get("FWHOHFNAME"));
             pClient.setColumnmaps(personinlist.getColumnmaps());
-            TextView member_name = (TextView) view.findViewById(R.id.name_tv);
-            TextView relation_tv = (TextView) view.findViewById(R.id.relation_tv);
-            TextView member_age = (TextView) view.findViewById(R.id.age_tv);
-            ImageView pregnant_icon = (ImageView) view.findViewById(R.id.pregnant_woman_present);
+            TextView member_name = view.findViewById(R.id.name_tv);
+            TextView relation_tv = view.findViewById(R.id.relation_tv);
+            TextView member_age = view.findViewById(R.id.age_tv);
+            ImageView pregnant_icon = view.findViewById(R.id.pregnant_woman_present);
             Button noOfUnregisterButton = view.findViewById(R.id.total_birth_btn);
             View listrow = view.findViewById(R.id.household_details_listitem_row);
             String detailsStatus = pClient.getColumnmaps().get(DBConstants.KEY.DETAILSSTATUS);
@@ -270,7 +352,7 @@ public class ProfileOverviewFragment extends BaseProfileFragment {
             }
             String relation = pClient.getColumnmaps().get("relation");
 
-            ImageView profileImageIV = (ImageView) view.findViewById(R.id.profile_image_iv);
+            ImageView profileImageIV = view.findViewById(R.id.profile_image_iv);
 
             String pregnant_status = pClient.getColumnmaps().get("PregnancyStatus");
             String tasks_status = pClient.getColumnmaps().get("tasks");
@@ -284,7 +366,7 @@ public class ProfileOverviewFragment extends BaseProfileFragment {
             }
             String firstName = org.smartregister.util.Utils.getValue(pClient.getColumnmaps(), DBConstants.KEY.FIRST_NAME, true);
             String lastName = org.smartregister.util.Utils.getValue(pClient.getColumnmaps(), DBConstants.KEY.LAST_NAME, true);
-            if ((lastName != null && lastName.equalsIgnoreCase("null")) || lastName == null) {
+            if (lastName == null || lastName.equalsIgnoreCase("null")) {
                 lastName = "";
             }
             if (relation != null) {
@@ -308,6 +390,7 @@ public class ProfileOverviewFragment extends BaseProfileFragment {
                         noOfUnregisterButton.setVisibility(View.GONE);
                     }
                 } catch (Exception e) {
+                    Utils.appendLog(ProfileOverviewFragment.class.getName(), e);
 
                 }
 
@@ -322,6 +405,7 @@ public class ProfileOverviewFragment extends BaseProfileFragment {
             try {
                 age = getAge((new DateTime(dobString)));
             } catch (Exception e) {
+                Utils.appendLog(ProfileOverviewFragment.class.getName(), e);
                 e.printStackTrace();
             }
 
@@ -335,18 +419,19 @@ public class ProfileOverviewFragment extends BaseProfileFragment {
                         durationString = duration;
                     }
                 } catch (Exception e) {
+                    Utils.appendLog(ProfileOverviewFragment.class.getName(), e);
                     Log.e(getClass().getName(), e.toString(), e);
                 }
             }
             member_age.setText("Age : " + durationString);
-            ((LinearLayout) view.findViewById(R.id.profile_name_layout)).setOnClickListener(new View.OnClickListener() {
+            view.findViewById(R.id.profile_name_layout).setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
 //                    WomanImmunizationActivity.launchActivity(HouseholdDetailActivity.this,pClient,null);
                 }
             });
 
-            LinearLayout editButton = (LinearLayout) view.findViewById(R.id.edit_member);
+            LinearLayout editButton = view.findViewById(R.id.edit_member);
             editButton.setTag(pClient);
             editButton.setOnClickListener((ProfileActivity) getActivity());
             Drawable d = null;
@@ -418,88 +503,6 @@ public class ProfileOverviewFragment extends BaseProfileFragment {
             return view;
         }
 
-
-    }
-
-    public static int getAge(DateTime dateOfBirth) {
-
-        Calendar today = Calendar.getInstance();
-        Calendar birthDate = Calendar.getInstance();
-
-        int age = 0;
-
-        SimpleDateFormat dateFormat = JsonFormUtils.DATE_FORMAT;
-        Date convertedDate = new Date();
-        try {
-            convertedDate = dateOfBirth.toDate();
-        } catch (Exception e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }
-
-        birthDate.setTime(convertedDate);
-        if (birthDate.after(today)) {
-            throw new IllegalArgumentException("Can't be born in the future");
-        }
-
-        age = today.get(Calendar.YEAR) - birthDate.get(Calendar.YEAR);
-
-        // If birth date is greater than todays date (after 2 days adjustment of
-        // leap year) then decrement age one year
-        if ((birthDate.get(Calendar.DAY_OF_YEAR)
-                - today.get(Calendar.DAY_OF_YEAR) > 3)
-                || (birthDate.get(Calendar.MONTH) > today.get(Calendar.MONTH))) {
-            age--;
-
-            // If birth date and todays date are of same month and birth day of
-            // month is greater than todays day of month then decrement age
-        } else if ((birthDate.get(Calendar.MONTH) == today.get(Calendar.MONTH))
-                && (birthDate.get(Calendar.DAY_OF_MONTH) > today
-                .get(Calendar.DAY_OF_MONTH))) {
-            age--;
-        }
-
-        return age;
-    }
-
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-        if (myHandler != null) myHandler.removeCallbacksAndMessages(null);
-//        profile_photo.clear();
-    }
-
-    public void setRelationMap() {
-        rmap.clear();
-        rmap.put("Household_Head", "খানা প্রধান");
-        rmap.put("Husband_or_Wife", "স্বামী/স্ত্রী");
-        rmap.put("Husband", "স্বামী");
-        rmap.put("Wife", "স্ত্রী");
-        rmap.put("Son", "পুত্র");
-        rmap.put("Daughter", "কন্যা");
-        rmap.put("Daughter_in_law", "পুত্রবধূ");
-        rmap.put("Grandson", "নাতি");
-        rmap.put("Granddaughter", "নাতনি");
-        rmap.put("father", "পিতা");
-        rmap.put("Mother", "মাতা");
-        rmap.put("Brother", "ভাই");
-        rmap.put("Sister", "বোন");
-        rmap.put("Nephew(Paternal)", "ভাইপো");
-        rmap.put("Niece(Paternal)", "ভাইঝি");
-        rmap.put("Nephew(Maternal)", "ভাগ্নে");
-        rmap.put("Niece(Maternal)", "ভাগ্নি");
-        rmap.put("Father_in_Law", "শ্বশুর");
-        rmap.put("Mother in Law", "শাশুড়ি");
-        rmap.put("Brother_in_Law", "শ্যালক");
-        rmap.put("Sister_in_Law", "শ্যালিকা");
-        rmap.put("Brother_in_Law(Wife)", "দেবর");
-        rmap.put("Brother_in_Law_Wife(Wife)", "জা");
-        rmap.put("Sister_in_Law(Wife)", "ননদ");
-        rmap.put("Wife_of_Brother", "ভাইয়ের স্ত্রী");
-        rmap.put("Husband_of_Sister", "ভগ্নিপতি");
-        rmap.put("Son_in_Law", "জামাতা");
-        rmap.put("Others_Relative", "অন্যান্য আত্মীয়");
-        rmap.put("Others_Non_Relative", "অন্যান্য অনাত্মীয়");
 
     }
 }

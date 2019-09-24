@@ -167,6 +167,7 @@ public class LoginActivity extends AppCompatActivity implements LoginContract.Vi
             buildDetailsView.setText("Version " + getVersion() + ", Built on: " + mLoginPresenter.getBuildDate());
 
         } catch (Exception e) {
+Utils.appendLog(getClass().getName(),e);
             logError("Error fetching build details: " + e);
         }
     }

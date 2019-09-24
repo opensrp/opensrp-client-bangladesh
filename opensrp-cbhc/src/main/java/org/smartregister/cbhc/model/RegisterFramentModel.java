@@ -13,6 +13,7 @@ import org.smartregister.cbhc.util.ConfigHelper;
 import org.smartregister.cbhc.util.Constants;
 import org.smartregister.cbhc.util.DBConstants;
 import org.smartregister.cbhc.util.JsonFormUtils;
+import org.smartregister.cbhc.util.Utils;
 import org.smartregister.clientandeventmodel.DateUtil;
 import org.smartregister.configurableviews.ConfigurableViewsLibrary;
 import org.smartregister.configurableviews.model.Field;
@@ -36,7 +37,7 @@ import static org.smartregister.cbhc.util.Constants.GLOBAL_IDENTIFIER;
  * Created by keyman on 12/07/2018.
  */
 public class RegisterFramentModel implements RegisterFragmentContract.Model {
-    
+
     @Override
     public RegisterConfiguration defaultRegisterConfiguration() {
         return ConfigHelper.defaultRegisterConfiguration(AncApplication.getInstance().getApplicationContext());
@@ -47,6 +48,7 @@ public class RegisterFramentModel implements RegisterFragmentContract.Model {
         try {
             return ConfigurableViewsLibrary.getInstance().getConfigurableViewsHelper().getViewConfiguration(viewConfigurationIdentifier);
         } catch (Exception e) {
+            Utils.appendLog(getClass().getName(), e);
             return null;
         }
     }
@@ -159,6 +161,7 @@ public class RegisterFramentModel implements RegisterFragmentContract.Model {
                         Date date = new Date(dobLong);
                         dob = DateUtil.yyyyMMddTHHmmssSSSZ.format(date);
                     } catch (Exception e) {
+                        Utils.appendLog(getClass().getName(), e);
                         Log.e(getClass().getName(), e.toString(), e);
                     }
                 }
@@ -190,6 +193,7 @@ public class RegisterFramentModel implements RegisterFragmentContract.Model {
                 }
             }
         } catch (JSONException e) {
+            Utils.appendLog(getClass().getName(), e);
             Log.e(getClass().getName(), "", e);
         }
         return "";
@@ -202,6 +206,7 @@ public class RegisterFramentModel implements RegisterFragmentContract.Model {
                 return jsonObject.getJSONObject(field);
             }
         } catch (JSONException e) {
+            Utils.appendLog(getClass().getName(), e);
             Log.e(getClass().getName(), "", e);
         }
         return null;
@@ -214,6 +219,7 @@ public class RegisterFramentModel implements RegisterFragmentContract.Model {
                 return jsonArray.getJSONObject(position);
             }
         } catch (JSONException e) {
+            Utils.appendLog(getClass().getName(), e);
             Log.e(getClass().getName(), "", e);
         }
         return null;
@@ -227,6 +233,7 @@ public class RegisterFramentModel implements RegisterFragmentContract.Model {
                 return new JSONArray(response.payload());
             }
         } catch (Exception e) {
+            Utils.appendLog(getClass().getName(), e);
             Log.e(getClass().getName(), "", e);
         }
         return null;

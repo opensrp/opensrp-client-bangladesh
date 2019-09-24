@@ -8,6 +8,7 @@ import android.os.Bundle;
 
 import org.joda.time.DateTime;
 import org.smartregister.cbhc.job.ExtendedSyncServiceJob;
+import org.smartregister.cbhc.util.Utils;
 import org.smartregister.domain.FetchStatus;
 import org.smartregister.repository.AllSharedPreferences;
 import org.smartregister.sync.DrishtiSyncScheduler;
@@ -52,6 +53,7 @@ public class SyncStatusBroadcastReceiver extends BroadcastReceiver {
                 context.unregisterReceiver(singleton);
             }
         } catch (IllegalArgumentException e) {
+            Utils.appendLog(SyncStatusBroadcastReceiver.class.getName(), e);
             logError("Error on destroy: " + e);
         }
     }
@@ -67,9 +69,7 @@ public class SyncStatusBroadcastReceiver extends BroadcastReceiver {
     }
 
     public void removeSyncStatusListener(SyncStatusListener syncStatusListener) {
-        if (syncStatusListeners.contains(syncStatusListener)) {
-            syncStatusListeners.remove(syncStatusListener);
-        }
+        syncStatusListeners.remove(syncStatusListener);
     }
 
     public boolean isSyncing() {
@@ -97,7 +97,8 @@ public class SyncStatusBroadcastReceiver extends BroadcastReceiver {
                         }
                     }
                 }
-            }catch(Exception e){
+            } catch (Exception e) {
+                Utils.appendLog(getClass().getName(), e);
                 e.printStackTrace();
             }
         }

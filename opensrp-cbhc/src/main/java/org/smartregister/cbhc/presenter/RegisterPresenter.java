@@ -5,12 +5,8 @@ import android.preference.PreferenceManager;
 import android.util.Log;
 import android.util.Pair;
 
-import com.google.gson.JsonArray;
-import com.google.gson.JsonObject;
-
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.tuple.Triple;
-import org.json.JSONArray;
 import org.json.JSONObject;
 import org.smartregister.cbhc.R;
 import org.smartregister.cbhc.application.AncApplication;
@@ -20,6 +16,7 @@ import org.smartregister.cbhc.model.RegisterModel;
 import org.smartregister.cbhc.util.Constants;
 import org.smartregister.cbhc.util.JsonFormUtils;
 import org.smartregister.cbhc.util.LookUpUtils;
+import org.smartregister.cbhc.util.Utils;
 import org.smartregister.cbhc.view.LocationPickerView;
 import org.smartregister.clientandeventmodel.Client;
 import org.smartregister.clientandeventmodel.Event;
@@ -64,7 +61,8 @@ public class RegisterPresenter implements RegisterContract.Presenter, RegisterCo
     public void unregisterViewConfiguration(List<String> viewIdentifiers) {
         try {
             model.unregisterViewConfiguration(viewIdentifiers);
-        }catch (Exception e){
+        } catch (Exception e) {
+            Utils.appendLog(getClass().getName(), e);
 
         }
     }
@@ -105,19 +103,17 @@ public class RegisterPresenter implements RegisterContract.Presenter, RegisterCo
 //            Triple<String, String, String> triple = Triple.of(formName, metadata, currentLocationId);
 //            Triple<String, String, String> triple = Triple.of(formName, metadata, currentLocationId);
 //            interactor.getNextUniqueId(triple, this);
-            interactor.getNextHealthId(formName, metadata, currentLocationId,householdID, this);
+            interactor.getNextHealthId(formName, metadata, currentLocationId, householdID, this);
             return;
         }
         JSONObject form = FormUtils.getInstance(AncApplication.getInstance().getApplicationContext()).getFormJson(Constants.JSON_FORM.MEMBER_REGISTER);
 
-        form = JsonFormUtils.getFormAsJson(form,formName, entityId, currentLocationId,householdID);
-        form.put("relational_id",householdID);
-        LookUpUtils.putRelationalIdInLookupObjects(form,householdID);
+        form = JsonFormUtils.getFormAsJson(form, formName, entityId, currentLocationId, householdID);
+        form.put("relational_id", householdID);
+        LookUpUtils.putRelationalIdInLookupObjects(form, householdID);
         getView().startFormActivity(form);
 
     }
-
-
 
 
     @Override
@@ -133,6 +129,7 @@ public class RegisterPresenter implements RegisterContract.Presenter, RegisterCo
             interactor.removeWomanFromANCRegister(jsonString, allSharedPreferences.fetchRegisteredANM());
 
         } catch (Exception e) {
+            Utils.appendLog(getClass().getName(), e);
             Log.e(TAG, Log.getStackTraceString(e));
 
         }
@@ -153,6 +150,7 @@ public class RegisterPresenter implements RegisterContract.Presenter, RegisterCo
             interactor.saveRegistration(pair, jsonString, isEditMode, this);
 
         } catch (Exception e) {
+            Utils.appendLog(getClass().getName(), e);
             Log.e(TAG, Log.getStackTraceString(e));
         }
     }
@@ -167,23 +165,26 @@ public class RegisterPresenter implements RegisterContract.Presenter, RegisterCo
         try {
             startForm(triple.getLeft(), entityId, triple.getMiddle(), triple.getRight());
         } catch (Exception e) {
+            Utils.appendLog(getClass().getName(), e);
             Log.e(TAG, Log.getStackTraceString(e));
             getView().displayToast(R.string.error_unable_to_start_form);
         }
     }
 
     @Override
-    public void onUniqueIdFetched(String formName,String metadata,String currentLocationId,String householdID, String entityId) {
+    public void onUniqueIdFetched(String formName, String metadata, String currentLocationId, String householdID, String entityId) {
         try {
-            startMemberRegistrationForm(formName,entityId,metadata,currentLocationId,householdID);
+            startMemberRegistrationForm(formName, entityId, metadata, currentLocationId, householdID);
         } catch (Exception e) {
+            Utils.appendLog(getClass().getName(), e);
             Log.e(TAG, Log.getStackTraceString(e));
             getView().displayToast(R.string.error_unable_to_start_form);
         }
     }
+
     @Override
     public void onRegistrationSaved(boolean isEdit) {
-        if(getView()!=null){
+        if (getView() != null) {
             getView().refreshList(FetchStatus.fetched);
             getView().hideProgressDialog();
         }
@@ -202,7 +203,7 @@ public class RegisterPresenter implements RegisterContract.Presenter, RegisterCo
             model = null;
         }
     }
-    
+
     @Override
     public void updateInitials() {
         String initials = model.getInitials();
@@ -210,7 +211,7 @@ public class RegisterPresenter implements RegisterContract.Presenter, RegisterCo
             getView().updateInitialsText(initials);
         }
     }
-    
+
     private RegisterContract.View getView() {
         if (viewReference != null)
             return viewReference.get();

@@ -45,15 +45,14 @@ import static org.smartregister.util.Utils.getName;
  */
 
 public class RegisterProvider implements RecyclerViewProvider<RegisterProvider.RegisterViewHolder> {
+    public static final HashMap<String, MemberCount> memberCountHashMap = new HashMap<>();
+    public static final HashMap<String, RegisterViewHolder> countViewHashMap = new HashMap<>();
     private final LayoutInflater inflater;
     private Set<org.smartregister.configurableviews.model.View> visibleColumns;
     private View.OnClickListener onClickListener;
-
     private Context context;
     private CommonRepository commonRepository;
-
     private View.OnClickListener paginationClickListener;
-
 
     public RegisterProvider(Context context, CommonRepository commonRepository, Set visibleColumns, View.OnClickListener onClickListener, View.OnClickListener paginationClickListener) {
 
@@ -65,6 +64,12 @@ public class RegisterProvider implements RecyclerViewProvider<RegisterProvider.R
 
         this.context = context;
         this.commonRepository = commonRepository;
+    }
+
+    public static void fillValue(TextView v, String value) {
+        if (v != null)
+            v.setText(value);
+
     }
 
     @Override
@@ -79,7 +84,7 @@ public class RegisterProvider implements RecyclerViewProvider<RegisterProvider.R
             populatePatientColumn(pc, client, viewHolder);
             populateIdentifierColumn(pc, viewHolder);
             populateLastColumn(pc, viewHolder);
-            populateRejectedViews(pc,viewHolder);
+            populateRejectedViews(pc, viewHolder);
             MemberCount mc = memberCountHashMap.get(pc.entityId());
             if (mc != null) {
                 populateMemberCountColumn(mc, viewHolder);
@@ -113,12 +118,34 @@ public class RegisterProvider implements RecyclerViewProvider<RegisterProvider.R
         */
     }
 
-    private void populateRejectedViews(CommonPersonObjectClient pc,RegisterViewHolder viewHolder){
-       String detailsStatus =  org.smartregister.util.Utils.getValue(pc.getColumnmaps(),DBConstants.KEY.DETAILSSTATUS,false);
-       if("0".equalsIgnoreCase(detailsStatus)){
-           viewHolder.register_columns.setBackgroundColor(context.getResources().getColor(android.R.color.holo_orange_light));
-       }
+    private void populateRejectedViews(CommonPersonObjectClient pc, RegisterViewHolder viewHolder) {
+        String detailsStatus = org.smartregister.util.Utils.getValue(pc.getColumnmaps(), DBConstants.KEY.DETAILSSTATUS, false);
+        if ("0".equalsIgnoreCase(detailsStatus)) {
+            viewHolder.register_columns.setBackgroundColor(context.getResources().getColor(android.R.color.holo_orange_light));
+        }
     }
+
+    /*private void updateDoseButton(){
+        DoseStatus doseStatus = Utils.getCurrentDoseStatus(pc);
+
+        Button patient = (Button) view.findViewById(R.id.dose_button);
+
+        LinearLayout completeView = (LinearLayout) view.findViewById(R.id.completedView);
+
+        if (StringUtils.isNotBlank(doseStatus.getDateDoseTwoGiven())) {
+            patient.setVisibility(View.GONE);
+            completeView.setVisibility(View.VISIBLE);
+        } else {
+
+            patient.setVisibility(View.VISIBLE);
+            completeView.setVisibility(View.GONE);
+            patient.setText(getDoseButtonText(doseStatus));
+            patient.setBackground(Utils.getDoseButtonBackground(context, Utils.getRegisterViewButtonStatus(doseStatus)));
+            patient.setTextColor(Utils.getDoseButtonTextColor(context, Utils.getRegisterViewButtonStatus(doseStatus)));
+            attachDosageOnclickListener(patient, pc);
+        }
+    }*/
+
     private void populatePatientColumn(CommonPersonObjectClient pc, SmartRegisterClient client, RegisterViewHolder viewHolder) {
 
         String firstName = org.smartregister.util.Utils.getValue(pc.getColumnmaps(), DBConstants.KEY.FIRST_NAME, true);
@@ -142,10 +169,11 @@ public class RegisterProvider implements RecyclerViewProvider<RegisterProvider.R
             Date last_interacted_date = new Date(Long.parseLong(last_interacted_with));
 
             last_interacted_with = last_interacted_date.toString();
-            String d[] = last_interacted_with.split(" ");
+            String[] d = last_interacted_with.split(" ");
             last_interacted_with = d[1] + " " + d[2] + " " + d[5];
 
         } catch (Exception e) {
+            Utils.appendLog(getClass().getName(), e);
 
         }
 
@@ -172,12 +200,10 @@ public class RegisterProvider implements RecyclerViewProvider<RegisterProvider.R
 
     }
 
-
     private void populateIdentifierColumn(CommonPersonObjectClient pc, RegisterViewHolder viewHolder) {
         String ancId = org.smartregister.util.Utils.getValue(pc.getColumnmaps(), DBConstants.KEY.ANC_ID, false);
         //fillValue(viewHolder.ancId, String.format(context.getString(R.string.anc_id_text), ancId));
     }
-
 
     private void populateLastColumn(CommonPersonObjectClient pc, RegisterViewHolder viewHolder) {
 
@@ -197,26 +223,17 @@ public class RegisterProvider implements RecyclerViewProvider<RegisterProvider.R
         }
     }
 
-    /*private void updateDoseButton(){
-        DoseStatus doseStatus = Utils.getCurrentDoseStatus(pc);
+    /*
+    private void adjustLayoutParams(View view, TextView details) {
+        ViewGroup.LayoutParams params = view.getLayoutParams();
+        params.height = ViewGroup.LayoutParams.WRAP_CONTENT;
+        view.setLayoutParams(params);
 
-        Button patient = (Button) view.findViewById(R.id.dose_button);
-
-        LinearLayout completeView = (LinearLayout) view.findViewById(R.id.completedView);
-
-        if (StringUtils.isNotBlank(doseStatus.getDateDoseTwoGiven())) {
-            patient.setVisibility(View.GONE);
-            completeView.setVisibility(View.VISIBLE);
-        } else {
-
-            patient.setVisibility(View.VISIBLE);
-            completeView.setVisibility(View.GONE);
-            patient.setText(getDoseButtonText(doseStatus));
-            patient.setBackground(Utils.getDoseButtonBackground(context, Utils.getRegisterViewButtonStatus(doseStatus)));
-            patient.setTextColor(Utils.getDoseButtonTextColor(context, Utils.getRegisterViewButtonStatus(doseStatus)));
-            attachDosageOnclickListener(patient, pc);
-        }
-    }*/
+        params = details.getLayoutParams();
+        params.height = ViewGroup.LayoutParams.WRAP_CONTENT;
+        details.setLayoutParams(params);
+    }
+*/
 
     private void attachSyncOnclickListener(View view, SmartRegisterClient client) {
         view.setOnClickListener(onClickListener);
@@ -235,18 +252,6 @@ public class RegisterProvider implements RecyclerViewProvider<RegisterProvider.R
         view.setTag(client);
         view.setTag(R.id.VIEW_ID, BaseRegisterFragment.CLICK_VIEW_ATTENTION_FLAG);
     }
-
-    /*
-    private void adjustLayoutParams(View view, TextView details) {
-        ViewGroup.LayoutParams params = view.getLayoutParams();
-        params.height = ViewGroup.LayoutParams.WRAP_CONTENT;
-        view.setLayoutParams(params);
-
-        params = details.getLayoutParams();
-        params.height = ViewGroup.LayoutParams.WRAP_CONTENT;
-        details.setLayoutParams(params);
-    }
-*/
 
     @Override
     public void getFooterView(RecyclerView.ViewHolder viewHolder, int currentPageCount, int totalPageCount, boolean hasNext, boolean hasPrevious) {
@@ -307,19 +312,6 @@ public class RegisterProvider implements RecyclerViewProvider<RegisterProvider.R
         return new RegisterViewHolder(view);
     }
 
-    public static void fillValue(TextView v, String value) {
-        if (v != null)
-            v.setText(value);
-
-    }
-
-    class MemberCount {
-        int memberCount;
-        int femaleChildCount;
-        int maleChildCount;
-        int pregnantCount;
-    }
-
     private void populateMemberCountColumn(MemberCount mc, RegisterViewHolder viewHolder) {
 
         TextView countView = viewHolder.memberCount;
@@ -359,8 +351,28 @@ public class RegisterProvider implements RecyclerViewProvider<RegisterProvider.R
 
     }
 
-    public static final HashMap<String, MemberCount> memberCountHashMap = new HashMap<>();
-    public static final HashMap<String, RegisterViewHolder> countViewHashMap = new HashMap<>();
+    @Override
+    public RecyclerView.ViewHolder createFooterHolder(ViewGroup parent) {
+        View view = inflater.inflate(R.layout.smart_register_pagination, parent, false);
+        return new FooterViewHolder(view);
+    }
+
+    @Override
+    public boolean isFooterViewHolder(RecyclerView.ViewHolder viewHolder) {
+        return viewHolder instanceof FooterViewHolder;
+    }
+
+    ////////////////////////////////////////////////////////////////
+    // Inner classes
+    ////////////////////////////////////////////////////////////////
+
+    class MemberCount {
+        int memberCount;
+        int femaleChildCount;
+        int maleChildCount;
+        int pregnantCount;
+    }
+
     class MemberCountAsyncTask extends AsyncTask {
         CommonPersonObjectClient pc;
         int count = 0;
@@ -376,6 +388,7 @@ public class RegisterProvider implements RecyclerViewProvider<RegisterProvider.R
         ImageView malechildpresent;
         ImageView pregnantpresent;
         RegisterViewHolder viewHolder;
+
         public MemberCountAsyncTask(CommonPersonObjectClient pc, RegisterViewHolder viewHolder) {
             this.pc = pc;
             this.countView = viewHolder.memberCount;
@@ -398,7 +411,8 @@ public class RegisterProvider implements RecyclerViewProvider<RegisterProvider.R
 //                cursor.moveToFirst();
 //                count = count+Integer.parseInt(cursor.getString(0));
 //                cursor.close();
-//            }catch (Exception e){
+//            }catch (Exception e) {
+//Utils.appendLog(getClass().getName(),e);
 //                Log.e("member error",e.getMessage());
 //            }
 //            try{
@@ -406,7 +420,8 @@ public class RegisterProvider implements RecyclerViewProvider<RegisterProvider.R
 //                cursor.moveToFirst();
 //                count = count+Integer.parseInt(cursor.getString(0));
 //                cursor.close();
-//            }catch (Exception e){
+//            }catch (Exception e) {
+//Utils.appendLog(getClass().getName(),e);
 //
 //            }
 //            try{
@@ -414,7 +429,8 @@ public class RegisterProvider implements RecyclerViewProvider<RegisterProvider.R
 //                cursor.moveToFirst();
 //                count = count+Integer.parseInt(cursor.getString(0));
 //                cursor.close();
-//            }catch (Exception e){
+//            }catch (Exception e) {
+//Utils.appendLog(getClass().getName(),e);
 //
 //            }
             try {
@@ -426,6 +442,7 @@ public class RegisterProvider implements RecyclerViewProvider<RegisterProvider.R
                 count = cursor.getCount();
                 cursor.close();
             } catch (Exception e) {
+                Utils.appendLog(getClass().getName(), e);
                 e.printStackTrace();
             }
             try {
@@ -436,6 +453,7 @@ public class RegisterProvider implements RecyclerViewProvider<RegisterProvider.R
                 femalechild = femalechild + Integer.parseInt(cursor.getString(0));
                 cursor.close();
             } catch (Exception e) {
+                Utils.appendLog(getClass().getName(), e);
 
             }
             try {
@@ -446,6 +464,7 @@ public class RegisterProvider implements RecyclerViewProvider<RegisterProvider.R
                 malechild = malechild + Integer.parseInt(cursor.getString(0));
                 cursor.close();
             } catch (Exception e) {
+                Utils.appendLog(getClass().getName(), e);
 
             }
             try {
@@ -456,6 +475,7 @@ public class RegisterProvider implements RecyclerViewProvider<RegisterProvider.R
                 pregnantcount = pregnantcount + Integer.parseInt(cursor.getString(0));
                 cursor.close();
             } catch (Exception e) {
+                Utils.appendLog(getClass().getName(), e);
 
             }
 
@@ -496,13 +516,9 @@ public class RegisterProvider implements RecyclerViewProvider<RegisterProvider.R
             mc.maleChildCount = malechild;
             mc.femaleChildCount = femalechild;
             memberCountHashMap.put(pc.entityId(), mc);
-            countViewHashMap.put(pc.entityId(),viewHolder);
+            countViewHashMap.put(pc.entityId(), viewHolder);
         }
     }
-
-    ////////////////////////////////////////////////////////////////
-    // Inner classes
-    ////////////////////////////////////////////////////////////////
 
     public class RegisterViewHolder extends RecyclerView.ViewHolder {
         public ImageView registericon;
@@ -523,6 +539,7 @@ public class RegisterProvider implements RecyclerViewProvider<RegisterProvider.R
         public Button sync;
         public View patientColumn;
         public View register_columns;
+
         public RegisterViewHolder(View itemView) {
             super(itemView);
             registericon = itemView.findViewById(R.id.imageViewregistericon);
@@ -546,17 +563,6 @@ public class RegisterProvider implements RecyclerViewProvider<RegisterProvider.R
             last_interacted_with = itemView.findViewById(R.id.last_interacted_with);
             register_columns = itemView.findViewById(R.id.register_columns);
         }
-    }
-
-    @Override
-    public RecyclerView.ViewHolder createFooterHolder(ViewGroup parent) {
-        View view = inflater.inflate(R.layout.smart_register_pagination, parent, false);
-        return new FooterViewHolder(view);
-    }
-
-    @Override
-    public boolean isFooterViewHolder(RecyclerView.ViewHolder viewHolder) {
-        return FooterViewHolder.class.isInstance(viewHolder);
     }
 
     public class FooterViewHolder extends RecyclerView.ViewHolder {

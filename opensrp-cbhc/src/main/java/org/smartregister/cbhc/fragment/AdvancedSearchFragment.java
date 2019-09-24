@@ -420,6 +420,7 @@ public class AdvancedSearchFragment extends BaseRegisterFragment implements Adva
             clientAdapter.setCurrentoffset(0);
 
         } catch (Exception e) {
+            org.smartregister.cbhc.util.Utils.appendLog(getClass().getName(), e);
             Log.e(getClass().getName(), e.toString(), e);
         } finally {
             if (c != null) {
@@ -470,6 +471,7 @@ public class AdvancedSearchFragment extends BaseRegisterFragment implements Adva
             query = sqb.orderbyCondition(Sortqueries);
             query = sqb.Endquery(sqb.addlimitandOffset(query, clientAdapter.getCurrentlimit(), clientAdapter.getCurrentoffset()));
         } catch (Exception e) {
+            org.smartregister.cbhc.util.Utils.appendLog(getClass().getName(), e);
             Log.e(getClass().getName(), e.toString(), e);
         }
 

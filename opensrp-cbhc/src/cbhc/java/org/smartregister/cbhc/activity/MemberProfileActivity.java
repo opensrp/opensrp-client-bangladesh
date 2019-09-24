@@ -56,7 +56,6 @@ import org.smartregister.clientandeventmodel.Obs;
 import org.smartregister.commonregistry.CommonPersonObject;
 import org.smartregister.commonregistry.CommonPersonObjectClient;
 import org.smartregister.domain.ProfileImage;
-import org.smartregister.repository.AllSharedPreferences;
 import org.smartregister.repository.BaseRepository;
 import org.smartregister.repository.EventClientRepository;
 import org.smartregister.repository.ImageRepository;
@@ -89,6 +88,15 @@ import static org.smartregister.util.Utils.getValue;
  */
 public class MemberProfileActivity extends BaseProfileActivity implements ProfileContract.View {
 
+    public static final String DIALOG_TAG = "PROFILE_DIALOG_TAG";
+    private static final String TAG = MemberProfileActivity.class.getCanonicalName();
+    //    public ProfileOverviewFragment profileOverviewFragment;
+    public MemberProfileContactsFragment profileOverviewFragment;
+    String typeofMember;
+    int age = -1;
+    int gender = -1;
+    int marital_status = 0;
+    FollowupFragment followupFragment;
     private TextView nameView;
     private TextView ageView;
     private TextView pregnant_statusView;
@@ -97,17 +105,10 @@ public class MemberProfileActivity extends BaseProfileActivity implements Profil
     private ImageView imageView;
     private ImageRenderHelper imageRenderHelper;
     private String womanPhoneNumber;
-    String typeofMember;
-
-
-    private static final String TAG = MemberProfileActivity.class.getCanonicalName();
-
-    public static final String DIALOG_TAG = "PROFILE_DIALOG_TAG";
     private CommonPersonObjectClient householdDetails;
-
-    int age = -1;
-    int gender = -1;
-    int marital_status = 0;
+    private TabLayout tabLayout;
+    private UniqueIdRepository uniqueIdRepository;
+    private HealthIdRepository healthIdRepository;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -135,9 +136,6 @@ public class MemberProfileActivity extends BaseProfileActivity implements Profil
 
 
     }
-
-
-    private TabLayout tabLayout;
 
     private void setUpViews() {
         imageView = findViewById(R.id.imageview_profile);
@@ -191,6 +189,7 @@ public class MemberProfileActivity extends BaseProfileActivity implements Profil
                     durationString = duration;
                 }
             } catch (Exception e) {
+                Utils.appendLog(getClass().getName(), e);
                 Log.e(getClass().getName(), e.toString(), e);
             }
         }
@@ -228,6 +227,7 @@ public class MemberProfileActivity extends BaseProfileActivity implements Profil
                             try {
                                 c.setTime(sdf.parse(lmp_date));
                             } catch (ParseException e) {
+                                Utils.appendLog(getClass().getName(), e);
                                 e.printStackTrace();
                             }
                             c.add(Calendar.DATE, 280);  // number of days to add
@@ -237,6 +237,7 @@ public class MemberProfileActivity extends BaseProfileActivity implements Profil
                         }
                     }
                 } catch (Exception e) {
+                    Utils.appendLog(getClass().getName(), e);
 
                 } finally {
                     cursor.close();
@@ -247,7 +248,8 @@ public class MemberProfileActivity extends BaseProfileActivity implements Profil
 //                    if (cursor.moveToNext()) {
 //                       Patient_identifier = cursor.getString(0);
 //                    }
-//                }catch(Exception e){
+//                }catch(Exception e) {
+//Utils.appendLog(getClass().getName(),e);
 //
 //                }
 
@@ -299,6 +301,7 @@ public class MemberProfileActivity extends BaseProfileActivity implements Profil
                     durationString = duration;
                 }
             } catch (Exception e) {
+                Utils.appendLog(getClass().getName(), e);
                 Log.e(getClass().getName(), e.toString(), e);
             }
         }
@@ -314,9 +317,6 @@ public class MemberProfileActivity extends BaseProfileActivity implements Profil
         commonPersonObjectClient.setColumnmaps(commonPersonObject.getColumnmaps());
         return commonPersonObjectClient;
     }
-
-    private UniqueIdRepository uniqueIdRepository;
-    private HealthIdRepository healthIdRepository;
 
     public HealthIdRepository getHealthIdRepository() {
         if (healthIdRepository == null) {
@@ -334,6 +334,7 @@ public class MemberProfileActivity extends BaseProfileActivity implements Profil
         try {
             JsonFormUtils.startFormForEdit(this, JsonFormUtils.REQUEST_CODE_GET_JSON, formMetadataformembers);
         } catch (Exception e) {
+            Utils.appendLog(getClass().getName(), e);
 
         }
     }
@@ -365,15 +366,12 @@ public class MemberProfileActivity extends BaseProfileActivity implements Profil
 //                try {
 //                    JsonFormUtils.startFormForEdit(this, JsonFormUtils.REQUEST_CODE_GET_JSON, formMetadataformembers);
 //                } catch (Exception e) {
+//                Utils.appendLog(getClass().getName(), e);
 //
 //                }
                 break;
         }
     }
-
-    //    public ProfileOverviewFragment profileOverviewFragment;
-    public MemberProfileContactsFragment profileOverviewFragment;
-    FollowupFragment followupFragment;
 
     private ViewPager setupViewPager(ViewPager viewPager) {
         ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
@@ -602,6 +600,7 @@ public class MemberProfileActivity extends BaseProfileActivity implements Profil
             intent.putExtra("json", form.toString());
             startActivityForResult(intent, JsonFormUtils.REQUEST_CODE_GET_JSON);
         } catch (Exception e) {
+            Utils.appendLog(getClass().getName(), e);
 
         }
 
@@ -631,6 +630,7 @@ public class MemberProfileActivity extends BaseProfileActivity implements Profil
                 Intent intent = new Intent(Intent.ACTION_DIAL, Uri.fromParts("tel", phoneNumber, null));
                 this.startActivity(intent);
             } catch (Exception e) {
+                Utils.appendLog(getClass().getName(), e);
 
                 Log.i(TAG, "No dial application so we launch copy to clipboard...");
                 CopyToClipboardDialog copyToClipboardDialog = new CopyToClipboardDialog(this, R.style.copy_clipboard_dialog);
@@ -671,6 +671,7 @@ public class MemberProfileActivity extends BaseProfileActivity implements Profil
                 }
 
             } catch (Exception e) {
+                Utils.appendLog(getClass().getName(), e);
 
             }
 
@@ -699,7 +700,7 @@ public class MemberProfileActivity extends BaseProfileActivity implements Profil
 
 
             Date date = new Date();
-            EventClientRepository db = (EventClientRepository) AncApplication.getInstance().getEventClientRepository();
+            EventClientRepository db = AncApplication.getInstance().getEventClientRepository();
 
 
             JSONObject client = db.getClientByBaseEntityId(householdDetails.entityId());
@@ -729,6 +730,7 @@ public class MemberProfileActivity extends BaseProfileActivity implements Profil
 
 
         } catch (Exception e) {
+            Utils.appendLog(getClass().getName(), e);
             Log.e(TAG, e.getMessage());
         }
     }
@@ -743,6 +745,7 @@ public class MemberProfileActivity extends BaseProfileActivity implements Profil
                 }
             }
         } catch (JSONException e) {
+            Utils.appendLog(getClass().getName(), e);
             e.printStackTrace();
         }
     }
@@ -764,6 +767,7 @@ public class MemberProfileActivity extends BaseProfileActivity implements Profil
                     }
                 }
             } catch (JSONException e) {
+                Utils.appendLog(getClass().getName(), e);
                 e.printStackTrace();
             }
         }
@@ -797,6 +801,7 @@ public class MemberProfileActivity extends BaseProfileActivity implements Profil
 
                                         mProfilePresenter.startMemberRegistrationForm(Constants.JSON_FORM.MEMBER_REGISTER, null, null, null, householdDetails.entityId());
                                     } catch (Exception e) {
+                                        Utils.appendLog(getClass().getName(), e);
                                         e.printStackTrace();
                                     }
                                 }
@@ -821,6 +826,7 @@ public class MemberProfileActivity extends BaseProfileActivity implements Profil
                                         MemberProfileActivity.super.onActivityResult(requestCode, resultCode, data);
 
                                     } catch (Exception e) {
+                                        Utils.appendLog(getClass().getName(), e);
                                         e.printStackTrace();
                                     }
                                 }
@@ -837,6 +843,7 @@ public class MemberProfileActivity extends BaseProfileActivity implements Profil
                 }
 
             } catch (Exception e) {
+                Utils.appendLog(getClass().getName(), e);
                 Log.e(TAG, Log.getStackTraceString(e));
             }
             Utils.VIEWREFRESH = true;
@@ -870,6 +877,7 @@ public class MemberProfileActivity extends BaseProfileActivity implements Profil
                     db.execSQL(sql);
 
                 } catch (Exception e) {
+                    Utils.appendLog(getClass().getName(), e);
                     e.printStackTrace();
                 }
                 return null;
@@ -890,7 +898,7 @@ public class MemberProfileActivity extends BaseProfileActivity implements Profil
             protected Object doInBackground(Object[] objects) {
                 AncRepository repo = (AncRepository) AncApplication.getInstance().getRepository();
                 SQLiteDatabase db = repo.getReadableDatabase();
-                String tables[] = {"ec_household", "ec_member", "ec_child", "ec_woman", "ec_household_search", "ec_member_search", "ec_child_search", "ec_woman_search"};
+                String[] tables = {"ec_household", "ec_member", "ec_child", "ec_woman", "ec_household_search", "ec_member_search", "ec_child_search", "ec_woman_search"};
 
                 Cursor cursor = null;
                 try {
@@ -900,6 +908,11 @@ public class MemberProfileActivity extends BaseProfileActivity implements Profil
                         if (cursor != null && cursor.getCount() != 0) {
                             sql = "UPDATE " + tables[i] + " SET 'date_removed' = '20-12-2019' WHERE base_entity_id = '" + entity_id + "';";
                             db.execSQL(sql);
+                            if (tables[i].contains("search")) {
+                                sql = "UPDATE " + tables[i] + " SET phrase = '' WHERE phrase IS NOT NULL AND phrase != '' AND  date_removed IS NOT NULL";
+                                db.execSQL(sql);
+                            }
+
 //                        db.rawQuery(sql,new String[]{});
 
                         }
@@ -908,6 +921,7 @@ public class MemberProfileActivity extends BaseProfileActivity implements Profil
                     }
 
                 } catch (Exception e) {
+                    Utils.appendLog(getClass().getName(), e);
 
                 }
 

@@ -10,19 +10,16 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import org.apache.commons.lang3.ArrayUtils;
-import org.joda.time.Days;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.smartregister.cbhc.R;
 import org.smartregister.cbhc.application.AncApplication;
 import org.smartregister.cbhc.util.Constants;
-import org.smartregister.cbhc.util.DBConstants;
 import org.smartregister.cbhc.util.JsonFormUtils;
 import org.smartregister.cbhc.util.Utils;
 import org.smartregister.commonregistry.CommonPersonObjectClient;
 import org.smartregister.util.FormUtils;
-import org.smartregister.view.customcontrols.CustomFontTextView;
 
 import java.io.Serializable;
 import java.util.Date;
@@ -39,6 +36,8 @@ import static org.smartregister.util.JsonFormUtils.fields;
  */
 public class MemberProfileContactsFragment extends BaseProfileFragment {
 
+    LayoutInflater inflater;
+    View fragmentView;
     private CommonPersonObjectClient householdDetails;
 
     public static MemberProfileContactsFragment newInstance(Bundle bundle) {
@@ -76,9 +75,6 @@ public class MemberProfileContactsFragment extends BaseProfileFragment {
         //Overriden
     }
 
-    LayoutInflater inflater;
-    View fragmentView;
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
@@ -90,103 +86,104 @@ public class MemberProfileContactsFragment extends BaseProfileFragment {
 
     public void reloadView() {
         householdDetails.getColumnmaps().putAll(AncApplication.getInstance().getContext().detailsRepository().getAllDetailsForClient(householdDetails.entityId()));
-        LinearLayout linearLayoutholder = (LinearLayout)fragmentView.findViewById(R.id.profile_overview_details_holder);
+        LinearLayout linearLayoutholder = fragmentView.findViewById(R.id.profile_overview_details_holder);
         linearLayoutholder.removeAllViews();
         setupView();
     }
 
-    public void processCheckboxValues(Map<String, String> womanClient, JSONArray field){
+    public void processCheckboxValues(Map<String, String> womanClient, JSONArray field) {
 
-        for(int i=0;i<field.length();i++){
+        for (int i = 0; i < field.length(); i++) {
             try {
                 JSONObject object = field.getJSONObject(i);
-                if(object.has("type")&&object.getString("type").equals("check_box")){
+                if (object.has("type") && object.getString("type").equals("check_box")) {
                     String key = object.getString("key");
                     String openmrs_id = object.getString("openmrs_entity_id");
                     String value = "";
-                    if(womanClient.get(key)!=null){
+                    if (womanClient.get(key) != null) {
                         value = womanClient.get(key);
-                    }else if(womanClient.get(openmrs_id)!=null){
+                    } else if (womanClient.get(openmrs_id) != null) {
                         value = womanClient.get(openmrs_id);
                     }
-                    String vals [] = value.split(",");
-                    HashMap<String,String>options_map = new HashMap<String,String>();
+                    String[] vals = value.split(",");
+                    HashMap<String, String> options_map = new HashMap<String, String>();
                     JSONArray options = object.getJSONArray("options");
-                    if(options!=null){
-                        for(int k = 0;k<options.length();k++){
+                    if (options != null) {
+                        for (int k = 0; k < options.length(); k++) {
                             JSONObject option_object = options.getJSONObject(k);
-                            options_map.put(option_object.getString("key"),option_object.getString("text"));
+                            options_map.put(option_object.getString("key"), option_object.getString("text"));
                         }
                     }
                     String val = "";
-                    if(!ArrayUtils.isEmpty(vals)){
-                        for(int k = 0;k<vals.length;k++){
+                    if (!ArrayUtils.isEmpty(vals)) {
+                        for (int k = 0; k < vals.length; k++) {
                             val = val + options_map.get(vals[k]) + ",";
                         }
                     }
                     value = val;
 
-                    if(value.endsWith(",")){
-                        value = value.substring(0,value.length()-1);
+                    if (value.endsWith(",")) {
+                        value = value.substring(0, value.length() - 1);
                     }
-                    if(value.equalsIgnoreCase("null")){
+                    if (value.equalsIgnoreCase("null")) {
                         value = "";
                     }
                     long days = -1;
-                    if(ProfileContactsFragment.date_of_birth!=null){
+                    if (ProfileContactsFragment.date_of_birth != null) {
                         long diff = ProfileContactsFragment.date_of_birth.getTime() - new Date().getTime();
                         days = TimeUnit.DAYS.convert(diff, TimeUnit.MILLISECONDS);
                     }
 
-                    if(ProfileContactsFragment.age>=5){
-                        if(key.equalsIgnoreCase("Disease_status_zero_to_two_month_by_age")||key.equalsIgnoreCase("Disease_status_two_month_to_five_year_by_age")){
+                    if (ProfileContactsFragment.age >= 5) {
+                        if (key.equalsIgnoreCase("Disease_status_zero_to_two_month_by_age") || key.equalsIgnoreCase("Disease_status_two_month_to_five_year_by_age")) {
                             value = "";
                         }
-                    }else if((ProfileContactsFragment.age>=1&&ProfileContactsFragment.age<5)||(days>=62&&days<1826)){
-                        if(key.equalsIgnoreCase("Disease_status_zero_to_two_month_by_age")||
-                                key.equalsIgnoreCase("Non Communicable Disease")||
-                                key.equalsIgnoreCase("Communicable Disease")||
-                                key.equalsIgnoreCase("Disease_Type")){
+                    } else if ((ProfileContactsFragment.age >= 1 && ProfileContactsFragment.age < 5) || (days >= 62 && days < 1826)) {
+                        if (key.equalsIgnoreCase("Disease_status_zero_to_two_month_by_age") ||
+                                key.equalsIgnoreCase("Non Communicable Disease") ||
+                                key.equalsIgnoreCase("Communicable Disease") ||
+                                key.equalsIgnoreCase("Disease_Type")) {
                             value = "";
                         }
-                    }else{
-                        if(key.equalsIgnoreCase("Disease_status_two_month_to_five_year_by_age")||
-                                key.equalsIgnoreCase("Non Communicable Disease")||
-                                key.equalsIgnoreCase("Communicable Disease")||
-                                key.equalsIgnoreCase("Disease_Type")){
+                    } else {
+                        if (key.equalsIgnoreCase("Disease_status_two_month_to_five_year_by_age") ||
+                                key.equalsIgnoreCase("Non Communicable Disease") ||
+                                key.equalsIgnoreCase("Communicable Disease") ||
+                                key.equalsIgnoreCase("Disease_Type")) {
                             value = "";
                         }
                     }
-                    object.put("value",value);
+                    object.put("value", value);
                 }
             } catch (JSONException e) {
+                Utils.appendLog(getClass().getName(), e);
                 e.printStackTrace();
             }
 
         }
     }
 
-    public void setPregnantStatus(Map<String,String>clientmap){
+    public void setPregnantStatus(Map<String, String> clientmap) {
         String pregnant_status = clientmap.get("PregnancyStatus");
-        if(pregnant_status == null || (pregnant_status!=null&&pregnant_status.isEmpty())){
-            clientmap.put("LMP","");
-            clientmap.put("delivery_date","");
-        }else{
-            if(pregnant_status.equalsIgnoreCase("প্রসব পূর্ব")||pregnant_status.equalsIgnoreCase("Antenatal Period")){
-                clientmap.put("delivery_date","");
-                clientmap.put("familyplanning","");
-            }else if(pregnant_status.equalsIgnoreCase("প্রসবোত্তর")||pregnant_status.equalsIgnoreCase("Postnatal")){
-                clientmap.put("LMP","");
-            }else{
-                clientmap.put("LMP","");
-                clientmap.put("delivery_date","");
+        if (pregnant_status == null || (pregnant_status != null && pregnant_status.isEmpty())) {
+            clientmap.put("LMP", "");
+            clientmap.put("delivery_date", "");
+        } else {
+            if (pregnant_status.equalsIgnoreCase("প্রসব পূর্ব") || pregnant_status.equalsIgnoreCase("Antenatal Period")) {
+                clientmap.put("delivery_date", "");
+                clientmap.put("familyplanning", "");
+            } else if (pregnant_status.equalsIgnoreCase("প্রসবোত্তর") || pregnant_status.equalsIgnoreCase("Postnatal")) {
+                clientmap.put("LMP", "");
+            } else {
+                clientmap.put("LMP", "");
+                clientmap.put("delivery_date", "");
             }
         }
     }
 
     public void setupView() {
-        LinearLayout linearLayoutholder = (LinearLayout)fragmentView.findViewById(R.id.profile_overview_details_holder);
-        LinearLayout.LayoutParams mainparams =new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,ViewGroup.LayoutParams.WRAP_CONTENT);
+        LinearLayout linearLayoutholder = fragmentView.findViewById(R.id.profile_overview_details_holder);
+        LinearLayout.LayoutParams mainparams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
         try {
             JSONObject form = FormUtils.getInstance(AncApplication.getInstance().getApplicationContext()).getFormJson(Constants.JSON_FORM.MEMBER_REGISTER);
             JSONArray field = fields(form);
@@ -194,44 +191,44 @@ public class MemberProfileContactsFragment extends BaseProfileFragment {
             ProfileContactsFragment.date_of_birth = null;
             ProfileContactsFragment.age = -1;
 
-            for(int i=0;i<field.length();i++){
-                processPopulatableFieldsForHouseholds(householdDetails.getColumnmaps(),field.getJSONObject(i));
+            for (int i = 0; i < field.length(); i++) {
+                processPopulatableFieldsForHouseholds(householdDetails.getColumnmaps(), field.getJSONObject(i));
             }
 
-            processCheckboxValues(householdDetails.getColumnmaps(),field);
+            processCheckboxValues(householdDetails.getColumnmaps(), field);
             //processDiseaseStatus(householdDetails.getColumnmaps(),field);
 
-            for(int i = 0;i<field.length();i++) {
-                if(field.getJSONObject(i).has("hint")||field.getJSONObject(i).has("label")) {
+            for (int i = 0; i < field.length(); i++) {
+                if (field.getJSONObject(i).has("hint") || field.getJSONObject(i).has("label")) {
                     inflater = (LayoutInflater) getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
                     View view = inflater.inflate(R.layout.overview_list_row, null, false);
-                    LinearLayout LayoutForDetailRow = (LinearLayout)view;
+                    LinearLayout LayoutForDetailRow = (LinearLayout) view;
 //                    LinearLayout LayoutForDetailRow = new LinearLayout(getActivity());
 //                    LayoutForDetailRow.setOrientation(LinearLayout.HORIZONTAL);
-                    TextView textLabel = (TextView)LayoutForDetailRow.findViewById(R.id.label);
-                    TextView textValue = (TextView)LayoutForDetailRow.findViewById(R.id.value);
+                    TextView textLabel = LayoutForDetailRow.findViewById(R.id.label);
+                    TextView textValue = LayoutForDetailRow.findViewById(R.id.value);
                     textValue.setGravity(Gravity.LEFT);
 //                    CustomFontTextView textLabel = new CustomFontTextView(getActivity());
                     textLabel.setTextSize(15);
 //                    CustomFontTextView textValue = new CustomFontTextView(getActivity());
                     textValue.setTextSize(15);
                     String hint = "";
-                    if(field.getJSONObject(i).has("hint")){
+                    if (field.getJSONObject(i).has("hint")) {
                         hint = field.getJSONObject(i).getString("hint");
-                    }else if(field.getJSONObject(i).has("label")){
+                    } else if (field.getJSONObject(i).has("label")) {
                         hint = field.getJSONObject(i).getString("label");
                     }
 
                     textLabel.setText(hint);
                     textLabel.setSingleLine(false);
                     String VALUE = "";
-                    if(field.getJSONObject(i).has(JsonFormUtils.VALUE)) {
+                    if (field.getJSONObject(i).has(JsonFormUtils.VALUE)) {
                         VALUE = field.getJSONObject(i).getString(JsonFormUtils.VALUE);
                         textValue.setText(VALUE);
                     }
 
                     String KEY = "";
-                    if(field.getJSONObject(i).has(JsonFormUtils.KEY)) {
+                    if (field.getJSONObject(i).has(JsonFormUtils.KEY)) {
                         KEY = field.getJSONObject(i).getString(JsonFormUtils.KEY);
                     }
 
@@ -247,10 +244,10 @@ public class MemberProfileContactsFragment extends BaseProfileFragment {
 //                    LayoutForDetailRow.addView(textLabel, params);
 //                    LayoutForDetailRow.addView(textValue, params);
 //                    linearLayoutholder.addView(LayoutForDetailRow, mainparams);
-                    if(!removeField(KEY,VALUE)){
-                        if((hint.contains("অন্যান্য")&&VALUE.isEmpty())){
+                    if (!removeField(KEY, VALUE)) {
+                        if ((hint.contains("অন্যান্য") && VALUE.isEmpty())) {
 
-                        }else{
+                        } else {
                             linearLayoutholder.addView(LayoutForDetailRow);
                         }
                     }
@@ -258,29 +255,30 @@ public class MemberProfileContactsFragment extends BaseProfileFragment {
                 }
             }
 
-        } catch (Exception e){
+        } catch (Exception e) {
+            Utils.appendLog(getClass().getName(), e);
 
         }
     }
 
-    private void processDiseaseStatus(Map<String,String> columnmaps, JSONArray field) {
+    private void processDiseaseStatus(Map<String, String> columnmaps, JSONArray field) {
         String dateString = columnmaps.get("birthdate");
         int age = 0;
         Date date = new Date(dateString);
-        for(int i=0;i<field.length();i++) {
+        for (int i = 0; i < field.length(); i++) {
 
         }
     }
 
-    public boolean removeField(String KEY, String VALUE){
-        String keys[] = {"Child_birth_weight","Birth_weight","Used_7_1_Chlorohexidin","marital_status","spouseName_english",
-                "spouseName_bengali","contact_phone_number_by_age",
-                "educational_qualification_by_age","occupation_by_age","pregnant_status","lmp_date","Delivery_date","family_planning","risky_habits",
-        "Professional technical professionals","Semi-skilled labor service","Unskilled labor","Factory worker, blue collar service","Home based manufacturing",
-        "Business","Domestic Servant","member_NID","member_BRID","Citizen_Card_number","member_f_name_bengali","Mother_Guardian_First_Name_bengali","Father_Guardian_First_Name_bengali",
-        "spouseName_bengali","disability_type","Occupation_Category","Disease_Type","Communicable Disease","Non Communicable Disease",
-                "Disease_status_zero_to_two_month_by_age","Disease_status_two_month_to_five_year_by_age","comments","illness_information"};
-        return ArrayUtils.contains(keys,KEY)&&VALUE.isEmpty();
+    public boolean removeField(String KEY, String VALUE) {
+        String[] keys = {"Child_birth_weight", "Birth_weight", "Used_7_1_Chlorohexidin", "marital_status", "spouseName_english",
+                "spouseName_bengali", "contact_phone_number_by_age",
+                "educational_qualification_by_age", "occupation_by_age", "pregnant_status", "lmp_date", "Delivery_date", "family_planning", "risky_habits",
+                "Professional technical professionals", "Semi-skilled labor service", "Unskilled labor", "Factory worker, blue collar service", "Home based manufacturing",
+                "Business", "Domestic Servant", "member_NID", "member_BRID", "Citizen_Card_number", "member_f_name_bengali", "Mother_Guardian_First_Name_bengali", "Father_Guardian_First_Name_bengali",
+                "spouseName_bengali", "disability_type", "Occupation_Category", "Disease_Type", "Communicable Disease", "Non Communicable Disease",
+                "Disease_status_zero_to_two_month_by_age", "Disease_status_two_month_to_five_year_by_age", "comments", "illness_information"};
+        return ArrayUtils.contains(keys, KEY) && VALUE.isEmpty();
 
     }
 }

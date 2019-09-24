@@ -845,6 +845,7 @@ public class ChildImmunizationFragment extends BaseProfileFragment {
                             curGroup.getVaccineData(),
                             vaccineList, alerts);
                 } catch (Exception e) {
+Utils.appendLog(getClass().getName(),e);
                     Log.e(TAG, Log.getStackTraceString(e));
                 }
             }

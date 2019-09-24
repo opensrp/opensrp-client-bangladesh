@@ -11,6 +11,7 @@ import android.widget.ImageView;
 import org.apache.commons.lang3.StringUtils;
 import org.smartregister.cbhc.R;
 import org.smartregister.cbhc.util.ImageUtils;
+import org.smartregister.cbhc.util.Utils;
 import org.smartregister.domain.Photo;
 import org.smartregister.util.OpenSRPImageLoader;
 import org.smartregister.view.activity.DrishtiApplication;
@@ -37,6 +38,7 @@ public class ImageRenderHelper {
                 Bitmap myBitmap = BitmapFactory.decodeFile(photo.getFilePath());
                 profileImageView.setImageBitmap(myBitmap);
             } catch (Exception e) {
+                Utils.appendLog(getClass().getName(), e);
                 Log.e(TAG, e.getMessage());
 
                 int backgroundResource = R.drawable.ic_woman_with_baby;

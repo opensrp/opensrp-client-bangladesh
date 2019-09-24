@@ -1,6 +1,5 @@
 package org.smartregister.cbhc.util;
 
-import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.ContentValues;
 import android.content.Context;
@@ -8,11 +7,11 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.telephony.TelephonyManager;
 import android.text.TextUtils;
+import android.text.format.DateFormat;
 import android.util.Log;
 import android.util.Pair;
 
 import com.google.common.reflect.TypeToken;
-import com.google.gson.JsonArray;
 
 import net.sqlcipher.database.SQLiteDatabase;
 
@@ -24,7 +23,6 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.smartregister.cbhc.BuildConfig;
-import org.smartregister.cbhc.R;
 import org.smartregister.cbhc.activity.AncJsonFormActivity;
 import org.smartregister.cbhc.application.AncApplication;
 import org.smartregister.cbhc.domain.FormLocation;
@@ -77,22 +75,19 @@ import static org.apache.commons.lang3.StringUtils.isBlank;
  * Created by keyman on 27/06/2018.
  */
 public class JsonFormUtils extends org.smartregister.util.JsonFormUtils {
-    private static final String TAG = JsonFormUtils.class.getCanonicalName();
-
     public static final String METADATA = "metadata";
     public static final String ENCOUNTER_TYPE = "encounter_type";
     public static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("dd-MM-yyyy");
-
     public static final String CURRENT_OPENSRP_ID = "current_opensrp_id";
     public static final String ANC_ID = "ANC_ID";
     public static final String READ_ONLY = "read_only";
-
+    public static final int REQUEST_CODE_GET_JSON = 3432;
+    private static final String TAG = JsonFormUtils.class.getCanonicalName();
     private static final String FORM_SUBMISSION_FIELD = "formsubmissionField";
     private static final String TEXT_DATA_TYPE = "text";
     private static final String SELECT_ONE_DATA_TYPE = "select one";
     private static final String SELECT_MULTIPLE_DATA_TYPE = "select multiple";
-
-    public static final int REQUEST_CODE_GET_JSON = 3432;
+    private static HealthIdRepository healthIdRepository;
 
     public static JSONObject getFormAsJson(JSONObject form,
                                            String formName, String id,
@@ -164,14 +159,14 @@ public class JsonFormUtils extends org.smartregister.util.JsonFormUtils {
             JSONArray field = fields(form);
             JSONObject date_of_registration = getFieldJSONObject(field, "Date_Of_Reg");
             date_of_registration.remove(JsonFormUtils.VALUE);
-            date_of_registration.put(JsonFormUtils.VALUE, df.format("dd-MM-yyyy", new java.util.Date()));
+            date_of_registration.put(JsonFormUtils.VALUE, DateFormat.format("dd-MM-yyyy", new java.util.Date()));
         } else if (Constants.JSON_FORM.MEMBER_REGISTER.equals(formName)) {
             android.text.format.DateFormat df = new android.text.format.DateFormat();
 
             JSONArray field = fields(form);
             JSONObject date_of_registration = getFieldJSONObject(field, "member_Reg_Date");
             date_of_registration.remove(JsonFormUtils.VALUE);
-            date_of_registration.put(JsonFormUtils.VALUE, df.format("dd-MM-yyyy", new java.util.Date()));
+            date_of_registration.put(JsonFormUtils.VALUE, DateFormat.format("dd-MM-yyyy", new java.util.Date()));
         }
 
 //        else if(formName.startsWith("Followup_Form")){
@@ -206,11 +201,10 @@ public class JsonFormUtils extends org.smartregister.util.JsonFormUtils {
             }
             updatePatientIdentifier(fields, uniqueId);
         } catch (JSONException e) {
+            Utils.appendLog(JsonFormUtils.class.getName(), e);
             e.printStackTrace();
         }
     }
-
-    private static HealthIdRepository healthIdRepository;
 
     public static HealthIdRepository getHealthIdRepository() {
         if (healthIdRepository == null) {
@@ -236,6 +230,7 @@ public class JsonFormUtils extends org.smartregister.util.JsonFormUtils {
                     }
                 }
             } catch (JSONException e) {
+                Utils.appendLog(JsonFormUtils.class.getName(), e);
                 e.printStackTrace();
             }
         }
@@ -329,6 +324,7 @@ public class JsonFormUtils extends org.smartregister.util.JsonFormUtils {
                 try {
                     age = Integer.parseInt(agestring);
                 } catch (Exception e) {
+                    Utils.appendLog(JsonFormUtils.class.getName(), e);
 
                 }
 
@@ -431,6 +427,7 @@ public class JsonFormUtils extends org.smartregister.util.JsonFormUtils {
                         }
                     }
                 } catch (Exception e) {
+                    Utils.appendLog(JsonFormUtils.class.getName(), e);
 
                 }
 
@@ -447,6 +444,7 @@ public class JsonFormUtils extends org.smartregister.util.JsonFormUtils {
                         }
                     }
                 } catch (Exception e) {
+                    Utils.appendLog(JsonFormUtils.class.getName(), e);
 
                 }
                 String imageLocation = getFieldValue(fields, "household_photo");
@@ -506,18 +504,18 @@ public class JsonFormUtils extends org.smartregister.util.JsonFormUtils {
                 entitytypeName = DBConstants.WOMAN_TABLE_NAME;
             }
             String formSubmissionID = "";
-//            EventClientRepository eventClientRepository = AncApplication.getInstance().getEventClientRepository();
+            EventClientRepository eventClientRepository = AncApplication.getInstance().getEventClientRepository();
+
+            JSONObject evenjsonobject = eventClientRepository.getEventsByBaseEntityIdAndEventType(baseClient.getBaseEntityId(), encounterType);
+            if (evenjsonobject == null) {
+                if (encounterType.contains("Update")) {
+                    evenjsonobject = eventClientRepository.getEventsByBaseEntityIdAndEventType(baseClient.getBaseEntityId(), encounterType.replace("Update", "").trim());
+                }
+            }
 //
-//            JSONObject evenjsonobject = eventClientRepository.getEventsByBaseEntityIdAndEventType(baseClient.getBaseEntityId(),encounterType);
-//            if(evenjsonobject == null){
-//                if(encounterType.contains("Update")){
-//                     evenjsonobject = eventClientRepository.getEventsByBaseEntityIdAndEventType(baseClient.getBaseEntityId(),encounterType.replace("Update",""));
-//                }
-//            }
-////
-//            if(evenjsonobject!= null) {
-//                formSubmissionID = evenjsonobject.getString("formSubmissionId");
-//            }
+            if (evenjsonobject != null) {
+                formSubmissionID = evenjsonobject.getString("formSubmissionId");
+            }
 
             Event baseEvent = org.smartregister.util.JsonFormUtils.createEvent(fields, metadata, formTag, entityId, encounterType, entitytypeName);
             if (!isBlank(formSubmissionID)) {
@@ -539,6 +537,7 @@ public class JsonFormUtils extends org.smartregister.util.JsonFormUtils {
                     }
                 }
             } catch (Exception e) {
+                Utils.appendLog(JsonFormUtils.class.getName(), e);
                 Log.e(TAG, Log.getStackTraceString(e));
             }
 
@@ -575,6 +574,7 @@ public class JsonFormUtils extends org.smartregister.util.JsonFormUtils {
             }
             return Pair.create(baseClient, baseEvent);
         } catch (Exception e) {
+            Utils.appendLog(JsonFormUtils.class.getName(), e);
             Log.e(TAG, Log.getStackTraceString(e));
             return null;
         }
@@ -602,6 +602,7 @@ public class JsonFormUtils extends org.smartregister.util.JsonFormUtils {
 //                if(fields.getJSONObject(i).has("value")&&fields.getJSONObject(i).getString("value").isEmpty())
 //                    remove_indexes.add(i);
 //            } catch (JSONException e) {
+//Utils.appendLog(JsonFormUtils.class.getName(),e);
 //                e.printStackTrace();
 //            }
 //        }
@@ -624,6 +625,7 @@ public class JsonFormUtils extends org.smartregister.util.JsonFormUtils {
                 }
 
             } catch (JSONException e) {
+                Utils.appendLog(JsonFormUtils.class.getName(), e);
                 e.printStackTrace();
             }
 
@@ -637,13 +639,14 @@ public class JsonFormUtils extends org.smartregister.util.JsonFormUtils {
             String lmp_date = (String) client.getAttribute("LMP");
             String delivery_date = (String) client.getAttribute("delivery_date");
             if (lmp_date != null) {
-                client.setAttributes((Map<String, Object>) client.getAttributes().put("LMP", (Object) timezonedateformat(lmp_date)));
+                client.setAttributes((Map<String, Object>) client.getAttributes().put("LMP", timezonedateformat(lmp_date)));
             }
             if (delivery_date != null) {
-                client.setAttributes((Map<String, Object>) client.getAttributes().put("delivery_date", (Object) timezonedateformat(delivery_date)));
+                client.setAttributes((Map<String, Object>) client.getAttributes().put("delivery_date", timezonedateformat(delivery_date)));
             }
 
         } catch (Exception e) {
+            Utils.appendLog(JsonFormUtils.class.getName(), e);
             e.printStackTrace();
         }
 
@@ -665,6 +668,7 @@ public class JsonFormUtils extends org.smartregister.util.JsonFormUtils {
             sdf.applyPattern(NEW_FORMAT);
             newDateString = sdf.format(d);
         } catch (ParseException e) {
+            Utils.appendLog(JsonFormUtils.class.getName(), e);
             e.printStackTrace();
         }
 
@@ -686,6 +690,7 @@ public class JsonFormUtils extends org.smartregister.util.JsonFormUtils {
             sdf.applyPattern(NEW_FORMAT);
             newDateString = sdf.format(d);
         } catch (ParseException e) {
+            Utils.appendLog(JsonFormUtils.class.getName(), e);
             e.printStackTrace();
         }
 
@@ -706,6 +711,7 @@ public class JsonFormUtils extends org.smartregister.util.JsonFormUtils {
 
 
         } catch (JSONException e) {
+            Utils.appendLog(JsonFormUtils.class.getName(), e);
             e.printStackTrace();
         }
     }
@@ -740,17 +746,12 @@ public class JsonFormUtils extends org.smartregister.util.JsonFormUtils {
                             value = value + selectedbox.get(j);
                         }
                     }
-                    if (keyname.equalsIgnoreCase("Disease_status") && !value.isEmpty()) {
-//                        if(!hasDisease(fields)){
-//                            value = "NULL";
-//                        }
-                        toReturn.put(keyname, value);
-//                        updatePregnantStatus(fields,value);
-                    } else if (!keyname.equalsIgnoreCase("Disease_status"))
-                        toReturn.put(keyname, value);
+
+                    toReturn.put(keyname, value);
                 }
             }
         } catch (Exception e) {
+            Utils.appendLog(JsonFormUtils.class.getName(), e);
 
         }
         return toReturn;
@@ -772,6 +773,7 @@ public class JsonFormUtils extends org.smartregister.util.JsonFormUtils {
 //                    }
 //                }
             } catch (JSONException e) {
+                Utils.appendLog(JsonFormUtils.class.getName(), e);
                 e.printStackTrace();
             }
         }
@@ -793,6 +795,7 @@ public class JsonFormUtils extends org.smartregister.util.JsonFormUtils {
 //                    }
 //                }
             } catch (JSONException e) {
+                Utils.appendLog(JsonFormUtils.class.getName(), e);
                 e.printStackTrace();
             }
         }
@@ -819,6 +822,7 @@ public class JsonFormUtils extends org.smartregister.util.JsonFormUtils {
                 addresses.add(address);
             }
         } catch (JSONException e) {
+            Utils.appendLog(JsonFormUtils.class.getName(), e);
             e.printStackTrace();
         }
         return addresses;
@@ -840,6 +844,7 @@ public class JsonFormUtils extends org.smartregister.util.JsonFormUtils {
                   } */
             }
         } catch (Exception e) {
+            Utils.appendLog(JsonFormUtils.class.getName(), e);
             Log.e(TAG, e.toString(), e);
         }
     }
@@ -904,12 +909,14 @@ public class JsonFormUtils extends org.smartregister.util.JsonFormUtils {
             }
 
         } catch (FileNotFoundException e) {
+            Utils.appendLog(JsonFormUtils.class.getName(), e);
             Log.e(TAG, "Failed to save static image to disk");
         } finally {
             if (os != null) {
                 try {
                     os.close();
                 } catch (IOException e) {
+                    Utils.appendLog(JsonFormUtils.class.getName(), e);
                     Log.e(TAG, "Failed to close static images output stream after attempting to write image");
                 }
             }
@@ -984,6 +991,7 @@ public class JsonFormUtils extends org.smartregister.util.JsonFormUtils {
                 return form.toString();
             }
         } catch (Exception e) {
+            Utils.appendLog(JsonFormUtils.class.getName(), e);
             Log.e(TAG, Log.getStackTraceString(e));
         }
 
@@ -1040,6 +1048,7 @@ public class JsonFormUtils extends org.smartregister.util.JsonFormUtils {
                 return form.toString();
             }
         } catch (Exception e) {
+            Utils.appendLog(JsonFormUtils.class.getName(), e);
             Log.e(TAG, Log.getStackTraceString(e));
         }
 
@@ -1079,6 +1088,7 @@ public class JsonFormUtils extends org.smartregister.util.JsonFormUtils {
                 return form.toString();
             }
         } catch (Exception e) {
+            Utils.appendLog(JsonFormUtils.class.getName(), e);
             Log.e(TAG, Log.getStackTraceString(e));
         }
 
@@ -1090,7 +1100,7 @@ public class JsonFormUtils extends org.smartregister.util.JsonFormUtils {
         if ((jsonObject.getString(JsonFormUtils.KEY).equalsIgnoreCase("member_unique_ID"))) {
             String idtype = womanClient.get("idtype");
             if (idtype != null) {
-                String tmp[] = idtype.split(",");
+                String[] tmp = idtype.split(",");
                 JSONArray idTypeArray = new JSONArray();
                 for (String t : tmp) {
                     idTypeArray.put(t);
@@ -1099,10 +1109,10 @@ public class JsonFormUtils extends org.smartregister.util.JsonFormUtils {
                 jsonObject.put(JsonFormUtils.VALUE, idTypeArray);
             }
 
-        } else if ((jsonObject.getString(JsonFormUtils.KEY).equalsIgnoreCase("Communicable Disease"))) {
+        } else if ((jsonObject.getString(JsonFormUtils.KEY).equalsIgnoreCase("Comm_Disease"))) {
             String Communicable_Disease = womanClient.get("Communicable Disease");
             if (Communicable_Disease != null) {
-                String tmp[] = Communicable_Disease.split(",");
+                String[] tmp = Communicable_Disease.split(",");
                 JSONArray Disease_TypeArray = new JSONArray();
                 for (String t : tmp) {
                     Disease_TypeArray.put(t);
@@ -1111,10 +1121,10 @@ public class JsonFormUtils extends org.smartregister.util.JsonFormUtils {
                 jsonObject.put(JsonFormUtils.VALUE, Disease_TypeArray);
             }
 
-        } else if ((jsonObject.getString(JsonFormUtils.KEY).equalsIgnoreCase("Non Communicable Disease"))) {
+        } else if ((jsonObject.getString(JsonFormUtils.KEY).equalsIgnoreCase("NonComnta_Disease"))) {
             String Non_Communicable_Disease = womanClient.get("Non Communicable Disease");
             if (Non_Communicable_Disease != null) {
-                String tmp[] = Non_Communicable_Disease.split(",");
+                String[] tmp = Non_Communicable_Disease.split(",");
                 JSONArray Disease_TypeArray = new JSONArray();
                 for (String t : tmp) {
                     Disease_TypeArray.put(t);
@@ -1126,7 +1136,7 @@ public class JsonFormUtils extends org.smartregister.util.JsonFormUtils {
         } else if ((jsonObject.getString(JsonFormUtils.KEY).equalsIgnoreCase("Disease_status_zero_to_two_month_by_age"))) {
             String Disease_status_zero_to_two_month_by_age = womanClient.get("Disease_Below_2Month_Age");
             if (Disease_status_zero_to_two_month_by_age != null) {
-                String tmp[] = Disease_status_zero_to_two_month_by_age.split(",");
+                String[] tmp = Disease_status_zero_to_two_month_by_age.split(",");
                 JSONArray Disease_TypeArray = new JSONArray();
                 for (String t : tmp) {
                     Disease_TypeArray.put(t);
@@ -1138,7 +1148,7 @@ public class JsonFormUtils extends org.smartregister.util.JsonFormUtils {
         } else if ((jsonObject.getString(JsonFormUtils.KEY).equalsIgnoreCase("Disease_status_two_month_to_five_year_by_age"))) {
             String Disease_2Month_5Years = womanClient.get("Disease_2Month_5Years");
             if (Disease_2Month_5Years != null) {
-                String tmp[] = Disease_2Month_5Years.split(",");
+                String[] tmp = Disease_2Month_5Years.split(",");
                 JSONArray Disease_TypeArray = new JSONArray();
                 for (String t : tmp) {
                     Disease_TypeArray.put(t);
@@ -1148,9 +1158,9 @@ public class JsonFormUtils extends org.smartregister.util.JsonFormUtils {
             }
 
         } else if ((jsonObject.getString(JsonFormUtils.KEY).equalsIgnoreCase("Disease_Type"))) {
-            String Disease_Type = womanClient.get("Disease Type");
+            String Disease_Type = womanClient.get("DiseaseType");
             if (Disease_Type != null) {
-                String tmp[] = Disease_Type.split(",");
+                String[] tmp = Disease_Type.split(",");
                 JSONArray Disease_TypeArray = new JSONArray();
                 for (String t : tmp) {
                     Disease_TypeArray.put(t);
@@ -1162,7 +1172,7 @@ public class JsonFormUtils extends org.smartregister.util.JsonFormUtils {
         } else if ((jsonObject.getString(JsonFormUtils.KEY).equalsIgnoreCase("illness_information"))) {
             String family_diseases_details = womanClient.get("family_diseases_details");
             if (family_diseases_details != null) {
-                String tmp[] = family_diseases_details.split(",");
+                String[] tmp = family_diseases_details.split(",");
                 JSONArray family_diseases_detailsArray = new JSONArray();
                 for (String t : tmp) {
                     family_diseases_detailsArray.put(t);
@@ -1174,7 +1184,7 @@ public class JsonFormUtils extends org.smartregister.util.JsonFormUtils {
         } else if ((jsonObject.getString(JsonFormUtils.KEY).equalsIgnoreCase("risky_habits"))) {
             String RiskyHabit = womanClient.get("RiskyHabit");
             if (RiskyHabit != null) {
-                String tmp[] = RiskyHabit.split(",");
+                String[] tmp = RiskyHabit.split(",");
                 JSONArray RiskyHabitArray = new JSONArray();
                 for (String t : tmp) {
                     RiskyHabitArray.put(t);
@@ -1309,6 +1319,7 @@ public class JsonFormUtils extends org.smartregister.util.JsonFormUtils {
             }
 
         } catch (Exception e) {
+            Utils.appendLog(JsonFormUtils.class.getName(), e);
             e.printStackTrace();
         }
         return value;
@@ -1330,6 +1341,7 @@ public class JsonFormUtils extends org.smartregister.util.JsonFormUtils {
                     keyname = attributename;
                 }
             } catch (JSONException e) {
+                Utils.appendLog(JsonFormUtils.class.getName(), e);
                 e.printStackTrace();
             }
 
@@ -1481,6 +1493,7 @@ public class JsonFormUtils extends org.smartregister.util.JsonFormUtils {
             }
 
         } catch (JSONException e) {
+            Utils.appendLog(JsonFormUtils.class.getName(), e);
             Log.e(TAG, e.getMessage());
         }
     }
@@ -1546,6 +1559,7 @@ public class JsonFormUtils extends org.smartregister.util.JsonFormUtils {
             try {
                 encounterLocation = metadata.getString(Constants.JSON_FORM_KEY.ENCOUNTER_LOCATION);
             } catch (JSONException e) {
+                Utils.appendLog(JsonFormUtils.class.getName(), e);
                 Log.e(TAG, e.getMessage());
             }
 
@@ -1618,6 +1632,7 @@ public class JsonFormUtils extends org.smartregister.util.JsonFormUtils {
             return Triple.of(isDeath, event, updateChildDetailsEvent);
 
         } catch (Exception e) {
+            Utils.appendLog(JsonFormUtils.class.getName(), e);
             Log.e(TAG, "", e);
         }
         return null;
@@ -1673,6 +1688,7 @@ public class JsonFormUtils extends org.smartregister.util.JsonFormUtils {
 
         } catch (
                 Exception e) {
+            Utils.appendLog(JsonFormUtils.class.getName(), e);
             Log.e(TAG, Log.getStackTraceString(e));
             return null;
         }
@@ -1715,6 +1731,7 @@ public class JsonFormUtils extends org.smartregister.util.JsonFormUtils {
                 activity.startActivityForResult(intent, JsonFormUtils.REQUEST_CODE_GET_JSON);
             }
         } catch (Exception e) {
+            Utils.appendLog(JsonFormUtils.class.getName(), e);
             Log.e(TAG, e.getMessage());
         }
     }
@@ -1730,6 +1747,7 @@ public class JsonFormUtils extends org.smartregister.util.JsonFormUtils {
                 activity.startActivityForResult(intent, JsonFormUtils.REQUEST_CODE_GET_JSON);
             }
         } catch (Exception e) {
+            Utils.appendLog(JsonFormUtils.class.getName(), e);
             Log.e(TAG, e.getMessage());
         }
     }
@@ -1746,6 +1764,7 @@ public class JsonFormUtils extends org.smartregister.util.JsonFormUtils {
                 activity.startActivityForResult(intent, JsonFormUtils.REQUEST_CODE_GET_JSON);
             }
         } catch (Exception e) {
+            Utils.appendLog(JsonFormUtils.class.getName(), e);
             Log.e(TAG, e.getMessage());
         }
     }
@@ -1759,6 +1778,7 @@ public class JsonFormUtils extends org.smartregister.util.JsonFormUtils {
             try {
                 followup_date.put(JsonFormUtils.VALUE, Utils.getDateByFormat(new Date()));
             } catch (JSONException e) {
+                Utils.appendLog(JsonFormUtils.class.getName(), e);
                 e.printStackTrace();
             }
         }
@@ -1775,7 +1795,7 @@ public class JsonFormUtils extends org.smartregister.util.JsonFormUtils {
                     if ((type.equalsIgnoreCase("check_box"))) {
                         String idtype = column_maps.get(object.getString(openmrs_entity_id));
                         if (idtype != null) {
-                            String tmp[] = idtype.split(",");
+                            String[] tmp = idtype.split(",");
                             JSONArray idTypeArray = new JSONArray();
                             for (String t : tmp) {
                                 idTypeArray.put(t);
@@ -1807,6 +1827,7 @@ public class JsonFormUtils extends org.smartregister.util.JsonFormUtils {
                 }
 
             } catch (JSONException e) {
+                Utils.appendLog(JsonFormUtils.class.getName(), e);
                 e.printStackTrace();
             }
 

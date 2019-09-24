@@ -205,6 +205,7 @@ public class MemberProfileActivity extends BaseProfileActivity implements Profil
                     durationString = duration;
                 }
             } catch (Exception e) {
+Utils.appendLog(getClass().getName(),e);
                 Log.e(getClass().getName(), e.toString(), e);
             }
         }
@@ -242,6 +243,7 @@ public class MemberProfileActivity extends BaseProfileActivity implements Profil
                             try {
                                 c.setTime(sdf.parse(lmp_date));
                             } catch (ParseException e) {
+Utils.appendLog(getClass().getName(),e);
                                 e.printStackTrace();
                             }
                             c.add(Calendar.DATE, 280);  // number of days to add
@@ -251,6 +253,7 @@ public class MemberProfileActivity extends BaseProfileActivity implements Profil
                         }
                     }
                 } catch (Exception e) {
+Utils.appendLog(getClass().getName(),e);
 
                 } finally {
                     cursor.close();
@@ -261,7 +264,8 @@ public class MemberProfileActivity extends BaseProfileActivity implements Profil
 //                    if (cursor.moveToNext()) {
 //                       Patient_identifier = cursor.getString(0);
 //                    }
-//                }catch(Exception e){
+//                }catch(Exception e) {
+Utils.appendLog(getClass().getName(),e);
 //
 //                }
 
@@ -324,6 +328,7 @@ public class MemberProfileActivity extends BaseProfileActivity implements Profil
                             durationString = duration;
                         }
                     } catch (Exception e) {
+Utils.appendLog(getClass().getName(),e);
                         Log.e(getClass().getName(), e.toString(), e);
                     }
                 }
@@ -378,6 +383,7 @@ public class MemberProfileActivity extends BaseProfileActivity implements Profil
                 try {
                     JsonFormUtils.startFormForEdit(this, JsonFormUtils.REQUEST_CODE_GET_JSON, formMetadataformembers);
                 } catch (Exception e) {
+Utils.appendLog(getClass().getName(),e);
 
                 }
                 break;
@@ -387,6 +393,7 @@ public class MemberProfileActivity extends BaseProfileActivity implements Profil
 //                try {
 //                    JsonFormUtils.startFormForEdit(this, JsonFormUtils.REQUEST_CODE_GET_JSON, formMetadataformembers);
 //                } catch (Exception e) {
+Utils.appendLog(getClass().getName(),e);
 //
 //                }
                 break;
@@ -654,6 +661,7 @@ public class MemberProfileActivity extends BaseProfileActivity implements Profil
             intent.putExtra("json", form.toString());
             startActivityForResult(intent, JsonFormUtils.REQUEST_CODE_GET_JSON);
         } catch (Exception e) {
+Utils.appendLog(getClass().getName(),e);
 
         }
 
@@ -683,6 +691,7 @@ public class MemberProfileActivity extends BaseProfileActivity implements Profil
                 Intent intent = new Intent(Intent.ACTION_DIAL, Uri.fromParts("tel", phoneNumber, null));
                 this.startActivity(intent);
             } catch (Exception e) {
+Utils.appendLog(getClass().getName(),e);
 
                 Log.i(TAG, "No dial application so we launch copy to clipboard...");
                 CopyToClipboardDialog copyToClipboardDialog = new CopyToClipboardDialog(this, R.style.copy_clipboard_dialog);
@@ -783,6 +792,7 @@ public class MemberProfileActivity extends BaseProfileActivity implements Profil
                 }
 
             } catch (Exception e) {
+Utils.appendLog(getClass().getName(),e);
 
             }
 
@@ -830,6 +840,7 @@ public class MemberProfileActivity extends BaseProfileActivity implements Profil
 
                                         mProfilePresenter.startMemberRegistrationForm(Constants.JSON_FORM.MEMBER_REGISTER, null, null, null, householdDetails.entityId());
                                     } catch (Exception e) {
+Utils.appendLog(getClass().getName(),e);
                                         e.printStackTrace();
                                     }
                                 }
@@ -854,6 +865,7 @@ public class MemberProfileActivity extends BaseProfileActivity implements Profil
 
 
                                     } catch (Exception e) {
+Utils.appendLog(getClass().getName(),e);
                                         e.printStackTrace();
                                     }
                                 }
@@ -866,6 +878,7 @@ public class MemberProfileActivity extends BaseProfileActivity implements Profil
                 }
 
             } catch (Exception e) {
+Utils.appendLog(getClass().getName(),e);
                 Log.e(TAG, Log.getStackTraceString(e));
             }
         }
@@ -898,6 +911,7 @@ public class MemberProfileActivity extends BaseProfileActivity implements Profil
                     db.execSQL(sql);
 
                 } catch (Exception e) {
+Utils.appendLog(getClass().getName(),e);
                     e.printStackTrace();
                 }
                 return null;
@@ -936,6 +950,7 @@ public class MemberProfileActivity extends BaseProfileActivity implements Profil
                     }
 
                 } catch (Exception e) {
+Utils.appendLog(getClass().getName(),e);
 
                 }
 

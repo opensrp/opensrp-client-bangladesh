@@ -8,7 +8,6 @@ import android.os.AsyncTask;
 import android.util.Log;
 import android.util.Pair;
 
-import net.sqlcipher.Cursor;
 import net.sqlcipher.database.SQLiteDatabase;
 
 import org.apache.commons.lang3.ArrayUtils;
@@ -40,12 +39,10 @@ public class DeleteIntentService extends IntentService {
 
 
     public static final String SYNC_URL = "/rest/event/client-list-to-delete";
-
-    private Context context;
-    private HTTPAgent httpAgent;
-
     public static final int EVENT_PULL_LIMIT = 250;
     private static final int EVENT_PUSH_LIMIT = 50;
+    private Context context;
+    private HTTPAgent httpAgent;
 
     public DeleteIntentService() {
         super("DeleteIntentService");
@@ -79,6 +76,7 @@ public class DeleteIntentService extends IntentService {
             pullECFromServer();
 
         } catch (Exception e) {
+            org.smartregister.cbhc.util.Utils.appendLog(getClass().getName(), e);
             Log.e(getClass().getName(), e.getMessage(), e);
             complete(FetchStatus.fetchedFailed);
         }
@@ -128,9 +126,9 @@ public class DeleteIntentService extends IntentService {
             }
 
             JSONArray entity_ids = new JSONArray((String) resp.payload());
-            String ids[] = new String[entity_ids.length()];
-            if(entity_ids!=null){
-                for(int i=0;i<entity_ids.length();i++){
+            String[] ids = new String[entity_ids.length()];
+            if (entity_ids != null) {
+                for (int i = 0; i < entity_ids.length(); i++) {
                     String id = entity_ids.getString(i);
                     ids[i] = id;
 //                    System.out.println(id);
@@ -161,12 +159,14 @@ public class DeleteIntentService extends IntentService {
 //                fetchRetry(0);
 //            }
         } catch (Exception e) {
+            org.smartregister.cbhc.util.Utils.appendLog(getClass().getName(), e);
             Log.e(getClass().getName(), "Fetch Retry Exception: " + e.getMessage(), e.getCause());
             fetchFailed(count);
         }
     }
+
     @SuppressLint("StaticFieldLeak")
-    public void delete_from_table(final String[]ids){
+    public void delete_from_table(final String[] ids) {
         Utils.startAsyncTask(new AsyncTask() {
 
             @Override
@@ -178,22 +178,22 @@ public class DeleteIntentService extends IntentService {
             @Override
             protected Object doInBackground(Object[] objects) {
 
-                String tablename[] = {"ec_details","ec_household","ec_woman","ec_child","ec_member"};
+                String[] tablename = {"ec_details", "ec_household", "ec_household_search", "ec_woman", "ec_woman_search", "ec_child", "ec_child_search", "ec_member", "ec_member_search"};
                 AncRepository repo = (AncRepository) AncApplication.getInstance().getRepository();
                 SQLiteDatabase db = repo.getReadableDatabase();
-                if(!ArrayUtils.isEmpty(ids)) {
-                    for(int i=0;i<tablename.length;i++) {
+                if (!ArrayUtils.isEmpty(ids)) {
+                    for (int i = 0; i < tablename.length; i++) {
 
                         String sql = "DELETE FROM " + tablename[i] + " WHERE ";
                         String condition = "";
-                        for(int k = 0;k<ids.length;k++) {
-                            condition = condition + " " + tablename[i]+".base_entity_id='"+ ids[k]+"' OR ";
+                        for (int k = 0; k < ids.length; k++) {
+                            condition = condition + " " + tablename[i] + ".base_entity_id='" + ids[k] + "' OR ";
                         }
-                        if(condition.length()>4)
-                            condition = condition.substring(0,condition.length()-4);
+                        if (condition.length() > 4)
+                            condition = condition.substring(0, condition.length() - 4);
                         sql = sql + condition + ";";
 
-                        if(db!=null)
+                        if (db != null)
                             db.execSQL(sql);
                     }
 
@@ -201,18 +201,18 @@ public class DeleteIntentService extends IntentService {
                     tablename[0] = "event";
                     tablename[1] = "client";
 
-                    for(int i=0;i<tablename.length;i++) {
+                    for (int i = 0; i < tablename.length; i++) {
 
                         String sql = "DELETE FROM " + tablename[i] + " WHERE ";
                         String condition = "";
-                        for(int k = 0;k<ids.length;k++) {
-                            condition = condition + " " + tablename[i]+".baseEntityId='"+ ids[k]+"' OR ";
+                        for (int k = 0; k < ids.length; k++) {
+                            condition = condition + " " + tablename[i] + ".baseEntityId='" + ids[k] + "' OR ";
                         }
-                        if(condition.length()>4)
-                            condition = condition.substring(0,condition.length()-4);
+                        if (condition.length() > 4)
+                            condition = condition.substring(0, condition.length() - 4);
                         sql = sql + condition + ";";
 
-                        if(db!=null)
+                        if (db != null)
                             db.execSQL(sql);
                     }
 
@@ -220,9 +220,10 @@ public class DeleteIntentService extends IntentService {
 
                 return null;
             }
-        },null);
+        }, null);
 
     }
+
     public void fetchFailed(int count) {
         if (count < BuildConfig.MAX_SYNC_RETRIES) {
             int newCount = count + 1;
@@ -239,11 +240,12 @@ public class DeleteIntentService extends IntentService {
             AncClientProcessorForJava.getInstance(context).processClient(events);
             //sendSyncStatusBroadcastMessage(FetchStatus.fetched);
         } catch (Exception e) {
+            org.smartregister.cbhc.util.Utils.appendLog(getClass().getName(), e);
             Log.e(getClass().getName(), "Process Client Exception: " + e.getMessage(), e.getCause());
         }
     }
 
-    public void removeTransferedSync(){
+    public void removeTransferedSync() {
         org.smartregister.util.Utils.startAsyncTask((new AsyncTask() {
             @Override
             protected Object doInBackground(Object[] objects) {
@@ -268,14 +270,14 @@ public class DeleteIntentService extends IntentService {
                     db.execSQL(sql);
                     sql = "UPDATE ec_household_search SET date_removed = '01-01-1000' WHERE date_removed IS NULL AND base_entity_id IN (SELECT baseEntityId FROM event WHERE json LIKE '%Followup HH Transfer%' group by baseEntityId);";
                     db.execSQL(sql);
-                }catch(Exception e) {
+                } catch (Exception e) {
+                    org.smartregister.cbhc.util.Utils.appendLog(getClass().getName(), e);
 
                 }
-             return null;
+                return null;
             }
-        }),null);
+        }), null);
     }
-
 
 
     private void sendSyncStatusBroadcastMessage(FetchStatus fetchStatus) {
@@ -326,6 +328,7 @@ public class DeleteIntentService extends IntentService {
                 return Pair.create(minServerVersion, maxServerVersion);
             }
         } catch (Exception e) {
+            org.smartregister.cbhc.util.Utils.appendLog(getClass().getName(), e);
             Log.e(getClass().getName(), e.getMessage(), e);
         }
         return Pair.create(0L, 0L);
@@ -339,6 +342,7 @@ public class DeleteIntentService extends IntentService {
                 count = jsonObject.getInt(NO_OF_EVENTS);
             }
         } catch (JSONException e) {
+            org.smartregister.cbhc.util.Utils.appendLog(getClass().getName(), e);
             Log.e(getClass().getName(), e.getMessage(), e);
         }
         return count;

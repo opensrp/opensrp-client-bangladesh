@@ -127,6 +127,7 @@ public class AncRepository extends Repository {
             }
             return readableDatabase;
         } catch (Exception e) {
+Utils.appendLog(getClass().getName(),e);
             Log.e(TAG, "Database Error. " + e.getMessage());
             return null;
         }
@@ -145,6 +146,7 @@ public class AncRepository extends Repository {
             }
             return writableDatabase;
         } catch (Exception e) {
+Utils.appendLog(getClass().getName(),e);
             Log.e(TAG, "Database Error. " + e.getMessage());
             return null;
         }
@@ -177,12 +179,14 @@ public class AncRepository extends Repository {
             IMDatabaseUtils.accessAssetsAndFillDataBaseForVaccineTypes(context, db);
 
         } catch (Exception e) {
+Utils.appendLog(getClass().getName(),e);
             Log.e(TAG, "upgradeToVersion2 " + Log.getStackTraceString(e));
         }
         try {
             ZScoreRepository.createTable(db);
             db.execSQL(WeightRepository.ALTER_ADD_Z_SCORE_COLUMN);
         } catch (Exception e) {
+Utils.appendLog(getClass().getName(),e);
             Log.e(TAG, "upgradeToVersion2 " + e.getMessage());
         }
     }
@@ -198,6 +202,7 @@ public class AncRepository extends Repository {
             db.execSQL(RecurringServiceRecordRepository.ALTER_ADD_CREATED_AT_COLUMN);
             RecurringServiceRecordRepository.migrateCreatedAt(db);
         } catch (Exception e) {
+Utils.appendLog(getClass().getName(),e);
             Log.e(TAG, "upgradeToVersion3 " + Log.getStackTraceString(e));
         }
         try {
@@ -207,6 +212,7 @@ public class AncRepository extends Repository {
             db.execSQL(WeightRepository.ALTER_ADD_CREATED_AT_COLUMN);
             WeightRepository.migrateCreatedAt(db);
         } catch (Exception e) {
+Utils.appendLog(getClass().getName(),e);
             Log.e(TAG, "upgradeToVersion3 " + e.getMessage());
         }
     }
@@ -218,6 +224,7 @@ public class AncRepository extends Repository {
             db.execSQL(RecurringServiceRecordRepository.UPDATE_TABLE_ADD_TEAM_COL);
             db.execSQL(RecurringServiceRecordRepository.UPDATE_TABLE_ADD_TEAM_ID_COL);
         } catch (Exception e) {
+Utils.appendLog(getClass().getName(),e);
             Log.e(TAG, "upgradeToVersion4 " + Log.getStackTraceString(e));
         }
         try {
@@ -225,6 +232,7 @@ public class AncRepository extends Repository {
             db.execSQL(WeightRepository.UPDATE_TABLE_ADD_TEAM_ID_COL);
             db.execSQL(WeightRepository.UPDATE_TABLE_ADD_CHILD_LOCATION_ID_COL);
         } catch (Exception e) {
+Utils.appendLog(getClass().getName(),e);
             Log.e(TAG, "upgradeToVersion4 " + Log.getStackTraceString(e));
         }
     }
@@ -234,6 +242,7 @@ public class AncRepository extends Repository {
             db.execSQL(VaccineRepository.UPDATE_TABLE_ADD_CHILD_LOCATION_ID_COL);
             db.execSQL(RecurringServiceRecordRepository.UPDATE_TABLE_ADD_CHILD_LOCATION_ID_COL);
         } catch (Exception e) {
+Utils.appendLog(getClass().getName(),e);
             Log.e(TAG, "upgradeToVersion5 " + Log.getStackTraceString(e));
         }
     }

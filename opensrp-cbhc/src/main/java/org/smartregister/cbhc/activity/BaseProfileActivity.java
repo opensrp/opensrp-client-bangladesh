@@ -29,15 +29,15 @@ import org.smartregister.view.activity.SecuredActivity;
  * Created by ndegwamartin on 16/07/2018.
  */
 public abstract class BaseProfileActivity extends SecuredActivity implements AppBarLayout.OnOffsetChangedListener, View.OnClickListener {
-    private CollapsingToolbarLayout collapsingToolbarLayout;
-    private boolean appBarTitleIsShown = true;
-    private int appBarLayoutScrollRange = -1;
-
     protected String womanName;
     protected AppBarLayout appBarLayout;
     protected ProgressDialog progressDialog;
     protected ProfileContract.Presenter mProfilePresenter;
     protected BaseProfileActivity mActivity;
+    private CollapsingToolbarLayout collapsingToolbarLayout;
+    private boolean appBarTitleIsShown = true;
+    private int appBarLayoutScrollRange = -1;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -79,6 +79,7 @@ public abstract class BaseProfileActivity extends SecuredActivity implements App
                 JsonFormUtils.startFormForEdit(this, JsonFormUtils.REQUEST_CODE_GET_JSON, formMetadata);
 
             } catch (Exception e) {
+                Utils.appendLog(getClass().getName(), e);
                 Log.e("TAG", e.getMessage());
             }
         }
@@ -157,7 +158,7 @@ public abstract class BaseProfileActivity extends SecuredActivity implements App
     }
 
     public void hideProgressDialog() {
-        if (mActivity!=null&&progressDialog != null) {
+        if (mActivity != null && progressDialog != null) {
             progressDialog.dismiss();
         }
     }
