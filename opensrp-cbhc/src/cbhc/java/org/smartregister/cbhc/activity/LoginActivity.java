@@ -32,6 +32,7 @@ import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import org.apache.commons.lang3.StringUtils;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 import org.joda.time.DateTime;
@@ -354,8 +355,14 @@ public class LoginActivity extends AppCompatActivity implements LoginContract.Vi
             @Override
             protected Object doInBackground(Object[] objects) {
                 try {
+                    SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(LoginActivity.this);
+                    AllSharedPreferences allSharedPreferences = new AllSharedPreferences(preferences);
+                    String baseurl = allSharedPreferences.fetchBaseURL("");
                     // Create a URL for the desired page
                     String base_url = getString(R.string.opensrp_url).replace("opensrp/", "");
+                    if (!StringUtils.isEmpty(baseurl) && baseurl.contains("opensrp")) {
+                        base_url = baseurl.replace("opensrp/", "");
+                    }
                     URL url = new URL(base_url + "opt/multimedia/app-version.txt");
 
                     // Read all the text returned by the server

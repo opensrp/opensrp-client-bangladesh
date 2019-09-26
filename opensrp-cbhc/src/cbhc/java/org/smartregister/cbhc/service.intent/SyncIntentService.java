@@ -116,20 +116,20 @@ public class SyncIntentService extends IntentService {
 
             Long lastSyncDatetime = ecSyncUpdater.getLastSyncTimeStamp();
             Log.v("REQUEST_URL", "LAST SYNC DT :" + lastSyncDatetime);
-            if (BuildConfig.DEBUG) {
-                try {
-                    File f = new File(Environment.getExternalStorageDirectory() + "/cbhc_log/request/");
-                    if (!f.exists()) {
-                        f.mkdirs();
-                    }
-                    BufferedWriter writer = new BufferedWriter(new FileWriter(Environment.getExternalStorageDirectory() + "/cbhc_log/request/" + lastSyncDatetime + ".json"));
-                    writer.write("REQUEST_URL :" + lastSyncDatetime);
-                    writer.close();
-                } catch (Exception e) {
-                    Utils.appendLog(getClass().getName(), e);
-                    e.printStackTrace();
-                }
-            }
+//            if (BuildConfig.DEBUG) {
+//                try {
+//                    File f = new File(Environment.getExternalStorageDirectory() + "/cbhc_log/request/");
+//                    if (!f.exists()) {
+//                        f.mkdirs();
+//                    }
+//                    BufferedWriter writer = new BufferedWriter(new FileWriter(Environment.getExternalStorageDirectory() + "/cbhc_log/request/" + lastSyncDatetime + ".json"));
+//                    writer.write("REQUEST_URL :" + lastSyncDatetime);
+//                    writer.close();
+//                } catch (Exception e) {
+//                    Utils.appendLog(getClass().getName(), e);
+//                    e.printStackTrace();
+//                }
+//            }
             lastSyncDatetime = lastSyncDatetime;
 //            String url = baseUrl + SYNC_URL + "?" + Constants.SyncFilters.FILTER_TEAM_ID + "=" + teamId + "&serverVersion=" + lastSyncDatetime + "&limit=" + SyncIntentService.EVENT_PULL_LIMIT;
 //            String url = baseUrl + SYNC_URL + "?" + Constants.SyncFilters.PROVIDER_ID + "=" + providerID + "&serverVersion=" + lastSyncDatetime + "&limit=" + SyncIntentService.EVENT_PULL_LIMIT;
@@ -147,21 +147,21 @@ public class SyncIntentService extends IntentService {
             }
 
             JSONObject jsonObject = new JSONObject((String) resp.payload());
-            if (BuildConfig.DEBUG) {
-                try {
-                    File f = new File(Environment.getExternalStorageDirectory() + "/cbhc_log/response/");
-                    if (!f.exists()) {
-                        f.mkdirs();
-                    }
-                    BufferedWriter writer = new BufferedWriter(new FileWriter(Environment.getExternalStorageDirectory() + "/cbhc_log/response/" + lastSyncDatetime + ".json"));
-                    writer.write(jsonObject.toString());
-                    writer.close();
-                } catch (Exception e) {
-                    Utils.appendLog(getClass().getName(), e);
-
-                    e.printStackTrace();
-                }
-            }
+//            if (BuildConfig.DEBUG) {
+//                try {
+//                    File f = new File(Environment.getExternalStorageDirectory() + "/cbhc_log/response/");
+//                    if (!f.exists()) {
+//                        f.mkdirs();
+//                    }
+//                    BufferedWriter writer = new BufferedWriter(new FileWriter(Environment.getExternalStorageDirectory() + "/cbhc_log/response/" + lastSyncDatetime + ".json"));
+//                    writer.write(jsonObject.toString());
+//                    writer.close();
+//                } catch (Exception e) {
+//                    Utils.appendLog(getClass().getName(), e);
+//
+//                    e.printStackTrace();
+//                }
+//            }
 
             int eCount = fetchNumberOfEvents(jsonObject);
             Log.v(getClass().getName(), "Parse Network Event Count: " + eCount);
@@ -180,9 +180,10 @@ public class SyncIntentService extends IntentService {
 
 //                new ClientInsertThread(ecSyncUpdater,jsonObject,lastServerVersion).start();
                 // long start  = System.currentTimeMillis();
-                ecSyncUpdater.saveAllClientsAndEvents(jsonObject);
-                ecSyncUpdater.updateLastSyncTimeStamp(lastServerVersion);
-                processClient(serverVersionPair);
+                if (ecSyncUpdater.saveAllClientsAndEvents(jsonObject)) {
+                    ecSyncUpdater.updateLastSyncTimeStamp(lastServerVersion);
+                    processClient(serverVersionPair);
+                }
                 // long end = System.currentTimeMillis();
                 //  long diff = end - start;
                 //System.out.println(diff);

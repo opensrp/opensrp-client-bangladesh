@@ -265,7 +265,7 @@ public class RegisterInteractor implements RegisterContract.Interactor {
             Date lastSyncDate = new Date(lastSyncTimeStamp);
 
 
-            getClientProcessorForJava().processClient(getSyncHelper().getEvents(lastSyncDate, BaseRepository.TYPE_Task_Unprocessed));
+            getClientProcessorForJava().processClient(getSyncHelper().getEvents(lastSyncDate, BaseRepository.TYPE_Unprocessed));
             getAllSharedPreferences().saveLastUpdatedAtDate(lastSyncDate.getTime());
 
             /////////////////////////try this out////////////////
