@@ -265,7 +265,7 @@ Utils.appendLog(getClass().getName(),e);
 //                       Patient_identifier = cursor.getString(0);
 //                    }
 //                }catch(Exception e) {
-Utils.appendLog(getClass().getName(),e);
+//Utils.appendLog(getClass().getName(),e);
 //
 //                }
 
@@ -393,7 +393,7 @@ Utils.appendLog(getClass().getName(),e);
 //                try {
 //                    JsonFormUtils.startFormForEdit(this, JsonFormUtils.REQUEST_CODE_GET_JSON, formMetadataformembers);
 //                } catch (Exception e) {
-Utils.appendLog(getClass().getName(),e);
+//Utils.appendLog(getClass().getName(),e);
 //
 //                }
                 break;

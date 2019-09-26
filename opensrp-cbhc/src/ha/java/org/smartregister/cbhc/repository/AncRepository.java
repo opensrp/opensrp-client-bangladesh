@@ -7,6 +7,7 @@ import net.sqlcipher.database.SQLiteDatabase;
 
 import org.smartregister.AllConstants;
 import org.smartregister.cbhc.application.AncApplication;
+import org.smartregister.cbhc.util.Utils;
 import org.smartregister.configurableviews.repository.ConfigurableViewsRepository;
 import org.smartregister.domain.db.Column;
 import org.smartregister.growthmonitoring.repository.HeightRepository;
@@ -135,7 +136,7 @@ public class AncRepository extends Repository {
             }
             return readableDatabase;
         } catch (Exception e) {
-Utils.appendLog(getClass().getName(),e);
+            Utils.appendLog(getClass().getName(), e);
             Log.e(TAG, "Database Error. " + e.getMessage());
             return null;
         }
@@ -154,7 +155,7 @@ Utils.appendLog(getClass().getName(),e);
             }
             return writableDatabase;
         } catch (Exception e) {
-Utils.appendLog(getClass().getName(),e);
+            Utils.appendLog(getClass().getName(), e);
             Log.e(TAG, "Database Error. " + e.getMessage());
             return null;
         }
@@ -188,7 +189,7 @@ Utils.appendLog(getClass().getName(),e);
             IMDatabaseUtils.accessAssetsAndFillDataBaseForVaccineTypes(context, db);
 
         } catch (Exception e) {
-Utils.appendLog(getClass().getName(),e);
+            Utils.appendLog(getClass().getName(), e);
             Log.e(TAG, "upgradeToVersion2 " + Log.getStackTraceString(e));
         }
         try {
@@ -199,7 +200,7 @@ Utils.appendLog(getClass().getName(),e);
             db.execSQL(WeightRepository.ALTER_ADD_Z_SCORE_COLUMN);
             db.execSQL(HeightRepository.ALTER_ADD_Z_SCORE_COLUMN);
         } catch (Exception e) {
-Utils.appendLog(getClass().getName(),e);
+            Utils.appendLog(getClass().getName(), e);
             Log.e(TAG, "upgradeToVersion2 " + e.getMessage());
         }
     }
@@ -215,7 +216,7 @@ Utils.appendLog(getClass().getName(),e);
             db.execSQL(RecurringServiceRecordRepository.ALTER_ADD_CREATED_AT_COLUMN);
             RecurringServiceRecordRepository.migrateCreatedAt(db);
         } catch (Exception e) {
-Utils.appendLog(getClass().getName(),e);
+            Utils.appendLog(getClass().getName(), e);
             Log.e(TAG, "upgradeToVersion3 " + Log.getStackTraceString(e));
         }
         try {
@@ -227,7 +228,7 @@ Utils.appendLog(getClass().getName(),e);
             WeightRepository.migrateCreatedAt(db);
             HeightRepository.migrateCreatedAt(db);
         } catch (Exception e) {
-Utils.appendLog(getClass().getName(),e);
+            Utils.appendLog(getClass().getName(), e);
             Log.e(TAG, "upgradeToVersion3 " + e.getMessage());
         }
     }
@@ -239,7 +240,7 @@ Utils.appendLog(getClass().getName(),e);
             db.execSQL(RecurringServiceRecordRepository.UPDATE_TABLE_ADD_TEAM_COL);
             db.execSQL(RecurringServiceRecordRepository.UPDATE_TABLE_ADD_TEAM_ID_COL);
         } catch (Exception e) {
-Utils.appendLog(getClass().getName(),e);
+            Utils.appendLog(getClass().getName(), e);
             Log.e(TAG, "upgradeToVersion4 " + Log.getStackTraceString(e));
         }
         try {
@@ -251,7 +252,7 @@ Utils.appendLog(getClass().getName(),e);
             db.execSQL(HeightRepository.UPDATE_TABLE_ADD_TEAM_ID_COL);
             db.execSQL(HeightRepository.UPDATE_TABLE_ADD_CHILD_LOCATION_ID_COL);
         } catch (Exception e) {
-Utils.appendLog(getClass().getName(),e);
+            Utils.appendLog(getClass().getName(), e);
             Log.e(TAG, "upgradeToVersion4 " + Log.getStackTraceString(e));
         }
     }
@@ -261,7 +262,7 @@ Utils.appendLog(getClass().getName(),e);
             db.execSQL(VaccineRepository.UPDATE_TABLE_ADD_CHILD_LOCATION_ID_COL);
             db.execSQL(RecurringServiceRecordRepository.UPDATE_TABLE_ADD_CHILD_LOCATION_ID_COL);
         } catch (Exception e) {
-Utils.appendLog(getClass().getName(),e);
+            Utils.appendLog(getClass().getName(), e);
             Log.e(TAG, "upgradeToVersion5 " + Log.getStackTraceString(e));
         }
     }

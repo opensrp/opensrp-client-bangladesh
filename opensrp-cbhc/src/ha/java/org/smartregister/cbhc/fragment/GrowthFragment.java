@@ -149,7 +149,7 @@ public class GrowthFragment extends BaseProfileFragment {
 //                        Calendar.getInstance().getTimeInMillis(), null, null, 0);
 //                allWeights.add(weight);
             } catch (Exception e) {
-Utils.appendLog(getClass().getName(),e);
+org.smartregister.cbhc.util.Utils.appendLog(getClass().getName(),e);
                 Log.e(TAG, Log.getStackTraceString(e));
             }
 
@@ -165,7 +165,7 @@ Utils.appendLog(getClass().getName(),e);
 //                        Calendar.getInstance().getTimeInMillis(), null, null, 0);
 //                allHeights.add(height);
             } catch (Exception e) {
-Utils.appendLog(getClass().getName(),e);
+org.smartregister.cbhc.util.Utils.appendLog(getClass().getName(),e);
                 Log.e(TAG, Log.getStackTraceString(e));
             }
             growthMonitoring.put(HEIGHT, allHeights);

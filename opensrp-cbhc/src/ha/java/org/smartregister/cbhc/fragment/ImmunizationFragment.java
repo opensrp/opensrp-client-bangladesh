@@ -2,7 +2,6 @@ package org.smartregister.cbhc.fragment;
 
 import android.app.Fragment;
 import android.app.FragmentTransaction;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
@@ -49,12 +48,12 @@ import java.util.Map;
 
 public class ImmunizationFragment extends Fragment {
 
+    private static final String DIALOG_TAG = "ChildImmunoActivity_DIALOG_TAG";
     private LayoutInflater inflater;
     private ViewGroup container;
     private CommonPersonObjectClient childDetails;
     private ArrayList<ImmunizationRowGroup> vaccineGroups;
     private ArrayList<ServiceRowGroup> serviceRowGroups;
-    private static final String DIALOG_TAG = "ChildImmunoActivity_DIALOG_TAG";
     private AlertService alertService;
     private LinearLayout fragmentContainer;
 
@@ -79,7 +78,7 @@ public class ImmunizationFragment extends Fragment {
             }
         }
         View underFiveFragment = inflater.inflate(R.layout.child_under_five_fragment, container, false);
-        fragmentContainer = (LinearLayout) underFiveFragment.findViewById(R.id.container);
+        fragmentContainer = underFiveFragment.findViewById(R.id.container);
 
         alertService = ImmunizationLibrary.getInstance().context().alertService();
 
@@ -102,7 +101,7 @@ public class ImmunizationFragment extends Fragment {
         vaccineGroups = new ArrayList<>();
         VaccineRepository vaccineRepository = ImmunizationLibrary.getInstance().vaccineRepository();
         List<Vaccine> vaccineList = vaccineRepository.findByEntityId(childDetails.entityId());
-        LinearLayout vaccineGroupCanvasLL = (LinearLayout) fragmentContainer.findViewById(R.id.immunizations);
+        LinearLayout vaccineGroupCanvasLL = fragmentContainer.findViewById(R.id.immunizations);
         vaccineGroupCanvasLL.removeAllViews();
 
         CustomFontTextView title = new CustomFontTextView(getActivity());
@@ -116,10 +115,10 @@ public class ImmunizationFragment extends Fragment {
         if (alertService != null) {
             alertList = alertService.findByEntityIdAndAlertNames(childDetails.entityId(),
                     VaccinateActionUtils.allAlertNames("child"));
-            for(Alert alert : alertList){
-                if(alert.status().value().equalsIgnoreCase(AlertStatus.expired.value())){
-                    Alert o = new Alert(alert.caseId(),alert.scheduleName(),alert.visitCode(),AlertStatus.upcoming,alert.startDate(),alert.expiryDate());
-                   alertList.set(alertList.indexOf(alert),o);
+            for (Alert alert : alertList) {
+                if (alert.status().value().equalsIgnoreCase(AlertStatus.expired.value())) {
+                    Alert o = new Alert(alert.caseId(), alert.scheduleName(), alert.visitCode(), AlertStatus.upcoming, alert.startDate(), alert.expiryDate());
+                    alertList.set(alertList.indexOf(alert), o);
                 }
             }
         }
@@ -170,7 +169,7 @@ public class ImmunizationFragment extends Fragment {
             }
         }
 
-        LinearLayout serviceGroupCanvasLL = (LinearLayout) fragmentContainer.findViewById(R.id.services);
+        LinearLayout serviceGroupCanvasLL = fragmentContainer.findViewById(R.id.services);
         serviceGroupCanvasLL.removeAllViews();
 
         CustomFontTextView title = new CustomFontTextView(getActivity());
@@ -201,7 +200,7 @@ public class ImmunizationFragment extends Fragment {
                 serviceRowGroups.add(curGroup);
             }
         } catch (Exception e) {
-Utils.appendLog(getClass().getName(),e);
+            org.smartregister.cbhc.util.Utils.appendLog(getClass().getName(), e);
             Log.e(getClass().getName(), Log.getStackTraceString(e));
         }
 

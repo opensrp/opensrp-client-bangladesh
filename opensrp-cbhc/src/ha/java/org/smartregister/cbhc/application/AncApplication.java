@@ -14,11 +14,10 @@ import com.evernote.android.job.JobManager;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
-import org.smartregister.cbhc.CBHCEventBusIndex;
-import org.smartregister.cbhc.R;
 import org.smartregister.Context;
 import org.smartregister.CoreLibrary;
 import org.smartregister.cbhc.BuildConfig;
+import org.smartregister.cbhc.CBHCEventBusIndex;
 import org.smartregister.cbhc.activity.LoginActivity;
 import org.smartregister.cbhc.event.TriggerSyncEvent;
 import org.smartregister.cbhc.event.ViewConfigurationSyncCompleteEvent;
@@ -57,8 +56,6 @@ import org.smartregister.sync.DrishtiSyncScheduler;
 import org.smartregister.view.activity.DrishtiApplication;
 import org.smartregister.view.receiver.TimeChangedBroadcastReceiver;
 
-import java.net.MalformedURLException;
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -73,24 +70,12 @@ import static org.smartregister.util.Log.logInfo;
 public class AncApplication extends DrishtiApplication implements TimeChangedBroadcastReceiver.OnTimeChangedListener {
 
 
-    private static JsonSpecHelper jsonSpecHelper;
-
-    private ConfigurableViewsRepository configurableViewsRepository;
-    private EventClientRepository eventClientRepository;
-    private static CommonFtsObject commonFtsObject;
-    private ConfigurableViewsHelper configurableViewsHelper;
-    private UniqueIdRepository uniqueIdRepository;
-    private HealthIdRepository healthIdRepository;
-
-    private ECSyncHelper ecSyncHelper;
-    private Compressor compressor;
-    private ClientProcessorForJava clientProcessorForJava;
-
-    private static final String TAG = AncApplication.class.getCanonicalName();
-    private String password;
     public static final ArrayList<String> ALLOWED_LEVELS;
     public static final String DEFAULT_LOCATION_LEVEL = "Health Facility";
     public static final String FACILITY = "Dispensary";
+    private static final String TAG = AncApplication.class.getCanonicalName();
+    private static JsonSpecHelper jsonSpecHelper;
+    private static CommonFtsObject commonFtsObject;
 
     static {
         ALLOWED_LEVELS = new ArrayList<>();
@@ -98,153 +83,42 @@ public class AncApplication extends DrishtiApplication implements TimeChangedBro
         ALLOWED_LEVELS.add(FACILITY);
     }
 
-    @Override
-    public void onCreate() {
+    private ConfigurableViewsRepository configurableViewsRepository;
+    private EventClientRepository eventClientRepository;
+    private ConfigurableViewsHelper configurableViewsHelper;
+    private UniqueIdRepository uniqueIdRepository;
+    private HealthIdRepository healthIdRepository;
+    private ECSyncHelper ecSyncHelper;
+    private Compressor compressor;
+    private ClientProcessorForJava clientProcessorForJava;
+    private String password;
+    private String DEFAULT_PASSWORD = "1e815e13-f6ca-42ef-97c8-83394c201a47";
+    // This Broadcast Receiver is the handler called whenever an Intent with an action named PullConfigurableViewsIntentService.EVENT_SYNC_COMPLETE is broadcast.
+    private BroadcastReceiver syncCompleteMessageReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(android.content.Context context, Intent intent) {
+            // Retrieve the extra data included in the Intent
 
-        super.onCreate();
+            int recordsRetrievedCount = intent.getIntExtra(org.smartregister.configurableviews.util.Constants.INTENT_KEY.SYNC_TOTAL_RECORDS, 0);
+            if (recordsRetrievedCount > 0) {
+                Log.d(TAG, "Total records retrieved " + recordsRetrievedCount);
+            }
 
-        mInstance = this;
-        context = Context.getInstance();
-        context.updateApplicationContext(getApplicationContext());
-        context.updateCommonFtsObject(createCommonFtsObject());
+            Utils.postEvent(new ViewConfigurationSyncCompleteEvent());
 
-        //Initialize Modules
-        CoreLibrary.init(context, new AncSyncConfiguration(), BuildConfig.BUILD_TIMESTAMP, null);
-        CoreLibrary.getInstance().setEcClientFieldsFile(Constants.EC_CLIENT_FIELDS);
+            String lastSyncTime = intent.getStringExtra(org.smartregister.configurableviews.util.Constants.INTENT_KEY.LAST_SYNC_TIME_STRING);
 
-        LocationHelper.init(ALLOWED_LEVELS, DEFAULT_LOCATION_LEVEL);
+            Utils.writePrefString(context, org.smartregister.configurableviews.util.Constants.INTENT_KEY.LAST_SYNC_TIME_STRING, lastSyncTime);
 
-        SyncStatusBroadcastReceiver.init(this);
-        TimeChangedBroadcastReceiver.init(this);
-        TimeChangedBroadcastReceiver.getInstance().addOnTimeChangedListener(this);
-
-        JobManager.create(this).addJobCreator(new AncJobCreator());
-        try {
-            Utils.saveLanguage("en");
-        } catch (Exception e) {
-Utils.appendLog(getClass().getName(),e);
-            Log.e(TAG, e.getMessage());
         }
-        initLibraries();
-        initOfflineSchedules();
-// Initialize JsonSpec Helper
-        this.jsonSpecHelper = new JsonSpecHelper(this);
-
-        setUpEventHandling();
-        String groupId = getPassword();
-//        if (groupId != null && !groupId.isEmpty()) {
-//            initLibraries();
-//            initOfflineSchedules();
-//        }
-
-
-    }
-
-    public void initLibraries() {
-        ConfigurableViewsLibrary.init(context, getRepository());
-        ImmunizationLibrary.init(context, getRepository(), null, BuildConfig.VERSION_CODE, BuildConfig.DATABASE_VERSION);
-
-        GrowthMonitoringLibrary.init(context, getRepository(), BuildConfig.VERSION_CODE, BuildConfig.DATABASE_VERSION);
-        startZscoreRefreshService();
-        startPullConfigurableViewsIntentService(this);
-    }
-
-    private AllSharedPreferences getSharedPreferences() {
-        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
-        AllSharedPreferences allSharedPreferences = new AllSharedPreferences(preferences);
-        return allSharedPreferences;
-    }
-
-
-    public void initOfflineSchedules() {
-        try {
-            List<VaccineGroup> childVaccines = VaccinatorUtils.getSupportedVaccines(this);
-            List<VaccineGroup> womanVaccines = VaccinatorUtils.getSupportedWomanVaccines(this);
-            List<Vaccine> specialVaccines = VaccinatorUtils.getSpecialVaccines(this);
-            VaccineSchedule.init(childVaccines, specialVaccines, "child");
-            VaccineSchedule.init(womanVaccines, null, "woman");
-
-        } catch (Exception e) {
-Utils.appendLog(getClass().getName(),e);
-            Log.e(TAG, Log.getStackTraceString(e));
-        }
-    }
+    };
 
     public static synchronized AncApplication getInstance() {
         return (AncApplication) mInstance;
     }
 
-    @Override
-    public Repository getRepository() {
-        try {
-            if (repository == null) {
-                repository = new AncRepository(getInstance().getApplicationContext(), context);
-                getConfigurableViewsRepository();
-
-            }
-        } catch (UnsatisfiedLinkError e) {
-            logError("Error on getRepository: " + e);
-
-        }
-        return repository;
-    }
-
-    private String DEFAULT_PASSWORD = "1e815e13-f6ca-42ef-97c8-83394c201a47";
-
-    public String getPassword() {
-        if (password == null) {
-            String username = getContext().userService().getAllSharedPreferences().fetchRegisteredANM();
-            password = getContext().userService().getGroupId(username);
-        }
-//        return "";
-        return password;
-
-    }
-
-    @Override
-    public void logoutCurrentUser() {
-        Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
-        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        intent.addCategory(Intent.CATEGORY_HOME);
-        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-        getApplicationContext().startActivity(intent);
-        context.userService().logoutSession();
-    }
-
     public static JsonSpecHelper getJsonSpecHelper() {
-        return getInstance().jsonSpecHelper;
-    }
-
-    public Context getContext() {
-        return context;
-    }
-
-    protected void cleanUpSyncState() {
-        try {
-            DrishtiSyncScheduler.stop(getApplicationContext());
-            context.allSharedPreferences().saveIsSyncInProgress(false);
-        } catch (Exception e) {
-Utils.appendLog(getClass().getName(),e);
-            Log.e(TAG, e.getMessage());
-        }
-    }
-
-    @Override
-    public void onTerminate() {
-        logInfo("Application is terminating. Stopping Sync scheduler and resetting isSyncInProgress setting.");
-        cleanUpSyncState();
-        TimeChangedBroadcastReceiver.destroy(this);
-        super.onTerminate();
-    }
-
-    public void startPullConfigurableViewsIntentService(android.content.Context context) {
-//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-//            context.startForegroundService(new Intent(context, PullConfigurableViewsIntentService.class));
-//        } else {
-//            context.startService(new Intent(context, PullConfigurableViewsIntentService.class));
-//        }
-        ViewConfigurationsServiceJob.scheduleJobImmediately(ViewConfigurationsServiceJob.TAG);
+        return jsonSpecHelper;
     }
 
     public static CommonFtsObject createCommonFtsObject() {
@@ -271,6 +145,144 @@ Utils.appendLog(getClass().getName(),e);
     private static String[] getFtsSortFields() {
         return new String[]{DBConstants.KEY.BASE_ENTITY_ID, DBConstants.KEY.FIRST_NAME, DBConstants.KEY.LAST_NAME, DBConstants.KEY.LAST_INTERACTED_WITH, DBConstants.KEY.DATE_REMOVED};
 //        return new String[]{DBConstants.KEY.FIRST_NAME, DBConstants.KEY.LAST_NAME, DBConstants.KEY.PHONE_NUMBER,"person_nid","person_brid","person_epi","person_address",DBConstants.KEY.LAST_INTERACTED_WITH};
+    }
+
+    @Override
+    public void onCreate() {
+
+        super.onCreate();
+
+        mInstance = this;
+        context = Context.getInstance();
+        context.updateApplicationContext(getApplicationContext());
+        context.updateCommonFtsObject(createCommonFtsObject());
+
+        //Initialize Modules
+        CoreLibrary.init(context, new AncSyncConfiguration(), BuildConfig.BUILD_TIMESTAMP, null);
+        CoreLibrary.getInstance().setEcClientFieldsFile(Constants.EC_CLIENT_FIELDS);
+
+        LocationHelper.init(ALLOWED_LEVELS, DEFAULT_LOCATION_LEVEL);
+
+        SyncStatusBroadcastReceiver.init(this);
+        TimeChangedBroadcastReceiver.init(this);
+        TimeChangedBroadcastReceiver.getInstance().addOnTimeChangedListener(this);
+
+        JobManager.create(this).addJobCreator(new AncJobCreator());
+        try {
+            Utils.saveLanguage("en");
+        } catch (Exception e) {
+            Utils.appendLog(getClass().getName(), e);
+            Log.e(TAG, e.getMessage());
+        }
+        initLibraries();
+        initOfflineSchedules();
+// Initialize JsonSpec Helper
+        jsonSpecHelper = new JsonSpecHelper(this);
+
+        setUpEventHandling();
+        String groupId = getPassword();
+//        if (groupId != null && !groupId.isEmpty()) {
+//            initLibraries();
+//            initOfflineSchedules();
+//        }
+
+
+    }
+
+    public void initLibraries() {
+        ConfigurableViewsLibrary.init(context, getRepository());
+        ImmunizationLibrary.init(context, getRepository(), null, BuildConfig.VERSION_CODE, BuildConfig.DATABASE_VERSION);
+
+        GrowthMonitoringLibrary.init(context, getRepository(), BuildConfig.VERSION_CODE, BuildConfig.DATABASE_VERSION);
+        startZscoreRefreshService();
+        startPullConfigurableViewsIntentService(this);
+    }
+
+    private AllSharedPreferences getSharedPreferences() {
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
+        AllSharedPreferences allSharedPreferences = new AllSharedPreferences(preferences);
+        return allSharedPreferences;
+    }
+
+    public void initOfflineSchedules() {
+        try {
+            List<VaccineGroup> childVaccines = VaccinatorUtils.getSupportedVaccines(this);
+            List<VaccineGroup> womanVaccines = VaccinatorUtils.getSupportedWomanVaccines(this);
+            List<Vaccine> specialVaccines = VaccinatorUtils.getSpecialVaccines(this);
+            VaccineSchedule.init(childVaccines, specialVaccines, "child");
+            VaccineSchedule.init(womanVaccines, null, "woman");
+
+        } catch (Exception e) {
+            Utils.appendLog(getClass().getName(), e);
+            Log.e(TAG, Log.getStackTraceString(e));
+        }
+    }
+
+    @Override
+    public Repository getRepository() {
+        try {
+            if (repository == null) {
+                repository = new AncRepository(getInstance().getApplicationContext(), context);
+                getConfigurableViewsRepository();
+
+            }
+        } catch (UnsatisfiedLinkError e) {
+            logError("Error on getRepository: " + e);
+
+        }
+        return repository;
+    }
+
+    public String getPassword() {
+        if (password == null) {
+            String username = getContext().userService().getAllSharedPreferences().fetchRegisteredANM();
+            password = getContext().userService().getGroupId(username);
+        }
+//        return "";
+        return password;
+
+    }
+
+    @Override
+    public void logoutCurrentUser() {
+        Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        intent.addCategory(Intent.CATEGORY_HOME);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        getApplicationContext().startActivity(intent);
+        context.userService().logoutSession();
+    }
+
+    public Context getContext() {
+        return context;
+    }
+
+    protected void cleanUpSyncState() {
+        try {
+            DrishtiSyncScheduler.stop(getApplicationContext());
+            context.allSharedPreferences().saveIsSyncInProgress(false);
+        } catch (Exception e) {
+            Utils.appendLog(getClass().getName(), e);
+            Log.e(TAG, e.getMessage());
+        }
+    }
+
+    @Override
+    public void onTerminate() {
+        logInfo("Application is terminating. Stopping Sync scheduler and resetting isSyncInProgress setting.");
+        cleanUpSyncState();
+        TimeChangedBroadcastReceiver.destroy(this);
+        super.onTerminate();
+    }
+
+    public void startPullConfigurableViewsIntentService(android.content.Context context) {
+//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+//            context.startForegroundService(new Intent(context, PullConfigurableViewsIntentService.class));
+//        } else {
+//            context.startService(new Intent(context, PullConfigurableViewsIntentService.class));
+//        }
+        ViewConfigurationsServiceJob.scheduleJobImmediately(ViewConfigurationsServiceJob.TAG);
     }
 
     public ConfigurableViewsRepository getConfigurableViewsRepository() {
@@ -338,7 +350,7 @@ Utils.appendLog(getClass().getName(),e);
 
         } catch
         (Exception e) {
-Utils.appendLog(getClass().getName(),e);
+            Utils.appendLog(getClass().getName(), e);
             Log.e(TAG, e.getMessage());
         }
 
@@ -355,27 +367,6 @@ Utils.appendLog(getClass().getName(),e);
         }
 
     }
-
-
-    // This Broadcast Receiver is the handler called whenever an Intent with an action named PullConfigurableViewsIntentService.EVENT_SYNC_COMPLETE is broadcast.
-    private BroadcastReceiver syncCompleteMessageReceiver = new BroadcastReceiver() {
-        @Override
-        public void onReceive(android.content.Context context, Intent intent) {
-            // Retrieve the extra data included in the Intent
-
-            int recordsRetrievedCount = intent.getIntExtra(org.smartregister.configurableviews.util.Constants.INTENT_KEY.SYNC_TOTAL_RECORDS, 0);
-            if (recordsRetrievedCount > 0) {
-                Log.d(TAG, "Total records retrieved " + recordsRetrievedCount);
-            }
-
-            Utils.postEvent(new ViewConfigurationSyncCompleteEvent());
-
-            String lastSyncTime = intent.getStringExtra(org.smartregister.configurableviews.util.Constants.INTENT_KEY.LAST_SYNC_TIME_STRING);
-
-            Utils.writePrefString(context, org.smartregister.configurableviews.util.Constants.INTENT_KEY.LAST_SYNC_TIME_STRING, lastSyncTime);
-
-        }
-    };
 
     public void startPullHealthIdsService() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
@@ -412,5 +403,10 @@ Utils.appendLog(getClass().getName(),e);
         Intent intent = new Intent(getInstance().getApplicationContext(), ZScoreRefreshIntentService.class);
         this.getApplicationContext().startService(intent);
     }
-
+    public void forcelogoutCurrentUser() {
+        getContext().userService().getAllSharedPreferences().saveForceRemoteLogin(true);
+        org.smartregister.cbhc.helper.LocationHelper.setInstance(null);
+        logoutCurrentUser();
+        System.exit(0);
+    }
 }

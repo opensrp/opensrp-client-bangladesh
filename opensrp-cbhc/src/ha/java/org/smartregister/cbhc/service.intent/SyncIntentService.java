@@ -6,31 +6,25 @@ import android.content.Intent;
 import android.util.Log;
 import android.util.Pair;
 
-import net.sqlcipher.database.SQLiteDatabase;
-
 import org.apache.commons.lang3.StringUtils;
 import org.joda.time.DateTime;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-import org.smartregister.CoreLibrary;
 import org.smartregister.cbhc.BuildConfig;
 import org.smartregister.cbhc.R;
 import org.smartregister.cbhc.application.AncApplication;
 import org.smartregister.cbhc.helper.ECSyncHelper;
-import org.smartregister.cbhc.helper.LocationHelper;
 import org.smartregister.cbhc.job.DeleteIntentServiceJob;
-import org.smartregister.cbhc.job.ImageUploadServiceJob;
 import org.smartregister.cbhc.job.PullHealthIdsServiceJob;
 import org.smartregister.cbhc.job.PullUniqueIdsServiceJob;
 import org.smartregister.cbhc.receiver.SyncStatusBroadcastReceiver;
-import org.smartregister.cbhc.repository.AncRepository;
 import org.smartregister.cbhc.sync.AncClientProcessorForJava;
 import org.smartregister.cbhc.util.Constants;
 import org.smartregister.cbhc.util.NetworkUtils;
+import org.smartregister.cbhc.util.Utils;
 import org.smartregister.domain.FetchStatus;
 import org.smartregister.domain.Response;
-import org.smartregister.domain.db.Client;
 import org.smartregister.domain.db.EventClient;
 import org.smartregister.repository.AllSharedPreferences;
 import org.smartregister.repository.EventClientRepository;
@@ -42,14 +36,12 @@ import java.util.List;
 import java.util.Map;
 
 public class SyncIntentService extends IntentService {
-    private static final String ADD_URL = "/rest/event/add";
     public static final String SYNC_URL = "/rest/event/sync";
-
+    public static final int EVENT_PULL_LIMIT = 250;
+    private static final String ADD_URL = "/rest/event/add";
+    private static final int EVENT_PUSH_LIMIT = 50;
     private Context context;
     private HTTPAgent httpAgent;
-
-    public static final int EVENT_PULL_LIMIT = 250;
-    private static final int EVENT_PUSH_LIMIT = 50;
 
     public SyncIntentService() {
         super("SyncIntentService");
@@ -86,7 +78,7 @@ public class SyncIntentService extends IntentService {
             pullECFromServer();
 
         } catch (Exception e) {
-Utils.appendLog(getClass().getName(),e);
+            Utils.appendLog(getClass().getName(), e);
             Log.e(getClass().getName(), e.getMessage(), e);
             complete(FetchStatus.fetchedFailed);
         }
@@ -163,7 +155,7 @@ Utils.appendLog(getClass().getName(),e);
                 fetchRetry(0);
             }
         } catch (Exception e) {
-Utils.appendLog(getClass().getName(),e);
+            Utils.appendLog(getClass().getName(), e);
             Log.e(getClass().getName(), "Fetch Retry Exception: " + e.getMessage(), e.getCause());
             fetchFailed(count);
         } finally {
@@ -191,7 +183,7 @@ Utils.appendLog(getClass().getName(),e);
             AncClientProcessorForJava.getInstance(context).processClient(events);
             sendSyncStatusBroadcastMessage(FetchStatus.fetched);
         } catch (Exception e) {
-Utils.appendLog(getClass().getName(),e);
+            Utils.appendLog(getClass().getName(), e);
             Log.e(getClass().getName(), "Process Client Exception: " + e.getMessage(), e.getCause());
         }
     }
@@ -238,7 +230,7 @@ Utils.appendLog(getClass().getName(),e);
                 db.markEventsAsSynced(pendingEvents);
                 Log.i(getClass().getName(), "Events synced successfully.");
             } catch (Exception e) {
-Utils.appendLog(getClass().getName(),e);
+                Utils.appendLog(getClass().getName(), e);
                 Log.e(getClass().getName(), e.getMessage(), e);
             }
         }
@@ -293,7 +285,7 @@ Utils.appendLog(getClass().getName(),e);
                 return Pair.create(minServerVersion, maxServerVersion);
             }
         } catch (Exception e) {
-Utils.appendLog(getClass().getName(),e);
+            Utils.appendLog(getClass().getName(), e);
             Log.e(getClass().getName(), e.getMessage(), e);
         }
         return Pair.create(0L, 0L);
@@ -307,7 +299,7 @@ Utils.appendLog(getClass().getName(),e);
                 count = jsonObject.getInt(NO_OF_EVENTS);
             }
         } catch (JSONException e) {
-Utils.appendLog(getClass().getName(),e);
+            Utils.appendLog(getClass().getName(), e);
             Log.e(getClass().getName(), e.getMessage(), e);
         }
         return count;
