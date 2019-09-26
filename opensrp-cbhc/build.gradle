@@ -188,6 +188,7 @@ dependencies {
 
     //    use issue158 branch for local build
     //    build from issue268
+    //    core version 2.6.51 for older build 2.7.26 for latest build
     implementation('org.smartregister:opensrp-client-core:2.7.26-SNAPSHOT') {
         transitive = true
         exclude group: 'com.github.bmelnychuk', module: 'atv'

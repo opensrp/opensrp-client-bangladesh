@@ -660,7 +660,7 @@ public class AncJsonFormFragment extends JsonFormFragment {
             }
         }
     }
-
+    int relation_position = -1;
     @Override
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
         if (presenter != null && parent != null && view != null)
@@ -669,6 +669,7 @@ public class AncJsonFormFragment extends JsonFormFragment {
         if (parent instanceof MaterialSpinner) {
             if (((MaterialSpinner) parent).getFloatingLabelText().toString().equalsIgnoreCase("খানা প্রধানের সাথে সম্পর্ক")) {
                 processHeadOfHouseHoldAsMember(position);
+                relation_position = position;
             }
             if (((MaterialSpinner) parent).getFloatingLabelText().toString().equalsIgnoreCase("লিঙ্গ")) {
                 processHeadOfHouseHoldRelation(position);
@@ -991,6 +992,9 @@ public class AncJsonFormFragment extends JsonFormFragment {
     }
 
     public void update_spouse_hint(ArrayList<View> formdataviews, int position, String headOfHouseholdName) {
+        if(relation_position != 1 || relation_position != 2){
+            return;
+        }
         for (int i = 0; i < formdataviews.size(); i++) {
             if (formdataviews.get(i) instanceof MaterialEditText) {
                 if (position == 1) {

@@ -237,6 +237,30 @@ public class JsonFormUtils extends org.smartregister.util.JsonFormUtils {
         return uniqueId;
     }
 
+    public static void removeEmptyFields(JSONArray fields) {
+        for (int i = 0; i < fields.length(); i++) {
+            try {
+                JSONObject field_object = fields.getJSONObject(i);
+                if (field_object.has("is_visible") && !field_object.getBoolean("is_visible") && field_object.has("value")) {
+                    String type = "";
+                    if (field_object.has("type")) {
+                        type = field_object.getString("type");
+                    }
+                    if (!StringUtils.isEmpty(type) && "check_box".equals(type) && field_object.getJSONArray("value").length()!=0) {
+                        field_object.put("value", new JSONArray());
+                        field_object.put("is_visible",true);
+                    } else if (!StringUtils.isEmpty(field_object.getString("value"))){
+                        field_object.put("value", "");
+                        field_object.put("is_visible",true);
+                    }
+                }
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+
+        }
+    }
+
     public static Pair<Client, Event> processRegistrationForm(AllSharedPreferences allSharedPreferences, String jsonString) {
         SQLiteDatabase db = AncApplication.getInstance().getRepository().getReadableDatabase();
 
@@ -250,7 +274,8 @@ public class JsonFormUtils extends org.smartregister.util.JsonFormUtils {
             JSONObject jsonForm = registrationFormParams.getMiddle();
 
             JSONArray fields = registrationFormParams.getRight();
-//            removeEmptyFields(fields);
+
+            removeEmptyFields(fields);
 //            fields = processAttributesWithChoiceIDs(fields);
 
             String entityId = getString(jsonForm, ENTITY_ID);
