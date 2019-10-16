@@ -137,8 +137,8 @@ public abstract class BaseRegisterActivity extends SecuredNativeSmartRegisterAct
 
     @Override
     protected void onDestroy() {
-        super.onDestroy();
         presenter.onDestroy(isChangingConfigurations());
+        super.onDestroy();
     }
 
     @Override

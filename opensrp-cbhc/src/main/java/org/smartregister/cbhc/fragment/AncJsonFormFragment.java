@@ -94,6 +94,7 @@ public class AncJsonFormFragment extends JsonFormFragment {
     JsonFormFragmentPresenter presenter;
     boolean permanentAddressFound = false;
     boolean flag = false;
+    int relation_position = -1;
     private Snackbar snackbar = null;
     private AlertDialog alertDialog = null;
     private final View.OnClickListener lookUpRecordOnClickLister = new View.OnClickListener() {
@@ -660,7 +661,7 @@ public class AncJsonFormFragment extends JsonFormFragment {
             }
         }
     }
-    int relation_position = -1;
+
     @Override
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
         if (presenter != null && parent != null && view != null)
@@ -992,7 +993,7 @@ public class AncJsonFormFragment extends JsonFormFragment {
     }
 
     public void update_spouse_hint(ArrayList<View> formdataviews, int position, String headOfHouseholdName) {
-        if(relation_position != 1 || relation_position != 2){
+        if (relation_position != 1 || relation_position != 2) {
             return;
         }
         for (int i = 0; i < formdataviews.size(); i++) {
@@ -1001,7 +1002,7 @@ public class AncJsonFormFragment extends JsonFormFragment {
                     if (((MaterialEditText) formdataviews.get(i)).getFloatingLabelText().toString().trim().equalsIgnoreCase("স্বামী/স্ত্রীর নাম (ইংরেজীতে)")) {
                         ((MaterialEditText) formdataviews.get(i)).setHint("স্ত্রীর নাম (ইংরেজীতে)");
                         ((MaterialEditText) formdataviews.get(i)).setFloatingLabelText("স্ত্রীর নাম (ইংরেজীতে)");
-                        ((MaterialEditText) formdataviews.get(i)).setText(headOfHouseholdName);
+//                        ((MaterialEditText) formdataviews.get(i)).setText(headOfHouseholdName);
                     }
 
                     if (((MaterialEditText) formdataviews.get(i)).getFloatingLabelText().toString().trim().equalsIgnoreCase("স্বামী/স্ত্রীর নাম (বাংলায়)")) {
@@ -1017,7 +1018,7 @@ public class AncJsonFormFragment extends JsonFormFragment {
                     if (((MaterialEditText) formdataviews.get(i)).getFloatingLabelText().toString().trim().equalsIgnoreCase("স্বামীর নাম (ইংরেজীতে)")) {
                         ((MaterialEditText) formdataviews.get(i)).setHint("স্ত্রীর নাম (ইংরেজীতে)");
                         ((MaterialEditText) formdataviews.get(i)).setFloatingLabelText("স্ত্রীর নাম (ইংরেজীতে)");
-                        ((MaterialEditText) formdataviews.get(i)).setText(headOfHouseholdName);
+//                        ((MaterialEditText) formdataviews.get(i)).setText(headOfHouseholdName);
                     }
 
 
@@ -1025,7 +1026,7 @@ public class AncJsonFormFragment extends JsonFormFragment {
                     if (((MaterialEditText) formdataviews.get(i)).getFloatingLabelText().toString().trim().equalsIgnoreCase("স্বামী/স্ত্রীর নাম (ইংরেজীতে)")) {
                         ((MaterialEditText) formdataviews.get(i)).setHint("স্বামীর নাম (ইংরেজীতে)");
                         ((MaterialEditText) formdataviews.get(i)).setFloatingLabelText("স্বামীর নাম (ইংরেজীতে)");
-                        ((MaterialEditText) formdataviews.get(i)).setText(headOfHouseholdName);
+//                        ((MaterialEditText) formdataviews.get(i)).setText(headOfHouseholdName);
                     }
 
                     if (((MaterialEditText) formdataviews.get(i)).getFloatingLabelText().toString().trim().equalsIgnoreCase("স্বামী/স্ত্রীর নাম (বাংলায়)")) {
@@ -1041,7 +1042,7 @@ public class AncJsonFormFragment extends JsonFormFragment {
                     if (((MaterialEditText) formdataviews.get(i)).getFloatingLabelText().toString().trim().equalsIgnoreCase("স্ত্রীর নাম (ইংরেজীতে)")) {
                         ((MaterialEditText) formdataviews.get(i)).setHint("স্বামীর নাম (ইংরেজীতে)");
                         ((MaterialEditText) formdataviews.get(i)).setFloatingLabelText("স্বামীর নাম (ইংরেজীতে)");
-                        ((MaterialEditText) formdataviews.get(i)).setText(headOfHouseholdName);
+//                        ((MaterialEditText) formdataviews.get(i)).setText(headOfHouseholdName);
                     }
 
                 }

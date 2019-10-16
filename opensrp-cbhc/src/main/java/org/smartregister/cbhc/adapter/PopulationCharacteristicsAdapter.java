@@ -51,6 +51,14 @@ public class PopulationCharacteristicsAdapter extends RecyclerView.Adapter<Popul
         return mData.size();
     }
 
+    public void setClickListener(ItemClickListener itemClickListener) {
+        this.mClickListener = itemClickListener;
+    }
+
+    public interface ItemClickListener {
+        void onItemClick(View view, int position);
+    }
+
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         private TextView labelTextView;
         private TextView valueTextView;
@@ -68,13 +76,5 @@ public class PopulationCharacteristicsAdapter extends RecyclerView.Adapter<Popul
         public void onClick(View view) {
             if (mClickListener != null) mClickListener.onItemClick(view, getAdapterPosition());
         }
-    }
-
-    public void setClickListener(ItemClickListener itemClickListener) {
-        this.mClickListener = itemClickListener;
-    }
-
-    public interface ItemClickListener {
-        void onItemClick(View view, int position);
     }
 }

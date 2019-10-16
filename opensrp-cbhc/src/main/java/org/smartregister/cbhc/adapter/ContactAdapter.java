@@ -17,22 +17,6 @@ public class ContactAdapter extends RecyclerView.Adapter<ContactAdapter.ViewHold
     private Context context;
     private List<Contact> contacts;
 
-    public class ViewHolder extends RecyclerView.ViewHolder {
-        public View cardLayout;
-        public TextView name;
-        public TextView requiredFields;
-        public View completeLayout;
-
-
-        public ViewHolder(View view) {
-            super(view);
-            cardLayout = view.findViewById(R.id.card_layout);
-            name = view.findViewById(R.id.container_name);
-            requiredFields = view.findViewById(R.id.required_fields);
-            completeLayout = view.findViewById(R.id.complete_layout);
-        }
-    }
-
     public ContactAdapter(Context context, List<Contact> contacts) {
         this.context = context;
         this.contacts = contacts;
@@ -69,5 +53,21 @@ public class ContactAdapter extends RecyclerView.Adapter<ContactAdapter.ViewHold
     @Override
     public int getItemCount() {
         return contacts.size();
+    }
+
+    public class ViewHolder extends RecyclerView.ViewHolder {
+        public View cardLayout;
+        public TextView name;
+        public TextView requiredFields;
+        public View completeLayout;
+
+
+        public ViewHolder(View view) {
+            super(view);
+            cardLayout = view.findViewById(R.id.card_layout);
+            name = view.findViewById(R.id.container_name);
+            requiredFields = view.findViewById(R.id.required_fields);
+            completeLayout = view.findViewById(R.id.complete_layout);
+        }
     }
 }

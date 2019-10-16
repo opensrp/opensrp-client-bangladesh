@@ -3,7 +3,6 @@ package org.smartregister.cbhc.service.intent;
 import android.app.IntentService;
 import android.content.Context;
 import android.content.Intent;
-import android.os.Environment;
 import android.util.Log;
 import android.util.Pair;
 
@@ -33,9 +32,6 @@ import org.smartregister.repository.AllSharedPreferences;
 import org.smartregister.repository.EventClientRepository;
 import org.smartregister.service.HTTPAgent;
 
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileWriter;
 import java.text.MessageFormat;
 import java.util.Date;
 import java.util.List;

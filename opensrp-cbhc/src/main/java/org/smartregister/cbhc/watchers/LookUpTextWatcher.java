@@ -2,16 +2,13 @@ package org.smartregister.cbhc.watchers;
 
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Pair;
 import android.view.View;
-import android.widget.Toast;
 
 import com.vijay.jsonwizard.R;
 import com.vijay.jsonwizard.fragments.JsonFormFragment;
 
 import org.apache.commons.lang3.StringUtils;
 import org.smartregister.Context;
-import org.smartregister.cbhc.application.AncApplication;
 import org.smartregister.cbhc.domain.EntityLookUp;
 import org.smartregister.cbhc.fragment.AncJsonFormFragment;
 import org.smartregister.cbhc.util.MotherLookUpUtils;
@@ -27,11 +24,10 @@ import static org.smartregister.cbhc.fragment.AncJsonFormFragment.lookuptype;
 
 public class LookUpTextWatcher implements TextWatcher {
     private static Map<String, EntityLookUp> lookUpMap;
-
+    public String relationalid;
     private View mView;
     private JsonFormFragment formFragment;
     private String mEntityId;
-    public String relationalid;
 
 
     public LookUpTextWatcher(JsonFormFragment formFragment, View view, String entityId, String relationalId) {
@@ -87,8 +83,8 @@ public class LookUpTextWatcher implements TextWatcher {
             context = pathJsonFormFragment.context();
             listener = pathJsonFormFragment.motherLookUpListener();
         }
-            lookuptype = mEntityId;
-            MotherLookUpUtils.motherLookUp(context, lookUpMap.get(mEntityId), listener, null,relationalid,lookuptype);
+        lookuptype = mEntityId;
+        MotherLookUpUtils.motherLookUp(context, lookUpMap.get(mEntityId), listener, null, relationalid, lookuptype);
 
 
     }

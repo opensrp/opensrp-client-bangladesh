@@ -1,13 +1,8 @@
 package org.smartregister.cbhc.task;
 
-import android.content.DialogInterface;
-import android.content.Intent;
-import android.net.Uri;
 import android.os.AsyncTask;
-import android.util.Log;
 
 import org.smartregister.Context;
-import org.smartregister.cbhc.activity.LoginActivity;
 import org.smartregister.cbhc.application.AncApplication;
 import org.smartregister.cbhc.contract.LoginContract;
 import org.smartregister.domain.LoginResponse;
@@ -18,17 +13,20 @@ import org.smartregister.event.Listener;
  */
 public class RemoteLoginTask extends AsyncTask<Void, Void, LoginResponse> {
 
-    private LoginContract.View mLoginView;
     private final String mUsername;
     private final String mPassword;
-
     private final Listener<LoginResponse> afterLoginCheck;
+    private LoginContract.View mLoginView;
 
     public RemoteLoginTask(LoginContract.View loginView, String username, String password, Listener<LoginResponse> afterLoginCheck) {
         mLoginView = loginView;
         mUsername = username;
         mPassword = password;
         this.afterLoginCheck = afterLoginCheck;
+    }
+
+    public static Context getOpenSRPContext() {
+        return AncApplication.getInstance().getContext();
     }
 
     @Override
@@ -70,11 +68,6 @@ public class RemoteLoginTask extends AsyncTask<Void, Void, LoginResponse> {
     @Override
     protected void onCancelled() {
         mLoginView.showProgress(false);
-    }
-
-
-    public static Context getOpenSRPContext() {
-        return AncApplication.getInstance().getContext();
     }
 
 }

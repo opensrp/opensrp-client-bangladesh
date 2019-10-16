@@ -406,7 +406,8 @@ public abstract class BaseRegisterFragment extends RecyclerViewFragment implemen
     public void clearSortAndFilter() {
         this.Sortqueries = default_sort_query;
         this.registerCondition = "";
-        presenter.initializeQueries(getMainCondition());
+        if (presenter != null)
+            presenter.initializeQueries(getMainCondition());
         filter(this.filters, this.joinTable, this.mainCondition, false);
         setTotalPatients();
 //        clientAdapter.notifyDataSetChanged();

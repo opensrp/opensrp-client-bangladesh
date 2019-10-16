@@ -19,14 +19,7 @@ import android.widget.Toast;
 
 import org.apache.commons.validator.routines.UrlValidator;
 import org.smartregister.cbhc.R;
-import org.smartregister.cbhc.util.Utils;
 import org.smartregister.repository.AllSharedPreferences;
-
-import java.net.MalformedURLException;
-import java.net.URL;
-
-import static org.smartregister.util.Log.logError;
-import static org.smartregister.util.Log.logInfo;
 
 public class SettingsActivity extends PreferenceActivity {
 
