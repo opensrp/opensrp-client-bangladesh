@@ -193,7 +193,7 @@ public class DeleteIntentService extends IntentService {
                             condition = condition.substring(0, condition.length() - 4);
                         sql = sql + condition + ";";
 
-                        if (db != null)
+                        if (db != null && !StringUtils.isEmpty(condition))
                             db.execSQL(sql);
                     }
 

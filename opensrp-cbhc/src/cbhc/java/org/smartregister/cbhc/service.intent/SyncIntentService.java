@@ -177,8 +177,8 @@ public class SyncIntentService extends IntentService {
 //                new ClientInsertThread(ecSyncUpdater,jsonObject,lastServerVersion).start();
                 // long start  = System.currentTimeMillis();
                 if (ecSyncUpdater.saveAllClientsAndEvents(jsonObject)) {
-                    ecSyncUpdater.updateLastSyncTimeStamp(lastServerVersion);
                     processClient(serverVersionPair);
+                    ecSyncUpdater.updateLastSyncTimeStamp(lastServerVersion);
                 }
                 // long end = System.currentTimeMillis();
                 //  long diff = end - start;

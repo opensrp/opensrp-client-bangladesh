@@ -8,6 +8,8 @@ import org.smartregister.cbhc.contract.LoginContract;
 import org.smartregister.domain.LoginResponse;
 import org.smartregister.event.Listener;
 
+import static org.smartregister.AllConstants.OPENSRP_AUTH_USER_URL_PATH;
+
 /**
  * Created by ndegwamartin on 22/06/2018.
  */
@@ -40,7 +42,7 @@ public class RemoteLoginTask extends AsyncTask<Void, Void, LoginResponse> {
 
         LoginResponse loginResponse = null;
         if (getOpenSRPContext() != null && getOpenSRPContext().userService() != null)
-            loginResponse = getOpenSRPContext().userService().isValidRemoteLogin(mUsername, mPassword);
+            loginResponse = isValidRemoteLogin(mUsername, mPassword);
 //        Log.d("LOGINREPONSE",loginResponse.getRawData().toString());
         if (loginResponse != null && loginResponse.equals(LoginResponse.SUCCESS)) {
             getOpenSRPContext().userService().getAllSharedPreferences().updateANMUserName(mUsername);
@@ -53,7 +55,20 @@ public class RemoteLoginTask extends AsyncTask<Void, Void, LoginResponse> {
         }
         return loginResponse;
     }
+    public LoginResponse isValidRemoteLogin(String userName, String password) {
+        String requestURL;
 
+        requestURL = getOpenSRPContext().configuration().dristhiBaseURL() + OPENSRP_AUTH_USER_URL_PATH;
+
+        LoginResponse loginResponse = getOpenSRPContext().getHttpAgent()
+                .urlCanBeAccessWithGivenCredentials(requestURL, userName, password);
+
+        if (LoginResponse.SUCCESS.equals(loginResponse)) {
+            getOpenSRPContext().userService().saveUserGroup(userName, password, loginResponse.payload());
+        }
+
+        return loginResponse;
+    }
     @Override
     protected void onPostExecute(final LoginResponse loginResponse) {
         super.onPostExecute(loginResponse);

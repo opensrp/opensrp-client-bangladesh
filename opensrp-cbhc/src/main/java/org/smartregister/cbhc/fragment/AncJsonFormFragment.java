@@ -811,8 +811,11 @@ public class AncJsonFormFragment extends JsonFormFragment {
             protected Object doInBackground(Object[] objects) {
                 JSONObject formObject = getJsonApi().getmJSONObject();
                 try {
-                    comment = formObject.getString("dataApprovalComments");
-                    status = formObject.getString("dataApprovalStatus");
+                    if(formObject.has("dataApprovalComments")&&formObject.has("dataApprovalStatus")){
+                        comment = formObject.getString("dataApprovalComments");
+                        status = formObject.getString("dataApprovalStatus");
+                    }
+
                 } catch (Exception e) {
                     org.smartregister.cbhc.util.Utils.appendLog(getClass().getName(), e);
 
