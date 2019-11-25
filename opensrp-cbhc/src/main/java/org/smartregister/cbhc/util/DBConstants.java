@@ -24,7 +24,9 @@ public class DBConstants {
         public static final String DOB_UNKNOWN = "dob_unknown";
         public static final String EDD = "edd";
         public static final String GENDER = "gender";
+        public static final String Date_Of_Reg = "Date_Of_Reg";
         public static final String ANC_ID = "anc_id";
+        public static final String RELATIONAL_ID = "relational_id";
         public static final String LAST_INTERACTED_WITH = "last_interacted_with";
         public static final String DATE_REMOVED = "date_removed";
         public static final String DETAILSSTATUS = "dataApprovalStatus";

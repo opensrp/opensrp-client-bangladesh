@@ -13,10 +13,15 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import org.apache.commons.lang3.StringUtils;
+import org.smartregister.cbhc.BuildConfig;
 import org.smartregister.cbhc.R;
 import org.smartregister.cbhc.application.AncApplication;
 import org.smartregister.cbhc.contract.MeContract;
 import org.smartregister.repository.AllSharedPreferences;
+
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Locale;
 
 public class MeFragment extends Fragment implements MeContract.View {
 
@@ -37,10 +42,14 @@ public class MeFragment extends Fragment implements MeContract.View {
         AllSharedPreferences allSharedPreferences = new AllSharedPreferences(preferences);
         String anm_name = allSharedPreferences.fetchRegisteredANM();
         String provider_name = allSharedPreferences.getPreference(anm_name);
+        String version_name = BuildConfig.VERSION_NAME;
+        String build_date = new SimpleDateFormat("dd MMM yyyy", Locale.getDefault()).format(new Date(BuildConfig.BUILD_TIMESTAMP));
+        String version_text = "Version " + version_name + ", Built on: " + build_date;
         String user_details = anm_name;
         if (!StringUtils.isEmpty(provider_name)) {
-            user_details = provider_name + "\n" + anm_name;
+            user_details = provider_name + "\n" + anm_name+"\n"+version_text;
         }
+
         username.setText(user_details);
 
         Logout.setOnClickListener(new View.OnClickListener() {

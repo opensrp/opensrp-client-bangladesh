@@ -293,11 +293,14 @@ public class JsonFormUtils extends org.smartregister.util.JsonFormUtils {
             // String lastLocationName = null;
             // String lastLocationId = null;
             // TODO Replace values for location questions with their corresponding location IDs
-
-
+            String relational_id = "";
+            Long lastInteractedTime = Calendar.getInstance().getTimeInMillis();
+            if(jsonForm.has(DBConstants.KEY.RELATIONAL_ID)){
+                relational_id = jsonForm.getString(DBConstants.KEY.RELATIONAL_ID);
+            }
             JSONObject lastInteractedWith = new JSONObject();
             lastInteractedWith.put(Constants.KEY.KEY, DBConstants.KEY.LAST_INTERACTED_WITH);
-            lastInteractedWith.put(Constants.KEY.VALUE, Calendar.getInstance().getTimeInMillis());
+            lastInteractedWith.put(Constants.KEY.VALUE, lastInteractedTime);
             fields.put(lastInteractedWith);
             Gender gender = null;
             if (!(encounterType.equalsIgnoreCase(Constants.EventType.MemberREGISTRATION)
@@ -328,6 +331,7 @@ public class JsonFormUtils extends org.smartregister.util.JsonFormUtils {
 
                     }
                 }
+
             } else if (Utils.notFollowUp(encounterType)) {
                 String agestring = "";
                 String dobstring = "";
@@ -373,7 +377,8 @@ public class JsonFormUtils extends org.smartregister.util.JsonFormUtils {
                         encounterType = Constants.EventType.MemberREGISTRATION;
                     }
                 }
-
+                if(!StringUtils.isEmpty(relational_id))
+                    updateHouseholdLastInteractedWith(db,relational_id,lastInteractedTime);
 
             }
 
@@ -603,6 +608,11 @@ public class JsonFormUtils extends org.smartregister.util.JsonFormUtils {
             Log.e(TAG, Log.getStackTraceString(e));
             return null;
         }
+    }
+
+    private static void updateHouseholdLastInteractedWith(SQLiteDatabase db, String relational_id, Long lastInteractedTime) {
+        db.execSQL("UPDATE ec_household SET last_interacted_with = '"+lastInteractedTime+"' WHERE base_entity_id = '"+relational_id+"'");
+        db.execSQL("UPDATE ec_household_search SET last_interacted_with = '"+lastInteractedTime+"' WHERE base_entity_id = '"+relational_id+"'");
     }
 
     private static void checkForAgeChangeToMemberType(JSONArray fields, JSONObject metadata, FormTag formTag, String entityId, String encounterType, String entitytypeName) {
@@ -1244,6 +1254,12 @@ public class JsonFormUtils extends org.smartregister.util.JsonFormUtils {
 
         } else if ((jsonObject.getString(JsonFormUtils.KEY).equalsIgnoreCase(DBConstants.KEY.member_Reg_Date))) {
             String reg_date = womanClient.get(DBConstants.KEY.member_Reg_Date);
+            if (reg_date != null) {
+                jsonObject.put(JsonFormUtils.VALUE, reg_date);
+                jsonObject.put(JsonFormUtils.READ_ONLY, true);
+            }
+        } else if ((jsonObject.getString(JsonFormUtils.KEY).equalsIgnoreCase(DBConstants.KEY.Date_Of_Reg))) {
+            String reg_date = womanClient.get(DBConstants.KEY.Date_Of_Reg);
             if (reg_date != null) {
                 jsonObject.put(JsonFormUtils.VALUE, reg_date);
                 jsonObject.put(JsonFormUtils.READ_ONLY, true);

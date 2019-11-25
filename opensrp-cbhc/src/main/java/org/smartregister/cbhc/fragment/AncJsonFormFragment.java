@@ -46,6 +46,7 @@ import com.vijay.jsonwizard.widgets.DatePickerFactory;
 
 import org.apache.commons.lang3.StringUtils;
 import org.joda.time.DateTime;
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.smartregister.Context;
@@ -898,13 +899,16 @@ public class AncJsonFormFragment extends JsonFormFragment {
                         for (int i = 0; i < formdataviews.size(); i++) {
                             if (formdataviews.get(i) instanceof MaterialEditText) {
                                 if (((MaterialEditText) formdataviews.get(i)).getFloatingLabelText().toString().trim().equalsIgnoreCase("নামের প্রথম অংশ (ইংরেজীতে)")) {
-                                    ((MaterialEditText) formdataviews.get(i)).setText(headOfHouseholdFirstName);
+                                    if(StringUtils.isEmpty(getValueForKey("member_f_name")))
+                                        ((MaterialEditText) formdataviews.get(i)).setText(headOfHouseholdFirstName);
                                 }
                                 if (((MaterialEditText) formdataviews.get(i)).getFloatingLabelText().toString().trim().equalsIgnoreCase("নামের শেষ অংশ (ইংরেজীতে)")) {
-                                    ((MaterialEditText) formdataviews.get(i)).setText(headOfHouseholdLastName);
+                                    if(StringUtils.isEmpty(getValueForKey("last_name")))
+                                        ((MaterialEditText) formdataviews.get(i)).setText(headOfHouseholdLastName);
                                 }
                                 if (((MaterialEditText) formdataviews.get(i)).getFloatingLabelText().toString().trim().equalsIgnoreCase("মোবাইল নম্বর (ইংরেজীতে)")) {
-                                    ((MaterialEditText) formdataviews.get(i)).setText(headOfHouseholdMobileNumber);
+                                    if(StringUtils.isEmpty(getValueForKey("contact_phone_number_by_age")))
+                                        ((MaterialEditText) formdataviews.get(i)).setText(headOfHouseholdMobileNumber);
                                 }
 //                            if (((MaterialEditText) formdataviews.get(i)).getFloatingLabelText().toString().trim().equalsIgnoreCase("‘হ্যাঁ’ হলে জন্ম তারিখ")) {
 //                                Date dob = org.smartregister.cbhc.util.Utils.dobStringToDate(headOfHouseholdDOB);
@@ -949,8 +953,10 @@ public class AncJsonFormFragment extends JsonFormFragment {
                     }
 //
                 }
+
             }, null);
         }
+
         if (position > 0 && isPressed) {
             ArrayList<View> formdataviews = getJsonApi().getFormDataViews();
 
@@ -994,7 +1000,25 @@ public class AncJsonFormFragment extends JsonFormFragment {
         }
 
     }
+    public String getValueForKey(String key){
+        try {
+            JSONArray jsonArray = getStep("step1").getJSONArray("fields");
+            for(int i=0;i<jsonArray.length();i++){
+                JSONObject object = jsonArray.getJSONObject(i);
+                String K = object.getString("key");
+                String V = "";
+                if(object.has("value"))
+                    V = object.getString("value");
+                if(key.equalsIgnoreCase(K)){
+                    return V;
+                }
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
 
+        return "";
+    }
     public void update_spouse_hint(ArrayList<View> formdataviews, int position, String headOfHouseholdName) {
         if (relation_position != 1 || relation_position != 2) {
             return;

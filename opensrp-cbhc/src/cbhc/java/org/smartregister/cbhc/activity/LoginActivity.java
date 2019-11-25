@@ -266,7 +266,7 @@ public class LoginActivity extends AppCompatActivity implements LoginContract.Vi
 //                username = "teliya1@cc.com";
 //                username = "sabab@ahmed.com";
                 //cc10006952@mhv.4
-//                username = "cc10006955@mhv.4";
+                username = "cc10006955@mhv.1";
 //                username = "cc10006953@test.1";git a
 //                username = "aminulislamovi.48@gmail.com";
 
@@ -274,7 +274,7 @@ public class LoginActivity extends AppCompatActivity implements LoginContract.Vi
 //                password = "Pain2set";
 //                username = "robinuthappa@gmail.com";
 //                username = "cc10006955@mhv.1";
-//                password = "123456";
+                password = "123456";
 
                 //anc repository object for raw query
 //                AncRepository repo = (AncRepository) AncApplication.getInstance().getRepository();

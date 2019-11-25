@@ -113,7 +113,7 @@
         "hint": "স্থায়ী ঠিকানা কি একই",
         "v_required": {
           "value": true,
-          "err": "Please Select address"
+          "err": "প্রশ্নের উত্তর দিন"
         },
         "values": [
           "হ্যাঁ",
@@ -181,7 +181,7 @@
         "hint": "ডাকঘর (স্থায়ী)",
         "v_required": {
           "value": true,
-          "err": "Please enter post office"
+          "err": "৪০ অক্ষরের ভিতরে বাংলায় লিখুন"
         },
         "v_regex": {
           "value": "[^A-Za-z0-9]{1,40}$",
@@ -215,7 +215,7 @@
           "err": "Please enter a valid name"
         },
         "v_required": {
-          "value": "true",
+          "value": true,
           "err": "Please enter the Name correctly"
         }
       },
@@ -228,7 +228,7 @@
         "hint": "পরিবারের প্রধানের নাম এর \nশেষ অংশ",
         "edit_type": "name",
         "v_required": {
-          "value": "true",
+          "value": true,
           "err": "Please enter the last name"
         },
         "v_regex": {
