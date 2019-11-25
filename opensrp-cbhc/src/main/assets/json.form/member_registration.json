@@ -539,6 +539,10 @@
           "value": "true",
           "err": "Enter age"
         },
+        "v_regex": {
+          "value": "([0-9])|([1-9][0-9])|\s*",
+          "err": "Number must in the range 0 to 99"
+        },
         "v_required": {
           "value": true,
           "err": "Please Type Age"

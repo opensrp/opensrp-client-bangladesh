@@ -41,7 +41,7 @@ public class DraftFormSelectorFragment extends DialogFragment implements View.On
     protected ProgressDialog progressDialog;
     Context context;
     String familyBaseEntityId;
-    DateFormat dateFormat = new SimpleDateFormat("yyyy-mm-dd hh:mm:ss");
+    DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
     private List<draft_form_object> draftFormObjects;
     private draftFormSelectorAdapter draft_FormSelector_Adapter;
     private ListView listview;

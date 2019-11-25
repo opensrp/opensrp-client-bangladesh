@@ -241,15 +241,15 @@ public class JsonFormUtils extends org.smartregister.util.JsonFormUtils {
         for (int i = 0; i < fields.length(); i++) {
             try {
                 JSONObject field_object = fields.getJSONObject(i);
-                if (field_object.has("is_visible") && !field_object.getBoolean("is_visible") && field_object.has("value")) {
+                if (field_object.has("is_visible") && !field_object.getBoolean("is_visible") ) {
                     String type = "";
                     if (field_object.has("type")) {
                         type = field_object.getString("type");
                     }
-                    if (!StringUtils.isEmpty(type) && "check_box".equals(type) && field_object.getJSONArray("value").length()!=0) {
+                    if (!StringUtils.isEmpty(type) && "check_box".equals(type) && field_object.has("value") && field_object.getJSONArray("value").length()!=0) {
                         field_object.put("value", new JSONArray());
                         field_object.put("is_visible",true);
-                    } else if (!StringUtils.isEmpty(field_object.getString("value"))){
+                    } else if (field_object.has("value") && !StringUtils.isEmpty(field_object.getString("value"))){
                         field_object.put("value", "");
                         field_object.put("is_visible",true);
                     }
@@ -824,7 +824,14 @@ public class JsonFormUtils extends org.smartregister.util.JsonFormUtils {
                 if (fieldObject.has("openmrs_choice_ids")) {
                     if (fieldObject.has("value")) {
                         String valueEntered = fieldObject.getString("value");
-                        fieldObject.put("value", fieldObject.getJSONObject("openmrs_choice_ids").get(valueEntered));
+                        JSONObject openmrs_choice_ids = fieldObject.getJSONObject("openmrs_choice_ids");
+                        if(openmrs_choice_ids.has(valueEntered)){
+                            Object newValue = openmrs_choice_ids.get(valueEntered);
+                            fieldObject.put("value", newValue);
+                        }else{
+                            fieldObject.put("value", "");
+                        }
+
                     }
                 }
 //                    }

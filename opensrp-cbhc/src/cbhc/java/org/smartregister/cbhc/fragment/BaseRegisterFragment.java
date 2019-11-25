@@ -354,7 +354,6 @@ public abstract class BaseRegisterFragment extends RecyclerViewFragment implemen
             filterRelativeLayout.setVisibility(View.GONE);
         }
     }
-
     @Override
     public void initializeQueryParams(String tableName, String countSelect, String mainSelect) {
         this.tablename = tableName;
@@ -362,7 +361,7 @@ public abstract class BaseRegisterFragment extends RecyclerViewFragment implemen
         this.countSelect = countSelect;
         this.mainSelect = mainSelect;
         if (StringUtils.isBlank(this.Sortqueries))
-            this.Sortqueries = DBConstants.KEY.LAST_INTERACTED_WITH + " DESC";
+            this.Sortqueries = default_sort_query;
     }
 
     @Override
@@ -380,6 +379,12 @@ public abstract class BaseRegisterFragment extends RecyclerViewFragment implemen
         this.joinTable = joinTableString;
         this.mainCondition = mainConditionString;
         this.joinTables = new String[]{"ec_woman", "ec_child", "ec_member"};
+        if(StringUtils.isEmpty(filterString)){
+            this.Sortqueries = default_sort_query;
+        }else{
+            this.Sortqueries = "first_name COLLATE NOCASE ASC,"+this.Sortqueries;
+        }
+
         countExecute();
 
         if (qrCode && StringUtils.isNotBlank(filterString) && clientAdapter.getTotalcount() == 0 && NetworkUtils.isNetworkAvailable()) {
