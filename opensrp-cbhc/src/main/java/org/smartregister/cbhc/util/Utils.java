@@ -205,7 +205,7 @@ Utils.appendLog(Utils.class.getName(),e);
             return new DateTime(dobString);
 
         } catch (Exception e) {
-Utils.appendLog(Utils.class.getName(),e);
+            Utils.appendLog(Utils.class.getName(),e);
             return null;
         }
     }
