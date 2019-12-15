@@ -129,7 +129,7 @@ public class ProfileActivity extends BaseProfileActivity implements ProfileContr
         nameView = findViewById(R.id.textview_name);
         imageView = findViewById(R.id.imageview_profile);
 
-
+        findViewById(R.id.btn_profile_refer).setVisibility(View.GONE);
         String firstName = org.smartregister.util.Utils.getValue(householdDetails.getColumnmaps(), DBConstants.KEY.FIRST_NAME, true);
         String lastName = org.smartregister.util.Utils.getValue(householdDetails.getColumnmaps(), DBConstants.KEY.LAST_NAME, true);
         if (lastName.equalsIgnoreCase("null") || lastName == null) {

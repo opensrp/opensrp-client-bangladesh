@@ -1,9 +1,13 @@
 package org.smartregister.cbhc.fragment;
 
+import android.content.ComponentName;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
 import android.support.v4.content.CursorLoader;
@@ -19,16 +23,19 @@ import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.github.ybq.android.spinkit.style.FadingCircle;
 
 import net.sqlcipher.database.SQLiteDatabase;
 
 import org.apache.commons.lang3.StringUtils;
+import org.json.JSONObject;
 import org.smartregister.cbhc.R;
 import org.smartregister.cbhc.activity.BaseRegisterActivity;
 import org.smartregister.cbhc.activity.HomeRegisterActivity;
@@ -45,6 +52,7 @@ import org.smartregister.cbhc.receiver.SyncStatusBroadcastReceiver;
 import org.smartregister.cbhc.repository.AncRepository;
 import org.smartregister.cbhc.util.Constants;
 import org.smartregister.cbhc.util.DBConstants;
+import org.smartregister.cbhc.util.MemberObject;
 import org.smartregister.cbhc.util.NetworkUtils;
 import org.smartregister.cbhc.util.Utils;
 import org.smartregister.commonregistry.CommonPersonObjectClient;
@@ -54,6 +62,7 @@ import org.smartregister.cursoradapter.RecyclerViewPaginatedAdapter;
 import org.smartregister.cursoradapter.SmartRegisterQueryBuilder;
 import org.smartregister.domain.FetchStatus;
 import org.smartregister.provider.SmartRegisterClientsProvider;
+import org.smartregister.repository.AllSharedPreferences;
 import org.smartregister.view.activity.SecuredNativeSmartRegisterActivity;
 import org.smartregister.view.dialog.DialogOption;
 
@@ -62,6 +71,8 @@ import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 import java.util.Set;
+
+import static android.app.Activity.RESULT_OK;
 
 /**
  * Created by keyman on 26/06/2018.
@@ -97,6 +108,8 @@ public abstract class BaseRegisterFragment extends RecyclerViewFragment implemen
     TextView unsyncView;
     private Snackbar syncStatusSnackbar;
     private ImageView qrCodeScanImageView;
+    private Button refer_cmed;
+
     private ProgressBar syncProgressBar;
     private boolean globalQrSearch = false;
     protected final TextWatcher textWatcher = new TextWatcher() {
@@ -172,9 +185,49 @@ public abstract class BaseRegisterFragment extends RecyclerViewFragment implemen
         activity.getSupportActionBar().setDisplayUseLogoEnabled(false);
         activity.getSupportActionBar().setDisplayShowTitleEnabled(false);
         unsyncView = toolbar.findViewById(R.id.unsync_count);
+        refer_cmed = toolbar.findViewById(R.id.refer_cmed);
+        refer_cmed.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                createReferJson();
+            }
+        });
         setupViews(view);
         renderView();
         return view;
+    }
+    public void createReferJson(){
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
+        AllSharedPreferences allSharedPreferences = new AllSharedPreferences(preferences);
+        String anm_name = allSharedPreferences.fetchRegisteredANM();
+        String provider_name = allSharedPreferences.getPreference(anm_name);  String cc_id = allSharedPreferences.fetchDefaultTeamId(anm_name);
+        String cc_name = allSharedPreferences.fetchDefaultTeam(anm_name);
+//        String cc_address = allSharedPreferences.fetchCurrentLocality();
+        String cc_address = "";
+
+
+        MemberObject mo = new MemberObject(null,MemberObject.type1);
+        JSONObject jsonObject = mo.getMemberObject(anm_name,provider_name,cc_id,cc_name,cc_address);
+
+        if(appInstalledOrNot("com.cmed.mhv")){
+            Intent intent = new Intent();
+            intent.setAction("android.intent.action.MPWOER");
+            intent.setComponent(new ComponentName("com.cmed.mhv","com.cmed.mhv.home.view.MainActivity_"));
+            intent.putExtra("mPowerData",jsonObject.toString());
+            startActivityForResult(intent,MemberObject.type1_RESULT_CODE);
+        }else{
+            Toast.makeText(getActivity(), "Application not installed", Toast.LENGTH_SHORT).show();
+        }
+
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == MemberObject.type1_RESULT_CODE && resultCode == RESULT_OK) {
+            Toast.makeText(getActivity(),"Successfully group activity done:"+data,Toast.LENGTH_LONG).show();
+            return;
+        }
     }
 
     protected abstract void initializePresenter();
@@ -187,7 +240,16 @@ public abstract class BaseRegisterFragment extends RecyclerViewFragment implemen
         }
     }
 
+    private boolean appInstalledOrNot(String uri) {
+        PackageManager pm = getActivity().getPackageManager();
+        try {
+            pm.getPackageInfo(uri, PackageManager.GET_ACTIVITIES);
+            return true;
+        } catch (PackageManager.NameNotFoundException e) {
+        }
 
+        return false;
+    }
     @Override
     public void updateSearchBarHint(String searchBarText) {
         if (getSearchView() != null) {
@@ -373,6 +435,7 @@ public abstract class BaseRegisterFragment extends RecyclerViewFragment implemen
     }
 
     public void filter(String filterString, String joinTableString, String mainConditionString, boolean qrCode) {
+        if(getSearchCancelView()!=null)
         getSearchCancelView().setVisibility(StringUtils.isEmpty(filterString) ? View.INVISIBLE : View.VISIBLE);
 //        filterString = " and ec_household.phone_number like '%017%' ";
         this.filters = filterString;

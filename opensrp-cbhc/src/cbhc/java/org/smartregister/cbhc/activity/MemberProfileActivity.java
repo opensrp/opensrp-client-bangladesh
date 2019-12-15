@@ -2,13 +2,17 @@ package org.smartregister.cbhc.activity;
 
 import android.Manifest;
 import android.app.AlertDialog;
+import android.content.ComponentName;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 import android.util.Log;
@@ -49,6 +53,7 @@ import org.smartregister.cbhc.util.Constants;
 import org.smartregister.cbhc.util.DBConstants;
 import org.smartregister.cbhc.util.ImageLoaderByGlide;
 import org.smartregister.cbhc.util.JsonFormUtils;
+import org.smartregister.cbhc.util.MemberObject;
 import org.smartregister.cbhc.util.Utils;
 import org.smartregister.cbhc.view.CopyToClipboardDialog;
 import org.smartregister.clientandeventmodel.Event;
@@ -56,6 +61,7 @@ import org.smartregister.clientandeventmodel.Obs;
 import org.smartregister.commonregistry.CommonPersonObject;
 import org.smartregister.commonregistry.CommonPersonObjectClient;
 import org.smartregister.domain.ProfileImage;
+import org.smartregister.repository.AllSharedPreferences;
 import org.smartregister.repository.BaseRepository;
 import org.smartregister.repository.EventClientRepository;
 import org.smartregister.repository.ImageRepository;
@@ -150,7 +156,7 @@ public class MemberProfileActivity extends BaseProfileActivity implements Profil
                 imageView.setImageDrawable(getResources().getDrawable(R.drawable.male_register_placeholder_profile));
             }
         }
-
+            findViewById(R.id.btn_profile_refer).setOnClickListener(this);
 //        ImageRepository imageRepo = CoreLibrary.getInstance().context().imageRepository();
 //        ProfileImage imageRecord = imageRepo.findByEntityId(householdDetails.entityId());
 //
@@ -360,6 +366,10 @@ public class MemberProfileActivity extends BaseProfileActivity implements Profil
                 }
 
                 break;
+            case R.id.btn_profile_refer:
+                householdDetails.getColumnmaps().putAll(AncApplication.getInstance().getContext().detailsRepository().getAllDetailsForClient(householdDetails.entityId()));
+                createReferJson();
+                break;
             case R.id.edit_member:
 //                CommonPersonObjectClient pclient  = (CommonPersonObjectClient) view.getTag();
 //                String formMetadataformembers = JsonFormUtils.getMemberJsonEditFormString(this, pclient.getColumnmaps());
@@ -372,7 +382,42 @@ public class MemberProfileActivity extends BaseProfileActivity implements Profil
                 break;
         }
     }
+    private boolean appInstalledOrNot(String uri) {
+        PackageManager pm = getPackageManager();
+        try {
+            pm.getPackageInfo(uri, PackageManager.GET_ACTIVITIES);
+            return true;
+        } catch (PackageManager.NameNotFoundException e) {
+        }
 
+        return false;
+    }
+    public void createReferJson(){
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
+        AllSharedPreferences allSharedPreferences = new AllSharedPreferences(preferences);
+        String anm_name = allSharedPreferences.fetchRegisteredANM();
+        String provider_name = allSharedPreferences.getPreference(anm_name);
+        String cc_id = allSharedPreferences.fetchDefaultTeamId(anm_name);
+        String cc_name = allSharedPreferences.fetchDefaultTeam(anm_name);
+        String cc_address = "";
+//        String cc_address = allSharedPreferences.fetchCurrentLocality();
+
+
+        MemberObject mo = new MemberObject(householdDetails,MemberObject.type2);
+        JSONObject jsonObject = mo.getMemberObject(anm_name,provider_name,cc_id,cc_name,cc_address);
+        if(appInstalledOrNot("com.cmed.mhv")) {
+
+            Intent intent = new Intent();
+            intent.setAction("android.intent.action.MPWOER");
+            intent.setComponent(new ComponentName("com.cmed.mhv", "com.cmed.mhv.home.view.MainActivity_"));
+            intent.putExtra("mPowerData", jsonObject.toString());
+            startActivityForResult(intent, MemberObject.type2_RESULT_CODE);
+
+            Toast.makeText(this,"data:"+jsonObject,Toast.LENGTH_LONG).show();
+        }else{
+            Toast.makeText(this, "Application not installed", Toast.LENGTH_SHORT).show();
+        }
+    }
     private ViewPager setupViewPager(ViewPager viewPager) {
         ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
 
@@ -775,6 +820,10 @@ public class MemberProfileActivity extends BaseProfileActivity implements Profil
 
     @Override
     protected void onActivityResult(final int requestCode, final int resultCode, final Intent data) {
+        if (requestCode == MemberObject.type2_RESULT_CODE && resultCode == RESULT_OK) {
+            Toast.makeText(MemberProfileActivity.this,"Successfully refered:"+data,Toast.LENGTH_LONG).show();
+            return;
+        }
 
         householdDetails.getColumnmaps().putAll(AncApplication.getInstance().getContext().detailsRepository().getAllDetailsForClient(householdDetails.entityId()));
         followupFragment.notifyAdapter();

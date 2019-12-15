@@ -2,6 +2,7 @@ package org.smartregister.cbhc.activity;
 
 import android.app.FragmentTransaction;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.util.Log;
@@ -80,6 +81,7 @@ public class HomeRegisterActivity extends BaseRegisterActivity {
         mBaseFragment.updateSortAndFilter(filterList, sortField);
         switchToBaseFragment();
     }
+
 
     public void clearFilter() {
         mBaseFragment.clearSortAndFilter();
@@ -200,5 +202,11 @@ public class HomeRegisterActivity extends BaseRegisterActivity {
         alertDialog.show();
     }
 
-
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if(getRegisterFragment() != null){
+            getRegisterFragment().onActivityResult(requestCode,resultCode,data);
+        }
+    }
 }

@@ -55,7 +55,7 @@ public class MeFragment extends Fragment implements MeContract.View {
         Logout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                AncApplication.getInstance().logoutCurrentUser();
+                AncApplication.getInstance().forceLogoutCurrentUser();
             }
         });
         Force_Logout.setOnClickListener(new View.OnClickListener() {
