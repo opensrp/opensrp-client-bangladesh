@@ -207,7 +207,7 @@ public abstract class BaseRegisterFragment extends RecyclerViewFragment implemen
 
 
         MemberObject mo = new MemberObject(null,MemberObject.type1);
-        JSONObject jsonObject = mo.getMemberObject(anm_name,provider_name,cc_id,cc_name,cc_address);
+        JSONObject jsonObject = mo.getMemberObject(anm_name,provider_name,cc_id,cc_name,cc_address,"");
 
         if(appInstalledOrNot("com.cmed.mhv")){
             Intent intent = new Intent();

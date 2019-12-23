@@ -395,28 +395,61 @@ public class MemberProfileActivity extends BaseProfileActivity implements Profil
     public void createReferJson(){
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
         AllSharedPreferences allSharedPreferences = new AllSharedPreferences(preferences);
-        String anm_name = allSharedPreferences.fetchRegisteredANM();
-        String provider_name = allSharedPreferences.getPreference(anm_name);
-        String cc_id = allSharedPreferences.fetchDefaultTeamId(anm_name);
-        String cc_name = allSharedPreferences.fetchDefaultTeam(anm_name);
-        String cc_address = "";
+        final String anm_name = allSharedPreferences.fetchRegisteredANM();
+        final String provider_name = allSharedPreferences.getPreference(anm_name);
+        final String cc_id = allSharedPreferences.fetchDefaultTeamId(anm_name);
+        final String cc_name = allSharedPreferences.fetchDefaultTeam(anm_name);
+        final String cc_address = "";
 //        String cc_address = allSharedPreferences.fetchCurrentLocality();
 
 
-        MemberObject mo = new MemberObject(householdDetails,MemberObject.type2);
-        JSONObject jsonObject = mo.getMemberObject(anm_name,provider_name,cc_id,cc_name,cc_address);
-        if(appInstalledOrNot("com.cmed.mhv")) {
+        final MemberObject mo = new MemberObject(householdDetails,MemberObject.type2);
+        org.smartregister.util.Utils.startAsyncTask(new AsyncTask() {
+            public String getValue(String key) {
+                if (householdDetails != null && householdDetails.getColumnmaps().containsKey(key))
+                    return householdDetails.getColumnmaps().get(key) == null ? "" : householdDetails.getColumnmaps().get(key);
+                return "";
+            }
+            String house_hold_viewable_id = "";
+            @Override
+            protected Object doInBackground(Object[] objects) {
+                AncRepository repo = (AncRepository) AncApplication.getInstance().getRepository();
+                SQLiteDatabase db = repo.getReadableDatabase();
+                String house_hold_id = getValue("relational_id");
 
-            Intent intent = new Intent();
-            intent.setAction("android.intent.action.MPWOER");
-            intent.setComponent(new ComponentName("com.cmed.mhv", "com.cmed.mhv.home.view.MainActivity_"));
-            intent.putExtra("mPowerData", jsonObject.toString());
-            startActivityForResult(intent, MemberObject.type2_RESULT_CODE);
+                Cursor cursor = db.rawQuery("select value from ec_details where base_entity_id='"+house_hold_id+"' and key = 'householdCode'", new String[]{});
+                if(cursor!=null&&cursor.getCount()>0&&cursor.moveToFirst()){
+                    try {
+                        if(cursor.getString(0)!=null)
+                            house_hold_viewable_id = cursor.getString(0);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }
+                cursor.close();
+                return null;
+            }
 
-            Toast.makeText(this,"data:"+jsonObject,Toast.LENGTH_LONG).show();
-        }else{
-            Toast.makeText(this, "Application not installed", Toast.LENGTH_SHORT).show();
-        }
+            @Override
+            protected void onPostExecute(Object o) {
+                super.onPostExecute(o);
+                JSONObject jsonObject = mo.getMemberObject(anm_name,provider_name,cc_id,cc_name,cc_address,house_hold_viewable_id);
+                if(appInstalledOrNot("com.cmed.mhv")) {
+
+                    Intent intent = new Intent();
+                    intent.setAction("android.intent.action.MPWOER");
+                    intent.setComponent(new ComponentName("com.cmed.mhv", "com.cmed.mhv.home.view.MainActivity_"));
+                    intent.putExtra("mPowerData", jsonObject.toString());
+                    startActivityForResult(intent, MemberObject.type2_RESULT_CODE);
+
+                    Toast.makeText(MemberProfileActivity.this,"data:"+jsonObject,Toast.LENGTH_LONG).show();
+                }else{
+                    Toast.makeText(MemberProfileActivity.this, "Application not installed", Toast.LENGTH_SHORT).show();
+                }
+
+            }
+        },null);
+
     }
     private ViewPager setupViewPager(ViewPager viewPager) {
         ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
