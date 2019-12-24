@@ -99,7 +99,8 @@
             android:screenOrientation="portrait"
             android:theme="@style/AncAppTheme.NoActionBar"
             />
-
+        <uses-library android:name="org.apache.http.legacy"
+            android:required="false"/>
 
     </application>
 
