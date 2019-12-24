@@ -442,7 +442,7 @@ public class MemberProfileActivity extends BaseProfileActivity implements Profil
                     intent.putExtra("mPowerData", jsonObject.toString());
                     startActivityForResult(intent, MemberObject.type2_RESULT_CODE);
 
-                    Toast.makeText(MemberProfileActivity.this,"data:"+jsonObject,Toast.LENGTH_LONG).show();
+//                    Toast.makeText(MemberProfileActivity.this,"data:"+jsonObject,Toast.LENGTH_LONG).show();
                 }else{
                     Toast.makeText(MemberProfileActivity.this, "Application not installed", Toast.LENGTH_SHORT).show();
                 }
