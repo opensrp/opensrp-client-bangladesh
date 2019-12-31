@@ -373,6 +373,7 @@ public abstract class BaseRegisterFragment extends RecyclerViewFragment implemen
     }
 
     public void filter(String filterString, String joinTableString, String mainConditionString, boolean qrCode) {
+        if(getSearchCancelView()!=null)
         getSearchCancelView().setVisibility(StringUtils.isEmpty(filterString) ? View.INVISIBLE : View.VISIBLE);
 //        filterString = " and ec_household.phone_number like '%017%' ";
         this.filters = filterString;
