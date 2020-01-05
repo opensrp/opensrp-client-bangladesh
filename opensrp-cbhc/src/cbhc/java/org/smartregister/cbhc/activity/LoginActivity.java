@@ -36,6 +36,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 import org.joda.time.DateTime;
+import org.smartregister.cbhc.BuildConfig;
 import org.smartregister.cbhc.R;
 import org.smartregister.cbhc.contract.LoginContract;
 import org.smartregister.cbhc.event.ViewConfigurationSyncCompleteEvent;
@@ -132,7 +133,7 @@ public class LoginActivity extends AppCompatActivity implements LoginContract.Vi
             goToHome(false);
         }
         mActivity = this;
-//        app_version_status();
+        app_version_status();
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
         AllSharedPreferences allSharedPreferences = new AllSharedPreferences(preferences);
         String anm_name = allSharedPreferences.fetchRegisteredANM();

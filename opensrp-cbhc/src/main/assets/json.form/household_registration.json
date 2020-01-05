@@ -345,6 +345,10 @@
         "v_numeric": {
           "value": "true",
           "err": "Must Contain Numeric Value"
+        },
+        "v_required": {
+          "value": true,
+          "err": "Please enter member count"
         }
       },
       {

@@ -1402,7 +1402,7 @@ public class JsonFormUtils extends org.smartregister.util.JsonFormUtils {
 
         if (jsonObject.getString(JsonFormUtils.KEY).equalsIgnoreCase("lmp_date")) {
 
-            String dobString = womanClient.get("lmp_date");
+            String dobString = womanClient.get("LMP");
             Date dob = Utils.dobStringToDate(dobString);
             if (dob != null) {
                 jsonObject.put(JsonFormUtils.VALUE, DATE_FORMAT.format(dob));
@@ -1859,7 +1859,23 @@ public class JsonFormUtils extends org.smartregister.util.JsonFormUtils {
 //                phone_number = phone_number.substring(phone_number.length()-11);
 //            }
                         object.put(JsonFormUtils.VALUE, phone_number);
-                    } else if (key != null && !key.startsWith("followup_Date")) {
+                    } else if (object.getString(JsonFormUtils.KEY).equalsIgnoreCase("lmp_date")) {
+
+                        String dobString = column_maps.get("LMP");
+                        Date dob = Utils.dobStringToDate(dobString);
+                        if (dob != null) {
+                            object.put(JsonFormUtils.VALUE, DATE_FORMAT.format(dob));
+                        }
+
+                    } else if (object.getString(JsonFormUtils.KEY).equalsIgnoreCase("Delivery_date")) {
+
+                        String dobString = column_maps.get("Delivery_date");
+                        Date dob = Utils.dobStringToDate(dobString);
+                        if (dob != null) {
+                            object.put(JsonFormUtils.VALUE, DATE_FORMAT.format(dob));
+                        }
+
+                    }else if (key != null && !key.startsWith("followup_Date")) {
                         String openmrs_key = object.getString(openmrs_entity_id);
                         String value = column_maps.get(openmrs_key);
                         if (value == null || (value != null && value.isEmpty()))
@@ -1868,6 +1884,7 @@ public class JsonFormUtils extends org.smartregister.util.JsonFormUtils {
                         if (value != null) {
 
                             value = processValueWithChoiceIds(object, value);
+
                             object.put(VALUE, value);
                         }
                     }
