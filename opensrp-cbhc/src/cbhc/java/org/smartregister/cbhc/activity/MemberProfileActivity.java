@@ -138,6 +138,7 @@ public class MemberProfileActivity extends BaseProfileActivity implements Profil
     }
 
     private void setUpViews() {
+        householdDetails.getColumnmaps().putAll(AncApplication.getInstance().getContext().detailsRepository().getAllDetailsForClient(householdDetails.entityId()));
         imageView = findViewById(R.id.imageview_profile);
         if (typeofMember != null) {
             if (typeofMember.equalsIgnoreCase("malechild")) {

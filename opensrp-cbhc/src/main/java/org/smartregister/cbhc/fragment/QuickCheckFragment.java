@@ -57,15 +57,6 @@ public class QuickCheckFragment extends DialogFragment implements QuickCheckCont
 
     private Button refer;
 
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-
-        setStyle(DialogFragment.STYLE_NO_TITLE, R.style.AncFullScreenDialog);
-
-        initializePresenter();
-    }
-
     public static void launchDialog(Activity activity,
                                     String dialogTag) {
         QuickCheckFragment dialogFragment = new QuickCheckFragment();
@@ -84,6 +75,15 @@ public class QuickCheckFragment extends DialogFragment implements QuickCheckCont
         ft.addToBackStack(null);
 
         dialogFragment.show(ft, dialogTag);
+    }
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+        setStyle(DialogFragment.STYLE_NO_TITLE, R.style.AncFullScreenDialog);
+
+        initializePresenter();
     }
 
     @Nullable
@@ -358,15 +358,6 @@ public class QuickCheckFragment extends DialogFragment implements QuickCheckCont
         private List<Field> reasons;
         private CheckedTextView lastChecked;
 
-        public class ViewHolder extends RecyclerView.ViewHolder {
-            private CheckedTextView checkedTextView;
-
-            private ViewHolder(CheckedTextView v) {
-                super(v);
-                checkedTextView = v;
-            }
-        }
-
         private ReasonAdapter() {
             this.reasons = presenter.getConfig().getReasons();
         }
@@ -412,20 +403,20 @@ public class QuickCheckFragment extends DialogFragment implements QuickCheckCont
             return reasons.size();
         }
 
+        public class ViewHolder extends RecyclerView.ViewHolder {
+            private CheckedTextView checkedTextView;
+
+            private ViewHolder(CheckedTextView v) {
+                super(v);
+                checkedTextView = v;
+            }
+        }
+
     }
 
     private class ComplaintDangerAdapter extends RecyclerView.Adapter<ComplaintDangerAdapter.ViewHolder> {
         private List<Field> list;
         private boolean isDangerSign;
-
-        public class ViewHolder extends RecyclerView.ViewHolder {
-            public CheckedTextView checkedTextView;
-
-            public ViewHolder(CheckedTextView v) {
-                super(v);
-                checkedTextView = v;
-            }
-        }
 
         private ComplaintDangerAdapter(boolean isDangerSign) {
             this.isDangerSign = isDangerSign;
@@ -504,6 +495,15 @@ public class QuickCheckFragment extends DialogFragment implements QuickCheckCont
         @Override
         public int getItemCount() {
             return list.size();
+        }
+
+        public class ViewHolder extends RecyclerView.ViewHolder {
+            public CheckedTextView checkedTextView;
+
+            public ViewHolder(CheckedTextView v) {
+                super(v);
+                checkedTextView = v;
+            }
         }
 
     }

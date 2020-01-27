@@ -28,7 +28,7 @@ public abstract class Constants {
 
     public static final String GLOBAL_IDENTIFIER = "identifier";
     public static final String ANC_ID = "ANC_ID";
-
+    public static String DEFALT_DATE_REMOVED_DATE = "01-01-1001";
     public static class CONFIGURATION {
         public static final String LOGIN = "login";
         public static final String HOME_REGISTER = "home_register";

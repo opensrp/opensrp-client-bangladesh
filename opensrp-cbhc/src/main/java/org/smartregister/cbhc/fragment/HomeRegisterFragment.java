@@ -16,7 +16,7 @@ import java.util.Objects;
  */
 
 public class HomeRegisterFragment extends BaseRegisterFragment {
-	@Override
+    @Override
     protected void initializePresenter() {
         if (getActivity() == null) {
             return;
@@ -37,23 +37,23 @@ public class HomeRegisterFragment extends BaseRegisterFragment {
 
     @Override
     public void setupViews(View view) {
-	    super.setupViews(view);
-	    View filterText = view.findViewById(R.id.filter_text_view);
-	    if (filterText != null) {
-		    filterText.setOnClickListener(registerActionHandler);
-	    }
-	
-	    // Due Button
-	    View contactButton = view.findViewById(R.id.due_button);
-	    if (contactButton != null) {
-		    contactButton.setOnClickListener(registerActionHandler);
-	    }
-	
-	    //Risk view
-	    View attentionFlag = view.findViewById(R.id.risk_layout);
-	    if (attentionFlag != null) {
-		    attentionFlag.setOnClickListener(registerActionHandler);
-	    }
+        super.setupViews(view);
+        View filterText = view.findViewById(R.id.filter_text_view);
+        if (filterText != null) {
+            filterText.setOnClickListener(registerActionHandler);
+        }
+
+        // Due Button
+        View contactButton = view.findViewById(R.id.due_button);
+        if (contactButton != null) {
+            contactButton.setOnClickListener(registerActionHandler);
+        }
+
+        //Risk view
+        View attentionFlag = view.findViewById(R.id.risk_layout);
+        if (attentionFlag != null) {
+            attentionFlag.setOnClickListener(registerActionHandler);
+        }
     }
 
     @Override
@@ -65,17 +65,17 @@ public class HomeRegisterFragment extends BaseRegisterFragment {
         HomeRegisterActivity homeRegisterActivity = (HomeRegisterActivity) getActivity();
 
         switch (view.getId()) {
-	        case R.id.filter_text_view:
-	        	homeRegisterActivity.switchToFragment(2);
-	        	break;
+            case R.id.filter_text_view:
+                homeRegisterActivity.switchToFragment(2);
+                break;
             default:
                 break;
         }
     }
-    
+
     @SuppressLint("NewApi")
     @Override
     public void showNotFoundPopup(String whoAncId) {
-        NoMatchDialogFragment.launchDialog((BaseRegisterActivity)Objects.requireNonNull(getActivity()), DIALOG_TAG, whoAncId);
+        NoMatchDialogFragment.launchDialog((BaseRegisterActivity) Objects.requireNonNull(getActivity()), DIALOG_TAG, whoAncId);
     }
 }

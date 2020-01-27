@@ -35,7 +35,7 @@ public class AncEditTextFactory extends EditTextFactory {
         super.attachLayout(stepName, context, formFragment, jsonObject, editText, editButton);
         if (jsonObject.has("look_up") && jsonObject.get("look_up").toString().equalsIgnoreCase(Boolean.TRUE.toString())) {
             String entityId = jsonObject.getString("key");
-            if(jsonObject.has("entity_id")) {
+            if (jsonObject.has("entity_id")) {
                 entityId = jsonObject.getString("entity_id");
             }
 
@@ -50,10 +50,10 @@ public class AncEditTextFactory extends EditTextFactory {
             }
             lookupMap.put(entityId, lookUpViews);
             String household_id = "";
-            if (jsonObject.has("relational_id")){
+            if (jsonObject.has("relational_id")) {
                 household_id = jsonObject.getString("relational_id");
             }
-            editText.addTextChangedListener(new LookUpTextWatcher(formFragment, editText, entityId,household_id));
+            editText.addTextChangedListener(new LookUpTextWatcher(formFragment, editText, entityId, household_id));
             editText.setTag(com.vijay.jsonwizard.R.id.after_look_up, false);
         }
     }
@@ -65,7 +65,7 @@ public class AncEditTextFactory extends EditTextFactory {
 
             RelativeLayout rootLayout = getRootLayout(context);
             final MaterialEditText editText = rootLayout.findViewById(R.id.edit_text);
-            ImageView editButton = (ImageView)rootLayout.findViewById(com.vijay.jsonwizard.R.id.material_edit_text_edit_button);
+            ImageView editButton = rootLayout.findViewById(com.vijay.jsonwizard.R.id.material_edit_text_edit_button);
             editButton.setVisibility(View.INVISIBLE);
 
             attachLayout(stepName, context, formFragment, jsonObject, editText, editButton);

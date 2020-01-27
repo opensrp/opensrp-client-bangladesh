@@ -33,7 +33,7 @@ public class ExtendedSyncIntentService extends IntentService {
         try {
 
             if (NetworkUtils.isNetworkAvailable()) {
-                actionService.fetchNewActions();
+//                actionService.fetchNewActions();
 
                 startSyncValidation();
             }

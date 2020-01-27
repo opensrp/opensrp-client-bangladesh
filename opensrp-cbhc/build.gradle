@@ -44,7 +44,6 @@ android {
         buildConfigField "boolean", "IS_SYNC_SETTINGS", "true"
         buildConfigField "long", "BUILD_TIMESTAMP", System.currentTimeMillis() + "L"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
-
         javaCompileOptions {
             annotationProcessorOptions {
                 arguments = [eventBusIndex: 'org.smartregister.cbhc.CBHCEventBusIndex']
@@ -177,8 +176,7 @@ dependencies {
     }
 
     //    build from 243
-    implementation('org.smartregister:opensrp-client-native-form:6.6.28-SNAPSHOT@aar') {
-
+    implementation('org.smartregister:opensrp-client-native-form:6.6.30-SNAPSHOT@aar') {
         transitive = true
         exclude group: 'com.android.support', module: 'recyclerview-v7'
         exclude group: 'com.android.support', module: 'appcompat-v7'
@@ -188,7 +186,8 @@ dependencies {
 
     //    use issue158 branch for local build
     //    build from issue268
-    implementation('org.smartregister:opensrp-client-core:2.6.51-SNAPSHOT') {
+    //    core version 2.6.51 for older build 2.7.26 for latest build
+    implementation('org.smartregister:opensrp-client-core:2.7.26-SNAPSHOT') {
         transitive = true
         exclude group: 'com.github.bmelnychuk', module: 'atv'
         exclude group: 'com.google.guava', module: 'guava'

@@ -4,13 +4,10 @@ import android.app.Activity;
 import android.app.DialogFragment;
 import android.app.ProgressDialog;
 import android.content.Context;
-import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.util.Log;
-import android.util.Pair;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,24 +18,17 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import org.apache.commons.lang3.StringUtils;
-import org.apache.commons.lang3.tuple.Triple;
 import org.json.JSONException;
 import org.json.JSONObject;
-
 import org.smartregister.cbhc.R;
 import org.smartregister.cbhc.activity.HomeRegisterActivity;
 import org.smartregister.cbhc.application.AncApplication;
 import org.smartregister.cbhc.domain.draft_form_object;
 import org.smartregister.cbhc.repository.DraftFormRepository;
 import org.smartregister.cbhc.util.Constants;
-import org.smartregister.clientandeventmodel.Client;
-import org.smartregister.clientandeventmodel.Event;
-import org.smartregister.util.FormUtils;
 import org.smartregister.util.Utils;
 
 import java.text.DateFormat;
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
@@ -47,20 +37,25 @@ public class DraftFormSelectorFragment extends DialogFragment implements View.On
 
 
     public static String DIALOG_TAG = "draft_form_dialog";
+    public static DraftFormRepository draftFormRepository;
     protected ProgressDialog progressDialog;
     Context context;
     String familyBaseEntityId;
+    DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
     private List<draft_form_object> draftFormObjects;
-    public static DraftFormRepository draftFormRepository;
-    DateFormat dateFormat = new SimpleDateFormat("yyyy-mm-dd hh:mm:ss");
     private draftFormSelectorAdapter draft_FormSelector_Adapter;
     private ListView listview;
 
+    public static DraftFormSelectorFragment newInstance() {
+        DraftFormSelectorFragment draftFormSelectorFragment = new DraftFormSelectorFragment();
+        return draftFormSelectorFragment;
+    }
 
-    public void setContext(Context context){
+    public void setContext(Context context) {
         this.context = context;
     }
-    public void setFamilyBaseEntityId(String familyBaseEntityId){
+
+    public void setFamilyBaseEntityId(String familyBaseEntityId) {
         this.familyBaseEntityId = familyBaseEntityId;
     }
 
@@ -72,8 +67,7 @@ public class DraftFormSelectorFragment extends DialogFragment implements View.On
     }
 
     @Override
-    public void onActivityCreated(Bundle savedInstanceState)
-    {
+    public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
     }
 
@@ -91,11 +85,11 @@ public class DraftFormSelectorFragment extends DialogFragment implements View.On
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        ((LinearLayout)view.findViewById(R.id.start_form)).setOnClickListener(DraftFormSelectorFragment.this);
+        view.findViewById(R.id.start_form).setOnClickListener(DraftFormSelectorFragment.this);
 
 
-        listview = (ListView) view.findViewById(R.id.draft_form_list);
-         draft_FormSelector_Adapter = new draftFormSelectorAdapter(context,0,draftFormObjects);
+        listview = view.findViewById(R.id.draft_form_list);
+        draft_FormSelector_Adapter = new draftFormSelectorAdapter(context, 0, draftFormObjects);
         listview.setAdapter(draft_FormSelector_Adapter);
         draft_FormSelector_Adapter.notifyDataSetChanged();
     }
@@ -115,8 +109,6 @@ public class DraftFormSelectorFragment extends DialogFragment implements View.On
 //        }
     }
 
-
-
     @Override
     public void onStart() {
         super.onStart();
@@ -125,56 +117,48 @@ public class DraftFormSelectorFragment extends DialogFragment implements View.On
         new Handler().post(new Runnable() {
             @Override
             public void run() {
-                if(getDialog()!=null)
-                getDialog().getWindow().setLayout(FrameLayout.LayoutParams.MATCH_PARENT, FrameLayout.LayoutParams.WRAP_CONTENT);
+                if (getDialog() != null)
+                    getDialog().getWindow().setLayout(FrameLayout.LayoutParams.MATCH_PARENT, FrameLayout.LayoutParams.WRAP_CONTENT);
 
             }
         });
 
     }
 
-
-
-    public static DraftFormSelectorFragment newInstance() {
-        DraftFormSelectorFragment draftFormSelectorFragment = new DraftFormSelectorFragment();
-        return draftFormSelectorFragment;
-    }
-
-
     @Override
     public void onClick(View v) {
-        switch (v.getId()){
+        switch (v.getId()) {
             case R.id.delete_draft:
-                draftFormRepository.deleteDraftForms(((draft_form_object)v.getTag()).getID_COLUMN());
-                if(familyBaseEntityId==null){
-                    draftFormObjects = ((HomeRegisterActivity)context).checkForDraft();
-                    draft_FormSelector_Adapter = new draftFormSelectorAdapter(context,0,draftFormObjects);
+                draftFormRepository.deleteDraftForms(((draft_form_object) v.getTag()).getID_COLUMN());
+                if (familyBaseEntityId == null) {
+                    draftFormObjects = ((HomeRegisterActivity) context).checkForDraft();
+                    draft_FormSelector_Adapter = new draftFormSelectorAdapter(context, 0, draftFormObjects);
                     listview.setAdapter(draft_FormSelector_Adapter);
                     draft_FormSelector_Adapter.notifyDataSetChanged();
 
-                }else{
-                    draftFormObjects = ((HomeRegisterActivity)context).checkForDraftWithEntityId(familyBaseEntityId);
-                    draft_FormSelector_Adapter = new draftFormSelectorAdapter(context,0,draftFormObjects);
+                } else {
+                    draftFormObjects = ((HomeRegisterActivity) context).checkForDraftWithEntityId(familyBaseEntityId);
+                    draft_FormSelector_Adapter = new draftFormSelectorAdapter(context, 0, draftFormObjects);
                     listview.setAdapter(draft_FormSelector_Adapter);
                     draft_FormSelector_Adapter.notifyDataSetChanged();
                 }
                 break;
             case R.id.form_column:
                 try {
-                    String draftForm = ((draft_form_object)v.getTag()).getDraftFormJson();
-                    draftFormRepository.deleteDraftForms(((draft_form_object)v.getTag()).getID_COLUMN());
-                    ((HomeRegisterActivity)context).startFormActivity(new JSONObject((draftForm)));
+                    String draftForm = ((draft_form_object) v.getTag()).getDraftFormJson();
+                    draftFormRepository.deleteDraftForms(((draft_form_object) v.getTag()).getID_COLUMN());
+                    ((HomeRegisterActivity) context).startFormActivity(new JSONObject((draftForm)));
                 } catch (JSONException e) {
-org.smartregister.cbhc.util.Utils.appendLog(getClass().getName(),e);
+                    org.smartregister.cbhc.util.Utils.appendLog(getClass().getName(), e);
                     e.printStackTrace();
                 }
                 dismiss();
                 break;
             case R.id.start_form:
-                if(familyBaseEntityId==null){
-                    ((HomeRegisterActivity)context).startFormActivity(Constants.JSON_FORM.Household_REGISTER, null, null);
-                }else{
-                    ((HomeRegisterActivity)context).startMemberRegistrationForm(familyBaseEntityId);
+                if (familyBaseEntityId == null) {
+                    ((HomeRegisterActivity) context).startFormActivity(Constants.JSON_FORM.Household_REGISTER, null, null);
+                } else {
+                    ((HomeRegisterActivity) context).startMemberRegistrationForm(familyBaseEntityId);
                 }
                 dismiss();
                 break;
@@ -187,7 +171,7 @@ org.smartregister.cbhc.util.Utils.appendLog(getClass().getName(),e);
 
     @Override
     public void dismiss() {
-        if(getFragmentManager()!=null){
+        if (getFragmentManager() != null) {
             super.dismiss();
         }
     }
@@ -221,12 +205,12 @@ org.smartregister.cbhc.util.Utils.appendLog(getClass().getName(),e);
         this.draftFormObjects = draftFormObjects;
     }
 
-    class draftFormSelectorAdapter extends ArrayAdapter<draft_form_object>{
+    class draftFormSelectorAdapter extends ArrayAdapter<draft_form_object> {
         List<draft_form_object> draft_form_objects;
 
         public draftFormSelectorAdapter(@NonNull Context context, int resource, @NonNull List<draft_form_object> objects) {
             super(context, resource, objects);
-            this.draft_form_objects  = objects;
+            this.draft_form_objects = objects;
         }
 
         @Override
@@ -234,7 +218,7 @@ org.smartregister.cbhc.util.Utils.appendLog(getClass().getName(),e);
             LayoutInflater inflater = (LayoutInflater) context
                     .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             View rowView = inflater.inflate(R.layout.draft_form_list_row, parent, false);
-            ((TextView)rowView.findViewById(R.id.form_name)).setText(draft_form_objects.get(position).getFormNAME());
+            ((TextView) rowView.findViewById(R.id.form_name)).setText(draft_form_objects.get(position).getFormNAME());
 
 
             //to convert Date to String, use format method of SimpleDateFormat class.
@@ -245,19 +229,18 @@ org.smartregister.cbhc.util.Utils.appendLog(getClass().getName(),e);
 
                 strDate = dateFormat.format(date);
             } catch (Exception e) {
-org.smartregister.cbhc.util.Utils.appendLog(getClass().getName(),e);
+                org.smartregister.cbhc.util.Utils.appendLog(getClass().getName(), e);
                 e.printStackTrace();
             }
-            ((TextView)rowView.findViewById(R.id.form_date)).setText(strDate);
+            ((TextView) rowView.findViewById(R.id.form_date)).setText(strDate);
 
 
-            LinearLayout draft_form = (LinearLayout)rowView.findViewById(R.id.form_column);
+            LinearLayout draft_form = rowView.findViewById(R.id.form_column);
             draft_form.setTag(draft_form_objects.get(position));
             draft_form.setOnClickListener(DraftFormSelectorFragment.this);
-            ImageButton delete_draft = (ImageButton)rowView.findViewById(R.id.delete_draft);
+            ImageButton delete_draft = rowView.findViewById(R.id.delete_draft);
             delete_draft.setTag(draft_form_objects.get(position));
             delete_draft.setOnClickListener(DraftFormSelectorFragment.this);
-
 
 
             return rowView;

@@ -237,6 +237,30 @@ public class JsonFormUtils extends org.smartregister.util.JsonFormUtils {
         return uniqueId;
     }
 
+    public static void removeEmptyFields(JSONArray fields) {
+        for (int i = 0; i < fields.length(); i++) {
+            try {
+                JSONObject field_object = fields.getJSONObject(i);
+                if (field_object.has("is_visible") && !field_object.getBoolean("is_visible") ) {
+                    String type = "";
+                    if (field_object.has("type")) {
+                        type = field_object.getString("type");
+                    }
+                    if (!StringUtils.isEmpty(type) && "check_box".equals(type) && field_object.has("value") && field_object.getJSONArray("value").length()!=0) {
+                        field_object.put("value", new JSONArray());
+                        field_object.put("is_visible",true);
+                    } else if (field_object.has("value") && !StringUtils.isEmpty(field_object.getString("value"))){
+                        field_object.put("value", "");
+                        field_object.put("is_visible",true);
+                    }
+                }
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+
+        }
+    }
+
     public static Pair<Client, Event> processRegistrationForm(AllSharedPreferences allSharedPreferences, String jsonString) {
         SQLiteDatabase db = AncApplication.getInstance().getRepository().getReadableDatabase();
 
@@ -250,7 +274,8 @@ public class JsonFormUtils extends org.smartregister.util.JsonFormUtils {
             JSONObject jsonForm = registrationFormParams.getMiddle();
 
             JSONArray fields = registrationFormParams.getRight();
-//            removeEmptyFields(fields);
+
+            removeEmptyFields(fields);
 //            fields = processAttributesWithChoiceIDs(fields);
 
             String entityId = getString(jsonForm, ENTITY_ID);
@@ -268,11 +293,14 @@ public class JsonFormUtils extends org.smartregister.util.JsonFormUtils {
             // String lastLocationName = null;
             // String lastLocationId = null;
             // TODO Replace values for location questions with their corresponding location IDs
-
-
+            String relational_id = "";
+            Long lastInteractedTime = Calendar.getInstance().getTimeInMillis();
+            if(jsonForm.has(DBConstants.KEY.RELATIONAL_ID)){
+                relational_id = jsonForm.getString(DBConstants.KEY.RELATIONAL_ID);
+            }
             JSONObject lastInteractedWith = new JSONObject();
             lastInteractedWith.put(Constants.KEY.KEY, DBConstants.KEY.LAST_INTERACTED_WITH);
-            lastInteractedWith.put(Constants.KEY.VALUE, Calendar.getInstance().getTimeInMillis());
+            lastInteractedWith.put(Constants.KEY.VALUE, lastInteractedTime);
             fields.put(lastInteractedWith);
             Gender gender = null;
             if (!(encounterType.equalsIgnoreCase(Constants.EventType.MemberREGISTRATION)
@@ -303,6 +331,7 @@ public class JsonFormUtils extends org.smartregister.util.JsonFormUtils {
 
                     }
                 }
+
             } else if (Utils.notFollowUp(encounterType)) {
                 String agestring = "";
                 String dobstring = "";
@@ -348,7 +377,8 @@ public class JsonFormUtils extends org.smartregister.util.JsonFormUtils {
                         encounterType = Constants.EventType.MemberREGISTRATION;
                     }
                 }
-
+                if(!StringUtils.isEmpty(relational_id))
+                    updateHouseholdLastInteractedWith(db,relational_id,lastInteractedTime);
 
             }
 
@@ -580,6 +610,11 @@ public class JsonFormUtils extends org.smartregister.util.JsonFormUtils {
         }
     }
 
+    private static void updateHouseholdLastInteractedWith(SQLiteDatabase db, String relational_id, Long lastInteractedTime) {
+        db.execSQL("UPDATE ec_household SET last_interacted_with = '"+lastInteractedTime+"' WHERE base_entity_id = '"+relational_id+"'");
+        db.execSQL("UPDATE ec_household_search SET last_interacted_with = '"+lastInteractedTime+"' WHERE base_entity_id = '"+relational_id+"'");
+    }
+
     private static void checkForAgeChangeToMemberType(JSONArray fields, JSONObject metadata, FormTag formTag, String entityId, String encounterType, String entitytypeName) {
 
         if (entitytypeName.equalsIgnoreCase(DBConstants.MEMBER_TABLE_NAME) || entitytypeName.equalsIgnoreCase(DBConstants.WOMAN_TABLE_NAME)) {
@@ -789,7 +824,14 @@ public class JsonFormUtils extends org.smartregister.util.JsonFormUtils {
                 if (fieldObject.has("openmrs_choice_ids")) {
                     if (fieldObject.has("value")) {
                         String valueEntered = fieldObject.getString("value");
-                        fieldObject.put("value", fieldObject.getJSONObject("openmrs_choice_ids").get(valueEntered));
+                        JSONObject openmrs_choice_ids = fieldObject.getJSONObject("openmrs_choice_ids");
+                        if(openmrs_choice_ids.has(valueEntered)){
+                            Object newValue = openmrs_choice_ids.get(valueEntered);
+                            fieldObject.put("value", newValue);
+                        }else{
+                            fieldObject.put("value", "");
+                        }
+
                     }
                 }
 //                    }
@@ -1223,6 +1265,12 @@ public class JsonFormUtils extends org.smartregister.util.JsonFormUtils {
                 jsonObject.put(JsonFormUtils.VALUE, reg_date);
                 jsonObject.put(JsonFormUtils.READ_ONLY, true);
             }
+        } else if ((jsonObject.getString(JsonFormUtils.KEY).equalsIgnoreCase(DBConstants.KEY.Date_Of_Reg))) {
+            String reg_date = womanClient.get(DBConstants.KEY.Date_Of_Reg);
+            if (reg_date != null) {
+                jsonObject.put(JsonFormUtils.VALUE, reg_date);
+                jsonObject.put(JsonFormUtils.READ_ONLY, true);
+            }
         } else if ((jsonObject.getString(JsonFormUtils.KEY).equalsIgnoreCase(DBConstants.KEY.Patient_Identifier))) {
             String Patient_Identifier = womanClient.get(DBConstants.KEY.Patient_Identifier);
             if (Patient_Identifier != null) {
@@ -1354,7 +1402,7 @@ public class JsonFormUtils extends org.smartregister.util.JsonFormUtils {
 
         if (jsonObject.getString(JsonFormUtils.KEY).equalsIgnoreCase("lmp_date")) {
 
-            String dobString = womanClient.get("lmp_date");
+            String dobString = womanClient.get("LMP");
             Date dob = Utils.dobStringToDate(dobString);
             if (dob != null) {
                 jsonObject.put(JsonFormUtils.VALUE, DATE_FORMAT.format(dob));
@@ -1811,7 +1859,23 @@ public class JsonFormUtils extends org.smartregister.util.JsonFormUtils {
 //                phone_number = phone_number.substring(phone_number.length()-11);
 //            }
                         object.put(JsonFormUtils.VALUE, phone_number);
-                    } else if (key != null && !key.startsWith("followup_Date")) {
+                    } else if (object.getString(JsonFormUtils.KEY).equalsIgnoreCase("lmp_date")) {
+
+                        String dobString = column_maps.get("LMP");
+                        Date dob = Utils.dobStringToDate(dobString);
+                        if (dob != null) {
+                            object.put(JsonFormUtils.VALUE, DATE_FORMAT.format(dob));
+                        }
+
+                    } else if (object.getString(JsonFormUtils.KEY).equalsIgnoreCase("Delivery_date")) {
+
+                        String dobString = column_maps.get("Delivery_date");
+                        Date dob = Utils.dobStringToDate(dobString);
+                        if (dob != null) {
+                            object.put(JsonFormUtils.VALUE, DATE_FORMAT.format(dob));
+                        }
+
+                    }else if (key != null && !key.startsWith("followup_Date")) {
                         String openmrs_key = object.getString(openmrs_entity_id);
                         String value = column_maps.get(openmrs_key);
                         if (value == null || (value != null && value.isEmpty()))
@@ -1820,6 +1884,7 @@ public class JsonFormUtils extends org.smartregister.util.JsonFormUtils {
                         if (value != null) {
 
                             value = processValueWithChoiceIds(object, value);
+
                             object.put(VALUE, value);
                         }
                     }

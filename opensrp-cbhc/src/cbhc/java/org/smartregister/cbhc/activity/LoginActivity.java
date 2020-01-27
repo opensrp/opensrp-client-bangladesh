@@ -36,6 +36,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 import org.joda.time.DateTime;
+import org.smartregister.cbhc.BuildConfig;
 import org.smartregister.cbhc.R;
 import org.smartregister.cbhc.contract.LoginContract;
 import org.smartregister.cbhc.event.ViewConfigurationSyncCompleteEvent;
@@ -133,6 +134,12 @@ public class LoginActivity extends AppCompatActivity implements LoginContract.Vi
         }
         mActivity = this;
         app_version_status();
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
+        AllSharedPreferences allSharedPreferences = new AllSharedPreferences(preferences);
+        String anm_name = allSharedPreferences.fetchRegisteredANM();
+        if(!StringUtils.isEmpty(anm_name)){
+            userNameEditText.setText(anm_name);
+        }
     }
 
     @Override
@@ -266,7 +273,7 @@ public class LoginActivity extends AppCompatActivity implements LoginContract.Vi
 //                username = "teliya1@cc.com";
 //                username = "sabab@ahmed.com";
                 //cc10006952@mhv.4
-//                username = "cc10006955@mhv.4";
+//                username = "cc10006955@mhv.1";
 //                username = "cc10006953@test.1";git a
 //                username = "aminulislamovi.48@gmail.com";
 

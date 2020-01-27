@@ -539,6 +539,10 @@
           "value": "true",
           "err": "Enter age"
         },
+        "v_regex": {
+          "value": "([0-9])|([1-9][0-9])|\s*",
+          "err": "Number must in the range 0 to 99"
+        },
         "v_required": {
           "value": true,
           "err": "Please Type Age"
@@ -730,7 +734,7 @@
           "err": "Number must begin with 095, 096, or 097 and must be a total of 11 digits in length"
         },
         "v_regex": {
-          "value": "0|(01[0-9][0-9]{8})|\s*",
+          "value": "0|(01[2-9][0-9]{8})|\s*",
           "err": "Number must begin with 011, 012, 013, 014, 015, 016,017,018 or 019 and must be a total of 11 digits in length"
         },
         "v_max_length": {
@@ -769,7 +773,7 @@
         "openmrs_entity_id": "disable",
         "openmrs_data_type": "text",
         "type": "spinner",
-        "hint": "প্রতিবন্ধি",
+        "hint": "প্রতিবন্ধী",
         "values": [
           "হ্যাঁ",
           "না"
@@ -790,28 +794,28 @@
         "openmrs_entity_id": "Disability_Type",
         "openmrs_data_type": "text",
         "type": "spinner",
-        "hint": "প্রতিবন্ধিতা ধরন",
+        "hint": "প্রতিবন্ধীতা ধরন",
         "values": [
           "অটিজম বৈশিষ্ট্য সম্পন্ন ব্যাক্তি",
-          "শারীরিক প্রতিবন্ধিতা",
-          "দৃষ্টি ও শ্রবণ প্রতিবন্ধিতা",
-          "বাক ও শ্রবণ প্রতিবন্ধিতা",
-          "মানসিক প্রতিবন্ধিতা",
-          "বুদ্ধি প্রতিবন্ধিতা",
-          "সেরিব্রাল পালসিজনিত প্রতিবন্ধিতা",
-          "ডাউন সিনড্রমজনিত প্রতিবন্ধিতা",
-          "বহুমুখী প্রতিবন্ধিতা"
+          "শারীরিক প্রতিবন্ধীতা",
+          "দৃষ্টি ও শ্রবণ প্রতিবন্ধীতা",
+          "বাক ও শ্রবণ প্রতিবন্ধীতা",
+          "মানসিক প্রতিবন্ধীতা",
+          "বুদ্ধি প্রতিবন্ধীতা",
+          "সেরিব্রাল পালসিজনিত প্রতিবন্ধীতা",
+          "ডাউন সিনড্রমজনিত প্রতিবন্ধীতা",
+          "বহুমুখী প্রতিবন্ধীতা"
         ],
         "openmrs_choice_ids": {
           "অটিজম বৈশিষ্ট্য সম্পন্ন ব্যাক্তি": "Autism",
-          "শারীরিক প্রতিবন্ধিতা": "Physical Disability",
-          "দৃষ্টি ও শ্রবণ প্রতিবন্ধিতা": "Auditory Disability",
-          "বাক ও শ্রবণ প্রতিবন্ধিতা": "Mute and Hearing Disability",
-          "মানসিক প্রতিবন্ধিতা": "Mental Disability",
-          "বুদ্ধি প্রতিবন্ধিতা": "Mentally Challenged",
-          "সেরিব্রাল পালসিজনিত প্রতিবন্ধিতা": "Cerebral Palsy",
-          "ডাউন সিনড্রমজনিত প্রতিবন্ধিতা": "Down Syndrome",
-          "বহুমুখী প্রতিবন্ধিতা": "Multidimensional Disability"
+          "শারীরিক প্রতিবন্ধীতা": "Physical Disability",
+          "দৃষ্টি ও শ্রবণ প্রতিবন্ধীতা": "Auditory Disability",
+          "বাক ও শ্রবণ প্রতিবন্ধীতা": "Mute and Hearing Disability",
+          "মানসিক প্রতিবন্ধীতা": "Mental Disability",
+          "বুদ্ধি প্রতিবন্ধীতা": "Mentally Challenged",
+          "সেরিব্রাল পালসিজনিত প্রতিবন্ধীতা": "Cerebral Palsy",
+          "ডাউন সিনড্রমজনিত প্রতিবন্ধীতা": "Down Syndrome",
+          "বহুমুখী প্রতিবন্ধীতা": "Multidimensional Disability"
         },
         "relevance": {
           "step1:disability": {
@@ -1987,7 +1991,7 @@
         "openmrs_entity_id": "RiskyHabit",
         "openmrs_data_type": "text",
         "type": "check_box",
-        "label": "ঝুকিপূর্ন অভ্যাস",
+        "label": "ঝুঁকিপূর্ণ অভ্যাস",
         "exclusive": [
           "None"
         ],
@@ -2055,7 +2059,7 @@
         "openmrs_entity": "",
         "openmrs_entity_id": "",
         "type": "edit_text",
-        "hint": "অন্যান্য ঝুকিপূর্ন অভ্যাস",
+        "hint": "অন্যান্য ঝুঁকিপূর্ণ অভ্যাস",
         "v_required": {
           "value": true,
           "err": "Please Type Other Habits"

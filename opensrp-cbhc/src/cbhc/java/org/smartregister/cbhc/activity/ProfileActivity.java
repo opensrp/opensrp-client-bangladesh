@@ -755,24 +755,28 @@ public class ProfileActivity extends BaseProfileActivity implements ProfileContr
             protected Object doInBackground(Object[] objects) {
                 AncRepository repo = (AncRepository) AncApplication.getInstance().getRepository();
                 SQLiteDatabase db = repo.getReadableDatabase();
-                String[] tables = {"ec_household", "ec_member", "ec_child", "ec_woman", "ec_household_search", "ec_member_search", "ec_child_search", "ec_woman_search"};
-
+                String[] hh_tables = {"ec_household", "ec_household_search"};
+                String[] mm_tables = {"ec_member", "ec_child", "ec_woman", "ec_member_search", "ec_child_search", "ec_woman_search"};
                 Cursor cursor = null;
                 try {
-                    for (int i = 0; i < tables.length; i++) {
-                        String sql = "select * from " + tables[i] + " where base_entity_id = '" + entity_id + "';";
-                        cursor = db.rawQuery(sql, new String[]{});
-                        if (cursor != null && cursor.getCount() != 0) {
-                            sql = "UPDATE " + tables[i] + " SET 'date_removed' = '20-12-2019' WHERE base_entity_id = '" + entity_id + "';";
+                    String sql = "UPDATE " + hh_tables[0] + " SET 'date_removed' = '"+Constants.DEFALT_DATE_REMOVED_DATE+"' WHERE base_entity_id = '" + entity_id + "';";
+                    db.execSQL(sql);
+                    sql = "UPDATE " + hh_tables[1] + " SET phrase = '','date_removed' = '"+Constants.DEFALT_DATE_REMOVED_DATE+"' WHERE base_entity_id = '" + entity_id + "';";
+                    db.execSQL(sql);
+                    for (int i = 0; i < mm_tables.length; i++) {
+
+
+                        if (mm_tables[i].contains("search")) {
+                            sql = "UPDATE " + mm_tables[i] + " SET phrase = '','date_removed' = '"+Constants.DEFALT_DATE_REMOVED_DATE+"' WHERE object_relational_id = '" + entity_id + "';";
                             db.execSQL(sql);
-                            if (tables[i].contains("search")) {
-                                sql = "UPDATE " + tables[i] + " SET phrase = '' WHERE phrase IS NOT NULL AND phrase != '' AND  date_removed IS NOT NULL";
-                                db.execSQL(sql);
-                            }
+                        }else{
+                            sql = "UPDATE " + mm_tables[i] + " SET 'date_removed' = '"+Constants.DEFALT_DATE_REMOVED_DATE+"' WHERE relational_id = '" + entity_id + "';";
+                            db.execSQL(sql);
+                        }
 
 //                        db.rawQuery(sql,new String[]{});
 
-                        }
+
                         if (cursor != null)
                             cursor.close();
                     }

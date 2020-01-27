@@ -200,15 +200,6 @@ public class SortFilterFragment extends Fragment implements SortFilterContract.V
     private class FilterAdapter extends RecyclerView.Adapter<FilterAdapter.ViewHolder> {
         private List<Field> filterList;
 
-        public class ViewHolder extends RecyclerView.ViewHolder {
-            public CheckedTextView checkedTextView;
-
-            public ViewHolder(CheckedTextView v) {
-                super(v);
-                checkedTextView = v;
-            }
-        }
-
         public FilterAdapter(List<Field> filterList) {
             this.filterList = filterList;
         }
@@ -243,9 +234,7 @@ public class SortFilterFragment extends Fragment implements SortFilterContract.V
                                 presenter.getFilterList().add(currentField);
                             }
                         } else {
-                            if (presenter.getFilterList().contains(currentField)) {
-                                presenter.getFilterList().remove(currentField);
-                            }
+                            presenter.getFilterList().remove(currentField);
                         }
                     }
                 }
@@ -266,6 +255,15 @@ public class SortFilterFragment extends Fragment implements SortFilterContract.V
         public void clear() {
             presenter.getFilterList().clear();
             notifyDataSetChanged();
+        }
+
+        public class ViewHolder extends RecyclerView.ViewHolder {
+            public CheckedTextView checkedTextView;
+
+            public ViewHolder(CheckedTextView v) {
+                super(v);
+                checkedTextView = v;
+            }
         }
     }
 
