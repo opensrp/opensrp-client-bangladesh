@@ -32,6 +32,7 @@ import org.smartregister.cbhc.helper.ECSyncHelper;
 import org.smartregister.cbhc.helper.LocationHelper;
 import org.smartregister.cbhc.repository.AncRepository;
 import org.smartregister.cbhc.repository.HealthIdRepository;
+import org.smartregister.cbhc.repository.UniqueIdRepository;
 import org.smartregister.cbhc.view.LocationPickerView;
 import org.smartregister.clientandeventmodel.Address;
 import org.smartregister.clientandeventmodel.Client;
@@ -88,6 +89,7 @@ public class JsonFormUtils extends org.smartregister.util.JsonFormUtils {
     private static final String SELECT_ONE_DATA_TYPE = "select one";
     private static final String SELECT_MULTIPLE_DATA_TYPE = "select multiple";
     private static HealthIdRepository healthIdRepository;
+    private static UniqueIdRepository uniqueIdRepository;
 
     public static JSONObject getFormAsJson(JSONObject form,
                                            String formName, String id,
@@ -210,6 +212,7 @@ public class JsonFormUtils extends org.smartregister.util.JsonFormUtils {
         if (healthIdRepository == null) {
             healthIdRepository = AncApplication.getInstance().getHealthIdRepository();
         }
+
         return healthIdRepository;
     }
 
@@ -674,10 +677,10 @@ public class JsonFormUtils extends org.smartregister.util.JsonFormUtils {
             String lmp_date = (String) client.getAttribute("LMP");
             String delivery_date = (String) client.getAttribute("delivery_date");
             if (lmp_date != null) {
-                client.setAttributes((Map<String, Object>) client.getAttributes().put("LMP", timezonedateformat(lmp_date)));
+                client.getAttributes().put("LMP", timezonedateformat(lmp_date));
             }
             if (delivery_date != null) {
-                client.setAttributes((Map<String, Object>) client.getAttributes().put("delivery_date", timezonedateformat(delivery_date)));
+                client.getAttributes().put("delivery_date", timezonedateformat(delivery_date));
             }
 
         } catch (Exception e) {

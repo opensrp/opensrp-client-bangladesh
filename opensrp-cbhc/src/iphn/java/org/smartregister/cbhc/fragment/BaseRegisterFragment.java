@@ -30,6 +30,7 @@ import net.sqlcipher.database.SQLiteDatabase;
 
 import org.apache.commons.lang3.StringUtils;
 import org.smartregister.cbhc.R;
+import org.smartregister.cbhc.activity.BaseRegisterActivity;
 import org.smartregister.cbhc.activity.HomeRegisterActivity;
 import org.smartregister.cbhc.activity.ProfileActivity;
 import org.smartregister.cbhc.application.AncApplication;
@@ -292,6 +293,7 @@ Utils.appendLog(getClass().getName(),e);
     @Override
     protected void onResumption() {
         super.onResumption();
+        refreshViews();
 
     }
     public void refreshViews(){
@@ -299,14 +301,14 @@ Utils.appendLog(getClass().getName(),e);
             setRefreshList(true);
 
         }catch (Exception e) {
-Utils.appendLog(getClass().getName(),e);
+            Utils.appendLog(getClass().getName(),e);
             e.printStackTrace();
         }
         try{
 
             renderView();
         }catch (Exception e) {
-Utils.appendLog(getClass().getName(),e);
+            Utils.appendLog(getClass().getName(),e);
             e.printStackTrace();
         }
 
@@ -321,7 +323,7 @@ Utils.appendLog(getClass().getName(),e);
         try {
             presenter.processViewConfigurations();
         }catch (Exception e) {
-Utils.appendLog(getClass().getName(),e);
+            Utils.appendLog(getClass().getName(),e);
 
         }
         // updateLocationText();
@@ -558,9 +560,7 @@ Utils.appendLog(getClass().getName(),e);
     public void onResume() {
         super.onResume();
         registerSyncStatusBroadcastReceiver();
-        updateUnsyncCount();
-        if (clientAdapter != null)
-            clientAdapter.notifyDataSetChanged();
+
     }
 
     @Override

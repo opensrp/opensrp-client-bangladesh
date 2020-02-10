@@ -193,7 +193,7 @@ public class ImmunizationFragment extends Fragment {
                 serviceRowGroups.add(curGroup);
             }
         } catch (Exception e) {
-Utils.appendLog(getClass().getName(),e);
+org.smartregister.cbhc.util.Utils.appendLog(getClass().getName(),e);
             Log.e(getClass().getName(), Log.getStackTraceString(e));
         }
 

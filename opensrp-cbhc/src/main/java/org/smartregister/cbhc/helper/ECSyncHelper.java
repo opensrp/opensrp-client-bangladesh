@@ -82,8 +82,6 @@ public class ECSyncHelper implements PrefsHelper {
 
     public List<EventClient> getEvents(Date lastSyncDate, String syncStatus) {
         try {
-            if (syncStatus.equalsIgnoreCase(BaseRepository.TYPE_Task_Unprocessed))
-                syncStatus = BaseRepository.TYPE_Unsynced;
             return eventClientRepository.fetchEventClients(lastSyncDate, syncStatus);
         } catch (Exception e) {
             Utils.appendLog(getClass().getName(), e);

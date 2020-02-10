@@ -6,8 +6,6 @@ import android.content.Intent;
 import android.util.Log;
 import android.util.Pair;
 
-import net.sqlcipher.database.SQLiteDatabase;
-
 import org.apache.commons.lang3.StringUtils;
 import org.joda.time.DateTime;
 import org.json.JSONArray;
@@ -17,19 +15,15 @@ import org.smartregister.cbhc.BuildConfig;
 import org.smartregister.cbhc.R;
 import org.smartregister.cbhc.application.AncApplication;
 import org.smartregister.cbhc.helper.ECSyncHelper;
-import org.smartregister.cbhc.helper.LocationHelper;
 import org.smartregister.cbhc.job.DeleteIntentServiceJob;
-import org.smartregister.cbhc.job.ImageUploadServiceJob;
-import org.smartregister.cbhc.job.PullHealthIdsServiceJob;
 import org.smartregister.cbhc.job.PullUniqueIdsServiceJob;
 import org.smartregister.cbhc.receiver.SyncStatusBroadcastReceiver;
-import org.smartregister.cbhc.repository.AncRepository;
 import org.smartregister.cbhc.sync.AncClientProcessorForJava;
 import org.smartregister.cbhc.util.Constants;
 import org.smartregister.cbhc.util.NetworkUtils;
+import org.smartregister.cbhc.util.Utils;
 import org.smartregister.domain.FetchStatus;
 import org.smartregister.domain.Response;
-import org.smartregister.domain.db.Client;
 import org.smartregister.domain.db.EventClient;
 import org.smartregister.repository.AllSharedPreferences;
 import org.smartregister.repository.EventClientRepository;
@@ -140,7 +134,6 @@ Utils.appendLog(getClass().getName(),e);
 
             if (eCount == 0) {
                 complete(FetchStatus.nothingFetched);
-                new DetailsStatusUpdate(jsonObject).start();
             } else if (eCount < 0) {
                 fetchFailed(count);
             } else if (eCount > 0) {
@@ -158,7 +151,6 @@ Utils.appendLog(getClass().getName(),e);
                 // long end = System.currentTimeMillis();
                 //  long diff = end - start;
                 //System.out.println(diff);
-                new DetailsStatusUpdate(jsonObject).start();
                 fetchRetry(0);
             }
         } catch (Exception e) {
@@ -166,122 +158,16 @@ Utils.appendLog(getClass().getName(),e);
             Log.e(getClass().getName(), "Fetch Retry Exception: " + e.getMessage(), e.getCause());
             fetchFailed(count);
         } finally {
-            DeleteIntentServiceJob.scheduleJobImmediately(DeleteIntentServiceJob.TAG);
-            PullHealthIdsServiceJob.scheduleJobImmediately(PullHealthIdsServiceJob.TAG);
+            //DeleteIntentServiceJob.scheduleJobImmediately(DeleteIntentServiceJob.TAG);
+            //PullHealthIdsServiceJob.scheduleJobImmediately(PullHealthIdsServiceJob.TAG);
             PullUniqueIdsServiceJob.scheduleJobImmediately(PullUniqueIdsServiceJob.TAG);
 
         }
     }
 
-    class DetailsStatusUpdate extends Thread {
 
-        JSONObject obj;
 
-        public DetailsStatusUpdate(JSONObject obj) {
-            DetailsStatusUpdate.this.obj = obj;
-        }
 
-        @Override
-        public void run() {
-
-            AncRepository repo = (AncRepository) AncApplication.getInstance().getRepository();
-            SQLiteDatabase db = repo.getReadableDatabase();
-            try {
-                if (obj != null && obj.has("clients")) {
-                    String tablenames[] = {"ec_household", "ec_woman", "ec_child", "ec_member"};
-//                    for (String table : tablenames) {
-//                        String setDefaultQuery = "update " + table + " set dataApprovalStatus = '1' where dataApprovalStatus!='1'";
-//                        db.execSQL(setDefaultQuery);
-//                    }
-                    JSONArray clients = obj.getJSONArray("clients");
-                    String rejected_ids = "";
-                    if (clients != null && clients.length() != 0) {
-                        for (int i = 0; i < clients.length(); i++) {
-                            JSONObject clientObject = clients.getJSONObject(i);
-                            if (clientObject != null && clientObject.has("dataApprovalStatus")) {
-                                String dataApprovalStatus = clientObject.getString("dataApprovalStatus");
-                                String dataApprovalComments = clientObject.getString("dataApprovalComments");
-                                String baseEntityId = clientObject.getString("baseEntityId");
-                                if ("0".equals(dataApprovalStatus)) {
-                                    String[] tablename = {"ec_woman", "ec_child", "ec_member"};
-                                    for (String table : tablename) {
-                                        String update1 = "update " + table + " set " +
-                                                "dataApprovalStatus = '0', dataApprovalComments = '" + dataApprovalComments + "' " +
-                                                "where " + table + ".base_entity_id = '" + baseEntityId + "'";
-                                        db.execSQL(update1);
-
-                                    }
-//                                    rejected_ids += "'" + baseEntityId + "',";
-                                }
-
-                            }
-
-                        }
-                    }
-
-//                    if (!rejected_ids.isEmpty()) {
-//                        rejected_ids = rejected_ids.substring(0, rejected_ids.length() - 1);
-//                        String[] tablename = {"ec_woman", "ec_child", "ec_member"};
-//                        for (String table : tablename) {
-//                            String update1 = "update " + table + " set dataApprovalStatus = '0' " +
-//                                    "where " + table + ".base_entity_id in " +
-//                                    "(" + rejected_ids + ")";
-//                            db.execSQL(update1);
-//                        }
-//                    }
-
-                }
-            } catch (Exception e) {
-Utils.appendLog(getClass().getName(),e);
-                e.printStackTrace();
-            }
-
-            String[] tablename = {"ec_woman", "ec_child", "ec_member"};
-            for (int i = 0; i < tablename.length; i++) {
-
-//
-                String update2 = "update " + tablename[i] + " set " +
-                        "dataApprovalStatus = '1' where " +
-                        tablename[i] + ".base_entity_id in " +
-                        "(select client.baseEntityId from " +
-                        "client where json_extract(client.json,'$.dataApprovalStatus')" +
-                        " != '0' or json_extract(client.json,'$.dataApprovalStatus') " +
-                        "is null) ;";
-                db.execSQL(update2);
-
-                String update3 = "update ec_household set dataApprovalStatus = '0' " +
-                        "where ec_household.base_entity_id in " +
-                        "(select " + tablename[i] + ".relational_id from " + tablename[i] + " " +
-                        "where " + tablename[i] + ".dataApprovalStatus = '0')";
-                db.execSQL(update3);
-
-                String update4 = "update ec_household set dataApprovalStatus = '1' " +
-                        "where ec_household.base_entity_id in " +
-                        "(select " + tablename[i] + ".relational_id from " + tablename[i] + " " +
-                        "where " + tablename[i] + ".dataApprovalStatus = '1')";
-                db.execSQL(update4);
-            }
-        }
-    }
-
-    class ClientInsertThread extends Thread {
-        ECSyncHelper ecSyncUpdater;
-        JSONObject jsonObject;
-        long lastServerVersion;
-
-        public ClientInsertThread(ECSyncHelper ecSyncUpdater, JSONObject jsonObject, long lastServerVersion) {
-            this.ecSyncUpdater = ecSyncUpdater;
-            this.jsonObject = jsonObject;
-            this.lastServerVersion = lastServerVersion;
-        }
-
-        @Override
-        public void run() {
-            ecSyncUpdater.saveAllClientsAndEvents(jsonObject);
-            ecSyncUpdater.updateLastSyncTimeStamp(lastServerVersion);
-        }
-
-    }
 
     public void fetchFailed(int count) {
         if (count < BuildConfig.MAX_SYNC_RETRIES) {
@@ -305,26 +191,7 @@ Utils.appendLog(getClass().getName(),e);
         }
     }
 
-    class ClientEventThread extends Thread {
-        Pair<Long, Long> serverVersionPair;
 
-        public ClientEventThread(Pair<Long, Long> serverVersionPair) {
-            this.serverVersionPair = serverVersionPair;
-        }
-
-        @Override
-        public void run() {
-            try {
-                ECSyncHelper ecUpdater = ECSyncHelper.getInstance(context);
-                List<EventClient> events = ecUpdater.allEventClients(serverVersionPair.first - 1, serverVersionPair.second);
-                AncClientProcessorForJava.getInstance(context).processClient(events);
-                sendSyncStatusBroadcastMessage(FetchStatus.fetched);
-            } catch (Exception e) {
-Utils.appendLog(getClass().getName(),e);
-                Log.e(getClass().getName(), "Process Client Exception: " + e.getMessage(), e.getCause());
-            }
-        }
-    }
 
     // PUSH TO SERVER
     private void pushToServer() {

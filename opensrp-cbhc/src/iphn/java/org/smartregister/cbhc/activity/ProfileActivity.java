@@ -1,6 +1,7 @@
 package org.smartregister.cbhc.activity;
 
 import android.Manifest;
+import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -10,6 +11,7 @@ import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 import android.text.TextUtils;
@@ -19,7 +21,6 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ArrayAdapter;
-import android.widget.CursorAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -45,6 +46,7 @@ import org.smartregister.cbhc.fragment.ProfileOverviewFragment;
 import org.smartregister.cbhc.fragment.ProfileTasksFragment;
 import org.smartregister.cbhc.fragment.QuickCheckFragment;
 import org.smartregister.cbhc.helper.ImageRenderHelper;
+import org.smartregister.cbhc.job.SyncServiceJob;
 import org.smartregister.cbhc.presenter.ProfilePresenter;
 import org.smartregister.cbhc.presenter.RegisterPresenter;
 import org.smartregister.cbhc.provider.RegisterProvider;
@@ -162,36 +164,56 @@ Utils.appendLog(getClass().getName(),e);
         gestationAgeView.setVisibility(View.GONE);
     }
 
+    @Override
+    public void onWindowFocusChanged(boolean hasFocus) {
+        super.onWindowFocusChanged(hasFocus);
+    }
+
     public void refreshProfileViews() {
-        householdDetails = CommonPersonObjectToClient(AncApplication.getInstance().getContext().commonrepository(DBConstants.HOUSEHOLD_TABLE_NAME).findByBaseEntityId(householdDetails.entityId()));
-
-        String firstName = org.smartregister.util.Utils.getValue(householdDetails.getColumnmaps(), DBConstants.KEY.FIRST_NAME, true);
-        String lastName = org.smartregister.util.Utils.getValue(householdDetails.getColumnmaps(), DBConstants.KEY.LAST_NAME, true);
-        if (lastName.equalsIgnoreCase("null") || lastName == null) {
-            lastName = "";
-        }
-        String patientName = getName(firstName, lastName);
-        patientName = patientName + " (খানা প্রধান)";
-
-        setProfileName(patientName);
-        String dobString = getValue(householdDetails.getColumnmaps(), "dob", true);
-        String durationString = "";
-        if (StringUtils.isNotBlank(dobString)) {
-            try {
-                DateTime birthDateTime = new DateTime(dobString);
-
-                String duration = DateUtil.getDuration(birthDateTime);
-                if (duration != null) {
-                    durationString = duration;
-                }
-            } catch (Exception e) {
-Utils.appendLog(getClass().getName(),e);
-                Log.e(getClass().getName(), e.toString(), e);
+        org.smartregister.util.Utils.startAsyncTask(new AsyncTask() {
+            @Override
+            protected Object doInBackground(Object[] objects) {
+//                householdDetails = CommonPersonObjectToClient(AncApplication.getInstance().getContext().commonrepository(DBConstants.HOUSEHOLD_TABLE_NAME).findByBaseEntityId(householdDetails.entityId()));
+                householdDetails.getColumnmaps().putAll(AncApplication.getInstance().getContext().detailsRepository().getAllDetailsForClient(householdDetails.entityId()));
+                return null;
             }
-        }
-        setProfileAge(durationString);
-        setProfileID(getValue(householdDetails.getColumnmaps(), "Patient_Identifier", true));
-        gestationAgeView.setVisibility(View.GONE);
+
+            @Override
+            protected void onPostExecute(Object o) {
+                super.onPostExecute(o);
+                String firstName = org.smartregister.util.Utils.getValue(householdDetails.getColumnmaps(), DBConstants.KEY.FIRST_NAME, true);
+                String lastName = org.smartregister.util.Utils.getValue(householdDetails.getColumnmaps(), DBConstants.KEY.LAST_NAME, true);
+                if (lastName.equalsIgnoreCase("null") || lastName == null) {
+                    lastName = "";
+                }
+                String patientName = getName(firstName, lastName);
+                patientName = patientName + " (খানা প্রধান)";
+
+                setProfileName(patientName);
+                String dobString = getValue(householdDetails.getColumnmaps(), "dob", true);
+                String durationString = "";
+                if (StringUtils.isNotBlank(dobString)) {
+                    try {
+                        DateTime birthDateTime = new DateTime(dobString);
+
+                        String duration = DateUtil.getDuration(birthDateTime);
+                        if (duration != null) {
+                            durationString = duration;
+                        }
+                    } catch (Exception e) {
+Utils.appendLog(getClass().getName(),e);
+                        Log.e(getClass().getName(), e.toString(), e);
+                    }
+                }
+                setProfileAge(durationString);
+                setProfileID(getValue(householdDetails.getColumnmaps(), "Patient_Identifier", true));
+                gestationAgeView.setVisibility(View.GONE);
+            }
+        },null);
+
+
+
+
 
     }
 
@@ -217,6 +239,7 @@ Utils.appendLog(getClass().getName(),e);
         if (healthIdRepository == null) {
             healthIdRepository = AncApplication.getInstance().getHealthIdRepository();
         }
+
         return healthIdRepository;
     }
 
@@ -341,6 +364,7 @@ Utils.appendLog(getClass().getName(),e);
         }
     }
 
+    @SuppressLint("NewApi")
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 
@@ -375,7 +399,7 @@ Utils.appendLog(getClass().getName(),e);
                             new DialogInterface.OnClickListener() {
                                 public void onClick(DialogInterface dialog, int which) {
                                     dialog.dismiss();
-                                    Utils.VIEWREFRESH = false;
+//                                    Utils.VIEWREFRESH = false;
                                 }
                             });
                     alertDialog.setButton(android.support.v7.app.AlertDialog.BUTTON_POSITIVE, "CONFIRM",
@@ -385,7 +409,7 @@ Utils.appendLog(getClass().getName(),e);
                                         String entity_id = form.getString("entity_id");
                                         removeMember(entity_id);
                                         presenter.saveForm(jsonString, false);
-                                        Utils.VIEWREFRESH = true;
+//                                        Utils.VIEWREFRESH = true;
 
                                     } catch (Exception e) {
 Utils.appendLog(getClass().getName(),e);
@@ -403,21 +427,27 @@ Utils.appendLog(getClass().getName(),e);
             } finally {
                 refreshList(null);
                 refreshProfileViews();
-                Utils.VIEWREFRESH = true;
-            }
 
+            }
+            SyncServiceJob.scheduleJobImmediately(SyncServiceJob.TAG);
+            new Handler().postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    refreshList(null);
+                    refreshProfileViews();
+                }
+            },1000);
         } else if (requestCode == BarcodeIntentIntegrator.REQUEST_CODE && resultCode == RESULT_OK) {
-//            BarcodeIntentResult res = BarcodeIntentIntegrator.parseActivityResult(requestCode, resultCode, data);
-//            if (StringUtils.isNotBlank(res.getContents())) {
-//                Log.d("Scanned QR Code", res.getContents());
-//                mBaseFragment.onQRCodeSucessfullyScanned(res.getContents());
-//                mBaseFragment.setSearchTerm(res.getContents());
-//            } else
-//                Log.i("", "NO RESULT FOR QR CODE");
+
         } else {
-            Utils.VIEWREFRESH = true;
             refreshList(null);
+            refreshProfileViews();
         }
+
+
+
+
+
     }
 
     private void updateScheduledTasks(final JSONObject form) {
@@ -578,6 +608,7 @@ Utils.appendLog(getClass().getName(),e);
         super.onResume();
 //        String baseEntityId = getIntent().getStringExtra(Constants.INTENT_KEY.BASE_ENTITY_ID);
 //        mProfilePresenter.refreshProfileView(baseEntityId);
+//        refreshProfileViews();
     }
 
     @Override

@@ -37,6 +37,7 @@ import android.widget.TextView;
 
 import net.sqlcipher.database.SQLiteDatabase;
 
+import org.apache.commons.lang3.StringUtils;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 import org.joda.time.DateTime;
@@ -49,9 +50,9 @@ import org.smartregister.cbhc.presenter.LoginPresenter;
 import org.smartregister.cbhc.repository.AncRepository;
 import org.smartregister.cbhc.task.SaveTeamLocationsTask;
 import org.smartregister.cbhc.util.Constants;
+import org.smartregister.cbhc.util.Utils;
 import org.smartregister.commonregistry.CommonRepository;
 import org.smartregister.repository.AllSharedPreferences;
-import org.smartregister.util.Utils;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -127,6 +128,12 @@ public class LoginActivity extends AppCompatActivity implements LoginContract.Vi
             goToHome(false);
         }
         mActivity = this;
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
+        AllSharedPreferences allSharedPreferences = new AllSharedPreferences(preferences);
+        String anm_name = allSharedPreferences.fetchRegisteredANM();
+        if(!StringUtils.isEmpty(anm_name)){
+            userNameEditText.setText(anm_name);
+        }
     }
 
     @Override
@@ -189,7 +196,7 @@ Utils.appendLog(getClass().getName(),e);
     public void goToHome(boolean remote) {
 //        org.smartregister.Context.getInstance().allSharedPreferences().saveForceRemoteLogin(false);
         if (remote) {
-            Utils.startAsyncTask(new SaveTeamLocationsTask(), null);
+            org.smartregister.util.Utils.startAsyncTask(new SaveTeamLocationsTask(), null);
         }
         Intent intent = new Intent(this, HomeRegisterActivity.class);
         intent.putExtra(Constants.IS_REMOTE_LOGIN, remote);

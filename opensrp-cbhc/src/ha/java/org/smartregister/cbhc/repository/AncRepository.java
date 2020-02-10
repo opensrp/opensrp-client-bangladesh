@@ -261,6 +261,13 @@ public class AncRepository extends Repository {
         try {
             db.execSQL(VaccineRepository.UPDATE_TABLE_ADD_CHILD_LOCATION_ID_COL);
             db.execSQL(RecurringServiceRecordRepository.UPDATE_TABLE_ADD_CHILD_LOCATION_ID_COL);
+            db.execSQL("ALTER TABLE ec_member ADD COLUMN dataApprovalStatus INTEGER DEFAULT 1");
+            db.execSQL("ALTER TABLE ec_member ADD COLUMN dataApprovalComments VARCHAR DEFAULT 1");
+            db.execSQL("ALTER TABLE ec_woman ADD COLUMN dataApprovalStatus INTEGER DEFAULT 1");
+            db.execSQL("ALTER TABLE ec_woman ADD COLUMN dataApprovalComments VARCHAR DEFAULT 1");
+            db.execSQL("ALTER TABLE ec_child ADD COLUMN dataApprovalStatus INTEGER DEFAULT 1");
+            db.execSQL("ALTER TABLE ec_child ADD COLUMN dataApprovalComments VARCHAR DEFAULT 1");
+            db.execSQL("ALTER TABLE ec_household ADD COLUMN dataApprovalStatus INTEGER DEFAULT 1");
         } catch (Exception e) {
             Utils.appendLog(getClass().getName(), e);
             Log.e(TAG, "upgradeToVersion5 " + Log.getStackTraceString(e));

@@ -86,11 +86,11 @@ public class RegisterProvider implements RecyclerViewProvider<RegisterProvider.R
             populateLastColumn(pc, viewHolder);
             populateRejectedViews(pc, viewHolder);
             MemberCount mc = memberCountHashMap.get(pc.entityId());
-            if (mc != null) {
-                populateMemberCountColumn(mc, viewHolder);
-            } else {
+//            if (mc != null) {
+//            populateMemberCountColumn(mc, viewHolder);
+//            } else {
                 (new MemberCountAsyncTask(pc, viewHolder)).execute();
-            }
+//            }
 
             return;
         }

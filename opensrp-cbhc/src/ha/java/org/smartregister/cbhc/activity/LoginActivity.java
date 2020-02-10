@@ -27,6 +27,7 @@ import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import org.apache.commons.lang3.StringUtils;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 import org.joda.time.DateTime;
@@ -107,6 +108,12 @@ public class LoginActivity extends AppCompatActivity implements LoginContract.Vi
             goToHome(false);
         }
         mActivity = this;
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
+        AllSharedPreferences allSharedPreferences = new AllSharedPreferences(preferences);
+        String anm_name = allSharedPreferences.fetchRegisteredANM();
+        if(!StringUtils.isEmpty(anm_name)){
+            userNameEditText.setText(anm_name);
+        }
     }
 
     @Override

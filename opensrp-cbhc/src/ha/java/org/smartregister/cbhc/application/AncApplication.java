@@ -22,11 +22,9 @@ import org.smartregister.cbhc.activity.LoginActivity;
 import org.smartregister.cbhc.event.TriggerSyncEvent;
 import org.smartregister.cbhc.event.ViewConfigurationSyncCompleteEvent;
 import org.smartregister.cbhc.helper.ECSyncHelper;
-import org.smartregister.cbhc.job.AncJobCreator;
 import org.smartregister.cbhc.job.ViewConfigurationsServiceJob;
 import org.smartregister.cbhc.receiver.SyncStatusBroadcastReceiver;
 import org.smartregister.cbhc.repository.AncRepository;
-import org.smartregister.cbhc.repository.HealthIdRepository;
 import org.smartregister.cbhc.repository.UniqueIdRepository;
 import org.smartregister.cbhc.service.intent.PullHealthIdsIntentService;
 import org.smartregister.cbhc.service.intent.PullUniqueIdsIntentService;
@@ -245,6 +243,9 @@ public class AncApplication extends DrishtiApplication implements TimeChangedBro
 
     @Override
     public void logoutCurrentUser() {
+
+    }
+    public void logoutUser(){
         Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         intent.addCategory(Intent.CATEGORY_HOME);

@@ -7,10 +7,13 @@ import net.sqlcipher.database.SQLiteDatabase;
 
 import org.smartregister.AllConstants;
 import org.smartregister.cbhc.application.AncApplication;
+import org.smartregister.cbhc.util.Utils;
 import org.smartregister.configurableviews.repository.ConfigurableViewsRepository;
 import org.smartregister.domain.db.Column;
+import org.smartregister.growthmonitoring.repository.HeightRepository;
+import org.smartregister.growthmonitoring.repository.HeightZScoreRepository;
 import org.smartregister.growthmonitoring.repository.WeightRepository;
-import org.smartregister.growthmonitoring.repository.ZScoreRepository;
+import org.smartregister.growthmonitoring.repository.WeightZScoreRepository;
 import org.smartregister.immunization.ImmunizationLibrary;
 import org.smartregister.immunization.repository.RecurringServiceRecordRepository;
 import org.smartregister.immunization.repository.RecurringServiceTypeRepository;
@@ -21,7 +24,6 @@ import org.smartregister.immunization.util.IMDatabaseUtils;
 import org.smartregister.repository.AlertRepository;
 import org.smartregister.repository.EventClientRepository;
 import org.smartregister.repository.Repository;
-import org.smartregister.repository.SettingsRepository;
 
 /**
  * Created by ndegwamartin on 09/04/2018.
@@ -33,6 +35,7 @@ public class AncRepository extends Repository {
     protected SQLiteDatabase readableDatabase;
     protected SQLiteDatabase writableDatabase;
     private Context context;
+
     public AncRepository(Context context, org.smartregister.Context openSRPContext) {
         super(context, AllConstants.DATABASE_NAME, AllConstants.DATABASE_VERSION, openSRPContext.session(), AncApplication.createCommonFtsObject(), openSRPContext.sharedRepositoriesArray());
         this.context = context;
@@ -49,7 +52,7 @@ public class AncRepository extends Repository {
         VaccineNameRepository.createTable(database);
         VaccineTypeRepository.createTable(database);
         WeightRepository.createTable(database);
-
+        HeightRepository.createTable(database);
         //////////////////DraftFormRepository////////////////
         DraftFormRepository.createTable(database);
         ////////////////////////////////////////////////////
@@ -64,9 +67,15 @@ public class AncRepository extends Repository {
         database.execSQL(WeightRepository.EVENT_ID_INDEX);
         database.execSQL(WeightRepository.UPDATE_TABLE_ADD_FORMSUBMISSION_ID_COL);
         database.execSQL(WeightRepository.FORMSUBMISSION_INDEX);
-
         database.execSQL(WeightRepository.UPDATE_TABLE_ADD_OUT_OF_AREA_COL);
         database.execSQL(WeightRepository.UPDATE_TABLE_ADD_OUT_OF_AREA_COL_INDEX);
+
+        database.execSQL(HeightRepository.UPDATE_TABLE_ADD_EVENT_ID_COL);
+        database.execSQL(HeightRepository.EVENT_ID_INDEX);
+        database.execSQL(HeightRepository.UPDATE_TABLE_ADD_FORMSUBMISSION_ID_COL);
+        database.execSQL(HeightRepository.FORMSUBMISSION_INDEX);
+        database.execSQL(HeightRepository.UPDATE_TABLE_ADD_OUT_OF_AREA_COL);
+        database.execSQL(HeightRepository.UPDATE_TABLE_ADD_OUT_OF_AREA_COL_INDEX);
 
         HealthIdRepository.createTable(database);
         UniqueIdRepository.createTable(database);
@@ -127,7 +136,7 @@ public class AncRepository extends Repository {
             }
             return readableDatabase;
         } catch (Exception e) {
-Utils.appendLog(getClass().getName(),e);
+            Utils.appendLog(getClass().getName(), e);
             Log.e(TAG, "Database Error. " + e.getMessage());
             return null;
         }
@@ -137,7 +146,7 @@ Utils.appendLog(getClass().getName(),e);
     @Override
     public synchronized SQLiteDatabase getWritableDatabase(String password) {
 
-        try{
+        try {
             if (writableDatabase == null || !writableDatabase.isOpen()) {
                 if (writableDatabase != null) {
                     writableDatabase.close();
@@ -146,7 +155,7 @@ Utils.appendLog(getClass().getName(),e);
             }
             return writableDatabase;
         } catch (Exception e) {
-Utils.appendLog(getClass().getName(),e);
+            Utils.appendLog(getClass().getName(), e);
             Log.e(TAG, "Database Error. " + e.getMessage());
             return null;
         }
@@ -163,6 +172,7 @@ Utils.appendLog(getClass().getName(),e);
         }
         super.close();
     }
+
     private void upgradeToVersion2(SQLiteDatabase db) {
         try {
             db.execSQL(VaccineRepository.UPDATE_TABLE_ADD_EVENT_ID_COL);
@@ -179,14 +189,18 @@ Utils.appendLog(getClass().getName(),e);
             IMDatabaseUtils.accessAssetsAndFillDataBaseForVaccineTypes(context, db);
 
         } catch (Exception e) {
-Utils.appendLog(getClass().getName(),e);
+            Utils.appendLog(getClass().getName(), e);
             Log.e(TAG, "upgradeToVersion2 " + Log.getStackTraceString(e));
         }
         try {
-            ZScoreRepository.createTable(db);
+
+            WeightZScoreRepository.createTable(db);
+            HeightZScoreRepository.createTable(db);
+
             db.execSQL(WeightRepository.ALTER_ADD_Z_SCORE_COLUMN);
+            db.execSQL(HeightRepository.ALTER_ADD_Z_SCORE_COLUMN);
         } catch (Exception e) {
-Utils.appendLog(getClass().getName(),e);
+            Utils.appendLog(getClass().getName(), e);
             Log.e(TAG, "upgradeToVersion2 " + e.getMessage());
         }
     }
@@ -202,7 +216,7 @@ Utils.appendLog(getClass().getName(),e);
             db.execSQL(RecurringServiceRecordRepository.ALTER_ADD_CREATED_AT_COLUMN);
             RecurringServiceRecordRepository.migrateCreatedAt(db);
         } catch (Exception e) {
-Utils.appendLog(getClass().getName(),e);
+            Utils.appendLog(getClass().getName(), e);
             Log.e(TAG, "upgradeToVersion3 " + Log.getStackTraceString(e));
         }
         try {
@@ -210,9 +224,11 @@ Utils.appendLog(getClass().getName(),e);
             EventClientRepository.createIndex(db, EventClientRepository.Table.event, columns);
 
             db.execSQL(WeightRepository.ALTER_ADD_CREATED_AT_COLUMN);
+            db.execSQL(HeightRepository.ALTER_ADD_CREATED_AT_COLUMN);
             WeightRepository.migrateCreatedAt(db);
+            HeightRepository.migrateCreatedAt(db);
         } catch (Exception e) {
-Utils.appendLog(getClass().getName(),e);
+            Utils.appendLog(getClass().getName(), e);
             Log.e(TAG, "upgradeToVersion3 " + e.getMessage());
         }
     }
@@ -224,15 +240,19 @@ Utils.appendLog(getClass().getName(),e);
             db.execSQL(RecurringServiceRecordRepository.UPDATE_TABLE_ADD_TEAM_COL);
             db.execSQL(RecurringServiceRecordRepository.UPDATE_TABLE_ADD_TEAM_ID_COL);
         } catch (Exception e) {
-Utils.appendLog(getClass().getName(),e);
+            Utils.appendLog(getClass().getName(), e);
             Log.e(TAG, "upgradeToVersion4 " + Log.getStackTraceString(e));
         }
         try {
             db.execSQL(WeightRepository.UPDATE_TABLE_ADD_TEAM_COL);
             db.execSQL(WeightRepository.UPDATE_TABLE_ADD_TEAM_ID_COL);
             db.execSQL(WeightRepository.UPDATE_TABLE_ADD_CHILD_LOCATION_ID_COL);
+
+            db.execSQL(HeightRepository.UPDATE_TABLE_ADD_TEAM_COL);
+            db.execSQL(HeightRepository.UPDATE_TABLE_ADD_TEAM_ID_COL);
+            db.execSQL(HeightRepository.UPDATE_TABLE_ADD_CHILD_LOCATION_ID_COL);
         } catch (Exception e) {
-Utils.appendLog(getClass().getName(),e);
+            Utils.appendLog(getClass().getName(), e);
             Log.e(TAG, "upgradeToVersion4 " + Log.getStackTraceString(e));
         }
     }
@@ -241,8 +261,15 @@ Utils.appendLog(getClass().getName(),e);
         try {
             db.execSQL(VaccineRepository.UPDATE_TABLE_ADD_CHILD_LOCATION_ID_COL);
             db.execSQL(RecurringServiceRecordRepository.UPDATE_TABLE_ADD_CHILD_LOCATION_ID_COL);
+            db.execSQL("ALTER TABLE ec_member ADD COLUMN dataApprovalStatus INTEGER DEFAULT 1");
+            db.execSQL("ALTER TABLE ec_member ADD COLUMN dataApprovalComments VARCHAR DEFAULT 1");
+            db.execSQL("ALTER TABLE ec_woman ADD COLUMN dataApprovalStatus INTEGER DEFAULT 1");
+            db.execSQL("ALTER TABLE ec_woman ADD COLUMN dataApprovalComments VARCHAR DEFAULT 1");
+            db.execSQL("ALTER TABLE ec_child ADD COLUMN dataApprovalStatus INTEGER DEFAULT 1");
+            db.execSQL("ALTER TABLE ec_child ADD COLUMN dataApprovalComments VARCHAR DEFAULT 1");
+            db.execSQL("ALTER TABLE ec_household ADD COLUMN dataApprovalStatus INTEGER DEFAULT 1");
         } catch (Exception e) {
-Utils.appendLog(getClass().getName(),e);
+            Utils.appendLog(getClass().getName(), e);
             Log.e(TAG, "upgradeToVersion5 " + Log.getStackTraceString(e));
         }
     }

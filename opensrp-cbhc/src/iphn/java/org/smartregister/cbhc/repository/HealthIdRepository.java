@@ -17,13 +17,9 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-/**
- * Created by ndegwamartin on 09/04/2018.
- */
-
-public class UniqueIdRepository extends BaseRepository {
+public class HealthIdRepository extends BaseRepository {
     private static final String TAG = UniqueIdRepository.class.getCanonicalName();
-    private static final String UniqueIds_SQL = "CREATE TABLE unique_ids(_id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,openmrs_id VARCHAR NOT NULL,status VARCHAR NULL, used_by VARCHAR NULL,synced_by VARCHAR NULL,created_at DATETIME NULL,updated_at TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP )";
+    private static final String HealthIds_SQL = "CREATE TABLE health_ids(_id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,openmrs_id VARCHAR NOT NULL,status VARCHAR NULL, used_by VARCHAR NULL,synced_by VARCHAR NULL,created_at DATETIME NULL,updated_at TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP )";
     private static final String UniqueIds_TABLE_NAME = "unique_ids";
     private static final String ID_COLUMN = "_id";
     private static final String OPENMRS_ID_COLUMN = "openmrs_id";
@@ -39,12 +35,12 @@ public class UniqueIdRepository extends BaseRepository {
     private final SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
 
-    public UniqueIdRepository(AncRepository ancRepository) {
+    public HealthIdRepository(AncRepository ancRepository) {
         super(ancRepository);
     }
 
     protected static void createTable(SQLiteDatabase database) {
-        database.execSQL(UniqueIds_SQL);
+        database.execSQL(HealthIds_SQL);
     }
 
     public void add(UniqueId uniqueId) {
@@ -136,7 +132,7 @@ public class UniqueIdRepository extends BaseRepository {
      *
      * @param openmrsId
      */
-    public synchronized void close(String openmrsId) {
+    public void close(String openmrsId) {
         try {
             String id;
             String userName = AncApplication.getInstance().getContext().allSharedPreferences().fetchRegisteredANM();
@@ -148,18 +144,6 @@ public class UniqueIdRepository extends BaseRepository {
             ContentValues values = new ContentValues();
             values.put(STATUS_COLUMN, STATUS_USED);
             values.put(USED_BY_COLUMN, userName);
-//            new Thread(new Runnable() {
-//                @Override
-//                public void run() {
-//                    while(getWritableDatabase().isDbLockedByOtherThreads()){
-//                        try {
-//                            Thread.sleep(500);
-//                        } catch (InterruptedException e) {
-//                            e.printStackTrace();
-//                        }
-//                    }
-//                }
-//            }).start();
             getWritableDatabase().update(UniqueIds_TABLE_NAME, values, OPENMRS_ID_COLUMN + " = ?", new String[]{id});
         } catch (Exception e) {
             Utils.appendLog(getClass().getName(), e);

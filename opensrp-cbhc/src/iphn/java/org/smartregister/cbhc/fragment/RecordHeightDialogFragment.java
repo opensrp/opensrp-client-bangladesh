@@ -54,9 +54,9 @@ public class RecordHeightDialogFragment extends DialogFragment {
     public View onCreateView(final LayoutInflater inflater, final ViewGroup container,
                              Bundle savedInstanceState) {
 
-       dateOfBirth = GrowthUtil.dateOfBirth();
+       dateOfBirth = GrowthUtil.getDateOfBirth();
 
-        ViewGroup dialogView = (ViewGroup) inflater.inflate(org.smartregister.growthmonitoring.R.layout.record_weight_dialog_view, container, false);
+        ViewGroup dialogView = null;//(ViewGroup) inflater.inflate(org.smartregister.growthmonitoring.R.layout.record_weight_dialog_view, container, false);
 
         final EditText editHeight = (EditText) dialogView.findViewById(org.smartregister.growthmonitoring.R.id.edit_weight);
         CustomFontTextView titleView = dialogView.findViewById(org.smartregister.growthmonitoring.R.id.record_weight);
@@ -71,7 +71,7 @@ public class RecordHeightDialogFragment extends DialogFragment {
             earlierDatePicker.setMinDate(dateOfBirth.getTime());
         }
 
-        String firstName = org.smartregister.util.Utils.getValue(GrowthUtil.childDetails.getColumnmaps(), "first_name", true);
+        String firstName = Utils.getValue(GrowthUtil.childDetails.getColumnmaps(), "first_name", true);
         String lastName = Utils.getValue(GrowthUtil.childDetails.getColumnmaps(), "last_name", true);
         String childName = getName(firstName, lastName).trim();
         TextView nameView = (TextView) dialogView.findViewById(org.smartregister.growthmonitoring.R.id.child_name);

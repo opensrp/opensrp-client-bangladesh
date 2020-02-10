@@ -45,6 +45,7 @@ import org.smartregister.cbhc.event.ShowProgressDialogEvent;
 import org.smartregister.cbhc.fragment.BaseRegisterFragment;
 import org.smartregister.cbhc.fragment.HomeRegisterFragment;
 import org.smartregister.cbhc.helper.BottomNavigationHelper;
+import org.smartregister.cbhc.job.SyncServiceJob;
 import org.smartregister.cbhc.listener.BottomNavigationListener;
 import org.smartregister.cbhc.presenter.RegisterPresenter;
 import org.smartregister.cbhc.repository.AncRepository;
@@ -380,11 +381,11 @@ public abstract class BaseRegisterActivity extends SecuredNativeSmartRegisterAct
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (data == null && Utils.VIEWREFRESH) {
-            mBaseFragment.clearSortAndFilter();
-            Utils.VIEWREFRESH = false;
-            return;
-        }
+//        if (data == null && Utils.VIEWREFRESH) {
+//            mBaseFragment.clearSortAndFilter();
+//            Utils.VIEWREFRESH = false;
+//            return;
+//        }
         if (requestCode == JsonFormUtils.REQUEST_CODE_GET_JSON && resultCode == RESULT_OK) {
 
             try {
@@ -408,6 +409,8 @@ public abstract class BaseRegisterActivity extends SecuredNativeSmartRegisterAct
                 Log.e(TAG, Log.getStackTraceString(e));
             }
             mBaseFragment.clearSortAndFilter();
+            SyncServiceJob.scheduleJobImmediately(SyncServiceJob.TAG);
+
         } else if (requestCode == BarcodeIntentIntegrator.REQUEST_CODE && resultCode == RESULT_OK) {
             BarcodeIntentResult res = BarcodeIntentIntegrator.parseActivityResult(requestCode, resultCode, data);
             if (StringUtils.isNotBlank(res.getContents())) {

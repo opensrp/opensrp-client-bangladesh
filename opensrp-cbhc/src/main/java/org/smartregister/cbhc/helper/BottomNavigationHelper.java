@@ -37,10 +37,10 @@ public class BottomNavigationHelper {
     public void disableShiftMode(BottomNavigationView view) {
         BottomNavigationMenuView menuView = (BottomNavigationMenuView) view.getChildAt(0);
         try {
-            Field shiftingMode = menuView.getClass().getDeclaredField("mShiftingMode");
-            shiftingMode.setAccessible(true);
-            shiftingMode.setBoolean(menuView, false);
-            shiftingMode.setAccessible(false);
+//            Field shiftingMode = menuView.getClass().getDeclaredField("mShiftingMode");
+//            shiftingMode.setAccessible(true);
+//            shiftingMode.setBoolean(menuView, false);
+//            shiftingMode.setAccessible(false);
             for (int i = 0; i < menuView.getChildCount(); i++) {
                 BottomNavigationItemView item = (BottomNavigationItemView) menuView.getChildAt(i);
                 item.setLabelVisibilityMode(LabelVisibilityMode.LABEL_VISIBILITY_LABELED);
@@ -48,12 +48,9 @@ public class BottomNavigationHelper {
                 // set once again checked value, so view will be updated
                 item.setChecked(item.getItemData().isChecked());
             }
-        } catch (NoSuchFieldException e) {
+        } catch (Exception e) {
             Utils.appendLog(getClass().getName(), e);
             //Timber.e(e, "Unable to get shift mode field");
-        } catch (IllegalAccessException e) {
-            Utils.appendLog(getClass().getName(), e);
-            //Timber.e(e, "Unable to change value of shift mode");
         }
     }
 

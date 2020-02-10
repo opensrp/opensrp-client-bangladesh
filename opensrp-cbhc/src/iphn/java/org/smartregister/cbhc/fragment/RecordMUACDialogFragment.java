@@ -6,6 +6,7 @@ import android.content.Context;
 import android.os.Bundle;
 import android.os.Handler;
 import android.text.Selection;
+import android.util.Pair;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,7 +20,9 @@ import android.widget.TextView;
 
 import org.apache.commons.lang3.StringUtils;
 import org.joda.time.DateTime;
+import org.smartregister.cbhc.R;
 import org.smartregister.cbhc.util.GrowthUtil;
+import org.smartregister.growthmonitoring.fragment.GrowthDialogFragment;
 import org.smartregister.util.DatePickerUtils;
 import org.smartregister.util.DateUtil;
 import org.smartregister.util.Utils;
@@ -27,17 +30,25 @@ import org.smartregister.view.customcontrols.CustomFontTextView;
 
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Random;
 
 import static org.smartregister.util.Utils.getName;
 import static org.smartregister.util.Utils.getValue;
 
-public class RecordMUACDialogFragment extends DialogFragment {
+public class RecordMUACDialogFragment extends GrowthDialogFragment {
 
 
     private Date dateOfBirth;
 
     public static final String WRAPPER_TAG = "tag";
     public static final String DATE_OF_BIRTH_TAG = "dob";
+    public static final HashMap<Long, Pair<String, String>>muacmap = new HashMap<>();
+
+    class MUAC{
+        String duration;
+        String muac;
+    }
 
     public static RecordMUACDialogFragment newInstance() {
         RecordMUACDialogFragment recordMUACDialogFragment = new RecordMUACDialogFragment();
@@ -54,9 +65,9 @@ public class RecordMUACDialogFragment extends DialogFragment {
     public View onCreateView(final LayoutInflater inflater, final ViewGroup container,
                              Bundle savedInstanceState) {
 
-        dateOfBirth = GrowthUtil.dateOfBirth();
+        dateOfBirth = GrowthUtil.getDateOfBirth();
 
-        ViewGroup dialogView = (ViewGroup) inflater.inflate(org.smartregister.growthmonitoring.R.layout.record_weight_dialog_view, container, false);
+        ViewGroup dialogView = (ViewGroup) inflater.inflate(R.layout.record_muac_dialog_view, container, false);
 
         final EditText editMUAC = (EditText) dialogView.findViewById(org.smartregister.growthmonitoring.R.id.edit_weight);
         CustomFontTextView titleView = dialogView.findViewById(org.smartregister.growthmonitoring.R.id.record_weight);
@@ -71,7 +82,7 @@ public class RecordMUACDialogFragment extends DialogFragment {
             earlierDatePicker.setMinDate(dateOfBirth.getTime());
         }
 
-        String firstName = org.smartregister.util.Utils.getValue(GrowthUtil.childDetails.getColumnmaps(), "first_name", true);
+        String firstName = Utils.getValue(GrowthUtil.childDetails.getColumnmaps(), "first_name", true);
         String lastName = Utils.getValue(GrowthUtil.childDetails.getColumnmaps(), "last_name", true);
         String childName = getName(firstName, lastName).trim();
         TextView nameView = (TextView) dialogView.findViewById(org.smartregister.growthmonitoring.R.id.child_name);
@@ -131,9 +142,8 @@ public class RecordMUACDialogFragment extends DialogFragment {
                 dismiss();
 
                 Calendar calendar = Calendar.getInstance();
-
-
                 Float height = Float.valueOf(heightString);
+//                muacmap.put(muacmap.size()+1,Pair.create())
 
             }
         });
