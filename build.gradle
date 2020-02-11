@@ -27,8 +27,9 @@ allprojects {
         maven { url "http://repo.maven.apache.org/maven2" }
         maven { url "http://cloudant.github.io/cloudant-sync-eap/org.smartregister.cbhc.repository" }
         maven { url "https://s3.amazonaws.com/repo.commonsware.com" }
-        google()
         jcenter()
+        google()
+
     }
 }
 

@@ -65,6 +65,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
@@ -154,19 +155,15 @@ public class JsonFormUtils extends org.smartregister.util.JsonFormUtils {
 
         }
         if (Constants.JSON_FORM.Household_REGISTER.equals(formName)) {
-            android.text.format.DateFormat df = new android.text.format.DateFormat();
-
             JSONArray field = fields(form);
             JSONObject date_of_registration = getFieldJSONObject(field, "Date_Of_Reg");
             date_of_registration.remove(JsonFormUtils.VALUE);
-            date_of_registration.put(JsonFormUtils.VALUE, DateFormat.format("dd-MM-yyyy", new java.util.Date()));
+            date_of_registration.put(JsonFormUtils.VALUE, new SimpleDateFormat("dd-MM-yyyy", Locale.ENGLISH).format(new Date()));
         } else if (Constants.JSON_FORM.MEMBER_REGISTER.equals(formName)) {
-            android.text.format.DateFormat df = new android.text.format.DateFormat();
-
             JSONArray field = fields(form);
             JSONObject date_of_registration = getFieldJSONObject(field, "member_Reg_Date");
             date_of_registration.remove(JsonFormUtils.VALUE);
-            date_of_registration.put(JsonFormUtils.VALUE, DateFormat.format("dd-MM-yyyy", new java.util.Date()));
+            date_of_registration.put(JsonFormUtils.VALUE, new SimpleDateFormat("dd-MM-yyyy", Locale.ENGLISH).format(new Date()));
         }
 
 //        else if(formName.startsWith("Followup_Form")){
@@ -1261,15 +1258,23 @@ public class JsonFormUtils extends org.smartregister.util.JsonFormUtils {
 
         } else if ((jsonObject.getString(JsonFormUtils.KEY).equalsIgnoreCase(DBConstants.KEY.member_Reg_Date))) {
             String reg_date = womanClient.get(DBConstants.KEY.member_Reg_Date);
-            if (reg_date != null) {
+            if (reg_date != null&&!"today".equalsIgnoreCase(reg_date.trim())) {
                 jsonObject.put(JsonFormUtils.VALUE, reg_date);
                 jsonObject.put(JsonFormUtils.READ_ONLY, true);
+            }else{
+                jsonObject.put(JsonFormUtils.VALUE, new SimpleDateFormat("dd-MM-yyyy", Locale.ENGLISH).format(new Date()));
+                jsonObject.put(JsonFormUtils.READ_ONLY, true);
+
             }
         } else if ((jsonObject.getString(JsonFormUtils.KEY).equalsIgnoreCase(DBConstants.KEY.Date_Of_Reg))) {
             String reg_date = womanClient.get(DBConstants.KEY.Date_Of_Reg);
-            if (reg_date != null) {
+            if (reg_date != null&&!"today".equalsIgnoreCase(reg_date.trim())) {
                 jsonObject.put(JsonFormUtils.VALUE, reg_date);
                 jsonObject.put(JsonFormUtils.READ_ONLY, true);
+            }else{
+                jsonObject.put(JsonFormUtils.VALUE, new SimpleDateFormat("dd-MM-yyyy", Locale.ENGLISH).format(new Date()));
+                jsonObject.put(JsonFormUtils.READ_ONLY, true);
+
             }
         } else if ((jsonObject.getString(JsonFormUtils.KEY).equalsIgnoreCase(DBConstants.KEY.Patient_Identifier))) {
             String Patient_Identifier = womanClient.get(DBConstants.KEY.Patient_Identifier);

@@ -210,6 +210,15 @@ public class AncApplication extends DrishtiApplication implements TimeChangedBro
 //        getApplicationContext().startActivity(intent);
 //        context.userService().logoutSession();
     }
+    public void logoutUser(){
+        Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        intent.addCategory(Intent.CATEGORY_HOME);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        getApplicationContext().startActivity(intent);
+        context.userService().logoutSession();
+    }
     public void forceLogoutCurrentUser() {
         Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
@@ -222,7 +231,7 @@ public class AncApplication extends DrishtiApplication implements TimeChangedBro
     public void forcelogoutCurrentUser() {
         getContext().userService().getAllSharedPreferences().saveForceRemoteLogin(true);
         LocationHelper.setInstance(null);
-        forceLogoutCurrentUser();
+        logoutUser();
         System.exit(0);
     }
 
