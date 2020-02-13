@@ -75,6 +75,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 
 import static com.vijay.jsonwizard.utils.FormUtils.dpToPixels;
@@ -88,7 +89,7 @@ import static org.smartregister.util.Utils.getValue;
  */
 public class AncJsonFormFragment extends JsonFormFragment {
 
-    public static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("dd-MM-yyyy");
+    public static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("dd-MM-yyyy", Locale.ENGLISH);
     public static String lookuptype = "";
     public static Drawable default_drawable;
     AncJsonFormActivity activity;

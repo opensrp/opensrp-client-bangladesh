@@ -65,6 +65,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
@@ -77,7 +78,7 @@ import static org.apache.commons.lang3.StringUtils.isBlank;
 public class JsonFormUtils extends org.smartregister.util.JsonFormUtils {
     public static final String METADATA = "metadata";
     public static final String ENCOUNTER_TYPE = "encounter_type";
-    public static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("dd-MM-yyyy");
+    public static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("dd-MM-yyyy",Locale.ENGLISH);
     public static final String CURRENT_OPENSRP_ID = "current_opensrp_id";
     public static final String ANC_ID = "ANC_ID";
     public static final String READ_ONLY = "read_only";
@@ -154,19 +155,15 @@ public class JsonFormUtils extends org.smartregister.util.JsonFormUtils {
 
         }
         if (Constants.JSON_FORM.Household_REGISTER.equals(formName)) {
-            android.text.format.DateFormat df = new android.text.format.DateFormat();
-
             JSONArray field = fields(form);
             JSONObject date_of_registration = getFieldJSONObject(field, "Date_Of_Reg");
             date_of_registration.remove(JsonFormUtils.VALUE);
-            date_of_registration.put(JsonFormUtils.VALUE, DateFormat.format("dd-MM-yyyy", new java.util.Date()));
+            date_of_registration.put(JsonFormUtils.VALUE, new SimpleDateFormat("dd-MM-yyyy", Locale.ENGLISH).format(new Date()));
         } else if (Constants.JSON_FORM.MEMBER_REGISTER.equals(formName)) {
-            android.text.format.DateFormat df = new android.text.format.DateFormat();
-
             JSONArray field = fields(form);
             JSONObject date_of_registration = getFieldJSONObject(field, "member_Reg_Date");
             date_of_registration.remove(JsonFormUtils.VALUE);
-            date_of_registration.put(JsonFormUtils.VALUE, DateFormat.format("dd-MM-yyyy", new java.util.Date()));
+            date_of_registration.put(JsonFormUtils.VALUE, new SimpleDateFormat("dd-MM-yyyy", Locale.ENGLISH).format(new Date()));
         }
 
 //        else if(formName.startsWith("Followup_Form")){
@@ -696,7 +693,7 @@ public class JsonFormUtils extends org.smartregister.util.JsonFormUtils {
         String oldDateString = dateString;
         String newDateString = dateString;
 
-        SimpleDateFormat sdf = new SimpleDateFormat(OLD_FORMAT);
+        SimpleDateFormat sdf = new SimpleDateFormat(OLD_FORMAT,Locale.ENGLISH);
         Date d = null;
         try {
             d = sdf.parse(oldDateString);
@@ -718,7 +715,7 @@ public class JsonFormUtils extends org.smartregister.util.JsonFormUtils {
         String oldDateString = dateString;
         String newDateString = dateString;
 
-        SimpleDateFormat sdf = new SimpleDateFormat(OLD_FORMAT);
+        SimpleDateFormat sdf = new SimpleDateFormat(OLD_FORMAT,Locale.ENGLISH);
         Date d = null;
         try {
             d = sdf.parse(oldDateString);
@@ -1261,15 +1258,23 @@ public class JsonFormUtils extends org.smartregister.util.JsonFormUtils {
 
         } else if ((jsonObject.getString(JsonFormUtils.KEY).equalsIgnoreCase(DBConstants.KEY.member_Reg_Date))) {
             String reg_date = womanClient.get(DBConstants.KEY.member_Reg_Date);
-            if (reg_date != null) {
+            if (reg_date != null&&!"today".equalsIgnoreCase(reg_date.trim())) {
                 jsonObject.put(JsonFormUtils.VALUE, reg_date);
                 jsonObject.put(JsonFormUtils.READ_ONLY, true);
+            }else{
+                jsonObject.put(JsonFormUtils.VALUE, new SimpleDateFormat("dd-MM-yyyy", Locale.ENGLISH).format(new Date()));
+                jsonObject.put(JsonFormUtils.READ_ONLY, true);
+
             }
         } else if ((jsonObject.getString(JsonFormUtils.KEY).equalsIgnoreCase(DBConstants.KEY.Date_Of_Reg))) {
             String reg_date = womanClient.get(DBConstants.KEY.Date_Of_Reg);
-            if (reg_date != null) {
+            if (reg_date != null&&!"today".equalsIgnoreCase(reg_date.trim())) {
                 jsonObject.put(JsonFormUtils.VALUE, reg_date);
                 jsonObject.put(JsonFormUtils.READ_ONLY, true);
+            }else{
+                jsonObject.put(JsonFormUtils.VALUE, new SimpleDateFormat("dd-MM-yyyy", Locale.ENGLISH).format(new Date()));
+                jsonObject.put(JsonFormUtils.READ_ONLY, true);
+
             }
         } else if ((jsonObject.getString(JsonFormUtils.KEY).equalsIgnoreCase(DBConstants.KEY.Patient_Identifier))) {
             String Patient_Identifier = womanClient.get(DBConstants.KEY.Patient_Identifier);
@@ -1900,7 +1905,7 @@ public class JsonFormUtils extends org.smartregister.util.JsonFormUtils {
     }
 
     public static Event addMetaData(Context context, Event event, Date start) throws JSONException {
-        SimpleDateFormat DATE_TIME_FORMAT = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        SimpleDateFormat DATE_TIME_FORMAT = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss",Locale.ENGLISH);
 
         Map<String, String> metaFields = new HashMap<>();
         metaFields.put("deviceid", "163149AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");

@@ -68,6 +68,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.Locale;
 
 import static org.smartregister.cbhc.fragment.ProfileOverviewFragment.EXTRA_HOUSEHOLD_DETAILS;
 import static org.smartregister.cbhc.util.Constants.EventType.PREGNANT_STATUS;
@@ -223,7 +224,7 @@ public class MemberProfileActivity extends BaseProfileActivity implements Profil
 
                         delivery_status = householdDetails.getColumnmaps().get(PREGNANT_STATUS);
                         if (lmp_date != null && delivery_status != null) {
-                            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd\'T\'HH:mm:ss.SSS\'Z\'");
+                            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd\'T\'HH:mm:ss.SSS\'Z\'", Locale.ENGLISH);
                             Calendar c = Calendar.getInstance();
                             try {
                                 c.setTime(sdf.parse(lmp_date));
@@ -232,7 +233,7 @@ public class MemberProfileActivity extends BaseProfileActivity implements Profil
                                 e.printStackTrace();
                             }
                             c.add(Calendar.DATE, 280);  // number of days to add
-                            sdf = new SimpleDateFormat("dd-MM-yyyy");
+                            sdf = new SimpleDateFormat("dd-MM-yyyy",Locale.ENGLISH);
                             lmp_date = sdf.format(c.getTime());  // dt is now the new date
 
                         }
@@ -658,7 +659,7 @@ public class MemberProfileActivity extends BaseProfileActivity implements Profil
 
         if (dob != null) {
             try {
-                Date dateob = new SimpleDateFormat("yyyy-MM-dd").parse(dob);
+                Date dateob = new SimpleDateFormat("yyyy-MM-dd",Locale.ENGLISH).parse(dob);
 //                Date dateob = new Date(dob);
                 if (dateob != null) {
                     long time = new Date().getTime() - dateob.getTime();

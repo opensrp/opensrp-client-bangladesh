@@ -31,7 +31,7 @@ public class LoginModel implements LoginContract.Model {
     }
 
     public String getBuildDate() {
-        return new SimpleDateFormat("dd MMM yyyy", Locale.getDefault()).format(new Date(BuildConfig.BUILD_TIMESTAMP));
+        return new SimpleDateFormat("dd MMM yyyy", Locale.ENGLISH).format(new Date(BuildConfig.BUILD_TIMESTAMP));
     }
 
     @Override
