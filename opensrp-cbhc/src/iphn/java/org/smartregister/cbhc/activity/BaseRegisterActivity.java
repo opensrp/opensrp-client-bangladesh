@@ -63,6 +63,7 @@ import org.smartregister.view.viewpager.OpenSRPViewPager;
 
 import java.text.SimpleDateFormat;
 import java.util.List;
+import java.util.Locale;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -74,7 +75,7 @@ import butterknife.ButterKnife;
 public abstract class BaseRegisterActivity extends SecuredNativeSmartRegisterActivity implements RegisterContract.View {
 
     public static final String TAG = BaseRegisterActivity.class.getCanonicalName();
-    private static final SimpleDateFormat dateFormatter = new SimpleDateFormat("dd/MM/yyyy");
+    private static final SimpleDateFormat dateFormatter = new SimpleDateFormat("dd/MM/yyyy", Locale.ENGLISH);
     @Bind(R.id.view_pager)
     protected OpenSRPViewPager mPager;
 

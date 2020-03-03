@@ -16,6 +16,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 public class HealthIdRepository extends BaseRepository {
 
@@ -33,7 +34,7 @@ public class HealthIdRepository extends BaseRepository {
 
     private static final String STATUS_USED = "used";
     private static final String STATUS_NOT_USED = "not_used";
-    private final SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+    private final SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.ENGLISH);
 
 
     public HealthIdRepository(AncRepository ancRepository) {

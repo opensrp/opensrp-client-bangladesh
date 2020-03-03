@@ -43,7 +43,7 @@ public class MeFragment extends Fragment implements MeContract.View {
         String anm_name = allSharedPreferences.fetchRegisteredANM();
         String provider_name = allSharedPreferences.getPreference(anm_name);
         String version_name = BuildConfig.VERSION_NAME;
-        String build_date = new SimpleDateFormat("dd MMM yyyy", Locale.getDefault()).format(new Date(BuildConfig.BUILD_TIMESTAMP));
+        String build_date = new SimpleDateFormat("dd MMM yyyy", Locale.ENGLISH).format(new Date(BuildConfig.BUILD_TIMESTAMP));
         String version_text = "Version " + version_name + ", Built on: " + build_date;
         String user_details = anm_name;
         if (!StringUtils.isEmpty(provider_name)) {

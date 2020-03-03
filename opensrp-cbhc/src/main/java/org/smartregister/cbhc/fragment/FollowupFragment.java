@@ -23,6 +23,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 import static org.smartregister.cbhc.fragment.ProfileOverviewFragment.EXTRA_HOUSEHOLD_DETAILS;
 import static org.smartregister.cbhc.util.Constants.FOLLOWUP_FORM.Followup_Form_MHV_ANC;
@@ -137,7 +138,7 @@ public class FollowupFragment extends BaseProfileFragment {
         }
         if (dob != null) {
             try {
-                Date dateob = new SimpleDateFormat("yyyy-MM-dd").parse(dob);
+                Date dateob = new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH).parse(dob);
 //                Date dateob = new Date(dob);
                 if (dateob != null) {
                     long time = new Date().getTime() - dateob.getTime();

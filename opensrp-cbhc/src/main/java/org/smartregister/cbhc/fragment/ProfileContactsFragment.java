@@ -33,6 +33,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 
 import static org.smartregister.cbhc.fragment.ProfileOverviewFragment.EXTRA_HOUSEHOLD_DETAILS;
@@ -110,7 +111,7 @@ public class ProfileContactsFragment extends BaseProfileFragment {
                 if (mamber_dob.contains("T")) {
                     mamber_dob = mamber_dob.substring(0, mamber_dob.indexOf("T"));
                     jsonObject.put(JsonFormUtils.VALUE, mamber_dob);
-                    SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
+                    SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy", Locale.ENGLISH);
                     try {
                         date_of_birth = sdf.parse(mamber_dob);
                     } catch (ParseException e) {
