@@ -158,7 +158,7 @@ public class SyncIntentService extends IntentService {
             Log.e(getClass().getName(), "Fetch Retry Exception: " + e.getMessage(), e.getCause());
             fetchFailed(count);
         } finally {
-            DeleteIntentServiceJob.scheduleJobImmediately(DeleteIntentServiceJob.TAG);
+            //DeleteIntentServiceJob.scheduleJobImmediately(DeleteIntentServiceJob.TAG);
             PullHealthIdsServiceJob.scheduleJobImmediately(PullHealthIdsServiceJob.TAG);
             PullUniqueIdsServiceJob.scheduleJobImmediately(PullUniqueIdsServiceJob.TAG);
 
@@ -252,7 +252,7 @@ public class SyncIntentService extends IntentService {
 
         ECSyncHelper ecSyncUpdater = ECSyncHelper.getInstance(context);
         ecSyncUpdater.updateLastCheckTimeStamp(new Date().getTime());
-        DeleteIntentServiceJob.scheduleJobImmediately(DeleteIntentServiceJob.TAG);
+//        DeleteIntentServiceJob.scheduleJobImmediately(DeleteIntentServiceJob.TAG);
     }
 
     private Pair<Long, Long> getMinMaxServerVersions(JSONObject jsonObject) {

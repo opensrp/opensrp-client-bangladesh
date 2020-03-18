@@ -49,6 +49,7 @@ import org.smartregister.cbhc.presenter.ProfilePresenter;
 import org.smartregister.cbhc.presenter.RegisterPresenter;
 import org.smartregister.cbhc.provider.RegisterProvider;
 import org.smartregister.cbhc.repository.AncRepository;
+import org.smartregister.cbhc.repository.HealthIdRepository;
 import org.smartregister.cbhc.repository.UniqueIdRepository;
 import org.smartregister.cbhc.util.Constants;
 import org.smartregister.cbhc.util.DBConstants;
@@ -394,7 +395,7 @@ Utils.appendLog(getClass().getName(),e);
                             new DialogInterface.OnClickListener() {
                                 public void onClick(DialogInterface dialog, int which) {
                                     dialog.dismiss();
-                                    Utils.VIEWREFRESH = false;
+//                                    Utils.VIEWREFRESH = false;
                                 }
                             });
                     alertDialog.setButton(android.support.v7.app.AlertDialog.BUTTON_POSITIVE, "CONFIRM",
@@ -404,7 +405,7 @@ Utils.appendLog(getClass().getName(),e);
                                         String entity_id = form.getString("entity_id");
                                         removeMember(entity_id);
                                         presenter.saveForm(jsonString, false);
-                                        Utils.VIEWREFRESH = true;
+//                                        Utils.VIEWREFRESH = true;
 
                                     } catch (Exception e) {
 Utils.appendLog(getClass().getName(),e);
@@ -422,7 +423,7 @@ Utils.appendLog(getClass().getName(),e);
             } finally {
                 refreshList(null);
 //                refreshProfileViews();
-                Utils.VIEWREFRESH = true;
+//                Utils.VIEWREFRESH = true;
             }
 
         } else if (requestCode == BarcodeIntentIntegrator.REQUEST_CODE && resultCode == RESULT_OK) {
@@ -434,7 +435,7 @@ Utils.appendLog(getClass().getName(),e);
 //            } else
 //                Log.i("", "NO RESULT FOR QR CODE");
         } else {
-            Utils.VIEWREFRESH = true;
+//            Utils.VIEWREFRESH = true;
             refreshList(null);
 //            refreshProfileViews();
         }
