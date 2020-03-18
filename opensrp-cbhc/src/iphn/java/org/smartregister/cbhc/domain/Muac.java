@@ -3,7 +3,7 @@ package org.smartregister.cbhc.domain;
 import java.util.Date;
 import java.util.HashMap;
 
-public class Muac {
+public class MUAC {
     private static final String ZEIR_ID = "ZEIR_ID";
     private Long id;
     private String baseEntityId;
@@ -23,12 +23,12 @@ public class Muac {
     private Double zScore;
     private Date createdAt;
 
-    public Muac() {
+    public MUAC() {
     }
 
-    public Muac(Long id, String baseEntityId, Float kg, Date date, String anmId, String
+    public MUAC(Long id, String baseEntityId, Float kg, Date date, String anmId, String
             locationId, String syncStatus, Long updatedAt, String eventId, String
-                        formSubmissionId, Integer outOfCatchment) {
+                          formSubmissionId, Integer outOfCatchment) {
         this.id = id;
         this.baseEntityId = baseEntityId;
         this.programClientId = null;
@@ -43,9 +43,9 @@ public class Muac {
         this.outOfCatchment = outOfCatchment;
     }
 
-    public Muac(Long id, String baseEntityId, String programClientId, Float kg, Date date,
-                String anmId, String locationId, String syncStatus, Long updatedAt, String
-                        eventId, String formSubmissionId, Double zScore, Integer outOfCatchment, Date createdAt) {
+    public MUAC(Long id, String baseEntityId, String programClientId, Float kg, Date date,
+                  String anmId, String locationId, String syncStatus, Long updatedAt, String
+                          eventId, String formSubmissionId, Double zScore, Integer outOfCatchment, Date createdAt) {
         this.id = id;
         this.baseEntityId = baseEntityId;
         this.programClientId = programClientId;
