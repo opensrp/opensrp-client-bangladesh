@@ -64,8 +64,14 @@ public class SyncIntentService extends IntentService {
 
     protected void handleSync() {
         sendSyncStatusBroadcastMessage(FetchStatus.fetchStarted);
+        long start_time = new Date().getTime();
+        Log.e("sync-time", "start-time:"+start_time);
 
         doSync();
+        long end_time = new Date().getTime();
+        Log.e("sync-time:", "end-time:"+end_time);
+        Log.e("sync-time:", "time-difference:"+(end_time-start_time));
+
     }
 
     private void doSync() {
