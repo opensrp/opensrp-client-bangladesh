@@ -7,7 +7,6 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.telephony.TelephonyManager;
 import android.text.TextUtils;
-import android.text.format.DateFormat;
 import android.util.Log;
 import android.util.Pair;
 
@@ -1039,7 +1038,17 @@ public class JsonFormUtils extends org.smartregister.util.JsonFormUtils {
 
         return "";
     }
+    private static final String LOCATIONTREE = "locationtree";
+    public static void getLocationTree(Context context){
+        try{
+            JSONObject form = FormUtils.getInstance(context).getFormJson(LOCATIONTREE);
+            
+        }catch(Exception e){
 
+        }
+
+
+    }
     public static String getMemberJsonEditFormString(Context context, Map<String, String> womanClient) {
         try {
 

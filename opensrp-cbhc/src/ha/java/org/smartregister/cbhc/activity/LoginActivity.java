@@ -33,12 +33,18 @@ import org.greenrobot.eventbus.ThreadMode;
 import org.joda.time.DateTime;
 import org.smartregister.cbhc.R;
 import org.smartregister.cbhc.contract.LoginContract;
+import org.smartregister.cbhc.domain.FormLocation;
 import org.smartregister.cbhc.event.ViewConfigurationSyncCompleteEvent;
+import org.smartregister.cbhc.helper.LocationHelper;
 import org.smartregister.cbhc.presenter.LoginPresenter;
 import org.smartregister.cbhc.task.SaveTeamLocationsTask;
 import org.smartregister.cbhc.util.Constants;
 import org.smartregister.repository.AllSharedPreferences;
 import org.smartregister.util.Utils;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 import static org.smartregister.AllConstants.DRISHTI_BASE_URL;
 import static org.smartregister.util.Log.logError;
@@ -114,8 +120,50 @@ public class LoginActivity extends AppCompatActivity implements LoginContract.Vi
         if(!StringUtils.isEmpty(anm_name)){
             userNameEditText.setText(anm_name);
         }
-    }
+        ArrayList<String> healthFacilities = new ArrayList<>();
+        healthFacilities.add("Country");
+        healthFacilities.add("Division");
+        healthFacilities.add("District");
+        healthFacilities.add("Upazilla");
+        healthFacilities.add("Union");
+        healthFacilities.add("Ward");
+        healthFacilities.add("Block");
+        healthFacilities.add("Subunit");
+        healthFacilities.add("EPI center");
 
+        //locationHelper getlocationtree
+        List<String> defaultFacility = LocationHelper.getInstance().generateDefaultLocationHierarchy(healthFacilities);
+        List<FormLocation> upToFacilities = LocationHelper.getInstance().generateLocationHierarchyTree(false, healthFacilities);
+        String locationTree = getLocationTree(upToFacilities);
+        System.out.println(locationTree);
+    }
+    public static String getLocationTree(List<FormLocation> upToFacilities){
+
+        String location = "";
+        ArrayList<String>locations = new ArrayList<>();
+        FormLocation loc = null;
+        for(int i=0;i<upToFacilities.size();i++){
+            loc = upToFacilities.get(i);
+            if(loc.nodes!=null&&loc.nodes.get(0)!=null&&loc.nodes.get(0).nodes.get(0)==null){
+                break;
+            }
+        }
+        System.out.println(loc);
+//        while(getNodeName(upToFacilities)!=null){
+//            FormLocation loc = upToFacilities.get(0);
+//            locations.add(loc.name);
+//            upToFacilities = loc.nodes;
+//
+//        }
+//        for(int i = locations.size()-2;i>=0;i--){
+//            location += locations.get(i) + " ";
+//        }
+        return location.trim();
+    }
+    public static String getNodeName(List<FormLocation> loc){
+        if(loc==null)return null;
+        return loc.get(0).name;
+    }
     @Override
     protected void onDestroy() {
         super.onDestroy();

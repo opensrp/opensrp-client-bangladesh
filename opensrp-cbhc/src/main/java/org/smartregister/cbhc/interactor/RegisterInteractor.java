@@ -4,7 +4,7 @@ import android.content.ContentValues;
 import android.support.annotation.VisibleForTesting;
 import android.util.Log;
 import android.util.Pair;
-
+import org.smartregister.cbhc.util.JsonFormUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.tuple.Triple;
 import org.json.JSONObject;
@@ -20,7 +20,6 @@ import org.smartregister.cbhc.repository.UniqueIdRepository;
 import org.smartregister.cbhc.util.AppExecutors;
 import org.smartregister.cbhc.util.Constants;
 import org.smartregister.cbhc.util.DBConstants;
-import org.smartregister.cbhc.util.JsonFormUtils;
 import org.smartregister.cbhc.util.Utils;
 import org.smartregister.clientandeventmodel.Client;
 import org.smartregister.clientandeventmodel.Event;

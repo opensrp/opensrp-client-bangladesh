@@ -19,10 +19,9 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ArrayAdapter;
-import android.widget.CursorAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
-
+import org.smartregister.cbhc.util.JsonFormUtils;
 import net.sqlcipher.Cursor;
 import net.sqlcipher.database.SQLiteDatabase;
 
@@ -54,7 +53,6 @@ import org.smartregister.cbhc.repository.UniqueIdRepository;
 import org.smartregister.cbhc.util.Constants;
 import org.smartregister.cbhc.util.DBConstants;
 import org.smartregister.cbhc.util.ImageLoaderByGlide;
-import org.smartregister.cbhc.util.JsonFormUtils;
 import org.smartregister.cbhc.util.LookUpUtils;
 import org.smartregister.cbhc.util.Utils;
 import org.smartregister.cbhc.view.CopyToClipboardDialog;

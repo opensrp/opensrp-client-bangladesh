@@ -17,10 +17,9 @@ import org.smartregister.cbhc.fragment.AncJsonFormFragment;
 import org.smartregister.cbhc.repository.DraftFormRepository;
 import org.smartregister.cbhc.repository.HealthIdRepository;
 import org.smartregister.cbhc.repository.UniqueIdRepository;
-import org.smartregister.cbhc.util.JsonFormUtils;
 import org.smartregister.cbhc.util.Utils;
 import org.smartregister.util.OpenSRPImageLoader;
-
+import org.smartregister.cbhc.util.JsonFormUtils;
 import static org.apache.commons.lang3.StringUtils.isBlank;
 import static org.smartregister.cbhc.util.JsonFormUtils.METADATA;
 import static org.smartregister.util.JsonFormUtils.getJSONObject;

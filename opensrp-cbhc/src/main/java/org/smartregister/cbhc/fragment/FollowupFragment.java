@@ -14,7 +14,6 @@ import android.widget.TextView;
 import org.smartregister.cbhc.R;
 import org.smartregister.cbhc.application.AncApplication;
 import org.smartregister.cbhc.util.Constants;
-import org.smartregister.cbhc.util.JsonFormUtils;
 import org.smartregister.commonregistry.CommonPersonObjectClient;
 import org.smartregister.immunization.view.ExpandableHeightGridView;
 
@@ -24,7 +23,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
-
+import org.smartregister.cbhc.util.JsonFormUtils;
 import static org.smartregister.cbhc.fragment.ProfileOverviewFragment.EXTRA_HOUSEHOLD_DETAILS;
 import static org.smartregister.cbhc.util.Constants.FOLLOWUP_FORM.Followup_Form_MHV_ANC;
 import static org.smartregister.cbhc.util.Constants.FOLLOWUP_FORM.Followup_Form_MHV_DS_Female;

@@ -2,14 +2,13 @@ package org.smartregister.cbhc.interactor;
 
 import android.support.annotation.VisibleForTesting;
 import android.util.Log;
-
+import org.smartregister.cbhc.util.JsonFormUtils;
 import org.json.JSONObject;
 import org.smartregister.cbhc.application.AncApplication;
 import org.smartregister.cbhc.contract.QuickCheckContract;
 import org.smartregister.cbhc.domain.QuickCheck;
 import org.smartregister.cbhc.helper.ECSyncHelper;
 import org.smartregister.cbhc.util.AppExecutors;
-import org.smartregister.cbhc.util.JsonFormUtils;
 import org.smartregister.cbhc.util.Utils;
 import org.smartregister.clientandeventmodel.Event;
 import org.smartregister.repository.AllSharedPreferences;

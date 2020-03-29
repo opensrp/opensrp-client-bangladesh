@@ -8,7 +8,7 @@ import net.sqlcipher.database.SQLiteDatabase;
 
 import org.apache.commons.lang3.StringUtils;
 import org.opensrp.api.constants.Gender;
-import org.smartregister.cbhc.domain.Muac;
+import org.smartregister.cbhc.domain.MUAC;
 import org.smartregister.cbhc.util.Utils;
 import org.smartregister.growthmonitoring.GrowthMonitoringLibrary;
 import org.smartregister.location.helper.LocationHelper;
@@ -23,8 +23,8 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
-public class MuacRepository extends BaseRepository {
-    public static final String MUAC_TABLE_NAME = "muacs";
+public class MUACRepository extends BaseRepository {
+    public static final String MUAC_TABLE_NAME = "MUACs";
     public static final String ID_COLUMN = "_id";
     public static final String BASE_ENTITY_ID = "base_entity_id";
     public static final String EVENT_ID = "event_id";
@@ -57,8 +57,8 @@ public class MuacRepository extends BaseRepository {
     public static final String UPDATE_TABLE_ADD_TEAM_COL = "ALTER TABLE " + MUAC_TABLE_NAME + " ADD COLUMN " + TEAM + " VARCHAR;";
     public static final String UPDATE_TABLE_ADD_TEAM_ID_COL = "ALTER TABLE " + MUAC_TABLE_NAME + " ADD COLUMN " + TEAM_ID + " VARCHAR;";
     public static final String UPDATE_TABLE_ADD_CHILD_LOCATION_ID_COL = "ALTER TABLE " + MUAC_TABLE_NAME + " ADD COLUMN " + CHILD_LOCATION_ID + " VARCHAR;";
-    private static final String TAG = MuacRepository.class.getCanonicalName();
-    private static final String MUAC_SQL = "CREATE TABLE muacs (_id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT," +
+    private static final String TAG = MUACRepository.class.getCanonicalName();
+    private static final String MUAC_SQL = "CREATE TABLE MUACs (_id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT," +
             "base_entity_id VARCHAR NOT NULL,program_client_id VARCHAR NULL,kg REAL NOT NULL,date DATETIME NOT NULL,anmid " +
             "VARCHAR NULL,location_id VARCHAR NULL,sync_status VARCHAR,updated_at INTEGER NULL)";
     private static final String BASE_ENTITY_ID_INDEX = "CREATE INDEX " + MUAC_TABLE_NAME + "_" + BASE_ENTITY_ID + "_index ON " + MUAC_TABLE_NAME + "(" + BASE_ENTITY_ID + " COLLATE NOCASE);";
@@ -66,7 +66,7 @@ public class MuacRepository extends BaseRepository {
     private static final String UPDATED_AT_INDEX = "CREATE INDEX " + MUAC_TABLE_NAME + "_" + UPDATED_AT_COLUMN + "_index ON " + MUAC_TABLE_NAME + "(" + UPDATED_AT_COLUMN + ");";
 
 
-    public MuacRepository(Repository repository) {
+    public MUACRepository(Repository repository) {
         super(repository);
     }
 
@@ -91,76 +91,76 @@ public class MuacRepository extends BaseRepository {
                     " WHERE " + CREATED_AT + " is null ";
             database.execSQL(sql);
         } catch (Exception e) {
-            Utils.appendLog(MuacRepository.class.getName(), e);
+            Utils.appendLog(MUACRepository.class.getName(), e);
             Log.e(TAG, Log.getStackTraceString(e));
         }
     }
 
     /**
-     * This method sets the muac's z-score, before adding it to the database
+     * This method sets the MUAC's z-score, before adding it to the database
      *
      * @param dateOfBirth
      * @param gender
-     * @param muac
+     * @param MUAC
      */
-    public void add(Date dateOfBirth, Gender gender, Muac muac) {
+    public void add(Date dateOfBirth, Gender gender, MUAC MUAC) {
 
     }
 
-    public void add(Muac muac) {
+    public void add(MUAC MUAC) {
         try {
-            if (muac == null) {
+            if (MUAC == null) {
                 return;
             }
 
             AllSharedPreferences allSharedPreferences = GrowthMonitoringLibrary.getInstance().context()
                     .allSharedPreferences();
             String providerId = allSharedPreferences.fetchRegisteredANM();
-            muac.setTeam(allSharedPreferences.fetchDefaultTeam(providerId));
-            muac.setTeamId(allSharedPreferences.fetchDefaultTeamId(providerId));
-            muac.setLocationId(allSharedPreferences.fetchDefaultLocalityId(providerId));
-            muac.setChildLocationId(LocationHelper.getInstance().getChildLocationId());
+            MUAC.setTeam(allSharedPreferences.fetchDefaultTeam(providerId));
+            MUAC.setTeamId(allSharedPreferences.fetchDefaultTeamId(providerId));
+            MUAC.setLocationId(allSharedPreferences.fetchDefaultLocalityId(providerId));
+            MUAC.setChildLocationId(LocationHelper.getInstance().getChildLocationId());
 
 
-            if (StringUtils.isBlank(muac.getSyncStatus())) {
-                muac.setSyncStatus(TYPE_Unsynced);
+            if (StringUtils.isBlank(MUAC.getSyncStatus())) {
+                MUAC.setSyncStatus(TYPE_Unsynced);
             }
-            if (StringUtils.isBlank(muac.getFormSubmissionId())) {
-                muac.setFormSubmissionId(generateRandomUUIDString());
+            if (StringUtils.isBlank(MUAC.getFormSubmissionId())) {
+                MUAC.setFormSubmissionId(generateRandomUUIDString());
             }
 
 
-            if (muac.getUpdatedAt() == null) {
-                muac.setUpdatedAt(Calendar.getInstance().getTimeInMillis());
+            if (MUAC.getUpdatedAt() == null) {
+                MUAC.setUpdatedAt(Calendar.getInstance().getTimeInMillis());
             }
 
             SQLiteDatabase database = getRepository().getWritableDatabase();
-            if (muac.getId() == null) {
-                Muac sameMuac = findUnique(database, muac);
-                if (sameMuac != null) {
-                    muac.setUpdatedAt(sameMuac.getUpdatedAt());
-                    muac.setId(sameMuac.getId());
-                    update(database, muac);
+            if (MUAC.getId() == null) {
+                MUAC sameMUAC = findUnique(database, MUAC);
+                if (sameMUAC != null) {
+                    MUAC.setUpdatedAt(sameMUAC.getUpdatedAt());
+                    MUAC.setId(sameMUAC.getId());
+                    update(database, MUAC);
                 } else {
-                    if (muac.getCreatedAt() == null) {
-                        muac.setCreatedAt(new Date());
+                    if (MUAC.getCreatedAt() == null) {
+                        MUAC.setCreatedAt(new Date());
                     }
-                    muac.setId(database.insert(MUAC_TABLE_NAME, null, createValuesFor(muac)));
+                    MUAC.setId(database.insert(MUAC_TABLE_NAME, null, createValuesFor(MUAC)));
                 }
             } else {
-                muac.setSyncStatus(TYPE_Unsynced);
-                update(database, muac);
+                MUAC.setSyncStatus(TYPE_Unsynced);
+                update(database, MUAC);
             }
         } catch (Exception e) {
-            Utils.appendLog(MuacRepository.class.getName(), e);
+            Utils.appendLog(MUACRepository.class.getName(), e);
             Log.e(TAG, Log.getStackTraceString(e));
         }
     }
 
-    public Muac findUnique(SQLiteDatabase db, Muac muac) {
+    public MUAC findUnique(SQLiteDatabase db, MUAC MUAC) {
 
-        if (muac == null || (StringUtils.isBlank(muac.getFormSubmissionId()) && StringUtils
-                .isBlank(muac.getEventId()))) {
+        if (MUAC == null || (StringUtils.isBlank(MUAC.getFormSubmissionId()) && StringUtils
+                .isBlank(MUAC.getEventId()))) {
             return null;
         }
 
@@ -172,33 +172,33 @@ public class MuacRepository extends BaseRepository {
 
             String selection = null;
             String[] selectionArgs = null;
-            if (StringUtils.isNotBlank(muac.getFormSubmissionId()) && StringUtils.isNotBlank(muac.getEventId())) {
+            if (StringUtils.isNotBlank(MUAC.getFormSubmissionId()) && StringUtils.isNotBlank(MUAC.getEventId())) {
                 selection = FORMSUBMISSION_ID + " = ? " + COLLATE_NOCASE + " OR " + EVENT_ID + " = ? " + COLLATE_NOCASE;
-                selectionArgs = new String[]{muac.getFormSubmissionId(), muac.getEventId()};
-            } else if (StringUtils.isNotBlank(muac.getEventId())) {
+                selectionArgs = new String[]{MUAC.getFormSubmissionId(), MUAC.getEventId()};
+            } else if (StringUtils.isNotBlank(MUAC.getEventId())) {
                 selection = EVENT_ID + " = ? " + COLLATE_NOCASE;
-                selectionArgs = new String[]{muac.getEventId()};
-            } else if (StringUtils.isNotBlank(muac.getFormSubmissionId())) {
+                selectionArgs = new String[]{MUAC.getEventId()};
+            } else if (StringUtils.isNotBlank(MUAC.getFormSubmissionId())) {
                 selection = FORMSUBMISSION_ID + " = ? " + COLLATE_NOCASE;
-                selectionArgs = new String[]{muac.getFormSubmissionId()};
+                selectionArgs = new String[]{MUAC.getFormSubmissionId()};
             }
 
             Cursor cursor = database.query(MUAC_TABLE_NAME, MUAC_TABLE_COLUMNS, selection, selectionArgs, null, null,
                     ID_COLUMN + " DESC ", null);
-            List<Muac> muacList = readAllMuacs(cursor);
-            if (!muacList.isEmpty()) {
-                return muacList.get(0);
+            List<MUAC> MUACList = readAllMUACs(cursor);
+            if (!MUACList.isEmpty()) {
+                return MUACList.get(0);
             }
         } catch (Exception e) {
-            Utils.appendLog(MuacRepository.class.getName(), e);
+            Utils.appendLog(MUACRepository.class.getName(), e);
             Log.e(TAG, Log.getStackTraceString(e));
         }
 
         return null;
     }
 
-    public void update(SQLiteDatabase database, Muac muac) {
-        if (muac == null || muac.getId() == null) {
+    public void update(SQLiteDatabase database, MUAC MUAC) {
+        if (MUAC == null || MUAC.getId() == null) {
             return;
         }
 
@@ -211,38 +211,38 @@ public class MuacRepository extends BaseRepository {
             }
 
             String idSelection = ID_COLUMN + " = ?";
-            db.update(MUAC_TABLE_NAME, createValuesFor(muac), idSelection, new String[]{muac.getId().toString()});
+            db.update(MUAC_TABLE_NAME, createValuesFor(MUAC), idSelection, new String[]{MUAC.getId().toString()});
         } catch (Exception e) {
-            Utils.appendLog(MuacRepository.class.getName(), e);
+            Utils.appendLog(MUACRepository.class.getName(), e);
             Log.e(TAG, Log.getStackTraceString(e));
         }
     }
 
-    private ContentValues createValuesFor(Muac muac) {
+    private ContentValues createValuesFor(MUAC MUAC) {
         ContentValues values = new ContentValues();
-        values.put(ID_COLUMN, muac.getId());
-        values.put(BASE_ENTITY_ID, muac.getBaseEntityId());
-        values.put(PROGRAM_CLIENT_ID, muac.getProgramClientId());
-        values.put(KG, muac.getKg());
-        values.put(DATE, muac.getDate() != null ? muac.getDate().getTime() : null);
-        values.put(ANMID, muac.getAnmId());
-        values.put(LOCATIONID, muac.getLocationId());
-        values.put(CHILD_LOCATION_ID, muac.getChildLocationId());
-        values.put(TEAM, muac.getTeam());
-        values.put(TEAM_ID, muac.getTeamId());
-        values.put(SYNC_STATUS, muac.getSyncStatus());
-        values.put(UPDATED_AT_COLUMN, muac.getUpdatedAt());
-        values.put(EVENT_ID, muac.getEventId());
-        values.put(FORMSUBMISSION_ID, muac.getFormSubmissionId());
-        values.put(OUT_OF_AREA, muac.getOutOfCatchment());
-        values.put(Z_SCORE, muac.getZScore() == null ? DEFAULT_Z_SCORE : muac.getZScore());
+        values.put(ID_COLUMN, MUAC.getId());
+        values.put(BASE_ENTITY_ID, MUAC.getBaseEntityId());
+        values.put(PROGRAM_CLIENT_ID, MUAC.getProgramClientId());
+        values.put(KG, MUAC.getKg());
+        values.put(DATE, MUAC.getDate() != null ? MUAC.getDate().getTime() : null);
+        values.put(ANMID, MUAC.getAnmId());
+        values.put(LOCATIONID, MUAC.getLocationId());
+        values.put(CHILD_LOCATION_ID, MUAC.getChildLocationId());
+        values.put(TEAM, MUAC.getTeam());
+        values.put(TEAM_ID, MUAC.getTeamId());
+        values.put(SYNC_STATUS, MUAC.getSyncStatus());
+        values.put(UPDATED_AT_COLUMN, MUAC.getUpdatedAt());
+        values.put(EVENT_ID, MUAC.getEventId());
+        values.put(FORMSUBMISSION_ID, MUAC.getFormSubmissionId());
+        values.put(OUT_OF_AREA, MUAC.getOutOfCatchment());
+        values.put(Z_SCORE, MUAC.getZScore() == null ? DEFAULT_Z_SCORE : MUAC.getZScore());
         values.put(CREATED_AT,
-                muac.getCreatedAt() != null ? EventClientRepository.dateFormat.format(muac.getCreatedAt()) : null);
+                MUAC.getCreatedAt() != null ? EventClientRepository.dateFormat.format(MUAC.getCreatedAt()) : null);
         return values;
     }
 
-    private List<Muac> readAllMuacs(Cursor cursor) {
-        List<Muac> muacs = new ArrayList<>();
+    private List<MUAC> readAllMUACs(Cursor cursor) {
+        List<MUAC> MUACs = new ArrayList<>();
         try {
             if (cursor != null && cursor.getCount() > 0 && cursor.moveToFirst()) {
                 while (!cursor.isAfterLast()) {
@@ -257,12 +257,12 @@ public class MuacRepository extends BaseRepository {
                         try {
                             createdAt = EventClientRepository.dateFormat.parse(dateCreatedString);
                         } catch (ParseException e) {
-                            Utils.appendLog(MuacRepository.class.getName(), e);
+                            Utils.appendLog(MUACRepository.class.getName(), e);
                             Log.e(TAG, Log.getStackTraceString(e));
                         }
                     }
 
-                    Muac muac = new Muac(cursor.getLong(cursor.getColumnIndex(ID_COLUMN)),
+                    MUAC MUAC = new MUAC(cursor.getLong(cursor.getColumnIndex(ID_COLUMN)),
                             cursor.getString(cursor.getColumnIndex(BASE_ENTITY_ID)),
                             cursor.getString(cursor.getColumnIndex(PROGRAM_CLIENT_ID)),
                             cursor.getFloat(cursor.getColumnIndex(KG)),
@@ -277,29 +277,29 @@ public class MuacRepository extends BaseRepository {
                             cursor.getInt(cursor.getColumnIndex(OUT_OF_AREA)),
                             createdAt);
 
-                    muac.setTeam(cursor.getString(cursor.getColumnIndex(TEAM)));
-                    muac.setTeamId(cursor.getString(cursor.getColumnIndex(TEAM_ID)));
-                    muac.setChildLocationId(cursor.getString(cursor.getColumnIndex(CHILD_LOCATION_ID)));
+                    MUAC.setTeam(cursor.getString(cursor.getColumnIndex(TEAM)));
+                    MUAC.setTeamId(cursor.getString(cursor.getColumnIndex(TEAM_ID)));
+                    MUAC.setChildLocationId(cursor.getString(cursor.getColumnIndex(CHILD_LOCATION_ID)));
 
-                    muacs.add(muac);
+                    MUACs.add(MUAC);
 
                     cursor.moveToNext();
                 }
             }
         } catch (Exception e) {
-            Utils.appendLog(MuacRepository.class.getName(), e);
+            Utils.appendLog(MUACRepository.class.getName(), e);
             Log.e(TAG, e.getMessage());
         } finally {
             if (cursor != null) {
                 cursor.close();
             }
         }
-        return muacs;
+        return MUACs;
 
     }
 
-    public List<Muac> findUnSyncedBeforeTime(int hours) {
-        List<Muac> muacs = new ArrayList<>();
+    public List<MUAC> findUnSyncedBeforeTime(int hours) {
+        List<MUAC> MUACs = new ArrayList<>();
         Cursor cursor = null;
         try {
 
@@ -311,51 +311,51 @@ public class MuacRepository extends BaseRepository {
             cursor = getRepository().getReadableDatabase().query(MUAC_TABLE_NAME, MUAC_TABLE_COLUMNS,
                     UPDATED_AT_COLUMN + " < ? " + COLLATE_NOCASE + " AND " + SYNC_STATUS + " = ? " + COLLATE_NOCASE,
                     new String[]{time.toString(), TYPE_Unsynced}, null, null, null, null);
-            muacs = readAllMuacs(cursor);
+            MUACs = readAllMUACs(cursor);
         } catch (Exception e) {
-            Utils.appendLog(MuacRepository.class.getName(), e);
+            Utils.appendLog(MUACRepository.class.getName(), e);
             Log.e(TAG, Log.getStackTraceString(e));
         } finally {
             if (cursor != null) {
                 cursor.close();
             }
         }
-        return muacs;
+        return MUACs;
     }
 
-    public Muac findUnSyncedByEntityId(String entityId) {
-        Muac muac = null;
+    public MUAC findUnSyncedByEntityId(String entityId) {
+        MUAC MUAC = null;
         Cursor cursor = null;
         try {
 
             cursor = getRepository().getReadableDatabase().query(MUAC_TABLE_NAME, MUAC_TABLE_COLUMNS,
                     BASE_ENTITY_ID + " = ? " + COLLATE_NOCASE + " AND " + SYNC_STATUS + " = ? ",
                     new String[]{entityId, TYPE_Unsynced}, null, null, UPDATED_AT_COLUMN + COLLATE_NOCASE + " DESC", null);
-            List<Muac> muacs = readAllMuacs(cursor);
-            if (!muacs.isEmpty()) {
-                muac = muacs.get(0);
+            List<MUAC> MUACs = readAllMUACs(cursor);
+            if (!MUACs.isEmpty()) {
+                MUAC = MUACs.get(0);
             }
         } catch (Exception e) {
-            Utils.appendLog(MuacRepository.class.getName(), e);
+            Utils.appendLog(MUACRepository.class.getName(), e);
             Log.e(TAG, Log.getStackTraceString(e));
         } finally {
             if (cursor != null) {
                 cursor.close();
             }
         }
-        return muac;
+        return MUAC;
     }
 
-    public List<Muac> findByEntityId(String entityId) {
-        List<Muac> muacs = null;
+    public List<MUAC> findByEntityId(String entityId) {
+        List<MUAC> MUACs = null;
         Cursor cursor = null;
         try {
             cursor = getRepository().getReadableDatabase()
                     .query(MUAC_TABLE_NAME, MUAC_TABLE_COLUMNS, BASE_ENTITY_ID + " = ? " + COLLATE_NOCASE,
                             new String[]{entityId}, null, null, null, null);
-            muacs = readAllMuacs(cursor);
+            MUACs = readAllMUACs(cursor);
         } catch (Exception e) {
-            Utils.appendLog(MuacRepository.class.getName(), e);
+            Utils.appendLog(MUACRepository.class.getName(), e);
             Log.e(TAG, Log.getStackTraceString(e));
         } finally {
             if (cursor != null) {
@@ -363,18 +363,18 @@ public class MuacRepository extends BaseRepository {
             }
         }
 
-        return muacs;
+        return MUACs;
     }
 
-    public List<Muac> findWithNoZScore() {
-        List<Muac> result = new ArrayList<>();
+    public List<MUAC> findWithNoZScore() {
+        List<MUAC> result = new ArrayList<>();
         Cursor cursor = null;
         try {
             cursor = getRepository().getReadableDatabase().query(MUAC_TABLE_NAME,
                     MUAC_TABLE_COLUMNS, Z_SCORE + " = " + DEFAULT_Z_SCORE, null, null, null, null, null);
-            result = readAllMuacs(cursor);
+            result = readAllMUACs(cursor);
         } catch (Exception e) {
-            Utils.appendLog(MuacRepository.class.getName(), e);
+            Utils.appendLog(MUACRepository.class.getName(), e);
             Log.e(TAG, Log.getStackTraceString(e));
         } finally {
             if (cursor != null) {
@@ -385,45 +385,45 @@ public class MuacRepository extends BaseRepository {
         return result;
     }
 
-    public Muac find(Long caseId) {
-        Muac muac = null;
+    public MUAC find(Long caseId) {
+        MUAC MUAC = null;
         Cursor cursor = null;
         try {
             cursor = getRepository().getReadableDatabase()
                     .query(MUAC_TABLE_NAME, MUAC_TABLE_COLUMNS, ID_COLUMN + " = ?", new String[]{caseId.toString()},
                             null, null, null, null);
-            List<Muac> muacs = readAllMuacs(cursor);
-            if (!muacs.isEmpty()) {
-                muac = muacs.get(0);
+            List<MUAC> MUACs = readAllMUACs(cursor);
+            if (!MUACs.isEmpty()) {
+                MUAC = MUACs.get(0);
             }
         } catch (Exception e) {
-            Utils.appendLog(MuacRepository.class.getName(), e);
+            Utils.appendLog(MUACRepository.class.getName(), e);
             Log.e(TAG, Log.getStackTraceString(e));
         } finally {
             if (cursor != null) {
                 cursor.close();
             }
         }
-        return muac;
+        return MUAC;
     }
 
-    public List<Muac> findLast5(String entityid) {
-        List<Muac> muacList = new ArrayList<>();
+    public List<MUAC> findLast5(String entityid) {
+        List<MUAC> MUACList = new ArrayList<>();
         Cursor cursor = null;
         try {
             cursor = getRepository().getReadableDatabase()
                     .query(MUAC_TABLE_NAME, MUAC_TABLE_COLUMNS, BASE_ENTITY_ID + " = ? " + COLLATE_NOCASE,
                             new String[]{entityid}, null, null, UPDATED_AT_COLUMN + COLLATE_NOCASE + " DESC", null);
-            muacList = readAllMuacs(cursor);
+            MUACList = readAllMUACs(cursor);
         } catch (Exception e) {
-            Utils.appendLog(MuacRepository.class.getName(), e);
+            Utils.appendLog(MUACRepository.class.getName(), e);
             Log.e(TAG, Log.getStackTraceString(e));
         } finally {
             if (cursor != null) {
                 cursor.close();
             }
         }
-        return muacList;
+        return MUACList;
     }
 
     public void delete(String id) {
@@ -432,7 +432,7 @@ public class MuacRepository extends BaseRepository {
                     .delete(MUAC_TABLE_NAME, ID_COLUMN + " = ? " + COLLATE_NOCASE + " AND " + SYNC_STATUS + " = ? ",
                             new String[]{id, TYPE_Unsynced});
         } catch (Exception e) {
-            Utils.appendLog(MuacRepository.class.getName(), e);
+            Utils.appendLog(MUACRepository.class.getName(), e);
             Log.e(TAG, Log.getStackTraceString(e));
         }
     }
@@ -444,7 +444,7 @@ public class MuacRepository extends BaseRepository {
             getRepository().getWritableDatabase()
                     .update(MUAC_TABLE_NAME, values, ID_COLUMN + " = ?", new String[]{caseId.toString()});
         } catch (Exception e) {
-            Utils.appendLog(MuacRepository.class.getName(), e);
+            Utils.appendLog(MUACRepository.class.getName(), e);
             Log.e(TAG, Log.getStackTraceString(e));
         }
     }

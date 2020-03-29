@@ -39,6 +39,14 @@
             android:layout_marginRight="25dp"
             android:gravity="center"
             android:text="Location Update \nAND LOGOUT" />
-
+        <Button
+            android:id="@+id/update_blocks"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginLeft="25dp"
+            android:layout_marginRight="25dp"
+            android:gravity="center"
+            android:text="Update Blocks" />
     </LinearLayout>
 </RelativeLayout>

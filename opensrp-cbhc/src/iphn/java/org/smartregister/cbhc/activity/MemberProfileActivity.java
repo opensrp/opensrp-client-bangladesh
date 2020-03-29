@@ -48,7 +48,6 @@ import org.smartregister.cbhc.repository.UniqueIdRepository;
 import org.smartregister.cbhc.util.Constants;
 import org.smartregister.cbhc.util.DBConstants;
 import org.smartregister.cbhc.util.ImageLoaderByGlide;
-import org.smartregister.cbhc.util.JsonFormUtils;
 import org.smartregister.cbhc.util.Utils;
 import org.smartregister.cbhc.view.CopyToClipboardDialog;
 import org.smartregister.commonregistry.CommonPersonObject;

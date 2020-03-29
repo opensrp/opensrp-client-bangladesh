@@ -12,7 +12,6 @@ import org.smartregister.cbhc.cursor.AdvancedMatrixCursor;
 import org.smartregister.cbhc.util.ConfigHelper;
 import org.smartregister.cbhc.util.Constants;
 import org.smartregister.cbhc.util.DBConstants;
-import org.smartregister.cbhc.util.JsonFormUtils;
 import org.smartregister.cbhc.util.Utils;
 import org.smartregister.clientandeventmodel.DateUtil;
 import org.smartregister.configurableviews.ConfigurableViewsLibrary;
@@ -23,7 +22,7 @@ import org.smartregister.configurableviews.model.ViewConfiguration;
 import org.smartregister.cursoradapter.SmartRegisterQueryBuilder;
 import org.smartregister.domain.Response;
 import org.smartregister.domain.ResponseStatus;
-
+import org.smartregister.cbhc.util.JsonFormUtils;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.LinkedHashMap;

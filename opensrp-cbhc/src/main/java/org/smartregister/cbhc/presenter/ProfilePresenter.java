@@ -4,7 +4,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.util.Log;
 import android.util.Pair;
-
+import org.smartregister.cbhc.util.JsonFormUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.tuple.Triple;
 import org.json.JSONObject;
@@ -18,7 +18,6 @@ import org.smartregister.cbhc.interactor.ProfileInteractor;
 import org.smartregister.cbhc.interactor.RegisterInteractor;
 import org.smartregister.cbhc.model.RegisterModel;
 import org.smartregister.cbhc.util.Constants;
-import org.smartregister.cbhc.util.JsonFormUtils;
 import org.smartregister.cbhc.util.LookUpUtils;
 import org.smartregister.cbhc.util.Utils;
 import org.smartregister.clientandeventmodel.Client;

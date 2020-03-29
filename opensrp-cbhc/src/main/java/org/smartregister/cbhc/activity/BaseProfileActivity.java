@@ -9,7 +9,7 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
-
+import org.smartregister.cbhc.util.JsonFormUtils;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
@@ -20,7 +20,6 @@ import org.smartregister.cbhc.event.ClientDetailsFetchedEvent;
 import org.smartregister.cbhc.event.PatientRemovedEvent;
 import org.smartregister.cbhc.task.FetchProfileDataTask;
 import org.smartregister.cbhc.util.Constants;
-import org.smartregister.cbhc.util.JsonFormUtils;
 import org.smartregister.cbhc.util.Utils;
 import org.smartregister.repository.AllSharedPreferences;
 import org.smartregister.view.activity.SecuredActivity;
