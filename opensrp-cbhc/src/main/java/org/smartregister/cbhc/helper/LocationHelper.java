@@ -257,7 +257,7 @@ public class LocationHelper {
             FormLocation other = new FormLocation();
             other.name = "Other";
             other.key = "Other";
-            other.level = "";
+            other.level = null;
             formLocationList.add(other);
         }
         return formLocationList;
@@ -458,9 +458,9 @@ public class LocationHelper {
             String name = node.getName();
             formLocation.name = getOpenMrsReadableName(name);
             formLocation.key = name;
-
+            formLocation.id = node.getLocationId();
             Set<String> levels = node.getTags();
-            formLocation.level = "";
+            formLocation.level = levels;
 
 
             LinkedHashMap<String, TreeNode<String, Location>> childMap = childMap(openMrsLocationData);

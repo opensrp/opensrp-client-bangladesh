@@ -120,50 +120,8 @@ public class LoginActivity extends AppCompatActivity implements LoginContract.Vi
         if(!StringUtils.isEmpty(anm_name)){
             userNameEditText.setText(anm_name);
         }
-        ArrayList<String> healthFacilities = new ArrayList<>();
-        healthFacilities.add("Country");
-        healthFacilities.add("Division");
-        healthFacilities.add("District");
-        healthFacilities.add("Upazilla");
-        healthFacilities.add("Union");
-        healthFacilities.add("Ward");
-        healthFacilities.add("Block");
-        healthFacilities.add("Subunit");
-        healthFacilities.add("EPI center");
+    }
 
-        //locationHelper getlocationtree
-        List<String> defaultFacility = LocationHelper.getInstance().generateDefaultLocationHierarchy(healthFacilities);
-        List<FormLocation> upToFacilities = LocationHelper.getInstance().generateLocationHierarchyTree(false, healthFacilities);
-        String locationTree = getLocationTree(upToFacilities);
-        System.out.println(locationTree);
-    }
-    public static String getLocationTree(List<FormLocation> upToFacilities){
-
-        String location = "";
-        ArrayList<String>locations = new ArrayList<>();
-        FormLocation loc = null;
-        for(int i=0;i<upToFacilities.size();i++){
-            loc = upToFacilities.get(i);
-            if(loc.nodes!=null&&loc.nodes.get(0)!=null&&loc.nodes.get(0).nodes.get(0)==null){
-                break;
-            }
-        }
-        System.out.println(loc);
-//        while(getNodeName(upToFacilities)!=null){
-//            FormLocation loc = upToFacilities.get(0);
-//            locations.add(loc.name);
-//            upToFacilities = loc.nodes;
-//
-//        }
-//        for(int i = locations.size()-2;i>=0;i--){
-//            location += locations.get(i) + " ";
-//        }
-        return location.trim();
-    }
-    public static String getNodeName(List<FormLocation> loc){
-        if(loc==null)return null;
-        return loc.get(0).name;
-    }
     @Override
     protected void onDestroy() {
         super.onDestroy();
@@ -303,11 +261,11 @@ public class LoginActivity extends AppCompatActivity implements LoginContract.Vi
 //                Cursor cursor = db.rawQuery("sql",new String[]{});
 //                cursor.close();
 //                username = "robinuthappa@gmail.com";
-//                username = "test@ha.4";
-//                password = "123456";
+                username = "nroy1978@gmail.com";
+                password = "N01915910723@";
 //                deleteKey(username);
-//                userNameEditText.setText(username);
-//                passwordEditText.setText(password);
+                userNameEditText.setText(username);
+                passwordEditText.setText(password);
                 //copy username password to clipboard
 //                Object clipboardService = getSystemService(CLIPBOARD_SERVICE);
 //                final ClipboardManager clipboardManager = (ClipboardManager)clipboardService;

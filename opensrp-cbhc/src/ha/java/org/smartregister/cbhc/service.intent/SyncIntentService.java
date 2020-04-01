@@ -3,6 +3,8 @@ package org.smartregister.cbhc.service.intent;
 import android.app.IntentService;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
 import android.util.Log;
 import android.util.Pair;
 
@@ -13,6 +15,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 import org.smartregister.cbhc.BuildConfig;
 import org.smartregister.cbhc.R;
+import org.smartregister.cbhc.activity.BlocksDialog;
 import org.smartregister.cbhc.application.AncApplication;
 import org.smartregister.cbhc.helper.ECSyncHelper;
 import org.smartregister.cbhc.job.PullHealthIdsServiceJob;
@@ -90,6 +93,9 @@ public class SyncIntentService extends IntentService {
     private synchronized void fetchRetry(final int count) {
 
         try {
+            SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
+//            preferences.edit().putString(Constants.LOCATION_UPDATED,selectedLocation);
+//            if(preferences.getString(Constants.LOCATION_UPDATED,null)==null)return;
             // Fetch team
             AllSharedPreferences sharedPreferences = AncApplication.getInstance().getContext().userService().getAllSharedPreferences();
             String teamId = sharedPreferences.fetchDefaultTeamId(sharedPreferences.fetchRegisteredANM());
@@ -127,7 +133,12 @@ public class SyncIntentService extends IntentService {
             }
 
             JSONObject jsonObject = new JSONObject((String) resp.payload());
-
+            if(jsonObject.has("msg")&&jsonObject.getString("msg")!=null&&jsonObject.getString("msg").equalsIgnoreCase("Block not found")){
+                Intent i = new Intent(this,BlocksDialog.class);
+                i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                startActivity(i);
+                return;
+            }
             int eCount = fetchNumberOfEvents(jsonObject);
             Log.i(getClass().getName(), "Parse Network Event Count: " + eCount);
 
@@ -252,7 +263,6 @@ public class SyncIntentService extends IntentService {
 
         ECSyncHelper ecSyncUpdater = ECSyncHelper.getInstance(context);
         ecSyncUpdater.updateLastCheckTimeStamp(new Date().getTime());
-//        DeleteIntentServiceJob.scheduleJobImmediately(DeleteIntentServiceJob.TAG);
     }
 
     private Pair<Long, Long> getMinMaxServerVersions(JSONObject jsonObject) {

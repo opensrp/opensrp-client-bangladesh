@@ -1,5 +1,6 @@
 package org.smartregister.cbhc.fragment;
 
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
@@ -17,7 +18,7 @@ import org.smartregister.cbhc.BuildConfig;
 import org.smartregister.cbhc.R;
 import org.smartregister.cbhc.application.AncApplication;
 import org.smartregister.cbhc.contract.MeContract;
-import org.smartregister.cbhc.view.BlocksDialog;
+import org.smartregister.cbhc.activity.BlocksDialog;
 import org.smartregister.repository.AllSharedPreferences;
 
 import java.text.SimpleDateFormat;
@@ -69,7 +70,7 @@ public class MeFragment extends Fragment implements MeContract.View {
         update_blocks.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                new BlocksDialog(getActivity()).show();
+                startActivity(new Intent(getActivity(),BlocksDialog.class));
             }
         });
         return view;
