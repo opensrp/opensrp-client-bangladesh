@@ -137,6 +137,7 @@ public class BlocksDialog extends Activity implements View.OnClickListener,Compo
 //                    childNode.id = block.getString("id");
                     childNode.nodes = null;
                     childNode.parent = node;
+                    childNode.vaild = block.getBoolean("assigned");
                     node.nodes.add(childNode);
                 }
                 nodelist.add(node);
@@ -168,6 +169,7 @@ public class BlocksDialog extends Activity implements View.OnClickListener,Compo
                 CheckBox block = new CheckBox(this);
                 block.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
                 block.setText(blocks.get(k).name);
+                block.setChecked(blocks.get(k).vaild);
                 block.setOnCheckedChangeListener(this);
                 view.addView(block);
                 nodeView.put(block,blocks.get(k));
