@@ -49,6 +49,13 @@ import java.util.List;
 import static org.smartregister.AllConstants.DRISHTI_BASE_URL;
 import static org.smartregister.util.Log.logError;
 import static org.smartregister.util.Log.logInfo;
+import android.net.Uri;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.net.MalformedURLException;
+import java.net.URL;
+import android.os.AsyncTask;
 
 /**
  * Created by ndegwamartin on 21/06/2018.
@@ -120,6 +127,7 @@ public class LoginActivity extends AppCompatActivity implements LoginContract.Vi
         if(!StringUtils.isEmpty(anm_name)){
             userNameEditText.setText(anm_name);
         }
+        app_version_status();
     }
 
     @Override
@@ -261,11 +269,11 @@ public class LoginActivity extends AppCompatActivity implements LoginContract.Vi
 //                Cursor cursor = db.rawQuery("sql",new String[]{});
 //                cursor.close();
 //                username = "robinuthappa@gmail.com";
-                username = "nroy1978@gmail.com";
-                password = "N01915910723@";
+//                username = "nroy1978@gmail.com";
+//                password = "N01915910723@";
 //                deleteKey(username);
-                userNameEditText.setText(username);
-                passwordEditText.setText(password);
+//                userNameEditText.setText(username);
+//                passwordEditText.setText(password);
                 //copy username password to clipboard
 //                Object clipboardService = getSystemService(CLIPBOARD_SERVICE);
 //                final ClipboardManager clipboardManager = (ClipboardManager)clipboardService;
@@ -325,12 +333,85 @@ public class LoginActivity extends AppCompatActivity implements LoginContract.Vi
 
         }
     }
+    public void app_version_status() {
+        org.smartregister.util.Utils.startAsyncTask(new AsyncTask() {
+            String version_code = "";
+            String version = "";
 
+            @Override
+            protected Object doInBackground(Object[] objects) {
+                try {
+                    SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(LoginActivity.this);
+                    AllSharedPreferences allSharedPreferences = new AllSharedPreferences(preferences);
+                    String baseurl = allSharedPreferences.fetchBaseURL("");
+                    // Create a URL for the desired page
+                    String base_url = getString(R.string.opensrp_url).replace("opensrp/", "");
+                    if (!StringUtils.isEmpty(baseurl) && baseurl.contains("opensrp")) {
+                        base_url = baseurl.replace("opensrp/", "");
+                    }
+                    URL url = new URL(base_url + "opt/multimedia/app-version.txt");
+
+                    // Read all the text returned by the server
+                    BufferedReader in = new BufferedReader(new InputStreamReader(url.openStream()));
+                    String str;
+                    str = "";
+                    while ((str = in.readLine()) != null) {
+                        // str is one line of text; readLine() strips the newline character(s)
+                        version_code += str;
+                    }
+                    in.close();
+                } catch (MalformedURLException e) {
+                    org.smartregister.cbhc.util.Utils.appendLog(getClass().getName(), e);
+                } catch (IOException e) {
+                    org.smartregister.cbhc.util.Utils.appendLog(getClass().getName(), e);
+                }
+                return null;
+            }
+
+            @Override
+            protected void onPostExecute(Object o) {
+                super.onPostExecute(o);
+                try {
+                    PackageInfo pInfo = LoginActivity.this.getPackageManager().getPackageInfo(getPackageName(), 0);
+                    version = pInfo.versionName;
+                    if (!version_code.trim().isEmpty() && !version.equalsIgnoreCase(version_code.trim())) {
+                        alertDialog = new android.support.v7.app.AlertDialog.Builder(LoginActivity.this).create();
+                        alertDialog.setTitle("New version available");
+                        alertDialog.setCancelable(false);
+                        alertDialog.setButton(android.support.v7.app.AlertDialog.BUTTON_POSITIVE, "UPDATE",
+                                new DialogInterface.OnClickListener() {
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        try {
+                                            final String appPackageName = getPackageName(); // getPackageName() from Context or Activity object
+                                            try {
+                                                startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=" + appPackageName)));
+                                            } catch (android.content.ActivityNotFoundException anfe) {
+                                                startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/apps/details?id=" + appPackageName)));
+                                            }
+
+
+                                        } catch (Exception e) {
+                                            org.smartregister.cbhc.util.Utils.appendLog(getClass().getName(), e);
+                                            e.printStackTrace();
+                                        }
+                                    }
+                                });
+                        if (mActivity != null && alertDialog != null)
+                            alertDialog.show();
+                    }
+                } catch (PackageManager.NameNotFoundException e) {
+                    org.smartregister.cbhc.util.Utils.appendLog(getClass().getName(), e);
+                    e.printStackTrace();
+                }
+            }
+        }, null);
+    }
     @Override
     public Activity getActivityContext() {
         return this;
 
     }
+    android.support.v7.app.AlertDialog alertDialog;
 
 
 }
