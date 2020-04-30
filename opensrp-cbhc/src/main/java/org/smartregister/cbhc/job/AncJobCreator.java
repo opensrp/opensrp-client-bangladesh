@@ -6,6 +6,8 @@ import android.support.annotation.Nullable;
 import com.evernote.android.job.Job;
 import com.evernote.android.job.JobCreator;
 
+import org.smartregister.cbhc.task.EventLogServiceJob;
+
 /**
  * Created by ndegwamartin on 05/09/2018.
  */
@@ -30,6 +32,8 @@ public class AncJobCreator implements JobCreator {
                 return new ViewConfigurationsServiceJob();
             case DeleteIntentServiceJob.TAG:
                 return new DeleteIntentServiceJob();
+            case EventLogServiceJob.TAG:
+                return new EventLogServiceJob();
             default:
                 return null;
         }

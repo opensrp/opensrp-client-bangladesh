@@ -36,6 +36,7 @@ public class AncRepository extends Repository {
     public void onCreate(SQLiteDatabase database) {
         super.onCreate(database);
         ConfigurableViewsRepository.createTable(database);
+        EventLogRepository.createTable(database);
         EventClientRepository.createTable(database, EventClientRepository.Table.client, EventClientRepository.client_column.values());
         EventClientRepository.createTable(database, EventClientRepository.Table.event, EventClientRepository.event_column.values());
 //        EventClientRepository.createTable(database, EventClientRepository.Table.path_reports, EventClientRepository.report_column.values());

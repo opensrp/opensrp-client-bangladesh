@@ -31,6 +31,7 @@ import org.smartregister.cbhc.domain.UniqueId;
 import org.smartregister.cbhc.helper.ECSyncHelper;
 import org.smartregister.cbhc.helper.LocationHelper;
 import org.smartregister.cbhc.repository.AncRepository;
+import org.smartregister.cbhc.repository.EventLogRepository;
 import org.smartregister.cbhc.repository.HealthIdRepository;
 import org.smartregister.cbhc.view.LocationPickerView;
 import org.smartregister.clientandeventmodel.Address;
@@ -1576,6 +1577,13 @@ public class JsonFormUtils extends org.smartregister.util.JsonFormUtils {
             }
         }
         return toreturn;
+    }
+
+    public static JSONObject getFormMetadata(String baseEntityId, String []encounterType){
+        EventLogRepository eventLogRepository = AncApplication.getInstance().getEventLogRepository();
+//        JSONObject formMetadata = eventLogRepository.getFormJson(householdDetails.getCaseId(),"Household Registration");
+        JSONObject formMetadata = eventLogRepository.getFormJson(baseEntityId,encounterType);
+        return formMetadata;
     }
 
     public static void startFormForEdit(Activity context, int jsonFormActivityRequestCode, String metaData) {

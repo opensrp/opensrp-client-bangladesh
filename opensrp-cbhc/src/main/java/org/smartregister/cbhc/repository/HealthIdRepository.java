@@ -22,7 +22,8 @@ public class HealthIdRepository extends BaseRepository {
 
     private static final String TAG = UniqueIdRepository.class.getCanonicalName();
     private static final String HealthIds_SQL = "CREATE TABLE health_ids(_id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,openmrs_id VARCHAR NOT NULL,status VARCHAR NULL, used_by VARCHAR NULL,synced_by VARCHAR NULL,created_at DATETIME NULL,updated_at TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP )";
-    private static final String HealthIds_TABLE_NAME = "health_ids";
+    private static final String HealthIds_TABLE_NAME = "unique_ids";
+//    private static final String HealthIds_TABLE_NAME = "health_ids";
     private static final String ID_COLUMN = "_id";
     private static final String OPENMRS_ID_COLUMN = "openmrs_id";
     private static final String STATUS_COLUMN = "status";
