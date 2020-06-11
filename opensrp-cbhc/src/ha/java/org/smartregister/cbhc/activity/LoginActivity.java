@@ -241,31 +241,7 @@ public class LoginActivity extends AppCompatActivity implements LoginContract.Vi
             case R.id.login_login_btn:
                 String username = userNameEditText.getText().toString();
                 String password = passwordEditText.getText().toString();
-//                username = "haiphn";
-//                password = "ha123";
-//                username = "testmhv2";
-//                username = "maxii";
-//                username = "teliya1@cc.com";
-//                username = "sabab@ahmed.com";
-//                password = "Pain2set";
 
-                //anc repository object for raw query
-//                AncRepository repo = (AncRepository) AncApplication.getInstance().getRepository();
-//                SQLiteDatabase db = repo.getReadableDatabase();
-//                Cursor cursor = db.rawQuery("sql",new String[]{});
-//                cursor.close();
-//                username = "robinuthappa@gmail.com";
-//                username = "test@ha.4";
-//                password = "123456";
-//                deleteKey(username);
-//                userNameEditText.setText(username);
-//                passwordEditText.setText(password);
-                //copy username password to clipboard
-//                Object clipboardService = getSystemService(CLIPBOARD_SERVICE);
-//                final ClipboardManager clipboardManager = (ClipboardManager)clipboardService;
-//                ClipData clipData = ClipData.newPlainText("Source Text", username + ":"+password);
-//                // Set it as primary clip data to copy text to system clipboard.
-//                clipboardManager.setPrimaryClip(clipData);
 
                 mLoginPresenter.attemptLogin(username, password);
                 break;

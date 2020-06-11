@@ -8,7 +8,7 @@ import net.sqlcipher.database.SQLiteDatabase;
 
 import org.apache.commons.lang3.StringUtils;
 import org.opensrp.api.constants.Gender;
-import org.smartregister.cbhc.domain.Muac;
+import org.smartregister.cbhc.domain.MUAC;
 import org.smartregister.cbhc.util.Utils;
 import org.smartregister.growthmonitoring.GrowthMonitoringLibrary;
 import org.smartregister.location.helper.LocationHelper;
@@ -103,11 +103,11 @@ public class MuacRepository extends BaseRepository {
      * @param gender
      * @param muac
      */
-    public void add(Date dateOfBirth, Gender gender, Muac muac) {
+    public void add(Date dateOfBirth, Gender gender, MUAC muac) {
 
     }
 
-    public void add(Muac muac) {
+    public void add(MUAC muac) {
         try {
             if (muac == null) {
                 return;
@@ -136,7 +136,7 @@ public class MuacRepository extends BaseRepository {
 
             SQLiteDatabase database = getRepository().getWritableDatabase();
             if (muac.getId() == null) {
-                Muac sameMuac = findUnique(database, muac);
+                MUAC sameMuac = findUnique(database, muac);
                 if (sameMuac != null) {
                     muac.setUpdatedAt(sameMuac.getUpdatedAt());
                     muac.setId(sameMuac.getId());
@@ -157,7 +157,7 @@ public class MuacRepository extends BaseRepository {
         }
     }
 
-    public Muac findUnique(SQLiteDatabase db, Muac muac) {
+    public MUAC findUnique(SQLiteDatabase db, MUAC muac) {
 
         if (muac == null || (StringUtils.isBlank(muac.getFormSubmissionId()) && StringUtils
                 .isBlank(muac.getEventId()))) {
@@ -185,7 +185,7 @@ public class MuacRepository extends BaseRepository {
 
             Cursor cursor = database.query(MUAC_TABLE_NAME, MUAC_TABLE_COLUMNS, selection, selectionArgs, null, null,
                     ID_COLUMN + " DESC ", null);
-            List<Muac> muacList = readAllMuacs(cursor);
+            List<MUAC> muacList = readAllMuacs(cursor);
             if (!muacList.isEmpty()) {
                 return muacList.get(0);
             }
@@ -197,7 +197,7 @@ public class MuacRepository extends BaseRepository {
         return null;
     }
 
-    public void update(SQLiteDatabase database, Muac muac) {
+    public void update(SQLiteDatabase database, MUAC muac) {
         if (muac == null || muac.getId() == null) {
             return;
         }
@@ -218,7 +218,7 @@ public class MuacRepository extends BaseRepository {
         }
     }
 
-    private ContentValues createValuesFor(Muac muac) {
+    private ContentValues createValuesFor(MUAC muac) {
         ContentValues values = new ContentValues();
         values.put(ID_COLUMN, muac.getId());
         values.put(BASE_ENTITY_ID, muac.getBaseEntityId());
@@ -241,8 +241,8 @@ public class MuacRepository extends BaseRepository {
         return values;
     }
 
-    private List<Muac> readAllMuacs(Cursor cursor) {
-        List<Muac> muacs = new ArrayList<>();
+    private List<MUAC> readAllMuacs(Cursor cursor) {
+        List<MUAC> muacs = new ArrayList<>();
         try {
             if (cursor != null && cursor.getCount() > 0 && cursor.moveToFirst()) {
                 while (!cursor.isAfterLast()) {
@@ -262,7 +262,7 @@ public class MuacRepository extends BaseRepository {
                         }
                     }
 
-                    Muac muac = new Muac(cursor.getLong(cursor.getColumnIndex(ID_COLUMN)),
+                    MUAC muac = new MUAC(cursor.getLong(cursor.getColumnIndex(ID_COLUMN)),
                             cursor.getString(cursor.getColumnIndex(BASE_ENTITY_ID)),
                             cursor.getString(cursor.getColumnIndex(PROGRAM_CLIENT_ID)),
                             cursor.getFloat(cursor.getColumnIndex(KG)),
@@ -298,8 +298,8 @@ public class MuacRepository extends BaseRepository {
 
     }
 
-    public List<Muac> findUnSyncedBeforeTime(int hours) {
-        List<Muac> muacs = new ArrayList<>();
+    public List<MUAC> findUnSyncedBeforeTime(int hours) {
+        List<MUAC> muacs = new ArrayList<>();
         Cursor cursor = null;
         try {
 
@@ -323,15 +323,15 @@ public class MuacRepository extends BaseRepository {
         return muacs;
     }
 
-    public Muac findUnSyncedByEntityId(String entityId) {
-        Muac muac = null;
+    public MUAC findUnSyncedByEntityId(String entityId) {
+        MUAC muac = null;
         Cursor cursor = null;
         try {
 
             cursor = getRepository().getReadableDatabase().query(MUAC_TABLE_NAME, MUAC_TABLE_COLUMNS,
                     BASE_ENTITY_ID + " = ? " + COLLATE_NOCASE + " AND " + SYNC_STATUS + " = ? ",
                     new String[]{entityId, TYPE_Unsynced}, null, null, UPDATED_AT_COLUMN + COLLATE_NOCASE + " DESC", null);
-            List<Muac> muacs = readAllMuacs(cursor);
+            List<MUAC> muacs = readAllMuacs(cursor);
             if (!muacs.isEmpty()) {
                 muac = muacs.get(0);
             }
@@ -346,8 +346,8 @@ public class MuacRepository extends BaseRepository {
         return muac;
     }
 
-    public List<Muac> findByEntityId(String entityId) {
-        List<Muac> muacs = null;
+    public List<MUAC> findByEntityId(String entityId) {
+        List<MUAC> muacs = null;
         Cursor cursor = null;
         try {
             cursor = getRepository().getReadableDatabase()
@@ -366,8 +366,8 @@ public class MuacRepository extends BaseRepository {
         return muacs;
     }
 
-    public List<Muac> findWithNoZScore() {
-        List<Muac> result = new ArrayList<>();
+    public List<MUAC> findWithNoZScore() {
+        List<MUAC> result = new ArrayList<>();
         Cursor cursor = null;
         try {
             cursor = getRepository().getReadableDatabase().query(MUAC_TABLE_NAME,
@@ -385,14 +385,14 @@ public class MuacRepository extends BaseRepository {
         return result;
     }
 
-    public Muac find(Long caseId) {
-        Muac muac = null;
+    public MUAC find(Long caseId) {
+        MUAC muac = null;
         Cursor cursor = null;
         try {
             cursor = getRepository().getReadableDatabase()
                     .query(MUAC_TABLE_NAME, MUAC_TABLE_COLUMNS, ID_COLUMN + " = ?", new String[]{caseId.toString()},
                             null, null, null, null);
-            List<Muac> muacs = readAllMuacs(cursor);
+            List<MUAC> muacs = readAllMuacs(cursor);
             if (!muacs.isEmpty()) {
                 muac = muacs.get(0);
             }
@@ -407,8 +407,8 @@ public class MuacRepository extends BaseRepository {
         return muac;
     }
 
-    public List<Muac> findLast5(String entityid) {
-        List<Muac> muacList = new ArrayList<>();
+    public List<MUAC> findLast5(String entityid) {
+        List<MUAC> muacList = new ArrayList<>();
         Cursor cursor = null;
         try {
             cursor = getRepository().getReadableDatabase()
