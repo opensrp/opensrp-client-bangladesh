@@ -85,7 +85,7 @@ public class HomeDashboardActivity extends AppCompatActivity {
     }
 
     public static String capitalize(@NonNull String input) {
-
+if(input==null||"".equals(input))return "";
         String[] words = input.toLowerCase().split(" ");
         StringBuilder builder = new StringBuilder();
         for (int i = 0; i < words.length; i++) {
