@@ -199,11 +199,12 @@ public class LoginActivity extends AppCompatActivity {
         android.util.Log.i(getClass().getName(), "Hiding Keyboard " + DateTime.now().toString());
         hideKeyboard();
         view.setClickable(false);
-
+//192.168.19.84:1971
+        //27.147.138.61
         final String userName = userNameEditText.getText().toString().trim();
         final String password = passwordEditText.getText().toString().trim();
-
-
+//        String userName = "Tanzim";
+//        String password = "Admin123";
         if (!TextUtils.isEmpty(userName) && !TextUtils.isEmpty(password)) {
             if (localLogin) {
                 localLogin(view, userName, password);

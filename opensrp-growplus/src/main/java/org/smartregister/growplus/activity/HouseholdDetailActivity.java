@@ -183,7 +183,6 @@ public class HouseholdDetailActivity extends BaseActivity {
         }
 
 //        toolbar.setOnLocationChangeListener(this);
-//
 
         initQueries();
 
@@ -438,7 +437,7 @@ public class HouseholdDetailActivity extends BaseActivity {
             DetailsRepository detailsRepository= org.smartregister.Context.getInstance().detailsRepository();
             Map<String, String> details = detailsRepository.getAllDetailsForClient(pClient.entityId());
             String uniqId=details.get("idtype");
-            if(!uniqId.equalsIgnoreCase("NONE")){
+            if(uniqId!=null&&!uniqId.equalsIgnoreCase("NONE")){
                 uniqId=uniqId+" : " +details.get("nationalId");
                 textViewUniqueId.setVisibility(View.VISIBLE);
                 textViewUniqueId.setText(getString(R.string.unique_id_format,uniqId));

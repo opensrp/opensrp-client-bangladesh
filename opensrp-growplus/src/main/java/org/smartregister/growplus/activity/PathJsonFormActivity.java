@@ -3,6 +3,7 @@ package org.smartregister.growplus.activity;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.util.TypedValue;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
@@ -19,6 +20,7 @@ import com.vijay.jsonwizard.constants.JsonFormConstants;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.smartregister.growplus.R;
 import org.smartregister.growplus.fragment.PathJsonFormFragment;
 
 import java.util.ArrayList;
@@ -37,6 +39,26 @@ public class PathJsonFormActivity extends JsonFormActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         isLaunched = true;
+
+    }
+    boolean skipDialog = false;
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if(item.getItemId()==R.id.action_save){
+            skipDialog = true;
+            new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    try {
+                        Thread.sleep(2*1000);
+                        skipDialog = false;
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }).start();
+        }
+        return super.onOptionsItemSelected(item);
 
     }
 
@@ -180,6 +202,8 @@ public class PathJsonFormActivity extends JsonFormActivity {
     }
 
     private void infodialog(String value, String mediatype, String medialink, String mediatext) {
+        if(skipDialog)
+            return;
 //        MediaDialogFragment.launchDialog(this,"mediaDialog",mediatype,medialink);
         FancyAlertDialog.Builder builder = new FancyAlertDialog.Builder(this);
         builder.setTitle("Info");

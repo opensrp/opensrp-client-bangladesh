@@ -14,13 +14,31 @@ import android.widget.TextView;
 
 import org.smartregister.growplus.R;
 import org.smartregister.growplus.application.VaccinatorApplication;
+import org.smartregister.growplus.toolbar.LocationSwitcherToolbar;
 
-public class HomeDashboardActivity extends AppCompatActivity {
+public class HomeDashboardActivity extends BaseActivity {
 
+    @Override
+    protected int getContentView() {
+        return  R.layout.home_dashboard;
+    }
+    @Override
+    protected int getToolbarId() {
+        return LocationSwitcherToolbar.TOOLBAR_ID;
+    }
+
+    @Override
+    protected Class onBackActivity() {
+        return ChildSmartRegisterActivity.class;
+    }
+
+    @Override
+    protected int getDrawerLayoutId() {
+        return  R.id.drawer_layout;
+    }
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.home_dashboard);
         final Bundle extras = this.getIntent().getExtras();
         LinearLayout household = (LinearLayout)findViewById(R.id.household_dashboard_button);
         household.setOnClickListener(new View.OnClickListener() {
