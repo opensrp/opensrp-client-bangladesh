@@ -9,6 +9,9 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import com.rey.material.widget.SnackBar;
 
 import org.apache.commons.lang3.StringUtils;
 import org.joda.time.DateTime;
@@ -34,6 +37,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
+
+import butterknife.OnClick;
 
 import static org.smartregister.immunization.util.VaccinatorUtils.generateScheduleList;
 import static org.smartregister.util.Utils.getName;
@@ -73,14 +78,19 @@ public class CounsellingCardAdapter extends BaseAdapter {
     }
 
     @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
+    public View getView(final int position, View convertView, ViewGroup parent) {
         try {
             LayoutInflater layoutInflater = (LayoutInflater)context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             RelativeLayout counsellingcard = (RelativeLayout) layoutInflater.inflate(R.layout.view_counselling_card, null, true);
             counsellingcard.setBackgroundResource(org.smartregister.immunization.R.drawable.vaccine_card_background_white);
             TextView counsellingdate = (TextView)counsellingcard.findViewById(R.id.name_tv);
             counsellingdate.setText(Utils.convertDateFormat(new DateTime(counsellingList.get(position).getDate().getTime())));
+            counsellingcard.findViewById(R.id.undo_b).setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
 
+                }
+            });
             return counsellingcard;
         } catch (Exception e) {
             Log.e(TAG, e.getMessage(), e);
