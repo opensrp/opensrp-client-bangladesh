@@ -62,7 +62,7 @@ public class Utils {
 
     public static final int NOFILTER = 8888;
     public static final String DEFAULT_IDENTIFIER = "88888888";
-    public static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("dd/MM/yyyy");
+    public static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("dd/MM/yyyy",Locale.ENGLISH);
     private static final String TAG = Utils.class.getCanonicalName();
 
     private static final SimpleDateFormat DB_DF = new SimpleDateFormat(Constants.SQLITE_DATE_TIME_FORMAT);

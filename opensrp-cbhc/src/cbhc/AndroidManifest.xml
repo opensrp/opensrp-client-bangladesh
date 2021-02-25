@@ -92,13 +92,8 @@
         <service android:name=".service.intent.DeleteIntentService" />
         <service android:name=".service.intent.ValidateIntentService" />
         <service android:name=".service.intent.ExtendedSyncIntentService" />
+        <service android:name=".service.intent.EventLogIntentService" />
 
-        <activity android:name=".activity.DetailActivity"
-            android:configChanges="keyboardHidden|orientation|screenSize"
-            android:launchMode="singleTask"
-            android:screenOrientation="portrait"
-            android:theme="@style/AncAppTheme.NoActionBar"
-            />
         <uses-library android:name="org.apache.http.legacy"
             android:required="false"/>
 

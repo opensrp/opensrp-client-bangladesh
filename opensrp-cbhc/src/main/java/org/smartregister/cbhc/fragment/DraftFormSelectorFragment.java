@@ -32,6 +32,7 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 public class DraftFormSelectorFragment extends DialogFragment implements View.OnClickListener {
 
@@ -41,7 +42,7 @@ public class DraftFormSelectorFragment extends DialogFragment implements View.On
     protected ProgressDialog progressDialog;
     Context context;
     String familyBaseEntityId;
-    DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+    DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss", Locale.ENGLISH);
     private List<draft_form_object> draftFormObjects;
     private draftFormSelectorAdapter draft_FormSelector_Adapter;
     private ListView listview;

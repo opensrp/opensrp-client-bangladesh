@@ -46,10 +46,13 @@ import org.smartregister.cbhc.cursor.AdvancedMatrixCursor;
 import org.smartregister.cbhc.domain.AttentionFlag;
 import org.smartregister.cbhc.event.SyncEvent;
 import org.smartregister.cbhc.job.ImageUploadServiceJob;
+import org.smartregister.cbhc.job.PullHealthIdsServiceJob;
 import org.smartregister.cbhc.job.SyncServiceJob;
 import org.smartregister.cbhc.provider.RegisterProvider;
 import org.smartregister.cbhc.receiver.SyncStatusBroadcastReceiver;
 import org.smartregister.cbhc.repository.AncRepository;
+import org.smartregister.cbhc.service.intent.EventLogIntentService;
+import org.smartregister.cbhc.task.EventLogServiceJob;
 import org.smartregister.cbhc.util.Constants;
 import org.smartregister.cbhc.util.DBConstants;
 import org.smartregister.cbhc.util.MemberObject;
@@ -70,6 +73,7 @@ import java.text.SimpleDateFormat;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 import java.util.Set;
 
 import static android.app.Activity.RESULT_OK;
@@ -576,6 +580,8 @@ public abstract class BaseRegisterFragment extends RecyclerViewFragment implemen
     @Override
     public void onSyncComplete(FetchStatus fetchStatus) {
         refreshSyncStatusViews(fetchStatus);
+        EventLogServiceJob.scheduleJobImmediately(EventLogServiceJob.TAG);
+
     }
 
     private void refreshSyncStatusViews(FetchStatus fetchStatus) {
@@ -753,7 +759,7 @@ public abstract class BaseRegisterFragment extends RecyclerViewFragment implemen
     ////////////////////////////////////////////////////////////////
 
     public String filterSelect(String filter) {
-        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH);
         String dateString = format.format(new Date());
         String TWO_MONTHS = format.format(new Date(new Date().getTime() - 2l * 32l * 24l * 60l * 60l * 1000l));
         String FIVE_YEAR = format.format(new Date(new Date().getTime() - 5l * 12l * 30l * 24l * 60l * 60l * 1000l));

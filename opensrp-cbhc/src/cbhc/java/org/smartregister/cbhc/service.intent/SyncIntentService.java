@@ -64,8 +64,14 @@ public class SyncIntentService extends IntentService {
 
     protected void handleSync() {
         sendSyncStatusBroadcastMessage(FetchStatus.fetchStarted);
+        long start_time = new Date().getTime();
+        Log.e("sync-time", "start-time:"+start_time);
 
         doSync();
+        long end_time = new Date().getTime();
+        Log.e("sync-time:", "end-time:"+end_time);
+        Log.e("sync-time:", "time-difference:"+(end_time-start_time));
+
     }
 
     private void doSync() {
@@ -164,7 +170,7 @@ public class SyncIntentService extends IntentService {
 
             if (eCount == 0) {
                 complete(FetchStatus.nothingFetched);
-                new DetailsStatusUpdate(jsonObject, eCount).start();
+//                new DetailsStatusUpdate(jsonObject, eCount).start();
             } else if (eCount < 0) {
                 fetchFailed(count);
             } else if (eCount > 0) {
@@ -174,7 +180,7 @@ public class SyncIntentService extends IntentService {
                     lastServerVersion = serverVersionPair.second;
                 }
 
-//                new ClientInsertThread(ecSyncUpdater,jsonObject,lastServerVersion).start();
+                //new ClientInsertThread(ecSyncUpdater,jsonObject,lastServerVersion).start();
                 // long start  = System.currentTimeMillis();
                 if (ecSyncUpdater.saveAllClientsAndEvents(jsonObject)) {
                     processClient(serverVersionPair);
@@ -183,7 +189,7 @@ public class SyncIntentService extends IntentService {
                 // long end = System.currentTimeMillis();
                 //  long diff = end - start;
                 //System.out.println(diff);
-                new DetailsStatusUpdate(jsonObject, eCount).start();
+//                new DetailsStatusUpdate(jsonObject, eCount).start();
                 fetchRetry(0);
             }
         } catch (Exception e) {

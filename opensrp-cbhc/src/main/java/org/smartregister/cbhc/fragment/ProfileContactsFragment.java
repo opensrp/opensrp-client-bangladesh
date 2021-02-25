@@ -111,7 +111,7 @@ public class ProfileContactsFragment extends BaseProfileFragment {
                 if (mamber_dob.contains("T")) {
                     mamber_dob = mamber_dob.substring(0, mamber_dob.indexOf("T"));
                     jsonObject.put(JsonFormUtils.VALUE, mamber_dob);
-                    SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy",Locale.ENGLISH);
+                    SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy", Locale.ENGLISH);
                     try {
                         date_of_birth = sdf.parse(mamber_dob);
                     } catch (ParseException e) {

@@ -48,6 +48,7 @@ import org.smartregister.cbhc.presenter.ProfilePresenter;
 import org.smartregister.cbhc.presenter.RegisterPresenter;
 import org.smartregister.cbhc.provider.RegisterProvider;
 import org.smartregister.cbhc.repository.AncRepository;
+import org.smartregister.cbhc.repository.EventLogRepository;
 import org.smartregister.cbhc.repository.HealthIdRepository;
 import org.smartregister.cbhc.repository.UniqueIdRepository;
 import org.smartregister.cbhc.util.Constants;

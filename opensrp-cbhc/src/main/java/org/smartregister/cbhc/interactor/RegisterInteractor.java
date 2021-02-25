@@ -17,6 +17,7 @@ import org.smartregister.cbhc.helper.ECSyncHelper;
 import org.smartregister.cbhc.repository.FollowupRepository;
 import org.smartregister.cbhc.repository.HealthIdRepository;
 import org.smartregister.cbhc.repository.UniqueIdRepository;
+import org.smartregister.cbhc.sync.AncClientProcessorForJava;
 import org.smartregister.cbhc.util.AppExecutors;
 import org.smartregister.cbhc.util.Constants;
 import org.smartregister.cbhc.util.DBConstants;
@@ -44,7 +45,7 @@ public class RegisterInteractor implements RegisterContract.Interactor {
     private HealthIdRepository healthIdRepository;
     private ECSyncHelper syncHelper;
     private AllSharedPreferences allSharedPreferences;
-    private ClientProcessorForJava clientProcessorForJava;
+    private AncClientProcessorForJava clientProcessorForJava;
     private AllCommonsRepository allCommonsRepository;
 
     @VisibleForTesting
@@ -345,14 +346,14 @@ public class RegisterInteractor implements RegisterContract.Interactor {
         this.allSharedPreferences = allSharedPreferences;
     }
 
-    public ClientProcessorForJava getClientProcessorForJava() {
+    public AncClientProcessorForJava getClientProcessorForJava() {
         if (clientProcessorForJava == null) {
             clientProcessorForJava = AncApplication.getInstance().getClientProcessorForJava();
         }
         return clientProcessorForJava;
     }
 
-    public void setClientProcessorForJava(ClientProcessorForJava clientProcessorForJava) {
+    public void setClientProcessorForJava(AncClientProcessorForJava clientProcessorForJava) {
         this.clientProcessorForJava = clientProcessorForJava;
     }
 
