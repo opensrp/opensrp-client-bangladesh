@@ -1,6 +1,8 @@
 package org.smartregister.cbhc.repository;
 
 import android.content.ContentValues;
+import android.util.Log;
+
 import net.sqlcipher.Cursor;
 import net.sqlcipher.database.SQLiteDatabase;
 import net.sqlcipher.database.SQLiteException;
@@ -69,6 +71,7 @@ public class EventLogRepository extends BaseRepository {
         String sql = "select client.baseEntityId as base_entity_id, client.json as client_json, event.json as event_json, event.eventId as event_id, " +
                 "event.eventType as event_type, event.eventDate as event_date from client,event where event.baseEntityId = client.baseEntityId and " +
                 "event.eventId not in (select ec_event_log.event_id from ec_event_log)";
+        Log.v("QUERY",sql);
         SQLiteDatabase database = getWritableDatabase();
         Cursor cursor = database.rawQuery(sql,null);
         ArrayList<EventLog> eventLogs = new ArrayList<>();
