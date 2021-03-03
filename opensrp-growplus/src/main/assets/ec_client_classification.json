@@ -7,6 +7,13 @@
         "fields": [
           {
             "field": "eventType",
+            "field_value": "Woman Member Follow Up",
+            "creates_case": [
+              "ec_followup"
+            ]
+          },
+          {
+            "field": "eventType",
             "field_value": "Household Registration",
             "creates_case": [
               "ec_household"

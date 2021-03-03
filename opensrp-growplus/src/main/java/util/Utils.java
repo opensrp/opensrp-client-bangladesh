@@ -27,9 +27,17 @@ import android.widget.TableRow;
 import android.widget.TextView;
 
 import org.apache.commons.lang3.StringUtils;
+import org.joda.time.DateTime;
+import org.joda.time.LocalDate;
+import org.joda.time.Years;
+import org.joda.time.format.DateTimeFormat;
+import org.joda.time.format.DateTimeFormatter;
 import org.smartregister.growplus.domain.EditWrapper;
 
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Collection;
+import java.util.Date;
 import java.util.Map;
 
 
@@ -38,6 +46,9 @@ import java.util.Map;
  *         Class containing some static utility methods.
  */
 public class Utils {
+
+    private static final SimpleDateFormat DB_DF = new SimpleDateFormat(Constants.SQLITE_DATE_TIME_FORMAT);
+    private static final DateTimeFormatter SQLITE_DATE_DF = DateTimeFormat.forPattern(Constants.SQLITE_DATE_TIME_FORMAT);
 
     private Utils() {
     }
@@ -173,5 +184,44 @@ public class Utils {
         }
         map.putAll(extend);
     }
+    public static Date dobStringToDate(String dobString) {
+        DateTime dateTime = dobStringToDateTime(dobString);
+        if (dateTime != null) {
+            return dateTime.toDate();
+        }
+        return null;
+    }
 
+    public static DateTime dobStringToDateTime(String dobString) {
+        try {
+            if (StringUtils.isBlank(dobString)) {
+                return null;
+            }
+            return new DateTime(dobString);
+
+        } catch (Exception e) {
+            return null;
+        }
+    }
+
+    public static int getAgeFromDate(String dateOfBirth) {
+        DateTime date = DateTime.parse(dateOfBirth);
+
+        Years age;
+        if(date==null){
+            age = Years.yearsBetween(LocalDate.now(), LocalDate.now());
+        }else{
+            age = Years.yearsBetween(date.toLocalDate(), LocalDate.now());
+        }
+
+        return age.getYears();
+    }
+
+    public static String getTodaysDate() {
+        return convertDateFormat(Calendar.getInstance().getTime(), DB_DF);
+    }
+    public static String convertDateFormat(Date date, SimpleDateFormat formatter) {
+
+        return formatter.format(date);
+    }
 }

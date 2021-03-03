@@ -251,4 +251,5 @@
     </string>
     <string name="title_activity_home_dashboard">HomeDashboardActivity</string>
     <string name="clear_filters">CLEAR FILTERS</string>
+    <string name="label_visit_date">Visit Date</string>
 </resources>

@@ -16,6 +16,7 @@ import android.text.TextUtils;
 import android.util.Log;
 import android.widget.Toast;
 
+import com.google.common.reflect.TypeToken;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
@@ -33,9 +34,13 @@ import org.smartregister.clientandeventmodel.Event;
 import org.smartregister.clientandeventmodel.FormEntityConstants;
 import org.smartregister.clientandeventmodel.Obs;
 import org.smartregister.commonregistry.CommonPersonObject;
+import org.smartregister.domain.Photo;
 import org.smartregister.domain.ProfileImage;
 import org.smartregister.growplus.domain.Counselling;
+import org.smartregister.growplus.domain.jsonmapping.FormLocation;
+import org.smartregister.growplus.helper.LocationHelper;
 import org.smartregister.growplus.repository.CounsellingRepository;
+import org.smartregister.growplus.view.LocationPickerView;
 import org.smartregister.growthmonitoring.domain.Weight;
 import org.smartregister.growthmonitoring.repository.WeightRepository;
 import org.smartregister.immunization.domain.Vaccine;
@@ -78,6 +83,7 @@ import java.util.regex.Pattern;
 
 import id.zelory.compressor.Compressor;
 
+import static org.smartregister.growplus.activity.GrowthReportActivity.DATE_FORMAT;
 import static org.smartregister.util.Utils.getValue;
 
 /**
@@ -108,6 +114,10 @@ public class JsonFormUtils extends org.smartregister.util.JsonFormUtils {
     //2007-03-31T04:00:00.000Z
     public static final Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'").registerTypeAdapter(DateTime.class, new DateTimeTypeConverter()).create();
 
+    private static Map councellingField = new HashMap();
+    public static Map getCouncellingField(){
+        return councellingField;
+    }
 
     public static void saveForm(Context context, org.smartregister.Context openSrpContext,
                                 String jsonString, String providerId) {
@@ -2569,6 +2579,354 @@ public class JsonFormUtils extends org.smartregister.util.JsonFormUtils {
                 Log.e(TAG, Log.getStackTraceString(e));
             }
             return null;
+        }
+    }
+
+    public static String getAutoPopulatedJsonEditFormString(Context context, Map<String, String> womanClient, String formName, String encounterType) {
+        try {
+            JSONObject form = FormUtils.getInstance(context).getFormJson(formName);
+            LocationPickerView lpv = new LocationPickerView(context);
+            lpv.init( VaccinatorApplication.getInstance().context());
+            JsonFormUtils.addWomanRegisterHierarchyQuestions(form);
+            Log.d(TAG, "Form is " + form.toString());
+            if (form != null) {
+                form.put(JsonFormUtils.ENTITY_ID, womanClient.get("base_entity_id"));
+                form.put(JsonFormUtils.ENCOUNTER_TYPE, encounterType);
+
+                JSONObject metadata = form.getJSONObject(JsonFormUtils.METADATA);
+                String lastLocationId = LocationHelper.getInstance().getOpenMrsLocationId(lpv.getSelectedItem());
+
+                metadata.put("encounter_location", lastLocationId);
+
+              //form.put("current_opensrp_id", womanClient.get("anc_id").replace("-", "")); // TODO kadir 'anc-id'
+
+                //inject opensrp id into the form
+                JSONObject stepOne = form.getJSONObject(JsonFormUtils.STEP1);
+                JSONArray jsonArray = stepOne.getJSONArray(JsonFormUtils.FIELDS);
+                for (int i = 0; i < jsonArray.length(); i++) {
+                    JSONObject jsonObject = jsonArray.getJSONObject(i);
+
+                    processPopulatableFields(womanClient, jsonObject);
+
+                }
+
+                return form.toString();
+            }
+        } catch (Exception e) {
+            Log.e(TAG, Log.getStackTraceString(e));
+        }
+
+        return "";
+    }
+
+    public static void addWomanRegisterHierarchyQuestions(JSONObject form) {
+        try {
+            JSONArray questions = form.getJSONObject("step1").getJSONArray("fields");
+            ArrayList<String> allLevels = new ArrayList<>();
+            allLevels.add("Country");
+            allLevels.add("Division");
+            allLevels.add("District");
+            allLevels.add("Upazilla");
+            allLevels.add("Union");
+            allLevels.add("Ward");
+            allLevels.add("Subunit");
+            allLevels.add("EPI center");
+
+
+            ArrayList<String> healthFacilities = new ArrayList<>();
+            healthFacilities.add("Country");
+            healthFacilities.add("Division");
+            healthFacilities.add("District");
+            healthFacilities.add("Upazilla");
+            healthFacilities.add("Union");
+            healthFacilities.add("Ward");
+            healthFacilities.add("Subunit");
+            healthFacilities.add("EPI center");
+
+
+            ArrayList<String> defaultFacilities = new ArrayList<>();
+            healthFacilities.add("Country");
+            healthFacilities.add("Division");
+            healthFacilities.add("District");
+            healthFacilities.add("Upazilla");
+            healthFacilities.add("Union");
+            healthFacilities.add("Ward");
+            healthFacilities.add("Subunit");
+            healthFacilities.add("EPI center");
+
+
+            List<String> defaultFacility = LocationHelper.getInstance().generateDefaultLocationHierarchy(healthFacilities);
+            List<FormLocation> upToFacilities = LocationHelper.getInstance().generateLocationHierarchyTree(false, healthFacilities);
+
+            String defaultFacilityString = AssetHandler.javaToJsonString(defaultFacility,
+                    new TypeToken<List<String>>() {
+                    }.getType());
+
+            String upToFacilitiesString = AssetHandler.javaToJsonString(upToFacilities,
+                    new TypeToken<List<FormLocation>>() {
+                    }.getType());
+
+            for (int i = 0; i < questions.length(); i++) {
+                if (questions.getJSONObject(i).getString("key").equalsIgnoreCase("HIE_FACILITIES")) {
+                    if (StringUtils.isNotBlank(upToFacilitiesString)) {
+                        questions.getJSONObject(i).put("tree", new JSONArray(upToFacilitiesString));
+                    }
+                    JSONArray defaultvalueArray = new JSONArray(upToFacilitiesString);
+                    String processedDefaultValue = processDefaultValueArray(defaultvalueArray);
+                    questions.getJSONObject(i).put("value", processedDefaultValue);
+
+                    if (StringUtils.isNotBlank(defaultFacilityString)) {
+                        questions.getJSONObject(i).put("default", defaultFacilityString);
+
+                    }
+                }
+            }
+
+        } catch (JSONException e) {
+            Log.e(TAG, e.getMessage());
+        }
+    }
+    private static String processDefaultValueArray(JSONArray defaultvalueArray) throws JSONException {
+        String toreturn = "[]";
+        for(int i = 0;i<defaultvalueArray.length();i++){
+            JSONArray nodes = defaultvalueArray.getJSONObject(i).getJSONArray("nodes");
+            JSONArray nodeStringArray = new JSONArray();
+            for(int j = 0;j<nodes.length();j++){
+                nodeStringArray.put(nodes.getJSONObject(i).getString("key"));
+                return_JSON_RECURSIVELY(nodes.getJSONObject(j).getJSONArray("nodes"),nodeStringArray);
+            }
+            toreturn = nodeStringArray.toString();
+        }
+        return toreturn;
+    }
+    private static String return_JSON_RECURSIVELY(JSONArray nodes,JSONArray nodestring)throws  JSONException{
+        String toreturn = null;
+        for(int j = 0;j<nodes.length();j++) {
+
+            toreturn = nodes.getJSONObject(j).getString("key");
+            nodestring.put(toreturn);
+            if(nodes.getJSONObject(j).has("nodes")) {
+                return_JSON_RECURSIVELY(nodes.getJSONObject(j).getJSONArray("nodes"), nodestring);
+            }
+        }
+        return  toreturn;
+    }
+
+    protected static void processPopulatableFields(Map<String, String> womanClient, JSONObject jsonObject) throws JSONException {
+
+        if (jsonObject.getString(JsonFormUtils.KEY).equalsIgnoreCase(DBConstants.KEY.DOB) && !Boolean.valueOf(womanClient.get(DBConstants.KEY.DOB_UNKNOWN))) {
+
+            String dobString = womanClient.get(DBConstants.KEY.DOB);
+            Date dob = Utils.dobStringToDate(dobString);
+            if (dob != null) {
+                jsonObject.put(JsonFormUtils.VALUE, DATE_FORMAT.format(dob));
+            }
+
+        } else if (jsonObject.getString(JsonFormUtils.KEY).equalsIgnoreCase(DBConstants.KEY.HOME_ADDRESS)) {
+
+            String homeAddress = womanClient.get(DBConstants.KEY.HOME_ADDRESS);
+            jsonObject.put(JsonFormUtils.VALUE, homeAddress);
+            jsonObject.toString();
+
+            List<String> healthFacilityHierarchy = new ArrayList<>();
+            String address5 = womanClient.get(DBConstants.KEY.HOME_ADDRESS);
+            healthFacilityHierarchy.add(address5);
+
+            String schoolFacilityHierarchyString = AssetHandler.javaToJsonString(healthFacilityHierarchy, new TypeToken<List<String>>() {
+            }.getType());
+
+            if (StringUtils.isNotBlank(schoolFacilityHierarchyString)) {
+                jsonObject.put(JsonFormUtils.VALUE, schoolFacilityHierarchyString);
+            }
+
+        } else if (jsonObject.getString(JsonFormUtils.KEY).equalsIgnoreCase(Constants.KEY.PHOTO)) {
+
+
+            Photo photo = ImageUtils.profilePhotoByClientID(womanClient.get(DBConstants.KEY.BASE_ENTITY_ID));
+
+            if (StringUtils.isNotBlank(photo.getFilePath())) {
+
+                jsonObject.put(JsonFormUtils.VALUE, photo.getFilePath());
+
+            }
+        } else if (jsonObject.getString(JsonFormUtils.KEY).equalsIgnoreCase(DBConstants.KEY.DOB_UNKNOWN)) {
+
+            jsonObject.put(JsonFormUtils.READ_ONLY, false);
+            JSONObject optionsObject = jsonObject.getJSONArray(Constants.JSON_FORM_KEY.OPTIONS).getJSONObject(0);
+            optionsObject.put(JsonFormUtils.VALUE, womanClient.get(DBConstants.KEY.DOB_UNKNOWN));
+
+        } else if (jsonObject.getString(JsonFormUtils.KEY).equalsIgnoreCase(DBConstants.KEY.AGE)) {
+
+            jsonObject.put(JsonFormUtils.READ_ONLY, false);
+            jsonObject.put(JsonFormUtils.VALUE, Utils.getAgeFromDate(womanClient.get(DBConstants.KEY.DOB)));
+
+        } else if (jsonObject.getString(JsonFormUtils.KEY).equalsIgnoreCase(DBConstants.KEY.ANC_ID)) {
+
+            jsonObject.put(JsonFormUtils.VALUE, womanClient.get(DBConstants.KEY.ANC_ID).replace("-", ""));
+
+        } else if (womanClient.containsKey(jsonObject.getString(JsonFormUtils.KEY))) {
+
+            jsonObject.put(JsonFormUtils.READ_ONLY, false);
+            jsonObject.put(JsonFormUtils.VALUE, womanClient.get(jsonObject.getString(JsonFormUtils.KEY)));
+        } else {
+            Log.e(TAG, "ERROR:: Unprocessed Form Object Key " + jsonObject.getString(JsonFormUtils.KEY));
+        }
+    }
+
+
+
+//    public static String getHouseholdJsonEditFormString(Context context, Map<String, String> womanClient) {
+//        try {
+//            JSONObject form = FormUtils.getInstance(context).getFormJson("women_followup");
+//            LocationPickerView lpv = new LocationPickerView(context);
+//            lpv.init();
+//            JsonFormUtils.addWomanRegisterHierarchyQuestions(form);
+//            Log.d(TAG, "Form is " + form.toString());
+//            if (form != null) {
+//                form.put(JsonFormUtils.ENTITY_ID, womanClient.get(DBConstants.KEY.BASE_ENTITY_ID));
+//                form.put(JsonFormUtils.ENCOUNTER_TYPE, Constants.EventType.UPDATE_Household_REGISTRATION);
+//
+//                JSONObject metadata = form.getJSONObject(JsonFormUtils.METADATA);
+//                String lastLocationId = LocationHelper.getInstance().getOpenMrsLocationId(lpv.getSelectedItem());
+//
+//                metadata.put(JsonFormUtils.ENCOUNTER_LOCATION, lastLocationId);
+//
+//                form.put(JsonFormUtils.CURRENT_OPENSRP_ID, womanClient.get("Patient_Identifier").replace("-", ""));
+//
+//                //inject opensrp id into the form
+//
+//                JSONObject stepOne = form.getJSONObject(JsonFormUtils.STEP1);
+//                JSONArray jsonArray = stepOne.getJSONArray(JsonFormUtils.FIELDS);
+//                for (int i = 0; i < jsonArray.length(); i++) {
+//                    JSONObject jsonObject = jsonArray.getJSONObject(i);
+//
+//                    processPopulatableFieldsForHouseholds(womanClient, jsonObject);
+//
+//                }
+////                Log.v("test language",womanClient.get("type_of_nearest_clinic"));
+//
+//                return form.toString();
+//            }
+//        } catch (Exception e) {
+//            Log.e(TAG, Log.getStackTraceString(e));
+//        }
+//
+//        return "";
+//    }
+public static void updateCounsellingForm(Context context, org.smartregister.Context openSrpContext, String jsonString, String providerId) {
+    try {
+        JSONObject form = new JSONObject(jsonString);
+         if (form.getString("encounter_type").equals("Pregnant Woman Counselling")) {
+            update_iycf_counselling_form_pregnants_woman(context, openSrpContext, jsonString, providerId, "woman_photo", "mother");
+        } else if (form.getString("encounter_type").equals("Lactating Woman Counselling")) {
+            update_iycf_counselling_form_lactating_woman(context, openSrpContext, jsonString, providerId, "woman_photo", "mother");
+        }
+    } catch (JSONException e) {
+        Log.e(TAG, Log.getStackTraceString(e));
+    }
+}
+    private static void update_iycf_counselling_form_pregnants_woman(Context context, org.smartregister.Context openSrpContext,
+                                                                   String jsonString, String providerId, String imageKey, String bindType) {
+        if (context == null || openSrpContext == null || StringUtils.isBlank(providerId)
+                || StringUtils.isBlank(jsonString)) {
+            return;
+        }
+
+        try {
+            ECSyncUpdater ecUpdater = ECSyncUpdater.getInstance(context);
+            SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
+            AllSharedPreferences allSharedPreferences = new AllSharedPreferences(preferences);
+
+            JSONObject jsonForm = new JSONObject(jsonString);
+
+            String entityId = getString(jsonForm, ENTITY_ID);
+//            if (StringUtils.isBlank(entityId)) {
+//                entityId = generateRandomUUIDString();
+//            }
+
+            JSONArray fields = fields(jsonForm);
+            fields = processCheckbox(fields);
+            if (fields == null) {
+                return;
+            }
+            ArrayList<Address> adresses = new ArrayList<Address>();
+            Address address1 = new Address();
+            String encounterType = getString(jsonForm, ENCOUNTER_TYPE);
+
+            JSONObject metadata = getJSONObject(jsonForm, METADATA);
+
+            // Replace values for location questions with their corresponding location IDs
+
+            Event e = JsonFormUtils.createEvent(openSrpContext, fields, metadata, entityId, encounterType, providerId, bindType);
+
+            if (e != null) {
+                JSONObject eventJson = new JSONObject(gson.toJson(e));
+                ecUpdater.addEvent(e.getBaseEntityId(), eventJson);
+            }
+
+            long lastSyncTimeStamp = allSharedPreferences.fetchLastUpdatedAtDate(0);
+            Date lastSyncDate = new Date(lastSyncTimeStamp);
+            PathClientProcessor.getInstance(context).processClient(ecUpdater.getEvents(lastSyncDate, BaseRepository.TYPE_Unsynced));
+            allSharedPreferences.saveLastUpdatedAtDate(lastSyncDate.getTime());
+            Map<String, String> fieldshashmap = fieldsToHashmap(fields);
+            councellingField.clear();
+            councellingField = fieldshashmap;
+
+        } catch (Exception e) {
+            Log.e(TAG, "", e);
+        }
+    }
+
+    private static void  update_iycf_counselling_form_lactating_woman(Context context, org.smartregister.Context openSrpContext,
+                                                                   String jsonString, String providerId, String imageKey, String bindType) {
+        if (context == null || openSrpContext == null || StringUtils.isBlank(providerId)
+                || StringUtils.isBlank(jsonString)) {
+            return;
+        }
+
+        try {
+            ECSyncUpdater ecUpdater = ECSyncUpdater.getInstance(context);
+            SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
+            AllSharedPreferences allSharedPreferences = new AllSharedPreferences(preferences);
+
+            JSONObject jsonForm = new JSONObject(jsonString);
+
+            String entityId = getString(jsonForm, ENTITY_ID);
+//            if (StringUtils.isBlank(entityId)) {
+//                entityId = generateRandomUUIDString();
+//            }
+
+            JSONArray fields = fields(jsonForm);
+            fields = processCheckbox(fields);
+            if (fields == null) {
+                return;
+            }
+            ArrayList<Address> adresses = new ArrayList<Address>();
+            Address address1 = new Address();
+            String encounterType = getString(jsonForm, ENCOUNTER_TYPE);
+
+            JSONObject metadata = getJSONObject(jsonForm, METADATA);
+
+            // Replace values for location questions with their corresponding location IDs
+
+            Event e = JsonFormUtils.createEvent(openSrpContext, fields, metadata, entityId, encounterType, providerId, bindType);
+
+            if (e != null) {
+                JSONObject eventJson = new JSONObject(gson.toJson(e));
+                ecUpdater.addEvent(e.getBaseEntityId(), eventJson);
+            }
+
+            long lastSyncTimeStamp = allSharedPreferences.fetchLastUpdatedAtDate(0);
+            Date lastSyncDate = new Date(lastSyncTimeStamp);
+            PathClientProcessor.getInstance(context).processClient(ecUpdater.getEvents(lastSyncDate, BaseRepository.TYPE_Unsynced));
+            allSharedPreferences.saveLastUpdatedAtDate(lastSyncDate.getTime());
+
+            Counselling counselling = new Counselling(null, entityId, encounterType, lastSyncDate, providerId, null, BaseRepository.TYPE_Synced, lastSyncTimeStamp, e.getEventId(), e.getFormSubmissionId(), lastSyncDate);
+            Map<String, String> fieldshashmap = fieldsToHashmap(fields);
+            councellingField.clear();
+            councellingField = fieldshashmap;
+        } catch (Exception e) {
+            Log.e(TAG, "", e);
         }
     }
 }

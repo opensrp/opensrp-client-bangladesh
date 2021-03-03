@@ -51,5 +51,18 @@ public class ImageUtils {
         }
         return photo;
     }
+    public static Photo profilePhotoByClientID(String clientEntityId) {
+        Photo photo = new Photo();
+        ProfileImage profileImage = VaccinatorApplication.getInstance().context().imageRepository().findByEntityId(clientEntityId);
+        if (profileImage != null) {
+            photo.setFilePath(profileImage.getFilepath());
+        } else {
+            photo.setResourceId(getProfileImageResourceIDentifier());
+        }
+        return photo;
+    }
+    public static int getProfileImageResourceIDentifier() {
+        return R.drawable.pregnant_woman; // TODO//
+    }
 
 }

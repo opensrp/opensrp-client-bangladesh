@@ -91,7 +91,11 @@ public class HouseholdSmartClientsProvider implements SmartRegisterCLientsProvid
 
         DetailsRepository detailsRepository;
         detailsRepository = org.smartregister.Context.getInstance().detailsRepository();
+
+
         Map<String, String> details = detailsRepository.getAllDetailsForClient(pc.entityId());
+
+
         fillValue((TextView) convertView.findViewById(R.id.householdprimarytext), getValue(details, "address3", false).substring( getValue(details, "address3", false).lastIndexOf(":")+1));
         fillValue((TextView) convertView.findViewById(R.id.housholdsecondarytext), getValue(details, "address2", false).substring( getValue(details, "address2", false).lastIndexOf(":")+1));
 

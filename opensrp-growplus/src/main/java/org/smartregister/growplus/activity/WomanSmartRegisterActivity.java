@@ -173,8 +173,7 @@ public class WomanSmartRegisterActivity extends BaseRegisterActivity {
             if (mBaseFragment instanceof HouseholdSmartRegisterFragment) {
                 LocationPickerView locationPickerView = ((HouseholdSmartRegisterFragment) mBaseFragment).getLocationPickerView();
                 String locationId = JsonFormUtils.getOpenMrsLocationId(context(), locationPickerView.getSelectedItem());
-                JsonFormUtils.startForm(this, context(), REQUEST_CODE_GET_JSON, formName, entityId,
-                        metaData, locationId);
+                JsonFormUtils.startForm(this, context(), REQUEST_CODE_GET_JSON, formName, entityId, metaData, locationId);
             }
         } catch (Exception e) {
             Log.e(TAG, Log.getStackTraceString(e));
@@ -256,7 +255,6 @@ public class WomanSmartRegisterActivity extends BaseRegisterActivity {
                     e.printStackTrace();
                 }
                 try {
-
                     List <Counselling> list = VaccinatorApplication.getInstance().counsellingRepository().findByEntityId((new JSONObject(jsonString)).getString("entity_id"));
                     Log.v("size for counselling","++++"+ list.size());
                 } catch (JSONException e) {

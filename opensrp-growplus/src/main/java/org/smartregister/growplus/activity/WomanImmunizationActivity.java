@@ -1,6 +1,5 @@
 package org.smartregister.growplus.activity;
 
-import android.app.Activity;
 import android.app.Fragment;
 import android.app.FragmentTransaction;
 import android.content.ContentValues;
@@ -20,13 +19,14 @@ import android.util.Pair;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.GridView;
+import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import net.sqlcipher.database.SQLiteDatabase;
 
 import org.apache.commons.lang3.StringUtils;
 import org.smartregister.commonregistry.AllCommonsRepository;
@@ -36,17 +36,14 @@ import org.smartregister.commonregistry.CommonRepository;
 import org.smartregister.domain.Alert;
 import org.smartregister.domain.Photo;
 import org.smartregister.growplus.adapter.CounsellingCardAdapter;
+import org.smartregister.growplus.adapter.WomenFollowupRecyclerViewAdapter;
 import org.smartregister.growplus.domain.Counselling;
-import org.smartregister.growplus.fragment.HouseholdMemberAddFragment;
-import org.smartregister.growplus.fragment.HouseholdSmartRegisterFragment;
 import org.smartregister.growplus.repository.CounsellingRepository;
-import org.smartregister.growplus.repository.PathRepository;
 import org.smartregister.growplus.repository.UniqueIdRepository;
 import org.smartregister.growplus.view.LocationPickerView;
 import org.smartregister.growthmonitoring.domain.Weight;
 import org.smartregister.growthmonitoring.domain.WeightWrapper;
 import org.smartregister.growthmonitoring.fragment.GrowthDialogFragment;
-import org.smartregister.growthmonitoring.fragment.RecordWeightDialogFragment;
 import org.smartregister.growthmonitoring.listener.WeightActionListener;
 import org.smartregister.growthmonitoring.repository.WeightRepository;
 import org.smartregister.immunization.domain.ServiceRecord;
@@ -64,7 +61,6 @@ import org.smartregister.immunization.repository.RecurringServiceRecordRepositor
 import org.smartregister.immunization.repository.RecurringServiceTypeRepository;
 import org.smartregister.immunization.repository.VaccineRepository;
 import org.smartregister.immunization.util.VaccinateActionUtils;
-import org.smartregister.immunization.util.VaccinatorUtils;
 import org.smartregister.immunization.view.ExpandableHeightGridView;
 import org.smartregister.immunization.view.ServiceGroup;
 import org.smartregister.immunization.view.VaccineGroup;
@@ -99,7 +95,6 @@ import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Random;
 import java.util.concurrent.TimeUnit;
 import java.util.regex.Pattern;
 
@@ -108,8 +103,8 @@ import util.JsonFormUtils;
 import util.PathConstants;
 
 import static org.smartregister.growplus.activity.WomanSmartRegisterActivity.REQUEST_CODE_GET_JSON;
-import static org.smartregister.growplus.fragment.HouseholdMemberAddFragment.DATE_FORMAT;
 import static org.smartregister.util.Utils.fillValue;
+import static org.smartregister.util.Utils.formatValue;
 import static org.smartregister.util.Utils.getName;
 import static org.smartregister.util.Utils.getValue;
 import static org.smartregister.util.Utils.kgStringSuffix;
@@ -129,12 +124,17 @@ public class WomanImmunizationActivity extends BaseActivity
     private static final String EXTRA_REGISTER_CLICKABLES = "register_clickables";
     public static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("dd/MM/yyyy");
     private static final String DIALOG_TAG = "ChildImmunoActivity_DIALOG_TAG";
+    private static final int REQUEST_CODE_GET_JSON_COUNSELLING_UPDATE = 512;
     private ArrayList<VaccineGroup> vaccineGroups;
     private ArrayList<ServiceGroup> serviceGroups;
     private static final ArrayList<String> COMBINED_VACCINES;
     private static final HashMap<String, String> COMBINED_VACCINES_MAP;
     private boolean bcgScarNotificationShown;
     private boolean weightNotificationShown;
+    private Button mFollowupDetail;
+    private Map<String, String> mWomenFollowupData;
+
+    private String[] mWomenFollowupKeys; // = { "Visit_date", "is_pregnant","date_of_delivery", "Date_Of_next_appointment" };
 
     static {
         COMBINED_VACCINES = new ArrayList<>();
@@ -157,6 +157,15 @@ public class WomanImmunizationActivity extends BaseActivity
     private RegisterClickables registerClickables;
     public DetailsRepository detailsRepository;
     public org.smartregister.Context context;
+    private WomenFollowupRecyclerViewAdapter mWomenFollowupRecyclerViewAdapter;
+//    private String[] mWomenCounsellingKeys;
+//    private Map<String, String> mWomenCounsellingData;
+    private Counselling mEditCounselling;
+
+
+    public interface WomanImmuneActivityListener{
+        void onRequestStartActivity(Counselling counselling);
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -199,8 +208,84 @@ public class WomanImmunizationActivity extends BaseActivity
         toolbar.init(this);
         setLastModified(false);
 
+        mFollowupDetail = (Button) findViewById(R.id.followup_details);
+        mFollowupDetail.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                showWomenFollowupDetail();
+            }
+        });
+
+        try {
+            showWomenFollowupData();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+
     }
 
+    private void showWomenFollowupDetail() {
+
+//        final AlertDialog.Builder mBuilder = new AlertDialog.Builder(WomanImmunizationActivity.this);
+//        mBuilder.setTitle("Followup Details");
+//        LayoutInflater inflater = getLayoutInflater();
+//        View convertView = inflater.inflate(R.layout.followup_detail_dialog, null);
+//
+//        mWomenFollowupRecyclerViewAdapter = new WomenFollowupRecyclerViewAdapter(this, mWomenFollowupData, mWomenFollowupKeys);
+//
+//        RecyclerView list = convertView.findViewById(R.id.women_followup_recycler_view);
+//        list.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
+//        list.setAdapter(mWomenFollowupRecyclerViewAdapter);
+//        mBuilder.setView(convertView); // setView
+//
+//        AlertDialog dialog = mBuilder.create();
+//        dialog.setCancelable(true);
+//        dialog.setCanceledOnTouchOutside(true);
+//        dialog.show();
+
+//        Map<String,String> detailmaps = childDetails.getColumnmaps();
+//        detailmaps.putAll(childDetails.getDetails());
+
+        String formMetadata = JsonFormUtils.getAutoPopulatedJsonEditFormString(this, mWomenFollowupData, "woman_followup", "Woman Member Follow Up");
+
+        Intent intent = new Intent(WomanImmunizationActivity.this, PathJsonFormActivity.class);
+        intent.putExtra("json", formMetadata);
+        startActivityForResult(intent, REQUEST_CODE_GET_JSON);
+       // startActivity(intent);
+    }
+
+    private void showWomenFollowupData() throws Exception {
+        //Cursor c = db.rawQuery("SELECT Visit_date, is_pregnant, columnN FROM ec_followup;");
+        SQLiteDatabase database =  VaccinatorApplication.getInstance().getRepository().getReadableDatabase();
+//
+        Cursor cursor =  database.rawQuery("SELECT * FROM ec_followup where mother_id = '" + childDetails.entityId()+"'", null);
+        mWomenFollowupKeys = cursor.getColumnNames();
+        mWomenFollowupData = new HashMap<>();
+
+        if (cursor != null) {
+            cursor.moveToFirst();
+            int i;
+            for (i = 0; i < mWomenFollowupKeys.length - 1; i++) {
+                String key = mWomenFollowupKeys[i];
+                String value = cursor.getString(cursor.getColumnIndex(key));
+                Log.e(WomanImmunizationActivity.class.getSimpleName(), key + ": " + value);
+                mWomenFollowupData.put(key, value);
+                //String DestinationDB = cursor.getString(cursor.getColumnIndex("Name"));
+
+            }
+        }
+//
+
+//        Map<String,String> detailmaps = childDetails.getColumnmaps();
+//        detailmaps.putAll(childDetails.getDetails());
+
+        String visitDate = cursor.getString(cursor.getColumnIndex("Visit_date"));
+     //   String visitDate = detailmaps.get("Visit_date");
+        cursor.close();
+
+        ((TextView)findViewById(R.id.visit_date)).setText(visitDate);
+    }
 
 
     @Override
@@ -274,6 +359,12 @@ public class WomanImmunizationActivity extends BaseActivity
         }
         CounsellingRepository counsellingRepository= VaccinatorApplication.getInstance().counsellingRepository();
         updateCounsellingViews(counsellingRepository.findByEntityId(childDetails.entityId()),(LinearLayout)findViewById(R.id.counselling_group_canvas_ll));
+        try {
+            showWomenFollowupData();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
     }
 
     private void updateProfilePicture(Gender gender) {
@@ -594,6 +685,53 @@ public class WomanImmunizationActivity extends BaseActivity
 //        counselling_group.setLayoutParams(layoutParams);
         counsellingCanvas.addView(counselling_group);
         CounsellingCardAdapter counsellingCardAdapter = new CounsellingCardAdapter(this,counsellingList);
+        counsellingCardAdapter.setActivityListener(new WomanImmuneActivityListener(){
+            @Override
+            public void onRequestStartActivity(Counselling counselling) {
+
+                mEditCounselling = counselling;
+                Map<String, String> counsellingFormData = counselling.getFormfields();
+                String formMetadata;
+
+                Map<String,String> detailmaps = childDetails.getColumnmaps();
+                detailmaps.putAll(childDetails.getDetails());
+
+                boolean pregnant = false;
+                boolean lactating = false;
+                Intent intent = new Intent(WomanImmunizationActivity.this, PathJsonFormActivity.class);
+                if(detailmaps.get("pregnant")!=null){
+                    if(detailmaps.get("pregnant").equalsIgnoreCase("Yes")){
+                        pregnant = true;
+                    }
+                }
+                if(detailmaps.get("lactating_woman")!=null){
+                    if(detailmaps.get("lactating_woman").equalsIgnoreCase("Yes")){
+                        lactating = true;
+                    }
+                }
+
+                if( pregnant && !lactating){
+                    formMetadata = JsonFormUtils.getAutoPopulatedJsonEditFormString(WomanImmunizationActivity.this,
+                            counsellingFormData, "iycf_counselling_form_pregnant_woman", "Pregnant Woman Counselling");
+                    //intent = new Intent(WomanImmunizationActivity.this, PathJsonFormActivity.class);
+                    intent.putExtra("json", formMetadata);
+                }
+
+                if( lactating){
+                    formMetadata = JsonFormUtils.getAutoPopulatedJsonEditFormString(WomanImmunizationActivity.this,
+                            counsellingFormData, "iycf_counselling_form_lactating_woman", "Lactating Woman Counselling");
+                    //intent = new Intent(WomanImmunizationActivity.this, PathJsonFormActivity.class);
+                    intent.putExtra("json", formMetadata);
+
+                }
+//                formMetadata = JsonFormUtils.getAutoPopulatedJsonEditFormString(WomanImmunizationActivity.this,
+//                        counsellingFormData, "iycf_counselling_form_pregnant_woman", "Pregnant Woman Counselling");
+//                //intent = new Intent(WomanImmunizationActivity.this, PathJsonFormActivity.class);
+//                intent.putExtra("json", formMetadata);
+                startActivityForResult(intent, REQUEST_CODE_GET_JSON_COUNSELLING_UPDATE);
+
+            }
+        } );
         ExpandableHeightGridView expandableHeightGridView = (ExpandableHeightGridView)counselling_group.findViewById(R.id.counselling_gv);
 //        final float scale = getResources().getDisplayMetrics().density;
 //        GridView.LayoutParams gridlayoutparams = new GridView.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,
@@ -647,9 +785,8 @@ public class WomanImmunizationActivity extends BaseActivity
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (requestCode == REQUEST_CODE_GET_JSON) {
-            if (resultCode == RESULT_OK) {
-
+        if ( resultCode == RESULT_OK) {
+            if (requestCode == REQUEST_CODE_GET_JSON) {
                 String jsonString = data.getStringExtra("json");
                 Log.d("JSONResult", jsonString);
 
@@ -657,7 +794,18 @@ public class WomanImmunizationActivity extends BaseActivity
                 AllSharedPreferences allSharedPreferences = new AllSharedPreferences(preferences);
 
                 JsonFormUtils.saveForm(this, context(), jsonString, allSharedPreferences.fetchRegisteredANM());
-               updateViews();
+                updateViews();
+            }
+            if(requestCode == REQUEST_CODE_GET_JSON_COUNSELLING_UPDATE){
+                String jsonString = data.getStringExtra("json");
+                Log.d("JSONResult", jsonString);
+
+                SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
+                AllSharedPreferences allSharedPreferences = new AllSharedPreferences(preferences);
+                JsonFormUtils.updateCounsellingForm(this, context(), jsonString, allSharedPreferences.fetchRegisteredANM());
+                mEditCounselling.setFormfields(JsonFormUtils.getCouncellingField());
+                VaccinatorApplication.getInstance().counsellingRepository().
+                        update(VaccinatorApplication.getInstance().getRepository().getReadableDatabase(),mEditCounselling);
             }
         }
     }

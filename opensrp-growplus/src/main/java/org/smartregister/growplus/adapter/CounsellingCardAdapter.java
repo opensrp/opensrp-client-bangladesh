@@ -1,6 +1,8 @@
 package org.smartregister.growplus.adapter;
 
 import android.content.Context;
+import android.content.Intent;
+import android.database.Cursor;
 import android.os.AsyncTask;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -13,12 +15,17 @@ import android.widget.Toast;
 
 import com.rey.material.widget.SnackBar;
 
+import net.sqlcipher.database.SQLiteDatabase;
+
 import org.apache.commons.lang3.StringUtils;
 import org.joda.time.DateTime;
 import org.smartregister.commonregistry.CommonPersonObjectClient;
 import org.smartregister.domain.Alert;
 import org.smartregister.domain.Photo;
 import org.smartregister.growplus.R;
+import org.smartregister.growplus.activity.PathJsonFormActivity;
+import org.smartregister.growplus.activity.WomanImmunizationActivity;
+import org.smartregister.growplus.application.VaccinatorApplication;
 import org.smartregister.growplus.domain.Counselling;
 import org.smartregister.immunization.db.VaccineRepo;
 import org.smartregister.immunization.domain.Vaccine;
@@ -39,6 +46,7 @@ import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
 import butterknife.OnClick;
+import util.JsonFormUtils;
 
 import static org.smartregister.immunization.util.VaccinatorUtils.generateScheduleList;
 import static org.smartregister.util.Utils.getName;
@@ -51,8 +59,10 @@ public class CounsellingCardAdapter extends BaseAdapter {
     private static final String TAG = "CounsellingCardAdapter";
     private final Context context;
 
-
     private List<Counselling> counsellingList;
+    private String[] mWomenFollowupKeys;
+    private HashMap<String, String> mWomenFollowupData;
+    private WomanImmunizationActivity.WomanImmuneActivityListener mWomanImmuneActivityListener;
 
 
     public CounsellingCardAdapter(Context context,List<Counselling> vaccineList) {
@@ -88,7 +98,8 @@ public class CounsellingCardAdapter extends BaseAdapter {
             counsellingcard.findViewById(R.id.undo_b).setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-
+                    Log.e(TAG, "TODO Call"); // TODO Counselling
+                    mWomanImmuneActivityListener.onRequestStartActivity(counsellingList.get(position));
                 }
             });
             return counsellingcard;
@@ -102,14 +113,14 @@ public class CounsellingCardAdapter extends BaseAdapter {
       this.counsellingList = counsellingList;
     }
 
-
-
-
-
     public List<Counselling> getCounsellingList() {
         return counsellingList;
     }
 
+    public void setActivityListener(WomanImmunizationActivity.WomanImmuneActivityListener womanImmuneActivityListener){
+        mWomanImmuneActivityListener = womanImmuneActivityListener;
+
+    }
 
 
 }

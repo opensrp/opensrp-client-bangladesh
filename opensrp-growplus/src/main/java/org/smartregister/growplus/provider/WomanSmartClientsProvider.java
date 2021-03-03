@@ -53,8 +53,10 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.concurrent.TimeUnit;
 import java.util.regex.Pattern;
 
@@ -143,7 +145,17 @@ public class WomanSmartClientsProvider implements SmartRegisterCLientsProviderFo
         fillValue((TextView) convertView.findViewById(R.id.address), address1);
 
         detailsRepository = detailsRepository == null ? org.smartregister.Context.getInstance().updateApplicationContext(context.getApplicationContext()).detailsRepository() : detailsRepository;
+
         Map<String, String> detailmaps = detailsRepository.getAllDetailsForClient(pc.entityId());
+
+
+        for (Map.Entry<String,String> entry : detailmaps.entrySet()) {
+            String key = entry.getKey();
+            String value = entry.getValue();
+            System.out.println("key: " + key + " " + "value:"+ value);
+        }
+
+
         pc.getColumnmaps().putAll(detailmaps);
         String husbandname = getValue(detailmaps, "spouseName", false);
         fillValue((TextView) convertView.findViewById(R.id.spousename), husbandname);
@@ -224,7 +236,7 @@ public class WomanSmartClientsProvider implements SmartRegisterCLientsProviderFo
 
                 }
             });
-        }else if(lactating){
+        }else if(lactating){   // TODO
             add_child.setText("Follow\nUp");
             add_child.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -233,6 +245,7 @@ public class WomanSmartClientsProvider implements SmartRegisterCLientsProviderFo
 
                     String metadata = getmetaDataForFollowUpForm(pc);
                     Intent intent = new Intent(context, PathJsonFormActivity.class);
+
 
                     intent.putExtra("json", metadata);
 
@@ -684,11 +697,23 @@ public class WomanSmartClientsProvider implements SmartRegisterCLientsProviderFo
 
             if (form != null) {
 
-
                 JSONObject jsonObject = form;
                 if (jsonObject.getString(JsonFormUtils.ENTITY_ID) != null) {
                     jsonObject.remove(JsonFormUtils.ENTITY_ID);
                     jsonObject.put(JsonFormUtils.ENTITY_ID, pc.entityId());
+                    jsonObject.put(JsonFormUtils.RELATIONAL_ID, pc.entityId());
+
+                }
+                //add mother id
+                JSONObject stepOne = form.getJSONObject(JsonFormUtils.STEP1);
+                JSONArray jsonArray = stepOne.getJSONArray(JsonFormUtils.FIELDS);
+                for (int i = 0; i < jsonArray.length(); i++) {
+                    JSONObject fieldjsonObject = jsonArray.getJSONObject(i);
+                    if (fieldjsonObject.getString(JsonFormUtils.KEY)
+                            .equalsIgnoreCase("mother_id")) {
+                        fieldjsonObject.put(JsonFormUtils.VALUE, pc.entityId());
+                        break;
+                    }
                 }
 
 //            intent.putExtra("json", form.toString());
@@ -713,16 +738,17 @@ public class WomanSmartClientsProvider implements SmartRegisterCLientsProviderFo
                 if (jsonObject.getString(JsonFormUtils.ENTITY_ID) != null) {
                     jsonObject.remove(JsonFormUtils.ENTITY_ID);
                     jsonObject.put(JsonFormUtils.ENTITY_ID, pc.entityId());
+                    jsonObject.put(JsonFormUtils.RELATIONAL_ID, pc.entityId());
+
                 }
                 JSONObject stepOne = form.getJSONObject(JsonFormUtils.STEP1);
                 JSONArray jsonArray = stepOne.getJSONArray(JsonFormUtils.FIELDS);
                 for (int i = 0; i < jsonArray.length(); i++) {
                     JSONObject fieldjsonObject = jsonArray.getJSONObject(i);
                     if (fieldjsonObject.getString(JsonFormUtils.KEY)
-                            .equalsIgnoreCase("is_pregnant")) {
-                        fieldjsonObject.remove(JsonFormUtils.VALUE);
-                        fieldjsonObject.put(JsonFormUtils.VALUE, "Yes");
-                        continue;
+                            .equalsIgnoreCase("mother_id")) {
+                        fieldjsonObject.put(JsonFormUtils.VALUE, pc.entityId());
+                        break;
                     }
                 }
 

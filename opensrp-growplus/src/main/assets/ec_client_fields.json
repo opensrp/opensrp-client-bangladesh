@@ -1,8 +1,171 @@
 {
   "bindobjects": [
     {
+      "name": "ec_followup",
+      "columns": [
+        {
+          "column_name": "base_entity_id",
+          "type": "Event",
+          "json_mapping": {
+            "field": "baseEntityId"
+          }
+        },
+        {
+          "column_name": "mother_id",
+          "type": "Event",
+          "json_mapping": {
+            "field": "obs.fieldCode",
+            "formSubmissionField": "mother_id"
+          }
+        },
+        {
+          "column_name": "Visit_date",
+          "type": "Event",
+          "json_mapping": {
+            "field": "obs.fieldCode",
+            "formSubmissionField": "Visit_date"
+          }
+        },
+        {
+          "column_name": "is_pregnant",
+          "type": "Event",
+          "json_mapping": {
+            "field": "obs.fieldCode",
+            "formSubmissionField": "is_pregnant"
+          }
+        },
+        {
+          "column_name": "lactating_woman",
+          "type": "Event",
+          "json_mapping": {
+            "field": "obs.fieldCode",
+            "formSubmissionField": "lactating_woman"
+          }
+        },
+        {
+          "column_name": "date_of_delivery",
+          "type": "Event",
+          "json_mapping": {
+            "field": "obs.fieldCode",
+            "formSubmissionField": "date_of_delivery"
+          }
+        },
+        {
+          "column_name": "pregnant",
+          "type": "Event",
+          "json_mapping": {
+            "field": "obs.fieldCode",
+            "formSubmissionField": "pregnant"
+          }
+        },
+        {
+          "column_name": "edd_lmp",
+          "type": "Event",
+          "json_mapping": {
+            "field": "obs.fieldCode",
+            "formSubmissionField": "edd_lmp"
+          }
+        },
+        {
+          "column_name": "lmp",
+          "type": "Event",
+          "json_mapping": {
+            "field": "obs.fieldCode",
+            "formSubmissionField": "lmp"
+          }
+        },
+        {
+          "column_name": "edd",
+          "type": "Event",
+          "json_mapping": {
+            "field": "obs.fieldCode",
+            "formSubmissionField": "ultrasound_date"
+          }
+        },
+        {
+          "column_name": "ultrasound_date",
+          "type": "Event",
+          "json_mapping": {
+            "field": "obs.fieldCode",
+            "formSubmissionField": "ultrasound_weeks"
+          }
+        },
+        {
+          "column_name": "ultrasound_weeks",
+          "type": "Event",
+          "json_mapping": {
+            "field": "obs.fieldCode",
+            "formSubmissionField": ""
+          }
+        },
+        {
+          "column_name": "visit_clinic_after_last_meeting",
+          "type": "Event",
+          "json_mapping": {
+            "field": "obs.fieldCode",
+            "formSubmissionField": "visit_clinic_after_last_meeting"
+          }
+        },
+        {
+          "column_name": "Date_Of_next_appointment",
+          "type": "Event",
+          "json_mapping": {
+            "field": "obs.fieldCode",
+            "formSubmissionField": "Date_Of_next_appointment"
+          }
+        },
+        {
+          "column_name": "mother_weight",
+          "type": "Event",
+          "json_mapping": {
+            "field": "obs.fieldCode",
+            "formSubmissionField": "mother_weight"
+          }
+        },
+        {
+          "column_name": "mother_nutrition_counseling",
+          "type": "Event",
+          "json_mapping": {
+            "field": "obs.fieldCode",
+            "formSubmissionField": "mother_nutrition_counseling"
+          }
+        },
+        {
+          "column_name": "distributed_nutrition_materials",
+          "type": "Event",
+          "json_mapping": {
+            "field": "obs.fieldCode",
+            "formSubmissionField": "distributed_nutrition_materials"
+          }
+        },
+        {
+          "column_name": "ifa_tablets_given",
+          "type": "Event",
+          "json_mapping": {
+            "field": "obs.fieldCode",
+            "formSubmissionField": "ifa_tablets_given"
+          }
+        },
+        {
+          "column_name": "Vit_A_and_minerals_given",
+          "type": "Event",
+          "json_mapping": {
+            "field": "obs.fieldCode",
+            "formSubmissionField": "Vit_A_and_minerals_given"
+          }
+        },
+        {
+          "column_name": "labelBackgroundImage",
+          "type": "Event",
+          "json_mapping": {
+            "field": "obs.fieldCode",
+            "formSubmissionField": "labelBackgroundImage"
+          }
+        }
+      ]
+    },
+    {
       "name": "ec_household",
-
       "columns": [
         {
           "column_name": "base_entity_id",

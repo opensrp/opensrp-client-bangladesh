@@ -55,6 +55,16 @@
     "title": "Mother Follow Up",
     "fields": [
       {
+        "key": "mother_id",
+        "openmrs_entity_parent": "",
+        "openmrs_entity": "concept",
+        "openmrs_entity_id": "mother_id",
+        "openmrs_data_type": "text",
+        "type": "edit_text",
+        "hint": "Mother id",
+        "read_only":"true"
+      },
+      {
         "key": "Visit_date",
         "openmrs_entity_parent": "",
         "openmrs_entity": "",
@@ -70,8 +80,8 @@
       {
         "key": "is_pregnant",
         "openmrs_entity_parent": "",
-        "openmrs_entity": "",
-        "openmrs_entity_id": "",
+        "openmrs_entity": "concept",
+        "openmrs_entity_id": "is_pregnant",
         "openmrs_data_type": "text",
         "type": "edit_text",
         "hidden": true,
@@ -81,8 +91,8 @@
       {
         "key": "lactating_woman",
         "openmrs_entity_parent": "",
-        "openmrs_entity": "",
-        "openmrs_entity_id": "",
+        "openmrs_entity": "concept",
+        "openmrs_entity_id": "lactating_woman",
         "openmrs_data_type": "text",
         "type": "spinner",
         "hint": "Haven you given birth?",
@@ -100,8 +110,8 @@
       {
         "key": "date_of_delivery",
         "openmrs_entity_parent": "",
-        "openmrs_entity": "",
-        "openmrs_entity_id": "",
+        "openmrs_entity": "concept",
+        "openmrs_entity_id": "date_of_delivery",
         "openmrs_data_type": "text",
         "type": "date_picker",
         "hint": "Date of Delivery",
@@ -119,8 +129,8 @@
       {
         "key": "pregnant",
         "openmrs_entity_parent": "",
-        "openmrs_entity": "",
-        "openmrs_entity_id": "",
+        "openmrs_entity": "concept",
+        "openmrs_entity_id": "pregnant",
         "openmrs_data_type": "text",
         "type": "spinner",
         "hint": "Are you Pregnant",
@@ -140,7 +150,7 @@
         "key": "edd_lmp",
         "openmrs_entity_parent": "",
         "openmrs_entity": "concept",
-        "openmrs_entity_id": "50b7f374-9406-49d1-bcfb-9bf613184030",
+        "openmrs_entity_id": "edd_lmp",
         "openmrs_data_type": "text",
         "type": "spinner",
         "hint": "If Yes Do you know your EDD/ LMP/ UptraSound Date",
@@ -159,8 +169,8 @@
       {
         "key": "lmp",
         "openmrs_entity_parent": "",
-        "openmrs_entity": "",
-        "openmrs_entity_id": "",
+        "openmrs_entity": "concept",
+        "openmrs_entity_id": "lmp",
         "openmrs_data_type": "text",
         "type": "date_picker",
         "hint": "LMP Date",
@@ -179,8 +189,8 @@
       {
         "key": "edd",
         "openmrs_entity_parent": "",
-        "openmrs_entity": "",
-        "openmrs_entity_id": "",
+        "openmrs_entity": "concept",
+        "openmrs_entity_id": "edd",
         "openmrs_data_type": "text",
         "type": "date_picker",
         "hint": "EDD Date",
@@ -198,8 +208,8 @@
       {
         "key": "ultrasound_date",
         "openmrs_entity_parent": "",
-        "openmrs_entity": "",
-        "openmrs_entity_id": "",
+        "openmrs_entity": "concept",
+        "openmrs_entity_id": "ultrasound_date",
         "openmrs_data_type": "text",
         "type": "date_picker",
         "hint": "UltraSound Date",
@@ -217,8 +227,8 @@
       {
         "key": "ultrasound_weeks",
         "openmrs_entity_parent": "",
-        "openmrs_entity": "",
-        "openmrs_entity_id": "",
+        "openmrs_entity": "concept",
+        "openmrs_entity_id": "ultrasound_weeks",
         "openmrs_data_type": "text",
         "type": "edit_text",
         "hint": "UltraSound Weeks",
@@ -244,8 +254,8 @@
       {
         "key": "visit_clinic_after_last_meeting",
         "openmrs_entity_parent": "",
-        "openmrs_entity": "",
-        "openmrs_entity_id": "",
+        "openmrs_entity": "concept",
+        "openmrs_entity_id": "visit_clinic_after_last_meeting",
         "openmrs_data_type": "text",
         "type": "spinner",
         "hint": "Did you visit any kind of hospital/health clinic after previous meeting?",
@@ -257,8 +267,8 @@
       {
         "key": "Date_Of_next_appointment",
         "openmrs_entity_parent": "",
-        "openmrs_entity": "",
-        "openmrs_entity_id": "",
+        "openmrs_entity": "concept",
+        "openmrs_entity_id": "Date_Of_next_appointment",
         "openmrs_data_type": "text",
         "type": "date_picker",
         "hint": "Follow Up visit date",
@@ -270,8 +280,8 @@
       {
         "key": "mother_weight",
         "openmrs_entity_parent": "",
-        "openmrs_entity": "",
-        "openmrs_entity_id": "",
+        "openmrs_entity": "concept",
+        "openmrs_entity_id": "mother_weight",
         "openmrs_data_type": "text",
         "type": "mother_weight",
         "hint": "",
@@ -291,8 +301,8 @@
       {
         "key": "mother_nutrition_counseling",
         "openmrs_entity_parent": "",
-        "openmrs_entity": "",
-        "openmrs_entity_id": "",
+        "openmrs_entity": "concept",
+        "openmrs_entity_id": "mother_nutrition_counseling",
         "type": "check_box",
         "label": "Mother Nutrition Counseling",
         "options":[
@@ -327,8 +337,8 @@
       {
         "key": "distributed_nutrition_materials",
         "openmrs_entity_parent": "",
-        "openmrs_entity": "",
-        "openmrs_entity_id": "",
+        "openmrs_entity": "concept",
+        "openmrs_entity_id": "distributed_nutrition_materials",
         "type": "check_box",
         "label": "Distributed Nutrition Materials",
         "options":[
@@ -358,8 +368,8 @@
       {
         "key": "ifa_tablets_given",
         "openmrs_entity_parent": "",
-        "openmrs_entity": "",
-        "openmrs_entity_id": "",
+        "openmrs_entity": "concept",
+        "openmrs_entity_id": "ifa_tablets_given",
         "type": "edit_text",
         "hint": "No of IFA Tablets That Has been Given",
         "v_numeric": {
@@ -380,8 +390,8 @@
       {
         "key": "Vit_A_and_minerals_given",
         "openmrs_entity_parent": "",
-        "openmrs_entity": "",
-        "openmrs_entity_id": "",
+        "openmrs_entity": "concept",
+        "openmrs_entity_id": "Vit_A_and_minerals_given",
         "type": "edit_text",
         "hint": "No of Vitamin Minerals That Has been Given",
         "v_numeric": {
@@ -402,8 +412,8 @@
       {
         "key":"labelBackgroundImage",
         "openmrs_entity_parent": "",
-        "openmrs_entity": "",
-        "openmrs_entity_id": "",
+        "openmrs_entity": "concept",
+        "openmrs_entity_id": "labelBackgroundImage",
         "type":"label",
         "text":"Please Refer Nearest Health center"
       }
