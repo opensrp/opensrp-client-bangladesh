@@ -288,7 +288,33 @@ Utils.appendLog(getClass().getName(),e);
             }
         }, null);
     }
-
+    private CommonPersonObjectClient CommonPersonObjectToClientMember(CommonPersonObject commonPersonObject) {
+        CommonPersonObjectClient commonPersonObjectClient = new CommonPersonObjectClient(commonPersonObject.getCaseId(), commonPersonObject.getDetails(), DBConstants.MEMBER_TABLE_NAME);
+        commonPersonObjectClient.setColumnmaps(commonPersonObject.getColumnmaps());
+        return commonPersonObjectClient;
+    }
+    private CommonPersonObjectClient CommonPersonObjectToClientWomen(CommonPersonObject commonPersonObject) {
+        CommonPersonObjectClient commonPersonObjectClient = new CommonPersonObjectClient(commonPersonObject.getCaseId(), commonPersonObject.getDetails(), DBConstants.WOMAN_TABLE_NAME);
+        commonPersonObjectClient.setColumnmaps(commonPersonObject.getColumnmaps());
+        return commonPersonObjectClient;
+    }
+    private CommonPersonObjectClient CommonPersonObjectToClientChild(CommonPersonObject commonPersonObject) {
+        CommonPersonObjectClient commonPersonObjectClient = new CommonPersonObjectClient(commonPersonObject.getCaseId(), commonPersonObject.getDetails(), DBConstants.CHILD_TABLE_NAME);
+        commonPersonObjectClient.setColumnmaps(commonPersonObject.getColumnmaps());
+        return commonPersonObjectClient;
+    }
+    public void setUpMemberDetails(String typeofMember){
+        if (typeofMember != null) {
+            if (typeofMember.equalsIgnoreCase("malechild") || typeofMember.equalsIgnoreCase("femalechild")) {
+                householdDetails =  CommonPersonObjectToClientChild(AncApplication.getInstance().getContext().commonrepository(DBConstants.CHILD_TABLE_NAME).findByBaseEntityId(householdDetails.entityId()));
+            }
+            else if (typeofMember.equalsIgnoreCase("woman")) {
+                householdDetails =  CommonPersonObjectToClientWomen(AncApplication.getInstance().getContext().commonrepository(DBConstants.WOMAN_TABLE_NAME).findByBaseEntityId(householdDetails.entityId()));
+            } else if (typeofMember.equalsIgnoreCase("member")) {
+                householdDetails =  CommonPersonObjectToClientMember(AncApplication.getInstance().getContext().commonrepository(DBConstants.MEMBER_TABLE_NAME).findByBaseEntityId(householdDetails.entityId()));
+            }
+        }
+    }
     public void refreshProfileViews() {
 //        if(typeofMember.equalsIgnoreCase("malechild")||typeofMember.equalsIgnoreCase("femalechild")){
 //            householdDetails = CommonPersonObjectToClient(AncApplication.getInstance().getContext().commonrepository(DBConstants.CHILD_TABLE_NAME).findByBaseEntityId(householdDetails.entityId()));
@@ -300,7 +326,8 @@ Utils.appendLog(getClass().getName(),e);
         org.smartregister.util.Utils.startAsyncTask(new AsyncTask(){
             @Override
             protected Object doInBackground(Object[] objects) {
-                householdDetails.getColumnmaps().putAll(AncApplication.getInstance().getContext().detailsRepository().getAllDetailsForClient(householdDetails.entityId()));
+                setUpMemberDetails(typeofMember);
+//                householdDetails.getColumnmaps().putAll(AncApplication.getInstance().getContext().detailsRepository().getAllDetailsForClient(householdDetails.entityId()));
                 return null;
             }
 
@@ -367,7 +394,8 @@ Utils.appendLog(getClass().getName(),e);
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.btn_profile_registration_info:
-                householdDetails.getColumnmaps().putAll(AncApplication.getInstance().getContext().detailsRepository().getAllDetailsForClient(householdDetails.entityId()));
+                setUpMemberDetails(typeofMember);
+//                householdDetails.getColumnmaps().putAll(AncApplication.getInstance().getContext().detailsRepository().getAllDetailsForClient(householdDetails.entityId()));
                 String patient_identifier = householdDetails.getColumnmaps().get("Patient_Identifier");
 
                 if (patient_identifier == null || (patient_identifier != null && patient_identifier.isEmpty()) || patient_identifier.equalsIgnoreCase("null")) {
@@ -817,7 +845,8 @@ Utils.appendLog(getClass().getName(),e);
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        householdDetails.getColumnmaps().putAll(AncApplication.getInstance().getContext().detailsRepository().getAllDetailsForClient(householdDetails.entityId()));
+        setUpMemberDetails(typeofMember);
+//        householdDetails.getColumnmaps().putAll(AncApplication.getInstance().getContext().detailsRepository().getAllDetailsForClient(householdDetails.entityId()));
         followupFragment.notifyAdapter();
         if (requestCode == JsonFormUtils.REQUEST_CODE_GET_JSON && resultCode == RESULT_OK) {
             try {

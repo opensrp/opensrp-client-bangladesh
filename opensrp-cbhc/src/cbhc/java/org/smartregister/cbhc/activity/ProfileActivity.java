@@ -48,7 +48,6 @@ import org.smartregister.cbhc.presenter.ProfilePresenter;
 import org.smartregister.cbhc.presenter.RegisterPresenter;
 import org.smartregister.cbhc.provider.RegisterProvider;
 import org.smartregister.cbhc.repository.AncRepository;
-import org.smartregister.cbhc.repository.EventLogRepository;
 import org.smartregister.cbhc.repository.HealthIdRepository;
 import org.smartregister.cbhc.repository.UniqueIdRepository;
 import org.smartregister.cbhc.util.Constants;
@@ -96,6 +95,7 @@ public class ProfileActivity extends BaseProfileActivity implements ProfileContr
     private UniqueIdRepository uniqueIdRepository;
     private HealthIdRepository healthIdRepository;
     private String motherNameEnglish;
+    String typeofMember;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -107,6 +107,7 @@ public class ProfileActivity extends BaseProfileActivity implements ProfileContr
                 householdDetails = (CommonPersonObjectClient) serializable;
                 RegisterProvider.memberCountHashMap.remove(householdDetails.entityId());
             }
+            typeofMember = extras.getString("type_of_member");
         }
         setUpViews();
 
@@ -164,9 +165,28 @@ public class ProfileActivity extends BaseProfileActivity implements ProfileContr
         setProfileID(getValue(householdDetails.getColumnmaps(), "Patient_Identifier", true));
         gestationAgeView.setVisibility(View.GONE);
     }
+    private CommonPersonObjectClient CommonPersonObjectToClient(CommonPersonObject commonPersonObject,String tableName) {
+        CommonPersonObjectClient commonPersonObjectClient = new CommonPersonObjectClient(commonPersonObject.getCaseId(), commonPersonObject.getDetails(), tableName);
+        commonPersonObjectClient.setColumnmaps(commonPersonObject.getColumnmaps());
+        return commonPersonObjectClient;
+    }
 
+    public void setUpMemberDetails(String typeofMember){
+        if (typeofMember != null) {
+            if (typeofMember.equalsIgnoreCase("malechild") || typeofMember.equalsIgnoreCase("femalechild")) {
+                householdDetails =  CommonPersonObjectToClient(AncApplication.getInstance().getContext().commonrepository(DBConstants.CHILD_TABLE_NAME).findByBaseEntityId(householdDetails.entityId()),DBConstants.CHILD_TABLE_NAME);
+            }
+            else if (typeofMember.equalsIgnoreCase("woman")) {
+                householdDetails =  CommonPersonObjectToClient(AncApplication.getInstance().getContext().commonrepository(DBConstants.WOMAN_TABLE_NAME).findByBaseEntityId(householdDetails.entityId()),DBConstants.WOMAN_TABLE_NAME);
+            }
+            else if (typeofMember.equalsIgnoreCase("member")) {
+                householdDetails =  CommonPersonObjectToClient(AncApplication.getInstance().getContext().commonrepository(DBConstants.MEMBER_TABLE_NAME).findByBaseEntityId(householdDetails.entityId()),DBConstants.MEMBER_TABLE_NAME);
+            }
+        }
+    }
     public void refreshProfileViews() {
-        householdDetails = CommonPersonObjectToClient(AncApplication.getInstance().getContext().commonrepository(DBConstants.HOUSEHOLD_TABLE_NAME).findByBaseEntityId(householdDetails.entityId()));
+        setUpMemberDetails(typeofMember);
+//        householdDetails = CommonPersonObjectToClient(AncApplication.getInstance().getContext().commonrepository(DBConstants.HOUSEHOLD_TABLE_NAME).findByBaseEntityId(householdDetails.entityId()));
 
         String firstName = org.smartregister.util.Utils.getValue(householdDetails.getColumnmaps(), DBConstants.KEY.FIRST_NAME, true);
         String lastName = org.smartregister.util.Utils.getValue(householdDetails.getColumnmaps(), DBConstants.KEY.LAST_NAME, true);
@@ -222,7 +242,8 @@ public class ProfileActivity extends BaseProfileActivity implements ProfileContr
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.btn_profile_registration_info:
-                householdDetails.getColumnmaps().putAll(AncApplication.getInstance().getContext().detailsRepository().getAllDetailsForClient(householdDetails.entityId()));
+                setUpMemberDetails(typeofMember);
+//                householdDetails.getColumnmaps().putAll(AncApplication.getInstance().getContext().detailsRepository().getAllDetailsForClient(householdDetails.entityId()));
                 patient_identifier = householdDetails.getColumnmaps().get("Patient_Identifier");
 
                 if (patient_identifier == null || (patient_identifier != null && patient_identifier.isEmpty()) || patient_identifier.equalsIgnoreCase("null")) {
@@ -245,20 +266,19 @@ public class ProfileActivity extends BaseProfileActivity implements ProfileContr
                 }
                 break;
             case R.id.edit_member:
-                CommonPersonObjectClient pclient = (CommonPersonObjectClient) view.getTag();
-                pclient.getColumnmaps().putAll(AncApplication.getInstance().getContext().detailsRepository().getAllDetailsForClient(pclient.entityId()));
-                patient_identifier = pclient.getColumnmaps().get("Patient_Identifier");
-                pclient.getColumnmaps().put("relational_id", householdDetails.getCaseId());
+                setUpMemberDetails(typeofMember);
+                patient_identifier = householdDetails.getColumnmaps().get("Patient_Identifier");
+                householdDetails.getColumnmaps().put("relational_id", householdDetails.getCaseId());
                 if (patient_identifier == null || (patient_identifier != null && patient_identifier.isEmpty()) || patient_identifier.equalsIgnoreCase("null")) {
                     Long unUsedIds = getHealthIdRepository().countUnUsedIds();
                     if (unUsedIds > 0l) {
-                        pclient.getColumnmaps().put("Patient_Identifier", Utils.DEFAULT_IDENTIFIER);
-                        launchFormEdit(pclient);
+                        householdDetails.getColumnmaps().put("Patient_Identifier", Utils.DEFAULT_IDENTIFIER);
+                        launchFormEdit(householdDetails);
                     } else {
                         displayShortToast(R.string.no_openmrs_id);
                     }
                 } else {
-                    launchFormEdit(pclient);
+                    launchFormEdit(householdDetails);
                 }
 
 

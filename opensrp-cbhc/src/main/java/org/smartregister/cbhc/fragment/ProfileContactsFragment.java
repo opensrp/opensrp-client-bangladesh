@@ -1,6 +1,7 @@
 package org.smartregister.cbhc.fragment;
 
 import android.content.Context;
+import android.database.Cursor;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -11,18 +12,23 @@ import android.widget.TextView;
 
 import com.google.common.reflect.TypeToken;
 
+import net.sqlcipher.database.SQLiteDatabase;
+
 import org.apache.commons.lang3.StringUtils;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.smartregister.cbhc.R;
 import org.smartregister.cbhc.application.AncApplication;
+import org.smartregister.cbhc.repository.AncRepository;
 import org.smartregister.cbhc.util.Constants;
 import org.smartregister.cbhc.util.DBConstants;
 import org.smartregister.cbhc.util.ImageUtils;
 import org.smartregister.cbhc.util.JsonFormUtils;
 import org.smartregister.cbhc.util.Utils;
+import org.smartregister.commonregistry.CommonPersonObject;
 import org.smartregister.commonregistry.CommonPersonObjectClient;
+import org.smartregister.commonregistry.CommonRepository;
 import org.smartregister.domain.Photo;
 import org.smartregister.util.AssetHandler;
 import org.smartregister.util.FormUtils;
@@ -35,6 +41,8 @@ import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+
+import timber.log.Timber;
 
 import static org.smartregister.cbhc.fragment.ProfileOverviewFragment.EXTRA_HOUSEHOLD_DETAILS;
 import static org.smartregister.cbhc.util.JsonFormUtils.DATE_FORMAT;
@@ -148,19 +156,34 @@ public class ProfileContactsFragment extends BaseProfileFragment {
         } else if (womanClient.containsKey(jsonObject.getString(JsonFormUtils.KEY))) {
             String keyname = jsonObject.getString(JsonFormUtils.KEY);
             keyname = processAttributesForEdit(jsonObject, keyname);
-            String value = womanClient.get(keyname);
-            value = processValueWithChoiceIds(jsonObject, value);
-            jsonObject.put(JsonFormUtils.READ_ONLY, false);
-            jsonObject.put(JsonFormUtils.VALUE, value);
+            String value = null;
+            value = womanClient.get(keyname);
+            try{
+                if(value != null){
+                    value = processValueWithChoiceIds(jsonObject, value);
+                    jsonObject.put(JsonFormUtils.READ_ONLY, false);
+                    jsonObject.put(JsonFormUtils.VALUE, value);
+                }
+            }catch (Exception e){
+
+            }
+
+
         } else {
             String keyname = jsonObject.getString(JsonFormUtils.KEY);
             keyname = processAttributesForEdit(jsonObject, keyname);
-            String value = womanClient.get(keyname);
-            if (value != null) {
-                value = processValueWithChoiceIds(jsonObject, value);
-                jsonObject.put(JsonFormUtils.READ_ONLY, false);
-                jsonObject.put(JsonFormUtils.VALUE, value);
+            String value = null;
+            value = womanClient.get(keyname);
+            try{
+                if (value != null) {
+                    value = processValueWithChoiceIds(jsonObject, value);
+                    jsonObject.put(JsonFormUtils.READ_ONLY, false);
+                    jsonObject.put(JsonFormUtils.VALUE, value);
+                }
+            }catch (Exception e){
+
             }
+
         }
     }
 
@@ -216,11 +239,20 @@ public class ProfileContactsFragment extends BaseProfileFragment {
             Serializable serializable = extras.getSerializable(EXTRA_HOUSEHOLD_DETAILS);
             if (serializable != null && serializable instanceof CommonPersonObjectClient) {
                 householdDetails = (CommonPersonObjectClient) serializable;
-                householdDetails.getColumnmaps().putAll(AncApplication.getInstance().getContext().detailsRepository().getAllDetailsForClient(householdDetails.entityId()));
+
+
+                householdDetails =  CommonPersonObjectToClient(AncApplication.getInstance().getContext().commonrepository(DBConstants.HOUSEHOLD_TABLE_NAME).findByBaseEntityId(householdDetails.entityId()));
+
+               //householdDetails.getColumnmaps().putAll(AncApplication.getInstance().getContext().detailsRepository().getAllDetailsForClient(householdDetails.entityId()));
 
             }
         }
 
+    }
+    private CommonPersonObjectClient CommonPersonObjectToClient(CommonPersonObject commonPersonObject) {
+        CommonPersonObjectClient commonPersonObjectClient = new CommonPersonObjectClient(commonPersonObject.getCaseId(), commonPersonObject.getDetails(), DBConstants.HOUSEHOLD_TABLE_NAME);
+        commonPersonObjectClient.setColumnmaps(commonPersonObject.getColumnmaps());
+        return commonPersonObjectClient;
     }
 
     @Override
@@ -248,10 +280,14 @@ public class ProfileContactsFragment extends BaseProfileFragment {
                 processPopulatableFieldsForHouseholds(householdDetails.getColumnmaps(), field.getJSONObject(i));
             }
             for (int i = 0; i < field.length(); i++) {
+                if (i==19){
+                    Log.v("test", String.valueOf(i));
+                }
                 if (field.getJSONObject(i).has("hint")) {
                     inflater = (LayoutInflater) getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
                     View view = inflater.inflate(R.layout.overview_list_row, null, false);
                     LinearLayout LayoutForDetailRow = (LinearLayout) view;
+
 //                    LinearLayout LayoutForDetailRow = new LinearLayout(getActivity());
 //                    LayoutForDetailRow.setOrientation(LinearLayout.HORIZONTAL);
                     TextView textLabel = LayoutForDetailRow.findViewById(R.id.label);
@@ -265,17 +301,20 @@ public class ProfileContactsFragment extends BaseProfileFragment {
                     String hint = field.getJSONObject(i).getString("hint");
                     textLabel.setText(hint);
                     textLabel.setSingleLine(false);
-                    String value = "";
+                    String value = null;
                     if (field.getJSONObject(i).has(JsonFormUtils.VALUE)) {
                         value = field.getJSONObject(i).getString(JsonFormUtils.VALUE);
                         value = processLocationValue(value);
-                        textValue.setText(value);
+                        if(value.isEmpty()){
+                            textValue.setText("");
+                        }
+                        else textValue.setText(value);
                     }
                     String KEY = "";
                     if (field.getJSONObject(i).has(JsonFormUtils.KEY)) {
                         KEY = field.getJSONObject(i).getString(JsonFormUtils.KEY);
                     }
-                    textValue.setSingleLine(false);
+                   textValue.setSingleLine(false);
 //                    LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
 //                    params.weight = 1;
 //                    params.setMargins(5, 5, 5, 5);
@@ -283,12 +322,9 @@ public class ProfileContactsFragment extends BaseProfileFragment {
 //                    LayoutForDetailRow.addView(textValue, params);
 //                    linearLayoutholder.addView(LayoutForDetailRow, mainparams);
                     if (!(KEY.equalsIgnoreCase("dob_unknown") || KEY.equalsIgnoreCase("dob") || KEY.equalsIgnoreCase("age"))) {
-                        if ((hint.contains("অন্যান্য") && value.isEmpty())) {
-
-                        } else {
-                            linearLayoutholder.addView(LayoutForDetailRow);
+                        if ((!hint.contains("অন্যান্য") && value != null)) {
+                            linearLayoutholder.addView(LayoutForDetailRow,mainparams);
                         }
-
 
                     }
 
@@ -365,7 +401,7 @@ public class ProfileContactsFragment extends BaseProfileFragment {
 
         } catch (Exception e) {
             Utils.appendLog(getClass().getName(), e);
-            Log.e("ereor", e.getMessage());
+            Log.e("ereorPath: ", e.getMessage());
         }
         return fragmentView;
     }

@@ -2,6 +2,7 @@ package org.smartregister.cbhc.fragment;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,8 +17,10 @@ import org.json.JSONObject;
 import org.smartregister.cbhc.R;
 import org.smartregister.cbhc.application.AncApplication;
 import org.smartregister.cbhc.util.Constants;
+import org.smartregister.cbhc.util.DBConstants;
 import org.smartregister.cbhc.util.JsonFormUtils;
 import org.smartregister.cbhc.util.Utils;
+import org.smartregister.commonregistry.CommonPersonObject;
 import org.smartregister.commonregistry.CommonPersonObjectClient;
 import org.smartregister.util.FormUtils;
 
@@ -38,6 +41,7 @@ public class MemberProfileContactsFragment extends BaseProfileFragment {
 
     LayoutInflater inflater;
     View fragmentView;
+    String typeofMember;
     private CommonPersonObjectClient householdDetails;
 
     public static MemberProfileContactsFragment newInstance(Bundle bundle) {
@@ -58,13 +62,33 @@ public class MemberProfileContactsFragment extends BaseProfileFragment {
             Serializable serializable = extras.getSerializable(EXTRA_HOUSEHOLD_DETAILS);
             if (serializable != null && serializable instanceof CommonPersonObjectClient) {
                 householdDetails = (CommonPersonObjectClient) serializable;
-                householdDetails.getColumnmaps().putAll(AncApplication.getInstance().getContext().detailsRepository().getAllDetailsForClient(householdDetails.entityId()));
+                typeofMember = extras.getString("type_of_member");
+                setUpMemberDetails(typeofMember);
+                //  householdDetails.getColumnmaps().putAll(AncApplication.getInstance().getContext().detailsRepository().getAllDetailsForClient(householdDetails.entityId()));
 
             }
         }
 
     }
+    private CommonPersonObjectClient CommonPersonObjectToClient(CommonPersonObject commonPersonObject,String tableName) {
+        CommonPersonObjectClient commonPersonObjectClient = new CommonPersonObjectClient(commonPersonObject.getCaseId(), commonPersonObject.getDetails(), tableName);
+        commonPersonObjectClient.setColumnmaps(commonPersonObject.getColumnmaps());
+        return commonPersonObjectClient;
+    }
 
+    public void setUpMemberDetails(String typeofMember){
+        if (typeofMember != null) {
+            if (typeofMember.equalsIgnoreCase("malechild") || typeofMember.equalsIgnoreCase("femalechild")) {
+                householdDetails =  CommonPersonObjectToClient(AncApplication.getInstance().getContext().commonrepository(DBConstants.CHILD_TABLE_NAME).findByBaseEntityId(householdDetails.entityId()),DBConstants.CHILD_TABLE_NAME);
+            }
+            else if (typeofMember.equalsIgnoreCase("woman")) {
+                householdDetails =  CommonPersonObjectToClient(AncApplication.getInstance().getContext().commonrepository(DBConstants.WOMAN_TABLE_NAME).findByBaseEntityId(householdDetails.entityId()),DBConstants.WOMAN_TABLE_NAME);
+            }
+            else if (typeofMember.equalsIgnoreCase("member")) {
+                householdDetails =  CommonPersonObjectToClient(AncApplication.getInstance().getContext().commonrepository(DBConstants.MEMBER_TABLE_NAME).findByBaseEntityId(householdDetails.entityId()),DBConstants.MEMBER_TABLE_NAME);
+            }
+        }
+    }
     @Override
     protected void onCreation() {
         //Overriden
@@ -85,7 +109,8 @@ public class MemberProfileContactsFragment extends BaseProfileFragment {
     }
 
     public void reloadView() {
-        householdDetails.getColumnmaps().putAll(AncApplication.getInstance().getContext().detailsRepository().getAllDetailsForClient(householdDetails.entityId()));
+  //      householdDetails.getColumnmaps().putAll(AncApplication.getInstance().getContext().detailsRepository().getAllDetailsForClient(householdDetails.entityId()));
+        setUpMemberDetails(typeofMember);
         LinearLayout linearLayoutholder = fragmentView.findViewById(R.id.profile_overview_details_holder);
         linearLayoutholder.removeAllViews();
         setupView();
@@ -140,15 +165,15 @@ public class MemberProfileContactsFragment extends BaseProfileFragment {
                         }
                     } else if ((ProfileContactsFragment.age >= 1 && ProfileContactsFragment.age < 5) || (days >= 62 && days < 1826)) {
                         if (key.equalsIgnoreCase("Disease_status_zero_to_two_month_by_age") ||
-                                key.equalsIgnoreCase("Non Communicable Disease") ||
-                                key.equalsIgnoreCase("Communicable Disease") ||
+                                key.equalsIgnoreCase("NonComnta_Disease") ||
+                                key.equalsIgnoreCase("Comm_Disease") ||
                                 key.equalsIgnoreCase("Disease_Type")) {
                             value = "";
                         }
                     } else {
                         if (key.equalsIgnoreCase("Disease_status_two_month_to_five_year_by_age") ||
-                                key.equalsIgnoreCase("Non Communicable Disease") ||
-                                key.equalsIgnoreCase("Communicable Disease") ||
+                                key.equalsIgnoreCase("NonComnta_Disease") ||
+                                key.equalsIgnoreCase("Comm_Disease") ||
                                 key.equalsIgnoreCase("Disease_Type")) {
                             value = "";
                         }
@@ -166,16 +191,16 @@ public class MemberProfileContactsFragment extends BaseProfileFragment {
     public void setPregnantStatus(Map<String, String> clientmap) {
         String pregnant_status = clientmap.get("PregnancyStatus");
         if (pregnant_status == null || (pregnant_status != null && pregnant_status.isEmpty())) {
-            clientmap.put("LMP", "");
+            clientmap.put("lmp_date", "");
             clientmap.put("delivery_date", "");
         } else {
             if (pregnant_status.equalsIgnoreCase("প্রসব পূর্ব") || pregnant_status.equalsIgnoreCase("Antenatal Period")) {
                 clientmap.put("delivery_date", "");
                 clientmap.put("familyplanning", "");
             } else if (pregnant_status.equalsIgnoreCase("প্রসবোত্তর") || pregnant_status.equalsIgnoreCase("Postnatal")) {
-                clientmap.put("LMP", "");
+                clientmap.put("lmp_date", "");
             } else {
-                clientmap.put("LMP", "");
+                clientmap.put("lmp_date", "");
                 clientmap.put("delivery_date", "");
             }
         }
@@ -207,7 +232,7 @@ public class MemberProfileContactsFragment extends BaseProfileFragment {
 //                    LayoutForDetailRow.setOrientation(LinearLayout.HORIZONTAL);
                     TextView textLabel = LayoutForDetailRow.findViewById(R.id.label);
                     TextView textValue = LayoutForDetailRow.findViewById(R.id.value);
-                    textValue.setGravity(Gravity.LEFT);
+ //                   textValue.setGravity(Gravity.LEFT);
 //                    CustomFontTextView textLabel = new CustomFontTextView(getActivity());
                     textLabel.setTextSize(15);
 //                    CustomFontTextView textValue = new CustomFontTextView(getActivity());
@@ -218,7 +243,6 @@ public class MemberProfileContactsFragment extends BaseProfileFragment {
                     } else if (field.getJSONObject(i).has("label")) {
                         hint = field.getJSONObject(i).getString("label");
                     }
-
                     textLabel.setText(hint);
                     textLabel.setSingleLine(false);
                     String VALUE = "";
@@ -244,12 +268,11 @@ public class MemberProfileContactsFragment extends BaseProfileFragment {
 //                    LayoutForDetailRow.addView(textLabel, params);
 //                    LayoutForDetailRow.addView(textValue, params);
 //                    linearLayoutholder.addView(LayoutForDetailRow, mainparams);
-                    if (!removeField(KEY, VALUE)) {
-                        if ((hint.contains("অন্যান্য") && VALUE.isEmpty())) {
-
-                        } else {
-                            linearLayoutholder.addView(LayoutForDetailRow);
+                    if (!(KEY.equalsIgnoreCase("dob_unknown") || KEY.equalsIgnoreCase("dob") || KEY.equalsIgnoreCase("age"))) {
+                        if ((!hint.contains("অন্যান্য") && !VALUE.isEmpty())) {
+                            linearLayoutholder.addView(LayoutForDetailRow,mainparams);
                         }
+
                     }
 
                 }
@@ -260,7 +283,18 @@ public class MemberProfileContactsFragment extends BaseProfileFragment {
 
         }
     }
-
+    private String processLocationValue(String value) {
+        if (value.contains("[")) {
+            value = value.replace("[", "").replace("]", "");
+            if (value.contains(",")) {
+                value = value.split(",")[value.split(",").length - 1];
+                if (value.contains("\"")) {
+                    value = value.replace("\"", "");
+                }
+            }
+        }
+        return value;
+    }
     private void processDiseaseStatus(Map<String, String> columnmaps, JSONArray field) {
         String dateString = columnmaps.get("birthdate");
         int age = 0;

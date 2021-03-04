@@ -219,13 +219,10 @@ public class ProfileOverviewFragment extends BaseProfileFragment {
                 String childtableName = DBConstants.CHILD_TABLE_NAME;
                 String membertablename = DBConstants.MEMBER_TABLE_NAME;
                 String rawQuery = queryfortheadapterthing(mother_id);
+
+                Log.v("QUERY_CB",rawQuery);
                 Cursor cursor = null;
-//                if(cursorAdpater!=null){
-//                    Cursor oldCursor = cursorAdpater.swapCursor(cursor);
-//                    if(oldCursor!=null){
-//                        oldCursor.close();
-//                    }
-//                }
+
                 if (cursor != null && !cursor.isClosed()) {
                     cursor.close();
                     cursor = null;
@@ -265,7 +262,7 @@ public class ProfileOverviewFragment extends BaseProfileFragment {
     }
 
     public String queryfortheadapterthing(String id) {
-        String query = "SELECT * FROM " +
+        /*String query = "SELECT * FROM " +
                 "        (select woman.id as _id , woman.relationalid , woman.Patient_Identifier, woman.dataApprovalStatus, woman.dataApprovalComments, woman.first_name , woman.last_name , woman.dob , woman.gender, woman.details, woman.PregnancyStatus, woman.tasks, details.value as relation " +
                 "FROM ec_woman as woman left join ec_details as details on (details.base_entity_id = woman.id and details.key = 'Realtion_With_Household_Head') " +
                 "WHERE (woman.relational_id = '</>' and woman.date_removed IS NULL)" +
@@ -279,6 +276,20 @@ public class ProfileOverviewFragment extends BaseProfileFragment {
                 " ORDER BY CASE WHEN relation = 'খানা প্রধান' THEN 1 " +
                 " WHEN relation = 'Household_Head' THEN 1 " +
                 "Else relation END ASC;";
+
+*/
+        String query = "SELECT * FROM (select woman.id as _id , woman.relationalid , woman.Patient_Identifier, woman.dataApprovalStatus, woman.dataApprovalComments, woman.first_name , woman.last_name , woman.dob , woman.gender, woman.details, woman.PregnancyStatus, woman.tasks, woman.Realtion_With_Household_Head as relation "+
+                "FROM ec_woman as woman WHERE (woman.relational_id = '</>' and woman.date_removed IS NULL)"+
+                " " + "Union all  Select member.id as _id , member.relationalid , member.Patient_Identifier, member.dataApprovalStatus, member.dataApprovalComments, member.first_name , member.last_name , member.dob,member.gender, member.details, member.PregnancyStatus, member.tasks, member.Realtion_With_Household_Head as relation " +
+                "FROM ec_member as member WHERE (member.relational_id = '</>' and member.date_removed IS NULL)" +
+                " " +
+                "Union all Select child.id as _id , child.relationalid , child.Patient_Identifier, child.dataApprovalStatus, child.dataApprovalComments, child.first_name , child.last_name , child.dob ,child.gender, child.details, child.PregnancyStatus, child.tasks, child.Realtion_With_Household_Head as relation " +
+                "FROM ec_child as child WHERE (child.relational_id = '</>' and child.date_removed IS NULL)) group by _id" +
+                " ORDER BY CASE WHEN relation = 'খানা প্রধান' THEN 1 " +
+                " WHEN relation = 'Household_Head' THEN 1 " +
+                "Else relation END ASC";
+       // String query = "SELECT * FROM ec_woman where relational_id = '"+id+"' and date_removed is null";
+
         return query.replaceAll("</>", id);
     }
 

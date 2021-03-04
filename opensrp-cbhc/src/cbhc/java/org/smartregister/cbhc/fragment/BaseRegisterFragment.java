@@ -295,7 +295,10 @@ public abstract class BaseRegisterFragment extends RecyclerViewFragment implemen
 
         }
         this.registerCondition = "";
-        presenter.initializeQueries(getMainCondition());
+        if(getMainCondition() != null && presenter != null){
+            presenter.initializeQueries(getMainCondition());
+        }
+
         updateSearchView();
         setServiceModeViewDrawableRight(null);
 
@@ -387,7 +390,9 @@ public abstract class BaseRegisterFragment extends RecyclerViewFragment implemen
         getDefaultOptionsProvider();
         if (isPausedOrRefreshList()) {
             this.registerCondition = "";
-            presenter.initializeQueries(getMainCondition());
+            if(presenter != null && getMainCondition() != null){
+                presenter.initializeQueries(getMainCondition());
+            }
         }
         updateSearchView();
         try {

@@ -145,16 +145,21 @@ public class MemberProfileActivity extends BaseProfileActivity implements Profil
     }
 
     private void setUpViews() {
-        householdDetails.getColumnmaps().putAll(AncApplication.getInstance().getContext().detailsRepository().getAllDetailsForClient(householdDetails.entityId()));
+ //       householdDetails.getColumnmaps().putAll(AncApplication.getInstance().getContext().detailsRepository().getAllDetailsForClient(householdDetails.entityId()));
+        setUpMemberDetails(typeofMember);
         imageView = findViewById(R.id.imageview_profile);
         if (typeofMember != null) {
-            if (typeofMember.equalsIgnoreCase("malechild")) {
-                imageView.setImageDrawable(getResources().getDrawable(R.drawable.child_boy_infant));
-            } else if (typeofMember.equalsIgnoreCase("femalechild")) {
-                imageView.setImageDrawable(getResources().getDrawable(R.drawable.child_girl_infant));
-            } else if (typeofMember.equalsIgnoreCase("woman")) {
+
+            if (typeofMember.equalsIgnoreCase("malechild")){
+                    imageView.setImageDrawable(getResources().getDrawable(R.drawable.child_boy_infant));
+                }
+            else if (typeofMember.equalsIgnoreCase("femalechild")) {
+                    imageView.setImageDrawable(getResources().getDrawable(R.drawable.child_girl_infant));
+                }
+            else if (typeofMember.equalsIgnoreCase("woman")) {
                 imageView.setImageDrawable(getResources().getDrawable(R.drawable.female_register_placeholder_profile));
-            } else if (typeofMember.equalsIgnoreCase("member")) {
+            }
+            else if (typeofMember.equalsIgnoreCase("member")) {
                 imageView.setImageDrawable(getResources().getDrawable(R.drawable.male_register_placeholder_profile));
             }
         }
@@ -209,7 +214,25 @@ public class MemberProfileActivity extends BaseProfileActivity implements Profil
         setProfileID(getValue(householdDetails.getColumnmaps(), "Patient_Identifier", true));
         gestationAgeView.setVisibility(View.GONE);
     }
+    private CommonPersonObjectClient CommonPersonObjectToClient(CommonPersonObject commonPersonObject,String tableName) {
+        CommonPersonObjectClient commonPersonObjectClient = new CommonPersonObjectClient(commonPersonObject.getCaseId(), commonPersonObject.getDetails(), tableName);
+        commonPersonObjectClient.setColumnmaps(commonPersonObject.getColumnmaps());
+        return commonPersonObjectClient;
+    }
 
+    public void setUpMemberDetails(String typeofMember){
+        if (typeofMember != null) {
+            if (typeofMember.equalsIgnoreCase("malechild") || typeofMember.equalsIgnoreCase("femalechild")) {
+                householdDetails =  CommonPersonObjectToClient(AncApplication.getInstance().getContext().commonrepository(DBConstants.CHILD_TABLE_NAME).findByBaseEntityId(householdDetails.entityId()),DBConstants.CHILD_TABLE_NAME);
+            }
+            else if (typeofMember.equalsIgnoreCase("woman")) {
+                householdDetails =  CommonPersonObjectToClient(AncApplication.getInstance().getContext().commonrepository(DBConstants.WOMAN_TABLE_NAME).findByBaseEntityId(householdDetails.entityId()),DBConstants.WOMAN_TABLE_NAME);
+            }
+            else if (typeofMember.equalsIgnoreCase("member")) {
+                householdDetails =  CommonPersonObjectToClient(AncApplication.getInstance().getContext().commonrepository(DBConstants.MEMBER_TABLE_NAME).findByBaseEntityId(householdDetails.entityId()),DBConstants.MEMBER_TABLE_NAME);
+            }
+        }
+    }
     public void updateEDD(final String entity_id) {
         org.smartregister.util.Utils.startAsyncTask(new AsyncTask() {
 
@@ -221,7 +244,8 @@ public class MemberProfileActivity extends BaseProfileActivity implements Profil
             protected Object doInBackground(Object[] objects) {
                 AncRepository repo = (AncRepository) AncApplication.getInstance().getRepository();
                 SQLiteDatabase db = repo.getReadableDatabase();
-                String sql = "SELECT VALUE FROM ec_details WHERE (KEY = 'lmp_date' OR KEY = 'LMP') AND base_entity_id = '" + entity_id + "'";
+                String sql = "SELECT lmp_date FROM ec_woman WHERE base_entity_id = '" + entity_id + "'";
+ //               String sql = "SELECT VALUE FROM ec_details WHERE (KEY = 'lmp_date' OR KEY = 'LMP') AND base_entity_id = '" + entity_id + "'";
                 Cursor cursor = db.rawQuery(sql, new String[]{});
 
                 try {
@@ -267,10 +291,13 @@ public class MemberProfileActivity extends BaseProfileActivity implements Profil
             @Override
             protected void onPostExecute(Object o) {
                 super.onPostExecute(o);
-                if (delivery_status.equalsIgnoreCase("প্রসব পূর্ব") || delivery_status.equalsIgnoreCase("Antenatal Period")) {
-                    pregnant_statusView.setVisibility(View.VISIBLE);
-                    pregnant_statusView.setText("EDD: " + lmp_date);
+                if(delivery_status != null){
+                    if (delivery_status.equalsIgnoreCase("প্রসব পূর্ব") || delivery_status.equalsIgnoreCase("Antenatal Period")) {
+                        pregnant_statusView.setVisibility(View.VISIBLE);
+                        pregnant_statusView.setText("EDD: " + lmp_date);
+                    }
                 }
+
 //                if(Patient_identifier!=null){
 //                    ancIdView.setText("ID: " + Patient_identifier);
 //                }
@@ -279,15 +306,9 @@ public class MemberProfileActivity extends BaseProfileActivity implements Profil
     }
 
     public void refreshProfileViews() {
-//        if(typeofMember.equalsIgnoreCase("malechild")||typeofMember.equalsIgnoreCase("femalechild")){
-//            householdDetails = CommonPersonObjectToClient(AncApplication.getInstance().getContext().commonrepository(DBConstants.CHILD_TABLE_NAME).findByBaseEntityId(householdDetails.entityId()));
-//        }else if(typeofMember.equalsIgnoreCase("woman")){
-//            householdDetails = CommonPersonObjectToClient(AncApplication.getInstance().getContext().commonrepository(DBConstants.WOMAN_TABLE_NAME).findByBaseEntityId(householdDetails.entityId()));
-//        }else if(typeofMember.equalsIgnoreCase("member")){
-//            householdDetails = CommonPersonObjectToClient(AncApplication.getInstance().getContext().commonrepository(DBConstants.MEMBER_TABLE_NAME).findByBaseEntityId(householdDetails.entityId()));
-//        }
+       setUpMemberDetails(typeofMember);
 
-        householdDetails.getColumnmaps().putAll(AncApplication.getInstance().getContext().detailsRepository().getAllDetailsForClient(householdDetails.entityId()));
+//        householdDetails.getColumnmaps().putAll(AncApplication.getInstance().getContext().detailsRepository().getAllDetailsForClient(householdDetails.entityId()));
         String firstName = org.smartregister.util.Utils.getValue(householdDetails.getColumnmaps(), DBConstants.KEY.FIRST_NAME, true);
         String lastName = org.smartregister.util.Utils.getValue(householdDetails.getColumnmaps(), DBConstants.KEY.LAST_NAME, true);
         if (lastName.equalsIgnoreCase("null") || lastName == null) {
@@ -320,11 +341,7 @@ public class MemberProfileActivity extends BaseProfileActivity implements Profil
         profileOverviewFragment.reloadView();
     }
 
-    private CommonPersonObjectClient CommonPersonObjectToClient(CommonPersonObject commonPersonObject) {
-        CommonPersonObjectClient commonPersonObjectClient = new CommonPersonObjectClient(commonPersonObject.getCaseId(), commonPersonObject.getDetails(), DBConstants.HOUSEHOLD_TABLE_NAME);
-        commonPersonObjectClient.setColumnmaps(commonPersonObject.getColumnmaps());
-        return commonPersonObjectClient;
-    }
+
 
     public HealthIdRepository getHealthIdRepository() {
         if (healthIdRepository == null) {
@@ -351,7 +368,8 @@ public class MemberProfileActivity extends BaseProfileActivity implements Profil
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.btn_profile_registration_info:
-                householdDetails.getColumnmaps().putAll(AncApplication.getInstance().getContext().detailsRepository().getAllDetailsForClient(householdDetails.entityId()));
+                setUpMemberDetails(typeofMember);
+//                householdDetails.getColumnmaps().putAll(AncApplication.getInstance().getContext().detailsRepository().getAllDetailsForClient(householdDetails.entityId()));
 //                householdDetails.getColumnmaps().put("Patient_Identifier", null);
                 String patient_identifier = householdDetails.getColumnmaps().get("Patient_Identifier");
 
@@ -369,7 +387,8 @@ public class MemberProfileActivity extends BaseProfileActivity implements Profil
 
                 break;
             case R.id.btn_profile_refer:
-                householdDetails.getColumnmaps().putAll(AncApplication.getInstance().getContext().detailsRepository().getAllDetailsForClient(householdDetails.entityId()));
+                setUpMemberDetails(typeofMember);
+    //            householdDetails.getColumnmaps().putAll(AncApplication.getInstance().getContext().detailsRepository().getAllDetailsForClient(householdDetails.entityId()));
                 createReferJson();
                 break;
             case R.id.edit_member:
@@ -860,7 +879,8 @@ public class MemberProfileActivity extends BaseProfileActivity implements Profil
             return;
         }
 
-        householdDetails.getColumnmaps().putAll(AncApplication.getInstance().getContext().detailsRepository().getAllDetailsForClient(householdDetails.entityId()));
+        setUpMemberDetails(typeofMember);
+//        householdDetails.getColumnmaps().putAll(AncApplication.getInstance().getContext().detailsRepository().getAllDetailsForClient(householdDetails.entityId()));
         followupFragment.notifyAdapter();
         if (requestCode == JsonFormUtils.REQUEST_CODE_GET_JSON && resultCode == RESULT_OK) {
             try {
