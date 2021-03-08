@@ -77,10 +77,7 @@ public class RegisterFramentModel implements RegisterFragmentContract.Model {
                 tableName + "." + DBConstants.KEY.DOB,
                 tableName + "." + "Patient_Identifier",
                 tableName + "." + DBConstants.KEY.PHONE_NUMBER,
-                "(select person_address from (select woman.person_address from ec_woman as woman where (woman.person_address = 'address7' and woman.base_entity_id=ec_household.id)"+
-                " " + "Union all  Select member.person_address from ec_member as member WHERE (member.person_address = 'address7' and member.base_entity_id=ec_household.id)" +
-                        " " +
-                        "Union all Select child.person_address from ec_child as child WHERE (child.person_address = 'address7' and child.base_entity_id=ec_household.id))) as para"};
+                tableName + "." + DBConstants.KEY.PRESENT_ADDRESS};
 //                "(select ec_details.value from ec_details where ec_details.key='address7' and ec_details.base_entity_id=ec_household.id) as para"};
         queryBUilder.SelectInitiateMainTable(tableName, columns);
         return queryBUilder.mainCondition(mainCondition);

@@ -151,13 +151,15 @@ public class RegisterProvider implements RecyclerViewProvider<RegisterProvider.R
         String firstName = org.smartregister.util.Utils.getValue(pc.getColumnmaps(), DBConstants.KEY.FIRST_NAME, true);
         String lastName = org.smartregister.util.Utils.getValue(pc.getColumnmaps(), DBConstants.KEY.LAST_NAME, true);
         String phoneNumber = org.smartregister.util.Utils.getValue(pc.getColumnmaps(), DBConstants.KEY.PHONE_NUMBER, true);
-        String para = org.smartregister.util.Utils.getValue(pc.getColumnmaps(), "para", true);
+        String address = org.smartregister.util.Utils.getValue(pc.getColumnmaps(), DBConstants.KEY.PRESENT_ADDRESS, true);
+//        String para = org.smartregister.util.Utils.getValue(pc.getColumnmaps(), "para", true);
         if (lastName.equalsIgnoreCase("null") || lastName == null) {
             lastName = "";
         }
         String patientName = getName(firstName, lastName);
 
         fillValue(viewHolder.patientName, WordUtils.capitalize(patientName));
+
 
         String dobString = Utils.getDuration(org.smartregister.util.Utils.getValue(pc.getColumnmaps(), DBConstants.KEY.DOB, false));
         dobString = dobString.contains("y") ? dobString.substring(0, dobString.indexOf("y")) : dobString;
@@ -180,8 +182,8 @@ public class RegisterProvider implements RecyclerViewProvider<RegisterProvider.R
         fillValue(viewHolder.last_interacted_with, last_interacted_with);
         View patient = viewHolder.patientColumn;
         attachPatientOnclickListener(patient, client);
-        fillValue(viewHolder.ancId, para);
-
+//        fillValue(viewHolder.ancId, para);
+        fillValue(viewHolder.ancId,address);
         View dueButton = viewHolder.dueButton;
         attachDosageOnclickListener(dueButton, client);
 
