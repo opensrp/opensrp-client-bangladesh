@@ -354,7 +354,8 @@ public class AncRepository extends Repository {
             db.execSQL("ALTER TABLE ec_member ADD COLUMN NonComnta_Disease VARCHAR");
 
         } catch (Exception e) {
-            Utils.appendLog(getClass().getName(), e);
+//            Utils.appendLog(getClass().getName(), e);
+            e.printStackTrace();
 
         }
 
