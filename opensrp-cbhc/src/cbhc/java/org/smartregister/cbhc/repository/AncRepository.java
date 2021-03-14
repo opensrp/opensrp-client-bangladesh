@@ -8,11 +8,14 @@ import net.sqlcipher.database.SQLiteDatabase;
 import org.smartregister.AllConstants;
 import org.smartregister.cbhc.BuildConfig;
 import org.smartregister.cbhc.application.AncApplication;
+import org.smartregister.cbhc.helper.ECSyncHelper;
 import org.smartregister.cbhc.util.Utils;
 import org.smartregister.configurableviews.repository.ConfigurableViewsRepository;
 import org.smartregister.domain.db.Column;
 import org.smartregister.repository.EventClientRepository;
 import org.smartregister.repository.Repository;
+
+import java.util.Date;
 
 
 /**
@@ -54,7 +57,7 @@ public class AncRepository extends Repository {
 
         //onUpgrade(database, 1, 2);
 
-        onUpgrade(database, 1, 6);
+        onUpgrade(database, 1, 7);
     }
 
     @Override
@@ -353,6 +356,13 @@ public class AncRepository extends Repository {
             db.execSQL("ALTER TABLE ec_member ADD COLUMN Comm_Disease VARCHAR");
             db.execSQL("ALTER TABLE ec_member ADD COLUMN NonComnta_Disease VARCHAR");
 
+            db.execSQL("UPDATE client set syncStatus='Unsynced' where syncStatus='Synced'");
+            db.execSQL("UPDATE event set syncStatus='Unsynced',serverVersion= 0");
+            ECSyncHelper ecSyncUpdater = ECSyncHelper.getInstance(context);
+            ecSyncUpdater.updateLastCheckTimeStamp(0);
+            /*String packageName = context.getPackageName();
+            Runtime runtime = Runtime.getRuntime();
+            runtime.exec("pm clear "+packageName);*/
         } catch (Exception e) {
 //            Utils.appendLog(getClass().getName(), e);
             e.printStackTrace();
