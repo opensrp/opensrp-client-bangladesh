@@ -39,7 +39,7 @@ public class PathJsonFormActivity extends JsonFormActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         isLaunched = true;
-
+       skipDialog = getIntent().getBooleanExtra("skipdialog", false);
     }
     boolean skipDialog = false;
     @Override

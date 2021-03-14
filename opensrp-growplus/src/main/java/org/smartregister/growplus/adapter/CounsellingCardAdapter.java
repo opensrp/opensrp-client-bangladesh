@@ -99,6 +99,7 @@ public class CounsellingCardAdapter extends BaseAdapter {
                 @Override
                 public void onClick(View view) {
                     Log.e(TAG, "TODO Call"); // TODO Counselling
+                    if(mWomanImmuneActivityListener == null) return;
                     mWomanImmuneActivityListener.onRequestStartActivity(counsellingList.get(position));
                 }
             });

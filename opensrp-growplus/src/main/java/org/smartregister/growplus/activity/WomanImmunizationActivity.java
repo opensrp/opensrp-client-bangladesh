@@ -246,7 +246,8 @@ public class WomanImmunizationActivity extends BaseActivity
 
 //        Map<String,String> detailmaps = childDetails.getColumnmaps();
 //        detailmaps.putAll(childDetails.getDetails());
-
+//        Map<String,String> detailmaps = childDetails.getColumnmaps();
+//        detailmaps.putAll(childDetails.getDetails());
         String formMetadata = JsonFormUtils.getAutoPopulatedJsonEditFormString(this, mWomenFollowupData, "woman_followup", "Woman Member Follow Up");
 
         Intent intent = new Intent(WomanImmunizationActivity.this, PathJsonFormActivity.class);
@@ -258,8 +259,8 @@ public class WomanImmunizationActivity extends BaseActivity
     private void showWomenFollowupData() throws Exception {
         //Cursor c = db.rawQuery("SELECT Visit_date, is_pregnant, columnN FROM ec_followup;");
         SQLiteDatabase database =  VaccinatorApplication.getInstance().getRepository().getReadableDatabase();
-//
         Cursor cursor =  database.rawQuery("SELECT * FROM ec_followup where mother_id = '" + childDetails.entityId()+"'", null);
+       // Cursor cursor =  database.rawQuery("SELECT * FROM ec_followup where base_entity_id = '" + childDetails.entityId()+"'", null);
         mWomenFollowupKeys = cursor.getColumnNames();
         mWomenFollowupData = new HashMap<>();
 
@@ -699,6 +700,7 @@ public class WomanImmunizationActivity extends BaseActivity
                 boolean pregnant = false;
                 boolean lactating = false;
                 Intent intent = new Intent(WomanImmunizationActivity.this, PathJsonFormActivity.class);
+                intent.putExtra("skipdialog", true);
                 if(detailmaps.get("pregnant")!=null){
                     if(detailmaps.get("pregnant").equalsIgnoreCase("Yes")){
                         pregnant = true;
@@ -715,6 +717,7 @@ public class WomanImmunizationActivity extends BaseActivity
                             counsellingFormData, "iycf_counselling_form_pregnant_woman", "Pregnant Woman Counselling");
                     //intent = new Intent(WomanImmunizationActivity.this, PathJsonFormActivity.class);
                     intent.putExtra("json", formMetadata);
+                    startActivityForResult(intent, REQUEST_CODE_GET_JSON_COUNSELLING_UPDATE);
                 }
 
                 if( lactating){
@@ -722,13 +725,14 @@ public class WomanImmunizationActivity extends BaseActivity
                             counsellingFormData, "iycf_counselling_form_lactating_woman", "Lactating Woman Counselling");
                     //intent = new Intent(WomanImmunizationActivity.this, PathJsonFormActivity.class);
                     intent.putExtra("json", formMetadata);
+                    startActivityForResult(intent, REQUEST_CODE_GET_JSON_COUNSELLING_UPDATE);
 
                 }
 //                formMetadata = JsonFormUtils.getAutoPopulatedJsonEditFormString(WomanImmunizationActivity.this,
 //                        counsellingFormData, "iycf_counselling_form_pregnant_woman", "Pregnant Woman Counselling");
 //                //intent = new Intent(WomanImmunizationActivity.this, PathJsonFormActivity.class);
 //                intent.putExtra("json", formMetadata);
-                startActivityForResult(intent, REQUEST_CODE_GET_JSON_COUNSELLING_UPDATE);
+                //startActivityForResult(intent, REQUEST_CODE_GET_JSON_COUNSELLING_UPDATE);
 
             }
         } );
