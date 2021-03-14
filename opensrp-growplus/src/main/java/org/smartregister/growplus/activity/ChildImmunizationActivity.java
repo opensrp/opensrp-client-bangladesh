@@ -48,6 +48,7 @@ import org.smartregister.growplus.sync.ECSyncUpdater;
 import org.smartregister.growplus.viewComponents.WidgetFactory;
 import org.smartregister.growthmonitoring.domain.Weight;
 import org.smartregister.growthmonitoring.domain.WeightWrapper;
+
 import org.smartregister.growthmonitoring.domain.ZScore;
 import org.smartregister.growthmonitoring.fragment.GrowthDialogFragment;
 import org.smartregister.growthmonitoring.fragment.RecordWeightDialogFragment;
@@ -1882,7 +1883,7 @@ public class ChildImmunizationActivity extends BaseActivity
             zScoreTextView.setGravity(Gravity.LEFT | Gravity.CENTER_VERTICAL);
             if (weight.getDate().compareTo(maxWeighingDate.getTime()) > 0) {
                 zScoreTextView.setText("");
-            } else {
+            } else { //TODO
                 double zScore = ZScore.calculate(gender, dob, weight.getDate(), weight.getKg());
                 zScore = ZScore.roundOff(zScore);
                 zScoreTextView.setTextColor(getResources().getColor(ZScore.getZScoreColor(zScore)));
