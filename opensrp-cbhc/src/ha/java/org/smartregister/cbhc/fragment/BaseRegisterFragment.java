@@ -714,8 +714,8 @@ Utils.appendLog(getClass().getName(),e);
                 tableName + "." + DBConstants.KEY.DOB,
                 tableName + "." + "Patient_Identifier",
                 tableName + "." + DBConstants.KEY.PHONE_NUMBER,
-                "(select ec_details.value from ec_details where ec_details.key='address7' and ec_details.base_entity_id=ec_household.id) as para"
-                };
+                tableName + "." + DBConstants.KEY.PRESENT_ADDRESS
+        };
 
         if(filter.equals("pregnant")){
             columns = new String[]{

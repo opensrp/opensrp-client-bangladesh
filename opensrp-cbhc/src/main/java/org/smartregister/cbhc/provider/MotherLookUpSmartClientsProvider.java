@@ -19,6 +19,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Locale;
 
 import static org.smartregister.util.Utils.fillValue;
 import static org.smartregister.util.Utils.getName;
@@ -29,7 +30,7 @@ import static org.smartregister.util.Utils.getValue;
  */
 public class MotherLookUpSmartClientsProvider {
     private final LayoutInflater inflater;
-    private final DateFormat dateFormat = new SimpleDateFormat("dd/MM/yy");
+    private final DateFormat dateFormat = new SimpleDateFormat("dd/MM/yy", Locale.ENGLISH);
 
 
     public MotherLookUpSmartClientsProvider(Context context) {

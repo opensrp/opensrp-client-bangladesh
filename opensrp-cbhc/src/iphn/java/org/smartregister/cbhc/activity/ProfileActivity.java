@@ -86,6 +86,7 @@ public class ProfileActivity extends BaseProfileActivity implements ProfileContr
     private ImageView imageView;
     private ImageRenderHelper imageRenderHelper;
     private String womanPhoneNumber;
+    String typeofMember;
 
     private static final String TAG = ProfileActivity.class.getCanonicalName();
 
@@ -101,6 +102,7 @@ public class ProfileActivity extends BaseProfileActivity implements ProfileContr
             Serializable serializable = extras.getSerializable(EXTRA_HOUSEHOLD_DETAILS);
             if (serializable != null && serializable instanceof CommonPersonObjectClient) {
                 householdDetails = (CommonPersonObjectClient) serializable;
+                typeofMember = extras.getString("type_of_member");
                 if(RegisterProvider.memberCountHashMap.containsKey(householdDetails.entityId()))
                 RegisterProvider.memberCountHashMap.remove(householdDetails.entityId());
             }
@@ -161,9 +163,36 @@ Utils.appendLog(getClass().getName(),e);
         setProfileID(getValue(householdDetails.getColumnmaps(), "Patient_Identifier", true));
         gestationAgeView.setVisibility(View.GONE);
     }
-
+    private CommonPersonObjectClient CommonPersonObjectToClientMember(CommonPersonObject commonPersonObject) {
+        CommonPersonObjectClient commonPersonObjectClient = new CommonPersonObjectClient(commonPersonObject.getCaseId(), commonPersonObject.getDetails(), DBConstants.MEMBER_TABLE_NAME);
+        commonPersonObjectClient.setColumnmaps(commonPersonObject.getColumnmaps());
+        return commonPersonObjectClient;
+    }
+    private CommonPersonObjectClient CommonPersonObjectToClientWomen(CommonPersonObject commonPersonObject) {
+        CommonPersonObjectClient commonPersonObjectClient = new CommonPersonObjectClient(commonPersonObject.getCaseId(), commonPersonObject.getDetails(), DBConstants.WOMAN_TABLE_NAME);
+        commonPersonObjectClient.setColumnmaps(commonPersonObject.getColumnmaps());
+        return commonPersonObjectClient;
+    }
+    private CommonPersonObjectClient CommonPersonObjectToClientChild(CommonPersonObject commonPersonObject) {
+        CommonPersonObjectClient commonPersonObjectClient = new CommonPersonObjectClient(commonPersonObject.getCaseId(), commonPersonObject.getDetails(), DBConstants.CHILD_TABLE_NAME);
+        commonPersonObjectClient.setColumnmaps(commonPersonObject.getColumnmaps());
+        return commonPersonObjectClient;
+    }
+    public void setUpMemberDetails(String typeofMember){
+        if (typeofMember != null) {
+            if (typeofMember.equalsIgnoreCase("malechild") || typeofMember.equalsIgnoreCase("femalechild")) {
+                householdDetails =  CommonPersonObjectToClientChild(AncApplication.getInstance().getContext().commonrepository(DBConstants.CHILD_TABLE_NAME).findByBaseEntityId(householdDetails.entityId()));
+            }
+            else if (typeofMember.equalsIgnoreCase("woman")) {
+                householdDetails =  CommonPersonObjectToClientWomen(AncApplication.getInstance().getContext().commonrepository(DBConstants.WOMAN_TABLE_NAME).findByBaseEntityId(householdDetails.entityId()));
+            } else if (typeofMember.equalsIgnoreCase("member")) {
+                householdDetails =  CommonPersonObjectToClientMember(AncApplication.getInstance().getContext().commonrepository(DBConstants.MEMBER_TABLE_NAME).findByBaseEntityId(householdDetails.entityId()));
+            }
+        }
+    }
     public void refreshProfileViews() {
-        householdDetails = CommonPersonObjectToClient(AncApplication.getInstance().getContext().commonrepository(DBConstants.HOUSEHOLD_TABLE_NAME).findByBaseEntityId(householdDetails.entityId()));
+        setUpMemberDetails(typeofMember);
+//        householdDetails = CommonPersonObjectToClient(AncApplication.getInstance().getContext().commonrepository(DBConstants.HOUSEHOLD_TABLE_NAME).findByBaseEntityId(householdDetails.entityId()));
 
         String firstName = org.smartregister.util.Utils.getValue(householdDetails.getColumnmaps(), DBConstants.KEY.FIRST_NAME, true);
         String lastName = org.smartregister.util.Utils.getValue(householdDetails.getColumnmaps(), DBConstants.KEY.LAST_NAME, true);
@@ -224,7 +253,8 @@ Utils.appendLog(getClass().getName(),e);
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.btn_profile_registration_info:
-                householdDetails.getColumnmaps().putAll(AncApplication.getInstance().getContext().detailsRepository().getAllDetailsForClient(householdDetails.entityId()));
+                setUpMemberDetails(typeofMember);
+//                householdDetails.getColumnmaps().putAll(AncApplication.getInstance().getContext().detailsRepository().getAllDetailsForClient(householdDetails.entityId()));
                 patient_identifier = householdDetails.getColumnmaps().get("Patient_Identifier");
 
                 if (patient_identifier == null || (patient_identifier != null && patient_identifier.isEmpty()) || patient_identifier.equalsIgnoreCase("null")) {

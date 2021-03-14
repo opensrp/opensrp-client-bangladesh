@@ -131,7 +131,8 @@ public class DeleteIntentService extends IntentService {
                 for (int i = 0; i < entity_ids.length(); i++) {
                     String id = entity_ids.getString(i);
                     ids[i] = id;
-//                    System.out.println(id);
+                    System.out.println(id);
+                    Log.i(SyncIntentService.class.getName(), "ID: " + id);
                 }
             }
             delete_from_table(ids);
@@ -178,7 +179,7 @@ public class DeleteIntentService extends IntentService {
             @Override
             protected Object doInBackground(Object[] objects) {
 
-                String[] tablename = {"ec_details", "ec_household", "ec_household_search", "ec_woman", "ec_woman_search", "ec_child", "ec_child_search", "ec_member", "ec_member_search"};
+                String[] tablename = {"ec_household", "ec_household_search", "ec_woman", "ec_woman_search", "ec_child", "ec_child_search", "ec_member", "ec_member_search"};
                 AncRepository repo = (AncRepository) AncApplication.getInstance().getRepository();
                 SQLiteDatabase db = repo.getReadableDatabase();
                 if (!ArrayUtils.isEmpty(ids)) {

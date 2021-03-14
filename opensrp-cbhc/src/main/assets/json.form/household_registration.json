@@ -58,8 +58,8 @@
       {
         "key": "HIE_FACILITIES",
         "openmrs_entity_parent": "",
-        "openmrs_entity": "",
-        "openmrs_entity_id": "",
+        "openmrs_entity": "concept",
+        "openmrs_entity_id": "HIE_FACILITIES",
         "openmrs_data_type": "text",
         "type": "tree",
         "hint": "খানার ঠিকানা(ব্লক,ওয়ার্ড,ইউনিয়ন)",
@@ -72,8 +72,8 @@
       {
         "key": "ADDRESS_LINE",
         "openmrs_entity_parent": "",
-        "openmrs_entity": "",
-        "openmrs_entity_id": "",
+        "openmrs_entity": "concept",
+        "openmrs_entity_id": "ADDRESS_LINE",
         "openmrs_data_type": "text",
         "type": "edit_text",
         "hint": "বর্তমান ঠিকানা",
@@ -106,8 +106,8 @@
       {
         "key": "is_permanent_address",
         "openmrs_entity_parent": "",
-        "openmrs_entity": "",
-        "openmrs_entity_id": "",
+        "openmrs_entity": "concept",
+        "openmrs_entity_id": "is_permanent_address",
         "openmrs_data_type": "text",
         "type": "spinner",
         "hint": "স্থায়ী ঠিকানা কি একই",
@@ -338,8 +338,8 @@
       {
         "key": "member_count",
         "openmrs_entity_parent": "",
-        "openmrs_entity": "",
-        "openmrs_entity_id": "",
+        "openmrs_entity": "concept",
+        "openmrs_entity_id": "member_count",
         "type": "edit_text",
         "hint": "খানার মোট সদস্য সংখ্যা",
         "v_numeric": {
@@ -657,11 +657,11 @@
         }
       },
       {
-        "key": "Family_Members_Health_Services_From_Health_Care_Center",
+        "key": "Health_Care_Center",
         "openmrs_entity_parent": "",
-        "openmrs_entity": "concept",
-        "openmrs_entity_id": "",
-        "openmrs_data_type": "Coded",
+        "openmrs_entity": "person_attribute",
+        "openmrs_entity_id": "Health_Care_Center",
+        "openmrs_data_type": "text",
         "type": "spinner",
         "hint": "পরিবারের সদস্যগন সাধারনত কোন স্বাস্থ্য সেবা কেন্দ্র থেকে স্বাস্থ্য সেবা নিয়ে থাকেন?",
         "values": [
@@ -724,10 +724,10 @@
         }
       },
       {
-        "key": "Near_By_Community_Clinic",
+        "key": "Community_Clinic",
         "openmrs_entity_parent": "",
-        "openmrs_entity": "",
-        "openmrs_entity_id": "",
+        "openmrs_entity": "person_attribute",
+        "openmrs_entity_id": "Community_Clinic",
         "type": "edit_text",
         "hint": "আপনার নিকটবর্তী কমিউনিটি \nক্লিনিকটির নাম কি?",
         "v_required": {
@@ -736,11 +736,11 @@
         }
       },
       {
-        "key": "Community_Clinic_Distance",
+        "key": "Clinic_Distance",
         "openmrs_entity_parent": "",
-        "openmrs_entity": "concept",
-        "openmrs_entity_id": "",
-        "openmrs_data_type": "Coded",
+        "openmrs_entity": "person_attribute",
+        "openmrs_entity_id": "Clinic_Distance",
+        "openmrs_data_type": "text",
         "type": "spinner",
         "hint": "নিকটবর্তী কমিউনিটি ক্লিনিকের আনুমানিক দুরত্ব কত কিঃ মিঃ",
         "values": [
@@ -763,10 +763,10 @@
         }
       },
       {
-        "key": "information_provider_name",
+        "key": "info_provider_name",
         "openmrs_entity_parent": "",
-        "openmrs_entity": "",
-        "openmrs_entity_id": "",
+        "openmrs_entity": "person_attribute",
+        "openmrs_entity_id": "info_provider_name",
         "type": "edit_text",
         "hint": "তথ্য প্রদানকারীর নামঃ",
         "v_required": {

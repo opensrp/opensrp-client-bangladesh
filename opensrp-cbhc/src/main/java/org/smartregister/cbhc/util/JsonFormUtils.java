@@ -31,6 +31,7 @@ import org.smartregister.cbhc.domain.UniqueId;
 import org.smartregister.cbhc.helper.ECSyncHelper;
 import org.smartregister.cbhc.helper.LocationHelper;
 import org.smartregister.cbhc.repository.AncRepository;
+import org.smartregister.cbhc.repository.EventLogRepository;
 import org.smartregister.cbhc.repository.HealthIdRepository;
 import org.smartregister.cbhc.view.LocationPickerView;
 import org.smartregister.clientandeventmodel.Address;
@@ -78,7 +79,7 @@ import static org.apache.commons.lang3.StringUtils.isBlank;
 public class JsonFormUtils extends org.smartregister.util.JsonFormUtils {
     public static final String METADATA = "metadata";
     public static final String ENCOUNTER_TYPE = "encounter_type";
-    public static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("dd-MM-yyyy");
+    public static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("dd-MM-yyyy",Locale.ENGLISH);
     public static final String CURRENT_OPENSRP_ID = "current_opensrp_id";
     public static final String ANC_ID = "ANC_ID";
     public static final String READ_ONLY = "read_only";
@@ -693,7 +694,7 @@ public class JsonFormUtils extends org.smartregister.util.JsonFormUtils {
         String oldDateString = dateString;
         String newDateString = dateString;
 
-        SimpleDateFormat sdf = new SimpleDateFormat(OLD_FORMAT);
+        SimpleDateFormat sdf = new SimpleDateFormat(OLD_FORMAT,Locale.ENGLISH);
         Date d = null;
         try {
             d = sdf.parse(oldDateString);
@@ -715,7 +716,7 @@ public class JsonFormUtils extends org.smartregister.util.JsonFormUtils {
         String oldDateString = dateString;
         String newDateString = dateString;
 
-        SimpleDateFormat sdf = new SimpleDateFormat(OLD_FORMAT);
+        SimpleDateFormat sdf = new SimpleDateFormat(OLD_FORMAT,Locale.ENGLISH);
         Date d = null;
         try {
             d = sdf.parse(oldDateString);
@@ -1578,6 +1579,13 @@ public class JsonFormUtils extends org.smartregister.util.JsonFormUtils {
         return toreturn;
     }
 
+    public static JSONObject getFormMetadata(String baseEntityId, String []encounterType){
+        EventLogRepository eventLogRepository = AncApplication.getInstance().getEventLogRepository();
+//        JSONObject formMetadata = eventLogRepository.getFormJson(householdDetails.getCaseId(),"Household Registration");
+        JSONObject formMetadata = eventLogRepository.getFormJson(baseEntityId,encounterType);
+        return formMetadata;
+    }
+
     public static void startFormForEdit(Activity context, int jsonFormActivityRequestCode, String metaData) {
         Intent intent = new Intent(context, AncJsonFormActivity.class);
         intent.putExtra(Constants.INTENT_KEY.JSON, metaData);
@@ -1905,7 +1913,7 @@ public class JsonFormUtils extends org.smartregister.util.JsonFormUtils {
     }
 
     public static Event addMetaData(Context context, Event event, Date start) throws JSONException {
-        SimpleDateFormat DATE_TIME_FORMAT = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        SimpleDateFormat DATE_TIME_FORMAT = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss",Locale.ENGLISH);
 
         Map<String, String> metaFields = new HashMap<>();
         metaFields.put("deviceid", "163149AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
