@@ -1,9 +1,6 @@
 package org.smartregister.growplus.adapter;
 
 import android.content.Context;
-import android.content.Intent;
-import android.database.Cursor;
-import android.os.AsyncTask;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,45 +8,18 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import com.rey.material.widget.SnackBar;
-
-import net.sqlcipher.database.SQLiteDatabase;
-
-import org.apache.commons.lang3.StringUtils;
 import org.joda.time.DateTime;
-import org.smartregister.commonregistry.CommonPersonObjectClient;
-import org.smartregister.domain.Alert;
-import org.smartregister.domain.Photo;
 import org.smartregister.growplus.R;
-import org.smartregister.growplus.activity.PathJsonFormActivity;
-import org.smartregister.growplus.activity.WomanImmunizationActivity;
-import org.smartregister.growplus.application.VaccinatorApplication;
 import org.smartregister.growplus.domain.Counselling;
-import org.smartregister.immunization.db.VaccineRepo;
-import org.smartregister.immunization.domain.Vaccine;
-import org.smartregister.immunization.domain.VaccineWrapper;
-import org.smartregister.immunization.repository.VaccineRepository;
-import org.smartregister.immunization.util.ImageUtils;
-import org.smartregister.immunization.util.VaccinatorUtils;
-import org.smartregister.immunization.view.VaccineCard;
-import org.smartregister.immunization.view.VaccineGroup;
+import org.smartregister.growplus.listener.ActivityListener;
 import org.smartregister.util.Utils;
 
 import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-import java.util.concurrent.TimeUnit;
-
-import butterknife.OnClick;
-import util.JsonFormUtils;
 
 import static org.smartregister.immunization.util.VaccinatorUtils.generateScheduleList;
-import static org.smartregister.util.Utils.getName;
 import static org.smartregister.util.Utils.getValue;
 
 /**
@@ -62,7 +32,7 @@ public class CounsellingCardAdapter extends BaseAdapter {
     private List<Counselling> counsellingList;
     private String[] mWomenFollowupKeys;
     private HashMap<String, String> mWomenFollowupData;
-    private WomanImmunizationActivity.WomanImmuneActivityListener mWomanImmuneActivityListener;
+    private ActivityListener mActivityListener;
 
 
     public CounsellingCardAdapter(Context context,List<Counselling> vaccineList) {
@@ -99,8 +69,8 @@ public class CounsellingCardAdapter extends BaseAdapter {
                 @Override
                 public void onClick(View view) {
                     Log.e(TAG, "TODO Call"); // TODO Counselling
-                    if(mWomanImmuneActivityListener == null) return;
-                    mWomanImmuneActivityListener.onRequestStartActivity(counsellingList.get(position));
+                    if(mActivityListener == null) return;
+                    mActivityListener.onCallbackActivity(counsellingList.get(position));
                 }
             });
             return counsellingcard;
@@ -118,9 +88,8 @@ public class CounsellingCardAdapter extends BaseAdapter {
         return counsellingList;
     }
 
-    public void setActivityListener(WomanImmunizationActivity.WomanImmuneActivityListener womanImmuneActivityListener){
-        mWomanImmuneActivityListener = womanImmuneActivityListener;
-
+    public void setActivityListener(ActivityListener activityListener){
+        mActivityListener = activityListener;
     }
 
 

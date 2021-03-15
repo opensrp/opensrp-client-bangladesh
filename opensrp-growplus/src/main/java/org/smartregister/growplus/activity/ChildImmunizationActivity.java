@@ -43,6 +43,7 @@ import org.smartregister.domain.Alert;
 import org.smartregister.domain.Photo;
 import org.smartregister.growplus.adapter.CounsellingCardAdapter;
 import org.smartregister.growplus.domain.Counselling;
+import org.smartregister.growplus.listener.ActivityListener;
 import org.smartregister.growplus.repository.CounsellingRepository;
 import org.smartregister.growplus.sync.ECSyncUpdater;
 import org.smartregister.growplus.viewComponents.WidgetFactory;
@@ -131,7 +132,7 @@ public class ChildImmunizationActivity extends BaseActivity
     private static final int RANDOM_MAX_RANGE = 4232;
     private static final int RANDOM_MIN_RANGE = 213;
     private static final int RECORD_WEIGHT_BUTTON_ACTIVE_MIN = 12;
-
+    private Counselling mEditCounselling;
     static {
         COMBINED_VACCINES = new ArrayList<>();
         COMBINED_VACCINES_MAP = new HashMap<>();
@@ -152,6 +153,7 @@ public class ChildImmunizationActivity extends BaseActivity
     public CommonPersonObjectClient childDetails;
     private RegisterClickables registerClickables;
     public DetailsRepository detailsRepository;
+    private static final int REQUEST_CODE_GET_JSON_COUNSELLING_UPDATE = 512;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -504,20 +506,34 @@ public class ChildImmunizationActivity extends BaseActivity
         recordnewCounselling.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
                     String metadata = getmetaDataForLactatingCounsellingForm(childDetails);
                     Intent intent = new Intent(ChildImmunizationActivity.this, PathJsonFormActivity.class);
-
                     intent.putExtra("json", metadata);
-
                     startActivityForResult(intent, REQUEST_CODE_GET_JSON);
-
-
             }
         });
         expandableHeightGridView.setExpanded(true);
         expandableHeightGridView.setAdapter(counsellingCardAdapter);
         counsellingCardAdapter.notifyDataSetChanged();
+
+        counsellingCardAdapter.setActivityListener(new ActivityListener() {
+            @Override
+            public void onCallbackActivity(Counselling counselling) {
+              Log.e(TAG, " Callback");
+                mEditCounselling = counselling;
+                Map<String, String> counsellingFormData = counselling.getFormfields();
+                Intent intent = new Intent(ChildImmunizationActivity.this, PathJsonFormActivity.class);
+                String formMetadata;
+
+                formMetadata = JsonFormUtils.getAutoPopulatedJsonEditFormString(ChildImmunizationActivity.this,
+                        counsellingFormData, "iycf_counselling_form_lactating_woman", "Lactating Woman Counselling");
+                //intent = new Intent(WomanImmunizationActivity.this, PathJsonFormActivity.class);
+                intent.putExtra("json", formMetadata);
+                intent.putExtra("skipdialog", true);
+                startActivityForResult(intent, REQUEST_CODE_GET_JSON_COUNSELLING_UPDATE);
+
+            }
+        });
     }
 
     private String getmetaDataForLactatingCounsellingForm(CommonPersonObjectClient pc) {
@@ -784,8 +800,8 @@ public class ChildImmunizationActivity extends BaseActivity
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (requestCode == REQUEST_CODE_GET_JSON) {
-            if (resultCode == RESULT_OK) {
+        if (resultCode == RESULT_OK) {
+            if (requestCode == REQUEST_CODE_GET_JSON) {
 
                 String jsonString = data.getStringExtra("json");
                 Log.d("JSONResult", jsonString);
@@ -796,6 +812,21 @@ public class ChildImmunizationActivity extends BaseActivity
                 JsonFormUtils.saveForm(this, context(), jsonString, allSharedPreferences.fetchRegisteredANM());
                 updateViews();
             }
+            if(requestCode == REQUEST_CODE_GET_JSON_COUNSELLING_UPDATE){
+                String jsonString = data.getStringExtra("json");
+                Log.d("JSONResult", jsonString);
+
+                SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
+                AllSharedPreferences allSharedPreferences = new AllSharedPreferences(preferences);
+                JsonFormUtils.updateCounsellingForm(this, context(), jsonString, allSharedPreferences.fetchRegisteredANM());
+                mEditCounselling.setFormfields(JsonFormUtils.getCouncellingField());
+                VaccinatorApplication.getInstance().counsellingRepository().
+                        update(VaccinatorApplication.getInstance().getRepository().getReadableDatabase(),mEditCounselling);
+            }
+
+
+
+
         }
     }
     protected org.smartregister.Context context() {

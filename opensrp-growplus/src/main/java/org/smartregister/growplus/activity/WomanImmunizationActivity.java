@@ -38,6 +38,7 @@ import org.smartregister.domain.Photo;
 import org.smartregister.growplus.adapter.CounsellingCardAdapter;
 import org.smartregister.growplus.adapter.WomenFollowupRecyclerViewAdapter;
 import org.smartregister.growplus.domain.Counselling;
+import org.smartregister.growplus.listener.ActivityListener;
 import org.smartregister.growplus.repository.CounsellingRepository;
 import org.smartregister.growplus.repository.UniqueIdRepository;
 import org.smartregister.growplus.view.LocationPickerView;
@@ -161,11 +162,6 @@ public class WomanImmunizationActivity extends BaseActivity
 //    private String[] mWomenCounsellingKeys;
 //    private Map<String, String> mWomenCounsellingData;
     private Counselling mEditCounselling;
-
-
-    public interface WomanImmuneActivityListener{
-        void onRequestStartActivity(Counselling counselling);
-    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -686,9 +682,9 @@ public class WomanImmunizationActivity extends BaseActivity
 //        counselling_group.setLayoutParams(layoutParams);
         counsellingCanvas.addView(counselling_group);
         CounsellingCardAdapter counsellingCardAdapter = new CounsellingCardAdapter(this,counsellingList);
-        counsellingCardAdapter.setActivityListener(new WomanImmuneActivityListener(){
+        counsellingCardAdapter.setActivityListener(new ActivityListener(){
             @Override
-            public void onRequestStartActivity(Counselling counselling) {
+            public void onCallbackActivity(Counselling counselling) {
 
                 mEditCounselling = counselling;
                 Map<String, String> counsellingFormData = counselling.getFormfields();
