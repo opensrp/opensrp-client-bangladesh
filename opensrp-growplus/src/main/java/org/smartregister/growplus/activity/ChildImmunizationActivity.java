@@ -6,6 +6,7 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.database.Cursor;
 import android.graphics.drawable.ColorDrawable;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -20,6 +21,7 @@ import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -27,6 +29,8 @@ import android.widget.ScrollView;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
+
+import net.sqlcipher.database.SQLiteDatabase;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.time.DateUtils;
@@ -154,6 +158,10 @@ public class ChildImmunizationActivity extends BaseActivity
     private RegisterClickables registerClickables;
     public DetailsRepository detailsRepository;
     private static final int REQUEST_CODE_GET_JSON_COUNSELLING_UPDATE = 512;
+    private Button mFollowupDetail;
+    private Map<String, String> mChildFollowupData;
+
+    private String[] mChildFollowupKeys;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -195,6 +203,64 @@ public class ChildImmunizationActivity extends BaseActivity
 
         toolbar.init(this);
         setLastModified(false);
+
+
+        mFollowupDetail = (Button) findViewById(R.id.child_followup_details);
+        mFollowupDetail.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                showChildFollowupDetail();
+            }
+        });
+
+        try {
+            showChildFollowupData();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+    }
+    private void showChildFollowupDetail() {
+
+        String formMetadata = JsonFormUtils.getAutoPopulatedJsonEditFormString(this, mChildFollowupData, "child_followup", "Child Member Follow Up");
+
+        Intent intent = new Intent(ChildImmunizationActivity.this, PathJsonFormActivity.class);
+        intent.putExtra("json", formMetadata);
+        startActivityForResult(intent, REQUEST_CODE_GET_JSON);
+        // startActivity(intent);
+    }
+
+    private void showChildFollowupData() throws Exception {
+        //Cursor c = db.rawQuery("SELECT Visit_date, is_pregnant, columnN FROM ec_followup;");
+        SQLiteDatabase database =  VaccinatorApplication.getInstance().getRepository().getReadableDatabase();
+        Log.e(ChildImmunizationActivity.TAG, childDetails.entityId());
+        Cursor cursor =  database.rawQuery("SELECT * FROM ec_followup_child where base_entity_id = '" + childDetails.entityId()+"'", null);
+        // Cursor cursor =  database.rawQuery("SELECT * FROM ec_followup where base_entity_id = '" + childDetails.entityId()+"'", null);
+        mChildFollowupKeys = cursor.getColumnNames();
+        mChildFollowupData = new HashMap<>();
+
+        if (cursor != null) {
+            cursor.moveToFirst();
+            int i;
+            for (i = 0; i < mChildFollowupKeys.length - 1; i++) {
+                String key = mChildFollowupKeys[i];
+                String value = cursor.getString(cursor.getColumnIndex(key));
+                Log.e(ChildImmunizationActivity.class.getSimpleName(), key + ": " + value);
+                mChildFollowupData.put(key, value);
+                //String DestinationDB = cursor.getString(cursor.getColumnIndex("Name"));
+
+            }
+        }
+//
+
+//        Map<String,String> detailmaps = childDetails.getColumnmaps();
+//        detailmaps.putAll(childDetails.getDetails());
+
+        String visitDate = cursor.getString(cursor.getColumnIndex("Visit_date"));
+        //   String visitDate = detailmaps.get("Visit_date");
+        cursor.close();
+
+        ((TextView)findViewById(R.id.child_visit_date)).setText(visitDate);
     }
 
     @Override
@@ -226,6 +292,11 @@ public class ChildImmunizationActivity extends BaseActivity
         serviceGroupCanvasLL.removeAllViews();
 
         updateViews();
+        try {
+            showChildFollowupData();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     private boolean isDataOk() {

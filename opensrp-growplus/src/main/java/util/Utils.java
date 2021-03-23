@@ -26,6 +26,8 @@ import android.widget.EditText;
 import android.widget.TableRow;
 import android.widget.TextView;
 
+import com.vijay.jsonwizard.widgets.DatePickerFactory;
+
 import org.apache.commons.lang3.StringUtils;
 import org.joda.time.DateTime;
 import org.joda.time.LocalDate;
@@ -52,7 +54,15 @@ public class Utils {
 
     private Utils() {
     }
+    public static String getDob(int age) {
 
+        Calendar cal = Calendar.getInstance();
+        cal.add(Calendar.YEAR, -age);
+        cal.set(Calendar.DAY_OF_MONTH, 1);
+        cal.set(Calendar.MONTH, 0);
+
+        return DatePickerFactory.DATE_FORMAT.format(cal.getTime());
+    }
     public static TableRow getDataRow(Context context, String label, String value, TableRow row) {
         TableRow tr = row;
         if (row == null) {

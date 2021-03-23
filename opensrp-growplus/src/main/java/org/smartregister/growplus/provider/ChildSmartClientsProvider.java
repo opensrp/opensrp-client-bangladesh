@@ -248,7 +248,11 @@ public class ChildSmartClientsProvider implements SmartRegisterCLientsProviderFo
             lpv.init(context);
             JsonFormUtils.addHouseholdRegLocHierarchyQuestions(form, context);
             Log.d("add child form", "Form is " + form.toString());
+            Log.d(ChildSmartClientsProvider.class.getSimpleName(), pc.entityId());
             if (form != null) {
+
+                form.put(JsonFormUtils.ENTITY_ID, pc.entityId());
+
                 JSONObject metaDataJson = form.getJSONObject("metadata");
                 JSONObject lookup = metaDataJson.getJSONObject("look_up");
                 lookup.put("entity_id", "mother");

@@ -7,6 +7,13 @@
         "fields": [
           {
             "field": "eventType",
+            "field_value": "Child Member Follow Up",
+            "creates_case": [
+              "ec_followup_child"
+            ]
+          },
+          {
+            "field": "eventType",
             "field_value": "Woman Member Follow Up",
             "creates_case": [
               "ec_followup"

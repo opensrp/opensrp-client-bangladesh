@@ -14,12 +14,15 @@ import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AlertDialog;
 import android.util.Log;
+import android.util.Pair;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.LinearLayout;
 
 import org.apache.commons.lang3.StringUtils;
 import org.json.JSONObject;
 import org.smartregister.adapter.SmartRegisterPaginatedAdapter;
+import org.smartregister.clientandeventmodel.*;
+
 import org.smartregister.domain.FetchStatus;
 import org.smartregister.domain.form.FormSubmission;
 import org.smartregister.event.Event;
@@ -160,8 +163,7 @@ public class ChildSmartRegisterActivity extends BaseRegisterActivity {
             if (mBaseFragment instanceof ChildSmartRegisterFragment) {
                 LocationPickerView locationPickerView = ((ChildSmartRegisterFragment) mBaseFragment).getLocationPickerView();
                 String locationId = JsonFormUtils.getOpenMrsLocationId(context(), locationPickerView.getSelectedItem());
-                JsonFormUtils.startForm(this, context(), REQUEST_CODE_GET_JSON, formName, entityId,
-                        metaData, locationId);
+                JsonFormUtils.startForm(ChildSmartRegisterActivity.this, context(), REQUEST_CODE_GET_JSON, formName, entityId, metaData, locationId);
             }
         } catch (Exception e) {
             Log.e(TAG, Log.getStackTraceString(e));
@@ -196,7 +198,11 @@ public class ChildSmartRegisterActivity extends BaseRegisterActivity {
                 SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
                 AllSharedPreferences allSharedPreferences = new AllSharedPreferences(preferences);
 
-                JsonFormUtils.saveForm(this, context(), jsonString, allSharedPreferences.fetchRegisteredANM());
+                  JsonFormUtils.saveForm(this, context(), jsonString, allSharedPreferences.fetchRegisteredANM());
+//                Pair<Client, org.smartregister.clientandeventmodel.Event> values = JsonFormUtils.processRegistrationForm(context(),allSharedPreferences, jsonString,allSharedPreferences.fetchRegisteredANM(), "child");
+//                System.out.println(values.toString());
+
+
             }
         }
     }
@@ -346,5 +352,55 @@ public class ChildSmartRegisterActivity extends BaseRegisterActivity {
         inputManager.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), HIDE_NOT_ALWAYS);
     }
 
+//    private void saveRegistration(Pair<Client, Event> pair, String jsonString, boolean isEditMode) {
+//        try {
+//            Client baseClient = pair.first;
+//            Event baseEvent = pair.second;
+//            if (baseClient != null) {
+//                JSONObject clientJson = new JSONObject(JsonFormUtils.gson.toJson(baseClient));
+//                if (isEditMode) {
+//                    JsonFormUtils.mergeAndSaveClient(getSyncHelper(), baseClient);
+//                } else {
+//                    getSyncHelper().addClient(baseClient.getBaseEntityId(), clientJson);
+//                }
+//            }
+//            if (baseEvent != null) {
+//                JSONObject eventJson = new JSONObject(JsonFormUtils.gson.toJson(baseEvent));
+//                getSyncHelper().addEvent(baseEvent.getBaseEntityId(), eventJson);
+//            }
+//            if (isEditMode) {
+//                // Unassign current OPENSRP ID
+//                if (baseClient != null) {
+//                    String newOpenSRPId = baseClient.getIdentifier(DBConstants.KEY.Patient_Identifier).replace("-", "");
+//                    String currentOpenSRPId = JsonFormUtils.getString(jsonString, JsonFormUtils.CURRENT_OPENSRP_ID).replace("-", "");
+//                    if (!newOpenSRPId.equals(currentOpenSRPId)) {
+//                        //OPENSRP ID was changed
+//                        getUniqueIdRepository().open(currentOpenSRPId);
+//                    }
+//                }
+//            } else {
+//                if (baseClient != null) {
+//                    String opensrpId = baseClient.getIdentifier(DBConstants.KEY.ANC_ID);
+//                    //mark OPENSRP ID as used
+//                    getUniqueIdRepository().close(opensrpId);
+//                }
+//            }
+//            if (baseClient != null || baseEvent != null) {
+//                String imageLocation = JsonFormUtils.getFieldValue(jsonString, Constants.KEY.PHOTO);
+//                JsonFormUtils.saveImage(baseEvent.getProviderId(), baseClient.getBaseEntityId(), imageLocation);
+//            }
+//            long lastSyncTimeStamp = getAllSharedPreferences().fetchLastUpdatedAtDate(0);
+//            Date lastSyncDate = new Date(lastSyncTimeStamp);
+//            getClientProcessorForJava().processClient(getSyncHelper().getEvents(lastSyncDate, BaseRepository.TYPE_Unsynced));
+//            getAllSharedPreferences().saveLastUpdatedAtDate(lastSyncDate.getTime());
+//            /////////////////////////try this out////////////////
+////            ECSyncHelper ecUpdater = ECSyncHelper.getInstance(AncApplication.getInstance().getApplicationContext());
+////            List<EventClient> events = ecUpdater.allEventClients(lastSyncTimeStamp-1, lastSyncTimeStamp);
+////            AncClientProcessorForJava.getInstance(AncApplication.getInstance().getApplicationContext()).processClient(events);
+//            ////////////////////////////////////////////////////////////////
+//        } catch (Exception e) {
+//            Log.e(TAG, Log.getStackTraceString(e));
+//        }
+//    }
 
 }

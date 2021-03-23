@@ -1,5 +1,85 @@
 {
   "bindobjects": [
+
+    {
+      "name": "ec_followup_child",
+      "columns": [
+        {
+          "column_name": "base_entity_id",
+          "type": "Event",
+          "json_mapping": {
+            "field": "baseEntityId"
+          }
+        },
+        {
+          "column_name": "Visit_date",
+          "type": "Event",
+          "json_mapping": {
+            "field": "obs.fieldCode",
+            "formSubmissionField": "Visit_date"
+          }
+        },
+        {
+          "column_name": "visit_clinic_after_last_meeting",
+          "type": "Event",
+          "json_mapping": {
+            "field": "obs.fieldCode",
+            "formSubmissionField": "visit_clinic_after_last_meeting"
+          }
+        },
+        {
+          "column_name": "next_followup_visit_date",
+          "type": "Event",
+          "json_mapping": {
+            "field": "obs.fieldCode",
+            "formSubmissionField": "next_followup_visit_date"
+          }
+        },
+        {
+          "column_name": "child_nutrition_counseling",
+          "type": "Event",
+          "json_mapping": {
+            "field": "obs.fieldCode",
+            "formSubmissionField": "child_nutrition_counseling"
+          }
+        },
+        {
+          "column_name": "child_distributed_nutrition_materials",
+          "type": "Event",
+          "json_mapping": {
+            "field": "obs.fieldCode",
+            "formSubmissionField": "child_distributed_nutrition_materials"
+          }
+        },
+        {
+          "column_name": "child_ifa_tablets_given",
+          "type": "Event",
+          "json_mapping": {
+            "field": "obs.fieldCode",
+            "formSubmissionField": "child_ifa_tablets_given"
+          }
+        },
+        {
+          "column_name": "child_Vit_A_and_minerals_given",
+          "type": "Event",
+          "json_mapping": {
+            "field": "obs.fieldCode",
+            "formSubmissionField": "child_Vit_A_and_minerals_given"
+          }
+        },
+        {
+          "column_name": "labelBackgroundImage",
+          "type": "Event",
+          "json_mapping": {
+            "field": "obs.fieldCode",
+            "formSubmissionField": "labelBackgroundImage"
+          }
+        }
+      ]
+    },
+
+
+
     {
       "name": "ec_followup",
       "columns": [
