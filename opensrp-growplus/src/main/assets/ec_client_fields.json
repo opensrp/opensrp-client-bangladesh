@@ -159,7 +159,7 @@
           "type": "Event",
           "json_mapping": {
             "field": "obs.fieldCode",
-            "formSubmissionField": "ultrasound_date"
+            "formSubmissionField": "edd"
           }
         },
         {
@@ -167,7 +167,7 @@
           "type": "Event",
           "json_mapping": {
             "field": "obs.fieldCode",
-            "formSubmissionField": "ultrasound_weeks"
+            "formSubmissionField": "ultrasound_date"
           }
         },
         {
@@ -175,7 +175,7 @@
           "type": "Event",
           "json_mapping": {
             "field": "obs.fieldCode",
-            "formSubmissionField": ""
+            "formSubmissionField": "ultrasound_weeks"
           }
         },
         {
