@@ -15,6 +15,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.github.ybq.android.spinkit.style.Circle;
 
@@ -389,7 +390,10 @@ public class ChildSmartRegisterFragment extends BaseSmartRegisterFragment implem
 
             switch (view.getId()) {
                 case R.id.child_profile_info_layout:
-
+                    if (SyncStatusBroadcastReceiver.getInstance().isSyncing()){
+                        Toast.makeText(getActivity(), "Syncing is not finished", Toast.LENGTH_SHORT).show();
+                        return;
+                    }
                     ChildImmunizationActivity.launchActivity(getActivity(), client, null);
                     break;
                 case R.id.record_weight:

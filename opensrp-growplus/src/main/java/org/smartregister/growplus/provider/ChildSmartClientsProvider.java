@@ -29,6 +29,7 @@ import org.smartregister.domain.Alert;
 import org.smartregister.growplus.activity.PathJsonFormActivity;
 import org.smartregister.growplus.application.VaccinatorApplication;
 import org.smartregister.growplus.fragment.HouseholdMemberAddFragment;
+import org.smartregister.growplus.receiver.SyncStatusBroadcastReceiver;
 import org.smartregister.growplus.repository.UniqueIdRepository;
 import org.smartregister.growplus.view.LocationPickerView;
 import org.smartregister.growthmonitoring.domain.Weight;
@@ -167,8 +168,10 @@ public class ChildSmartClientsProvider implements SmartRegisterCLientsProviderFo
         record_weight_text.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-
+                if(SyncStatusBroadcastReceiver.getInstance().isSyncing()){
+                    Toast.makeText((Activity)context, "Syncing is not finished", Toast.LENGTH_SHORT).show();
+                    return;
+                }
                 String metadata = getmetaDataForEditForm(pc);
                 Intent intent = new Intent(context, PathJsonFormActivity.class);
 
