@@ -903,7 +903,7 @@ public class MemberProfileActivity extends BaseProfileActivity implements Profil
                                 public void onClick(DialogInterface dialog, int which) {
                                     try {
 
-                                        mProfilePresenter.startMemberRegistrationForm(Constants.JSON_FORM.MEMBER_REGISTER, null, null, null, householdDetails.entityId());
+                                        mProfilePresenter. startMemberRegistrationForm(Constants.JSON_FORM.MEMBER_REGISTER, null, null, null, householdDetails.entityId());
                                     } catch (Exception e) {
                                         Utils.appendLog(getClass().getName(), e);
                                         e.printStackTrace();

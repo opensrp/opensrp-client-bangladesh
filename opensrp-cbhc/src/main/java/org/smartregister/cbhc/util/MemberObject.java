@@ -9,11 +9,13 @@ import org.apache.commons.lang3.StringUtils;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.smartregister.cbhc.application.AncApplication;
+import org.smartregister.cbhc.model.UnsendData;
 import org.smartregister.cbhc.repository.AncRepository;
 import org.smartregister.commonregistry.CommonPersonObjectClient;
 
 import java.lang.reflect.Member;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -26,6 +28,7 @@ public class MemberObject {
     public static final int type2_RESULT_CODE = 22121;
     Map<String, String> householdDetails;
     private String type;
+
 
     public MemberObject(CommonPersonObjectClient householdDetails, String type) {
         if (householdDetails != null)
@@ -52,7 +55,6 @@ public class MemberObject {
         return object;
 
     }
-
     public JSONObject populateMemberObject(String mhv_id, String mhv_name,String house_hold_viewable_id) {
 
         JSONObject memberObject = new JSONObject();
@@ -92,11 +94,97 @@ public class MemberObject {
         }
         return null;
     }
+    public JSONObject getHHObject(String local_id, String mhv_id, String cc_id, String server_id, String house_hold_id,ArrayList<String> hhArrayList) {
+        JSONObject object = new JSONObject();
+        try {
+            object.put("type", type);
+            object.put("local_id", local_id);
+            object.put("mhv_id", mhv_id);
+            object.put("cc_id", cc_id);
+            object.put("server_id", server_id);
 
-    public void putHouseholdId(final JSONObject memberObject, final String house_hold_id) {
-
-
+            if (type1.equalsIgnoreCase(type))
+                object.put("household", populateHHObject(mhv_id,house_hold_id,hhArrayList));
+        } catch (JSONException e) {
+            e.printStackTrace();
         }
+
+        return object;
+
+    }
+
+    public JSONObject populateHHObject(String mhv_id,String house_hold_id,ArrayList<String> hhArrayList) {
+
+        JSONObject hhObject = new JSONObject();
+        try {
+            //memberObject.put("member_id", getValue("base_entity_id"));
+
+            hhObject.put("mhv_id", mhv_id);
+            hhObject.put("date_month", hhArrayList.get(0));
+            hhObject.put("house_hold_head_name", hhArrayList.get(1));
+            hhObject.put("house_hold_id", house_hold_id);
+            hhObject.put("address", hhArrayList.get(2));
+            hhObject.put("latrine_type", hhArrayList.get(3));
+            hhObject.put("accommodation_type", hhArrayList.get(4));
+            hhObject.put("drinking_water", hhArrayList.get(5));
+            hhObject.put("monthly_expense", hhArrayList.get(6));
+            return hhObject;
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+    public JSONObject getGroupMemberObject(String local_id, String mhv_id, String cc_id, String server_id,CommonPersonObjectClient client) {
+        JSONObject object = new JSONObject();
+        try {
+            object.put("type", type);
+            object.put("local_id", local_id);
+            object.put("mhv_id", mhv_id);
+            object.put("cc_id", cc_id);
+            object.put("server_id", server_id);
+
+            if (type1.equalsIgnoreCase(type))
+                object.put("member", populateGroupMemberObject(mhv_id, client));
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        return object;
+
+    }
+    public JSONObject populateGroupMemberObject(String mhv_id,CommonPersonObjectClient client) {
+
+        JSONObject memberObject = new JSONObject();
+        try {
+            //memberObject.put("member_id", getValue("base_entity_id"));
+            memberObject.put("mhv_id", mhv_id);
+            memberObject.put("first_name", getMemberValue("first_name",client));
+            memberObject.put("last_name", getMemberValue("last_name",client));
+            memberObject.put("date_of_birth", getMemberValue("dob",client));
+            memberObject.put("health_id_card", getMemberValue("Patient_Identifier",client));
+         /*   memberObject.put("is_heart_disease", false);
+            memberObject.put("is_kidney_disease", false);
+            memberObject.put("is_diabetes", getValue("Non Communicable Disease").contains("Diabetes"));
+            memberObject.put("is_pregnant", getValue("PregnancyStatus").equals("Antenatal Period"));
+            memberObject.put("is_child", getAge(getValue("dob")) <= 5);
+            memberObject.put("added_on", getValue("member_Reg_Date"));
+            memberObject.put("monthly_income", 0);
+            memberObject.put("has_health_card", false);
+
+            memberObject.put("nid", getValue("person_nid"));
+            memberObject.put("is_disable", getValue("disable").equals("Yes"));
+            memberObject.put("death_of_death", "");
+            memberObject.put("contact_number", getValue("phone_number"));
+            memberObject.put("profession", Utils.getOccupationIndex(getProfession()));
+            memberObject.put("blood_group", getValue("bloodgroup"));
+            memberObject.put("gender", getValue("gender"));*/
+
+            return memberObject;
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
 
     public String getProfession() {
         String category = getValue("Occupation Category");
@@ -141,6 +229,10 @@ public class MemberObject {
         if (householdDetails != null && householdDetails.containsKey(key))
             return householdDetails.get(key) == null ? "" : householdDetails.get(key);
         return "";
+    }
+    public String getMemberValue(String key, CommonPersonObjectClient client) {
+        String firstName = org.smartregister.util.Utils.getValue(client.getColumnmaps(), key, true);
+        return firstName;
     }
 
 }

@@ -391,9 +391,9 @@ public class JsonFormUtils extends org.smartregister.util.JsonFormUtils {
             formTag.appVersion = BuildConfig.VERSION_CODE;
             formTag.databaseVersion = BuildConfig.DATABASE_VERSION;
 
-            if (encounterType.contains("Household")) {
+            /*if (encounterType.contains("Household")) {
 
-            }
+            }*/
 
             Client baseClient = null;
             if (Utils.notFollowUp(encounterType)) {
@@ -1508,15 +1508,15 @@ public class JsonFormUtils extends org.smartregister.util.JsonFormUtils {
 
 
             ArrayList<String> defaultFacilities = new ArrayList<>();
-            healthFacilities.add("Country");
-            healthFacilities.add("Division");
-            healthFacilities.add("District");
-            healthFacilities.add("Upazilla");
-            healthFacilities.add("Union");
-            healthFacilities.add("Ward");
-            healthFacilities.add("Block");
-            healthFacilities.add("Subunit");
-            healthFacilities.add("EPI center");
+            defaultFacilities.add("Country");
+            defaultFacilities.add("Division");
+            defaultFacilities.add("District");
+            defaultFacilities.add("Upazilla");
+            defaultFacilities.add("Union");
+            defaultFacilities.add("Ward");
+            defaultFacilities.add("Block");
+            defaultFacilities.add("Subunit");
+            defaultFacilities.add("EPI center");
 
 
             List<String> defaultFacility = LocationHelper.getInstance().generateDefaultLocationHierarchy(healthFacilities);

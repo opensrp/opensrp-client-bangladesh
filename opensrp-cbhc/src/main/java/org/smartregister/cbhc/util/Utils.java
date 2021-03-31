@@ -20,6 +20,9 @@ import android.widget.Toast;
 import com.google.common.reflect.TypeToken;
 import com.vijay.jsonwizard.widgets.DatePickerFactory;
 
+import net.sqlcipher.Cursor;
+import net.sqlcipher.database.SQLiteDatabase;
+
 import org.apache.commons.lang3.StringUtils;
 import org.greenrobot.eventbus.EventBus;
 import org.joda.time.DateTime;
@@ -32,6 +35,8 @@ import org.smartregister.cbhc.application.AncApplication;
 import org.smartregister.cbhc.domain.FormLocation;
 import org.smartregister.cbhc.event.BaseEvent;
 import org.smartregister.cbhc.helper.LocationHelper;
+import org.smartregister.cbhc.model.UnsendData;
+import org.smartregister.cbhc.repository.AncRepository;
 import org.smartregister.repository.AllSharedPreferences;
 import org.smartregister.util.AssetHandler;
 import org.smartregister.util.DateUtil;
@@ -60,6 +65,14 @@ import static org.smartregister.util.Log.logError;
 
 public class Utils {
 
+    public static ArrayList<UnsendData> getCmedDataFromRepo(AncRepository repo){
+        ArrayList<UnsendData> unsendDataArrayList = new ArrayList<>();
+        unsendDataArrayList.add(new UnsendData("4c7faea1-d1b0-451c-bb5d-abdafaf58de7","HH"));
+        unsendDataArrayList.add(new UnsendData("f1e2a271-7f17-4382-a643-0401431838cb","HH"));
+        unsendDataArrayList.add(new UnsendData("efc8bd85-6f3c-4515-bfff-2e9d428c6cea","MM"));
+        unsendDataArrayList.add(new UnsendData("7ebacc2f-b8af-40e0-afc8-f7e9840a60ae","MM"));
+        return unsendDataArrayList;
+    }
     public static final int NOFILTER = 8888;
     public static final String DEFAULT_IDENTIFIER = "88888888";
     public static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("dd/MM/yyyy",Locale.ENGLISH);
@@ -129,15 +142,19 @@ public class Utils {
 
         String location = "";
         ArrayList<String>locations = new ArrayList<>();
-        while(getNodeName(upToFacilities)!=null){
-            FormLocation loc = upToFacilities.get(0);
-            locations.add(loc.name);
-            upToFacilities = loc.nodes;
+        if(!upToFacilities.isEmpty()){
+            while(getNodeName(upToFacilities)!=null){
+                FormLocation loc = upToFacilities.get(0);
+                locations.add(loc.name);
+                upToFacilities = loc.nodes;
 
+            }
+            for(int i = locations.size()-2;i>=0;i--){
+                location += locations.get(i) + " ";
+            }
         }
-        for(int i = locations.size()-2;i>=0;i--){
-            location += locations.get(i) + " ";
-        }
+
+
         return location.trim();
     }
     public static String getNodeName(List<FormLocation> loc){

@@ -1,5 +1,6 @@
 package org.smartregister.cbhc.fragment;
 
+import android.annotation.SuppressLint;
 import android.content.ComponentName;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -36,9 +37,11 @@ import net.sqlcipher.database.SQLiteDatabase;
 
 import org.apache.commons.lang3.StringUtils;
 import org.json.JSONObject;
+import org.smartregister.Context;
 import org.smartregister.cbhc.R;
 import org.smartregister.cbhc.activity.BaseRegisterActivity;
 import org.smartregister.cbhc.activity.HomeRegisterActivity;
+import org.smartregister.cbhc.activity.MemberProfileActivity;
 import org.smartregister.cbhc.activity.ProfileActivity;
 import org.smartregister.cbhc.application.AncApplication;
 import org.smartregister.cbhc.contract.RegisterFragmentContract;
@@ -48,6 +51,7 @@ import org.smartregister.cbhc.event.SyncEvent;
 import org.smartregister.cbhc.job.ImageUploadServiceJob;
 import org.smartregister.cbhc.job.PullHealthIdsServiceJob;
 import org.smartregister.cbhc.job.SyncServiceJob;
+import org.smartregister.cbhc.model.UnsendData;
 import org.smartregister.cbhc.provider.RegisterProvider;
 import org.smartregister.cbhc.receiver.SyncStatusBroadcastReceiver;
 import org.smartregister.cbhc.repository.AncRepository;
@@ -58,7 +62,9 @@ import org.smartregister.cbhc.util.DBConstants;
 import org.smartregister.cbhc.util.MemberObject;
 import org.smartregister.cbhc.util.NetworkUtils;
 import org.smartregister.cbhc.util.Utils;
+import org.smartregister.commonregistry.CommonPersonObject;
 import org.smartregister.commonregistry.CommonPersonObjectClient;
+import org.smartregister.commonregistry.CommonRepository;
 import org.smartregister.configurableviews.model.Field;
 import org.smartregister.cursoradapter.RecyclerViewFragment;
 import org.smartregister.cursoradapter.RecyclerViewPaginatedAdapter;
@@ -69,14 +75,22 @@ import org.smartregister.repository.AllSharedPreferences;
 import org.smartregister.view.activity.SecuredNativeSmartRegisterActivity;
 import org.smartregister.view.dialog.DialogOption;
 
+import java.io.Serializable;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 import java.util.Set;
 
+import timber.log.Timber;
+
 import static android.app.Activity.RESULT_OK;
+import static org.smartregister.cbhc.fragment.ProfileOverviewFragment.EXTRA_HOUSEHOLD_DETAILS;
+import static org.smartregister.cbhc.util.Constants.EventType.PREGNANT_STATUS;
 
 /**
  * Created by keyman on 26/06/2018.
@@ -99,6 +113,7 @@ public abstract class BaseRegisterFragment extends RecyclerViewFragment implemen
     protected RelativeLayout filterRelativeLayout;
     protected MenuItem menuItem;
     protected String registerCondition;
+    String typeofMember;
     protected View.OnKeyListener hideKeyboard = new View.OnKeyListener() {
 
         @Override
@@ -205,14 +220,115 @@ public abstract class BaseRegisterFragment extends RecyclerViewFragment implemen
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
         AllSharedPreferences allSharedPreferences = new AllSharedPreferences(preferences);
         String anm_name = allSharedPreferences.fetchRegisteredANM();
-        String provider_name = allSharedPreferences.getPreference(anm_name);  String cc_id = allSharedPreferences.fetchDefaultTeamId(anm_name);
+        final String provider_name = allSharedPreferences.getPreference(anm_name);
+        final String cc_id = allSharedPreferences.fetchDefaultTeamId(anm_name);
+        final String local_id = allSharedPreferences.fetchDefaultLocalityId(anm_name);
         String cc_name = allSharedPreferences.fetchDefaultTeam(anm_name);
 //        String cc_address = allSharedPreferences.fetchCurrentLocality();
         String cc_address = "";
 
+        final MemberObject mo = new MemberObject(null,MemberObject.type1);
+        final MemberObject hho = new MemberObject(null,MemberObject.type1);
 
-        MemberObject mo = new MemberObject(null,MemberObject.type1);
-        JSONObject jsonObject = mo.getMemberObject(anm_name,provider_name,cc_id,cc_name,cc_address,"");
+        org.smartregister.util.Utils.startAsyncTask(new AsyncTask() {
+            String date_month = "";
+            String house_hold_head_name = "";
+            String address = "";
+            String latrine_type = "";
+            String accommodation_type = "";
+            String drinking_water = "";
+            String monthly_expense = "";
+            ArrayList<JSONObject> hhJsonArrayList = null;
+            ArrayList<JSONObject> mmJsonArrayList = null;
+            ArrayList<String> hhArrayList = null;
+            ArrayList<String> mmArrayList = null;
+
+
+            @Override
+            protected Object doInBackground(Object[] objects) {
+                AncRepository repo = (AncRepository) AncApplication.getInstance().getRepository();
+                SQLiteDatabase db = repo.getReadableDatabase();
+                ArrayList<UnsendData> unsendDataList = Utils.getCmedDataFromRepo(repo);
+                for(UnsendData unsendData : unsendDataList){
+                    if(unsendData.getType().equals("HH")){
+                        String sql = "select last_interacted_with, first_name, last_name, person_address, latrine_structure, household_type, water_source, Monthly_Expenditure from ec_household where base_entity_id='"+unsendData.getBaseEntityId()+"'";
+                        //               String sql = "SELECT VALUE FROM ec_details WHERE (KEY = 'lmp_date' OR KEY = 'LMP') AND base_entity_id = '" + entity_id + "'";
+                        net.sqlcipher.Cursor cursor = db.rawQuery(sql, new String[]{});
+                        try {
+                            if (cursor.moveToNext()) {
+                                date_month = cursor.getString(0);
+                                house_hold_head_name = cursor.getString(1) + " " + cursor.getString(2);
+                                address = cursor.getString(3);
+                                latrine_type = cursor.getString(4);
+                                accommodation_type = cursor.getString(5);
+                                drinking_water = cursor.getString(6);
+                                monthly_expense = cursor.getString(7);
+                                String[] strs = {date_month,house_hold_head_name,address,latrine_type,accommodation_type,drinking_water,monthly_expense};
+                                hhArrayList.addAll(Arrays.asList(strs));
+                                JSONObject jsonObject = hho.getHHObject(local_id,provider_name,cc_id,"",unsendData.getBaseEntityId(),hhArrayList);
+                                hhJsonArrayList.add(jsonObject);
+                                Toast.makeText(getContext(), "hhListJson:"+(CharSequence) hhJsonArrayList, Toast.LENGTH_SHORT).show();
+                            }
+                        } catch (Exception e) {
+                            Utils.appendLog(getClass().getName(), e);
+
+                        } finally {
+                            cursor.close();
+                        }
+                    }else if(unsendData.getType().equals("MM")){
+                        CommonPersonObjectClient pClient = null;
+                        String query = "select * from ec_member where base_entity_id='"+unsendData.getBaseEntityId()+"'";
+                        CommonRepository commonRepository = context().commonrepository("ec_member");
+                        Cursor cursor = null;
+                        try {
+                            //cursor = CoreChwApplication.getInstance().getRepository().getReadableDatabase().rawQuery(query, new String[]{});
+                            cursor = commonRepository.rawCustomQueryForAdapter(query);
+                            if (cursor != null && cursor.moveToFirst()) {
+                                CommonPersonObject personObject = commonRepository.readAllcommonforCursorAdapter(cursor);
+                                //personObject.setCaseId(baseEntityId);
+                                pClient = new CommonPersonObjectClient(personObject.getCaseId(),
+                                        personObject.getDetails(), "");
+                                pClient.setColumnmaps(personObject.getColumnmaps());
+                                JSONObject jsonObject = mo.getGroupMemberObject(local_id,provider_name,cc_id,"",pClient);
+                                mmJsonArrayList.add(jsonObject);
+                                Toast.makeText(getContext(), "mmListJson:"+(CharSequence) hhJsonArrayList, Toast.LENGTH_SHORT).show();
+
+                            }
+                        } catch (Exception ex) {
+                            ex.printStackTrace();
+                        } finally {
+                            if (cursor != null) {
+                                cursor.close();
+                            }
+                        }
+
+                    }
+                }
+
+
+                return null;
+            }
+
+            @Override
+            protected void onPostExecute(Object o) {
+                super.onPostExecute(o);
+                if(appInstalledOrNot("com.example.testapplication")) {
+
+                    Intent intent = new Intent();
+                    intent.setClassName("com.example.testapplication", "com.example.testapplication.MainActivity");
+                    intent.putExtra("unsendhhlist",hhJsonArrayList);
+                    intent.putExtra("unsendmemberList", mmJsonArrayList);
+                    startActivity(intent);
+                    Toast.makeText(getContext(), "mmListJson:"+(CharSequence) hhJsonArrayList, Toast.LENGTH_SHORT).show();
+
+                }else{
+                    Toast.makeText(getContext(), "Application not installed", Toast.LENGTH_SHORT).show();
+                }
+
+            }
+        },null);
+
+        /*JSONObject jsonObject = mo.getMemberObject(anm_name,provider_name,cc_id,cc_name,cc_address,"");
 
         if(appInstalledOrNot("com.cmed.mhv")){
             Intent intent = new Intent();
@@ -222,7 +338,10 @@ public abstract class BaseRegisterFragment extends RecyclerViewFragment implemen
             startActivityForResult(intent,MemberObject.type1_RESULT_CODE);
         }else{
             Toast.makeText(getActivity(), "Application not installed", Toast.LENGTH_SHORT).show();
-        }
+        }*/
+
+
+
 
     }
 
