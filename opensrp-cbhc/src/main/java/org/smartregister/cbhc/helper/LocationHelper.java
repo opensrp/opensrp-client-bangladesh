@@ -238,7 +238,7 @@ public class LocationHelper {
         List<FormLocation> formLocationList = new ArrayList<>();
         try {
             LinkedHashMap<String, TreeNode<String, Location>> map = map();
-            if (!Utils.isEmptyMap(map)) {
+            if (Utils.isEmptyMap(map)) {
                 for (Map.Entry<String, TreeNode<String, Location>> entry : map.entrySet()) {
                     List<FormLocation> foundLocationList = getFormJsonData(entry.getValue(), allowedLevels);
                     if (!Utils.isEmptyCollection(foundLocationList)) {
