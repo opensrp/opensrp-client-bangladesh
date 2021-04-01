@@ -18,6 +18,7 @@ import android.preference.PreferenceManager;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
+import android.text.TextUtils;
 import android.text.method.HideReturnsTransformationMethod;
 import android.text.method.PasswordTransformationMethod;
 import android.util.Log;
@@ -99,6 +100,18 @@ public class LoginActivity extends AppCompatActivity implements LoginContract.Vi
             ActivityCompat.requestPermissions(this,
                     new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_EXTERNAL_STORAGE},
                     REQUEST_WRITE_STORAGE);
+        }
+        if(getIntent()!=null){
+            String cmedAction = getIntent().getAction();
+            if(!TextUtils.isEmpty(cmedAction) && cmedAction.equalsIgnoreCase(Constants.CMED_KEY.CMED_ACTION)){
+                Constants.CMED_KEY.IS_FROM_CMED = true;
+                String userId = getIntent().getStringExtra(Constants.CMED_KEY.USER_NAME);
+                String passWord = getIntent().getStringExtra(Constants.CMED_KEY.USER_PASSWORD);
+                userNameEditText.setText(userId);
+                passwordEditText.setText(passWord);
+                mLoginPresenter.attemptLogin(userId,passWord);
+            }
+
         }
 
     }
@@ -204,6 +217,11 @@ public class LoginActivity extends AppCompatActivity implements LoginContract.Vi
         if (remote) {
             Utils.startAsyncTask(new SaveTeamLocationsTask(), null);
         }
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
+        AllSharedPreferences allSharedPreferences = new AllSharedPreferences(preferences);
+        allSharedPreferences.savePreference(Constants.CMED_KEY.USER_NAME,userNameEditText.getText().toString());
+        allSharedPreferences.savePreference(Constants.CMED_KEY.USER_PASSWORD,passwordEditText.getText().toString());
+
         Intent intent = new Intent(this, HomeRegisterActivity.class);
         intent.putExtra(Constants.IS_REMOTE_LOGIN, remote);
         startActivity(intent);

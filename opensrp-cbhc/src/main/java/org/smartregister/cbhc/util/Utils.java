@@ -60,6 +60,8 @@ import static org.smartregister.util.Log.logError;
 
 public class Utils {
 
+
+
     public static final int NOFILTER = 8888;
     public static final String DEFAULT_IDENTIFIER = "88888888";
     public static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("dd/MM/yyyy",Locale.ENGLISH);
@@ -146,77 +148,77 @@ public class Utils {
     }
     public static int getOccupationIndex(String profession){
         String openmrs_choice_ids[]= {
-                    "ইঞ্জিনিয়ার : Engineer",
-                    "বিজ্ঞানী : Physical scientist and relevant technicians",
-                    "অর্থনীতিবিদ : Economist",
-                    "পরিসংখ্যানবিদ, গণিতবিদ, সিস্টেম এনালিস্ট এবং এতদসম্পকিত কর্মী : Statistician, Mathematician, System Analyst and Relevant",
-                    "লেখক, সাংবাদিক এবং এতদসম্পর্কিত কর্মী : Writer, Journalist and Relevant",
-                    "বিমান এবং জাহাজের কর্মকর্তা : Officer of Airplane and Ship",
-                    "চিকিৎসক, দন্ত চিকিৎসক ও প্রাণী চিকিৎসক : Medical doctor, Dentist & Veterinary",
-                    "নার্স এবং চিকিৎসা-সংক্রান্ত অন্যান্য কর্মী :  Nurse and treatment related other stuffs",
-                    "অভিনয়, কণ্ঠশিল্পী এবং নৃত্য শিল্পী : Acting, Singing and Dancing",
-                    "খেলোয়াড় এবং এতদসম্পর্কিত কর্মী : Player and Relevant",
-                    "হিসাব রক্ষক : Accountant",
-                    "বিচারক : Judge",
-                    "শিক্ষক : Teacher",
-                    "আইনজীবী : Lawyer",
-                    "ম্যানেজার : Manager",
-                    "সরকারী কর্মকর্তা : Government Executive Officer",
-                    "কৃষি খামার ব্যবস্থাপক ও তত্বাবধায়ক : Agricultural Farm Manager and Supervisor",
-                    "করণীক (কেরাণী) : Clerk",
-                    "টাইপিস্ট/স্টেনোগ্রাফার/কম্পিউটার অপারেটর : Typist, Stenographer & Computer Operator",
-                    "রেকর্ড কিপার,ক্যাশিয়ার এবং এতদসম্পর্কিত কর্মী : Record Keeper, Cashier & Relevant",
-                    "কম্পিউটার সম্পর্কিত কর্মী : Computer Relevant Worker",
-                    "পেশাগত, কারিগরি এবং অন্যান্য অশ্রেণীভুক্ত এতদসম্পর্কিত কর্মী : Occupational, Technical and other non categorized worker",
-                    "চিঠিপত্র বিলিকারী : Postman",
-                    "টেলিফোন ও টেলিগ্রাফ অপারেটর : Telephone and Telegraph Operator",
-                    "অশ্রেণীভুক্ত দাপ্তরিক কাজ : Non-categorized Clerical Worker",
-                    "ভ্রমণ সংক্রান্ত কাজে নিয়োজিত কর্মী : Travelling Related Worker",
-                    "উৎপাদন তত্ত্বাবধায়ক এবং ফোরম্যান : Production Supervisor & Foreman",
-                    "ধর্মীয় কর্মী : Religious Worker",
-                    "অশ্রেণীভুক্ত সেবা কর্মী : Non-categorized Service Provider",
-                    "বনকর্মী : Forester",
-                    "বৈদ্যুতিক কর্মী : Electrician",
-                    "বৈদ্যুতিক ব্যতীত অন্যান্য মেশিন কর্মী : Machine Worker Other Then Electric",
-                    "স্বর্ণকার : Goldsmith",
-                    "গাড়ির চালক : Driver",
-                    "বাবুর্চি, হোটেল বয় এবং এতদসম্পর্কিত সম্পর্কিত কর্মী : Cook, Waiter & Relevant Worker",
-                    "অশ্রেণীভুক্ত বিক্রয় কর্মী : Non-categorized Sales Worker",
-                    "যানবাহন ও যোগাযোগ তত্ত্বাবধায়ক : Vehicle & Communication Supervisor",
-                    "গাড়ির কন্ডাক্টর : Car conductor",
-                    "শব্দ প্রচারকর্মী ও চলচ্চিত্র প্রদর্শনকারী : Announcer & Cinema Exhibitor",
-                    "নিরাপত্তা কর্মী : Guard",
-                    "দোকানদার : Shopkeeper",
-                    "ধোপার কাজ : Fuller",
-                    "খনন কর্মী ও খননকারী : Excavation and Digging",
-                    "ধাতু প্রক্রিয়াকারী : Metal Processing",
-                    "রাসায়নিক দ্রব্য প্রক্রিয়াকারী : Chemical Material Processing",
-                    "খাদ্য ও পানীয় প্রক্রিয়া কারী : Food & Drink Processing",
-                    "তামাক প্রক্রিয়াকারী : Tobacco Processing",
-                    "চামড়া প্রক্রিয়াকরণ :  Leather Processing",
-                    "জুতা ও চামড়াজাত দ্রব্য প্রস্তুতকারী : Shoe & Lather Product Producer",
-                    "রাবার ও প্লাস্টিক দ্রব্য প্রস্তুতকারী : Rubber & Plastic Material Producer",
-                    "কাগজ ও কাগজের বোর্ড প্রস্তুতকারী : Paper & Paper Board Producer",
-                    "মুদ্রণ কাজ : Printing",
-                    "কর্মকার, ঢালাই কর্মী ও যন্ত্রাংশ প্রস্তুতকারী : Smith, Welding Worker & Machinery Parts Producer",
-                    "পাথর কাটা ও প্রক্রিয়কারী : Mason",
-                    "পানি ও পয়ঃনিষ্কাশন কাঠামো নির্মাণকারী : Plumber",
-                    "বজ্য ব্যবস্থাপনা কর্মী : Corporate management staff",
-                    "ধাতু ঝালাইকারী : Metal Welder",
-                    "অকৃষি শ্রমিক : Non-agricultural Worker",
-                    "কৃষি শ্রমিক : Agricultural Worker",
-                    "কাঠ মিস্ত্রি : Carpenter",
-                    "দর্জি ও অন্যান্য সেলাই কর্মী : Tailor & Relevant",
-                    "গ্লাস ও মাটির জিনিস প্রস্তুতকারী : Glass Maker & Potter",
-                    "তাঁতি কাপড় বোনা ও রং করা : Weaving & Painting",
-                    "জেলে, শিকারী এবং এতদসম্পর্কিত কর্মী : Fisherman, Hunter and Relevant",
-                    "ফেরিওয়ালা : Hawker",
-                    "পাইকারী ও খুচরা ব্যবসা : Retail & Wholesale",
-                    "বীমা, রিয়েল এস্টেট ব্যবসা এবং এতদসম্পর্কিত সেবা বিক্রেতা : Insurance, Real State and Relevant Service Seller",
-                    "হোটেল মালিক : Hotel Owner",
-                    "পোল্ট্রি মালিক : Poultry owner",
-                    "অশ্রেণীভুক্ত গৃহপরিচারিকা : Non-categorized Housemaid",
-                    "বাড়ির কেয়ারটেকার, ঝাড়ুদার এবং এতদসম্পর্কিত কর্মী : House Caretaker, Sweeper & Relevant Worker"
+                "ইঞ্জিনিয়ার : Engineer",
+                "বিজ্ঞানী : Physical scientist and relevant technicians",
+                "অর্থনীতিবিদ : Economist",
+                "পরিসংখ্যানবিদ, গণিতবিদ, সিস্টেম এনালিস্ট এবং এতদসম্পকিত কর্মী : Statistician, Mathematician, System Analyst and Relevant",
+                "লেখক, সাংবাদিক এবং এতদসম্পর্কিত কর্মী : Writer, Journalist and Relevant",
+                "বিমান এবং জাহাজের কর্মকর্তা : Officer of Airplane and Ship",
+                "চিকিৎসক, দন্ত চিকিৎসক ও প্রাণী চিকিৎসক : Medical doctor, Dentist & Veterinary",
+                "নার্স এবং চিকিৎসা-সংক্রান্ত অন্যান্য কর্মী :  Nurse and treatment related other stuffs",
+                "অভিনয়, কণ্ঠশিল্পী এবং নৃত্য শিল্পী : Acting, Singing and Dancing",
+                "খেলোয়াড় এবং এতদসম্পর্কিত কর্মী : Player and Relevant",
+                "হিসাব রক্ষক : Accountant",
+                "বিচারক : Judge",
+                "শিক্ষক : Teacher",
+                "আইনজীবী : Lawyer",
+                "ম্যানেজার : Manager",
+                "সরকারী কর্মকর্তা : Government Executive Officer",
+                "কৃষি খামার ব্যবস্থাপক ও তত্বাবধায়ক : Agricultural Farm Manager and Supervisor",
+                "করণীক (কেরাণী) : Clerk",
+                "টাইপিস্ট/স্টেনোগ্রাফার/কম্পিউটার অপারেটর : Typist, Stenographer & Computer Operator",
+                "রেকর্ড কিপার,ক্যাশিয়ার এবং এতদসম্পর্কিত কর্মী : Record Keeper, Cashier & Relevant",
+                "কম্পিউটার সম্পর্কিত কর্মী : Computer Relevant Worker",
+                "পেশাগত, কারিগরি এবং অন্যান্য অশ্রেণীভুক্ত এতদসম্পর্কিত কর্মী : Occupational, Technical and other non categorized worker",
+                "চিঠিপত্র বিলিকারী : Postman",
+                "টেলিফোন ও টেলিগ্রাফ অপারেটর : Telephone and Telegraph Operator",
+                "অশ্রেণীভুক্ত দাপ্তরিক কাজ : Non-categorized Clerical Worker",
+                "ভ্রমণ সংক্রান্ত কাজে নিয়োজিত কর্মী : Travelling Related Worker",
+                "উৎপাদন তত্ত্বাবধায়ক এবং ফোরম্যান : Production Supervisor & Foreman",
+                "ধর্মীয় কর্মী : Religious Worker",
+                "অশ্রেণীভুক্ত সেবা কর্মী : Non-categorized Service Provider",
+                "বনকর্মী : Forester",
+                "বৈদ্যুতিক কর্মী : Electrician",
+                "বৈদ্যুতিক ব্যতীত অন্যান্য মেশিন কর্মী : Machine Worker Other Then Electric",
+                "স্বর্ণকার : Goldsmith",
+                "গাড়ির চালক : Driver",
+                "বাবুর্চি, হোটেল বয় এবং এতদসম্পর্কিত সম্পর্কিত কর্মী : Cook, Waiter & Relevant Worker",
+                "অশ্রেণীভুক্ত বিক্রয় কর্মী : Non-categorized Sales Worker",
+                "যানবাহন ও যোগাযোগ তত্ত্বাবধায়ক : Vehicle & Communication Supervisor",
+                "গাড়ির কন্ডাক্টর : Car conductor",
+                "শব্দ প্রচারকর্মী ও চলচ্চিত্র প্রদর্শনকারী : Announcer & Cinema Exhibitor",
+                "নিরাপত্তা কর্মী : Guard",
+                "দোকানদার : Shopkeeper",
+                "ধোপার কাজ : Fuller",
+                "খনন কর্মী ও খননকারী : Excavation and Digging",
+                "ধাতু প্রক্রিয়াকারী : Metal Processing",
+                "রাসায়নিক দ্রব্য প্রক্রিয়াকারী : Chemical Material Processing",
+                "খাদ্য ও পানীয় প্রক্রিয়া কারী : Food & Drink Processing",
+                "তামাক প্রক্রিয়াকারী : Tobacco Processing",
+                "চামড়া প্রক্রিয়াকরণ :  Leather Processing",
+                "জুতা ও চামড়াজাত দ্রব্য প্রস্তুতকারী : Shoe & Lather Product Producer",
+                "রাবার ও প্লাস্টিক দ্রব্য প্রস্তুতকারী : Rubber & Plastic Material Producer",
+                "কাগজ ও কাগজের বোর্ড প্রস্তুতকারী : Paper & Paper Board Producer",
+                "মুদ্রণ কাজ : Printing",
+                "কর্মকার, ঢালাই কর্মী ও যন্ত্রাংশ প্রস্তুতকারী : Smith, Welding Worker & Machinery Parts Producer",
+                "পাথর কাটা ও প্রক্রিয়কারী : Mason",
+                "পানি ও পয়ঃনিষ্কাশন কাঠামো নির্মাণকারী : Plumber",
+                "বজ্য ব্যবস্থাপনা কর্মী : Corporate management staff",
+                "ধাতু ঝালাইকারী : Metal Welder",
+                "অকৃষি শ্রমিক : Non-agricultural Worker",
+                "কৃষি শ্রমিক : Agricultural Worker",
+                "কাঠ মিস্ত্রি : Carpenter",
+                "দর্জি ও অন্যান্য সেলাই কর্মী : Tailor & Relevant",
+                "গ্লাস ও মাটির জিনিস প্রস্তুতকারী : Glass Maker & Potter",
+                "তাঁতি কাপড় বোনা ও রং করা : Weaving & Painting",
+                "জেলে, শিকারী এবং এতদসম্পর্কিত কর্মী : Fisherman, Hunter and Relevant",
+                "ফেরিওয়ালা : Hawker",
+                "পাইকারী ও খুচরা ব্যবসা : Retail & Wholesale",
+                "বীমা, রিয়েল এস্টেট ব্যবসা এবং এতদসম্পর্কিত সেবা বিক্রেতা : Insurance, Real State and Relevant Service Seller",
+                "হোটেল মালিক : Hotel Owner",
+                "পোল্ট্রি মালিক : Poultry owner",
+                "অশ্রেণীভুক্ত গৃহপরিচারিকা : Non-categorized Housemaid",
+                "বাড়ির কেয়ারটেকার, ঝাড়ুদার এবং এতদসম্পর্কিত কর্মী : House Caretaker, Sweeper & Relevant Worker"
         };
         int index = -1;
         if(!StringUtils.isEmpty(profession)){
@@ -253,7 +255,7 @@ public class Utils {
                 duration = new DateTime(date);
                 return DateUtil.getDuration(duration);
             } catch (Exception e) {
-Utils.appendLog(Utils.class.getName(),e);
+                Utils.appendLog(Utils.class.getName(),e);
                 Log.e(TAG, e.toString(), e);
             }
         }
@@ -298,7 +300,7 @@ Utils.appendLog(Utils.class.getName(),e);
                 inputMethodManager.hideSoftInputFromWindow(view.getWindowToken(), 0);
             }
         } catch (Exception e) {
-Utils.appendLog(Utils.class.getName(),e);
+            Utils.appendLog(Utils.class.getName(),e);
             logError("Error encountered while hiding keyboard " + e);
         }
     }

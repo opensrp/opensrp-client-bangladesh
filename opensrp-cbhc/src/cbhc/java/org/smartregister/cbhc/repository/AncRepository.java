@@ -15,8 +15,6 @@ import org.smartregister.domain.db.Column;
 import org.smartregister.repository.EventClientRepository;
 import org.smartregister.repository.Repository;
 
-import java.util.Date;
-
 
 /**
  * Created by ndegwamartin on 09/04/2018.
@@ -80,14 +78,14 @@ public class AncRepository extends Repository {
                 case 4:
                     upgradeToVersion4(db);
                     break;
-                case 5:
-                    upgradeToVersion5(db);
-                    break;
                 case 6:
                     upgradeToVersion6(db);
                     break;
                 case 7:
                     upgradeToVersion7(db);
+                    break;
+                case 8:
+                    upgradeToVersion8(db);
                     break;
                 default:
                     break;
@@ -371,9 +369,8 @@ public class AncRepository extends Repository {
 
     }
 
-    private void upgradeToVersion5(SQLiteDatabase db) {
+    private void upgradeToVersion8(SQLiteDatabase db) {
 
-
+        UnSendDataRepository.createTable(db);
     }
 }
-

@@ -33,7 +33,12 @@ public abstract class Constants {
         public static final String LOGIN = "login";
         public static final String HOME_REGISTER = "home_register";
     }
-
+    public static final class CMED_KEY{
+        public static final String USER_NAME = "user_name";
+        public static final String USER_PASSWORD = "password_string";
+        public static final String CMED_ACTION = "android.intent.action.CMED";
+        public static boolean IS_FROM_CMED = false;
+    }
     public static final class EventType {
         public static final String HouseholdREGISTRATION = "Household Registration";
         public static final String UPDATE_Household_REGISTRATION = "Update Household Registration";
