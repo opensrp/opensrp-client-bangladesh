@@ -104,6 +104,7 @@ public abstract class BaseRegisterFragment extends RecyclerViewFragment implemen
     public static final String CLICK_VIEW_SYNC = "click_view_sync";
     public static final String CLICK_VIEW_ATTENTION_FLAG = "click_view_attention_flag";
     private static final String TAG = BaseRegisterFragment.class.getCanonicalName();
+    private static final int CMED_REQUEST_CODE = 5555 ;
     public static String TOOLBAR_TITLE = BaseRegisterActivity.class.getPackage() + ".toolbarTitle";
     protected RegisterActionHandler registerActionHandler = new RegisterActionHandler();
     protected RegisterFragmentContract.Presenter presenter;
@@ -243,6 +244,11 @@ public abstract class BaseRegisterFragment extends RecyclerViewFragment implemen
             ArrayList<String> hhArrayList = null;
             ArrayList<String> mmArrayList = null;
 
+            @Override
+            protected void onPreExecute() {
+                super.onPreExecute();
+                showProgressView();
+            }
 
             @Override
             protected Object doInBackground(Object[] objects) {
@@ -250,7 +256,7 @@ public abstract class BaseRegisterFragment extends RecyclerViewFragment implemen
                 SQLiteDatabase db = repo.getReadableDatabase();
                 ArrayList<UnsendData> unsendDataList = Utils.getCmedDataFromRepo(repo);
                 for(UnsendData unsendData : unsendDataList){
-                    if(unsendData.getType().equals("HH")){
+                    if(unsendData.getType().equals(Constants.CMED_KEY.HH_TYPE)){
                         String sql = "select last_interacted_with, first_name, last_name, person_address, latrine_structure, household_type, water_source, Monthly_Expenditure from ec_household where base_entity_id='"+unsendData.getBaseEntityId()+"'";
                         //               String sql = "SELECT VALUE FROM ec_details WHERE (KEY = 'lmp_date' OR KEY = 'LMP') AND base_entity_id = '" + entity_id + "'";
                         net.sqlcipher.Cursor cursor = db.rawQuery(sql, new String[]{});
@@ -275,7 +281,7 @@ public abstract class BaseRegisterFragment extends RecyclerViewFragment implemen
                         } finally {
                             cursor.close();
                         }
-                    }else if(unsendData.getType().equals("MM")){
+                    }else if(unsendData.getType().equals(Constants.CMED_KEY.MM_TYPE)){
                         CommonPersonObjectClient pClient = null;
                         String query = "select * from ec_member where base_entity_id='"+unsendData.getBaseEntityId()+"'";
                         CommonRepository commonRepository = context().commonrepository("ec_member");
@@ -312,13 +318,11 @@ public abstract class BaseRegisterFragment extends RecyclerViewFragment implemen
             @Override
             protected void onPostExecute(Object o) {
                 super.onPostExecute(o);
+                hideProgressView();
                 if(appInstalledOrNot("com.example.testapplication")) {
 
-                    Intent intent = new Intent();
-                    intent.setClassName("com.example.testapplication", "com.example.testapplication.MainActivity");
-                    intent.putExtra("unsendhhlist",hhJsonArrayList);
-                    intent.putExtra("unsendmemberList", mmJsonArrayList);
-                    startActivity(intent);
+                    Intent intent = Utils.passToMHVAPp(hhJsonArrayList,mmJsonArrayList,getActivity());
+                    startActivityForResult(intent,CMED_REQUEST_CODE);
                     Toast.makeText(getContext(), "mmListJson:"+(CharSequence) hhJsonArrayList, Toast.LENGTH_SHORT).show();
 
                 }else{
@@ -351,6 +355,11 @@ public abstract class BaseRegisterFragment extends RecyclerViewFragment implemen
         if (requestCode == MemberObject.type1_RESULT_CODE && resultCode == RESULT_OK) {
             Toast.makeText(getActivity(),"Successfully group activity done:"+data,Toast.LENGTH_LONG).show();
             return;
+        }
+        else if(requestCode == CMED_REQUEST_CODE && resultCode == RESULT_OK){
+            if(getActivity()!=null && !getActivity().isFinishing()){
+                Toast.makeText(getActivity(),"Successfully send to MHV app",Toast.LENGTH_SHORT).show();
+            }
         }
     }
 

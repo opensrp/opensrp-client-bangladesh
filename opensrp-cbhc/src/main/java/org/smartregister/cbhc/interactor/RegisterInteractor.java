@@ -14,8 +14,10 @@ import org.smartregister.cbhc.domain.FollowupForm;
 import org.smartregister.cbhc.domain.UniqueId;
 import org.smartregister.cbhc.event.PatientRemovedEvent;
 import org.smartregister.cbhc.helper.ECSyncHelper;
+import org.smartregister.cbhc.model.UnsendData;
 import org.smartregister.cbhc.repository.FollowupRepository;
 import org.smartregister.cbhc.repository.HealthIdRepository;
+import org.smartregister.cbhc.repository.UnSendDataRepository;
 import org.smartregister.cbhc.repository.UniqueIdRepository;
 import org.smartregister.cbhc.sync.AncClientProcessorForJava;
 import org.smartregister.cbhc.util.AppExecutors;
@@ -290,10 +292,29 @@ public class RegisterInteractor implements RegisterContract.Interactor {
                     FollowupRepository followupFormRepository = new FollowupRepository(AncApplication.getInstance().getRepository());
                     followupFormRepository.saveForm(followupForm);
                 }
+                if(Constants.CMED_KEY.IS_FROM_CMED && encounter_type != null) {
+                    UnsendData unsendData = new UnsendData();
+                    if (encounter_type.equalsIgnoreCase(Constants.EventType.HouseholdREGISTRATION)) {
+                        unsendData = new UnsendData(base_entity_id, Constants.CMED_KEY.HH_TYPE);
+                    }else if(encounter_type.equalsIgnoreCase(Constants.EventType.MemberREGISTRATION) ||
+                            encounter_type.equalsIgnoreCase(Constants.EventType.WomanMemberREGISTRATION) ||
+                            encounter_type.equalsIgnoreCase(Constants.EventType.Child_REGISTRATION)) {
+                        unsendData = new UnsendData(base_entity_id, Constants.CMED_KEY.MM_TYPE);
+                    }
+
+                    unsendData.setLastInteractedDate(System.currentTimeMillis());
+                    unsendData.setSend(false);
+                    UnSendDataRepository unSendDataRepository = new UnSendDataRepository(AncApplication.getInstance().getRepository());
+                    unSendDataRepository.saveData(unsendData);
+                    }
+
+
             } catch (Exception e) {
                 Utils.appendLog(getClass().getName(), e);
 
             }
+            //save for unsend data
+            UnsendData unsendData = new UnsendData();
 
         } catch (Exception e) {
             Utils.appendLog(getClass().getName(), e);

@@ -95,30 +95,16 @@ public class MemberObject {
         return null;
     }
     public JSONObject getHHObject(String local_id, String mhv_id, String cc_id, String server_id, String house_hold_id,ArrayList<String> hhArrayList) {
-        JSONObject object = new JSONObject();
-        try {
-            object.put("type", type);
-            object.put("local_id", local_id);
-            object.put("mhv_id", mhv_id);
-            object.put("cc_id", cc_id);
-            object.put("server_id", server_id);
-
-            if (type1.equalsIgnoreCase(type))
-                object.put("household", populateHHObject(mhv_id,house_hold_id,hhArrayList));
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-
-        return object;
-
+        return populateHHObject(local_id,server_id,cc_id,mhv_id,house_hold_id,hhArrayList);
     }
 
-    public JSONObject populateHHObject(String mhv_id,String house_hold_id,ArrayList<String> hhArrayList) {
+    public JSONObject populateHHObject(String local_id,String server_id,String cc_id,String mhv_id,String house_hold_id,ArrayList<String> hhArrayList) {
 
         JSONObject hhObject = new JSONObject();
         try {
-            //memberObject.put("member_id", getValue("base_entity_id"));
-
+            hhObject.put("local_id", local_id);
+            hhObject.put("server_id", server_id);
+            hhObject.put("cc_id", cc_id);
             hhObject.put("mhv_id", mhv_id);
             hhObject.put("date_month", hhArrayList.get(0));
             hhObject.put("house_hold_head_name", hhArrayList.get(1));
@@ -135,28 +121,16 @@ public class MemberObject {
         return null;
     }
     public JSONObject getGroupMemberObject(String local_id, String mhv_id, String cc_id, String server_id,CommonPersonObjectClient client) {
-        JSONObject object = new JSONObject();
-        try {
-            object.put("type", type);
-            object.put("local_id", local_id);
-            object.put("mhv_id", mhv_id);
-            object.put("cc_id", cc_id);
-            object.put("server_id", server_id);
-
-            if (type1.equalsIgnoreCase(type))
-                object.put("member", populateGroupMemberObject(mhv_id, client));
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-
-        return object;
+        return  populateGroupMemberObject(cc_id,server_id,mhv_id, client);
 
     }
-    public JSONObject populateGroupMemberObject(String mhv_id,CommonPersonObjectClient client) {
+    public JSONObject populateGroupMemberObject(String cc_id, String server_id,String mhv_id,CommonPersonObjectClient client) {
 
         JSONObject memberObject = new JSONObject();
         try {
             //memberObject.put("member_id", getValue("base_entity_id"));
+            memberObject.put("cc_id", cc_id);
+            memberObject.put("server_id", server_id);
             memberObject.put("mhv_id", mhv_id);
             memberObject.put("first_name", getMemberValue("first_name",client));
             memberObject.put("last_name", getMemberValue("last_name",client));

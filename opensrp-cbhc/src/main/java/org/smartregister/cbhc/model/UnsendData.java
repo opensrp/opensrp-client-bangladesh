@@ -5,6 +5,14 @@ public class UnsendData {
     String type;
     long lastInteractedDate;
     boolean isSend;
+    public UnsendData(){
+
+    }
+
+    public UnsendData(String baseEntityId, String type) {
+        this.baseEntityId = baseEntityId;
+        this.type = type;
+    }
 
     public String getBaseEntityId() {
         return baseEntityId;

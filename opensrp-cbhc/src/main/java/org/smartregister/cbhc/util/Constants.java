@@ -38,6 +38,11 @@ public abstract class Constants {
         public static final String USER_PASSWORD = "password_string";
         public static final String CMED_ACTION = "android.intent.action.CMED";
         public static boolean IS_FROM_CMED = false;
+        public static String HH_TYPE = "hh";
+        public static String MM_TYPE = "mm";
+        public static String HH_LIST = "hh_list";
+        public static String MM_LIST = "mm_list";
+
     }
     public static final class EventType {
         public static final String HouseholdREGISTRATION = "Household Registration";

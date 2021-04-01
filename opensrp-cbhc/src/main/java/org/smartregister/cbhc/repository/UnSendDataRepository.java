@@ -35,9 +35,10 @@ public class UnSendDataRepository extends BaseRepository {
         database.execSQL(UN_SEND_SQL);
     }
 
-    public void saveForm(UnsendData object) {
+    public void saveData(UnsendData object) {
         SQLiteDatabase database = getWritableDatabase();
-        database.insert(UN_SEND_TABLE_NAME,null,createFormValues(object));
+        long isInserted = database.insert(UN_SEND_TABLE_NAME,null,createFormValues(object));
+        Log.v("UNSEND_DATE","isInserted>>>"+isInserted);
     }
     public ArrayList<UnsendData> getAllUnsendData(){
         SQLiteDatabase database = getWritableDatabase();
@@ -76,6 +77,7 @@ public class UnSendDataRepository extends BaseRepository {
         values.put(TYPE, object.getType());
         values.put(DATE, object.getLastInteractedDate());
         values.put(IS_SEND, object.isSend()?1:0);
+        Log.v("UNSEND_DATE","values>>>"+values);
         return values;
     }
     public int updateSendingStatus(String baseEntityId){

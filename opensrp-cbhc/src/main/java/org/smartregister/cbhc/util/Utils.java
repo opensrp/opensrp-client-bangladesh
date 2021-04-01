@@ -2,6 +2,7 @@ package org.smartregister.cbhc.util;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.content.res.Resources;
@@ -31,12 +32,15 @@ import org.joda.time.Weeks;
 import org.joda.time.Years;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
+import org.json.JSONObject;
 import org.smartregister.cbhc.application.AncApplication;
 import org.smartregister.cbhc.domain.FormLocation;
 import org.smartregister.cbhc.event.BaseEvent;
 import org.smartregister.cbhc.helper.LocationHelper;
 import org.smartregister.cbhc.model.UnsendData;
 import org.smartregister.cbhc.repository.AncRepository;
+import org.smartregister.cbhc.repository.FollowupRepository;
+import org.smartregister.cbhc.repository.UnSendDataRepository;
 import org.smartregister.repository.AllSharedPreferences;
 import org.smartregister.util.AssetHandler;
 import org.smartregister.util.DateUtil;
@@ -66,12 +70,28 @@ import static org.smartregister.util.Log.logError;
 public class Utils {
 
     public static ArrayList<UnsendData> getCmedDataFromRepo(AncRepository repo){
-        ArrayList<UnsendData> unsendDataArrayList = new ArrayList<>();
-        unsendDataArrayList.add(new UnsendData("4c7faea1-d1b0-451c-bb5d-abdafaf58de7","HH"));
-        unsendDataArrayList.add(new UnsendData("f1e2a271-7f17-4382-a643-0401431838cb","HH"));
-        unsendDataArrayList.add(new UnsendData("efc8bd85-6f3c-4515-bfff-2e9d428c6cea","MM"));
-        unsendDataArrayList.add(new UnsendData("7ebacc2f-b8af-40e0-afc8-f7e9840a60ae","MM"));
-        return unsendDataArrayList;
+        UnSendDataRepository followupFormRepository = new UnSendDataRepository(repo);
+        return followupFormRepository.getAllUnsendData();
+
+//        ArrayList<UnsendData> unsendDataArrayList = new ArrayList<>();
+//        unsendDataArrayList.add(new UnsendData("4c7faea1-d1b0-451c-bb5d-abdafaf58de7","HH"));
+//        unsendDataArrayList.add(new UnsendData("f1e2a271-7f17-4382-a643-0401431838cb","HH"));
+//        unsendDataArrayList.add(new UnsendData("efc8bd85-6f3c-4515-bfff-2e9d428c6cea","MM"));
+//        unsendDataArrayList.add(new UnsendData("7ebacc2f-b8af-40e0-afc8-f7e9840a60ae","MM"));
+//        return unsendDataArrayList;
+    }
+    public static Intent passToMHVAPp(ArrayList<JSONObject> hhList, ArrayList<JSONObject> mmList, Context context){
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
+        AllSharedPreferences allSharedPreferences = new AllSharedPreferences(preferences);
+        String userName = allSharedPreferences.getPreference(Constants.CMED_KEY.USER_NAME);
+        String passwordText = allSharedPreferences.getPreference(Constants.CMED_KEY.USER_PASSWORD);
+        Intent intent = new Intent();
+        intent.setClassName("com.example.testapplication", "com.example.testapplication.MainActivity");
+        intent.putExtra(Constants.CMED_KEY.HH_LIST,hhList);
+        intent.putExtra(Constants.CMED_KEY.MM_LIST, mmList);
+        intent.putExtra(Constants.CMED_KEY.USER_NAME,userName);
+        intent.putExtra(Constants.CMED_KEY.USER_PASSWORD,passwordText);
+        return intent;
     }
     public static final int NOFILTER = 8888;
     public static final String DEFAULT_IDENTIFIER = "88888888";
