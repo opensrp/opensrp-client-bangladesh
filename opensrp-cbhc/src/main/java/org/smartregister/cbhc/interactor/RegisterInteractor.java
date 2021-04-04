@@ -303,6 +303,7 @@ public class RegisterInteractor implements RegisterContract.Interactor {
                     }else if(encounter_type.equalsIgnoreCase(Constants.EventType.Child_REGISTRATION)){
                         unsendData = new UnsendData(base_entity_id, Constants.CMED_KEY.CHILD_TYPE);
                     }
+                    unsendData.setBaseEntityId(baseEvent.getBaseEntityId());
                     unsendData.setLastInteractedDate(System.currentTimeMillis());
                     unsendData.setSend(false);
                     UnSendDataRepository unSendDataRepository = new UnSendDataRepository(AncApplication.getInstance().getRepository());
