@@ -55,7 +55,7 @@ public class AncRepository extends Repository {
 
         //onUpgrade(database, 1, 2);
 
-        onUpgrade(database, 1, 7);
+        onUpgrade(database, 1, 8);
     }
 
     @Override
