@@ -37,7 +37,7 @@ public abstract class Constants {
         public static final String USER_NAME = "user_name";
         public static final String USER_PASSWORD = "password_string";
         public static final String CMED_ACTION = "android.intent.action.CMED";
-        public static boolean IS_FROM_CMED = false;
+        public static boolean IS_FROM_CMED = true;
         public static String HH_TYPE = "hh";
         public static String MM_TYPE = "mm";
         public static String WOMEN_TYPE = "wo";

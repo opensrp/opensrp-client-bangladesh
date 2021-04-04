@@ -1,7 +1,5 @@
 package org.smartregister.cbhc.fragment;
 
-import android.annotation.SuppressLint;
-import android.content.ComponentName;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
@@ -36,12 +34,11 @@ import com.github.ybq.android.spinkit.style.FadingCircle;
 import net.sqlcipher.database.SQLiteDatabase;
 
 import org.apache.commons.lang3.StringUtils;
+import org.json.JSONArray;
 import org.json.JSONObject;
-import org.smartregister.Context;
 import org.smartregister.cbhc.R;
 import org.smartregister.cbhc.activity.BaseRegisterActivity;
 import org.smartregister.cbhc.activity.HomeRegisterActivity;
-import org.smartregister.cbhc.activity.MemberProfileActivity;
 import org.smartregister.cbhc.activity.ProfileActivity;
 import org.smartregister.cbhc.application.AncApplication;
 import org.smartregister.cbhc.contract.RegisterFragmentContract;
@@ -49,14 +46,12 @@ import org.smartregister.cbhc.cursor.AdvancedMatrixCursor;
 import org.smartregister.cbhc.domain.AttentionFlag;
 import org.smartregister.cbhc.event.SyncEvent;
 import org.smartregister.cbhc.job.ImageUploadServiceJob;
-import org.smartregister.cbhc.job.PullHealthIdsServiceJob;
 import org.smartregister.cbhc.job.SyncServiceJob;
 import org.smartregister.cbhc.model.UnsendData;
 import org.smartregister.cbhc.provider.RegisterProvider;
 import org.smartregister.cbhc.receiver.SyncStatusBroadcastReceiver;
 import org.smartregister.cbhc.repository.AncRepository;
 import org.smartregister.cbhc.repository.UnSendDataRepository;
-import org.smartregister.cbhc.service.intent.EventLogIntentService;
 import org.smartregister.cbhc.task.EventLogServiceJob;
 import org.smartregister.cbhc.util.Constants;
 import org.smartregister.cbhc.util.DBConstants;
@@ -76,22 +71,15 @@ import org.smartregister.repository.AllSharedPreferences;
 import org.smartregister.view.activity.SecuredNativeSmartRegisterActivity;
 import org.smartregister.view.dialog.DialogOption;
 
-import java.io.Serializable;
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 import java.util.Set;
 
-import timber.log.Timber;
-
 import static android.app.Activity.RESULT_OK;
-import static org.smartregister.cbhc.fragment.ProfileOverviewFragment.EXTRA_HOUSEHOLD_DETAILS;
-import static org.smartregister.cbhc.util.Constants.EventType.PREGNANT_STATUS;
 
 /**
  * Created by keyman on 26/06/2018.
@@ -240,10 +228,10 @@ public abstract class BaseRegisterFragment extends RecyclerViewFragment implemen
             String accommodation_type = "";
             String drinking_water = "";
             String monthly_expense = "";
-            ArrayList<JSONObject> hhJsonArrayList = null;
-            ArrayList<JSONObject> mmJsonArrayList = null;
-            ArrayList<String> hhArrayList = null;
-            ArrayList<String> mmArrayList = null;
+            List<JSONArray> hhJsonArrayList = null;
+            List<JSONArray> mmJsonArrayList = null;
+            List<String> hhArrayList = null;
+            List<String> mmArrayList = null;
 
             @Override
             protected void onPreExecute() {
@@ -258,7 +246,7 @@ public abstract class BaseRegisterFragment extends RecyclerViewFragment implemen
                 ArrayList<UnsendData> unsendDataList = Utils.getCmedDataFromRepo(repo);
                 for(UnsendData unsendData : unsendDataList){
                     if(unsendData.getType().equals(Constants.CMED_KEY.HH_TYPE)){
-                        String sql = "select last_interacted_with, first_name, last_name, person_address, latrine_structure, household_type, water_source, Monthly_Expenditure from ec_household where base_entity_id='"+unsendData.getBaseEntityId()+"'";
+                        String sql = "select last_interacted_with, first_name, last_name, ADDRESS_LINE, latrine_structure, household_type, water_source, Monthly_Expenditure from ec_household where base_entity_id='"+unsendData.getBaseEntityId()+"'";
                         //               String sql = "SELECT VALUE FROM ec_details WHERE (KEY = 'lmp_date' OR KEY = 'LMP') AND base_entity_id = '" + entity_id + "'";
                         net.sqlcipher.Cursor cursor = db.rawQuery(sql, new String[]{});
                         try {
@@ -271,9 +259,11 @@ public abstract class BaseRegisterFragment extends RecyclerViewFragment implemen
                                 drinking_water = cursor.getString(6);
                                 monthly_expense = cursor.getString(7);
                                 String[] strs = {date_month,house_hold_head_name,address,latrine_type,accommodation_type,drinking_water,monthly_expense};
-                                hhArrayList.addAll(Arrays.asList(strs));
+                                hhArrayList = Arrays.asList(strs);
                                 JSONObject jsonObject = hho.getHHObject(local_id,provider_name,cc_id,"",unsendData.getBaseEntityId(),hhArrayList);
-                                hhJsonArrayList.add(jsonObject);
+                                JSONArray jsonArray = new JSONArray();
+                                jsonArray.put(jsonObject);
+                                hhJsonArrayList = Arrays.asList(jsonArray);
                                 Toast.makeText(getContext(), "hhListJson:"+(CharSequence) hhJsonArrayList, Toast.LENGTH_SHORT).show();
                             }
                         } catch (Exception e) {
@@ -282,10 +272,11 @@ public abstract class BaseRegisterFragment extends RecyclerViewFragment implemen
                         } finally {
                             cursor.close();
                         }
-                    }else if(unsendData.getType().equals(Constants.CMED_KEY.MM_TYPE)){
+                    }
+                    else {
                         CommonPersonObjectClient pClient = null;
-                        String query = "select * from ec_member where base_entity_id='"+unsendData.getBaseEntityId()+"'";
-                        CommonRepository commonRepository = context().commonrepository("ec_member");
+                        String query = getQuery(unsendData);
+                        CommonRepository commonRepository = getCommonRepository(unsendData);
                         Cursor cursor = null;
                         try {
                             //cursor = CoreChwApplication.getInstance().getRepository().getReadableDatabase().rawQuery(query, new String[]{});
@@ -297,7 +288,9 @@ public abstract class BaseRegisterFragment extends RecyclerViewFragment implemen
                                         personObject.getDetails(), "");
                                 pClient.setColumnmaps(personObject.getColumnmaps());
                                 JSONObject jsonObject = mo.getGroupMemberObject(local_id,provider_name,cc_id,"",pClient);
-                                mmJsonArrayList.add(jsonObject);
+                                JSONArray jsonArray = new JSONArray();
+                                jsonArray.put(jsonObject);
+                                mmJsonArrayList = Arrays.asList(jsonArray);
                                 Toast.makeText(getContext(), "mmListJson:"+(CharSequence) hhJsonArrayList, Toast.LENGTH_SHORT).show();
 
                             }
@@ -308,7 +301,6 @@ public abstract class BaseRegisterFragment extends RecyclerViewFragment implemen
                                 cursor.close();
                             }
                         }
-
                     }
                 }
 
@@ -324,7 +316,7 @@ public abstract class BaseRegisterFragment extends RecyclerViewFragment implemen
 
                     Intent intent = Utils.passToMHVAPp(hhJsonArrayList,mmJsonArrayList,getActivity());
                     startActivityForResult(intent,CMED_REQUEST_CODE);
-                    Toast.makeText(getContext(), "mmListJson:"+(CharSequence) hhJsonArrayList, Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getContext(), "mmListJson:"+hhJsonArrayList, Toast.LENGTH_SHORT).show();
 
                 }else{
                     Toast.makeText(getContext(), "Application not installed", Toast.LENGTH_SHORT).show();
@@ -348,6 +340,35 @@ public abstract class BaseRegisterFragment extends RecyclerViewFragment implemen
 
 
 
+    }
+
+    private CommonRepository getCommonRepository(UnsendData unsendData){
+        CommonRepository commonRepository = null;
+        if(unsendData.getType().equals(Constants.CMED_KEY.MM_TYPE)){
+            commonRepository = context().commonrepository("ec_member");
+        }
+        else if(unsendData.getType().equals(Constants.CMED_KEY.WOMEN_TYPE)){
+            commonRepository = context().commonrepository("ec_woman");
+        }
+        else if(unsendData.getType().equals(Constants.CMED_KEY.CHILD_TYPE)){
+            commonRepository = context().commonrepository("ec_child");
+        }
+
+        return commonRepository;
+    }
+    private String getQuery(UnsendData unsendData){
+        String query = null;
+        if(unsendData.getType().equals(Constants.CMED_KEY.MM_TYPE)){
+            query = "select * from ec_member where base_entity_id='"+unsendData.getBaseEntityId()+"'";
+        }
+        else if(unsendData.getType().equals(Constants.CMED_KEY.WOMEN_TYPE)){
+            query = "select * from ec_woman where base_entity_id='"+unsendData.getBaseEntityId()+"'";
+        }
+        else if(unsendData.getType().equals(Constants.CMED_KEY.CHILD_TYPE)){
+            query = "select * from ec_child where base_entity_id='"+unsendData.getBaseEntityId()+"'";
+        }
+
+        return query;
     }
 
     @Override

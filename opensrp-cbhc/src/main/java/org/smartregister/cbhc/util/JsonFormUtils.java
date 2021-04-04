@@ -1507,16 +1507,16 @@ public class JsonFormUtils extends org.smartregister.util.JsonFormUtils {
             healthFacilities.add("EPI center");
 
 
-            ArrayList<String> defaultFacilities = new ArrayList<>();
-            defaultFacilities.add("Country");
-            defaultFacilities.add("Division");
-            defaultFacilities.add("District");
-            defaultFacilities.add("Upazilla");
-            defaultFacilities.add("Union");
-            defaultFacilities.add("Ward");
-            defaultFacilities.add("Block");
-            defaultFacilities.add("Subunit");
-            defaultFacilities.add("EPI center");
+           /* ArrayList<String> defaultFacilities = new ArrayList<>();
+            healthFacilities.add("Country");
+            healthFacilities.add("Division");
+            healthFacilities.add("District");
+            healthFacilities.add("Upazilla");
+            healthFacilities.add("Union");
+            healthFacilities.add("Ward");
+            healthFacilities.add("Block");
+            healthFacilities.add("Subunit");
+            healthFacilities.add("EPI center");*/
 
 
             List<String> defaultFacility = LocationHelper.getInstance().generateDefaultLocationHierarchy(healthFacilities);

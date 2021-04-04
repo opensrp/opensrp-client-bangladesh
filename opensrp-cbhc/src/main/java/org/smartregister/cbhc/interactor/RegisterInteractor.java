@@ -282,6 +282,7 @@ public class RegisterInteractor implements RegisterContract.Interactor {
                 JSONObject formObject = new JSONObject(jsonString);
                 String encounter_type = formObject.getString("encounter_type");
                 String base_entity_id = formObject.getString("entity_id");
+                Log.v("UNSEND_DATE",base_entity_id);
                 if (encounter_type != null && !Utils.notFollowUp(encounter_type)) {
                     //time to save followup jinish
                     FollowupForm followupForm = new FollowupForm();

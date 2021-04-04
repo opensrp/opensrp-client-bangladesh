@@ -18,6 +18,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class MemberObject {
@@ -94,11 +95,11 @@ public class MemberObject {
         }
         return null;
     }
-    public JSONObject getHHObject(String local_id, String mhv_id, String cc_id, String server_id, String house_hold_id,ArrayList<String> hhArrayList) {
+    public JSONObject getHHObject(String local_id, String mhv_id, String cc_id, String server_id, String house_hold_id, List<String> hhArrayList) {
         return populateHHObject(local_id,server_id,cc_id,mhv_id,house_hold_id,hhArrayList);
     }
 
-    public JSONObject populateHHObject(String local_id,String server_id,String cc_id,String mhv_id,String house_hold_id,ArrayList<String> hhArrayList) {
+    public JSONObject populateHHObject(String local_id,String server_id,String cc_id,String mhv_id,String house_hold_id,List<String> hhArrayList) {
 
         JSONObject hhObject = new JSONObject();
         try {
@@ -121,14 +122,15 @@ public class MemberObject {
         return null;
     }
     public JSONObject getGroupMemberObject(String local_id, String mhv_id, String cc_id, String server_id,CommonPersonObjectClient client) {
-        return  populateGroupMemberObject(cc_id,server_id,mhv_id, client);
+        return  populateGroupMemberObject(local_id,cc_id,server_id,mhv_id, client);
 
     }
-    public JSONObject populateGroupMemberObject(String cc_id, String server_id,String mhv_id,CommonPersonObjectClient client) {
+    public JSONObject populateGroupMemberObject(String local_id,String cc_id, String server_id,String mhv_id,CommonPersonObjectClient client) {
 
         JSONObject memberObject = new JSONObject();
         try {
             //memberObject.put("member_id", getValue("base_entity_id"));
+            memberObject.put("local_id", local_id);
             memberObject.put("cc_id", cc_id);
             memberObject.put("server_id", server_id);
             memberObject.put("mhv_id", mhv_id);
@@ -136,12 +138,20 @@ public class MemberObject {
             memberObject.put("last_name", getMemberValue("last_name",client));
             memberObject.put("date_of_birth", getMemberValue("dob",client));
             memberObject.put("health_id_card", getMemberValue("Patient_Identifier",client));
-         /*   memberObject.put("is_heart_disease", false);
+            memberObject.put("added_on", getMemberValue("member_Reg_Date",client));
+            memberObject.put("is_heart_disease", false);
             memberObject.put("is_kidney_disease", false);
-            memberObject.put("is_diabetes", getValue("Non Communicable Disease").contains("Diabetes"));
-            memberObject.put("is_pregnant", getValue("PregnancyStatus").equals("Antenatal Period"));
-            memberObject.put("is_child", getAge(getValue("dob")) <= 5);
-            memberObject.put("added_on", getValue("member_Reg_Date"));
+            memberObject.put("is_diabetes", getMemberValue("Non Communicable Disease",client).contains("Diabetes"));
+            memberObject.put("is_pregnant", getMemberValue("PregnancyStatus",client).equals("Antenatal Period"));
+            memberObject.put("is_child", getAge(getMemberValue("dob",client)) <= 5);
+            memberObject.put("nid", getMemberValue("person_nid",client));
+            memberObject.put("is_disable", getMemberValue("disable",client).equals("Yes"));
+            memberObject.put("death_of_death", "");
+            memberObject.put("contact_number", getMemberValue("phoneNumber",client));
+            memberObject.put("profession", Utils.getOccupationIndex(getProfession()));
+            memberObject.put("blood_group", getMemberValue("bloodgroup",client));
+            memberObject.put("gender", getMemberValue("gender",client));
+         /*   memberObject.put("added_on", getValue("member_Reg_Date"));
             memberObject.put("monthly_income", 0);
             memberObject.put("has_health_card", false);
 
@@ -205,8 +215,8 @@ public class MemberObject {
         return "";
     }
     public String getMemberValue(String key, CommonPersonObjectClient client) {
-        String firstName = org.smartregister.util.Utils.getValue(client.getColumnmaps(), key, true);
-        return firstName;
+        String value = org.smartregister.util.Utils.getValue(client.getColumnmaps(), key, true);
+        return value;
     }
 
 }
