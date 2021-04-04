@@ -40,6 +40,8 @@ public abstract class Constants {
         public static boolean IS_FROM_CMED = false;
         public static String HH_TYPE = "hh";
         public static String MM_TYPE = "mm";
+        public static String WOMEN_TYPE = "wo";
+        public static String CHILD_TYPE = "child";
         public static String HH_LIST = "hh_list";
         public static String MM_LIST = "mm_list";
 

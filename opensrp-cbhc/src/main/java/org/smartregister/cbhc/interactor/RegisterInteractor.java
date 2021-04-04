@@ -296,12 +296,13 @@ public class RegisterInteractor implements RegisterContract.Interactor {
                     UnsendData unsendData = new UnsendData();
                     if (encounter_type.equalsIgnoreCase(Constants.EventType.HouseholdREGISTRATION)) {
                         unsendData = new UnsendData(base_entity_id, Constants.CMED_KEY.HH_TYPE);
-                    }else if(encounter_type.equalsIgnoreCase(Constants.EventType.MemberREGISTRATION) ||
-                            encounter_type.equalsIgnoreCase(Constants.EventType.WomanMemberREGISTRATION) ||
-                            encounter_type.equalsIgnoreCase(Constants.EventType.Child_REGISTRATION)) {
+                    }else if(encounter_type.equalsIgnoreCase(Constants.EventType.MemberREGISTRATION)){
                         unsendData = new UnsendData(base_entity_id, Constants.CMED_KEY.MM_TYPE);
+                    }else if(encounter_type.equalsIgnoreCase(Constants.EventType.WomanMemberREGISTRATION)){
+                        unsendData = new UnsendData(base_entity_id, Constants.CMED_KEY.WOMEN_TYPE);
+                    }else if(encounter_type.equalsIgnoreCase(Constants.EventType.Child_REGISTRATION)){
+                        unsendData = new UnsendData(base_entity_id, Constants.CMED_KEY.CHILD_TYPE);
                     }
-
                     unsendData.setLastInteractedDate(System.currentTimeMillis());
                     unsendData.setSend(false);
                     UnSendDataRepository unSendDataRepository = new UnSendDataRepository(AncApplication.getInstance().getRepository());

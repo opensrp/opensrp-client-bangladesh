@@ -55,6 +55,7 @@ import org.smartregister.cbhc.model.UnsendData;
 import org.smartregister.cbhc.provider.RegisterProvider;
 import org.smartregister.cbhc.receiver.SyncStatusBroadcastReceiver;
 import org.smartregister.cbhc.repository.AncRepository;
+import org.smartregister.cbhc.repository.UnSendDataRepository;
 import org.smartregister.cbhc.service.intent.EventLogIntentService;
 import org.smartregister.cbhc.task.EventLogServiceJob;
 import org.smartregister.cbhc.util.Constants;
@@ -358,7 +359,10 @@ public abstract class BaseRegisterFragment extends RecyclerViewFragment implemen
         }
         else if(requestCode == CMED_REQUEST_CODE && resultCode == RESULT_OK){
             if(getActivity()!=null && !getActivity().isFinishing()){
-                Toast.makeText(getActivity(),"Successfully send to MHV app",Toast.LENGTH_SHORT).show();
+                UnSendDataRepository unSendDataRepository = new UnSendDataRepository(AncApplication.getInstance().getRepository());
+                boolean isUpdated = unSendDataRepository.updateSendingStatus() == 1;
+                Toast.makeText(getActivity(),"Successfully send to MHV app, is updated:"+isUpdated,Toast.LENGTH_SHORT).show();
+
             }
         }
     }

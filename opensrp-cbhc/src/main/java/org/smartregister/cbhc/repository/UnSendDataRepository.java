@@ -80,10 +80,10 @@ public class UnSendDataRepository extends BaseRepository {
         Log.v("UNSEND_DATE","values>>>"+values);
         return values;
     }
-    public int updateSendingStatus(String baseEntityId){
+    public int updateSendingStatus(){
         ContentValues values = new ContentValues();
         values.put(IS_SEND, 1);
-        return getWritableDatabase().update(UN_SEND_TABLE_NAME, values, BASE_ENTITY_ID + " = ?", new String[]{baseEntityId});
+        return getWritableDatabase().update(UN_SEND_TABLE_NAME, values, null, null);
 
     }
 }
