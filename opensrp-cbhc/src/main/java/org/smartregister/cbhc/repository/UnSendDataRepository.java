@@ -83,7 +83,7 @@ public class UnSendDataRepository extends BaseRepository {
     public int updateSendingStatus(){
         ContentValues values = new ContentValues();
         values.put(IS_SEND, 1);
-        return getWritableDatabase().update(UN_SEND_TABLE_NAME, values, null, null);
+        return getWritableDatabase().update(UN_SEND_TABLE_NAME, values, IS_SEND + " = ?", new String[]{"0"});
 
     }
 }
