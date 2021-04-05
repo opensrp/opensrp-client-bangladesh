@@ -224,8 +224,8 @@ public abstract class BaseRegisterFragment extends RecyclerViewFragment implemen
 
         org.smartregister.util.Utils.startAsyncTask(new AsyncTask() {
 
-            ArrayList<JSONObject> hhJsonArrayList = new ArrayList<>();
-            ArrayList<JSONObject> mmJsonArrayList = new ArrayList<>();
+            ArrayList<String> hhJsonArrayList = new ArrayList<>();
+            ArrayList<String> mmJsonArrayList = new ArrayList<>();
             List<String> hhArrayList = new ArrayList<>();
             List<String> memberArrayList = new ArrayList<>();
             HashMap<String, String> memberMap = new HashMap<>();
@@ -262,7 +262,7 @@ public abstract class BaseRegisterFragment extends RecyclerViewFragment implemen
                                 JSONObject jsonObject = hho.getHHObject(local_id, provider_name, cc_id, "", unsendData.getBaseEntityId(), hhArrayList);
                                 JSONArray jsonArray = new JSONArray();
                                 jsonArray.put(jsonObject);
-                                hhJsonArrayList.add(jsonObject);
+                                hhJsonArrayList.add(jsonObject.toString());
                             }
                         } catch (Exception e) {
                             Utils.appendLog(getClass().getName(), e);
@@ -275,7 +275,7 @@ public abstract class BaseRegisterFragment extends RecyclerViewFragment implemen
                         JSONObject jsonObject = mo.getGroupMemberObject(local_id,provider_name,cc_id,"",unsendData.getBaseEntityId(),memberMap);
                         JSONArray jsonArray = new JSONArray();
                         jsonArray.put(jsonObject);
-                        mmJsonArrayList.add(jsonObject);
+                        mmJsonArrayList.add(jsonObject.toString());
                         Log.v("MemberList:", String.valueOf(mmJsonArrayList));
                     }
                 }

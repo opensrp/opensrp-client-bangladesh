@@ -78,7 +78,7 @@ public class Utils {
 //        unsendDataArrayList.add(new UnsendData("7ebacc2f-b8af-40e0-afc8-f7e9840a60ae","MM"));
 //        return unsendDataArrayList;
     }
-    public static Intent passToMHVAPP(ArrayList<JSONObject> hhList, ArrayList<JSONObject> mmList, Context context){
+    public static Intent passToMHVAPP(ArrayList<String> hhList, ArrayList<String> mmList, Context context){
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
         AllSharedPreferences allSharedPreferences = new AllSharedPreferences(preferences);
         String userName = allSharedPreferences.getPreference(Constants.CMED_KEY.USER_NAME);
