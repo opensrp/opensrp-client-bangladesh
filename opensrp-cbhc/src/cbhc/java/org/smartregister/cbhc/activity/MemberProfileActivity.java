@@ -455,12 +455,10 @@ public class MemberProfileActivity extends BaseProfileActivity implements Profil
             protected void onPostExecute(Object o) {
                 super.onPostExecute(o);
                 JSONObject jsonObject = mo.getMemberObject(anm_name,provider_name,cc_id,cc_name,cc_address,house_hold_viewable_id);
-                if(appInstalledOrNot("com.cmed.mhv")) {
+                if(appInstalledOrNot(Constants.CMED_KEY.PACKAGE_NAME)) {
 
-                    Intent intent = new Intent();
-                    intent.setAction("android.intent.action.MPWOER");
-                    intent.setComponent(new ComponentName("com.cmed.mhv", "com.cmed.mhv.home.view.MainActivity_"));
-                    intent.putExtra("mPowerData", jsonObject.toString());
+
+                    Intent intent = Utils.passMemberFromReferlToMHVAPp(jsonObject,MemberProfileActivity.this);
                     startActivityForResult(intent, MemberObject.type2_RESULT_CODE);
 
 //                    Toast.makeText(MemberProfileActivity.this,"data:"+jsonObject,Toast.LENGTH_LONG).show();

@@ -34,9 +34,11 @@ public abstract class Constants {
         public static final String HOME_REGISTER = "home_register";
     }
     public static final class CMED_KEY{
+        public static final String PACKAGE_NAME = "com.cmed.mhv";
         public static final String USER_NAME = "user_name";
         public static final String USER_PASSWORD = "password_string";
         public static final String CMED_ACTION = "android.intent.action.CMED";
+        public static final String MPOWER_ACTION = "android.intent.action.MPOWER";
         public static boolean IS_FROM_CMED = true;
         public static String HH_TYPE = "hh";
         public static String MM_TYPE = "mm";
@@ -44,6 +46,7 @@ public abstract class Constants {
         public static String CHILD_TYPE = "child";
         public static String HH_LIST = "hh_list";
         public static String MM_LIST = "mm_list";
+        public static String MEMBER_REFERL = "mm_ref";
 
     }
     public static final class EventType {

@@ -111,10 +111,7 @@ public class AncClientProcessorForJava {
                     }
 
                     Client client = eventClient.getClient();
-                    if (!eventType.contains("Household")) {
-                        String log = "client: " + client.getRelationships();
-                        System.out.println(log);
-                    }
+
                     //iterate through the events
                     if (client != null && event != null && clientClassification != null) {
                         if (!eventType.contains("Household")) {

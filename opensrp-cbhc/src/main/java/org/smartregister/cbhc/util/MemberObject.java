@@ -115,6 +115,8 @@ public class MemberObject {
             hhObject.put("accommodation_type", hhArrayList.get(4));
             hhObject.put("drinking_water", hhArrayList.get(5));
             hhObject.put("monthly_expense", hhArrayList.get(6));
+            hhObject.put("system_id", hhArrayList.get(7));
+            hhObject.put("hh_code", hhArrayList.get(8));
             return hhObject;
         } catch (JSONException e) {
             e.printStackTrace();

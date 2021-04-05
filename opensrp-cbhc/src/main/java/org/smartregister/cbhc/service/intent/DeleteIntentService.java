@@ -131,7 +131,6 @@ public class DeleteIntentService extends IntentService {
                 for (int i = 0; i < entity_ids.length(); i++) {
                     String id = entity_ids.getString(i);
                     ids[i] = id;
-                    System.out.println(id);
                     Log.i(SyncIntentService.class.getName(), "ID: " + id);
                 }
             }

@@ -114,7 +114,6 @@ public class EventLogRepository extends BaseRepository {
 //            }else{
                 //insert
                 long rowId = database.insert(EVENT_LOG_TABLE_NAME, null, createValuesFor(eventLog));
-                System.out.println(rowId);
 //            }
 //            database.setTransactionSuccessful();
 //            if(c!=null)c.close();

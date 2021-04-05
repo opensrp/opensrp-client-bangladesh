@@ -1,6 +1,7 @@
 package org.smartregister.cbhc.util;
 
 import android.app.Activity;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -77,19 +78,45 @@ public class Utils {
 //        unsendDataArrayList.add(new UnsendData("7ebacc2f-b8af-40e0-afc8-f7e9840a60ae","MM"));
 //        return unsendDataArrayList;
     }
-    public static Intent passToMHVAPp(List<JSONArray> hhList, List<JSONArray> mmList, Context context){
+    public static Intent passToMHVAPP(List<JSONArray> hhList, List<JSONArray> mmList, Context context){
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
         AllSharedPreferences allSharedPreferences = new AllSharedPreferences(preferences);
         String userName = allSharedPreferences.getPreference(Constants.CMED_KEY.USER_NAME);
         String passwordText = allSharedPreferences.getPreference(Constants.CMED_KEY.USER_PASSWORD);
         Intent intent = new Intent();
-        intent.setClassName("com.example.testapplication", "com.example.testapplication.MainActivity");
+        intent.setAction(Constants.CMED_KEY.MPOWER_ACTION);
+//        intent.setClassName("com.example.testapplication", "com.example.testapplication.MainActivity");
+        intent.setComponent(new ComponentName("com.cmed.mhv", "com.cmed.mhv.home.view.MainActivity_"));
+
         intent.putExtra(Constants.CMED_KEY.HH_LIST, String.valueOf(hhList));
         intent.putExtra(Constants.CMED_KEY.MM_LIST, String.valueOf(mmList));
         intent.putExtra(Constants.CMED_KEY.USER_NAME,userName);
         intent.putExtra(Constants.CMED_KEY.USER_PASSWORD,passwordText);
         return intent;
     }
+    public static Intent passMemberFromReferlToMHVAPp(JSONObject jsonObject, Context context){
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
+        AllSharedPreferences allSharedPreferences = new AllSharedPreferences(preferences);
+        String userName = allSharedPreferences.getPreference(Constants.CMED_KEY.USER_NAME);
+        String passwordText = allSharedPreferences.getPreference(Constants.CMED_KEY.USER_PASSWORD);
+        Intent intent = new Intent();
+        intent.setAction(Constants.CMED_KEY.MPOWER_ACTION);
+//        intent.setClassName("com.example.testapplication", "com.example.testapplication.MainActivity");
+        intent.setComponent(new ComponentName("com.cmed.mhv", "com.cmed.mhv.home.view.MainActivity_"));
+        intent.putExtra(Constants.CMED_KEY.MEMBER_REFERL, jsonObject.toString());
+        intent.putExtra(Constants.CMED_KEY.USER_NAME,userName);
+        intent.putExtra(Constants.CMED_KEY.USER_PASSWORD,passwordText);
+        return intent;
+    }
+    public static Intent callingPrimaAppLoginActivity(String userName, String passwordText){
+        Intent intent = new Intent();
+        intent.setAction(Constants.CMED_KEY.CMED_ACTION);
+        intent.setClassName("org.smartregister.cbhc", "org.smartregister.cbhc.activity.LoginActivity");
+        intent.putExtra(Constants.CMED_KEY.USER_NAME,userName);
+        intent.putExtra(Constants.CMED_KEY.USER_PASSWORD,passwordText);
+        return intent;
+    }
+
     public static final int NOFILTER = 8888;
     public static final String DEFAULT_IDENTIFIER = "88888888";
     public static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("dd/MM/yyyy",Locale.ENGLISH);
@@ -287,7 +314,7 @@ public class Utils {
                 duration = new DateTime(date);
                 return DateUtil.getDuration(duration);
             } catch (Exception e) {
-Utils.appendLog(Utils.class.getName(),e);
+                Utils.appendLog(Utils.class.getName(),e);
                 Log.e(TAG, e.toString(), e);
             }
         }
@@ -332,7 +359,7 @@ Utils.appendLog(Utils.class.getName(),e);
                 inputMethodManager.hideSoftInputFromWindow(view.getWindowToken(), 0);
             }
         } catch (Exception e) {
-Utils.appendLog(Utils.class.getName(),e);
+            Utils.appendLog(Utils.class.getName(),e);
             logError("Error encountered while hiding keyboard " + e);
         }
     }
