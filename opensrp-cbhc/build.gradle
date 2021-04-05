@@ -93,6 +93,7 @@ android {
             buildConfigField "int", "PULL_UNIQUE_IDS_MINUTES", '10'
             buildConfigField "int", "VIEW_SYNC_CONFIGURATIONS_MINUTES", '2'
             testCoverageEnabled true
+            minifyEnabled false
         }
     }
     packagingOptions {

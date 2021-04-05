@@ -75,6 +75,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Set;
@@ -93,7 +94,7 @@ public abstract class BaseRegisterFragment extends RecyclerViewFragment implemen
     public static final String CLICK_VIEW_SYNC = "click_view_sync";
     public static final String CLICK_VIEW_ATTENTION_FLAG = "click_view_attention_flag";
     private static final String TAG = BaseRegisterFragment.class.getCanonicalName();
-    private static final int CMED_REQUEST_CODE = 5555 ;
+    private static final int CMED_REQUEST_CODE = 5555;
     public static String TOOLBAR_TITLE = BaseRegisterActivity.class.getPackage() + ".toolbarTitle";
     protected RegisterActionHandler registerActionHandler = new RegisterActionHandler();
     protected RegisterFragmentContract.Presenter presenter;
@@ -206,7 +207,8 @@ public abstract class BaseRegisterFragment extends RecyclerViewFragment implemen
         renderView();
         return view;
     }
-    public void createReferJson(){
+
+    public void createReferJson() {
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
         AllSharedPreferences allSharedPreferences = new AllSharedPreferences(preferences);
         String anm_name = allSharedPreferences.fetchRegisteredANM();
@@ -217,14 +219,16 @@ public abstract class BaseRegisterFragment extends RecyclerViewFragment implemen
 //        String cc_address = allSharedPreferences.fetchCurrentLocality();
         String cc_address = "";
 
-        final MemberObject mo = new MemberObject(null,MemberObject.type1);
-        final MemberObject hho = new MemberObject(null,MemberObject.type1);
+        final MemberObject mo = new MemberObject(null, MemberObject.type1);
+        final MemberObject hho = new MemberObject(null, MemberObject.type1);
 
         org.smartregister.util.Utils.startAsyncTask(new AsyncTask() {
 
             List<JSONArray> hhJsonArrayList = new ArrayList<>();
             List<JSONArray> mmJsonArrayList = new ArrayList<>();
             List<String> hhArrayList = new ArrayList<>();
+            List<String> memberArrayList = new ArrayList<>();
+            HashMap<String, String> memberMap = new HashMap<>();
 
             @Override
             protected void onPreExecute() {
@@ -237,9 +241,9 @@ public abstract class BaseRegisterFragment extends RecyclerViewFragment implemen
                 AncRepository repo = (AncRepository) AncApplication.getInstance().getRepository();
                 SQLiteDatabase db = repo.getReadableDatabase();
                 ArrayList<UnsendData> unsendDataList = Utils.getCmedDataFromRepo(repo);
-                for(UnsendData unsendData : unsendDataList){
-                    if(unsendData.getType().equals(Constants.CMED_KEY.HH_TYPE)){
-                        String sql = "select last_interacted_with, first_name, last_name, ADDRESS_LINE, latrine_structure, household_type, water_source, Monthly_Expenditure,Patient_Identifier,householdCode from ec_household where base_entity_id='"+unsendData.getBaseEntityId()+"'";
+                for (UnsendData unsendData : unsendDataList) {
+                    if (unsendData.getType().equals(Constants.CMED_KEY.HH_TYPE)) {
+                        String sql = "select last_interacted_with, first_name, last_name, ADDRESS_LINE, latrine_structure, household_type, water_source, Monthly_Expenditure,Patient_Identifier,householdCode from ec_household where base_entity_id='" + unsendData.getBaseEntityId() + "'";
                         //               String sql = "SELECT VALUE FROM ec_details WHERE (KEY = 'lmp_date' OR KEY = 'LMP') AND base_entity_id = '" + entity_id + "'";
                         net.sqlcipher.Cursor cursor = db.rawQuery(sql, new String[]{});
                         try {
@@ -253,9 +257,9 @@ public abstract class BaseRegisterFragment extends RecyclerViewFragment implemen
                                 String monthly_expense = cursor.getString(7);
                                 String systemId = cursor.getString(8);
                                 String HHCode = cursor.getString(9);
-                                String[] strs = {date_month,house_hold_head_name,address,latrine_type,accommodation_type,drinking_water,monthly_expense,systemId,HHCode};
+                                String[] strs = {date_month, house_hold_head_name, address, latrine_type, accommodation_type, drinking_water, monthly_expense, systemId, HHCode};
                                 hhArrayList = Arrays.asList(strs);
-                                JSONObject jsonObject = hho.getHHObject(local_id,provider_name,cc_id,"",unsendData.getBaseEntityId(),hhArrayList);
+                                JSONObject jsonObject = hho.getHHObject(local_id, provider_name, cc_id, "", unsendData.getBaseEntityId(), hhArrayList);
                                 JSONArray jsonArray = new JSONArray();
                                 jsonArray.put(jsonObject);
                                 hhJsonArrayList = Arrays.asList(jsonArray);
@@ -266,34 +270,12 @@ public abstract class BaseRegisterFragment extends RecyclerViewFragment implemen
                         } finally {
                             cursor.close();
                         }
-                    }
-                    else {
-                        CommonPersonObjectClient pClient = null;
-                        String query = getQuery(unsendData);
-                        CommonRepository commonRepository = getCommonRepository(unsendData);
-                        Cursor cursor = null;
-                        try {
-                            //cursor = CoreChwApplication.getInstance().getRepository().getReadableDatabase().rawQuery(query, new String[]{});
-                            cursor = commonRepository.rawCustomQueryForAdapter(query);
-                            if (cursor != null && cursor.moveToFirst()) {
-                                CommonPersonObject personObject = commonRepository.readAllcommonforCursorAdapter(cursor);
-                                //personObject.setCaseId(baseEntityId);
-                                pClient = new CommonPersonObjectClient(personObject.getCaseId(),
-                                        personObject.getDetails(), "");
-                                pClient.setColumnmaps(personObject.getColumnmaps());
-                                JSONObject jsonObject = mo.getGroupMemberObject(local_id,provider_name,cc_id,"",pClient);
-                                JSONArray jsonArray = new JSONArray();
-                                jsonArray.put(jsonObject);
-                                mmJsonArrayList = Arrays.asList(jsonArray);
-
-                            }
-                        } catch (Exception ex) {
-                            ex.printStackTrace();
-                        } finally {
-                            if (cursor != null) {
-                                cursor.close();
-                            }
-                        }
+                    } else {
+                        memberMap = getMemberDetails(unsendData);
+                        JSONObject jsonObject = mo.getGroupMemberObject(local_id,provider_name,cc_id,"",unsendData.getBaseEntityId(),memberMap);
+                        JSONArray jsonArray = new JSONArray();
+                        jsonArray.put(jsonObject);
+                        mmJsonArrayList = Arrays.asList(jsonArray);
                     }
                 }
 
@@ -305,76 +287,147 @@ public abstract class BaseRegisterFragment extends RecyclerViewFragment implemen
             protected void onPostExecute(Object o) {
                 super.onPostExecute(o);
                 hideProgressView();
-                if(appInstalledOrNot(Constants.CMED_KEY.PACKAGE_NAME)) {
+                Log.v("HouseHold_List: ", String.valueOf(hhJsonArrayList));
+                Log.v("Member_List: ", String.valueOf(mmJsonArrayList));
+                if (appInstalledOrNot(Constants.CMED_KEY.PACKAGE_NAME)) {
 
-                    Intent intent = Utils.passToMHVAPP(hhJsonArrayList,mmJsonArrayList,getActivity());
-                    startActivityForResult(intent,CMED_REQUEST_CODE);
-
-                }else{
+                    Intent intent = Utils.passToMHVAPP(hhJsonArrayList, mmJsonArrayList, getActivity());
+                    startActivityForResult(intent, CMED_REQUEST_CODE);
+                } else {
                     Toast.makeText(getContext(), "Application not installed", Toast.LENGTH_SHORT).show();
                 }
 
             }
-        },null);
-
-        /*JSONObject jsonObject = mo.getMemberObject(anm_name,provider_name,cc_id,cc_name,cc_address,"");
-
-        if(appInstalledOrNot("com.cmed.mhv")){
-            Intent intent = new Intent();
-            intent.setAction("android.intent.action.MPWOER");
-            intent.setComponent(new ComponentName("com.cmed.mhv","com.cmed.mhv.home.view.MainActivity_"));
-            intent.putExtra("mPowerData",jsonObject.toString());
-            startActivityForResult(intent,MemberObject.type1_RESULT_CODE);
-        }else{
-            Toast.makeText(getActivity(), "Application not installed", Toast.LENGTH_SHORT).show();
-        }*/
-
-
+        }, null);
 
 
     }
 
-    private CommonRepository getCommonRepository(UnsendData unsendData){
+    private CommonRepository getCommonRepository(UnsendData unsendData) {
         CommonRepository commonRepository = null;
-        if(unsendData.getType().equals(Constants.CMED_KEY.MM_TYPE)){
+        if (unsendData.getType().equals(Constants.CMED_KEY.MM_TYPE)) {
             commonRepository = context().commonrepository("ec_member");
-        }
-        else if(unsendData.getType().equals(Constants.CMED_KEY.WOMEN_TYPE)){
+        } else if (unsendData.getType().equals(Constants.CMED_KEY.WOMEN_TYPE)) {
             commonRepository = context().commonrepository("ec_woman");
-        }
-        else if(unsendData.getType().equals(Constants.CMED_KEY.CHILD_TYPE)){
+        } else if (unsendData.getType().equals(Constants.CMED_KEY.CHILD_TYPE)) {
             commonRepository = context().commonrepository("ec_child");
         }
 
         return commonRepository;
     }
-    private String getQuery(UnsendData unsendData){
+
+    private HashMap<String, String> getMemberDetails(UnsendData unsendData) {
+        HashMap<String, String> map = new HashMap<>();
         String query = null;
-        if(unsendData.getType().equals(Constants.CMED_KEY.MM_TYPE)){
-            query = "select * from ec_member where base_entity_id='"+unsendData.getBaseEntityId()+"'";
-        }
-        else if(unsendData.getType().equals(Constants.CMED_KEY.WOMEN_TYPE)){
-            query = "select * from ec_woman where base_entity_id='"+unsendData.getBaseEntityId()+"'";
-        }
-        else if(unsendData.getType().equals(Constants.CMED_KEY.CHILD_TYPE)){
-            query = "select * from ec_child where base_entity_id='"+unsendData.getBaseEntityId()+"'";
+        AncRepository repo = (AncRepository) AncApplication.getInstance().getRepository();
+        SQLiteDatabase db = repo.getWritableDatabase();
+        if (unsendData.getType().equals(Constants.CMED_KEY.MM_TYPE)) {
+            query = "select Patient_Identifier, first_name, last_name,dob,birthPlace, member_Reg_Date, MaritalStatus, disable, " +
+                    "ethnicity,education,Occupation_Category,bloodgroup,has_disease,family_diseases_details,RiskyHabit," +
+                    "phoneNumber,gender from ec_member where base_entity_id='" + unsendData.getBaseEntityId() + "'";
+            Cursor cursor = db.rawQuery(query, new String[]{});
+            try {
+                if (cursor.moveToNext()) {
+                    map.put("health_id_card",cursor.getString(0));
+                    map.put("member_name",cursor.getString(1) + " " + cursor.getString(2));
+                    map.put("dob",cursor.getString(3));
+                    map.put("address",cursor.getString(4));
+                    map.put("add_date",cursor.getString(5));
+                    map.put("marital_status",cursor.getString(6));
+                    map.put("is_disable",cursor.getString(7));
+                    map.put("ethnicity",cursor.getString(8));
+                    map.put("education",cursor.getString(9));
+                    map.put("occupation",cursor.getString(10));
+                    map.put("bloog_group",cursor.getString(11));
+                    map.put("has_disease",cursor.getString(12));
+                    map.put("family_disease",cursor.getString(13));
+                    map.put("risky_habit",cursor.getString(14));
+                    map.put("phone_no",cursor.getString(15));
+                    map.put("gender",cursor.getString(16));
+
+                }
+            } catch (Exception e) {
+                Utils.appendLog(getClass().getName(), e);
+
+            } finally {
+                cursor.close();
+            }
+        } else if (unsendData.getType().equals(Constants.CMED_KEY.WOMEN_TYPE)) {
+            query = "select Patient_Identifier, first_name, last_name,dob,birthPlace, member_Reg_Date, MaritalStatus, disable, " +
+                    "ethnicity,education,Occupation_Category,bloodgroup,has_disease,family_diseases_details,RiskyHabit," +
+                    "phoneNumber,gender,lmp_date,Pregnancy_Status from ec_woman where base_entity_id='" + unsendData.getBaseEntityId() + "'";
+            net.sqlcipher.Cursor cursor = db.rawQuery(query, new String[]{});
+            try {
+                if (cursor.moveToNext()) {
+                    map.put("health_id_card",cursor.getString(0));
+                    map.put("member_name",cursor.getString(1) + " " + cursor.getString(2));
+                    map.put("dob",cursor.getString(3));
+                    map.put("address",cursor.getString(4));
+                    map.put("add_date",cursor.getString(5));
+                    map.put("marital_status",cursor.getString(6));
+                    map.put("is_disable",cursor.getString(7));
+                    map.put("ethnicity",cursor.getString(8));
+                    map.put("education",cursor.getString(9));
+                    map.put("occupation",cursor.getString(10));
+                    map.put("bloog_group",cursor.getString(11));
+                    map.put("has_disease",cursor.getString(12));
+                    map.put("family_disease",cursor.getString(13));
+                    map.put("risky_habit",cursor.getString(14));
+                    map.put("phone_no",cursor.getString(15));
+                    map.put("gender",cursor.getString(16));
+                    map.put("lmp_date",cursor.getString(17));
+                    map.put("preg_status",cursor.getString(18));
+                }
+            } catch (Exception e) {
+                Utils.appendLog(getClass().getName(), e);
+
+            } finally {
+                cursor.close();
+            }
+        } else if (unsendData.getType().equals(Constants.CMED_KEY.CHILD_TYPE)) {
+            query = "select Patient_Identifier, first_name, last_name,fatherNameEnglish,motherNameEnglish,dob,birthPlace, Birth_weight,member_Reg_Date, disable, " +
+                    "ethnicity,bloodgroup,has_disease,family_diseases_details,gender,use_chlorohexidin from ec_woman where base_entity_id='" + unsendData.getBaseEntityId() + "'";
+            net.sqlcipher.Cursor cursor = db.rawQuery(query, new String[]{});
+            try {
+                if (cursor.moveToNext()) {
+                    map.put("health_id_card",cursor.getString(0));
+                    map.put("member_name",cursor.getString(1) + " " + cursor.getString(2));
+                    map.put("fatherName",cursor.getString(3));
+                    map.put("motherName",cursor.getString(4));
+                    map.put("dob",cursor.getString(5));
+                    map.put("address",cursor.getString(6));
+                    map.put("birth_weight",cursor.getString(7));
+                    map.put("add_date",cursor.getString(8));
+                    map.put("is_disable",cursor.getString(9));
+                    map.put("ethnicity",cursor.getString(10));
+                    map.put("bloog_group",cursor.getString(11));
+                    map.put("has_disease",cursor.getString(12));
+                    map.put("family_disease",cursor.getString(13));
+                    map.put("gender",cursor.getString(14));
+                    map.put("use_chlorohexin",cursor.getString(15));
+                }
+            } catch (Exception e) {
+                Utils.appendLog(getClass().getName(), e);
+
+            } finally {
+                cursor.close();
+            }
         }
 
-        return query;
+        return map;
     }
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == MemberObject.type1_RESULT_CODE && resultCode == RESULT_OK) {
-            Toast.makeText(getActivity(),"Successfully group activity done:"+data,Toast.LENGTH_LONG).show();
+            Toast.makeText(getActivity(), "Successfully group activity done:" + data, Toast.LENGTH_LONG).show();
             return;
-        }
-        else if(requestCode == CMED_REQUEST_CODE && resultCode == RESULT_OK){
+        } else if (requestCode == CMED_REQUEST_CODE && resultCode == RESULT_OK) {
             UnSendDataRepository unSendDataRepository = new UnSendDataRepository(AncApplication.getInstance().getRepository());
             boolean isUpdated = unSendDataRepository.updateSendingStatus() == 1;
-            if(getActivity()!=null && !getActivity().isFinishing()){
-                Toast.makeText(getActivity(),"Successfully send to MHV app, is updated:"+isUpdated,Toast.LENGTH_SHORT).show();
+            if (getActivity() != null && !getActivity().isFinishing()) {
+                Toast.makeText(getActivity(), "Successfully send to MHV app, is updated:" + isUpdated, Toast.LENGTH_SHORT).show();
 
             }
         }
@@ -400,6 +453,7 @@ public abstract class BaseRegisterFragment extends RecyclerViewFragment implemen
 
         return false;
     }
+
     @Override
     public void updateSearchBarHint(String searchBarText) {
         if (getSearchView() != null) {
@@ -440,7 +494,7 @@ public abstract class BaseRegisterFragment extends RecyclerViewFragment implemen
 
         }
         this.registerCondition = "";
-        if(getMainCondition() != null && presenter != null){
+        if (getMainCondition() != null && presenter != null) {
             presenter.initializeQueries(getMainCondition());
         }
 
@@ -535,7 +589,7 @@ public abstract class BaseRegisterFragment extends RecyclerViewFragment implemen
         getDefaultOptionsProvider();
         if (isPausedOrRefreshList()) {
             this.registerCondition = "";
-            if(presenter != null && getMainCondition() != null){
+            if (presenter != null && getMainCondition() != null) {
                 presenter.initializeQueries(getMainCondition());
             }
         }
@@ -571,6 +625,7 @@ public abstract class BaseRegisterFragment extends RecyclerViewFragment implemen
             filterRelativeLayout.setVisibility(View.GONE);
         }
     }
+
     @Override
     public void initializeQueryParams(String tableName, String countSelect, String mainSelect) {
         this.tablename = tableName;
@@ -590,17 +645,17 @@ public abstract class BaseRegisterFragment extends RecyclerViewFragment implemen
     }
 
     public void filter(String filterString, String joinTableString, String mainConditionString, boolean qrCode) {
-        if(getSearchCancelView()!=null)
-        getSearchCancelView().setVisibility(StringUtils.isEmpty(filterString) ? View.INVISIBLE : View.VISIBLE);
+        if (getSearchCancelView() != null)
+            getSearchCancelView().setVisibility(StringUtils.isEmpty(filterString) ? View.INVISIBLE : View.VISIBLE);
 //        filterString = " and ec_household.phone_number like '%017%' ";
         this.filters = filterString;
         this.joinTable = joinTableString;
         this.mainCondition = mainConditionString;
         this.joinTables = new String[]{"ec_woman", "ec_child", "ec_member"};
-        if(StringUtils.isEmpty(filterString)){
+        if (StringUtils.isEmpty(filterString)) {
             this.Sortqueries = default_sort_query;
-        }else{
-            this.Sortqueries = "first_name COLLATE NOCASE ASC,"+this.Sortqueries;
+        } else {
+            this.Sortqueries = "first_name COLLATE NOCASE ASC," + this.Sortqueries;
         }
 
         countExecute();

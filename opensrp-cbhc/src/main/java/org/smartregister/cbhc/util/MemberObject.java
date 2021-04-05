@@ -123,11 +123,11 @@ public class MemberObject {
         }
         return null;
     }
-    public JSONObject getGroupMemberObject(String local_id, String mhv_id, String cc_id, String server_id,CommonPersonObjectClient client) {
-        return  populateGroupMemberObject(local_id,cc_id,server_id,mhv_id, client);
+    public JSONObject getGroupMemberObject(String local_id, String mhv_id, String cc_id, String server_id,String baseEntityId, HashMap<String,String> map) {
+        return  populateGroupMemberObject(local_id,cc_id,server_id,mhv_id,baseEntityId, map);
 
     }
-    public JSONObject populateGroupMemberObject(String local_id,String cc_id, String server_id,String mhv_id,CommonPersonObjectClient client) {
+    public JSONObject populateGroupMemberObject(String local_id,String cc_id, String server_id,String mhv_id,String baseEntityId,HashMap<String,String> map) {
 
         JSONObject memberObject = new JSONObject();
         try {
@@ -136,35 +136,27 @@ public class MemberObject {
             memberObject.put("cc_id", cc_id);
             memberObject.put("server_id", server_id);
             memberObject.put("mhv_id", mhv_id);
-            memberObject.put("first_name", getMemberValue("first_name",client));
-            memberObject.put("last_name", getMemberValue("last_name",client));
-            memberObject.put("date_of_birth", getMemberValue("dob",client));
-            memberObject.put("health_id_card", getMemberValue("Patient_Identifier",client));
-            memberObject.put("added_on", getMemberValue("member_Reg_Date",client));
-            memberObject.put("is_heart_disease", false);
-            memberObject.put("is_kidney_disease", false);
-            memberObject.put("is_diabetes", getMemberValue("Non Communicable Disease",client).contains("Diabetes"));
-            memberObject.put("is_pregnant", getMemberValue("PregnancyStatus",client).equals("Antenatal Period"));
-            memberObject.put("is_child", getAge(getMemberValue("dob",client)) <= 5);
-            memberObject.put("nid", getMemberValue("person_nid",client));
-            memberObject.put("is_disable", getMemberValue("disable",client).equals("Yes"));
-            memberObject.put("death_of_death", "");
-            memberObject.put("contact_number", getMemberValue("phoneNumber",client));
-            memberObject.put("profession", Utils.getOccupationIndex(getProfession()));
-            memberObject.put("blood_group", getMemberValue("bloodgroup",client));
-            memberObject.put("gender", getMemberValue("gender",client));
-         /*   memberObject.put("added_on", getValue("member_Reg_Date"));
-            memberObject.put("monthly_income", 0);
-            memberObject.put("has_health_card", false);
+            memberObject.put("member_id", baseEntityId);
+            memberObject.put("member_name", map.get("member_name"));
+            memberObject.put("dob", map.get("dob"));
+            memberObject.put("address", map.get("address"));
+            memberObject.put("add_date", map.get("add_date"));
+            memberObject.put("is_disable", map.get("is_disable"));
+            memberObject.put("ethnicity", map.get("ethnicity"));
+            memberObject.put("bloog_group", map.get("bloog_group"));
+            memberObject.put("has_disease", map.get("has_disease"));
+            memberObject.put("family_disease", map.get("family_disease"));
+            memberObject.put("phone_no", map.get("phone_no"));
+            memberObject.put("gender", map.get("gender"));
 
-            memberObject.put("nid", getValue("person_nid"));
-            memberObject.put("is_disable", getValue("disable").equals("Yes"));
-            memberObject.put("death_of_death", "");
-            memberObject.put("contact_number", getValue("phone_number"));
-            memberObject.put("profession", Utils.getOccupationIndex(getProfession()));
-            memberObject.put("blood_group", getValue("bloodgroup"));
-            memberObject.put("gender", getValue("gender"));*/
-
+            memberObject.put("marital_status", map.get("marital_status"));
+            memberObject.put("education", map.get("education"));
+            memberObject.put("occupation", map.get("occupation"));
+            memberObject.put("risky_habit", map.get("risky_habit"));
+            memberObject.put("lmp_date", map.get("lmp_date"));
+            memberObject.put("preg_status", map.get("preg_status"));
+            memberObject.put("birth_weight", map.get("birth_weight"));
+            memberObject.put("use_chlorohexin", map.get("use_chlorohexin"));
             return memberObject;
         } catch (JSONException e) {
             e.printStackTrace();
@@ -173,7 +165,7 @@ public class MemberObject {
     }
 
     public String getProfession() {
-        String category = getValue("Occupation Category");
+        String category = getValue("Occupation_Category");
         if (!StringUtils.isEmpty(category)) {
             String proffesion = getValue(category);
             return proffesion;
