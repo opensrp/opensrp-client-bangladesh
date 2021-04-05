@@ -260,8 +260,6 @@ public abstract class BaseRegisterFragment extends RecyclerViewFragment implemen
                                 String[] strs = {date_month, house_hold_head_name, address, latrine_type, accommodation_type, drinking_water, monthly_expense, systemId, HHCode};
                                 hhArrayList = Arrays.asList(strs);
                                 JSONObject jsonObject = hho.getHHObject(local_id, provider_name, cc_id, "", unsendData.getBaseEntityId(), hhArrayList);
-                                JSONArray jsonArray = new JSONArray();
-                                jsonArray.put(jsonObject);
                                 hhJsonArrayList.add(jsonObject.toString());
                             }
                         } catch (Exception e) {
@@ -273,8 +271,6 @@ public abstract class BaseRegisterFragment extends RecyclerViewFragment implemen
                     } else {
                         memberMap = getMemberDetails(unsendData);
                         JSONObject jsonObject = mo.getGroupMemberObject(local_id,provider_name,cc_id,"",unsendData.getBaseEntityId(),memberMap);
-                        JSONArray jsonArray = new JSONArray();
-                        jsonArray.put(jsonObject);
                         mmJsonArrayList.add(jsonObject.toString());
                         Log.v("MemberList:", String.valueOf(mmJsonArrayList));
                     }
