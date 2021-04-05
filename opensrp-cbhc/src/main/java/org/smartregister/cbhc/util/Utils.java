@@ -78,18 +78,18 @@ public class Utils {
 //        unsendDataArrayList.add(new UnsendData("7ebacc2f-b8af-40e0-afc8-f7e9840a60ae","MM"));
 //        return unsendDataArrayList;
     }
-    public static Intent passToMHVAPP(List<JSONArray> hhList, List<JSONArray> mmList, Context context){
+    public static Intent passToMHVAPP(ArrayList<JSONObject> hhList, ArrayList<JSONObject> mmList, Context context){
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
         AllSharedPreferences allSharedPreferences = new AllSharedPreferences(preferences);
         String userName = allSharedPreferences.getPreference(Constants.CMED_KEY.USER_NAME);
         String passwordText = allSharedPreferences.getPreference(Constants.CMED_KEY.USER_PASSWORD);
         Intent intent = new Intent();
         intent.setAction(Constants.CMED_KEY.MPOWER_ACTION);
-//        intent.setClassName("com.example.testapplication", "com.example.testapplication.MainActivity");
-        intent.setComponent(new ComponentName("com.cmed.mhv", "com.cmed.mhv.home.view.MainActivity_"));
+        intent.setClassName("com.example.testapplication", "com.example.testapplication.MainActivity");
+//        intent.setComponent(new ComponentName("com.cmed.mhv", "com.cmed.mhv.home.view.MainActivity_"));
 
-        intent.putExtra(Constants.CMED_KEY.HH_LIST, String.valueOf(hhList));
-        intent.putExtra(Constants.CMED_KEY.MM_LIST, String.valueOf(mmList));
+        intent.putExtra(Constants.CMED_KEY.HH_LIST, hhList);
+        intent.putExtra(Constants.CMED_KEY.MM_LIST,  mmList);
         intent.putExtra(Constants.CMED_KEY.USER_NAME,userName);
         intent.putExtra(Constants.CMED_KEY.USER_PASSWORD,passwordText);
         return intent;

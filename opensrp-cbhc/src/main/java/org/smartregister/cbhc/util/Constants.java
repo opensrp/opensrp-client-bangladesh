@@ -34,7 +34,8 @@ public abstract class Constants {
         public static final String HOME_REGISTER = "home_register";
     }
     public static final class CMED_KEY{
-        public static final String PACKAGE_NAME = "com.cmed.mhv";
+        //public static final String PACKAGE_NAME = "com.cmed.mhv";
+        public static final String PACKAGE_NAME = "com.example.testapplication";
         public static final String USER_NAME = "user_name";
         public static final String USER_PASSWORD = "password_string";
         public static final String CMED_ACTION = "android.intent.action.CMED";

@@ -224,8 +224,8 @@ public abstract class BaseRegisterFragment extends RecyclerViewFragment implemen
 
         org.smartregister.util.Utils.startAsyncTask(new AsyncTask() {
 
-            List<JSONArray> hhJsonArrayList = new ArrayList<>();
-            List<JSONArray> mmJsonArrayList = new ArrayList<>();
+            ArrayList<JSONObject> hhJsonArrayList = new ArrayList<>();
+            ArrayList<JSONObject> mmJsonArrayList = new ArrayList<>();
             List<String> hhArrayList = new ArrayList<>();
             List<String> memberArrayList = new ArrayList<>();
             HashMap<String, String> memberMap = new HashMap<>();
@@ -262,7 +262,7 @@ public abstract class BaseRegisterFragment extends RecyclerViewFragment implemen
                                 JSONObject jsonObject = hho.getHHObject(local_id, provider_name, cc_id, "", unsendData.getBaseEntityId(), hhArrayList);
                                 JSONArray jsonArray = new JSONArray();
                                 jsonArray.put(jsonObject);
-                                hhJsonArrayList = Arrays.asList(jsonArray);
+                                hhJsonArrayList.add(jsonObject);
                             }
                         } catch (Exception e) {
                             Utils.appendLog(getClass().getName(), e);
@@ -275,7 +275,8 @@ public abstract class BaseRegisterFragment extends RecyclerViewFragment implemen
                         JSONObject jsonObject = mo.getGroupMemberObject(local_id,provider_name,cc_id,"",unsendData.getBaseEntityId(),memberMap);
                         JSONArray jsonArray = new JSONArray();
                         jsonArray.put(jsonObject);
-                        mmJsonArrayList = Arrays.asList(jsonArray);
+                        mmJsonArrayList.add(jsonObject);
+                        Log.v("MemberList:", String.valueOf(mmJsonArrayList));
                     }
                 }
 
@@ -293,6 +294,7 @@ public abstract class BaseRegisterFragment extends RecyclerViewFragment implemen
 
                     Intent intent = Utils.passToMHVAPP(hhJsonArrayList, mmJsonArrayList, getActivity());
                     startActivityForResult(intent, CMED_REQUEST_CODE);
+
                 } else {
                     Toast.makeText(getContext(), "Application not installed", Toast.LENGTH_SHORT).show();
                 }
