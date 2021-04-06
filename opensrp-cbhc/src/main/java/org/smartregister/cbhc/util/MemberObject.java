@@ -117,6 +117,7 @@ public class MemberObject {
             hhObject.put("monthly_expense", hhArrayList.get(6));
             hhObject.put("system_id", hhArrayList.get(7));
             hhObject.put("hh_code", hhArrayList.get(8));
+            hhObject.put("hie_facilities", hhArrayList.get(9));
             return hhObject;
         } catch (JSONException e) {
             e.printStackTrace();

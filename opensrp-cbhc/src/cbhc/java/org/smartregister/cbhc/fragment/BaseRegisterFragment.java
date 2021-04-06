@@ -243,7 +243,7 @@ public abstract class BaseRegisterFragment extends RecyclerViewFragment implemen
                 ArrayList<UnsendData> unsendDataList = Utils.getCmedDataFromRepo(repo);
                 for (UnsendData unsendData : unsendDataList) {
                     if (unsendData.getType().equals(Constants.CMED_KEY.HH_TYPE)) {
-                        String sql = "select last_interacted_with, first_name, last_name, ADDRESS_LINE, latrine_structure, household_type, water_source, Monthly_Expenditure,Patient_Identifier,householdCode from ec_household where base_entity_id='" + unsendData.getBaseEntityId() + "'";
+                        String sql = "select last_interacted_with, first_name, last_name, ADDRESS_LINE, latrine_structure, household_type, water_source, Monthly_Expenditure,Patient_Identifier,householdCode,HIE_FACILITIES from ec_household where base_entity_id='" + unsendData.getBaseEntityId() + "'";
                         //               String sql = "SELECT VALUE FROM ec_details WHERE (KEY = 'lmp_date' OR KEY = 'LMP') AND base_entity_id = '" + entity_id + "'";
                         net.sqlcipher.Cursor cursor = db.rawQuery(sql, new String[]{});
                         try {
@@ -257,7 +257,8 @@ public abstract class BaseRegisterFragment extends RecyclerViewFragment implemen
                                 String monthly_expense = cursor.getString(7);
                                 String systemId = cursor.getString(8);
                                 String HHCode = cursor.getString(9);
-                                String[] strs = {date_month, house_hold_head_name, address, latrine_type, accommodation_type, drinking_water, monthly_expense, systemId, HHCode};
+                                String HIE_FACILITIES = cursor.getString(10);
+                                String[] strs = {date_month, house_hold_head_name, address, latrine_type, accommodation_type, drinking_water, monthly_expense, systemId, HHCode,HIE_FACILITIES};
                                 hhArrayList = Arrays.asList(strs);
                                 JSONObject jsonObject = hho.getHHObject(local_id, provider_name, cc_id, "", unsendData.getBaseEntityId(), hhArrayList);
                                 hhJsonArrayList.add(jsonObject.toString());
