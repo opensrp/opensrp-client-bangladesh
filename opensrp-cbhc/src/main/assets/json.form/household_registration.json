@@ -321,8 +321,8 @@
       {
         "key": "Date_Of_Reg",
         "openmrs_entity_parent": "",
-        "openmrs_entity": "",
-        "openmrs_entity_id": "",
+        "openmrs_entity": "person_attribute",
+        "openmrs_entity_id": "Date_Of_Reg",
         "type": "date_picker",
         "hint": "রেজিস্ট্রেশন তারিখ",
         "expanded": false,
@@ -789,7 +789,7 @@
       {
         "key": "gps",
         "openmrs_entity_parent": "usual_residence",
-        "openmrs_entity": "person_address",
+        "openmrs_entity": "person_attribute",
         "openmrs_entity_id": "geopoint",
         "openmrs_data_type": "text",
         "type": "gps"

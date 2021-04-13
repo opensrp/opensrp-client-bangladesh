@@ -85,8 +85,8 @@ public class Utils {
         String passwordText = allSharedPreferences.getPreference(Constants.CMED_KEY.USER_PASSWORD);
         Intent intent = new Intent();
         intent.setAction(Constants.CMED_KEY.MPOWER_ACTION);
-        intent.setClassName("com.example.testapplication", "com.example.testapplication.MainActivity");
-//        intent.setComponent(new ComponentName("com.cmed.mhv", "com.cmed.mhv.home.view.MainActivity_"));
+//        intent.setClassName("com.example.testapplication", "com.example.testapplication.MainActivity");
+        intent.setComponent(new ComponentName("com.cmed.mhv", "com.cmed.mhv.home.view.MainActivity_"));
 
         intent.putExtra(Constants.CMED_KEY.HH_LIST, hhList);
         intent.putExtra(Constants.CMED_KEY.MM_LIST,  mmList);

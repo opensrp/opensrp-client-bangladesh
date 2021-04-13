@@ -530,8 +530,8 @@
       {
         "key": "age",
         "openmrs_entity_parent": "",
-        "openmrs_entity": "",
-        "openmrs_entity_id": "",
+        "openmrs_entity": "person_attribute",
+        "openmrs_entity_id": "age",
         "openmrs_data_type": "text",
         "type": "edit_text",
         "hint": "না জানলে বয়স লিখুন (বছর)",
@@ -2079,9 +2079,9 @@
       {
         "key": "comments",
         "openmrs_entity_parent": "",
-        "openmrs_entity": "",
-        "openmrs_entity_id": "",
-        "openmrs_data_type": "",
+        "openmrs_entity": "person_attribute",
+        "openmrs_entity_id": "comments",
+        "openmrs_data_type": "text",
         "type": "edit_text",
         "hint": "মন্তব্য"
       },

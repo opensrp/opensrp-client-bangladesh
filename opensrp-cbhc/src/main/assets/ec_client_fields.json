@@ -270,7 +270,20 @@
             "formSubmissionField": "member_count"
           }
         },
-
+        {
+          "column_name": "geopoint",
+          "type": "Client",
+          "json_mapping": {
+            "field": "attributes.geopoint"
+          }
+        },
+        {
+          "column_name": "Date_Of_Reg",
+          "type": "Client",
+          "json_mapping": {
+            "field": "attributes.Date_Of_Reg"
+          }
+        },
         {
           "column_name": "Community_Clinic",
           "type": "Client",
@@ -571,6 +584,13 @@
           "type": "Client",
           "json_mapping": {
             "field": "birthdate"
+          }
+        },
+        {
+          "column_name": "age",
+          "type": "Client",
+          "json_mapping": {
+            "field": "attributes.age"
           }
         },
         {
@@ -1009,6 +1029,20 @@
           }
         },
         {
+          "column_name": "age",
+          "type": "Client",
+          "json_mapping": {
+            "field": "attributes.age"
+          }
+        },
+        {
+          "column_name": "comments",
+          "type": "Client",
+          "json_mapping": {
+            "field": "attributes.comments"
+          }
+        },
+        {
           "column_name": "dob_unknown",
           "type": "Client",
           "json_mapping": {
@@ -1435,6 +1469,13 @@
           "type": "Client",
           "json_mapping": {
             "field": "birthdate"
+          }
+        },
+        {
+          "column_name": "age",
+          "type": "Client",
+          "json_mapping": {
+            "field": "attributes.age"
           }
         },
         {

@@ -1,8 +1,9 @@
 package org.smartregister.cbhc.util;
 
+import android.database.Cursor;
 import android.os.AsyncTask;
+import android.text.TextUtils;
 
-import net.sqlcipher.Cursor;
 import net.sqlcipher.database.SQLiteDatabase;
 
 import org.apache.commons.lang3.StringUtils;
@@ -95,40 +96,53 @@ public class MemberObject {
         }
         return null;
     }
-    public JSONObject getHHObject(String local_id, String mhv_id, String cc_id, String server_id, String house_hold_id, List<String> hhArrayList) {
-        return populateHHObject(local_id,server_id,cc_id,mhv_id,house_hold_id,hhArrayList);
-    }
 
-    public JSONObject populateHHObject(String local_id,String server_id,String cc_id,String mhv_id,String house_hold_id,List<String> hhArrayList) {
 
-        JSONObject hhObject = new JSONObject();
+    public static JSONObject populateNewHHObject(String local_id,String cc_id, String server_id,String mhv_id,String baseEntityId,HashMap<String,String> map) {
+        JSONObject memberObject = new JSONObject();
         try {
-            hhObject.put("local_id", local_id);
-            hhObject.put("server_id", server_id);
-            hhObject.put("cc_id", cc_id);
-            hhObject.put("mhv_id", mhv_id);
-            hhObject.put("date_month", hhArrayList.get(0));
-            hhObject.put("house_hold_head_name", hhArrayList.get(1));
-            hhObject.put("house_hold_id", house_hold_id);
-            hhObject.put("address", hhArrayList.get(2));
-            hhObject.put("latrine_type", hhArrayList.get(3));
-            hhObject.put("accommodation_type", hhArrayList.get(4));
-            hhObject.put("drinking_water", hhArrayList.get(5));
-            hhObject.put("monthly_expense", hhArrayList.get(6));
-            hhObject.put("system_id", hhArrayList.get(7));
-            hhObject.put("hh_code", hhArrayList.get(8));
-            hhObject.put("hie_facilities", hhArrayList.get(9));
-            return hhObject;
+            //memberObject.put("member_id", getValue("base_entity_id"));
+            memberObject.put("local_id", local_id);
+            memberObject.put("cc_id", cc_id);
+            memberObject.put("server_id", server_id);
+            memberObject.put("mhv_id", mhv_id);
+            ///
+            memberObject.put("accommodation_type",getValueFromMap(map,"household_type"));
+            memberObject.put("accuracy",getGPS(getValueFromMap(map,"geopoint"),"accuracy"));
+            memberObject.put("altitude",getGPS(getValueFromMap(map,"geopoint"),"altitude"));
+            memberObject.put("date_month",getValueFromMap(map,"Date_Of_Reg"));
+            memberObject.put("drinking_water",getValueFromMap(map,"water_source"));
+            memberObject.put("family_financial_state",getValueFromMap(map,"financial_status"));
+            memberObject.put("has_house_hold",false);
+            memberObject.put("health_care_name_give_service_to_the_family",getValueFromMap(map,"info_provider_name"));
+            memberObject.put("holding_number",getValueFromMap(map,"householdCode"));
+            memberObject.put("house_hold_head_name",getValueFromMap(map,"first_name"));
+            memberObject.put("house_hold_head",getValueFromMap(map,"first_name"));
+            memberObject.put("house_hold_head_id",getValueFromMap(map,"Patient_Identifier"));
+            memberObject.put("house_hold_id",getValueFromMap(map,"Patient_Identifier"));
+            memberObject.put("house_hold_id_string",getValueFromMap(map,"base_entity_id"));
+            memberObject.put("informer_name",getValueFromMap(map,"first_name"));
+            memberObject.put("is_address_same",getValueFromMap(map,"is_permanent_address").equalsIgnoreCase("হ্যাঁ"));
+            memberObject.put("latitude",getGPS(getValueFromMap(map,"geopoint"),"latitude"));
+            memberObject.put("longitude",getGPS(getValueFromMap(map,"geopoint"),"longitude"));
+            memberObject.put("latrine_type",getValueFromMap(map,"latrine_type"));
+            memberObject.put("monthly_expense",getValueFromMap(map,"Monthly_Expenditure"));
+            memberObject.put("nearest_community_clinic_distance",getValueFromMap(map,"Clinic_Distance"));
+            memberObject.put("nearest_community_clinic_name",getValueFromMap(map,"Community_Clinic"));
+            memberObject.put("nearest_health_care_distance",getValueFromMap(map,"Health_Facility_Distance"));
+            memberObject.put("nearest_health_care_name",getValueFromMap(map,"Health_Care_Center"));
+            memberObject.put("permanent_address",getValueFromMap(map,"HIE_FACILITIES"));
+            memberObject.put("post_office",getValueFromMap(map,"postOfficePresent"));
+            memberObject.put("present_address",getValueFromMap(map,"ADDRESS_LINE"));
+            memberObject.put("village_or_colony",getValueFromMap(map,"village"));
+            return memberObject;
         } catch (JSONException e) {
             e.printStackTrace();
         }
         return null;
     }
-    public JSONObject getGroupMemberObject(String local_id, String mhv_id, String cc_id, String server_id,String baseEntityId, HashMap<String,String> map) {
-        return  populateGroupMemberObject(local_id,cc_id,server_id,mhv_id,baseEntityId, map);
 
-    }
-    public JSONObject populateGroupMemberObject(String local_id,String cc_id, String server_id,String mhv_id,String baseEntityId,HashMap<String,String> map) {
+    public static JSONObject populateNewMemberObject(String local_id,String cc_id, String server_id,String mhv_id,String baseEntityId,HashMap<String,String> map) {
 
         JSONObject memberObject = new JSONObject();
         try {
@@ -137,34 +151,83 @@ public class MemberObject {
             memberObject.put("cc_id", cc_id);
             memberObject.put("server_id", server_id);
             memberObject.put("mhv_id", mhv_id);
-            memberObject.put("member_id", baseEntityId);
-            memberObject.put("member_name", map.get("member_name"));
-            memberObject.put("dob", map.get("dob"));
-            memberObject.put("address", map.get("address"));
-            memberObject.put("add_date", map.get("add_date"));
-            memberObject.put("is_disable", map.get("is_disable"));
-            memberObject.put("ethnicity", map.get("ethnicity"));
-            memberObject.put("bloog_group", map.get("bloog_group"));
-            memberObject.put("has_disease", map.get("has_disease"));
-            memberObject.put("family_disease", map.get("family_disease"));
-            memberObject.put("phone_no", map.get("phone_no"));
-            memberObject.put("gender", map.get("gender"));
+            ///
+            memberObject.put("added_on",getValueFromMap(map,"member_Reg_Date"));
+            memberObject.put("birth_certificate_number",getValueFromMap(map,"person_brid"));
+            memberObject.put("birth_place",getValueFromMap(map,"birthPlace"));
+            memberObject.put("blood_group",getValueFromMap(map,"bloodgroup"));
+            memberObject.put("comment",getValueFromMap(map,"comments"));
+            memberObject.put("date_of_birth",getValueFromMap(map,"dob"));
+            memberObject.put("disability_type",getValueFromMap(map,"Disability_Type"));
+            memberObject.put("disease_type",getValueFromMap(map,"disease_type"));
+            memberObject.put("domestic_diseases",getValueFromMap(map,"family_diseases_details"));
+            memberObject.put("educational_qualification",getValueFromMap(map,"education"));
+            memberObject.put("epi_card_number",getValueFromMap(map,"person_epi"));
+            memberObject.put("ethnicity",getValueFromMap(map,"ethnicity"));
+            memberObject.put("fathers_first_name",getValueFromMap(map,"fatherNameEnglish"));
+            memberObject.put("fathers_first_name_bn",getValueFromMap(map,"fathernameBangla"));
+            memberObject.put("first_name",getValueFromMap(map,"first_name"));
+            memberObject.put("first_name_bn",getValueFromMap(map,"givenNameLocal"));
+            memberObject.put("fullName",getValueFromMap(map,"first_name")+" "+getValueFromMap(map,"last_name"));
+            memberObject.put("gender",getValueFromMap(map,"gender"));
+            memberObject.put("health_id_card",getValueFromMap(map,"Patient_Identifier"));
+            memberObject.put("house_hold_id_string",getValueFromMap(map,"relational_id"));
+            memberObject.put("house_hold_id",getIdentifierOfHH(getValueFromMap(map,"relational_id")));
+            memberObject.put("last_name",getValueFromMap(map,"last_name"));
+            memberObject.put("marital_status",getValueFromMap(map,"MaritalStatus"));
+            memberObject.put("mothers_first_name",getValueFromMap(map,"motherNameEnglish"));
+            memberObject.put("mothers_first_name_bn",getValueFromMap(map,"motherNameBangla"));
+            memberObject.put("nid",getValueFromMap(map,"person_nid"));
+            memberObject.put("phone",getValueFromMap(map,"phone_number"));
+            memberObject.put("profession_type",getValueFromMap(map,"Occupation_Category"));
+            memberObject.put("relationship_with_household_head",getValueFromMap(map,"Realtion_With_Household_Head"));
+            memberObject.put("religion",getValueFromMap(map,"Religion"));
+            ///
 
-            memberObject.put("marital_status", map.get("marital_status"));
-            memberObject.put("education", map.get("education"));
-            memberObject.put("occupation", map.get("occupation"));
-            memberObject.put("risky_habit", map.get("risky_habit"));
-            memberObject.put("lmp_date", map.get("lmp_date"));
-            memberObject.put("preg_status", map.get("preg_status"));
-            memberObject.put("birth_weight", map.get("birth_weight"));
-            memberObject.put("use_chlorohexin", map.get("use_chlorohexin"));
+            memberObject.put("member_id", baseEntityId);
+            memberObject.put("is_disable", getValueFromMap(map,"disable").equalsIgnoreCase("Yes"));
+            memberObject.put("death_of_death", "");
+            memberObject.put("is_hypertension",  getValueFromMap(map,"NonComnta_Disease").contains("High Blood Pressure"));
+            memberObject.put("is_heart_disease", false);
+            memberObject.put("is_kidney_disease", false);
+            memberObject.put("is_diabetes", getValueFromMap(map,"NonComnta_Disease").contains("Diabetes"));
+            memberObject.put("is_pregnant", getValueFromMap(map,"PregnancyStatus").equals("Antenatal Period"));
+            memberObject.put("is_child", getAge(getValueFromMap(map,"dob")) <= 5);
+            memberObject.put("monthly_income", 0);
+            memberObject.put("has_health_card", true);
+            memberObject.put("is_house_hold_head",getValueFromMap(map,"Realtion_With_Household_Head").equals("Household_Head"));
+            memberObject.put("isMale",getValueFromMap(map,"gender").equalsIgnoreCase("M"));
+            memberObject.put("age", getAge(getValueFromMap(map,"dob")));
             return memberObject;
         } catch (JSONException e) {
             e.printStackTrace();
         }
         return null;
     }
+    private static String getValueFromMap(HashMap<String,String> map, String key){
+        try{
+            String str = map.get(key);
+            return TextUtils.isEmpty(str)?"null":str;
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        return "null";
+    }
 
+    private static String getGPS(String geopoint, String category){
+        if(TextUtils.isEmpty(geopoint)) return "";
+        String[] str = geopoint.split(" ");
+        try{
+            String lat = str[0];
+            String lng = str[1];
+            if(category.equalsIgnoreCase("latitude")) return lat;
+            if(category.equalsIgnoreCase("longitude")) return lng;
+        }catch (Exception e){
+
+        }
+
+        return "";
+    }
     public String getProfession() {
         String category = getValue("Occupation_Category");
         if (!StringUtils.isEmpty(category)) {
@@ -174,7 +237,7 @@ public class MemberObject {
         return "";
     }
 
-    public int getAge(String dob) {
+    public static int getAge(String dob) {
         if (dob != null && dob.contains("T")) {
             dob = dob.substring(0, dob.indexOf('T'));
         }
@@ -194,7 +257,6 @@ public class MemberObject {
                 }
 
             } catch (Exception e) {
-                org.smartregister.cbhc.util.Utils.appendLog(getClass().getName(), e);
 
             }
 
@@ -202,6 +264,29 @@ public class MemberObject {
         }
 
         return 0;
+    }
+    private static String getIdentifierOfHH(String relationalId){
+        String identifier = "";
+        AncRepository repo = (AncRepository) AncApplication.getInstance().getRepository();
+        SQLiteDatabase db = repo.getWritableDatabase();
+        String query = "select Patient_Identifier from ec_household where base_entity_id='" + relationalId + "'";
+
+        Cursor cursor = db.rawQuery(query, new String[]{});
+        try {
+
+            if (cursor.moveToNext()) {
+                identifier = cursor.getString(0);
+
+            }
+
+
+        } catch (Exception e) {
+
+        } finally {
+            cursor.close();
+        }
+
+        return identifier;
     }
 
     public String getValue(String key) {

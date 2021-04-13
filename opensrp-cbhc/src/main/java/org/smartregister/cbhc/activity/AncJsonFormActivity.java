@@ -190,6 +190,8 @@ public class AncJsonFormActivity extends JsonFormActivity {
         return identifier;
     }
 
-
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
+    }
 }
 

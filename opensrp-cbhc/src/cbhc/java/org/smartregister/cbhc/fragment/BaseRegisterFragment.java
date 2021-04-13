@@ -71,9 +71,11 @@ import org.smartregister.repository.AllSharedPreferences;
 import org.smartregister.view.activity.SecuredNativeSmartRegisterActivity;
 import org.smartregister.view.dialog.DialogOption;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -81,6 +83,7 @@ import java.util.Locale;
 import java.util.Set;
 
 import static android.app.Activity.RESULT_OK;
+import static org.smartregister.cbhc.util.Constants.EventType.PREGNANT_STATUS;
 
 /**
  * Created by keyman on 26/06/2018.
@@ -226,9 +229,6 @@ public abstract class BaseRegisterFragment extends RecyclerViewFragment implemen
 
             ArrayList<String> hhJsonArrayList = new ArrayList<>();
             ArrayList<String> mmJsonArrayList = new ArrayList<>();
-            List<String> hhArrayList = new ArrayList<>();
-            List<String> memberArrayList = new ArrayList<>();
-            HashMap<String, String> memberMap = new HashMap<>();
 
             @Override
             protected void onPreExecute() {
@@ -239,39 +239,15 @@ public abstract class BaseRegisterFragment extends RecyclerViewFragment implemen
             @Override
             protected Object doInBackground(Object[] objects) {
                 AncRepository repo = (AncRepository) AncApplication.getInstance().getRepository();
-                SQLiteDatabase db = repo.getReadableDatabase();
                 ArrayList<UnsendData> unsendDataList = Utils.getCmedDataFromRepo(repo);
                 for (UnsendData unsendData : unsendDataList) {
                     if (unsendData.getType().equals(Constants.CMED_KEY.HH_TYPE)) {
-                        String sql = "select last_interacted_with, first_name, last_name, ADDRESS_LINE, latrine_structure, household_type, water_source, Monthly_Expenditure,Patient_Identifier,householdCode,HIE_FACILITIES from ec_household where base_entity_id='" + unsendData.getBaseEntityId() + "'";
-                        //               String sql = "SELECT VALUE FROM ec_details WHERE (KEY = 'lmp_date' OR KEY = 'LMP') AND base_entity_id = '" + entity_id + "'";
-                        net.sqlcipher.Cursor cursor = db.rawQuery(sql, new String[]{});
-                        try {
-                            if (cursor.moveToNext()) {
-                                String date_month = cursor.getString(0);
-                                String house_hold_head_name = cursor.getString(1) + " " + cursor.getString(2);
-                                String address = cursor.getString(3);
-                                String latrine_type = cursor.getString(4);
-                                String accommodation_type = cursor.getString(5);
-                                String drinking_water = cursor.getString(6);
-                                String monthly_expense = cursor.getString(7);
-                                String systemId = cursor.getString(8);
-                                String HHCode = cursor.getString(9);
-                                String HIE_FACILITIES = cursor.getString(10);
-                                String[] strs = {date_month, house_hold_head_name, address, latrine_type, accommodation_type, drinking_water, monthly_expense, systemId, HHCode,HIE_FACILITIES};
-                                hhArrayList = Arrays.asList(strs);
-                                JSONObject jsonObject = hho.getHHObject(local_id, provider_name, cc_id, "", unsendData.getBaseEntityId(), hhArrayList);
-                                hhJsonArrayList.add(jsonObject.toString());
-                            }
-                        } catch (Exception e) {
-                            Utils.appendLog(getClass().getName(), e);
-
-                        } finally {
-                            cursor.close();
-                        }
+                        HashMap<String, String> hhMap = getDetails(unsendData,Constants.CMED_KEY.HH_TYPE);
+                        JSONObject jsonObject = hho.populateNewHHObject(local_id, provider_name, cc_id, "", unsendData.getBaseEntityId(), hhMap);
+                        hhJsonArrayList.add(jsonObject.toString());
                     } else {
-                        memberMap = getMemberDetails(unsendData);
-                        JSONObject jsonObject = mo.getGroupMemberObject(local_id,provider_name,cc_id,"",unsendData.getBaseEntityId(),memberMap);
+                        HashMap<String, String> memberMap = getDetails(unsendData,unsendData.getType());
+                        JSONObject jsonObject = mo.populateNewMemberObject(local_id,provider_name,cc_id,"",unsendData.getBaseEntityId(),memberMap);
                         mmJsonArrayList.add(jsonObject.toString());
                         Log.v("MemberList:", String.valueOf(mmJsonArrayList));
                     }
@@ -314,107 +290,40 @@ public abstract class BaseRegisterFragment extends RecyclerViewFragment implemen
 
         return commonRepository;
     }
-
-    private HashMap<String, String> getMemberDetails(UnsendData unsendData) {
+    private HashMap<String, String> getDetails(UnsendData unsendData, String type) {
         HashMap<String, String> map = new HashMap<>();
         String query = null;
         AncRepository repo = (AncRepository) AncApplication.getInstance().getRepository();
         SQLiteDatabase db = repo.getWritableDatabase();
-        if (unsendData.getType().equals(Constants.CMED_KEY.MM_TYPE)) {
-            query = "select Patient_Identifier, first_name, last_name,dob,birthPlace, member_Reg_Date, MaritalStatus, disable, " +
-                    "ethnicity,education,Occupation_Category,bloodgroup,has_disease,family_diseases_details,RiskyHabit," +
-                    "phoneNumber,gender from ec_member where base_entity_id='" + unsendData.getBaseEntityId() + "'";
-            Cursor cursor = db.rawQuery(query, new String[]{});
-            try {
-                if (cursor.moveToNext()) {
-                    map.put("health_id_card",cursor.getString(0));
-                    map.put("member_name",cursor.getString(1) + " " + cursor.getString(2));
-                    map.put("dob",cursor.getString(3));
-                    map.put("address",cursor.getString(4));
-                    map.put("add_date",cursor.getString(5));
-                    map.put("marital_status",cursor.getString(6));
-                    map.put("is_disable",cursor.getString(7));
-                    map.put("ethnicity",cursor.getString(8));
-                    map.put("education",cursor.getString(9));
-                    map.put("occupation",cursor.getString(10));
-                    map.put("bloog_group",cursor.getString(11));
-                    map.put("has_disease",cursor.getString(12));
-                    map.put("family_disease",cursor.getString(13));
-                    map.put("risky_habit",cursor.getString(14));
-                    map.put("phone_no",cursor.getString(15));
-                    map.put("gender",cursor.getString(16));
+        if(type.equalsIgnoreCase(Constants.CMED_KEY.HH_TYPE)){
+            query = "select * from ec_household where base_entity_id='" + unsendData.getBaseEntityId() + "'";
 
+        }else{
+            query = getQuery(unsendData.getType(),unsendData.getBaseEntityId());
+        }
+
+        Cursor cursor = db.rawQuery(query, new String[]{});
+        try {
+
+            cursor.moveToFirst();
+            while (!cursor.isAfterLast()) {
+                int columncount = cursor.getColumnCount();
+                for(int i=0;i<columncount;i++){
+                    map.put(cursor.getColumnName(i),cursor.getString(i));
                 }
-            } catch (Exception e) {
-                Utils.appendLog(getClass().getName(), e);
-
-            } finally {
-                cursor.close();
+                cursor.moveToNext();
             }
-        } else if (unsendData.getType().equals(Constants.CMED_KEY.WOMEN_TYPE)) {
-            query = "select Patient_Identifier, first_name, last_name,dob,birthPlace, member_Reg_Date, MaritalStatus, disable, " +
-                    "ethnicity,education,Occupation_Category,bloodgroup,has_disease,family_diseases_details,RiskyHabit," +
-                    "phoneNumber,gender,lmp_date,Pregnancy_Status from ec_woman where base_entity_id='" + unsendData.getBaseEntityId() + "'";
-            net.sqlcipher.Cursor cursor = db.rawQuery(query, new String[]{});
-            try {
-                if (cursor.moveToNext()) {
-                    map.put("health_id_card",cursor.getString(0));
-                    map.put("member_name",cursor.getString(1) + " " + cursor.getString(2));
-                    map.put("dob",cursor.getString(3));
-                    map.put("address",cursor.getString(4));
-                    map.put("add_date",cursor.getString(5));
-                    map.put("marital_status",cursor.getString(6));
-                    map.put("is_disable",cursor.getString(7));
-                    map.put("ethnicity",cursor.getString(8));
-                    map.put("education",cursor.getString(9));
-                    map.put("occupation",cursor.getString(10));
-                    map.put("bloog_group",cursor.getString(11));
-                    map.put("has_disease",cursor.getString(12));
-                    map.put("family_disease",cursor.getString(13));
-                    map.put("risky_habit",cursor.getString(14));
-                    map.put("phone_no",cursor.getString(15));
-                    map.put("gender",cursor.getString(16));
-                    map.put("lmp_date",cursor.getString(17));
-                    map.put("preg_status",cursor.getString(18));
-                }
-            } catch (Exception e) {
-                Utils.appendLog(getClass().getName(), e);
 
-            } finally {
-                cursor.close();
-            }
-        } else if (unsendData.getType().equals(Constants.CMED_KEY.CHILD_TYPE)) {
-            query = "select Patient_Identifier, first_name, last_name,fatherNameEnglish,motherNameEnglish,dob,birthPlace, Birth_weight,member_Reg_Date, disable, " +
-                    "ethnicity,bloodgroup,has_disease,family_diseases_details,gender,use_chlorohexidin from ec_woman where base_entity_id='" + unsendData.getBaseEntityId() + "'";
-            net.sqlcipher.Cursor cursor = db.rawQuery(query, new String[]{});
-            try {
-                if (cursor.moveToNext()) {
-                    map.put("health_id_card",cursor.getString(0));
-                    map.put("member_name",cursor.getString(1) + " " + cursor.getString(2));
-                    map.put("fatherName",cursor.getString(3));
-                    map.put("motherName",cursor.getString(4));
-                    map.put("dob",cursor.getString(5));
-                    map.put("address",cursor.getString(6));
-                    map.put("birth_weight",cursor.getString(7));
-                    map.put("add_date",cursor.getString(8));
-                    map.put("is_disable",cursor.getString(9));
-                    map.put("ethnicity",cursor.getString(10));
-                    map.put("bloog_group",cursor.getString(11));
-                    map.put("has_disease",cursor.getString(12));
-                    map.put("family_disease",cursor.getString(13));
-                    map.put("gender",cursor.getString(14));
-                    map.put("use_chlorohexin",cursor.getString(15));
-                }
-            } catch (Exception e) {
-                Utils.appendLog(getClass().getName(), e);
+        } catch (Exception e) {
+            Utils.appendLog(getClass().getName(), e);
 
-            } finally {
-                cursor.close();
-            }
+        } finally {
+            cursor.close();
         }
 
         return map;
     }
+
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -430,6 +339,18 @@ public abstract class BaseRegisterFragment extends RecyclerViewFragment implemen
 
             }
         }
+    }
+    private String getQuery(String type, String baseEntityId) {
+        if (type.equals(Constants.CMED_KEY.MM_TYPE)) {
+            return "select * from ec_member where base_entity_id='" + baseEntityId + "'";
+        }
+        else if (type.equals(Constants.CMED_KEY.WOMEN_TYPE)) {
+            return "select * from ec_woman where base_entity_id='" + baseEntityId + "'";
+        }
+        else if (type.equals(Constants.CMED_KEY.CHILD_TYPE)) {
+            return "select * from ec_child where base_entity_id='" + baseEntityId + "'";
+        }
+        return "";
     }
 
     protected abstract void initializePresenter();
