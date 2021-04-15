@@ -252,4 +252,10 @@
     <string name="title_activity_home_dashboard">HomeDashboardActivity</string>
     <string name="clear_filters">CLEAR FILTERS</string>
     <string name="label_visit_date">Visit Date</string>
+    <string name="record_location">জি পি এস</string>
+    <string name="latitude">অক্ষাংশ: %s</string>
+    <string name="longitude">দ্রাঘিমাংশ: %s</string>
+    <string name="altitude">উচ্চতা: %s</string>
+    <string name="accuracy">সঠিকতা: %s</string>
+    <string name="loading_location">Loading Location</string>
 </resources>

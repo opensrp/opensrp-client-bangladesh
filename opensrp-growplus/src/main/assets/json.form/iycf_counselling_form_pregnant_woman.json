@@ -52,7 +52,7 @@
     }
   },
   "step1": {
-    "title": "IYCF Councelling Form Pregnant woman",
+    "title": "কাউন্সেলিং ফর্ম -গর্ভবতী মা",
     "fields": [
       {
         "key": "dummy_view_for_text_resize",
@@ -71,7 +71,7 @@
         "openmrs_entity": "",
         "openmrs_entity_id": "",
         "type":"label",
-        "text":"How do you feel?\nHave you had any illnesses in the last 2 weeks?"
+        "text":"আপনি আজ কেমন অনুভব করছেন?\n গত ২ সপ্তাহে আপনার কোনও অসুস্থতা ছিল?"
       },
       {
         "key": "pregnant_counselling_actions_decided_previous_meeting",
@@ -83,8 +83,8 @@
         "hidden": true,
         "hint": "",
         "values": [
-          "Yes",
-          "No"
+          "হ্যাঁ",
+          "না"
         ],
         "value": ""
       },
@@ -94,14 +94,14 @@
         "openmrs_entity": "",
         "openmrs_entity_id": "",
         "type": "spinner",
-        "hint": "Are there any family members present at the consultation?",
+        "hint": "কাউন্সেলিং করার সময়  কি পরিবারের কোনও সদস্য উপস্থিত আছেন?",
         "values": [
-          "Yes",
-          "No"
+          "হ্যাঁ",
+          "না"
         ],
         "v_required": {
           "value": "true",
-          "err": "Please answer the question"
+          "err": "প্রশ্নের উত্তর দিন"
         }
       },
       {
@@ -110,32 +110,32 @@
         "openmrs_entity": "",
         "openmrs_entity_id": "",
         "type": "check_box",
-        "label": "If yes, which ones",
+        "label": "যদি হ্যাঁ, কে উপস্থিত ছিলেন",
         "v_required": {
           "value": true,
-          "err": "Please enter the members present"
+          "err": "উপস্থিত সদস্যদের নাম লিখুন"
         },
         "options":[
           {
             "key":"Husband",
-            "text":"Husband",
+            "text":"স্বামী",
             "value":"Husband"
           },
           {
             "key":"Grandmother/mother in law",
-            "text":"Grandmother/mother in law",
+            "text":"দাদী / শাশুড়ি",
             "value":"Grandmother/mother in law"
           },
           {
             "key":"Daughter / son",
-            "text":"Daughter / son",
+            "text":"কন্যা / পুত্র",
             "value":"Daughter / son"
           }
         ],
         "relevance": {
           "step1:any_member_present": {
             "type": "string",
-            "ex": "equalTo(., \"Yes\")"
+            "ex": "equalTo(., \"হ্যাঁ\")"
           }
         }
       },
@@ -145,26 +145,26 @@
         "openmrs_entity": "",
         "openmrs_entity_id": "",
         "type": "check_box",
-        "label": "Do you have concerns you would like to discuss during this visit related to nutrition? ",
+        "label": "পুষ্টির সাথে সম্পর্কিত এই ভিজিটের সময় আপনি কী আলোচনা করতে চান? ",
         "options":[
           {
             "key":"womans_diet",
-            "text":"Woman’s diet",
+            "text":"মায়ের খাদ্যাভ্যাস",
             "value":"false"
           },
           {
             "key":"reducing_workload",
-            "text":"Reducing workload",
+            "text":"কাজের চাপ হ্রাস",
             "value":"false"
           },
           {
             "key":"prevention_of_malaria",
-            "text":"Prevention of malaria",
+            "text":"ম্যালেরিয়া প্রতিরোধ",
             "value":"false"
           },
           {
             "key":"breastfeeding",
-            "text":"Breastfeeding",
+            "text":"বুকের দুধ খাওয়ানো",
             "value":"false"
           }
         ],
@@ -181,28 +181,27 @@
         "openmrs_entity": "",
         "openmrs_entity_id": "",
         "type": "spinner",
-        "hint": "Has your diet changed since you have become pregnant?",
+        "hint": "আপনি গর্ভবতী হওয়ার পর থেকে আপনার ধরনের কি কোন খাদ্যাভ্যাসে  পরিবর্তন হয়েছে?",
         "values": [
-          "Yes",
-          "No"
+          "হ্যাঁ",
+          "না"
         ],
         "has_media_content": true,
         "media": [
           {
             "media_type":"video",
-            "media_trigger_value":"No",
+            "media_trigger_value":"না",
             "media_link":"android.resource://org.smartregister.growplus/raw/pregnantfood",
-            "media_text":"\u2022 She should reduce tea and coffee consumption during pregnancy as it can interfere with her body’s use of foods. Don’t drink tea/coffee at least 2 hours before and after taking food."
+            "media_text":"\u2022 গর্ভাবস্থায় তার চা এবং কফির  খাওয়া হ্রাস করা উচিত । খাবার গ্রহণের কমপক্ষে 2 ঘন্টা আগে এবং পরে চা / কফি পান করবেন না।"
           }
         ],
         "v_required": {
           "value": "true",
-          "err": "Please answer the question"
+          "err": "প্রশ্নের উত্তর দিন"
         },
         "relevance": {
         "step1:nutrition_to_discuss": {
-          "type": "string",
-          "ex": "regex(., \"(?i).*?\\bwomans_diet\\b.*?\")"
+          "type": "string"
         }
         }
       },
@@ -212,34 +211,34 @@
         "openmrs_entity": "",
         "openmrs_entity_id": "",
         "type": "spinner",
-        "hint": "Are you eating additional foods than what you normally eat?",
+        "hint": "আপনি সাধারণত যে খাবার খান তার চেয়েও অতিরিক্ত খাবার খাচ্ছেন?",
         "values": [
-          "Yes",
-          "No"
+          "হ্যাঁ",
+          "না"
         ],
         "has_media_content": true,
         "media": [
           {
             "media_type":"video",
-            "media_trigger_value":"Yes",
+            "media_trigger_value":"হ্যাঁ",
             "media_link":"android.resource://org.smartregister.growplus/raw/pregnantfood",
-            "media_text":"\u2022 She should reduce tea and coffee consumption during pregnancy as it can interfere with her body’s use of foods. Don’t drink tea/coffee at least 2 hours before and after taking food."
+            "media_text":"\u2022 গর্ভাবস্থায় তার চা এবং কফির  খাওয়া হ্রাস করা উচিত । খাবার গ্রহণের কমপক্ষে 2 ঘন্টা আগে এবং পরে চা / কফি পান করবেন না।"
           },
           {
             "media_type":"video",
-            "media_trigger_value":"No",
+            "media_trigger_value":"না",
             "media_link":"android.resource://org.smartregister.growplus/raw/pregnantfood",
-            "media_text":"\u2022 She should reduce tea and coffee consumption during pregnancy as it can interfere with her body’s use of foods. Don’t drink tea/coffee at least 2 hours before and after taking food."
+            "media_text":"\u2022 গর্ভাবস্থায় তার চা এবং কফির  খাওয়া হ্রাস করা উচিত । খাবার গ্রহণের কমপক্ষে 2 ঘন্টা আগে এবং পরে চা / কফি পান করবেন না।"
           }
         ],
         "v_required": {
           "value": "true",
-          "err": "Please answer the question"
+          "err": "প্রশ্নের উত্তর দিন"
         },
         "relevance": {
           "step1:has_diet_changed": {
             "type": "string",
-            "ex": "equalTo(., \"Yes\")"
+            "ex": "equalTo(., \"হ্যাঁ\")"
           }
         }
       },
@@ -249,20 +248,19 @@
         "openmrs_entity": "",
         "openmrs_entity_id": "",
         "type": "spinner",
-        "hint": "Are you having any trouble eating?",
+        "hint": "আপনি খেতে কোন সমস্যা হচ্ছে?",
         "values": [
-          "Yes",
-          "No"
+          "হ্যাঁ",
+          "না"
         ],
         "relevance": {
           "step1:nutrition_to_discuss": {
-            "type": "string",
-            "ex": "regex(., \"(?i).*?\\bwomans_diet\\b.*?\")"
+            "type": "string"
           }
         },
         "v_required": {
           "value": "true",
-          "err": "Please answer the question"
+          "err": "প্রশ্নের উত্তর দিন"
         }
       },
       {
@@ -271,35 +269,34 @@
         "openmrs_entity": "",
         "openmrs_entity_id": "",
         "type": "spinner",
-        "hint": "How many IFA tablets do you take per week?",
+        "hint": "আপনি প্রতি সপ্তাহে কতগুলি আইএফএ ট্যাবলেট গ্রহণ করেন?",
         "values": [
-          "7 Tablet or more",
-          "6 tablet or less"
+          "7 টি ট্যাবলেট বা আরও বেশি",
+          "6 ট্যাবলেট বা তার চেয়ে কম"
         ],
         "has_media_content": true,
         "media": [
           {
             "media_type":"text",
-            "media_trigger_value":"7 Tablet or more",
+            "media_trigger_value":"7 টি ট্যাবলেট বা আরও বেশি",
             "media_link":"",
-            "media_text":"\u2022  Congratulate her and encourage her to keep taking iron tablets daily."
+            "media_text":"\u2022 তাকে অভিনন্দন জানায় এবং প্রতিদিন আইএফএ  ট্যাবলেট গ্রহণ করতে তাকে উৎসাহিত করুন।"
           },
           {
             "media_type":"text",
-            "media_trigger_value":"6 tablet or less",
+            "media_trigger_value":"6 ট্যাবলেট বা তার চেয়ে কম",
             "media_link":"",
-            "media_text":"Take iron and folic acid tablets to prevent anaemia during pregnancy and for at least 3 months after your baby’s birth.\n Ask: What hinders you from taking IFA daily? \n- If she is having trouble with the taste, encourage her to take the tablet with a flavored drink, or with food.\n - If that is difficult, counsel her on taking half a tablet of IFA per day."
+            "media_text":"রক্তাল্পতা প্রতিরোধের জন্য গর্ভাবস্থায় এবং আপনার সন্তানের জন্মের পরে কমপক্ষে 3 মাস ধরে আয়রন এবং ফলিক অ্যাসিড ট্যাবলেট গ্রহণ করুন \\ Ask n জিজ্ঞাসা করুন: প্রতিদিন আইএফএ গ্রহণে আপনাকে বাধা কী? \\ N- যদি স্বাদে সমস্যা হয় তবে তাকে উৎসাহিত করুন স্বাদযুক্ত পানীয় বা খাবারের সাথে ট্যাবলেটটি নিয়ে যান \\ - n - যদি এটি সমস্যা হয় তবে প্রতি দিন তাকে অর্ধেক ট্যাবলেট আইএফএ নেওয়ার পরামর্শ দিন \""
           }
         ],
         "relevance": {
           "step1:nutrition_to_discuss": {
-            "type": "string",
-            "ex": "regex(., \"(?i).*?\\bwomans_diet\\b.*?\")"
+            "type": "string"
           }
         },
         "v_required": {
           "value": "true",
-          "err": "Please answer the question"
+          "err": "প্রশ্নের উত্তর দিন"
         }
       },
       {
@@ -308,29 +305,28 @@
         "openmrs_entity": "",
         "openmrs_entity_id": "",
         "type": "spinner",
-        "hint": "Are you taking other supplements?",
+        "hint": "আপনি কি অন্যান্য পরিপূরক খাবার গ্রহণ করছেন?",
         "values": [
-          "Yes",
-          "No"
+          "হ্যাঁ",
+          "না"
         ],
         "has_media_content": true,
         "media": [
           {
             "media_type":"text",
-            "media_trigger_value":"Yes",
+            "media_trigger_value":"হ্যাঁ",
             "media_link":"",
-            "media_text":"Which supplements are you taking?\nDo you have access to iodized salt? (only ask if country does not have mandatory national salt iodization)\nDiscuss:\n- Use iodised salt to help your baby’s brain and body develop well\n- Take de-worming tablets to help prevent anaemia only after first trimester"
+            "media_text":"আপনি কোন পরিপূরক খাবার গ্রহণ করছেন \n আপনি আয়োডিনযুক্ত লবণ কিনতে পারেন  \nDiscuss : n- ব্যবহার করুন \\ আয়োডিনযুক্ত লবণ আপনার শিশুর মস্তিষ্ক এবং শরীরের ভাল বিকাশ করে \\ n- অ্যানিমিয়া প্রতিরোধে সাহায্য করার জন্য কৃমির ট্যাবলেটগুলি কেবল প্রথম ত্রৈমাসিকের পরে নিন \""
           }
         ],
         "relevance": {
           "step1:nutrition_to_discuss": {
-            "type": "string",
-            "ex": "regex(., \"(?i).*?\\bwomans_diet\\b.*?\")"
+            "type": "string"
           }
         },
         "v_required": {
           "value": "true",
-          "err": "Please answer the question"
+          "err": "প্রশ্নের উত্তর দিন"
         }
       },
       {
@@ -339,35 +335,34 @@
         "openmrs_entity": "",
         "openmrs_entity_id": "",
         "type": "spinner",
-        "hint": "Are you able to take time to sufficiently rest?",
+        "hint": " আপনি কি পর্যাপ্ত বিশ্রামের জন্য সময় পান?",
         "values": [
-          "Yes",
-          "No"
+          "হ্যাঁ",
+          "না"
         ],
         "has_media_content": true,
         "media": [
           {
             "media_type":"text",
-            "media_trigger_value":"Yes",
+            "media_trigger_value":"হ্যাঁ",
             "media_link":"",
-            "media_text":"Congratulate her and encourage her to keep taking time to rest throughout her day and not to take on a high work load. If other family members are present, praise them for taking on more in terms of workload"
+            "media_text":"গর্ভবতী মহিলাকে অভিনন্দন জানান এবং   গর্ভবতী মহিলাকে  সারা দিন ধরে বিশ্রাম নিতে এবং অতিরিক্ত কাজের চাপ না নেওয়ার জন্য উত্সাহিত করুন। পরিবারের অন্য সদস্যরা যদি উপস্থিত থাকেন তবে কাজের চাপ ভাগ করে নেওয়ার জন্য তাদের প্রশংসা করুন।"
           },
           {
             "media_type":"text",
-            "media_trigger_value":"No",
+            "media_trigger_value":"না",
             "media_link":"",
-            "media_text":"Getting adequate rest during pregnancy is very important. Make sure you schedule in times throughout the day to rest and relax. This will help your baby build up strength for a less painful delivery.If a pregnant woman especially in her third trimester continues to do strenuous work, this could result in her baby being born early with a low birth weight. This will affect the health and development of her baby.\n - Are there ways she can talk with family members to share some of her work with others in the family?They can exchange strenuous chores with her so she can sit and rest more often."
+            "media_text":"গর্ভাবস্থায় পর্যাপ্ত বিশ্রাম পাওয়া খুব গুরুত্বপূর্ণ। নিশ্চিত হয়ে নিন যে আপনি সারাদিন বিশ্রাম নেওয়ার জন্য পর্যাপ্ত সময় ঠিক করতে পাচ্ছেন। বিশ্রাম আপনার বাচ্চাকে কম বেদনাদায়ক প্রসবের জন্য শক্তি বাড়িয়ে তুলতে সহায়তা করবে । যদি কোনও গর্ভবতী মহিলা বিশেষত তার তৃতীয় ত্রৈমাসিকের মধ্যে কঠোর কাজ করা অব্যাহত থাকে, এর ফলে তার বাচ্চা কম জন্মের ওজন নিয়ে প্রারম্ভিক হতে পারে। এটি তার শিশুর স্বাস্থ্য এবং বিকাশের উপর প্রভাব ফেলবে \\ - - তার কাজের কিছু অংশ পরিবারের অন্যদের সাথে ভাগ করে নেওয়ার জন্য তিনি কি পরিবারের সদস্যদের সাথে কথা বলতে পারেন? তারা তার সাথে কঠোর কাজগুলি বিনিময় করতে পারেন যাতে তিনি আরও প্রায়ই বসে বিশ্রাম নিতে পারেন।"
           }
         ],
         "relevance": {
           "step1:nutrition_to_discuss": {
-            "type": "string",
-            "ex": "regex(., \"(?i).*?\\breducing_workload\\b.*?\")"
+            "type": "string"
           }
         },
         "v_required": {
           "value": "true",
-          "err": "Please answer the question"
+          "err": "প্রশ্নের উত্তর দিন"
         }
       },
       {
@@ -376,35 +371,34 @@
         "openmrs_entity": "",
         "openmrs_entity_id": "",
         "type": "spinner",
-        "hint": "Are you sleeping under an insecticide-treated mosquito net?",
+        "hint": "আপনি মশারির নীচে ঘুমাচ্ছেন?",
         "values": [
-          "Yes",
-          "No"
+          "হ্যাঁ",
+          "না"
         ],
         "has_media_content": true,
         "media": [
           {
             "media_type":"text",
-            "media_trigger_value":"Yes",
+            "media_trigger_value":"হ্যাঁ",
             "media_link":"",
-            "media_text":"Congratulate her and encourage her to continue sleeping under a ITN"
+            "media_text":"তাকে অভিনন্দন জানান এবং ম্যালেরিয়া প্রতিরোধের জন্য মশারির নীচে ঘুমাতে  উৎসাহিত করুন।"
           },
           {
             "media_type":"text",
-            "media_trigger_value":"No",
+            "media_trigger_value":"না",
             "media_link":"",
-            "media_text":"Do you know why it is important to sleep under a mosquito net? \n- It helps to prevent malaria which makes you tired and affects your energy levels. It is best to sleep under an insecticide-treated mosquito net.\n- Mosquitos are the cause of malaria, and bednets prevent mosquitos from biting you. More important for pregnant women and babies to be protected from malaria \n Ask: Are there any barriers in you sleeping under an insecticide treated net?\nSuggesting some alternative actions: Use a fan, ensure no stagnant water present, be receptive to indoor residual spray"
+            "media_text":"আপনি কি জানেন যে মশারির নীচে ঘুমানো কেন গুরুত্বপূর্ণ?-N- এটি ম্যালেরিয়া প্রতিরোধে সহায়তা করে যা আপনাকে ক্লান্ত করে তোলে এবং আপনার শক্তির স্তরকে প্রভাবিত করে। কীটনাশক-চিকিত্সা করা মশারির নীচে ঘুমানো ভাল sleep n- মশা ম্যালেরিয়ার কারণ এবং বিছানাগুলি মশার রোগ আপনাকে কামড়ানো থেকে বিরত করে। গর্ভবতী মহিলা এবং শিশুদের ম্যালেরিয়া থেকে রক্ষা করার জন্য আরও গুরুত্বপূর্ণ Ask একটি ফ্যান, কোনও স্থির জল উপস্থিত না হওয়া নিশ্চিত করুন, অন্দর অবশেষ স্প্রেতে গ্রহনযোগ্য হোন"
           }
         ],
         "relevance": {
           "step1:nutrition_to_discuss": {
-            "type": "string",
-            "ex": "regex(., \"(?i).*?\\bprevention_of_malaria\\b.*?\")"
+            "type": "string"
           }
         },
         "v_required": {
           "value": "true",
-          "err": "Please answer the question"
+          "err": "প্রশ্নের উত্তর দিন"
         }
       },
       {
@@ -413,35 +407,34 @@
         "openmrs_entity": "",
         "openmrs_entity_id": "",
         "type": "spinner",
-        "hint": "Are you currently taking intermittent preventative treatment (IPT) of malaria?",
+        "hint": "আপনি কি বর্তমানে ম্যালেরিয়ার মধ্যবর্তী সময়ে প্রতিরোধমূলক চিকিত্সা (আইপিটি) নিচ্ছেন",
         "values": [
-          "Yes",
-          "No"
+          "হ্যাঁ",
+          "না"
         ],
         "has_media_content": true,
         "media": [
           {
             "media_type":"text",
-            "media_trigger_value":"Yes",
+            "media_trigger_value":"হ্যাঁ",
             "media_link":"",
-            "media_text":"Congratulate her and encourage her to continue taking IPT for prevention of malaria"
+            "media_text":"তাকে অভিনন্দন জানান এবং ম্যালেরিয়া প্রতিরোধের জন্য আইপিটি নেওয়া চালিয়ে যেতে উৎসাহিত করুন"
           },
           {
             "media_type":"text",
-            "media_trigger_value":"No",
+            "media_trigger_value":"না",
             "media_link":"",
-            "media_text":"Ask: What are your current barriers in taking IPT? How can we work through these barriers together?\nIt is best to take antimalarial medicine as prescribed(talk about why IPT is important for pregnant women).\nMore important for pregnant women and babies to be protected from malaria. Discussion of how to get antimalarial meds – CHV, alternative community based resources, private sector"
+            "media_text":"জিজ্ঞাসা করুন: আইপিটি নেওয়ার ক্ষেত্রে আপনার বর্তমান বাধাগুলি কী কী? এই বাধাগুলি কীভাবে আমরা একসাথে কাজ করতে পারি ? Prescribed n নির্ধারিত হিসাবে অ্যান্টিম্যালারি medicine ষধ গ্রহণ করা ভাল (গর্ভবতী মহিলাদের জন্য আইপিটি কেন গুরুত্বপূর্ণ তা সম্পর্কে আলোচনা করুন) \\ n গর্ভবতী মহিলা এবং শিশুদের ম্যালেরিয়া থেকে সুরক্ষিত করার জন্য আরও গুরুত্বপূর্ণ। কীভাবে অ্যান্টিমেলারিয়াল মেডগুলি পাবেন - সিএইচভি, বিকল্প সম্প্রদায়ভিত্তিক সংস্থান, বেসরকারী ক্ষেত্রের আলোচনা"
           }
         ],
         "relevance": {
           "step1:nutrition_to_discuss": {
-            "type": "string",
-            "ex": "regex(., \"(?i).*?\\bprevention_of_malaria\\b.*?\")"
+            "type": "string"
           }
         },
         "v_required": {
           "value": "true",
-          "err": "Please answer the question"
+          "err": "প্রশ্নের উত্তর দিন"
         }
       },
       {
@@ -450,35 +443,34 @@
         "openmrs_entity": "",
         "openmrs_entity_id": "",
         "type": "spinner",
-        "hint": "What are your thoughts on breastfeeding after delivery?",
+        "hint": "প্রসবের পরে বুকের দুধ খাওয়ানোর বিষয়ে আপনার কী ধারণা?",
         "values": [
-          "I plan to breastfeed",
-          "I do not want to breastfeed"
+          "আমি বুকের দুধ খাওয়ানোর পরিকল্পনা করছি",
+          "আমি বুকের দুধ খাওয়াতে চাই না"
         ],
         "has_media_content": true,
         "media": [
           {
             "media_type":"text",
-            "media_trigger_value":"I plan to breastfeed",
+            "media_trigger_value":"আমি বুকের দুধ খাওয়ানোর পরিকল্পনা করছি",
             "media_link":"",
-            "media_text":"This is an excellent choice. You are making a good choice to give your child the best start to life.\nBreastmilk is clean and wholesome and provides all the essential nutrients and vitamins your baby needs for a healthy start to life. Give only breastmilk in the first 5 months of life including no water, tea, or milk or any other liquid and immediately breastfeed within an hour of delivery."
+            "media_text":"এটি একটি দুর্দান্ত পছন্দ। আপনার বাচ্চাকে জীবনের সবচেয়ে ভাল শুরু করার জন্য আপনি একটি ভাল পছন্দ বেছে নিচ্ছেন \\ B বুকের দুধ পরিষ্কার এবং স্বাস্থ্যকর এবং আপনার শিশুর স্বাস্থ্যকর জীবন শুরু করার জন্য বুকের দুধ প্রয়োজনীয় সমস্ত পুষ্টি এবং ভিটামিন সরবরাহ করে। প্রথম 5 মাসে কেবলমাত্র বুকের দুধ দিন এবং প্রসবের এক ঘন্টার মধ্যে অবিলম্বে বুকের দুধ পান করান।পানি, চা, বা দুধ বা অন্য কোনও তরল খাওয়াবেন না।"
           },
           {
             "media_type":"video",
-            "media_trigger_value":"I do not want to breastfeed",
+            "media_trigger_value":"আমি বুকের দুধ খাওয়াতে চাই না",
             "media_link":"android.resource://org.smartregister.growplus/raw/understandingbreastfeeding",
             "media_text":""
           }
         ],
         "relevance": {
           "step1:nutrition_to_discuss": {
-            "type": "string",
-            "ex": "regex(., \"(?i).*?\\bbreastfeeding\\b.*?\")"
+            "type": "string"
           }
         },
         "v_required": {
           "value": "true",
-          "err": "Please answer the question"
+          "err": "প্রশ্নের উত্তর দিন"
         }
       },
       {
@@ -487,35 +479,35 @@
         "openmrs_entity": "",
         "openmrs_entity_id": "",
         "type": "check_box",
-        "label": "Let’s identify one or two small actions we can work on before your next visit. Of the topics we discussed, what would you like to work on before our next meeting? Some possible actions:",
+        "label": "আসুন আমরা আপনার পরবর্তী ভিজিটের আগে কাজ করতে পারি এমন একটি বা দুটি ছোট কাজ  শনাক্ত করি । আমরা আলোচিত বিষয়গুলির মধ্যে, আপনি আমাদের পরবর্তী  ভিজিটের   আগে কী নিয়ে কাজ করতে চান? কিছু সম্ভাব্য পদক্ষেপ:",
         "v_required": {
           "value": true,
-          "err": "Please answer the question"
+          "err": "প্রশ্নের উত্তর দিন"
         },
         "options":[
           {
             "key":"ifa_each_day",
-            "text":"Take IFA each day or try to take it as frequently as possible",
+            "text":"প্রতিদিন আইএফএ ট্যাবলেট নিন বা যতটা সম্ভব ঘন ঘন এটি খাওয়ার চেষ্টা করুন",
             "value":"false"
           },
           {
             "key":"iodized_salt",
-            "text":"Use iodized salt instead of regular salt if available",
+            "text":"সাধারন খোলা লবণের পরিবর্তে আয়োডিনযুক্ত লবণ ব্যবহার করুন",
             "value":"false"
           },
           {
             "key":"extra_snack",
-            "text":"Eat an extra snack a day",
+            "text":"দিনে অতিরিক্ত নাস্তা খান",
             "value":"false"
           },
           {
             "key":"discuss_husband_extra_food",
-            "text":"Discuss with husband or mother in law about eating extra and diverse food throughout the day",
+            "text":"প্রতিদিন অতিরিক্ত ও বৈচিত্র্যময় খাবার খাওয়ার বিষয়ে স্বামী বা শাশুড়ির সাথে আলোচনা করুন।",
             "value":"false"
           },
           {
             "key":"negotiate_family_anc_visit",
-            "text":"Negotiate with family members to take on some of her workload and to attend ANC visits together",
+            "text":"তার কাজের চাপ কিছু নিতে এবং একসাথে ANC ভিজিটে  নিতে পরিবারের সদস্যদের সাথে আলোচনা করুন।",
             "value":"false"
           }
         ],
@@ -533,12 +525,12 @@
         "openmrs_entity_id": "",
         "openmrs_data_type": "text",
         "type": "date_picker",
-        "hint": "Let’s schedule next appointment",
+        "hint": "পরবর্তী অ্যাপয়েন্টমেন্টের শিডিউল ঠিক করুন।",
         "expanded": false,
         "min_date": "today",
         "v_required": {
           "value": "true",
-          "err": "Please enter the date of next appointment"
+          "err": "পরবর্তী অ্যাপয়েন্টমেন্টের তারিখ প্রবেশ করুন।"
         }
       }
     ]

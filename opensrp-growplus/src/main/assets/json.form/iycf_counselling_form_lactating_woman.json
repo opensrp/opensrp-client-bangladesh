@@ -52,7 +52,7 @@
     }
   },
   "step1": {
-    "title": "IYCF Councelling Form Lactating woman",
+    "title": "কাউন্সেলিং ফর্ম -দুগ্ধদানকারী মহিলা",
     "fields": [
       {
         "key": "dummy_view_for_text_resize",
@@ -97,31 +97,31 @@
         "openmrs_entity": "",
         "openmrs_entity_id": "",
         "type": "check_box",
-        "label": "Do you have concerns you would like to discuss during this visit related to nutrition? ",
+        "label": "পুষ্টি সম্পর্কিত এই ভিজিটের সময় আপনি কী আলোচনা করতে চান এমন উদ্বেগ রয়েছে?",
         "options":[
           {
             "key":"mothers_diet",
-            "text":"Mother’s diet",
+            "text":"মায়ের ডায়েট",
             "value":"false"
           },
           {
             "key":"breastfeeding",
-            "text":"Breastfeeding",
+            "text":"বুকের দুধ খাওয়ানো",
             "value":"false"
           },
           {
             "key":"complementary_feeding",
-            "text":"Complementary feeding",
+            "text":"পরিপূরক খাওয়ানো",
             "value":"false"
           },
           {
             "key":"wash",
-            "text":"WASH",
+            "text":"ধোয়া",
             "value":"false"
           },
           {
             "key":"support_from_family",
-            "text":"Support from family",
+            "text":"পরিবার থেকে সমর্থন",
             "value":"false"
           }
         ],
@@ -138,19 +138,18 @@
         "openmrs_entity": "",
         "openmrs_entity_id": "",
         "type": "spinner",
-        "hint": "Are you any having trouble eating?",
+        "hint": "আপনার কি খেতে সমস্যা হচ্ছে?",
         "values": [
-          "Yes",
-          "No"
+          "হ্যাঁ",
+          "না"
         ],
         "v_required": {
           "value": "true",
-          "err": "Please answer the question"
+          "err": "প্রশ্নের উত্তর দিন"
         },
         "relevance": {
         "step1:nutrition_to_discuss": {
-          "type": "string",
-          "ex": "regex(., \"(?i).*?\\bmothers_diet\\b.*?\")"
+          "type": "string"
         }
         }
       },
@@ -160,46 +159,46 @@
         "openmrs_entity": "",
         "openmrs_entity_id": "",
         "type": "check_box",
-        "label": "What types of food are you eating on a daily basis?",
+        "label": "আপনি প্রতিদিন কোন ধরণের খাবার খাচ্ছেন?",
         "options":[
           {
             "key":"dairy",
-            "text":"Dairy: milk, cheese, yogurt",
+            "text":"দুগ্ধ: দুধ, পনির, দই",
             "value":"false"
           },
           {
             "key":"dark_green_leafy_vegetables",
-            "text":"Dark green leafy vegetables",
+            "text":"গাঢ় সবুজ শাকসব্জী",
             "value":"false"
           },
           {
             "key":"vit_a_rich_fresh_fruits",
-            "text":"Other Vitamin A-rich fresh fruits and vegetables: mago, papaya, passion fruit",
+            "text":"অন্যান্য ভিটামিন এ সমৃদ্ধ তাজা ফল এবং শাকসব্জি,আম পেঁপে",
             "value":"false"
           },
           {
             "key":"meat_fish_poultry",
-            "text":"Meat, fish, poultry",
+            "text":"মাংস, মাছ, হাঁস-মুরগি",
             "value":"false"
           },
           {
             "key":"eggs",
-            "text":"Eggs",
+            "text":"ডিম",
             "value":"false"
           },
           {
             "key":"grains",
-            "text":"Grains: bread, potatoes, sorghum",
+            "text":"শস্য: রুটি, আলু",
             "value":"false"
           },
           {
             "key":"nuts_and_seeds",
-            "text":"Nuts and seeds",
+            "text":"বাদাম এবং শিম বীজ",
             "value":"false"
           },
           {
             "key":"pulses",
-            "text":"Pulses: peas, lentils and beans",
+            "text":"ডাল: মটর, মসুর ও মটরশুটি",
             "value":"false"
           }
         ],
@@ -209,69 +208,68 @@
             "media_type":"text",
             "media_trigger_value":"1",
             "media_link":"",
-            "media_text":"Probing questions:\n- What makes it difficult for you to eat a variety of foods?",
+            "media_text":"তদন্তকারী প্রশ্ন: \n- বিভিন্ন ধরণের খাবার খেতে আপনার পক্ষে কী অসুবিধা হয়?",
             "checkbox_count": true
           },
           {
             "media_type":"text",
             "media_trigger_value":"2",
             "media_link":"",
-            "media_text":"Probing questions:\n- What makes it difficult for you to eat a variety of foods?",
+            "media_text":"তদন্তকারী প্রশ্ন: \n- বিভিন্ন ধরণের খাবার খেতে আপনার পক্ষে কী অসুবিধা হয়?",
             "checkbox_count": true
           },
           {
             "media_type":"text",
             "media_trigger_value":"3",
             "media_link":"",
-            "media_text":"Probing questions:\n- What makes it difficult for you to eat a variety of foods?",
+            "media_text":"তদন্তকারী প্রশ্ন: \n- বিভিন্ন ধরণের খাবার খেতে আপনার পক্ষে কী অসুবিধা হয়?",
             "checkbox_count": true
           },
           {
             "media_type":"text",
             "media_trigger_value":"4",
             "media_link":"",
-            "media_text":"Probing questions:\n- What makes it difficult for you to eat a variety of foods?",
+            "media_text":"তদন্তকারী প্রশ্ন: \n- বিভিন্ন ধরণের খাবার খেতে আপনার পক্ষে কী অসুবিধা হয়?",
             "checkbox_count": true
           },
           {
             "media_type":"text",
             "media_trigger_value":"5",
             "media_link":"",
-            "media_text":"Congratulations",
+            "media_text":"অভিনন্দন",
             "checkbox_count": true
           },
           {
             "media_type":"text",
             "media_trigger_value":"6",
             "media_link":"",
-            "media_text":"Congratulations",
+            "media_text":"অভিনন্দন",
             "checkbox_count": true
           },
           {
             "media_type":"text",
             "media_trigger_value":"7",
             "media_link":"",
-            "media_text":"Congratulations",
+            "media_text":"অভিনন্দন",
             "checkbox_count": true
           },
           {
             "media_type":"text",
             "media_trigger_value":"8",
             "media_link":"",
-            "media_text":"Congratulations",
+            "media_text":"অভিনন্দন",
             "checkbox_count": true
           },
           {
             "media_type":"text",
             "media_trigger_value":"eggs",
             "media_link":"",
-            "media_text":"Do you have eggs at home or are you able to purchase eggs? Would it be possible to eat one egg a day?"
+            "media_text":"বাড়িতে আপনার ডিম আছে  অথবা আপনি  কি ডিম কিনতে পারবেন? দিনে একটি ডিম খাওয়া সম্ভব হবে কি?"
           }
         ],
         "relevance": {
         "step1:nutrition_to_discuss": {
-          "type": "string",
-          "ex": "regex(., \"(?i).*?\\bmothers_diet\\b.*?\")"
+          "type": "string"
         }
       }
       },
@@ -281,35 +279,34 @@
         "openmrs_entity": "",
         "openmrs_entity_id": "",
         "type": "spinner",
-        "hint": "How many times a day are you eating?",
+        "hint": "আপনি দিনে কতবার খাচ্ছেন?",
         "values": [
-          "2 times or less",
-          "3 times or more"
+          "২ বার বা তার চেয়ে কম",
+          "৩ বার বা আরও বেশি"
         ],
         "has_media_content": true,
         "media": [
           {
             "media_type":"text",
-            "media_trigger_value":"2 times or less",
+            "media_trigger_value":"২ বার বা তার চেয়ে কম",
             "media_link":"",
-            "media_text":"Should eat three meals a day with two extra small healthy snacks in between.\n -what makes it difficult for you to eat three meals a day and healthy snacks?"
+            "media_text":"এর মধ্যে দুটি অতিরিক্ত ছোট স্বাস্থ্যকর স্ন্যাক সহ দিনে তিনবার খাবার খাওয়া উচিত \\-n - আপনার পক্ষে দিনে তিনবার খাবার এবং স্বাস্থ্যকর স্ন্যাকস খাওয়া কীসের পক্ষে কঠিন?"
           },
           {
             "media_type":"text",
-            "media_trigger_value":"3 times or more",
+            "media_trigger_value":"৩ বার বা আরও বেশি",
             "media_link":"",
-            "media_text":"Are you eating healthy snacks in between meals? If so, congratulate mother and encourage her to keep eating three or more times a time"
+            "media_text":"আপনি কি খাবারের মধ্যে স্বাস্থ্যকর নাস্তা খাচ্ছেন? যদি তাই হয় তবে মাকে অভিনন্দন জানান এবং একবারে তিন বা ততোধিক বার খাওয়াতে উত্সাহিত করুন"
           }
         ],
         "relevance": {
           "step1:nutrition_to_discuss": {
-            "type": "string",
-            "ex": "regex(., \"(?i).*?\\bmothers_diet\\b.*?\")"
+            "type": "string"
           }
         },
         "v_required": {
           "value": "true",
-          "err": "Please answer the question"
+          "err": "প্রশ্নের উত্তর দিন"
         }
       },
       {
@@ -318,41 +315,39 @@
         "openmrs_entity": "",
         "openmrs_entity_id": "",
         "type": "spinner",
-        "hint": "Are you eating an extra meal or healthy snacks throughout the day?",
+        "hint": "আপনি কি সারা দিন অতিরিক্ত খাবার খাচ্ছেন বা স্বাস্থ্যকর স্ন্যাকস খাচ্ছেন?",
         "values": [
-          "Yes",
-          "No"
+          "হ্যাঁ",
+          "না"
         ],
         "has_media_content": true,
         "media": [
           {
             "media_type":"text",
-            "media_trigger_value":"Yes",
+            "media_trigger_value":"হ্যাঁ",
             "media_link":"",
-            "media_text":"Congratulate the mother and encourage her to eat an extra meal or healthy snacks to supplement her diet"
+            "media_text":"মাকে অভিনন্দন জানান এবং তার ডায়েট পরিপূরক হিসাবে অতিরিক্ত খাবার বা স্বাস্থ্যকর স্ন্যাকস খেতে উৎসাহিত করুন"
           },
           {
             "media_type":"text",
-            "media_trigger_value":"No",
+            "media_trigger_value":"না",
             "media_link":"",
-            "media_text":"Until your child is weaned,eat two extra small meals or “healthy snacks” (extra food between meals)eachday to provide energy and nutrition for you and your growing baby\n- Name examples of healthy snacks such as banana, avocado…etc.\n- Encourage mother to eat adiverse set of foodincluding milk, fresh fruit and vegetables, meat, fish, eggs, grains, peas and beans."
+            "media_text":"আপনার সন্তানের দুগ্ধ ছাড়ানো অবধি আপনার এবং আপনার বেড়ে ওঠা শিশুর জন্য শক্তি এবং পুষ্টি সরবরাহের জন্য প্রতিদিন অতিরিক্ত দুটি ছোট ছোট খাবার বা স্বাস্থ্যকর স্ন্যাকস \"(খাবারের মধ্যে অতিরিক্ত খাবার) খাওয়া \n- স্বাস্থ্যকর স্ন্যাকসের উদাহরণ যেমন কলা, অ্যাভোকাডো… ইত্যাদি Name"
           }
         ],
         "relevance": {
           "step1:nutrition_to_discuss": {
-            "type": "string",
-            "ex": "regex(., \"(?i).*?\\bmothers_diet\\b.*?\")"
+            "type": "string"
           }
         },
         "relevance": {
           "step1:nutrition_to_discuss": {
-            "type": "string",
-            "ex": "regex(., \"(?i).*?\\bwmothers_diet\\b.*?\")"
+            "type": "string"
           }
         },
         "v_required": {
           "value": "true",
-          "err": "Please answer the question"
+          "err": "প্রশ্নের উত্তর দিন"
         }
       },
       {
@@ -361,35 +356,34 @@
         "openmrs_entity": "",
         "openmrs_entity_id": "",
         "type": "spinner",
-        "hint": "Are you taking IFA?",
+        "hint": "আপনি কি আইএফএ নিচ্ছেন?",
         "values": [
-          "Yes",
-          "No"
+          "হ্যাঁ",
+          "না"
         ],
         "has_media_content": true,
         "media": [
           {
             "media_type":"text",
-            "media_trigger_value":"Yes",
+            "media_trigger_value":"হ্যাঁ",
             "media_link":"",
-            "media_text":" Great, praise the mother and encourage her to continue to take iron supplements until at least 3 months after your baby’s birth."
+            "media_text":"দুর্দান্ত, মায়ের প্রশংসা করুন এবং আপনার সন্তানের জন্মের কমপক্ষে ৩ মাস অবধি IFA চালিয়ে যেতে উত্সাহিত করুন।"
           },
           {
             "media_type":"text",
-            "media_trigger_value":"No",
+            "media_trigger_value":"না",
             "media_link":"",
-            "media_text":" - Take iron and folic acid tablets to prevent anaemia for at least 3 months after your baby’s birth.\n- These tablets help to keep you strong and healthy for breastfeeding and to replenish your energy after birth.\nAsk:What hinders you from taking IFA daily?\n- If she is having trouble with the taste, encourage her to take the tablet with a flavored drink, or with food.\n If that is difficult counsel her on:\n - Taking two tablets per week, 120mg each OR \n- Taking half a tablet of IFA per day"
+            "media_text":"- আপনার শিশুর জন্মের পরে কমপক্ষে 3 মাস রক্তাল্পতা প্রতিরোধের জন্য আয়রন এবং ফলিক অ্যাসিড ট্যাবলেটগুলি নিন \n- এই ট্যাবলেটগুলি আপনাকে স্তন্যপান করানোর জন্য শক্তিশালী এবং স্বাস্থ্যকর রাখতে এবং জন্মের পরে আপনার শক্তি পুনরায় পূরণ করতে সহায়তা করে \\ sk n জিজ্ঞাসা: আপনাকে কী বাধা দেয়? প্রতিদিন আইএফএ গ্রহণ করছেন? \n- যদি স্বাদে সমস্যা হয় তবে তাকে স্বাদযুক্ত পানীয় বা খাবারের সাথে ট্যাবলেটটি গ্রহণ করতে উত্সাহিত করুন \\ n যদি সমস্যা হয় তবে তার পক্ষে এই পরামর্শ: \n - প্রতি সপ্তাহে দুটি ট্যাবলেট গ্রহণ করা, প্রতিটি 120mg বা \n- প্রতিদিন আইএফএর অর্ধেক ট্যাবলেট নেওয়া"
           }
         ],
         "relevance": {
           "step1:nutrition_to_discuss": {
-            "type": "string",
-            "ex": "regex(., \"(?i).*?\\bmothers_diet\\b.*?\")"
+            "type": "string"
           }
         },
         "v_required": {
           "value": "true",
-          "err": "Please answer the question"
+          "err": "প্রশ্নের উত্তর দিন"
         }
       },
       {
@@ -398,35 +392,34 @@
         "openmrs_entity": "",
         "openmrs_entity_id": "",
         "type": "spinner",
-        "hint": "Are you taking any other supplements?",
+        "hint": "আপনি কি অন্যান্য পরিপূরক খাবার গ্রহণ করছেন?",
         "values": [
-          "Yes",
-          "No"
+          "হ্যাঁ",
+          "না"
         ],
         "has_media_content": true,
         "media": [
           {
             "media_type":"text",
-            "media_trigger_value":"Yes",
+            "media_trigger_value":"হ্যাঁ",
             "media_link":"",
-            "media_text":" Ask: Which supplements are you taking?\nAsk: Do you have access to iodized salt? (only ask if country does not have mandatory national salt iodization)"
+            "media_text":"আপনি কোন পরিপূরক খাবার গ্রহণ করছেন \n আপনি আয়োডিনযুক্ত লবণ কিনতে পারেন"
           },
           {
             "media_type":"text",
-            "media_trigger_value":"No",
+            "media_trigger_value":"না",
             "media_link":"",
-            "media_text":"Discuss:\n- Use iodised salt to help your baby’s brain and body develop well.\n- Take de-worming tablets to help prevent anaemia.\n- Takevitamin A capsules/solution immediately after delivery or within 6 weeks so that your baby receives the vitamin A in your breast milk to help prevent illness."
+            "media_text":"\n Discuss : n- ব্যবহার করুন \\ আয়োডিনযুক্ত লবণ আপনার শিশুর মস্তিষ্ক এবং শরীরের ভাল বিকাশ করে \n- অ্যানিমিয়া প্রতিরোধে সাহায্য করার জন্য কৃমির ট্যাবলেটগুলি কেবল প্রথম ত্রৈমাসিকের পরে নিন"
           }
         ],
         "relevance": {
           "step1:nutrition_to_discuss": {
-            "type": "string",
-            "ex": "regex(., \"(?i).*?\\bmothers_diet\\b.*?\")"
+            "type": "string"
           }
         },
         "v_required": {
           "value": "true",
-          "err": "Please answer the question"
+          "err": "প্রশ্নের উত্তর দিন"
         }
       },
       {
@@ -435,35 +428,34 @@
         "openmrs_entity": "",
         "openmrs_entity_id": "",
         "type": "spinner",
-        "hint": "Are you currently breastfeeding?",
+        "hint": "আপনি কি এখন বুকের দুধ খাচ্ছেন?",
         "values": [
-          "Yes",
-          "No"
+          "হ্যাঁ",
+          "না"
         ],
         "has_media_content": true,
         "media": [
           {
             "media_type":"text",
-            "media_trigger_value":"Yes",
+            "media_trigger_value":"হ্যাঁ",
             "media_link":"",
-            "media_text":"Congratulate and encourage the mother to continue"
+            "media_text":"অভিনন্দন এবং মাকে চালিয়ে যেতে উৎসাহিত করুন"
           },
           {
             "media_type":"video",
-            "media_trigger_value":"No",
+            "media_trigger_value":"না",
             "media_link":"android.resource://org.smartregister.growplus/raw/understandingbreastfeeding",
-            "media_text":"Breastmilk is clean and wholesome and provides all the essential nutrients and vitamins your baby needs for a healthy start to life. Give only breastmilk in the first 5 months of life including no water, tea, or milk or any other liquid and immediately breastfeed within an hour of delivery."
+            "media_text":"মায়ের দুধ পরিষ্কার এবং স্বাস্থ্যকর এবং আপনার শিশুর স্বাস্থ্যকর শুরু করার জন্য প্রয়োজনীয় সমস্ত পুষ্টি এবং ভিটামিন সরবরাহ করে। জল, চা, বা দুধ বা অন্য কোনও তরল সহ জীবনের প্রথম 5 মাসে কেবলমাত্র বুকের দুধ দিন এবং প্রসবের এক ঘন্টার মধ্যে অবিলম্বে বুকের দুধ খাওয়ান।"
           }
         ],
         "relevance": {
           "step1:nutrition_to_discuss": {
-            "type": "string",
-            "ex": "regex(., \"(?i).*?\\bbreastfeeding\\b.*?\")"
+            "type": "string"
           }
         },
         "v_required": {
           "value": "true",
-          "err": "Please answer the question"
+          "err": "প্রশ্নের উত্তর দিন"
         }
       },
       {
@@ -534,19 +526,19 @@
             "media_type":"text",
             "media_trigger_value":"inverted_nipple",
             "media_link":"",
-            "media_text":"•Ask mother to see a health worker for help."
+            "media_text":"•মাকে সাহায্যের জন্য স্বাস্থ্যকর্মী দেখতে বলুন।"
           },
           {
             "media_type":"text",
             "media_trigger_value":"cracked_and_sore_nipple",
             "media_link":"",
-            "media_text":"•Explain that her condition will improve with proper positioning and attachment.\n•Apply a drop of the breast milk to the nipple and expose to fresh air"
+            "media_text":"ব্যাখ্যা করুন যে তার অবস্থার যথাযথ অবস্থান এবং সংযুক্তি দিয়ে উন্নতি হবে। \n স্তনের বুকের দুধের এক ফোঁটা প্রয়োগ করুন এবং তাজা বাতাসে প্রকাশ করুন"
           },
           {
             "media_type":"text",
             "media_trigger_value":"mother_away_for_long_periods",
             "media_link":"",
-            "media_text":"•Show her how to express her milk and leave in a clean container to be fed by cup\n•If unable to express enough breastmilk, discuss how to supplement with other milk."
+            "media_text":"কীভাবে তার দুধ প্রকাশ করবেন এবং কাপ দিয়ে খাওয়ানোর জন্য একটি পরিষ্কার পাত্রে রেখে দিন \n পর্যাপ্ত বুকের দুধ খাওয়াতে না পারলে কীভাবে অন্যান্য দুধের পরিপূরক করতে হয় তা নিয়ে আলোচনা করুন।"
           },
           {
             "media_type":"text",
@@ -558,7 +550,7 @@
         "relevance": {
           "step1:breastfeeding": {
             "type": "string",
-            "ex": "equalTo(., \"No\")"
+            "ex": "equalTo(., \"না\")"
           }
         }
       },
@@ -568,35 +560,34 @@
         "openmrs_entity": "",
         "openmrs_entity_id": "",
         "type": "spinner",
-        "hint": "Did you breastfeed your child yesterday?",
+        "hint": "আপনি কি গতকাল আপনার শিশুকে বুকের দুধ খাওয়ালেন?",
         "values": [
-          "Yes",
-          "No"
+          "হ্যাঁ",
+          "না"
         ],
         "has_media_content": true,
         "media": [
           {
             "media_type":"text",
-            "media_trigger_value":"Yes",
+            "media_trigger_value":"হ্যাঁ",
             "media_link":"",
-            "media_text":" Congratulate Her"
+            "media_text":"তাকে অভিনন্দন"
           },
           {
             "media_type":"text",
             "media_trigger_value":"No",
             "media_link":"",
-            "media_text":"For child 0-5 months \n- Continue breastfeeding your baby on demand both day and night. This will maintain his or her health and strength as breast milk continues to be the most important part of your baby’s diet.\n\nFor child 6-11 months:\n- Continue breastfeeding your baby on demand both day and night. This will maintain his or her health and strength as breast milk continues to be the most important part of your baby’s diet.\n- Breastfeed first before giving other foods.\n- Breastmilk supplies half (1/2) baby’s energy needs \n\n For 12-23 month olds:  - Continue breastfeeding your baby on demand both day and night. This will maintain his or her health and strength as breast milk continues to be the most important part of your baby’s diet.\n  - Breastfeedfirstbefore giving other foods.\n- Breastmilk continues to make up about one third (1/3) of the energy needs of the young child."
+            "media_text":"শিশুর জন্য 0-5 মাস \n- দিন এবং রাতে উভয় দাবিতে আপনার শিশুকে বুকের দুধ খাওয়ানো চালিয়ে যান। এটি তার বা তার স্বাস্থ্য এবং শক্তি বজায় রাখবে কারণ বুকের দুধ আপনার শিশুর ডায়েটের সবচেয়ে গুরুত্বপূর্ণ অংশ হিসাবে অব্যাহত রয়েছে \n সন্তানের জন্য -11-১১ মাস: \n- দিন এবং রাত উভয় সময়ের জন্য আপনার বাচ্চার বুকের দুধ খাওয়ানো চালিয়ে যান। এটি তার বা তার স্বাস্থ্য এবং শক্তি বজায় রাখবে কারণ বুকের দুধ আপনার শিশুর ডায়েটের সবচেয়ে গুরুত্বপূর্ণ অংশ হিসাবে অব্যাহত রয়েছে \\-n- অন্যান্য খাবার দেওয়ার আগে প্রথমে বুকের দুধ খাওয়ান \\ -2 n 12-23 মাস বয়সীদের জন্য: - দিন এবং রাত্রি উভয় দাবিতে আপনার শিশুকে বুকের দুধ খাওয়ানো চালিয়ে যান। এটি তার বা তার স্বাস্থ্য এবং শক্তি বজায় রাখবে কারণ বুকের দুধ আপনার শিশুর ডায়েটের সবচেয়ে গুরুত্বপূর্ণ অংশ হিসাবে অব্যাহত রয়েছে \\ অল্প বয়স্ক শিশুটির শক্তি প্রয়োজন।"
           }
         ],
         "relevance": {
           "step1:nutrition_to_discuss": {
-            "type": "string",
-            "ex": "regex(., \"(?i).*?\\bbreastfeeding\\b.*?\")"
+            "type": "string"
           }
         },
         "v_required": {
           "value": "true",
-          "err": "Please answer the question"
+          "err": "প্রশ্নের উত্তর দিন"
         }
       },
       {
@@ -605,10 +596,10 @@
         "openmrs_entity": "",
         "openmrs_entity_id": "",
         "type": "edit_text",
-        "hint": "How many times do you breastfeed day and night?",
+        "hint": "দিন ও রাতে আপনি কতবার দুধ পান করান?",
         "v_numeric": {
           "value": "true",
-          "err": "Enter a valid number"
+          "err": "একটি বৈধ নম্বর লিখুন"
         },
         "has_media_content": true,
         "media": [
@@ -616,7 +607,7 @@
             "media_type":"text",
             "media_trigger_value":"10",
             "media_link":"",
-            "media_text":" Congratulate and encourage the mother to continue"
+            "media_text":"অভিনন্দন এবং মাকে চালিয়ে যেতে উৎসাহিত করুন"
           },
           {
             "media_type":"text",
@@ -627,13 +618,12 @@
         ],
         "relevance": {
           "step1:nutrition_to_discuss": {
-            "type": "string",
-            "ex": "regex(., \"(?i).*?\\bbreastfeeding\\b.*?\")"
+            "type": "string"
           }
         },
         "v_required": {
           "value": "true",
-          "err": "Please answer the question"
+          "err": "প্রশ্নের উত্তর দিন"
         }
       },
       {
@@ -644,7 +634,7 @@
         "openmrs_data_type": "text",
         "type": "label",
         "read_only": true,
-        "text": "Congratulate and encourage the mother to continue",
+        "text": "অভিনন্দন এবং মাকে চালিয়ে যেতে উৎসাহিত করুন",
         "relevance": {
           "step1:breastfeed_frequency": {
             "type": "numeric",
@@ -659,31 +649,31 @@
         "openmrs_entity": "",
         "openmrs_entity_id": "",
         "type": "check_box",
-        "label": "What are some signs you know that your baby wants to breastfeed?",
+        "label": "আপনার বাচ্চা বুকের দুধ খেতে চায় এমন কয়েকটি লক্ষণ কী কী?",
         "options":[
           {
             "key":"restlessness",
-            "text":"Restlessness",
+            "text":"অস্থিরতা",
             "value":"false"
           },
           {
             "key":"0pening_mouth_and_turning_head_from_side_to_side",
-            "text":"Opening mouth and turning head from side-to-side",
+            "text":"মুখ খুলে এবং পাশাপাশি থেকে মাথা ঘুরিয়ে নিচ্ছেন",
             "value":"false"
           },
           {
             "key":"putting_tongue_in_and_out",
-            "text":"Putting tongue in and out",
+            "text":"জিভ ভিতরে এবং বাইরে নিচ্ছে",
             "value":"false"
           },
           {
             "key":"suckling_on_fingers_and_fists",
-            "text":"Suckling on fingers and fists",
+            "text":"আঙ্গুল এবং মুষ্টি উপর চুষে",
             "value":"false"
           },
           {
             "key":"dont_know",
-            "text":"Don’t know",
+            "text":"জানিনা",
             "value":"false"
           }
         ],
@@ -691,9 +681,9 @@
         "media": [
           {
             "media_type":"text",
-            "media_trigger_value":"dont_know",
+            "media_trigger_value":"জানিনা",
             "media_link":"",
-            "media_text":"Mention the signs that they missed. Also say: Crying is a late sign of hunger. Early signs that your baby wants to breastfeed include:\n a. Restlessness \n b. Openingmouthand turning head from side-to-side \n c. Puttingtonguein and out \n d. Suckling on fingers and fists"
+            "media_text":"তারা যে চিহ্নগুলি হারিয়েছিল তা উল্লেখ করুন  এও বলুন: কান্নাকাটি ক্ষুধার এক দেরী চিহ্ন। আপনার শিশুটি বুকের দুধ খাওয়ানোর জন্য প্রাথমিক লক্ষণগুলির মধ্যে অন্তর্ভুক্ত রয়েছে: \n ক। অস্থিরতা b n খ। খোলার দিক থেকে সামনের দিকে মাথা ঘুরে \n জিভ ভিতরে এবং বাইরে  \n  আঙ্গুল এবং মুষ্টির উপর চুষতে"
           },
           {
             "media_type":"text",
@@ -704,8 +694,8 @@
         ],
         "relevance": {
           "step1:nutrition_to_discuss": {
-            "type": "string",
-            "ex": "regex(., \"(?i).*?\\bbreastfeeding\\b.*?\")"
+            "type": "string"
+
           }
         }
       },
@@ -715,26 +705,26 @@
         "openmrs_entity": "",
         "openmrs_entity_id": "",
         "type": "check_box",
-        "label": "Are you having any difficulties with breastfeeding?",
+        "label": "স্তন্যপান করানোর ক্ষেত্রে কি আপনার কোনও সমস্যা হচ্ছে?",
         "options":[
           {
             "key":"position_during_breastfeeding",
-            "text":"Position during breastfeeding",
+            "text":"স্তন্যদানের সময় অবস্থান",
             "value":"false"
           },
           {
             "key":"poor_attachment",
-            "text":"Poor attachment",
+            "text":"সংযুক্তি",
             "value":"false"
           },
           {
             "key":"suckling",
-            "text":"Suckling",
+            "text":"চুষছে",
             "value":"false"
           },
           {
             "key":"hand_express_cup_feeding_storing_breastmilk",
-            "text":"Hand express, cup feeding, storing breastmilk",
+            "text":"কাপ খাওয়ানো, বুকের দুধ সংগ্রহ করা",
             "value":"false"
           }
         ],
@@ -742,34 +732,33 @@
         "media": [
           {
             "media_type":"image",
-            "media_trigger_value":"position_during_breastfeeding",
+            "media_trigger_value":"স্তন্যদানের সময় অবস্থান",
             "media_link":"android.resource://org.smartregister.growplus/raw/position_during_breastfeeding",
-            "media_text":"Good positioning helps to ensure that your baby suckles well and helps you to produce a good supply of breast milk. The four key points about your baby’s position are: straight, facing the breast, close, and supported: \n1. The baby’s body should be straight, not bent or twisted, but with the head slightly back \n2. The baby’s body should be facing the breast not held flat to your chest or abdomen, and he or she should be able to look up to your face \n3. The baby should be close to you \n4. You should support the baby’s whole body, not just the neck and shoulders, with your hand and forearm There are different ways to position your baby: 1. Cradle position (most commonly used) 2. Cross cradle position (good for small babies) 3. Side-lyingposition(useto rest while breastfeeding and at night) 4. Under-arm position (use after caesarean section, if your nipples are painful or if you are breastfeeding twins or a small baby)"
+            "media_text":"ভাল অবস্থান আপনার শিশুর ভাল স্তন্যপান করে এবং আপনাকে বুকের দুধের সরবরাহ করতে ভাল সহায়তা করে তা নিশ্চিত করতে সহায়তা করে your আপনার শিশুর অবস্থান সম্পর্কে চারটি মূল বিষয় হ'ল: সোজা, স্তনের মুখোমুখি, ঘনিষ্ঠ এবং সমর্থিত: 1 n1 শিশুর শরীর সোজা হওয়া উচিত, বাঁকানো বা বাঁকানো নয়, তবে মাথাটি কিছুটা পিছন ফিরে \n2 \n শিশুর শরীরটি আপনার বুকের বা পেটের সমতল নয় এমন স্তনের মুখোমুখি হওয়া উচিত, এবং সে আপনার মুখের দিকে তাকাতে সক্ষম হবে \n3 শিশুকে আপনার নিকটবর্তী হওয়া উচিত \n4। আপনার হাত এবং সামনের হাত দিয়ে কেবল ঘাড় এবং কাঁধ নয়, আপনার বাচ্চার পুরো শরীরকে সমর্থন করা উচিত আপনার বাচ্চার অবস্থানের বিভিন্ন উপায় রয়েছে: 1. ক্র্যাডল অবস্থান (সর্বাধিক ব্যবহৃত) 2 ক্রস ক্র্যাডল পজিশন (ছোট বাচ্চাদের পক্ষে ভাল) ৩. পাশের অবস্থান (স্তন্যপান করানোর সময় এবং রাতে খাওয়ার সময় বিশ্রাম) ৪. আন্ডার-আর্ম পজিশন (সিজনিয়ার অংশের পরে ব্যবহার করুন, যদি আপনার স্তনবৃন্তগুলি ব্যথা হয় বা আপনি যদি যমজ বা ছোট স্তন্যপান করান তবে) শিশু)"
           },
           {
             "media_type":"image",
-            "media_trigger_value":"poor_attachment",
+            "media_trigger_value":"সংযুক্তি",
             "media_link":"android.resource://org.smartregister.growplus/raw/poor_attachments",
-            "media_text":"Good attachment helps to ensure that your baby suckles well and helps you to produce a good supply of breast milk. · Good attachment helps to prevent sore and cracked nipples. · Breastfeeding should not be painful. · Get help to improve the attachment if you experience pain. There are 4 signs of good attachment: 1. Baby’s mouth is wide open 2. You can see more of the darker skin (areola) above the baby’s mouth than below 3. Baby’s lower lip is turned outwards 4. Baby’s chin is touching mother’s breast"
+            "media_text":"ভাল সংযুক্তি এটি নিশ্চিত করতে সহায়তা করে যে আপনার শিশুর ভাল স্তন্যপান হয় এবং আপনাকে বুকের দুধের সরবরাহ করতে ভাল সহায়তা করে। · ভাল সংযুক্তি ঘা এবং ফাটল স্তনবৃন্ত প্রতিরোধ করতে সহায়তা করে। Ast বুকের দুধ খাওয়ানো কষ্টদায়ক হওয়া উচিত নয়। You যদি আপনি ব্যথা অনুভব করেন তবে সংযুক্তি উন্নত করতে সহায়তা পান। ভাল সংযুক্তির 4 টি লক্ষণ রয়েছে: 1. শিশুর মুখ প্রশস্ত খোলা 2. আপনি নীচের চেয়ে শিশুর মুখের উপরে আরও গা the় ত্বক (areola) দেখতে পাচ্ছেন 3. শিশুর নীচের ঠোঁট বাইরের দিকে ঘুরে গেছে 4. শিশুর চিবুকটি মায়ের স্তনকে স্পর্শ করছে"
           },
           {
             "media_type":"text",
-            "media_trigger_value":"suckling",
+            "media_trigger_value":"চুষছে",
             "media_link":"",
-            "media_text":"The signs of effective suckling are:\n  a)The baby takes slow deep suckles, sometimes pausing.\n  b)You may be able to see or hear your baby swallowing after one or two suckles.\n  c)Suckling is comfortable and pain free for you.\n  d)Your baby finishes the feed, releases the breast and looks contented and relaxed.\n  e)The breast is softer after the feed.\n  · Effective suckling helps you to produce milk and satisfy your baby.\n  · After your baby releases one breast offer your baby the other breast. This will ensure that your baby stimulates your milk production in both breasts, and also gets the most nutritious and satisfying milk."
+            "media_text":"কার্যকর স্তন্যপান করানোর লক্ষণগুলি হ'ল: baby না) শিশু ধীরে ধীরে গভীর স্তন্যপান গ্রহণ করে, কখনও কখনও বিরতি দেয় b nb) আপনি এক বা দুটি স্তন্যপান করার পরে আপনার শিশুকে গিলে দেখতে বা শুনতে সক্ষম হতে পারেন \\ আপনি। \\ n ডি) আপনার শিশুটি ফিড শেষ করে, স্তন ছেড়ে দেয় এবং সন্তুষ্ট এবং স্বাচ্ছন্দ্য দেখাচ্ছে looks) নে) ফিডের পরে স্তন নরম হয় \\ আপনার শিশুটি একটি স্তন প্রকাশ করে আপনার শিশুকে অন্য স্তন দেয়। এটি নিশ্চিত করবে যে আপনার শিশু উভয় স্তনেই আপনার দুধের উত্পাদনকে উত্সাহ দেয় এবং সর্বাধিক পুষ্টিকর এবং সন্তোষজনক দুধ পান।"
           },
           {
             "media_type":"image",
-            "media_trigger_value":"hand_express_cup_feeding_storing_breastmilk",
+            "media_trigger_value":"কাপ খাওয়ানো, বুকের দুধ সংগ্রহ করা",
             "media_link":"android.resource://org.smartregister.growplus/raw/hand_express",
-            "media_text":" Demonstrate these steps with a doll or a baby: · Make sure your hands and utensils are clean. · Washyour hands with soap and running water. · Cleanand boil the container you will use to collect your breast milk. · Get comfortable. · It is sometimes helpful to gently stroke your breasts. A warm cloth may help stimulate the flow of milk. · Putyour thumb on the breast above the dark area around the nipple (areola) and the other fingers on the underside of the breast behind the areola. • With your thumb and first 2 fingers press a little bit in towards chest wall andthen press gently towards the dark area (areola). • Milk may start to flow in drops, or sometimes in fine streams. Collect the milk inthe clean container. • Avoid rubbing the skin, which can cause bruising, or squeezing the nipple,which stops the flow of milk. • Rotate the thumb and finger positions and press/compress and release allaround the areola. · Expressone breast for at least 3 to 5 minutes until the flow slows, then express the other breast, then repeat both sides again (20 to 30 minutes total). Say: · Storebreastmilk in a clean, covered container. Milk can be stored 6 to 8 hours in a cool place and up to 72 hours in the back of the refrigerator. · Givebaby expressed breast milk from a cup. Bring cup to the baby’s lower lip and allow baby to take small amounts of milk, lapping the milk with his or her tongue. Do not pour the milk into baby’s mouth · Pourjustenough breast milk from the clean covered container into the feeding cup. · Bottlesareunsafeto use because they are difficult to wash and can be easily contaminated."
+            "media_text":"এটির উপরে জোর দেওয়ার বিষয়টি নিশ্চিত করুন: ডায়রিয়া এবং অন্যান্য অসুস্থতা এড়াতে ভাল স্বাস্থ্যবিধি (পরিষ্কার-পরিচ্ছন্নতা) গুরুত্বপূর্ণ \\ n আপনার বাচ্চাকে খাবার বা তরল সরবরাহ করতে একটি পরিষ্কার চামচ বা কাপ ব্যবহার করুন।  আপনার বাচ্চাকে দেওয়া খাবারগুলি নিরাপদ স্বাস্থ্যকর জায়গায় সংরক্ষণ করুন।  খাবার প্রস্তুত এবং শিশুকে খাওয়ানোর আগে আপনার হাত সাবান ও জল দিয়ে ধুয়ে নিন। \\ n খাওয়ার আগে আপনার হাত এবং আপনার শিশুর হাত ধুয়ে নিন। \\ n টয়লেট ব্যবহার করে এবং শিশুর নীচে ধুয়ে বা পরিষ্কার করার পরে আপনার হাত সাবান ও জলে ধুয়ে নিন \\ n আপনার হাতকে পরিষ্কার হাত, পরিষ্কার পাত্র এবং পরিষ্কার কাপ ব্যবহার করে আপনার শিশুকে খাওয়ান।\\n  আপনার বাচ্চাকে খাবার বা তরল সরবরাহ করতে একটি পরিষ্কার চামচ বা কাপ ব্যবহার করুন।\\ n বোতল, চা বা স্পাউড কাপগুলি ব্যবহার করবেন না যেহেতু এগুলি পরিষ্কার করা শক্ত এবং আপনার শিশু অসুস্থ হয়ে পড়তে পারে।"
           }
 
         ],
         "relevance": {
           "step1:nutrition_to_discuss": {
-            "type": "string",
-            "ex": "regex(., \"(?i).*?\\bbreastfeeding\\b.*?\")"
+            "type": "string"
           }
         }
       },
@@ -779,35 +768,34 @@
         "openmrs_entity": "",
         "openmrs_entity_id": "",
         "type": "spinner",
-        "hint": "Are you giving any other liquids to your child other than breastmilk?",
+        "hint": "আপনি কি আপনার বাচ্চাকে বুকের দুধ ছাড়া অন্য কোনও তরল দিচ্ছেন?",
         "values": [
-          "Yes",
-          "No"
+          "হ্যাঁ",
+          "না"
         ],
         "has_media_content": true,
         "media": [
           {
             "media_type":"image",
-            "media_trigger_value":"Yes",
+            "media_trigger_value":"হ্যাঁ",
             "media_link":"android.resource://org.smartregister.growplus/raw/importance_of_breastfeeding",
-            "media_text":"Child age = 0-5 months: \n Ask: Do you know why it is important to feed the child only breastmilk in the first 6 months?\n  Breast milk provides all the food and water that your baby needs during the first 6 months - Giving your baby anything else will cause him/her to suckle less and will reduce the amount of breast milk that you produce. - Discourage giving tea, water, or other liquids because they can make a baby sick"
+            "media_text":"শিশুর বয়স = ০-৫ মাস: Ask n জিজ্ঞাসা করুন: প্রথম in মাসে শিশুকে কেবলমাত্র বুকের দুধ খাওয়ানো কেন গুরুত্বপূর্ণ তা আপনি জানেন? Ast n প্রথম during সময়ের মধ্যে আপনার বাচ্চার প্রয়োজনীয় সমস্ত খাবার এবং জল সরবরাহ করে বুকের দুধ মাস - আপনার বাচ্চাকে অন্য কিছু দেওয়ার ফলে তার স্তন্যপান কম হবে এবং আপনার উত্পন্ন স্তন্যের দুধের পরিমাণ হ্রাস পাবে tea চা, জল বা অন্যান্য তরল দেওয়া নিরুৎসাহিত করুন কারণ তারা শিশুকে অসুস্থ করতে পারে"
           },
           {
             "media_type":"text",
-            "media_trigger_value":"No",
+            "media_trigger_value":"না",
             "media_link":"",
-            "media_text":"Child age = 0-5 months: \n Congratulate and encourage mother to continue breastfeeding to keep baby healthy"
+            "media_text":"শিশু বয়স = 0-৫ মাস: baby n শিশুকে সুস্থ রাখতে মাকে বুকের দুধ খাওয়ানো চালিয়ে যেতে অভিনন্দন জানান এবং উত্সাহিত করুন"
           }
         ],
         "relevance": {
           "step1:nutrition_to_discuss": {
-            "type": "string",
-            "ex": "regex(., \"(?i).*?\\bbreastfeeding\\b.*?\")"
+            "type": "string"
           }
         },
         "v_required": {
           "value": "true",
-          "err": "Please answer the question"
+          "err": "প্রশ্নের উত্তর দিন"
         }
       },
       {
@@ -816,42 +804,42 @@
         "openmrs_entity": "",
         "openmrs_entity_id": "",
         "type": "spinner",
-        "hint": "How Many Times ?",
+        "hint": "কতবার?",
         "values": [
-          "3 or more times",
-          "Less than 3 times",
-          "No other food"
+          "৩ বা ততোধিক বার",
+          "৩ বারেরও কম",
+          "অন্য কোনও খাবার নেই"
         ],
         "has_media_content": true,
         "media": [
           {
             "media_type":"text",
-            "media_trigger_value":"3 or more times",
+            "media_trigger_value":"৩ বা ততোধিক বার",
             "media_link":"",
-            "media_text":"Child age = 6-8 months\n  Congratulate and encourage mother to continue"
+            "media_text":"শিশু বয়স = ৬-৮ মাস \n অভিনন্দন এবং মাকে চালিয়ে যেতে উত্সাহিত করুন"
           },
           {
             "media_type":"text",
-            "media_trigger_value":"Less than 3 times",
+            "media_trigger_value":"৩ বারেরও কম",
             "media_link":"",
-            "media_text":"Child age = 6-8 months\n  Feed the child one or more meals or snacks to supplement breastmilk. This can include a healthy snack such as a banana or avocado."
+            "media_text":"শিশু বয়স = ৬-৮ মাস \n শিশুকে বুকের দুধের পরিপূরক হিসাবে এক বা একাধিক খাবার বা স্ন্যাকস খাওয়ান This এতে কলা বা অ্যাভোকাডোর মতো স্বাস্থ্যকর জলখাবার অন্তর্ভুক্ত থাকতে পারে।"
           },
           {
             "media_type":"text",
-            "media_trigger_value":"No other food",
+            "media_trigger_value":"অন্য কোনও খাবার নেই",
             "media_link":"",
-            "media_text":"Child age = 6-8 months\n  Encourage mother to start adding other foods to child’s diet"
+            "media_text":"শিশু বয়স = ৬-৮ মাস \n মাকে সন্তানের ডায়েটে অন্যান্য খাবার যুক্ত করা শুরু করতে উত্সাহিত করুন"
           }
         ],
         "relevance": {
           "step1:additional_liquids_other_than_breastmilk": {
             "type": "string",
-            "ex": "equalTo(., \"Yes\")"
+            "ex": "equalTo(., \"হ্যাঁ\")"
           }
         },
         "v_required": {
           "value": "true",
-          "err": "Please answer the question"
+          "err": "প্রশ্নের উত্তর দিন"
         }
       },
       {
@@ -860,20 +848,19 @@
         "openmrs_entity": "",
         "openmrs_entity_id": "",
         "type": "edit_text",
-        "hint": "How many times did you feed your child semi-solid or solid foods yesterday?",
+        "hint": "গতকাল আপনি কতবার আপনার সন্তানকে অর্ধ-কঠিন বা শক্ত খাবার খাওয়াতে পেরেছেন?",
         "relevance": {
           "step1:nutrition_to_discuss": {
-            "type": "string",
-            "ex": "regex(., \"(?i).*?\\bcomplementary_feeding\\b.*?\")"
+            "type": "string"
           }
         },
         "v_numeric": {
           "value": "true",
-          "err": "Enter a valid number"
+          "err": "একটি বৈধ নম্বর লিখুন"
         },
         "v_required": {
           "value": "true",
-          "err": "Please answer the question"
+          "err": "প্রশ্নের উত্তর দিন"
         }
       },
       {
@@ -882,7 +869,7 @@
         "openmrs_entity": "",
         "openmrs_entity_id": "",
         "type":"label",
-        "text":" Could you help me understand what foods you give to your child? Ask questions to understand why they feed semi-solid or solid foods. Counsel them on promoting exclusive breastfeeding.",
+        "text":"আপনি আপনার বাচ্চাকে কী খাবার দিন তা বুঝতে আপনি আমাকে সহায়তা করতে পারেন? তারা কেন আধা-কঠিন বা শক্ত খাবার খাওয়ান তা বোঝার জন্য প্রশ্ন জিজ্ঞাসা করুন exclusive একচেটিয়া বুকের দুধ খাওয়ানোর বিষয়ে পরামর্শ করুন",
         "relevance": {
           "step1:age_in_months_for_calculation_complimentary_feeding": {
             "type": "numeric",
@@ -896,7 +883,7 @@
         "openmrs_entity": "",
         "openmrs_entity_id": "",
         "type":"label",
-        "text":"In two months, you will start adding semi-solid foods to your child’s diet, at least 3 times a day",
+        "text":"দুই মাসের মধ্যে, আপনি আপনার সন্তানের ডায়েটে অর্ধ-কঠিন খাবার যুক্ত করতে শুরু করবেন, দিনে কমপক্ষে 3 বার",
         "relevance": {
           "step1:age_in_months_for_calculation_complimentary_feeding": {
             "type": "numeric",
@@ -910,7 +897,7 @@
         "openmrs_entity": "",
         "openmrs_entity_id": "",
         "type":"label",
-        "text":"Next month, you will start adding semi-solid foods to your child’s diet, at least 3 times a day",
+        "text":"পরের মাসে, আপনি আপনার সন্তানের ডায়েটে আধা-শক্ত খাবার যুক্ত করতে শুরু করবেন, আপনাকে প্রতিটি ফিডে ২-৩ টেবিল চামচ দিয়ে শুরু করতে হবে",
         "relevance": {
           "step1:age_in_months_for_calculation_complimentary_feeding": {
             "type": "numeric",
@@ -952,20 +939,19 @@
         "openmrs_entity": "",
         "openmrs_entity_id": "",
         "type": "edit_text",
-        "hint": "What amount of semi-solid or solid foods did you give your child yesterday (amount)?",
+        "hint": "আপনি গতকাল (পরিমাণ) আপনার শিশুকে কত পরিমাণ আধা-কঠিন বা শক্ত খাবার দিয়েছেন?",
         "v_numeric": {
           "value": "true",
-          "err": "Enter a valid number"
+          "err": "একটি বৈধ নম্বর লিখুন"
         },
         "relevance": {
           "step1:nutrition_to_discuss": {
-            "type": "string",
-            "ex": "regex(., \"(?i).*?\\bcomplementary_feeding\\b.*?\")"
+            "type": "string"
           }
         },
         "v_required": {
           "value": "true",
-          "err": "Please answer the question"
+          "err": "প্রশ্নের উত্তর দিন"
         }
       },
       {
@@ -974,7 +960,7 @@
         "openmrs_entity": "",
         "openmrs_entity_id": "",
         "type":"label",
-        "text":"In two months, you will start adding semi-solid foods to your child’s diet, you will need to start with 2-3 tablespoonfuls at each feed",
+        "text":"দুই মাসের মধ্যে, আপনি আপনার বাচ্চার ডায়েটে আধা-শক্ত খাবার যুক্ত করতে শুরু করবেন, প্রতিটি ফিডে আপনাকে ২-৩ টেবিল চামচ দিয়ে শুরু করতে হবে",
         "relevance": {
           "step1:age_in_months_for_calculation_complimentary_feeding": {
             "type": "numeric",
@@ -988,7 +974,7 @@
         "openmrs_entity": "",
         "openmrs_entity_id": "",
         "type":"label",
-        "text":"Next month, you will start adding semi-solid foods to your child’s diet, you will need to start with 2-3 tablespoonfuls at each feed",
+        "text":"পরের মাসে, আপনি আপনার সন্তানের ডায়েটে আধা-শক্ত খাবার যুক্ত করতে শুরু করবেন, আপনাকে প্রতিটি ফিডে ২-৩ টেবিল চামচ দিয়ে শুরু করতে হবে",
         "relevance": {
           "step1:age_in_months_for_calculation_complimentary_feeding": {
             "type": "numeric",
@@ -1016,42 +1002,41 @@
         "openmrs_entity": "",
         "openmrs_entity_id": "",
         "type": "spinner",
-        "hint": "Is your child fed porridge?",
+        "hint": "আপনার বাচ্চা cereal খাওয়ানো হয়?",
         "values": [
-          "Porridge is thick and enriched",
-          "Thick porridge not enriched",
-          "Watery porridge"
+          "cereal ঘন এবং সমৃদ্ধ",
+          "ঘন cereal সমৃদ্ধ নয়",
+          "জলযুক্ত cereal"
         ],
         "has_media_content": true,
         "media": [
           {
             "media_type":"text",
-            "media_trigger_value":"Porridge is thick and enriched",
+            "media_trigger_value":"cereal ঘন এবং সমৃদ্ধ",
             "media_link":"",
-            "media_text":"Congratulate mother for feeding thick enriched porridge to her child"
+            "media_text":"বাচ্চাকে ঘন এবং সমৃদ্ধ cereal খাওয়ানোর জন্য মাকে অভিনন্দন জানাই"
           },
           {
             "media_type":"text",
-            "media_trigger_value":"Thick porridge not enriched",
+            "media_trigger_value":"ঘন cereal সমৃদ্ধ নয়",
             "media_link":"",
-            "media_text":"Enrich by cooking porridge with palm oil, groundnut paste, soya flour, fish powder, milk (list foods available according to local context and season)."
+            "media_text":"পাম তেল, চিনাবাদামের পেস্ট, সয়া ময়দা, মাছের গুঁড়ো, দুধ (স্থানীয় প্রেক্ষাপট এবং মরসুম অনুসারে উপলব্ধ খাবারের তালিকা তৈরি করুন) দিয়ে দই রান্না করে সমৃদ্ধ করুন।"
           },
           {
             "media_type":"text",
-            "media_trigger_value":"Watery porridge",
+            "media_trigger_value":"জলযুক্ত cereal",
             "media_link":"",
-            "media_text":"Make porridge thicker by adding more flour, egg or bread and enrich with oil, groundnut paste, fish powder, milk, vegetable (list foods available according to local context and season)."
+            "media_text":"আরও ময়দা, ডিম বা পাউরুটি যোগ করে দরিদ্র ঘন করুন এবং তেল, চিনাবাদামের পেস্ট, ফিশ পাউডার, দুধ, উদ্ভিজ্জ (স্থানীয় প্রেক্ষাপট এবং মরসুম অনুসারে উপলব্ধ খাবারের তালিকা তৈরি করুন) দিয়ে সমৃদ্ধ করুন"
           }
         ],
         "relevance": {
           "step1:nutrition_to_discuss": {
-            "type": "string",
-            "ex": "regex(., \"(?i).*?\\bcomplementary_feeding\\b.*?\")"
+            "type": "string"
           }
         },
         "v_required": {
           "value": "true",
-          "err": "Please answer the question"
+          "err": "প্রশ্নের উত্তর দিন"
         }
       },
       {
@@ -1060,16 +1045,16 @@
         "openmrs_entity": "",
         "openmrs_entity_id": "",
         "type": "spinner",
-        "hint": "Is your child fed solid food?",
+        "hint": "আপনার শিশু কি শক্ত খাবার খাওয়ানো হয়?",
         "values": [
-          "Yes",
-          "No"
+          "হ্যাঁ",
+          "না"
         ],
         "has_media_content": true,
         "media": [
           {
             "media_type":"text",
-            "media_trigger_value":"Yes",
+            "media_trigger_value":"হ্যাঁ",
             "media_link":"",
             "media_text":"For children under 6 months:\nCould you help me understand what foods you give to your child? Ask questions to understand why they feed semi-solid or solid foods. Counsel them on promoting exclusive breastfeeding.\nFor 4 month olds:\nIn two months, you will start adding semi-solid foods to your child’s diet, give mashed/pureed family foods\nFor 5 month olds: Next month, you will start adding semi-solid foods to your child’s diet, give mashed/pureed family foods\nFor 6-8 month olds: Give mashed/pureed family foods. By 8 months your baby can begin eating finger foods.\nFor 9-11 month olds: Give finely chopped family foods, finger foods, sliced foods.\nFor 12-23 month olds: Give family foods cut into small pieces, finger foods, sliced food."
           },
@@ -1077,18 +1062,17 @@
             "media_type":"text",
             "media_trigger_value":"No",
             "media_link":"",
-            "media_text":"For children under 6 months:\nCould you help me understand what foods you give to your child? Ask questions to understand why they feed semi-solid or solid foods. Counsel them on promoting exclusive breastfeeding.\nFor 4 month olds:\nIn two months, you will start adding semi-solid foods to your child’s diet, give mashed/pureed family foods\nFor 5 month olds: Next month, you will start adding semi-solid foods to your child’s diet, give mashed/pureed family foods\nFor 6-8 month olds: Give mashed/pureed family foods. By 8 months your baby can begin eating finger foods.\nFor 9-11 month olds: Give finely chopped family foods, finger foods, sliced foods.\nFor 12-23 month olds: Give family foods cut into small pieces, finger foods, sliced food."
+            "media_text":"6 মাসের কম বয়সী বাচ্চাদের জন্য: \n আপনি কি আপনার বাচ্চাকে কোন খাবারগুলি সরবরাহ করেন তা বুঝতে আমাকে সহায়তা করতে পারবেন? তারা কেন আধা-কঠিন বা শক্ত খাবার খাওয়ায় তা জানতে প্রশ্ন জিজ্ঞাসা করুন। একচেটিয়া বুকের দুধ খাওয়ানোর পরামর্শ দেওয়ার জন্য তাদের পরামর্শ দিন \\ আপনার বাচ্চার ডায়েটে অর্ধ-কঠিন খাবার দিন, ম্যাসড / খাঁটি পারিবারিক খাবার দিন 6- n 6--৮ মাস বয়সী শিশুদের জন্য: ম্যাসড / খাঁটি পারিবারিক খাবার দিন। 8 মাসের মধ্যে আপনার শিশু আঙুলের খাবার খাওয়া শুরু করতে পারে \\ 9 n 9-10 মাস বয়সী শিশুদের জন্য: সূক্ষ্মভাবে কাটা পারিবারিক খাবার, আঙুলের খাবার, কাটা খাবার দিন। \\ N 12-23 মাস বয়সী শিশুদের জন্য: পরিবারের খাবারগুলি ছোট ছোট টুকরো, আঙুলের খাবার, কাটা খাবার।"
           }
         ],
         "relevance": {
           "step1:nutrition_to_discuss": {
-            "type": "string",
-            "ex": "regex(., \"(?i).*?\\bcomplementary_feeding\\b.*?\")"
+            "type": "string"
           }
         },
         "v_required": {
           "value": "true",
-          "err": "Please answer the question"
+          "err": "প্রশ্নের উত্তর দিন"
         }
       },
       {
@@ -1097,42 +1081,41 @@
         "openmrs_entity": "",
         "openmrs_entity_id": "",
         "type": "spinner",
-        "hint": "Is your child fed meat, fish, beans, or egg (or another animal sourced food) with their meal?",
+        "hint": "আপনার শিশু কি মাছ, মটরশুটি, ডিম, মাংস খাওয়ানো হয়?",
         "values": [
-          "Yes",
-          "Little",
-          "no animal sourced foods are given to child"
+          "হ্যাঁ",
+          "অল্প",
+          "প্রাণী উত্সের খাবার খাওয়ানো হয় না"
         ],
         "has_media_content": true,
         "media": [
           {
             "media_type":"text",
-            "media_trigger_value":"Yes",
+            "media_trigger_value":"হ্যাঁ",
             "media_link":"",
-            "media_text":"For children under 6 months\nCould you help me understand what foods you give to your child? Ask questions to understand why they feed animal sourced foods. Counsel them on promoting exclusive breastfeeding. \nFor 4 month olds\n:In two months, In two months, you will start adding semi-solid foods to your child’s diet, an important part of their diet will be meat, fish, egg, dairy products. You can do this by adding mashed or powdered fish, beans, egg, organ meats to your child’s food.\nFor 5 month olds: Next month, you will start adding semi-solid foods to your child’s diet, an important part of their diet will be meat, fish, egg, dairy products. You can do this by adding mashed or powdered fish, beans, egg, organ meats to your child’s food.\n For children above 6 months - Praise mother and encourage her to continue to give these foods to her child"
+            "media_text":"6 মাসের কম বয়সী বাচ্চাদের জন্য: \n আপনি কি আপনার বাচ্চাকে কোন খাবারগুলি সরবরাহ করেন তা বুঝতে আমাকে সহায়তা করতে পারবেন? তারা কেন আধা-কঠিন বা শক্ত খাবার খাওয়ায় তা জানতে প্রশ্ন জিজ্ঞাসা করুন। একচেটিয়া বুকের দুধ খাওয়ানোর পরামর্শ দেওয়ার জন্য তাদের পরামর্শ দিন \\ আপনার বাচ্চার ডায়েটে অর্ধ-কঠিন খাবার দিন, ম্যাসড / খাঁটি পারিবারিক খাবার দিন 6- n 6--৮ মাস বয়সী শিশুদের জন্য: ম্যাসড / খাঁটি পারিবারিক খাবার দিন। 8 মাসের মধ্যে আপনার শিশু আঙুলের খাবার খাওয়া শুরু করতে পারে \\ 9 n 9-10 মাস বয়সী শিশুদের জন্য: সূক্ষ্মভাবে কাটা পারিবারিক খাবার, আঙুলের খাবার, কাটা খাবার দিন। \\ N 12-23 মাস বয়সী শিশুদের জন্য: পরিবারের খাবারগুলি ছোট ছোট টুকরো, আঙুলের খাবার, কাটা খাবার।"
           },
           {
             "media_type":"text",
-            "media_trigger_value":"Little",
+            "media_trigger_value":"অল্প",
             "media_link":"",
-            "media_text":"For children above 6 months • Encourage mother to add mashed or powdered fish, beans, egg, organ meats, to child’s food\n• Give mashed beef, chicken, snail, insects, or another other meat available\n• Animal source foods are very important. Start animal source foods as early and as often as possible. Cook well and chop fine.\n• Infants can eat well-cooked and finely-chopped eggs, meat and fish even if they don’t have teeth"
+            "media_text":" ৬ মাসের বেশি বয়সী বাচ্চাদের জন্য - বাচ্চাদের খাবারে মা'কে ছোট মাছ, মটরশুটি, ডিম, মাংস যোগ করতে উত্সাহিত করুন । মাংস, মুরগী, শামুক, পোকামাকড় বা অন্য কোনও মাংস উপলভ্য করুন \\ n • প্রাণী উত্সের খাবার অত্যন্ত গুরুত্বপূর্ণ। যত তাড়াতাড়ি সম্ভব এবং যতবার সম্ভব পশুর উত্স খাবার শুরু করুন  ভালভাবে রান্না করুন এবং সূক্ষ্ম কাটা। n • শিশুরা দাঁত না থাকলেও ভালভাবে রান্না করা এবং সূক্ষ্ম কাটা ডিম, মাংস এবং মাছ খেতে পারে"
           },
           {
             "media_type":"text",
-            "media_trigger_value":"no animal sourced foods are given to child",
+            "media_trigger_value":"প্রাণী উত্সের খাবার খাওয়ানো হয় না",
             "media_link":"",
-            "media_text":"For children above 6 months • Encourage mother to add mashed or powdered fish, beans, egg, organ meats, to child’s food\n• Give mashed beef, chicken, snail, insects, or another other meat available\n• Animal source foods are very important. Start animal source foods as early and as often as possible. Cook well and chop fine.\n• Infants can eat well-cooked and finely-chopped eggs, meat and fish even if they don’t have teeth"
+            "media_text":"৬ মাসের বেশি বয়সী বাচ্চাদের জন্য - বাচ্চাদের খাবারে মা'কে ছোট মাছ, মটরশুটি, ডিম, মাংস যোগ করতে উত্সাহিত করুন । মাংস, মুরগী, শামুক, পোকামাকড় বা অন্য কোনও মাংস উপলভ্য করুন \\ n • প্রাণী উত্সের খাবার অত্যন্ত গুরুত্বপূর্ণ। যত তাড়াতাড়ি সম্ভব এবং যতবার সম্ভব পশুর উত্স খাবার শুরু করুন  ভালভাবে রান্না করুন এবং সূক্ষ্ম কাটা। n • শিশুরা দাঁত না থাকলেও ভালভাবে রান্না করা এবং সূক্ষ্ম কাটা ডিম, মাংস এবং মাছ খেতে পারে"
           }
         ],
         "relevance": {
           "step1:nutrition_to_discuss": {
-            "type": "string",
-            "ex": "regex(., \"(?i).*?\\bcomplementary_feeding\\b.*?\")"
+            "type": "string"
           }
         },
         "v_required": {
           "value": "true",
-          "err": "Please answer the question"
+          "err": "প্রশ্নের উত্তর দিন"
         }
       },
       {
@@ -1141,16 +1124,15 @@
         "openmrs_entity": "",
         "openmrs_entity_id": "",
         "type": "edit_text",
-        "hint": "What types of food did you give your child yesterday (variety)?",
+        "hint": "গতকাল আপনি কী ধরণের খাবার দিয়েছিলেন (বিভিন্ন)?",
         "relevance": {
           "step1:nutrition_to_discuss": {
-            "type": "string",
-            "ex": "regex(., \"(?i).*?\\bcomplementary_feeding\\b.*?\")"
+            "type": "string"
           }
         },
         "v_required": {
           "value": "true",
-          "err": "Please answer the question"
+          "err": "প্রশ্নের উত্তর দিন"
         }
       },
       {
@@ -1159,35 +1141,34 @@
         "openmrs_entity": "",
         "openmrs_entity_id": "",
         "type": "spinner",
-        "hint": "For children 6-23 months",
+        "hint": "বাচ্চাদের জন্য 6-23 মাস",
         "values": [
-          "I actively practiced being patient and encouraging my child to eat",
-          "I did not do anything or the baby still refused to eat"
+          "আমি সক্রিয়ভাবে ধৈর্যশীল এবং আমার শিশুকে খেতে উত্সাহিত করেছি",
+          "আমি কিছু করিনি বা শিশুটি এখনও খেতে অস্বীকার করেছিল"
         ],
         "has_media_content": true,
         "media": [
           {
             "media_type":"text",
-            "media_trigger_value":"I actively practiced being patient and encouraging my child to eat",
+            "media_trigger_value":"আমি সক্রিয়ভাবে ধৈর্যশীল এবং আমার শিশুকে খেতে উত্সাহিত করেছি",
             "media_link":"",
-            "media_text":"Congratulate the mother and encourage her to continue"
+            "media_text":"মাকে অভিনন্দন জানানো এবং চালিয়ে যাওয়ার জন্য উত্সাহ দিন"
           },
           {
             "media_type":"text",
-            "media_trigger_value":"I did not do anything or the baby still refused to eat",
+            "media_trigger_value":"আমি কিছু করিনি বা শিশুটি এখনও খেতে অস্বীকার করেছিল",
             "media_link":"",
-            "media_text":"- Be patient and actively encourage your baby to eat.\n- Don’t force your baby to eat.\n- Use a separate plate to feed the baby to make sure he or she eats all the food given."
+            "media_text":"ধৈর্য ধরুন এবং সক্রিয়ভাবে আপনার বাচ্চাকে খেতে উত্সাহিত করুন \\-n- আপনার বাচ্চাকে খেতে বাধ্য করবেন না \\-n- বাচ্চাকে খাওয়ানোর জন্য একটি পৃথক প্লেট ব্যবহার করুন যাতে সে প্রদত্ত সমস্ত খাবার খায় make"
           }
         ],
         "relevance": {
           "step1:nutrition_to_discuss": {
-            "type": "string",
-            "ex": "regex(., \"(?i).*?\\bcomplementary_feeding\\b.*?\")"
+            "type": "string"
           }
         },
         "v_required": {
           "value": "true",
-          "err": "Please answer the question"
+          "err": "প্রশ্নের উত্তর দিন"
         }
       },
       {
@@ -1196,35 +1177,34 @@
         "openmrs_entity": "",
         "openmrs_entity_id": "",
         "type": "spinner",
-        "hint": "If children 6-23 months What measures do you take to make sure food is clean before serving your child?",
+        "hint": "বাচ্চারা যদি 6-23 মাস আপনার সন্তানের পরিবেশনের আগে খাবারটি পরিষ্কার থাকে তা নিশ্চিত করার জন্য আপনি কী ব্যবস্থা গ্রহণ করেন?",
         "values": [
-          "greater than five ways to ensure food is clean before serving food",
-          "less than five ways to ensure a hygienic environment before serving food"
+          "খাবারটি পরিবেশনের আগে খাবারটি নিশ্চিত করার পাঁচটিরও বেশি উপায়",
+          "খাবার পরিবেশনের আগে স্বাস্থ্যকর পরিবেশ নিশ্চিত করার পাঁচটি কম উপায়"
         ],
         "has_media_content": true,
         "media": [
           {
             "media_type":"text",
-            "media_trigger_value":"greater than five ways to ensure food is clean before serving food",
+            "media_trigger_value":"খাবারটি পরিবেশনের আগে খাবারটি নিশ্চিত করার পাঁচটিরও বেশি উপায়",
             "media_link":"",
-            "media_text":"Congratulate the mother and encourage her to continue"
+            "media_text":"মাকে অভিনন্দন জানানো এবং চালিয়ে যাওয়ার জন্য উত্সাহ দিন"
           },
           {
             "media_type":"image",
-            "media_trigger_value":"less than five ways to ensure a hygienic environment before serving food",
+            "media_trigger_value":"খাবার পরিবেশনের আগে স্বাস্থ্যকর পরিবেশ নিশ্চিত করার পাঁচটি কম উপায়",
             "media_link":"android.resource://org.smartregister.growplus/raw/hygene",
-            "media_text":"Make sure to emphasize that: Good hygiene (cleanliness) is important to avoid diarrhoeadiarrhea and other illnesses \n• Use a clean spoon or cup to give foods or liquids to your baby. \n• Store the foods to be given to your baby in a safe hygienic place. \n• Wash your hands with soap and water before preparing foods and feeding baby. \n• Wash your hands and your baby’s hands before eating. \n• Wash your hands with soap and water after using the toilet and washing or cleaning baby’s bottom \n• Feed your baby using clean hands, clean utensils and clean cups. \n• Use a clean spoon or cup to give foods or liquids to your baby. \n• Do not use bottles, teats or spouted cups since they are difficult to clean and can cause your baby to become sick."
+            "media_text":"এটির উপর জোর দেওয়ার বিষয়টি নিশ্চিত করুন: ডায়রিয়াওডিয়েরিয়া এবং অন্যান্য অসুস্থতা এড়াতে ভাল স্বাস্থ্যবিধি (পরিষ্কার-পরিচ্ছন্নতা) গুরুত্বপূর্ণ \\ n your আপনার বাচ্চাকে খাবার বা তরল দিতে একটি পরিষ্কার চামচ বা কাপ ব্যবহার করুন \\ • আপনার বাচ্চাকে দেওয়া খাবারগুলি সংরক্ষণ করুন নিরাপদ স্বাস্থ্যকর জায়গায় \\ • n foods খাবার প্রস্তুত এবং বাচ্চাকে খাওয়ানোর আগে আপনার হাত সাবান ও জল দিয়ে ধুয়ে নিন \\ • eating খাওয়ার আগে আপনার হাত এবং আপনার শিশুর হাত ধুয়ে নিন \\ • টয়লেট ব্যবহারের পরে আপনার হাত সাবান ও জল দিয়ে ধুয়ে নিন এবং শিশুর নীচে ধুয়ে বা পরিষ্কার করা \n clean আপনার বাচ্চাকে পরিষ্কার হাত, পরিষ্কার পাত্র এবং পরিষ্কার কাপ ব্যবহার করে খাওয়ান \\ \\ n your আপনার বাচ্চাকে খাবার বা তরল দিতে একটি পরিষ্কার চামচ বা কাপ ব্যবহার করুন \\ \\ বোতল, চাট বা ব্যবহার করবেন না সেগুলি পরিষ্কার করা কঠিন এবং আপনার শিশুর অসুস্থ হওয়ার কারণ হতে পারে বলে কাপগুলি স্পাউট করে"
           }
         ],
         "relevance": {
           "step1:nutrition_to_discuss": {
-            "type": "string",
-            "ex": "regex(., \"(?i).*?\\bwash\\b.*?\")"
+            "type": "string"
           }
         },
         "v_required": {
           "value": "true",
-          "err": "Please answer the question"
+          "err": "প্রশ্নের উত্তর দিন"
         }
       },
       {
@@ -1233,35 +1213,34 @@
         "openmrs_entity": "",
         "openmrs_entity_id": "",
         "type": "spinner",
-        "hint": "Do you have soap/ash and water for handwashing?",
+        "hint": "হাত ধোওয়ার জন্য আপনার কি সাবান/ছাই এবং জল আছে",
         "values": [
-          "Yes",
-          "No"
+          "হ্যাঁ",
+          "না"
         ],
         "has_media_content": true,
         "media": [
           {
             "media_type":"text",
-            "media_trigger_value":"Yes",
+            "media_trigger_value":"হ্যাঁ",
             "media_link":"",
-            "media_text":" This is excellent, encourage mother to continue using soap/ash and water for handwashing"
+            "media_text":"এটি দুর্দান্ত, হ্যান্ড ওয়াশিংয়ের জন্য মাকে সাবান/ছাই এবং জল ব্যবহার চালিয়ে যেতে উত্সাহিত করুন"
           },
           {
             "media_type":"text",
-            "media_trigger_value":"No",
+            "media_trigger_value":"না",
             "media_link":"",
-            "media_text":"Discuss ways you can prioritize getting soap/ash and water for handwashing and the importance of washing hands with clean water and soap"
+            "media_text":"হাত ধোয়ার জন্য সাবান/ছাই এবং জল প্রাপ্তিকে এবং পরিষ্কার জল এবং সাবান দিয়ে হাত ধোয়ার গুরুত্বকে আপনি কীভাবে অগ্রাধিকার দিতে পারেন সে বিষয়ে আলোচনা করুন"
           }
         ],
         "relevance": {
           "step1:nutrition_to_discuss": {
-            "type": "string",
-            "ex": "regex(., \"(?i).*?\\bwash\\b.*?\")"
+            "type": "string"
           }
         },
         "v_required": {
           "value": "true",
-          "err": "Please answer the question"
+          "err": "প্রশ্নের উত্তর দিন"
         }
       },
       {
@@ -1270,35 +1249,34 @@
         "openmrs_entity": "",
         "openmrs_entity_id": "",
         "type": "spinner",
-        "hint": "When do you wash hands?",
+        "hint": "কখন হাত ধোবেন?",
         "values": [
-          "All five critical times",
-          "Less than the five critical times"
+          "পাঁচটি সমালোচনামূলক সময়",
+          "পাঁচটি সমালোচনামূলক সময়ের চেয়ে কম"
         ],
         "has_media_content": true,
         "media": [
           {
             "media_type":"text",
-            "media_trigger_value":"All five critical times",
+            "media_trigger_value":"পাঁচটি সমালোচনামূলক সময়",
             "media_link":"",
-            "media_text":"Congratulate her and encourage her to continue washing her hands at these important times"
+            "media_text":"তাকে অভিনন্দন জানাই এবং এই গুরুত্বপূর্ণ সময়ে তার হাত ধোয়া চালিয়ে যেতে উত্সাহিত করুন"
           },
           {
             "media_type":"text",
-            "media_trigger_value":"Less than the five critical times",
+            "media_trigger_value":"পাঁচটি সমালোচনামূলক সময়ের চেয়ে কম",
             "media_link":"",
-            "media_text":"Mention that it is important to wash hands before preparing foods, feeding child, after using toilet, after cleaning baby, after any contact with feces"
+            "media_text":"উল্লেখ করুন যে খাবার প্রস্তুত করার আগে, শিশুকে খাওয়ানো, টয়লেট ব্যবহারের পরে, শিশুকে পরিষ্কার করার পরে, মলের সাথে কোনও যোগাযোগের পরে হাত ধোওয়া জরুরি"
           }
         ],
         "relevance": {
           "step1:nutrition_to_discuss": {
-            "type": "string",
-            "ex": "regex(., \"(?i).*?\\bwash\\b.*?\")"
+            "type": "string"
           }
         },
         "v_required": {
           "value": "true",
-          "err": "Please answer the question"
+          "err": "প্রশ্নের উত্তর দিন"
         }
       },
       {
@@ -1307,35 +1285,34 @@
         "openmrs_entity": "",
         "openmrs_entity_id": "",
         "type": "spinner",
-        "hint": "Do animals sleep inside the house during the night?",
+        "hint": "রাতের বেলা প্রাণী কি ঘরের ভিতরে ঘুমায়?",
         "values": [
-          "No",
-          "Yes"
+          "না",
+          "হ্যাঁ"
         ],
         "has_media_content": true,
         "media": [
           {
             "media_type":"text",
-            "media_trigger_value":"No",
+            "media_trigger_value":"না",
             "media_link":"",
-            "media_text":"Congratulate her and encourage her to keep animals sleeping outside"
+            "media_text":"তাকে অভিনন্দন জানানো এবং প্রাণীদের বাইরে ঘুমোতে উত্সাহিত করুন"
           },
           {
             "media_type":"text",
-            "media_trigger_value":"Yes",
+            "media_trigger_value":"হ্যাঁ",
             "media_link":"",
-            "media_text":"Ask: Which animals sleep inside?\nIt is important to keep animals separate from children as animals create a dirty environment for children. If children are exposed to a dirty environment and animal droppings, then they can get sick and it affects their long term growth and development. What could you do to separate children from these animals throughout the day and at night?\n Some suggestions:\n - Corralling animals\n - Ensuring a clean play space for children separate from where animals can go\n What other actions could you take to ensure a child’s environment is clean?"
+            "media_text":"জিজ্ঞাসা করুন: কোন প্রাণী ভিতরে ঘুমায়? Animals n প্রাণী বাচ্চাদের জন্য নোংরা পরিবেশ তৈরি করায় প্রাণীকে শিশুদের থেকে আলাদা রাখা গুরুত্বপূর্ণ is শিশুরা যদি কোনও নোংরা পরিবেশ এবং পশুর ঝরে পড়ে থাকে তবে তারা অসুস্থ হতে পারে এবং এটি তাদের দীর্ঘমেয়াদী প্রভাবিত করে বৃদ্ধি এবং বিকাশ। আপনি সারা দিন এবং রাতে এই প্রাণীগুলি থেকে শিশুদের আলাদা করতে আপনি কী করতে পারেন? Some n কিছু পরামর্শ: \\ n - প্রাণীদের একত্রিত করা \\ n - প্রাণী যেখানে যেতে পারে সেখান থেকে পৃথক বাচ্চাদের জন্য একটি পরিষ্কার খেলার জায়গা নিশ্চিত করা What n কী বাচ্চার পরিবেশ পরিষ্কার থাকে তা নিশ্চিত করতে আপনি অন্যান্য পদক্ষেপ নিতে পারেন?"
           }
         ],
         "relevance": {
           "step1:nutrition_to_discuss": {
-            "type": "string",
-            "ex": "regex(., \"(?i).*?\\bwash\\b.*?\")"
+            "type": "string"
           }
         },
         "v_required": {
           "value": "true",
-          "err": "Please answer the question"
+          "err": "প্রশ্নের উত্তর দিন"
         }
       },
       {
@@ -1344,29 +1321,28 @@
         "openmrs_entity": "",
         "openmrs_entity_id": "",
         "type": "spinner",
-        "hint": "Do you have support from other members of your household to feed your child the best foods?",
+        "hint": "আপনার সন্তানের সেরা খাবার খাওয়ানোর জন্য আপনার পরিবারের অন্যান্য সদস্যদের সমর্থন রয়েছে?",
         "values": [
-          "Yes",
-          "No"
+          "হ্যাঁ",
+          "না"
         ],
         "has_media_content": true,
         "media": [
           {
             "media_type":"text",
-            "media_trigger_value":"No",
+            "media_trigger_value":"না",
             "media_link":"",
-            "media_text":"talk about how to reach husbands, grandmothers, what other ways to create a supportive environment for child feeding.\nProbe: What steps could you take to get support from family members to help with child feeding?"
+            "media_text":"স্বামী, নানি/দাদীর সাথে কথা বলুন, বাচ্চা খাওয়ানোর জন্য সহায়ক পরিবেশ তৈরি করার অন্যান্য উপায়গুলি সম্পর্কে কথা বলুন \n: শিশুদের খাওয়ানোর ক্ষেত্রে পরিবারের সদস্যদের সমর্থন পেতে আপনি কী পদক্ষেপ নিতে পারেন?"
           }
         ],
         "relevance": {
           "step1:nutrition_to_discuss": {
-            "type": "string",
-            "ex": "regex(., \"(?i).*?\\bsupport_from_family\\b.*?\")"
+            "type": "string"
           }
         },
         "v_required": {
           "value": "true",
-          "err": "Please answer the question"
+          "err": "প্রশ্নের উত্তর দিন"
         }
       },
       {
@@ -1375,10 +1351,10 @@
         "openmrs_entity": "",
         "openmrs_entity_id": "",
         "type": "edit_text",
-        "hint": "Do you have any other difficulties that you would like to share on barriers to feeding your child?",
+        "hint": "আপনার কি অন্য কোনও সমস্যা আছে যা আপনি আপনার সন্তানের খাওয়ানোর পথে প্রতিবন্ধকতাগুলি ভাগ করতে চান?",
         "v_required": {
           "value": "true",
-          "err": "Please answer the question"
+          "err": "প্রশ্নের উত্তর দিন"
         }
       },
       {
@@ -1387,10 +1363,10 @@
         "openmrs_entity": "",
         "openmrs_entity_id": "",
         "type": "edit_text",
-        "hint": "Do you have any other concerns you would like to share with me or discuss?",
+        "hint": "আপনি কি আমার সাথে ভাগ করে নিতে বা আলোচনা করতে চান এমন অন্য কোনও উদ্বেগ রয়েছে?",
         "v_required": {
           "value": "true",
-          "err": "Please answer the question"
+          "err": "প্রশ্নের উত্তর দিন"
         }
       },
       {
@@ -1399,29 +1375,29 @@
         "openmrs_entity": "",
         "openmrs_entity_id": "",
         "type": "spinner",
-        "hint": "Let’s identify one or two small actions we can work to improve child feeding or your diet. Of the topics we discussed, what would you like to work on before our next meeting?",
+        "hint": "আসুন আমরা শিশুদের খাওয়ানো বা আপনার ডায়েট উন্নত করতে কাজ করতে পারি এমন একটি বা দুটি ছোট ক্রিয়া শনাক্ত করি we আমরা যে বিষয়গুলি আলোচনা করেছি তার মধ্যে আমাদের পরবর্তী সভার আগে আপনি কী নিয়ে কাজ করতে চান?",
         "values": [
-          "If child is growth faltering for 2 or more months or severely underweight",
-          "All children"
+          "যদি বাচ্চা ২ বা তার বেশি মাস ধরে বাড়া বা মারাত্মক কম ওজনের জন্য বৃদ্ধি ঘটাচ্ছে",
+          "সব শিশুরা"
         ],
         "has_media_content": true,
         "media": [
           {
             "media_type":"text",
-            "media_trigger_value":"If child is growth faltering for 2 or more months or severely underweight",
+            "media_trigger_value":"যদি বাচ্চা ২ বা তার বেশি মাস ধরে বাড়া বা মারাত্মক কম ওজনের জন্য বৃদ্ধি ঘটাচ্ছে",
             "media_link":"",
-            "media_text":"CHILD IS GROWTH FALTERING, SPEND MORE TIME ON ACTION PLAN AND ENSURING MOTHER UNDERSTANDS ALL ASPECTS DISCUSSED DURING INTERACTION. \n            Refer child to a social support program to receive extra assistance, or refer to health clinic"
+            "media_text":"ছেলেমেয়েরা আরও বড় ফলশ্রুতি, কার্য পরিকল্পনার জন্য আরও বেশি সময় ব্যয় করে এবং মাদারের অধীনে থাকা আন্তঃব্যক্তির সময় সমস্ত বিষয় অবলম্বন করে \n অতিরিক্ত সহায়তা পাওয়ার জন্য শিশুকে একটি সামাজিক সহায়তা প্রোগ্রামে উল্লেখ করুন বা স্বাস্থ্য ক্লিনিকে দেখুন"
           },
           {
             "media_type":"text",
-            "media_trigger_value":"All children",
+            "media_trigger_value":"সব শিশুরা",
             "media_link":"",
             "media_text":"Some possible actions:\n - Improve consistency of food that I give my child, make sure the food I give is thick enough (if between 6-23 months)\n- Give an egg to my child at least once every day\n- Talk to my husband to ask if he could feed the child one meal tomorrow\n- Corralling my chickens so my child is not exposed to them during the day and night"
           }
         ],
         "v_required": {
           "value": "true",
-          "err": "Please answer the question"
+          "err": "প্রশ্নের উত্তর দিন"
         }
       },
       {
@@ -1430,12 +1406,12 @@
         "openmrs_entity": "",
         "openmrs_entity_id": "",
         "type": "date_picker",
-        "hint": "Let’s schedule our next appointment",
+        "hint": "আসুন পরবর্তী অ্যাপয়েন্টমেন্টের সময়সূচি ঠিক করি।",
         "expanded": false,
         "min_date": "today",
         "v_required": {
           "value": "true",
-          "err": "Please enter the date of next appointment"
+          "err": "পরবর্তী অ্যাপয়েন্টমেন্টের তারিখ প্রবেশ করুন"
         }
       }
     ]

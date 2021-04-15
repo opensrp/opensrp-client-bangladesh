@@ -61,13 +61,13 @@
         "openmrs_entity_id": "",
         "openmrs_data_type": "text",
         "type": "date_picker",
-        "hint": "Registration Date",
+        "hint": "নিবন্ধনের তারিখ",
         "expanded": false,
         "min_date": "today-5y",
         "max_date": "today",
         "v_required": {
           "value": "false",
-          "err": "Please enter the date of Registration."
+          "err": "নিবন্ধনের তারিখ প্রবেশ করুন"
         }
       },
       {
@@ -81,11 +81,11 @@
         "value": "0",
         "v_numeric": {
           "value": "true",
-          "err": "Please enter a valid ID"
+          "err": "দয়া করে একটি বৈধ আইডি দিন"
         },
         "v_required": {
           "value": "true",
-          "err": "Please enter the Child's ZEIR ID"
+          "err": "দয়া করে সন্তানের ZEIR আইডি লিখুন"
         }
       },
       {
@@ -95,15 +95,15 @@
         "openmrs_entity_id": "first_name",
         "openmrs_data_type": "text",
         "type": "edit_text",
-        "hint": "Member Name",
+        "hint": "সদস্যের প্রথম নাম",
         "expanded": false,
         "v_required": {
           "value": "true",
-          "err": "Please Enter a Valid Name"
+          "err": "একটি বৈধ নাম লিখুন"
         },
         "v_regex": {
           "value": "[A-Za-z\\s\.\-]*",
-          "err": "Please Enter a Valid Name"
+          "err": "একটি বৈধ নাম লিখুন"
         }
       },
       {
@@ -113,11 +113,11 @@
         "openmrs_entity_id": "idtype",
         "openmrs_data_type": "text",
         "type": "spinner",
-        "hint": "Which ID card do you have?",
+        "hint": "নিচের কোন পরিচয় পত্রটি আপনার কাছে আছে?",
         "values": [
-          "NID",
-          "BRID",
-          "None"
+          "জাতীয় পরিচয়পত্র নং",
+          "জন্ম নিবন্ধন সনদ নং",
+          "কিছুই না"
         ]
       },
       {
@@ -127,23 +127,23 @@
         "openmrs_entity_id": "nationalId",
         "openmrs_data_type": "text",
         "type": "edit_text",
-        "hint": "Type NID ",
+        "hint": "জাতীয় পরিচয়পত্রে দেওয়া সরকারী নম্বর যেভাবে দেওয়া আছে সেভাবেই প্রবেশ করান ",
         "v_numeric": {
           "value": "true",
-          "err": "Enter a valid NID No."
+          "err": "একটি বৈধ এনআইডি নং লিখুন"
         },
         "v_regex": {
           "value": "^(?=[0-9]*$)(?:.{10}|.{13}|.{17})$",
-          "err": "Number must be a total of 10,13 or 17 digits in length"
+          "err": "সংখ্যাটি দৈর্ঘ্যে মোট ১০, ১৩, বা ১৭ স্যংখার হতে হবে"
         },
         "v_required": {
           "value": true,
-          "err": "Please Type NID"
+          "err": "এনআইডি টাইপ করুন"
         },
         "relevance": {
           "step1:member_unique_ID": {
             "type": "string",
-            "ex": "equalTo(., \"NID\")"
+            "ex": "equalTo(., \"জাতীয় পরিচয়পত্র নং\")"
           }
         }
       },
@@ -154,23 +154,23 @@
         "openmrs_entity_id": "nationalId",
         "openmrs_data_type": "text",
         "type": "edit_text",
-        "hint": "Type BRID",
+        "hint": "জন্ম নিবন্ধন সনদপত্রের সরকারী নম্বর যেভাবে দেওয়া আছে সেভাবেই ইনপুট দিন।",
         "v_numeric": {
           "value": "true",
-          "err": "Enter a valid BRID"
+          "err": "একটি বৈধ জন্ম নিবন্ধন সনদ নং লিখুন"
         },
         "v_regex": {
           "value": "^(?=[0-9]*$)(?:.{17})$",
-          "err": "Number must be a total of 17 digits in length"
+          "err": "সংখ্যাটি দৈর্ঘ্যে মোট ১৭ স্যংখার হতে হবে"
         },
         "v_required": {
           "value": true,
-          "err": "Please Type BRID"
+          "err": "একটি বৈধ জন্ম নিবন্ধন সনদ নং লিখুন"
         },
         "relevance": {
           "step1:member_unique_ID": {
             "type": "string",
-            "ex": "equalTo(., \"BRID\")"
+            "ex": "equalTo(., \"জন্ম নিবন্ধন সনদ নং\")"
           }
         }
       },
@@ -181,10 +181,10 @@
         "openmrs_entity_id": "",
         "openmrs_data_type": "text",
         "type": "spinner",
-        "hint": "Do You Know Your Birth Date",
+        "hint": "জন্ম তারিখ জানা আছে কি?",
         "values": [
-          "YES",
-          "NO"
+          "হ্যাঁ",
+          "না"
         ]
       },
       {
@@ -194,15 +194,15 @@
         "openmrs_entity_id": "birthdate",
         "openmrs_data_type": "text",
         "type": "date_picker",
-        "hint": "Birth Date",
+        "hint": "জন্ম তারিখ",
         "v_required": {
           "value": true,
-          "err": "Please Enter birth date"
+          "err": "দয়া করে জন্ম তারিখ লিখুন"
         },
         "relevance": {
           "step1:member_birth_date_known": {
             "type": "string",
-            "ex": "equalTo(., \"YES\")"
+            "ex": "equalTo(., \"হ্যাঁ\")"
           }
         },
         "max_date": "today"
@@ -214,19 +214,19 @@
         "openmrs_entity_id": "",
         "openmrs_data_type": "text",
         "type": "edit_text",
-        "hint": "Age(Year)",
+        "hint": "বয়স (বছর)",
         "v_numeric": {
           "value": "true",
-          "err": "Enter age"
+          "err": "বয়স লিখুন"
         },
         "v_required": {
           "value": true,
-          "err": "Please Type Age"
+          "err": "দয়া করে বয়স লিখুন"
         },
         "relevance": {
           "step1:member_birth_date_known": {
             "type": "string",
-            "ex": "equalTo(., \"NO\")"
+            "ex": "equalTo(., \"না\")"
           }
         }
       },
@@ -237,26 +237,26 @@
         "openmrs_entity_id": "phoneNumber",
         "openmrs_data_type": "text",
         "type": "edit_text",
-        "hint": "Mobile Number",
+        "hint": "মোবাইল নম্বর",
         "v_required": {
           "value": true,
-          "err": "Enter 11 digits Mobile Number."
+          "err": "১১ ডিজিটের মোবাইল নম্বর লিখুন."
         },
         "v_numeric": {
           "value": "true",
-          "err": "Number must begin with 095, 096, or 097 and must be a total of 11 digits in length"
+          "err": "সংখ্যাটি অবশ্যই ০৯৫, ০৯৬ বা ০৯৭ দিয়ে শুরু হতে হবে এবং দৈর্ঘ্যে মোট ১১ সংখ্যা হতে হবে"
         },
         "v_regex": {
           "value": "(01[5-9][0-9]{8})|\s*",
-          "err": "Number must begin with 015, 016,017,018 or 019 and must be a total of 11 digits in length"
+          "err": "সংখ্যাটি অবশ্যই ০১৫, ০১৬, ০১৭, ০১৮ বা ০১৯ দিয়ে শুরু হতে হবে এবং দৈর্ঘ্যে মোট ১১ সংখ্যা হতে হবে"
         },
         "v_max_length":{
           "value" : "11",
-          "err" : "Please Enter 11 digit Mobile number"
+          "err" : "দয়া করে ১১ ডিজিটের মোবাইল নম্বর লিখুন"
         },
         "v_min_length":{
           "value" : "11",
-          "err" : "Please Enter 11 digit Mobile number"
+          "err" : "দয়া করে ১১ ডিজিটের মোবাইল নম্বর লিখুন"
         }
       },
       {
@@ -266,14 +266,14 @@
         "openmrs_entity_id": "spouseName",
         "openmrs_data_type": "text",
         "type": "edit_text",
-        "hint": "Husband Name",
+        "hint": "স্বামীর নাম",
         "v_required": {
           "value": true,
-          "err": "Please Type Husband Name."
+          "err": "স্বামীর নাম টাইপ করুন।"
         },
         "v_regex": {
           "value": "[A-Za-z\\s\.\-]*",
-          "err": "Please Enter a Valid Name"
+          "err": "দয়া করে একটি বৈধ নাম লিখুন"
         }
       },
       {
@@ -283,11 +283,11 @@
         "openmrs_entity_id": "",
         "openmrs_data_type": "text",
         "type": "spinner",
-        "hint": "Are you Pregnant",
+        "hint": "আপনি কি গর্ভবতী?",
         "values":[
-          "No",
-          "Yes",
-          "Don't Know"
+          "না",
+          "হ্যাঁ",
+          "জানা নেই"
         ]
       },
       {
@@ -297,15 +297,15 @@
         "openmrs_entity_id": "",
         "openmrs_data_type": "text",
         "type": "spinner",
-        "hint": "Haven you given birth?",
+        "hint": "আপনি কি জন্ম দিয়েছেন?",
         "values":[
-          "No",
-          "Yes"
+          "না",
+          "হ্যাঁ"
         ],
         "relevance": {
           "step1:pregnant": {
             "type": "string",
-            "ex": "equalTo(., \"No\")"
+            "ex": "equalTo(., \"না\")"
           }
         }
       },
@@ -316,16 +316,16 @@
         "openmrs_entity_id": "50b7f374-9406-49d1-bcfb-9bf613184030",
         "openmrs_data_type": "text",
         "type": "spinner",
-        "hint": "Do you know your LMP, EDD or Ultrasound Info?",
+        "hint": "আপনি কি আপনার এলএমপি, ইডিডি বা আল্ট্রাসাউন্ড তথ্য জানেন?",
         "values":[
-          "LMP",
-          "EDD",
-          "UltraSound"
+          "শেষ মাসিকের তারিখ (LMP)",
+          "সন্তান প্রসবের সম্ভাব্য (EDD) তারিখ",
+          "আল্ট্রাসাউন্ড তারিখ"
         ],
         "relevance": {
           "step1:pregnant": {
             "type": "string",
-            "ex": "equalTo(., \"Yes\")"
+            "ex": "equalTo(., \"হ্যাঁ\")"
           }
         }
       },
@@ -336,15 +336,15 @@
         "openmrs_entity_id": "",
         "openmrs_data_type": "text",
         "type": "date_picker",
-        "hint": "LMP Date",
+        "hint": "শেষ মাসিকের তারিখ (LMP)",
         "v_required": {
           "value": true,
-          "err": "Please Enter LMP date"
+          "err": "দয়া করে শেষ মাসিকের তারিখ (LMP) তারিখ প্রবেশ করুন"
         },
         "relevance": {
           "step1:edd_lmp": {
             "type": "string",
-            "ex": "equalTo(., \"LMP\")"
+            "ex": "equalTo(., \"শেষ মাসিকের তারিখ (LMP)\")"
           }
         },
         "max_date": "today"
@@ -356,15 +356,15 @@
         "openmrs_entity_id": "",
         "openmrs_data_type": "text",
         "type": "date_picker",
-        "hint": "EDD date",
+        "hint": "সন্তান প্রসবের সম্ভাব্য (EDD) তারিখ",
         "v_required": {
           "value": true,
-          "err": "Please Enter LMP date"
+          "err": "দয়া করে সন্তান প্রসবের সম্ভাব্য (EDD) তারিখ প্রবেশ করুন"
         },
         "relevance": {
           "step1:edd_lmp": {
             "type": "string",
-            "ex": "equalTo(., \"EDD\")"
+            "ex": "equalTo(., \"সন্তান প্রসবের সম্ভাব্য (EDD) তারিখ\")"
           }
         }
       },
@@ -375,15 +375,15 @@
         "openmrs_entity_id": "",
         "openmrs_data_type": "text",
         "type": "date_picker",
-        "hint": "Ultrasound date",
+        "hint": "আল্ট্রাসাউন্ড পরীক্ষার তারিখ",
         "v_required": {
           "value": true,
-          "err": "Please Enter LMP date"
+          "err": "আল্ট্রাসাউন্ড তারিখ প্রবেশ করুন"
         },
         "relevance": {
           "step1:edd_lmp": {
             "type": "string",
-            "ex": "equalTo(., \"UltraSound\")"
+            "ex": "equalTo(., \"আল্ট্রাসাউন্ড তারিখ\")"
           }
         }
       },
@@ -394,23 +394,23 @@
         "openmrs_entity_id": "",
         "openmrs_data_type": "text",
         "type": "edit_text",
-        "hint": "Ultrasound weeks",
+        "hint": "আল্ট্রাসাউন্ড অনুসারে গর্ভাবস্থা সপ্তাহ",
         "v_required": {
           "value": true,
-          "err": "Enter Ultrasound Weeks."
+          "err": "আল্ট্রাসাউন্ড সপ্তাহ লিখুন."
         },
         "v_numeric": {
           "value": "true",
-          "err": "Enter Ultrasound Weeks."
+          "err": "আল্ট্রাসাউন্ড সপ্তাহ লিখুন"
         },
         "v_max_length":{
           "value" : "2",
-          "err" : "Max length can be at most 2."
+          "err" : "সর্বোচ্চ দৈর্ঘ্য সর্বোচ্চ ২ স্যংখার হতে পারবে"
         },
         "relevance": {
           "step1:edd_lmp": {
             "type": "string",
-            "ex": "equalTo(., \"UltraSound\")"
+            "ex": "equalTo(., \"আল্ট্রাসাউন্ড তারিখ\")"
           }
         }
       }

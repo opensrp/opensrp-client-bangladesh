@@ -61,7 +61,7 @@
         "openmrs_entity_id": "mother_id",
         "openmrs_data_type": "text",
         "type": "edit_text",
-        "hint": "Mother id",
+        "hint": "মাদার আইডি",
         "read_only":"true"
       },
       {
@@ -71,10 +71,10 @@
         "openmrs_entity_id": "",
         "openmrs_data_type": "text",
         "type": "date_picker",
-        "hint": "Visit date",
+        "hint": "ভিজিট তারিখ",
         "v_required": {
           "value": true,
-          "err": "Please Enter date"
+          "err": "দয়া করে তারিখ লিখুন"
         }
       },
       {
@@ -95,15 +95,15 @@
         "openmrs_entity_id": "lactating_woman",
         "openmrs_data_type": "text",
         "type": "spinner",
-        "hint": "Haven you given birth?",
+        "hint": "আপনি কি জন্ম দিয়েছেন?",
         "values":[
-          "No",
-          "Yes"
+          "না",
+          "হ্যাঁ"
         ],
         "relevance": {
           "step1:is_pregnant": {
             "type": "string",
-            "ex": "equalTo(., \"Yes\")"
+            "ex": "equalTo(., \"হ্যাঁ\")"
           }
         }
       },
@@ -114,15 +114,15 @@
         "openmrs_entity_id": "date_of_delivery",
         "openmrs_data_type": "text",
         "type": "date_picker",
-        "hint": "Date of Delivery",
+        "hint": "প্রসবের তারিখ",
         "v_required": {
           "value": true,
-          "err": "Please Enter date"
+          "err": "দয়া করে তারিখ লিখুন"
         },
         "relevance": {
           "step1:lactating_woman": {
             "type": "string",
-            "ex": "equalTo(., \"Yes\")"
+            "ex": "equalTo(., \"হ্যাঁ\")"
           }
         }
       },
@@ -133,16 +133,16 @@
         "openmrs_entity_id": "pregnant",
         "openmrs_data_type": "text",
         "type": "spinner",
-        "hint": "Are you Pregnant",
+        "hint": "আপনি কি গর্ভবতী",
         "values":[
-          "No",
-          "Yes",
-          "Don't Know"
+          "না",
+          "হ্যাঁ",
+          "জানি না"
         ],
         "relevance": {
           "step1:is_pregnant": {
             "type": "string",
-            "ex": "notEqualTo(., \"Yes\")"
+            "ex": "notEqualTo(., \"হ্যাঁ\")"
           }
         }
       },
@@ -153,16 +153,16 @@
         "openmrs_entity_id": "edd_lmp",
         "openmrs_data_type": "text",
         "type": "spinner",
-        "hint": "If Yes Do you know your EDD/ LMP/ UptraSound Date",
+        "hint": "যদি হ্যাঁ হয়, আপনি কি আপনার এলএমপি, ইডিডি বা আল্ট্রাসাউন্ড তথ্য জানেন?",
         "values":[
-          "LMP",
-          "EDD",
-          "UltraSound"
+          "শেষ মাসিকের তারিখ (LMP)",
+          "সন্তান প্রসবের সম্ভাব্য (EDD) তারিখ",
+          "আল্ট্রাসাউন্ড তারিখ"
         ],
         "relevance": {
         "step1:pregnant": {
           "type": "string",
-          "ex": "equalTo(., \"Yes\")"
+          "ex": "equalTo(., \"হ্যাঁ\")"
         }
         }
       },
@@ -173,15 +173,15 @@
         "openmrs_entity_id": "lmp",
         "openmrs_data_type": "text",
         "type": "date_picker",
-        "hint": "LMP Date",
+        "hint": "শেষ মাসিকের তারিখ (LMP)",
         "v_required": {
           "value": true,
-          "err": "Please Enter LMP date"
+          "err": "দয়া করে শেষ মাসিকের তারিখ (LMP) তারিখ লিখুন"
         },
         "relevance": {
           "step1:edd_lmp": {
             "type": "string",
-            "ex": "equalTo(., \"LMP\")"
+            "ex": "equalTo(., \"শেষ মাসিকের তারিখ (LMP)\")"
           }
         },
         "max_date": "today"
@@ -193,15 +193,15 @@
         "openmrs_entity_id": "edd",
         "openmrs_data_type": "text",
         "type": "date_picker",
-        "hint": "EDD Date",
+        "hint": "সন্তান প্রসবের সম্ভাব্য (EDD) তারিখ",
         "v_required": {
           "value": true,
-          "err": "Please Enter LMP date"
+          "err": "দয়া করে সন্তান প্রসবের সম্ভাব্য (EDD) তারিখ লিখুন"
         },
         "relevance": {
           "step1:edd_lmp": {
             "type": "string",
-            "ex": "equalTo(., \"EDD\")"
+            "ex": "equalTo(., \"সন্তান প্রসবের সম্ভাব্য (EDD) তারিখ\")"
           }
         }
       },
@@ -212,15 +212,15 @@
         "openmrs_entity_id": "ultrasound_date",
         "openmrs_data_type": "text",
         "type": "date_picker",
-        "hint": "UltraSound Date",
+        "hint": "আল্ট্রাসাউন্ড তারিখ",
         "v_required": {
           "value": true,
-          "err": "Please Enter LMP date"
+          "err": "দয়া করে আল্ট্রাসাউন্ড তারিখ লিখুন"
         },
         "relevance": {
           "step1:edd_lmp": {
             "type": "string",
-            "ex": "equalTo(., \"UltraSound\")"
+            "ex": "equalTo(., \"আল্ট্রাসাউন্ড তারিখ\")"
           }
         }
       },
@@ -231,23 +231,23 @@
         "openmrs_entity_id": "ultrasound_weeks",
         "openmrs_data_type": "text",
         "type": "edit_text",
-        "hint": "UltraSound Weeks",
+        "hint": "আল্ট্রা সাউন্ড দ্বারা গর্ভাবস্থা সপ্তাহ",
         "v_required": {
           "value": true,
-          "err": "Enter Ultrasound Weeks."
+          "err": "আল্ট্রাসাউন্ড সপ্তাহ লিখুন"
         },
         "v_numeric": {
           "value": "true",
-          "err": "Enter Ultrasound Weeks."
+          "err": "আল্ট্রাসাউন্ড সপ্তাহ লিখুন"
         },
         "v_max_length":{
           "value" : "2",
-          "err" : "Max length can be at most 2."
+          "err" : "সংখ্যাটি সর্বোচ্চ ২ অঙ্কের হতে পারবে"
         },
         "relevance": {
           "step1:edd_lmp": {
             "type": "string",
-            "ex": "equalTo(., \"UltraSound\")"
+            "ex": "equalTo(., \"আল্ট্রাসাউন্ড তারিখ\")"
           }
         }
       },
@@ -258,10 +258,10 @@
         "openmrs_entity_id": "visit_clinic_after_last_meeting",
         "openmrs_data_type": "text",
         "type": "spinner",
-        "hint": "Did you visit any kind of hospital/health clinic after previous meeting?",
+        "hint": "আপনি কি কোনও ধরণের হাসপাতালে /\nআগের বৈঠক শেষে স্বাস্থ্য ক্লিনিক গিয়েছিলেন ?",
         "values":[
-          "Yes",
-          "No"
+          "হ্যাঁ",
+          "না"
         ]
       },
       {
@@ -271,10 +271,10 @@
         "openmrs_entity_id": "Date_Of_next_appointment",
         "openmrs_data_type": "text",
         "type": "date_picker",
-        "hint": "Follow Up visit date",
+        "hint": "পরবর্তিতে ভিজিট করার তারিখ",
         "v_required": {
           "value": true,
-          "err": "Please Enter date"
+          "err": "তারিখ লিখুন।"
         }
       },
       {
@@ -284,18 +284,18 @@
         "openmrs_entity_id": "mother_weight",
         "openmrs_data_type": "text",
         "type": "mother_weight",
-        "hint": "",
+        "hint": "মায়ের ওজন",
         "v_min": {
           "value": "0.1",
-          "err": "Weight must be greater than 0"
+          "err": "ওজন ০ এর বেশি হতে হবে।"
         },
         "v_numeric": {
           "value": "true",
-          "err": "Enter a valid weight"
+          "err": "সঙ্গত ওজন লিখুন।"
         },
         "v_required": {
           "value": "false",
-          "err": "Enter the mother's weight"
+          "err": "মায়ের ওজন"
         }
       },
       {
@@ -304,33 +304,33 @@
         "openmrs_entity": "concept",
         "openmrs_entity_id": "mother_nutrition_counseling",
         "type": "check_box",
-        "label": "Mother Nutrition Counseling",
+        "label": "মায়ের পুষ্টি পরামর্শ",
         "options":[
           {
             "key":"consume_ifa_tablet",
-            "text":"Consume IFA tablet",
+            "text":"আইএফএ ট্যাবলেট গ্রহণ করুন",
             "value":"false"
           },
           {
             "key":"Vit_A_and_minerals",
-            "text":"Vit A and minerals",
+            "text":"ভিটামিন-এ এবং মিনারেল",
             "value":"false"
           },
           {
             "key":"hand_wash",
-            "text":"Hand wash",
+            "text":"হাত ধোয়া",
             "value":"false"
           },
           {
             "key":"others",
-            "text":"Others",
+            "text":"অন্যান্য",
             "value":"false"
           }
         ],
         "relevance": {
           "step1:pregnant": {
             "type": "string",
-            "ex": "equalTo(., \"Yes\")"
+            "ex": "equalTo(., \"হ্যাঁ\")"
           }
         }
       },
@@ -340,28 +340,28 @@
         "openmrs_entity": "concept",
         "openmrs_entity_id": "distributed_nutrition_materials",
         "type": "check_box",
-        "label": "Distributed Nutrition Materials",
+        "label": "বণ্টনকৃত পুষ্টি উপাদান",
         "options":[
           {
             "key":"ifa_tablet",
-            "text":"IFA tablet",
+            "text":"আইএফএ ট্যাবলেট",
             "value":"false"
           },
           {
             "key":"Vit_A_and_minerals",
-            "text":"Vit A and minerals",
+            "text":"ভিটামিন-এ এবং মিনারেল",
             "value":"false"
           },
           {
             "key":"nothing",
-            "text":"Nothing",
+            "text":"কোনোটিই না",
             "value":"false"
           }
         ],
         "relevance": {
           "step1:pregnant": {
             "type": "string",
-            "ex": "equalTo(., \"Yes\")"
+            "ex": "equalTo(., \"হ্যাঁ\")"
           }
         }
       },
@@ -371,20 +371,19 @@
         "openmrs_entity": "concept",
         "openmrs_entity_id": "ifa_tablets_given",
         "type": "edit_text",
-        "hint": "No of IFA Tablets That Has been Given",
+        "hint": "প্রদত্ত আইএফএ ট্যাবলেট সংখ্যা",
         "v_numeric": {
           "value": "true",
-          "err": "Enter a valid number"
+          "err": "একটি সঙ্গত সংখ্যা লিখুন।"
         },
         "relevance": {
           "step1:distributed_nutrition_materials": {
-            "type": "string",
-            "ex": "regex(., \"(?i).*?\\bifa_tablet\\b.*?\")"
+            "type": "string"
           }
         },
         "v_required": {
           "value": "true",
-          "err": "Please answer the question"
+          "err": "প্রশ্নের উত্তর দিন।"
         }
       },
       {
@@ -393,20 +392,19 @@
         "openmrs_entity": "concept",
         "openmrs_entity_id": "Vit_A_and_minerals_given",
         "type": "edit_text",
-        "hint": "No of Vitamin Minerals That Has been Given",
+        "hint": "প্রদত্ত ভিটামিন  মিনারেল সংখ্যা",
         "v_numeric": {
           "value": "true",
-          "err": "Enter a valid number"
+          "err": "একটি সঙ্গত সংখ্যা লিখুন।"
         },
         "relevance": {
           "step1:distributed_nutrition_materials": {
-            "type": "string",
-            "ex": "regex(., \"(?i).*?\\bVit_A_and_minerals\\b.*?\")"
+            "type": "string"
           }
         },
         "v_required": {
           "value": "true",
-          "err": "Please answer the question"
+          "err": "প্রশ্নের উত্তর দিন।"
         }
       },
       {
@@ -415,7 +413,7 @@
         "openmrs_entity": "concept",
         "openmrs_entity_id": "labelBackgroundImage",
         "type":"label",
-        "text":"Please Refer Nearest Health center"
+        "text":"নিকটবর্তী স্বাস্থ্য কেন্দ্র দেখুন"
       }
         ]
   }

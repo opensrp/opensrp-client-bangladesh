@@ -61,7 +61,7 @@
         "openmrs_entity_id": "",
         "openmrs_data_type": "text",
         "type": "tree",
-        "hint": "Sub-Block",
+        "hint": "সাব-ব্লক",
         "tree": [],
         "v_required": {
           "value": true,
@@ -74,7 +74,7 @@
         "openmrs_entity": "person_attribute",
         "openmrs_entity_id": "householdCode",
         "type": "edit_text",
-        "hint": "House/Holding No"
+        "hint": "বাড়ি/হোল্ডিং নং"
       },
       {
         "key": "ADDRESS_LINE",
@@ -83,7 +83,7 @@
         "openmrs_entity_id": "address1",
         "openmrs_data_type": "text",
         "type": "edit_text",
-        "hint": "Address"
+        "hint": "ঠিকানা"
       },
       {
         "key": "OpenMRS_ID",
@@ -91,16 +91,16 @@
         "openmrs_entity": "person_identifier",
         "openmrs_entity_id": "OpenMRS_ID",
         "type": "edit_text",
-        "hint": "Household ID *",
+        "hint": "খানা নং *",
         "read_only":"true",
         "value": "0",
         "v_numeric": {
           "value": "true",
-          "err": "Please enter a valid ID"
+          "err": "একটি সঙ্গত আইডি দিন"
         },
         "v_required": {
           "value": "true",
-          "err": "Please enter the Child's ZEIR ID"
+          "err": "শিশুর ZEIR আইডি দিন"
         }
       },
       {
@@ -117,15 +117,15 @@
         "openmrs_entity": "person",
         "openmrs_entity_id": "first_name",
         "type": "edit_text",
-        "hint": "Household Head Name",
+        "hint": "খানা প্রধানের প্রথম নাম",
         "edit_type": "name",
         "v_regex": {
           "value": "[A-Za-z\\s\.\-]*",
-          "err": "Please enter a valid name"
+          "err": "একটি সঙ্গত নাম লিখুন"
         },
         "v_required": {
           "value": "true",
-          "err": "Please enter the Child's ZEIR ID"
+          "err": "শিশুর ZEIR আইডি দিন"
         }
       },
       {
@@ -134,14 +134,14 @@
         "openmrs_entity": "person",
         "openmrs_entity_id": "gender",
         "type": "spinner",
-        "hint": "Head of Household Gender *",
+        "hint": "খানা প্রধানের লিঙ্গ *",
         "values": [
-          "Male",
-          "Female"
+          "পুরুষ",
+          "মহিলা"
         ],
         "v_required": {
           "value": "true",
-          "err": "Please enter the sex"
+          "err": "লিঙ্গ দিন"
         }
       },
       {
@@ -150,13 +150,13 @@
         "openmrs_entity": "",
         "openmrs_entity_id": "",
         "type": "date_picker",
-        "hint": "Registration Date",
+        "hint": "নিবন্ধনের তারিখ",
         "expanded": false,
         "min_date": "today-5y",
         "max_date": "today",
         "v_required": {
           "value": "true",
-          "err": "Please enter the date of Registration"
+          "err": "রেজিস্ট্রেশন এর তারিখ লিখুন"
         }
       },
       {
@@ -166,14 +166,14 @@
         "openmrs_entity_id": "phoneNumber",
         "openmrs_data_type": "text",
         "type": "edit_text",
-        "hint": "Mobile Number",
+        "hint": "মোবাইল নম্বর",
         "v_numeric": {
           "value": "true",
-          "err": "Number must begin with 095, 096, or 097 and must be a total of 11 digits in length"
+          "err": "সংখ্যাটি অবশ্যই ০৯৫, ০৯৬ বা ০৯৭ দিয়ে শুরু হতে হবে এবং দৈর্ঘ্যে মোট ১১ সংখ্যা হতে হবে"
         },
         "v_regex": {
           "value": "(01[5-9][0-9]{8})|\s*",
-          "err": "Number must begin with 015, 016,017,018 or 019 and must be a total of 11 digits in length"
+          "err": "সংখ্যাটি অবশ্যই ০১৫, ০১৬, ০১৭, ০১৮ বা ০১৯ দিয়ে শুরু হতে হবে এবং দৈর্ঘ্যে মোট ১১ সংখ্যা হতে হবে"
         }
       }
     ]
