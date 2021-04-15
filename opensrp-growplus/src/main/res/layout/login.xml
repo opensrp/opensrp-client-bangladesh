@@ -57,7 +57,6 @@
             android:paddingRight="@dimen/login_horizontal_margin">
 
             <EditText
-                android:text="tanzim"
                 android:id="@+id/login_userNameText"
                 android:layout_width="match_parent"
                 android:layout_height="45dp"
@@ -74,7 +73,6 @@
                 android:typeface="sans" />
 
             <EditText
-                android:text="Admin123"
                 android:id="@+id/login_passwordText"
                 android:layout_width="match_parent"
                 android:layout_height="45dp"
