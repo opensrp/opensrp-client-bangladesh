@@ -204,7 +204,51 @@ public class MemberObject {
         }
         return null;
     }
-    private static String getValueFromMap(HashMap<String,String> map, String key){
+    public static HashMap<String, String> getDetails(String baseEntityId, String type) {
+        HashMap<String, String> map = new HashMap<>();
+        String query = null;
+        AncRepository repo = (AncRepository) AncApplication.getInstance().getRepository();
+        SQLiteDatabase db = repo.getWritableDatabase();
+        if(type.equalsIgnoreCase(Constants.CMED_KEY.HH_TYPE)){
+            query = "select * from ec_household where base_entity_id='" + baseEntityId + "'";
+
+        }else{
+            query = getQuery(type,baseEntityId);
+        }
+
+        Cursor cursor = db.rawQuery(query, new String[]{});
+        try {
+
+            cursor.moveToFirst();
+            while (!cursor.isAfterLast()) {
+                int columncount = cursor.getColumnCount();
+                for(int i=0;i<columncount;i++){
+                    map.put(cursor.getColumnName(i),cursor.getString(i));
+                }
+                cursor.moveToNext();
+            }
+
+        } catch (Exception e) {
+
+        } finally {
+            cursor.close();
+        }
+
+        return map;
+    }
+    private static String getQuery(String type, String baseEntityId) {
+        if (type.equals(Constants.CMED_KEY.MM_TYPE)) {
+            return "select * from ec_member where base_entity_id='" + baseEntityId + "'";
+        }
+        else if (type.equals(Constants.CMED_KEY.WOMEN_TYPE)) {
+            return "select * from ec_woman where base_entity_id='" + baseEntityId + "'";
+        }
+        else if (type.equals(Constants.CMED_KEY.CHILD_TYPE)) {
+            return "select * from ec_child where base_entity_id='" + baseEntityId + "'";
+        }
+        return "";
+    }
+    public static String getValueFromMap(HashMap<String,String> map, String key){
         try{
             String str = map.get(key);
             return TextUtils.isEmpty(str)?"null":str;

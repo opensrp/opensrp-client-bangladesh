@@ -74,6 +74,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.Locale;
 
 import static org.smartregister.cbhc.fragment.ProfileOverviewFragment.EXTRA_HOUSEHOLD_DETAILS;
@@ -424,7 +425,6 @@ public class MemberProfileActivity extends BaseProfileActivity implements Profil
 //        String cc_address = allSharedPreferences.fetchCurrentLocality();
 
 
-        final MemberObject mo = new MemberObject(householdDetails,MemberObject.type2);
         org.smartregister.util.Utils.startAsyncTask(new AsyncTask() {
             public String getValue(String key) {
                 if (householdDetails != null && householdDetails.getColumnmaps().containsKey(key))
@@ -432,22 +432,35 @@ public class MemberProfileActivity extends BaseProfileActivity implements Profil
                 return "";
             }
             String house_hold_viewable_id = "";
+            ArrayList<String> hhJsonArrayList = new ArrayList<>();
+            ArrayList<String> mmJsonArrayList = new ArrayList<>();
+            final MemberObject mo = new MemberObject(null, MemberObject.type1);
+            final MemberObject hho = new MemberObject(null, MemberObject.type1);
             @Override
             protected Object doInBackground(Object[] objects) {
-                AncRepository repo = (AncRepository) AncApplication.getInstance().getRepository();
-                SQLiteDatabase db = repo.getReadableDatabase();
                 String house_hold_id = getValue("relational_id");
 
-                Cursor cursor = db.rawQuery("select value from ec_details where base_entity_id='"+house_hold_id+"' and key = 'householdCode'", new String[]{});
-                if(cursor!=null&&cursor.getCount()>0&&cursor.moveToFirst()){
-                    try {
-                        if(cursor.getString(0)!=null)
-                            house_hold_viewable_id = cursor.getString(0);
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
+                HashMap<String, String> hhMap = MemberObject.getDetails(house_hold_id,Constants.CMED_KEY.HH_TYPE);
+                house_hold_viewable_id = hhMap.get("householdCode");
+                JSONObject jsonObject = hho.populateNewHHObject(house_hold_id, provider_name, cc_id, "", house_hold_id, hhMap);
+                hhJsonArrayList.add(jsonObject.toString());
+                String type = "";
+                if (typeofMember.equalsIgnoreCase("malechild")){
+                    type = Constants.CMED_KEY.CHILD_TYPE;
                 }
-                cursor.close();
+                else if (typeofMember.equalsIgnoreCase("femalechild")) {
+                    type = Constants.CMED_KEY.CHILD_TYPE;
+                }
+                else if (typeofMember.equalsIgnoreCase("woman")) {
+                    type = Constants.CMED_KEY.WOMEN_TYPE;
+                }
+                else if (typeofMember.equalsIgnoreCase("member")) {
+                    type = Constants.CMED_KEY.MM_TYPE;
+                }
+
+                HashMap<String, String> memberMap = MemberObject.getDetails(householdDetails.getCaseId(),type);
+                JSONObject memberjsonObject = mo.populateNewMemberObject(householdDetails.getCaseId(),provider_name,cc_id,"",householdDetails.getCaseId(),memberMap);
+                mmJsonArrayList.add(memberjsonObject.toString());
                 return null;
             }
 
@@ -455,10 +468,12 @@ public class MemberProfileActivity extends BaseProfileActivity implements Profil
             protected void onPostExecute(Object o) {
                 super.onPostExecute(o);
                 JSONObject jsonObject = mo.getMemberObject(anm_name,provider_name,cc_id,cc_name,cc_address,house_hold_viewable_id);
+                Log.v("HouseHold_List: ", String.valueOf(hhJsonArrayList));
+                Log.v("Member_List: ", String.valueOf(mmJsonArrayList));
                 if(appInstalledOrNot(Constants.CMED_KEY.PACKAGE_NAME)) {
 
 
-                    Intent intent = Utils.passMemberFromReferlToMHVAPp(jsonObject,MemberProfileActivity.this);
+                    Intent intent = Utils.passMemberFromReferlToMHVAPp(jsonObject,hhJsonArrayList,mmJsonArrayList,MemberProfileActivity.this);
                     startActivityForResult(intent, MemberObject.type2_RESULT_CODE);
 
 //                    Toast.makeText(MemberProfileActivity.this,"data:"+jsonObject,Toast.LENGTH_LONG).show();

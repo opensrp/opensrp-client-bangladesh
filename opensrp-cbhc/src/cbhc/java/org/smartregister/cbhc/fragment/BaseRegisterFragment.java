@@ -217,7 +217,6 @@ public abstract class BaseRegisterFragment extends RecyclerViewFragment implemen
         String anm_name = allSharedPreferences.fetchRegisteredANM();
         final String provider_name = allSharedPreferences.getPreference(anm_name);
         final String cc_id = allSharedPreferences.fetchDefaultTeamId(anm_name);
-        final String local_id = allSharedPreferences.fetchDefaultLocalityId(anm_name);
         String cc_name = allSharedPreferences.fetchDefaultTeam(anm_name);
 //        String cc_address = allSharedPreferences.fetchCurrentLocality();
         String cc_address = "";
@@ -242,14 +241,19 @@ public abstract class BaseRegisterFragment extends RecyclerViewFragment implemen
                 ArrayList<UnsendData> unsendDataList = Utils.getCmedDataFromRepo(repo);
                 for (UnsendData unsendData : unsendDataList) {
                     if (unsendData.getType().equals(Constants.CMED_KEY.HH_TYPE)) {
-                        HashMap<String, String> hhMap = getDetails(unsendData,Constants.CMED_KEY.HH_TYPE);
-                        JSONObject jsonObject = hho.populateNewHHObject(local_id, provider_name, cc_id, "", unsendData.getBaseEntityId(), hhMap);
+                        HashMap<String, String> hhMap = MemberObject.getDetails(unsendData.getBaseEntityId(),Constants.CMED_KEY.HH_TYPE);
+                        JSONObject jsonObject = hho.populateNewHHObject(unsendData.getBaseEntityId(), provider_name, cc_id, "", unsendData.getBaseEntityId(), hhMap);
                         hhJsonArrayList.add(jsonObject.toString());
                     } else {
-                        HashMap<String, String> memberMap = getDetails(unsendData,unsendData.getType());
-                        JSONObject jsonObject = mo.populateNewMemberObject(local_id,provider_name,cc_id,"",unsendData.getBaseEntityId(),memberMap);
+                        HashMap<String, String> memberMap = MemberObject.getDetails(unsendData.getBaseEntityId(),unsendData.getType());
+                        String hhRelationId = mo.getValueFromMap(memberMap,"relational_id");
+                        if(!isContentHH(hhRelationId,unsendDataList)){
+                            HashMap<String, String> hhMap = MemberObject.getDetails(hhRelationId,Constants.CMED_KEY.HH_TYPE);
+                            JSONObject jsonObject = hho.populateNewHHObject(hhRelationId, provider_name, cc_id, "", hhRelationId, hhMap);
+                            hhJsonArrayList.add(jsonObject.toString());
+                        }
+                        JSONObject jsonObject = mo.populateNewMemberObject(unsendData.getBaseEntityId(),provider_name,cc_id,"",unsendData.getBaseEntityId(),memberMap);
                         mmJsonArrayList.add(jsonObject.toString());
-                        Log.v("MemberList:", String.valueOf(mmJsonArrayList));
                     }
                 }
 
@@ -261,12 +265,20 @@ public abstract class BaseRegisterFragment extends RecyclerViewFragment implemen
             protected void onPostExecute(Object o) {
                 super.onPostExecute(o);
                 hideProgressView();
+                if(hhJsonArrayList.size() == 0 && mmJsonArrayList.size() == 0){
+                    Toast.makeText(getActivity(),"No data found to send MHV app",Toast.LENGTH_SHORT).show();
+                    return;
+                }
                 Log.v("HouseHold_List: ", String.valueOf(hhJsonArrayList));
                 Log.v("Member_List: ", String.valueOf(mmJsonArrayList));
                 if (appInstalledOrNot(Constants.CMED_KEY.PACKAGE_NAME)) {
 
                     Intent intent = Utils.passToMHVAPP(hhJsonArrayList, mmJsonArrayList, getActivity());
                     startActivityForResult(intent, CMED_REQUEST_CODE);
+                    UnSendDataRepository unSendDataRepository = new UnSendDataRepository(AncApplication.getInstance().getRepository());
+                    boolean isUpdated = unSendDataRepository.updateSendingStatus() == 1;
+                    Toast.makeText(getActivity(), "Successfully send to MHV app, is updated:" + isUpdated, Toast.LENGTH_SHORT).show();
+
 
                 } else {
                     Toast.makeText(getContext(), "Application not installed", Toast.LENGTH_SHORT).show();
@@ -276,6 +288,15 @@ public abstract class BaseRegisterFragment extends RecyclerViewFragment implemen
         }, null);
 
 
+    }
+    private boolean isContentHH(String hhid,ArrayList<UnsendData> unsendDataList){
+        for(UnsendData unsendData : unsendDataList){
+            if (unsendData.getType().equals(Constants.CMED_KEY.HH_TYPE)) {
+                if(unsendData.getBaseEntityId().equalsIgnoreCase(hhid)) return true;
+            }
+
+        }
+        return false;
     }
 
     private CommonRepository getCommonRepository(UnsendData unsendData) {
@@ -290,39 +311,7 @@ public abstract class BaseRegisterFragment extends RecyclerViewFragment implemen
 
         return commonRepository;
     }
-    private HashMap<String, String> getDetails(UnsendData unsendData, String type) {
-        HashMap<String, String> map = new HashMap<>();
-        String query = null;
-        AncRepository repo = (AncRepository) AncApplication.getInstance().getRepository();
-        SQLiteDatabase db = repo.getWritableDatabase();
-        if(type.equalsIgnoreCase(Constants.CMED_KEY.HH_TYPE)){
-            query = "select * from ec_household where base_entity_id='" + unsendData.getBaseEntityId() + "'";
 
-        }else{
-            query = getQuery(unsendData.getType(),unsendData.getBaseEntityId());
-        }
-
-        Cursor cursor = db.rawQuery(query, new String[]{});
-        try {
-
-            cursor.moveToFirst();
-            while (!cursor.isAfterLast()) {
-                int columncount = cursor.getColumnCount();
-                for(int i=0;i<columncount;i++){
-                    map.put(cursor.getColumnName(i),cursor.getString(i));
-                }
-                cursor.moveToNext();
-            }
-
-        } catch (Exception e) {
-            Utils.appendLog(getClass().getName(), e);
-
-        } finally {
-            cursor.close();
-        }
-
-        return map;
-    }
 
 
     @Override
@@ -331,27 +320,9 @@ public abstract class BaseRegisterFragment extends RecyclerViewFragment implemen
         if (requestCode == MemberObject.type1_RESULT_CODE && resultCode == RESULT_OK) {
             Toast.makeText(getActivity(), "Successfully group activity done:" + data, Toast.LENGTH_LONG).show();
             return;
-        } else if (requestCode == CMED_REQUEST_CODE && resultCode == RESULT_OK) {
-            UnSendDataRepository unSendDataRepository = new UnSendDataRepository(AncApplication.getInstance().getRepository());
-            boolean isUpdated = unSendDataRepository.updateSendingStatus() == 1;
-            if (getActivity() != null && !getActivity().isFinishing()) {
-                Toast.makeText(getActivity(), "Successfully send to MHV app, is updated:" + isUpdated, Toast.LENGTH_SHORT).show();
+        }
+    }
 
-            }
-        }
-    }
-    private String getQuery(String type, String baseEntityId) {
-        if (type.equals(Constants.CMED_KEY.MM_TYPE)) {
-            return "select * from ec_member where base_entity_id='" + baseEntityId + "'";
-        }
-        else if (type.equals(Constants.CMED_KEY.WOMEN_TYPE)) {
-            return "select * from ec_woman where base_entity_id='" + baseEntityId + "'";
-        }
-        else if (type.equals(Constants.CMED_KEY.CHILD_TYPE)) {
-            return "select * from ec_child where base_entity_id='" + baseEntityId + "'";
-        }
-        return "";
-    }
 
     protected abstract void initializePresenter();
 

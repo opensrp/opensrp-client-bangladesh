@@ -85,7 +85,7 @@ public class Utils {
         String passwordText = allSharedPreferences.getPreference(Constants.CMED_KEY.USER_PASSWORD);
         Intent intent = new Intent();
         intent.setAction(Constants.CMED_KEY.MPOWER_ACTION);
-//        intent.setClassName("com.example.testapplication", "com.example.testapplication.MainActivity");
+        //intent.setClassName("com.example.myapplication", "com.example.myapplication.MainActivity");
         intent.setComponent(new ComponentName("com.cmed.mhv", "com.cmed.mhv.home.view.MainActivity_"));
 
         intent.putExtra(Constants.CMED_KEY.HH_LIST, hhList);
@@ -94,16 +94,18 @@ public class Utils {
         intent.putExtra(Constants.CMED_KEY.USER_PASSWORD,passwordText);
         return intent;
     }
-    public static Intent passMemberFromReferlToMHVAPp(JSONObject jsonObject, Context context){
+    public static Intent passMemberFromReferlToMHVAPp(JSONObject jsonObject,ArrayList<String> hhList, ArrayList<String> mmList, Context context){
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
         AllSharedPreferences allSharedPreferences = new AllSharedPreferences(preferences);
         String userName = allSharedPreferences.getPreference(Constants.CMED_KEY.USER_NAME);
         String passwordText = allSharedPreferences.getPreference(Constants.CMED_KEY.USER_PASSWORD);
         Intent intent = new Intent();
         intent.setAction(Constants.CMED_KEY.MPOWER_ACTION);
-//        intent.setClassName("com.example.testapplication", "com.example.testapplication.MainActivity");
+//        intent.setClassName("com.example.testapplication", "com.example.myapplication.MainActivity");
         intent.setComponent(new ComponentName("com.cmed.mhv", "com.cmed.mhv.home.view.MainActivity_"));
         intent.putExtra(Constants.CMED_KEY.MEMBER_REFERL, jsonObject.toString());
+        intent.putExtra(Constants.CMED_KEY.HH_LIST, hhList);
+        intent.putExtra(Constants.CMED_KEY.MM_LIST,  mmList);
         intent.putExtra(Constants.CMED_KEY.USER_NAME,userName);
         intent.putExtra(Constants.CMED_KEY.USER_PASSWORD,passwordText);
         return intent;
