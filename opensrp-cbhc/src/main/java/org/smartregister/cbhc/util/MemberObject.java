@@ -45,7 +45,7 @@ public class MemberObject {
             object.put("mhv_id", mhv_id);
             object.put("cc_id", cc_id);
             object.put("cc_name", cc_name);
-            object.put("cc_address", Utils.getLocationTree());
+            object.put("cc_address", "");
 
             object.put("mhv_name", mhv_name);
             if (type2.equalsIgnoreCase(type))

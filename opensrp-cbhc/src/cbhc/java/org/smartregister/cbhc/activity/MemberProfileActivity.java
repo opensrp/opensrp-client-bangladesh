@@ -421,8 +421,7 @@ public class MemberProfileActivity extends BaseProfileActivity implements Profil
         final String provider_name = allSharedPreferences.getPreference(anm_name);
         final String cc_id = allSharedPreferences.fetchDefaultTeamId(anm_name);
         final String cc_name = allSharedPreferences.fetchDefaultTeam(anm_name);
-        final String cc_address = "";
-//        String cc_address = allSharedPreferences.fetchCurrentLocality();
+        final String cc_address = "";//allSharedPreferences.fetchCurrentLocality();
 
 
         org.smartregister.util.Utils.startAsyncTask(new AsyncTask() {
@@ -434,14 +433,16 @@ public class MemberProfileActivity extends BaseProfileActivity implements Profil
             String house_hold_viewable_id = "";
             ArrayList<String> hhJsonArrayList = new ArrayList<>();
             ArrayList<String> mmJsonArrayList = new ArrayList<>();
-            final MemberObject mo = new MemberObject(null, MemberObject.type1);
-            final MemberObject hho = new MemberObject(null, MemberObject.type1);
+
+
+
             @Override
             protected Object doInBackground(Object[] objects) {
                 String house_hold_id = getValue("relational_id");
 
                 HashMap<String, String> hhMap = MemberObject.getDetails(house_hold_id,Constants.CMED_KEY.HH_TYPE);
                 house_hold_viewable_id = hhMap.get("householdCode");
+                final MemberObject hho = new MemberObject(null, MemberObject.type1);
                 JSONObject jsonObject = hho.populateNewHHObject(house_hold_id, provider_name, cc_id, "", house_hold_id, hhMap);
                 hhJsonArrayList.add(jsonObject.toString());
                 String type = "";
@@ -459,7 +460,8 @@ public class MemberProfileActivity extends BaseProfileActivity implements Profil
                 }
 
                 HashMap<String, String> memberMap = MemberObject.getDetails(householdDetails.getCaseId(),type);
-                JSONObject memberjsonObject = mo.populateNewMemberObject(householdDetails.getCaseId(),provider_name,cc_id,"",householdDetails.getCaseId(),memberMap);
+                final MemberObject mmo = new MemberObject(null,MemberObject.type2);
+                JSONObject memberjsonObject = mmo.populateNewMemberObject(householdDetails.getCaseId(),provider_name,cc_id,"",householdDetails.getCaseId(),memberMap);
                 mmJsonArrayList.add(memberjsonObject.toString());
                 return null;
             }
@@ -467,7 +469,10 @@ public class MemberProfileActivity extends BaseProfileActivity implements Profil
             @Override
             protected void onPostExecute(Object o) {
                 super.onPostExecute(o);
+                final MemberObject mo = new MemberObject(householdDetails,MemberObject.type2);
+
                 JSONObject jsonObject = mo.getMemberObject(anm_name,provider_name,cc_id,cc_name,cc_address,house_hold_viewable_id);
+                Log.v("ref: ", String.valueOf(jsonObject));
                 Log.v("HouseHold_List: ", String.valueOf(hhJsonArrayList));
                 Log.v("Member_List: ", String.valueOf(mmJsonArrayList));
                 if(appInstalledOrNot(Constants.CMED_KEY.PACKAGE_NAME)) {
