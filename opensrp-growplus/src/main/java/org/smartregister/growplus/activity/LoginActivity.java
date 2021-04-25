@@ -176,7 +176,7 @@ public class LoginActivity extends AppCompatActivity {
     private void initializeBuildDetails() {
         TextView buildDetailsTextView = (TextView) findViewById(org.smartregister.R.id.login_build);
         try {
-            buildDetailsTextView.setText("Version " + getVersion() + ", Built on: " + getBuildDate());
+            buildDetailsTextView.setText(getResources().getText(R.string.version) +" " + getVersion() + ", "+ getResources().getText(R.string.built_on)+" " + getBuildDate());
         } catch (Exception e) {
             logError("Error fetching build details: " + e);
         }

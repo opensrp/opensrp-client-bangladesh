@@ -17,9 +17,9 @@
         <org.smartregister.view.customcontrols.CustomFontTextView
             android:id="@+id/child_header"
             style="@style/CustomFontTextViewStyle.ClientList.Medium"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/str_provider_profile"
+            android:layout_width="53dp"
+            android:layout_height="match_parent"
+            android:text="@string/profile_household"
             android:textAllCaps="true"
             android:textColor="@color/client_list_grey"
             android:textSize="14sp" />
@@ -38,7 +38,7 @@
             style="@style/CustomFontTextViewStyle.ClientList.Medium"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Member"
+            android:text="@string/member_household"
             android:textAllCaps="true"
             android:textColor="@color/client_list_grey"
             android:textSize="14sp" />
@@ -57,7 +57,7 @@
             style="@style/CustomFontTextViewStyle.ClientList.Medium"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Last Visit"
+            android:text="@string/last_visit_household"
             android:textAllCaps="true"
             android:textColor="@color/client_list_grey"
             android:textSize="14sp" />
@@ -75,7 +75,7 @@
             style="@style/CustomFontTextViewStyle.ClientList.Medium"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="ADD"
+            android:text="@string/add_household"
             android:textAllCaps="true"
             android:textColor="@color/client_list_grey"
             android:textSize="14sp"

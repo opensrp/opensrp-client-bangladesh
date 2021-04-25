@@ -12,8 +12,39 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_weight="1.0"
-        android:gravity="bottom"
-        android:background="@drawable/splash">
+        android:background="@color/white">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:layout_width="160dp"
+                android:layout_height="80dp"
+                android:layout_alignParentLeft="true"
+
+                android:layout_gravity="left"
+                android:src="@drawable/up_logo" />
+<!--            <ImageView-->
+<!--                android:layout_width="80dp"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:layout_gravity="center"-->
+<!--                android:scaleType="centerInside">-->
+
+<!--            </ImageView>-->
+
+            <ImageView
+                android:layout_width="160dp"
+                android:layout_height="80dp"
+                android:layout_marginRight="30dp"
+                android:layout_alignParentRight="true"
+                android:layout_gravity ="right"
+                android:src="@drawable/ic_logo_mpower" />
+
+        </RelativeLayout>
+
+
 
         <!-- Most important group of views goes in last to avoid being overlapped by other less important views -->
 
@@ -33,7 +64,7 @@
                 android:layout_gravity="center"
                 android:layout_marginTop="30dp"
                 android:scaleType="centerInside"
-                android:src="@drawable/growplus_icon_login_screen" />
+                android:src="@drawable/login_screen_women_icon" />
 
             <TextView
                 android:id="@+id/login_build"
@@ -42,7 +73,7 @@
                 android:layout_marginTop="5dp"
                 android:layout_marginBottom="10dp"
                 android:gravity="center_horizontal"
-                android:textColor="#bfe7f3" />
+                android:textColor="#9BBCC6" />
         </LinearLayout>
 
         <LinearLayout
@@ -64,7 +95,7 @@
                 android:layout_weight="8"
                 android:background="@drawable/rounded_corner_edittext_growplus"
                 android:ems="10"
-                android:hint="@string/userNameEditText"
+                android:hint="@string/login_user_name_hint"
                 android:inputType="textNoSuggestions|textFilter|textVisiblePassword"
                 android:paddingLeft="5dp"
                 android:singleLine="true"
@@ -81,7 +112,7 @@
                 android:layout_weight="8"
                 android:background="@drawable/rounded_corner_edittext_growplus"
                 android:ems="10"
-                android:hint="@string/passwordEditText"
+                android:hint="@string/login_password_hint"
                 android:inputType="textPassword"
 
                 android:paddingLeft="5dp"
@@ -104,7 +135,7 @@
                 android:shadowDx="0"
                 android:shadowDy="1"
                 android:shadowRadius="0.5"
-                android:text="@string/login_text"
+                android:text="@string/login_please"
                 android:textColor="#666666"
                 android:textSize="20sp" />
         </LinearLayout>
@@ -123,7 +154,7 @@
                 android:layout_height="wrap_content"
                 android:gravity="center_horizontal"
                 android:text="Powered by"
-                android:textColor="#bfe7f3" />
+                android:textColor="#9BBCC6" />
 
             <ImageView
                 android:layout_width="@dimen/login_opensrp_logo_width"
@@ -135,7 +166,30 @@
                 android:src="@drawable/ic_opensrp_logo" />
         </LinearLayout>
 
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:gravity="bottom|center"
+            android:layout_weight="1"
+            android:layout_marginLeft="30dp"
+            android:layout_marginRight="30dp"
+            android:layout_marginBottom="30dp"
 
+            >
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_giz" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_horizontal"
+                android:text="@string/giz_acknowledge"
+                android:textColor="#000000" />
+
+        </LinearLayout>
 
         <!-- Top section -->
 

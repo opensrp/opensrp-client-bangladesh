@@ -127,7 +127,7 @@ public class GrowthReportActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.report_detail_activity_simple_tabs);
-        ((TextView)findViewById(R.id.title)).setText("Report");
+        ((TextView)findViewById(R.id.title)).setText(R.string.report);
 
 
         tabLayout = (TabLayout) findViewById(R.id.tabs);
@@ -162,7 +162,7 @@ public class GrowthReportActivity extends BaseActivity {
     }
     private void createTabIcons() {
         TextView tabOne = new TextView(this);
-        tabOne.setText("Key"+ System.getProperty("line.separator") +"Achievement");
+        tabOne.setText(getResources().getText(R.string.key_achievement_firstline)+ System.getProperty("line.separator") +getResources().getString(R.string.key_achievement_secondline));
         tabOne.setCompoundDrawablesWithIntrinsicBounds(0, R.mipmap.bargraph, 0, 0);
         tabOne.setGravity(Gravity.CENTER);
         tabOne.setTextColor(getResources().getColor(R.color.status_bar_text_almost_white));

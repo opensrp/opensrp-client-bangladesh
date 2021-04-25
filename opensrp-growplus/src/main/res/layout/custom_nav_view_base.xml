@@ -100,7 +100,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 style="@style/CustomFontTextViewStyle.ClientList.Light.twoline"
-                android:text="Sync"
+                android:text="@string/nav_sync"
                 android:id="@+id/nav_synctextview"
                 android:textColor="@color/white"
                 android:textSize="18sp"
@@ -137,7 +137,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         style="@style/CustomFontTextViewStyle.ClientList.Light.twoline"
-                        android:text="Household Register"
+                        android:text="@string/nav_household_reg"
                         android:id="@+id/household_registertextview"
                         android:textColor="@color/white"
                         android:textSize="@dimen/label_text_size"
@@ -168,7 +168,7 @@
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_vertical"
                         android:layout_weight="1"
-                        android:text="Mother Register"
+                        android:text="@string/nav_mother_reg"
                         android:textColor="@color/white"
                         android:textSize="@dimen/label_text_size" />
                 </LinearLayout>
@@ -198,7 +198,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         style="@style/CustomFontTextViewStyle.ClientList.Light.twoline"
-                        android:text="Child Register"
+                        android:text="@string/nav_child_reg"
                         android:id="@+id/child_registertextview"
                         android:textColor="@color/white"
                         android:textSize="@dimen/label_text_size"
@@ -263,7 +263,7 @@
                         android:textSize="@dimen/label_text_size"
                         android:layout_weight="1"
                         android:layout_gravity="center_vertical"
-                        android:text="Reports" />
+                        android:text="@string/report" />
                 </LinearLayout>
             </LinearLayout>
         </ScrollView>

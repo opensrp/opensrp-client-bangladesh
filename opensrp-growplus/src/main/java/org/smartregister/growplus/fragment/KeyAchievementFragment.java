@@ -115,7 +115,7 @@ public class KeyAchievementFragment extends Fragment {
         titleList.removeAll(titleList);
         counts.removeAll(counts);
         iconList.removeAll(iconList);
-        titleList.add("Total Child Registered");
+        titleList.add(getResources().getString(R.string.total_registered_child));
         iconList.add(getResources().getDrawable(R.drawable.key_achievement_children));
         try {
             counts.add(totalchildregister(sql_lite_DATE_FORMAT.format((new DateTime()).plusDays(1).toDate())));
@@ -124,7 +124,7 @@ public class KeyAchievementFragment extends Fragment {
             e.printStackTrace();
         }
 
-        titleList.add("Total Pregnant Woman Registered");
+        titleList.add(getResources().getString(R.string.total_registered_prg_wmn));
         iconList.add(getResources().getDrawable(R.drawable.pregnant_woman_key_achievement));
         try {
             counts.add(totalpregnantWoman());

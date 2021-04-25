@@ -52,7 +52,7 @@
     }
   },
   "step1": {
-    "title": "Household Registration",
+    "title": "খানা নিবন্ধন",
     "fields": [
       {
         "key": "HIE_FACILITIES",

@@ -164,7 +164,7 @@ public class ChildSmartClientsProvider implements SmartRegisterCLientsProviderFo
         TextView record_weight_text = recordWeight.findViewById(R.id.record_weight_text);
 //        recordWeight.setOnClickListener(onClickListener);
 //        recordWeight.setVisibility(View.INVISIBLE);
-        record_weight_text.setText("Follow\nUp");
+        record_weight_text.setText("ফলো\nআপ");
         record_weight_text.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

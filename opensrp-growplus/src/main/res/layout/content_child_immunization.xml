@@ -81,7 +81,7 @@
                             style="@style/CustomFontTextViewStyle.ListView.Normal.MultipleLines"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Age"
+                            android:text="@string/birthdate_age"
                             android:textColor="@color/dark_grey"
                             android:textSize="14sp" />
                         <org.smartregister.view.customcontrols.CustomFontTextView
@@ -105,7 +105,7 @@
                             style="@style/CustomFontTextViewStyle.ListView.Normal.MultipleLines"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="System ID"
+                            android:text="@string/systen_id"
                             android:textColor="@color/dark_grey"
                             android:textSize="14sp" />
                         <org.smartregister.view.customcontrols.CustomFontTextView
@@ -129,7 +129,7 @@
                             style="@style/CustomFontTextViewStyle.ListView.Normal.MultipleLines"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Birth Date"
+                            android:text="@string/birth_date"
                             android:textColor="@color/dark_grey"
                             android:textSize="14sp" />
                         <org.smartregister.view.customcontrols.CustomFontTextView
@@ -153,7 +153,7 @@
                             style="@style/CustomFontTextViewStyle.ListView.Normal.MultipleLines"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Father's Name"
+                            android:text="@string/father_name"
                             android:textColor="@color/dark_grey"
                             android:textSize="14sp" />
                         <org.smartregister.view.customcontrols.CustomFontTextView
@@ -176,7 +176,7 @@
                             style="@style/CustomFontTextViewStyle.ListView.Normal.MultipleLines"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Mother's Name"
+                            android:text="@string/mother_name"
                             android:textColor="@color/dark_grey"
                             android:textSize="14sp" />
                         <org.smartregister.view.customcontrols.CustomFontTextView
@@ -199,7 +199,7 @@
                             style="@style/CustomFontTextViewStyle.ListView.Normal.MultipleLines"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Birth Weight"
+                            android:text="@string/birth_weight"
                             android:textColor="@color/dark_grey"
                             android:textSize="14sp" />
                         <org.smartregister.view.customcontrols.CustomFontTextView
@@ -258,7 +258,7 @@
                         style="@style/CustomFontTextViewStyle.ClientList"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="WEIGHT-FOR-AGE"
+                        android:text="@string/weight_for_age"
                         android:textColor="@color/text_black"
                         android:textSize="@dimen/activity_sub_title_size" />
 
@@ -339,7 +339,7 @@
                         style="@style/CustomFontTextViewStyle.ClientList"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="HER SIBLINGS"
+                        android:text="@string/his_her_siblings"
                         android:textColor="@color/text_black"
                         android:textSize="@dimen/activity_sub_title_size" />
 
@@ -381,7 +381,7 @@
                         android:layout_height="wrap_content"
                         android:layout_alignParentLeft="true"
                         android:layout_centerVertical="true"
-                        android:text="@string/label_immunization_records"
+                        android:text="@string/counselling_service"
                         android:textColor="@color/text_black"
                         android:textSize="@dimen/activity_sub_title_size" />
 
@@ -446,7 +446,7 @@
                     android:layout_height="wrap_content"
                     android:layout_toRightOf="@id/status_iv"
                     android:background="@null"
-                    android:text="Followup"
+                    android:text="@string/fw_women"
                     android:textColor="@color/text_black"
                     android:textSize="14sp" />
 
@@ -471,7 +471,7 @@
                             android:layout_height="wrap_content"
                             android:layout_toRightOf="@id/status_iv"
                             android:background="@null"
-                            android:text="Visit Date"
+                            android:text="@string/visit_date"
                             android:textColor="@color/text_black"
                             android:textSize="14sp" />
                         <TextView
@@ -494,7 +494,7 @@
                         android:layout_margin="10dp"
                         android:textColor="@color/white"
                         android:gravity="center_vertical"
-                        android:text="View Details"
+                        android:text="@string/view_detail"
                         android:layout_alignParentRight="true"/>
 
                 </RelativeLayout>

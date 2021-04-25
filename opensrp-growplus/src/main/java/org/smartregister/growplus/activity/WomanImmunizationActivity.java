@@ -585,8 +585,7 @@ public class WomanImmunizationActivity extends BaseActivity
         toolbar.updateSeparatorView(toolbarResource);
 
         TextView childSiblingsTV = (TextView) findViewById(R.id.child_siblings_tv);
-        childSiblingsTV.setText(
-                "Her Children".toUpperCase());
+//        childSiblingsTV.setText("Her Children".toUpperCase()); // todo
         updateProfilePicture(gender);
 
         return selectedColor;

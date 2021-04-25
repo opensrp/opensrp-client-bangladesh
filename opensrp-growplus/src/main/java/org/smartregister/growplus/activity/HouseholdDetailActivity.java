@@ -388,7 +388,7 @@ public class HouseholdDetailActivity extends BaseActivity {
         refreshadapter();
         final DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         LinearLayout stockregister = (LinearLayout) drawer.findViewById(R.id.stockcontrol);
-        ((CustomFontTextView)findViewById(R.id.title)).setText("Household Details");
+        ((CustomFontTextView)findViewById(R.id.title)).setText(getResources().getText(R.string.hh_details));
         stockregister.setBackgroundColor(getResources().getColor(R.color.tintcolor));
     }
 

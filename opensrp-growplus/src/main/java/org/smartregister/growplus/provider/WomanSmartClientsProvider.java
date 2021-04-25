@@ -220,7 +220,7 @@ public class WomanSmartClientsProvider implements SmartRegisterCLientsProviderFo
                 }
             });
         }else if(pregnant&&!lactating){
-            add_child.setText("Follow\nUp");
+            add_child.setText("ফলো\nআপ");
 
             add_child.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -237,7 +237,7 @@ public class WomanSmartClientsProvider implements SmartRegisterCLientsProviderFo
                 }
             });
         }else if(lactating){   // TODO
-            add_child.setText("Follow\nUp");
+            add_child.setText("ফলো\nআপ");
             add_child.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {

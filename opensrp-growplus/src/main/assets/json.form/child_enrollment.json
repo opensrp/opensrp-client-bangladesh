@@ -55,7 +55,7 @@
     }
   },
   "step1": {
-    "title": "Birth Registration",
+    "title": "জন্ম নিবন্ধন",
     "fields": [
       {
         "key": "HIE_FACILITIES",

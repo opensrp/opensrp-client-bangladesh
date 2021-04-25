@@ -61,7 +61,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"
-            android:text="Weight"
+            android:text="@string/child_contact_number"
             android:textAllCaps="true"
             android:textColor="@color/client_list_grey"
             android:textSize="14sp" />

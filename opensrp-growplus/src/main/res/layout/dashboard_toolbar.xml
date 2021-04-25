@@ -26,7 +26,7 @@
 
             <org.smartregister.view.customcontrols.CustomFontTextView
                 android:id="@+id/title"
-                android:text="Dashboard"
+                android:text="@string/dashboard"
                 style="@style/CustomFontTextViewStyle.ClientList.Medium"
                 android:gravity="center"
                 android:layout_width="wrap_content"

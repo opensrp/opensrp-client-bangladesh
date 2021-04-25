@@ -40,7 +40,7 @@
         android:layout_alignParentRight="true"
         android:layout_centerVertical="true"
         android:background="@drawable/undo_background"
-        android:text="View Details"
+        android:text="@string/view_detail"
         android:textAllCaps="false"
         android:textAppearance="?android:attr/textAppearanceSmall"
         android:textColor="@android:color/white"

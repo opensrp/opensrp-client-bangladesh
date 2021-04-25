@@ -69,7 +69,7 @@
                         android:gravity="left|center_vertical"
                         android:minWidth="@dimen/weight_table_column_min_width"
                         android:paddingLeft="0dp"
-                        android:text="Age"
+                        android:text="@string/birthdate_age"
                         android:textColor="@color/client_list_grey"
                         android:textSize="@dimen/record_weight_tv_text_size"
                         android:textStyle="bold" />
@@ -83,7 +83,7 @@
                         android:gravity="left|center_vertical"
                         android:minWidth="@dimen/weight_table_column_min_width"
                         android:paddingLeft="0dp"
-                        android:text="Weight"
+                        android:text="@string/child_contact_number"
                         android:textColor="@color/client_list_grey"
                         android:textSize="@dimen/record_weight_tv_text_size"
                         android:textStyle="bold" />
@@ -97,7 +97,7 @@
                         android:gravity="left|center_vertical"
                         android:minWidth="@dimen/weight_table_column_min_width"
                         android:paddingLeft="0dp"
-                        android:text="Z-score"
+                        android:text="@string/z_score"
                         android:textColor="@color/client_list_grey"
                         android:textSize="@dimen/record_weight_tv_text_size"
                         android:textStyle="bold" />
