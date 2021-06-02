@@ -172,7 +172,9 @@ public class MemberObject {
             memberObject.put("gender",getValueFromMap(map,"gender"));
             memberObject.put("health_id_card",getValueFromMap(map,"Patient_Identifier"));
             memberObject.put("house_hold_id_string",getValueFromMap(map,"relational_id"));
-            memberObject.put("house_hold_id",getIdentifierOfHH(getValueFromMap(map,"relational_id")));
+            String[] identityAndCode = getIdentifierOfHH(getValueFromMap(map,"relational_id"));
+            memberObject.put("house_hold_id",identityAndCode[0]);
+            memberObject.put("house_hold_viewable_id",identityAndCode[1]);
             memberObject.put("last_name",getValueFromMap(map,"last_name"));
             memberObject.put("marital_status",getValueFromMap(map,"MaritalStatus"));
             memberObject.put("mothers_first_name",getValueFromMap(map,"motherNameEnglish"));
@@ -309,17 +311,18 @@ public class MemberObject {
 
         return 0;
     }
-    private static String getIdentifierOfHH(String relationalId){
-        String identifier = "";
+    private static String[] getIdentifierOfHH(String relationalId){
+        String[] identifier = new String[2];
         AncRepository repo = (AncRepository) AncApplication.getInstance().getRepository();
         SQLiteDatabase db = repo.getWritableDatabase();
-        String query = "select Patient_Identifier from ec_household where base_entity_id='" + relationalId + "'";
+        String query = "select Patient_Identifier,householdCode from ec_household where base_entity_id='" + relationalId + "'";
 
         Cursor cursor = db.rawQuery(query, new String[]{});
         try {
 
             if (cursor.moveToNext()) {
-                identifier = cursor.getString(0);
+                identifier[0] = cursor.getString(0);
+                identifier[1] = cursor.getString(1);
 
             }
 
