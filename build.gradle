@@ -5,9 +5,11 @@ buildscript {
     repositories {
         google()
         jcenter()
+        mavenLocal()
     }
     dependencies {
         classpath 'com.android.tools.build:gradle:3.2.1'
+        classpath "io.codearte.gradle.nexus:gradle-nexus-staging-plugin:0.11.0"
 
         // NOTE: Do not place your application dependencies here; they belong
         // in the individual module build.gradle files
@@ -21,15 +23,17 @@ allprojects {
         mavenLocal()
         mavenCentral()
         maven { url 'https://jitpack.io' }
-        maven { url "http://nexus.motechproject.org/content/repositories/drishti" }
-        maven { url "http://nexus.motechproject.org/content/repositories/snapshots" }
         maven { url "http://acra.googlecode.com/svn/org.smartregister.cbhc.repository/releases" }
         maven { url "https://repo.maven.apache.org/maven2" }
-        maven { url "http://cloudant.github.io/cloudant-sync-eap/org.smartregister.cbhc.repository" }
-        maven { url "https://s3.amazonaws.com/repo.commonsware.com" }
-        jcenter()
+        maven { url "http://cloudant.github.io/cloudant-sync-eap/repository" }
+        maven { url 'https://maven.fabric.io/public' }
+        maven {
+            url "https://s3.amazonaws.com/repo.commonsware.com"
+        }
         google()
-
+        jcenter()
+        maven { url "https://s3.amazonaws.com/repo.commonsware.com" }
+        maven { url "https://dl.bintray.com/ona/rdt-capture" }
     }
 }
 
