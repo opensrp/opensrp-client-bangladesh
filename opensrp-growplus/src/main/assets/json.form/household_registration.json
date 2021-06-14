@@ -61,7 +61,7 @@
         "openmrs_entity_id": "",
         "openmrs_data_type": "text",
         "type": "tree",
-        "hint": "সাব-ব্লক",
+        "hint": "ইউনিয়ন",
         "tree": [],
         "v_required": {
           "value": true,
@@ -117,7 +117,7 @@
         "openmrs_entity": "person",
         "openmrs_entity_id": "first_name",
         "type": "edit_text",
-        "hint": "খানা প্রধানের প্রথম নাম",
+        "hint": "খানা প্রধানের নাম",
         "edit_type": "name",
         "v_regex": {
           "value": "[A-Za-z\\s\.\-]*",
@@ -125,7 +125,7 @@
         },
         "v_required": {
           "value": "true",
-          "err": "শিশুর ZEIR আইডি দিন"
+          "err": "খানা প্রধানের নাম দিন"
         }
       },
       {
@@ -156,7 +156,7 @@
         "max_date": "today",
         "v_required": {
           "value": "true",
-          "err": "রেজিস্ট্রেশন এর তারিখ লিখুন"
+          "err": "নিবন্ধনের এর তারিখ লিখুন"
         }
       },
       {

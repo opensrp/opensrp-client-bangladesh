@@ -80,6 +80,7 @@ import static org.smartregister.immunization.util.VaccinatorUtils.receivedVaccin
 import static org.smartregister.util.Utils.fillValue;
 import static org.smartregister.util.Utils.getName;
 import static org.smartregister.util.Utils.getValue;
+import static org.smartregister.view.activity.SecuredNativeSmartRegisterActivity.TAG;
 
 /**
  * Created by Ahmed on 13-Oct-15.
@@ -149,7 +150,12 @@ public class ChildSmartClientsProvider implements SmartRegisterCLientsProviderFo
 
         String gender = getValue(pc.getColumnmaps(), PathConstants.KEY.GENDER, true);
 
-
+        Gender validGender;
+        try{
+         validGender = Gender.valueOf(gender);
+        }catch (Exception ex){
+            gender = "UNKNOWN";
+        }
 
         final ImageView profilePic = (ImageView) convertView.findViewById(R.id.child_profilepic);
         int defaultImageResId = ImageUtils.profileImageResourceByGender(gender);

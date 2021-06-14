@@ -323,7 +323,7 @@ public class KeyAchievementFragment extends Fragment {
     }
 
     public String totalpregnantWoman(){
-        Cursor cursor =  commonRepository.rawCustomQueryForAdapter("select count(*) from ec_mother where ec_mother.base_entity_id in (select base_entity_id from ec_details where ec_details.value = 'Yes' and ec_details.key = 'pregnant')");
+        Cursor cursor =  commonRepository.rawCustomQueryForAdapter("select count(*) from ec_mother where ec_mother.base_entity_id in (select base_entity_id from ec_details where ec_details.value = 'হ্যাঁ' and ec_details.key = 'pregnant')");
         cursor.moveToFirst();
         String totalpregnantWoman = cursor.getString(0);
         cursor.close();

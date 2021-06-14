@@ -17,6 +17,7 @@ import android.text.TextUtils;
 import android.util.Log;
 import android.util.Pair;
 import android.view.LayoutInflater;
+import android.view.Menu;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -217,10 +218,7 @@ public class WomanImmunizationActivity extends BaseActivity
         } catch (Exception e) {
             e.printStackTrace();
         }
-
-
     }
-
     private void showWomenFollowupDetail() {
 
 //        final AlertDialog.Builder mBuilder = new AlertDialog.Builder(WomanImmunizationActivity.this);
@@ -315,7 +313,13 @@ public class WomanImmunizationActivity extends BaseActivity
             serviceGroupCanvasLL.removeAllViews();
             serviceGroups = null;
         }
+
         updateViews();
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        return false;
     }
 
     private boolean isDataOk() {
@@ -335,9 +339,17 @@ public class WomanImmunizationActivity extends BaseActivity
         //):( prrrr
         childDetails.getColumnmaps().putAll(details);
         updateGenderViews();
-        toolbar.setTitle(updateActivityTitle());
+       // toolbar.setTitle(updateActivityTitle());
         updateAgeViews();
         updateChildIdViews();
+
+        TextView titleTV = (TextView)  toolbar.findViewById(R.id.title);
+        String title = childDetails.getColumnmaps().get("first_name");
+        titleTV.setText(title);
+
+        String location = childDetails.getColumnmaps().get("stateProvince");
+        toolbar.findViewById(R.id.location_name).setVisibility(View.VISIBLE);
+        ((TextView)toolbar.findViewById(R.id.location_name)).setText(location);
 
         WeightRepository weightRepository = VaccinatorApplication.getInstance().weightRepository();
 
@@ -428,10 +440,11 @@ public class WomanImmunizationActivity extends BaseActivity
         final String eddstring = getValue(childDetails.getColumnmaps(), "edd", false);
         String pregnant = "No";
         if(childDetails.getColumnmaps().get("pregnant")!=null){
-            if(childDetails.getColumnmaps().get("pregnant").equalsIgnoreCase("Yes")){
-                pregnant = "Yes";
-
-            }
+//            if(childDetails.getColumnmaps().get("pregnant").equalsIgnoreCase("Yes") ){
+//                pregnant = "Yes";
+//
+//            }
+            pregnant = childDetails.getColumnmaps().get("pregnant");
         }
 
         fillValue((TextView) findViewById(R.id.lmp_id_tv), lmpstring);

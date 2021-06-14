@@ -95,7 +95,7 @@
         "openmrs_entity_id": "first_name",
         "openmrs_data_type": "text",
         "type": "edit_text",
-        "hint": "সদস্যের প্রথম নাম",
+        "hint": "সদস্যের নাম",
         "expanded": false,
         "v_required": {
           "value": "true",

@@ -275,8 +275,8 @@
     <string name="add_household">যোগ</string>
     <string name="nav_login">লগ আউট</string>
     <string name="nav_household_reg">খানার নিবন্ধন</string>
-    <string name="nav_mother_reg">মায়ের নিবন্ধন</string>
-    <string name="nav_child_reg">শিশুর নিবন্ধন</string>
+    <string name="nav_mother_reg">মায়ের ফলোআপ</string>
+    <string name="nav_child_reg">শিশুর ফলো আপ</string>
     <string name="nav_sync">সিঙ্ক</string>
     <string name="report">রিপোর্ট</string>
     <string name="key_achievement_firstline">অর্জন</string>

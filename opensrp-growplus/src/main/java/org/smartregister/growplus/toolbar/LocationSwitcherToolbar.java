@@ -86,7 +86,7 @@ public class LocationSwitcherToolbar extends BaseToolbar {
             View separatorV = baseActivity.findViewById(R.id.separator_v);
             titleTV.setText(title);
             baseActivity.getMenu().findItem(R.id.location_switcher).setActionView(locationActionView);
-            separatorV.setBackgroundDrawable(baseActivity.getResources().getDrawable(separatorResourceId));
+            //separatorV.setBackgroundDrawable(baseActivity.getResources().getDrawable(separatorResourceId));
         }
     }
 

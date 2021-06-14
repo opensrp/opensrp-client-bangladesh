@@ -274,6 +274,9 @@ public class ReportGeoMapFragment extends Fragment implements
             pc.setColumnmaps(allcommonschild.get(i).getColumnmaps());
             String geopoint = details.get("gps");
             if(geopoint!=null){
+                if(geopoint.equals(" ")) {
+                    continue;
+                }
                 geoChildWeightHolder geoChildWeightHolder =
                         new geoChildWeightHolder(pc.getCaseId(),pc.getColumnmaps().get("first_name"));
                 geoChildWeightHolder.setPosition(new LatLng(Double.parseDouble(geopoint.split(" ")[0]),Double.parseDouble(geopoint.split(" ")[1])));
@@ -292,6 +295,13 @@ public class ReportGeoMapFragment extends Fragment implements
                     }
                 }
                 String gender = getValue(pc.getColumnmaps(), PathConstants.KEY.GENDER, true);
+
+                Gender validGender;
+                try{
+                    validGender = Gender.valueOf(gender);
+                }catch (Exception ex){
+                    gender = "UNKNOWN";
+                }
 
                 List<Weight> weightlist = weightRepository.findLast5(pc.getCaseId());
                 if(weightlist.size() >= 1) {

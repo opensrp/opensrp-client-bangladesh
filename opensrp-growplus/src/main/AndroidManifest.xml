@@ -16,7 +16,9 @@
         android:name=".application.VaccinatorApplication"
         android:allowBackup="true"
         android:usesCleartextTraffic="true"
-        android:icon="@drawable/growplus_icon">
+        android:icon="@mipmap/icon_growplus_launcher"
+        android:roundIcon="@mipmap/icon_growplus_launcher"
+        >
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="@string/google_maps_key" />

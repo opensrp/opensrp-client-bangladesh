@@ -24,9 +24,21 @@
                 android:layout_width="@dimen/smart_register_nav_bar_separator"
                 android:layout_height="match_parent"
                 android:layout_gravity="right|center_vertical"
-                android:background="@drawable/vertical_separator_male"
+
                 android:scaleType="fitXY" />
+
+            <org.smartregister.view.customcontrols.CustomFontTextView
+                android:id="@+id/location_name"
+                style="@style/CustomFontTextViewStyle.NavBar.Black"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginRight="5dp"
+                android:gravity="right|center_vertical"
+                android:layout_gravity="right"
+                android:visibility="gone"
+                android:background="@android:color/transparent" />
         </FrameLayout>
+
     </org.smartregister.growplus.toolbar.LocationSwitcherToolbar>
 
 </android.support.design.widget.AppBarLayout>

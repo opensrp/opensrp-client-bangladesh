@@ -19,6 +19,7 @@ import android.util.Pair;
 import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.LayoutInflater;
+import android.view.Menu;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -299,6 +300,11 @@ public class ChildImmunizationActivity extends BaseActivity
         }
     }
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        return false;
+    }
+
     private boolean isDataOk() {
         return childDetails != null && childDetails.getDetails() != null;
     }
@@ -317,9 +323,19 @@ public class ChildImmunizationActivity extends BaseActivity
         util.Utils.putAll(childDetails.getColumnmaps(), details);
 
         updateGenderViews();
-        toolbar.setTitle(updateActivityTitle());
+      //  toolbar.setTitle(updateActivityTitle());
         updateAgeViews();
         updateChildIdViews();
+
+        TextView titleTV = (TextView)  toolbar.findViewById(R.id.title);
+        String title = childDetails.getColumnmaps().get("first_name");
+        titleTV.setText(title);
+
+        String location = childDetails.getColumnmaps().get("stateProvince");
+        toolbar.findViewById(R.id.location_name).setVisibility(View.VISIBLE);
+        ((TextView)toolbar.findViewById(R.id.location_name)).setText(location);
+
+
 
         WeightRepository weightRepository = VaccinatorApplication.getInstance().weightRepository();
 
@@ -1985,7 +2001,9 @@ public class ChildImmunizationActivity extends BaseActivity
             if (weight.getDate().compareTo(maxWeighingDate.getTime()) > 0) {
                 zScoreTextView.setText("");
             } else { //TODO
-                double zScore = ZScore.calculate(gender, dob, weight.getDate(), weight.getKg());
+                Double zScoreDouble = ZScore.calculate(gender, dob, weight.getDate(), weight.getKg());
+                double zScore =  (zScoreDouble == null) ? 0 : zScoreDouble.doubleValue();
+               // double zScore = ZScore.calculate(gender, dob, weight.getDate(), weight.getKg());
                 zScore = ZScore.roundOff(zScore);
                 zScoreTextView.setTextColor(getResources().getColor(ZScore.getZScoreColor(zScore)));
                 zScoreTextView.setText(String.valueOf(zScore));

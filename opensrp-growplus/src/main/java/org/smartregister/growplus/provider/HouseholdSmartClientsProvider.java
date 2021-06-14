@@ -9,11 +9,16 @@ import android.view.ViewGroup;
 import android.widget.AbsListView;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.ListView;
 import android.widget.TextView;
 
 import org.smartregister.commonregistry.CommonPersonObject;
 import org.smartregister.commonregistry.CommonPersonObjectClient;
 import org.smartregister.cursoradapter.SmartRegisterCLientsProviderForCursorAdapter;
+import org.smartregister.cursoradapter.SmartRegisterQueryBuilder;
+import org.smartregister.growplus.activity.HouseholdDetailActivity;
+import org.smartregister.growplus.application.VaccinatorApplication;
+import org.smartregister.growplus.repository.PathRepository;
 import org.smartregister.growthmonitoring.repository.WeightRepository;
 import org.smartregister.immunization.repository.VaccineRepository;
 import org.smartregister.growplus.R;
@@ -124,11 +129,9 @@ public class HouseholdSmartClientsProvider implements SmartRegisterCLientsProvid
                     ft.remove(prev);
                 }
                 ft.addToBackStack(null);
-
-                HouseholdMemberAddFragment addmemberFragment = HouseholdMemberAddFragment.newInstance(context,locationId,pc.entityId(),context());
+               boolean isMotherExist = isMotherExist(pc);
+                HouseholdMemberAddFragment addmemberFragment = HouseholdMemberAddFragment.newInstance(context,locationId,pc.entityId(),context(), isMotherExist);
                     addmemberFragment.show(ft, HouseholdMemberAddFragment.DIALOG_TAG);
-//
-
             }
         });
 //
@@ -196,5 +199,20 @@ public class HouseholdSmartClientsProvider implements SmartRegisterCLientsProvid
 
       protected org.smartregister.Context context() {
         return org.smartregister.Context.getInstance().updateApplicationContext(context);
+    }
+
+    private boolean isMotherExist(CommonPersonObjectClient householdObject) {
+        PathRepository repo = (PathRepository) VaccinatorApplication.getInstance().getRepository();
+        net.sqlcipher.database.SQLiteDatabase db = repo.getReadableDatabase();
+        String mother_id = householdObject.getDetails().get("_id");
+
+        String tableName = PathConstants.MOTHER_TABLE_NAME;
+        SmartRegisterQueryBuilder queryBUilder = new SmartRegisterQueryBuilder();
+        queryBUilder.SelectInitiateMainTable(tableName, new String[]{
+                tableName + ".relational_id",
+        });
+        Cursor cursor = db.rawQuery(queryBUilder.mainCondition("relational_id = ?"),new String[]{mother_id});
+
+        return (cursor!=null && cursor.getCount()>0) ? true : false ;
     }
 }
