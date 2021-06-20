@@ -63,6 +63,12 @@
 
         </LinearLayout>
 
+        <ToggleButton
+            android:id="@+id/language_switcher"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="ToggleButton" />
+
     </FrameLayout>
     <android.support.v7.widget.GridLayout
         android:background="#EFEFEF"

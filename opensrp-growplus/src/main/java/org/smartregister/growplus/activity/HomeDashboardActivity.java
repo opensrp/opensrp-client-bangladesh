@@ -1,6 +1,8 @@
 package org.smartregister.growplus.activity;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
@@ -9,14 +11,18 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.view.View;
+import android.widget.CompoundButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.ToggleButton;
 
 import org.smartregister.growplus.R;
 import org.smartregister.growplus.application.VaccinatorApplication;
 import org.smartregister.growplus.toolbar.LocationSwitcherToolbar;
 
 public class HomeDashboardActivity extends BaseActivity {
+
+    private SharedPreferences languagePrefs;
 
     @Override
     protected int getContentView() {
@@ -100,6 +106,13 @@ public class HomeDashboardActivity extends BaseActivity {
         TextView nameTV = (TextView) findViewById(R.id.provider_name);
         nameTV.setText(capitalize(preferredName));
 
+        ((ToggleButton)findViewById(R.id.language_switcher)).setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                languagePrefs.edit().putString("locale",  b ? "bn" : "en" ).apply();
+            }
+        });
+     languagePrefs = getSharedPreferences("language",Context.MODE_PRIVATE);
     }
 
     public static String capitalize(@NonNull String input) {

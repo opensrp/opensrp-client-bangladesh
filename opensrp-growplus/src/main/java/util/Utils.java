@@ -234,4 +234,7 @@ public class Utils {
 
         return formatter.format(date);
     }
+    public static String getsSelectedLocale(Context context) {
+        return  context.getSharedPreferences("language",Context.MODE_PRIVATE).getString("locale", "en");
+    }
 }

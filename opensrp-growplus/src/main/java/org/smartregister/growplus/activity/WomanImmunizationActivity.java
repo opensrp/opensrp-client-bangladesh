@@ -220,7 +220,7 @@ public class WomanImmunizationActivity extends BaseActivity
         }
     }
     private void showWomenFollowupDetail() {
-
+        String language = getSharedPreferences("language",Context.MODE_PRIVATE).getString("locale", "en");
 //        final AlertDialog.Builder mBuilder = new AlertDialog.Builder(WomanImmunizationActivity.this);
 //        mBuilder.setTitle("Followup Details");
 //        LayoutInflater inflater = getLayoutInflater();
