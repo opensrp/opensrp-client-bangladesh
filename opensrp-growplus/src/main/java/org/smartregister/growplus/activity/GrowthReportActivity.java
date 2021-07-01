@@ -168,19 +168,19 @@ public class GrowthReportActivity extends BaseActivity {
         tabOne.setTextColor(getResources().getColor(R.color.status_bar_text_almost_white));
         tabLayout.getTabAt(0).setCustomView(tabOne);
 //        tabLayout.getTabAt(0).setIcon(R.mipmap.bargraph);
-        TextView tabtwo = new TextView(this);
-        tabtwo.setText("Geo"+ System.getProperty("line.separator") +"Map");
-        tabtwo.setCompoundDrawablesWithIntrinsicBounds(0, R.mipmap.ic_geo_loc, 0, 0);
-        tabtwo.setGravity(Gravity.CENTER);
-        tabtwo.setTextColor(getResources().getColor(R.color.status_bar_text_almost_white));
-        tabLayout.getTabAt(1).setCustomView(tabtwo);
+//        TextView tabtwo = new TextView(this);
+//        tabtwo.setText("Geo"+ System.getProperty("line.separator") +"Map");
+//        tabtwo.setCompoundDrawablesWithIntrinsicBounds(0, R.mipmap.ic_geo_loc, 0, 0);
+//        tabtwo.setGravity(Gravity.CENTER);
+//        tabtwo.setTextColor(getResources().getColor(R.color.status_bar_text_almost_white));
+//        tabLayout.getTabAt(1).setCustomView(tabtwo);
 
         TextView tabthree = new TextView(this);
         tabthree.setText("Growth"+ System.getProperty("line.separator") +"Faltering Trend");
         tabthree.setCompoundDrawablesWithIntrinsicBounds(0, R.mipmap.ic_chart, 0, 0);
         tabthree.setGravity(Gravity.CENTER);
         tabthree.setTextColor(getResources().getColor(R.color.status_bar_text_almost_white));
-        tabLayout.getTabAt(2).setCustomView(tabthree);
+        tabLayout.getTabAt(1).setCustomView(tabthree);
     }
 
 
@@ -211,7 +211,7 @@ public class GrowthReportActivity extends BaseActivity {
         adapter = new ViewPagerAdapter(getSupportFragmentManager());
 
         adapter.addFragment(new KeyAchievementFragment(), "Key Achievement");
-        adapter.addFragment(new ReportGeoMapFragment(), "Geo Map");
+       // adapter.addFragment(new ReportGeoMapFragment(), "Geo Map");
         adapter.addFragment(new GrowthFalteringTrendReportFragment(), "Growth Faltering Trend");
         viewPager.setAdapter(adapter);
     }
