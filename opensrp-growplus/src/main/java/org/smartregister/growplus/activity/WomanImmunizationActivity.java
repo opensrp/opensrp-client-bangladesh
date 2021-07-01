@@ -1667,7 +1667,7 @@ public class WomanImmunizationActivity extends BaseActivity
                 try {
                     dateTime = lmp_DATE_FORMAT.parse(dobString);
                     VaccineSchedule.updateOfflineAlerts(childDetails.entityId(), new DateTime(dateTime.getTime()), "woman");
-                } catch (ParseException e) {
+                } catch (ParseException|NullPointerException e) {
                     e.printStackTrace();
                 }
             }

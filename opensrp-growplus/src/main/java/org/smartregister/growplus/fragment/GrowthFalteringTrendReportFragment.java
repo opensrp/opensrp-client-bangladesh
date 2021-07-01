@@ -251,7 +251,16 @@ public class GrowthFalteringTrendReportFragment extends Fragment {
         int monthLastWeightTaken = 0;
         Map<String, String> detailsMap = detailsRepository.getAllDetailsForClient(childDetails.getCaseId());
         childDetails.getColumnmaps().putAll(detailsMap);
-        Gender gender =   Gender.valueOf(getValue(childDetails.getColumnmaps(), PathConstants.KEY.GENDER, true).toUpperCase());
+
+        String genderString = getValue(childDetails.getColumnmaps(), PathConstants.KEY.GENDER, true);
+
+        Gender validGender;
+        try{
+            validGender = Gender.valueOf(genderString);
+        }catch (Exception ex){
+            genderString = "UNKNOWN";
+        }
+        Gender gender =   Gender.valueOf(genderString.toUpperCase());
 
 
         formattedDob = DATE_FORMAT.format(dob);
