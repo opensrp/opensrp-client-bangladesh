@@ -76,10 +76,10 @@ import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
 import util.PathConstants;
+import util.WeightVelocityUtils;
 
 import static android.view.View.INVISIBLE;
 import static com.vijay.jsonwizard.utils.FormUtils.DATE_FORMAT;
-import static org.smartregister.growplus.provider.ChildSmartClientsProvider.checkWeighGainVelocity;
 import static org.smartregister.growthmonitoring.repository.WeightRepository.*;
 import static org.smartregister.util.Utils.getValue;
 
@@ -142,8 +142,11 @@ public class GrowthFalteringTrendReportFragment extends Fragment {
        List <Weight> latest = readAllWeights(cursor);
        int falteredweight = 0;
        for(int i = 0;i<latest.size();i++){
-           boolean check = processWeightForGrowthChart(latest.get(i));
-           if(!check){
+           Weight weight=latest.get(i);
+           String baseEntityId=weight.getBaseEntityId();
+           CommonPersonObject child = commonRepository.findByBaseEntityId(baseEntityId);
+           Boolean check = WeightVelocityUtils.processWeightForGrowthChart(weight,child);
+           if(check!=null && !check){
                falteredweight++;
            }
        }
@@ -156,38 +159,38 @@ public class GrowthFalteringTrendReportFragment extends Fragment {
 
  }
 
-    private boolean processWeightForGrowthChart(Weight weight) {
-        Date weightdate =weight.getDate();
-        Cursor cursor =  commonRepository.rawCustomQueryForAdapter("SELECT * FROM weights where date( date / 1000, 'unixepoch') < date( "+weightdate.getTime()+"/1000,'unixepoch') and base_entity_id = '"+weight.getBaseEntityId()+"' group by base_entity_id having date = max(date)");
-        List <Weight> previousweightlist = readAllWeights(cursor);
-        Weight previousWeight = null;
-        if(previousweightlist.size()>0){
-            previousWeight = previousweightlist.get(0);
-        }
-
-        CommonPersonObject child = commonRepository.findByBaseEntityId(weight.getBaseEntityId());
-        if(child!=null) {
-            DateTime birthDateTime = null;
-            String dobString = getValue(child.getColumnmaps(), PathConstants.KEY.DOB, false);
-            String durationString = "";
-            if (StringUtils.isNotBlank(dobString)) {
-                try {
-                    birthDateTime = new DateTime(dobString);
-                    String duration = DateUtil.getDuration(birthDateTime);
-                    if (duration != null) {
-                        durationString = duration;
-                    }
-                } catch (Exception e) {
-                    Log.e(getClass().getName(), e.toString(), e);
-                }
-            }
-
-            boolean check = checkForWeightGainCalc(birthDateTime.toDate(), weight, previousWeight, child, detailRepository);
-            return check;
-        }else{
-            return false;
-        }
-    }
+//    private Boolean processWeightForGrowthChart(Weight weight) {
+//        Date weightdate =weight.getDate();
+//        Cursor cursor =  commonRepository.rawCustomQueryForAdapter("SELECT * FROM weights where date( date / 1000, 'unixepoch') < date( "+weightdate.getTime()+"/1000,'unixepoch') and base_entity_id = '"+weight.getBaseEntityId()+"' group by base_entity_id having date = max(date)");
+//        List <Weight> previousweightlist = readAllWeights(cursor);
+//        Weight previousWeight = null;
+//        if(previousweightlist.size()>0){
+//            previousWeight = previousweightlist.get(0);
+//        }
+//
+//        CommonPersonObject child = commonRepository.findByBaseEntityId(weight.getBaseEntityId());
+//        if(child!=null) {
+//            DateTime birthDateTime = null;
+//            String dobString = getValue(child.getColumnmaps(), PathConstants.KEY.DOB, false);
+//            String durationString = "";
+//            if (StringUtils.isNotBlank(dobString)) {
+//                try {
+//                    birthDateTime = new DateTime(dobString);
+//                    String duration = DateUtil.getDuration(birthDateTime);
+//                    if (duration != null) {
+//                        durationString = duration;
+//                    }
+//                } catch (Exception e) {
+//                    Log.e(getClass().getName(), e.toString(), e);
+//                }
+//            }
+//
+//            Boolean check = WeightVelocityUtils.checkForWeightGainCalc(birthDateTime.toDate(), weight, previousWeight, child, detailRepository);
+//            return check;
+//        }else{
+//            return false;
+//        }
+//    }
 
     public static List<Weight> readAllWeights(Cursor cursor) {
         List<Weight> weights = new ArrayList<>();
@@ -244,44 +247,6 @@ public class GrowthFalteringTrendReportFragment extends Fragment {
 
     }
 
-    public static boolean checkForWeightGainCalc(Date dob, Weight weight,Weight previousWeight, CommonPersonObject childDetails, DetailsRepository detailsRepository) {
-        String dobString = "";
-        String formattedAge = "";
-        String formattedDob = "";
-        int monthLastWeightTaken = 0;
-        Map<String, String> detailsMap = detailsRepository.getAllDetailsForClient(childDetails.getCaseId());
-        childDetails.getColumnmaps().putAll(detailsMap);
-        Gender gender =   Gender.valueOf(getValue(childDetails.getColumnmaps(), PathConstants.KEY.GENDER, true).toUpperCase());
 
-
-        formattedDob = DATE_FORMAT.format(dob);
-        long timeDiff = Calendar.getInstance().getTimeInMillis() - dob.getTime();
-
-        int age_in_months = (int) Math.floor((float) timeDiff /
-                TimeUnit.MILLISECONDS.convert(30, TimeUnit.DAYS));
-        DateTime tempweighttime = null;
-        if(previousWeight == null) {
-            Float birthweight = new Float(getValue(detailsMap, "Birth_Weight", true));
-            previousWeight = new Weight();
-            previousWeight.setKg(birthweight);
-            previousWeight.setDate(dob);
-            monthLastWeightTaken = 0;
-        }else{
-            long timeDiffwhenLastWeightwastaken =  previousWeight.getDate().getTime() - dob.getTime();
-            monthLastWeightTaken = (int) Math.round((float) timeDiffwhenLastWeightwastaken /
-                    TimeUnit.MILLISECONDS.convert(30, TimeUnit.DAYS));
-        }
-
-        long timeDiffwhenWeightwastaken =  weight.getDate().getTime() - dob.getTime();
-
-        int age_when_weight_taken = (int) Math.round((float) timeDiffwhenWeightwastaken /
-                TimeUnit.MILLISECONDS.convert(30, TimeUnit.DAYS));
-
-        boolean check = checkWeighGainVelocity(weight,previousWeight,age_when_weight_taken,monthLastWeightTaken,gender);
-        return check;
-//        net.sqlcipher.database.SQLiteDatabase db = wp.getPathRepository().getReadableDatabase();
-
-
-    }
 
 }
