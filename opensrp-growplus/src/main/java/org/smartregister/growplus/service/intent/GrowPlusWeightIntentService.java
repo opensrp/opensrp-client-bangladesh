@@ -18,7 +18,7 @@ import org.smartregister.growthmonitoring.GrowthMonitoringLibrary;
 import org.smartregister.growthmonitoring.domain.Weight;
 import org.smartregister.growthmonitoring.repository.WeightRepository;
 import org.smartregister.growthmonitoring.service.intent.WeightIntentService;
-import org.smartregister.growthmonitoring.util.GMConstants;
+import org.smartregister.growthmonitoring.util.GrowthMonitoringConstants;
 import org.smartregister.growthmonitoring.util.JsonFormUtils;
 import org.smartregister.repository.DetailsRepository;
 import org.smartregister.util.Utils;
@@ -57,27 +57,27 @@ public class GrowPlusWeightIntentService extends IntentService {
         DetailsRepository detailsRepository = VaccinatorApplication.getInstance().context().detailsRepository();
 
         try {
-            List<Weight> weights = weightRepository.findUnSyncedBeforeTime(GMConstants.WEIGHT_SYNC_TIME);
+            List<Weight> weights = weightRepository.findUnSyncedBeforeTime(GrowthMonitoringConstants.GROWTH_MONITORING_SYNC_TIME);
             if (!weights.isEmpty()) {
                 for (Weight weight : weights) {
 
                     //Weight
                     JSONObject jsonObject = new JSONObject();
-                    jsonObject.put(GMConstants.JsonForm.KEY, "Weight_Kgs");
-                    jsonObject.put(GMConstants.JsonForm.OPENMRS_ENTITY, "concept");
-                    jsonObject.put(GMConstants.JsonForm.OPENMRS_ENTITY_ID, "5089AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
-                    jsonObject.put(GMConstants.JsonForm.OPENMRS_ENTITY_PARENT, "");
-                    jsonObject.put(GMConstants.JsonForm.OPENMRS_DATA_TYPE, "decimal");
-                    jsonObject.put(GMConstants.JsonForm.VALUE, weight.getKg());
+                    jsonObject.put(GrowthMonitoringConstants.JsonForm.KEY, "Weight_Kgs");
+                    jsonObject.put(GrowthMonitoringConstants.JsonForm.OPENMRS_ENTITY, "concept");
+                    jsonObject.put(GrowthMonitoringConstants.JsonForm.OPENMRS_ENTITY_ID, "5089AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
+                    jsonObject.put(GrowthMonitoringConstants.JsonForm.OPENMRS_ENTITY_PARENT, "");
+                    jsonObject.put(GrowthMonitoringConstants.JsonForm.OPENMRS_DATA_TYPE, "decimal");
+                    jsonObject.put(GrowthMonitoringConstants.JsonForm.VALUE, weight.getKg());
 
                     //Zscore
                     JSONObject zScoreObject = new JSONObject();
-                    zScoreObject.put(GMConstants.JsonForm.KEY, "Z_Score_Weight_Age");
-                    zScoreObject.put(GMConstants.JsonForm.OPENMRS_ENTITY, "concept");
-                    zScoreObject.put(GMConstants.JsonForm.OPENMRS_ENTITY_ID, "162584AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
-                    zScoreObject.put(GMConstants.JsonForm.OPENMRS_ENTITY_PARENT, "");
-                    zScoreObject.put(GMConstants.JsonForm.OPENMRS_DATA_TYPE, "calculation");
-                    zScoreObject.put(GMConstants.JsonForm.VALUE, weight.getZScore());
+                    zScoreObject.put(GrowthMonitoringConstants.JsonForm.KEY, "Z_Score_Weight_Age");
+                    zScoreObject.put(GrowthMonitoringConstants.JsonForm.OPENMRS_ENTITY, "concept");
+                    zScoreObject.put(GrowthMonitoringConstants.JsonForm.OPENMRS_ENTITY_ID, "162584AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
+                    zScoreObject.put(GrowthMonitoringConstants.JsonForm.OPENMRS_ENTITY_PARENT, "");
+                    zScoreObject.put(GrowthMonitoringConstants.JsonForm.OPENMRS_DATA_TYPE, "calculation");
+                    zScoreObject.put(GrowthMonitoringConstants.JsonForm.VALUE, weight.getZScore());
 
                     JSONArray jsonArray = new JSONArray();
 
@@ -136,12 +136,12 @@ public class GrowPlusWeightIntentService extends IntentService {
 
 
                         JSONObject previousWeightObject = new JSONObject();
-                        previousWeightObject.put(GMConstants.JsonForm.KEY, "previous_weight");
-                        previousWeightObject.put(GMConstants.JsonForm.OPENMRS_ENTITY, "");
-                        previousWeightObject.put(GMConstants.JsonForm.OPENMRS_ENTITY_ID, "");
-                        previousWeightObject.put(GMConstants.JsonForm.OPENMRS_ENTITY_PARENT, "");
-                        previousWeightObject.put(GMConstants.JsonForm.OPENMRS_DATA_TYPE, "");
-                        previousWeightObject.put(GMConstants.JsonForm.VALUE, previousWeight.getDate());
+                        previousWeightObject.put(GrowthMonitoringConstants.JsonForm.KEY, "previous_weight");
+                        previousWeightObject.put(GrowthMonitoringConstants.JsonForm.OPENMRS_ENTITY, "");
+                        previousWeightObject.put(GrowthMonitoringConstants.JsonForm.OPENMRS_ENTITY_ID, "");
+                        previousWeightObject.put(GrowthMonitoringConstants.JsonForm.OPENMRS_ENTITY_PARENT, "");
+                        previousWeightObject.put(GrowthMonitoringConstants.JsonForm.OPENMRS_DATA_TYPE, "");
+                        previousWeightObject.put(GrowthMonitoringConstants.JsonForm.VALUE, previousWeight.getDate());
                         String previousweightdatetimestamp ="";
                         if(previousWeight.getId()!=-1) {
                             Cursor previousweightcursor = commonRepository.rawCustomQueryForAdapter("select date from weights where _id = '" + previousWeight.getId() + "'");
@@ -153,12 +153,12 @@ public class GrowPlusWeightIntentService extends IntentService {
                         }
 
                         JSONObject previousWeightDateObject = new JSONObject();
-                        previousWeightDateObject.put(GMConstants.JsonForm.KEY, "previous_weight_date");
-                        previousWeightDateObject.put(GMConstants.JsonForm.OPENMRS_ENTITY, "");
-                        previousWeightDateObject.put(GMConstants.JsonForm.OPENMRS_ENTITY_ID, "");
-                        previousWeightDateObject.put(GMConstants.JsonForm.OPENMRS_ENTITY_PARENT, "");
-                        previousWeightDateObject.put(GMConstants.JsonForm.OPENMRS_DATA_TYPE, "");
-                        previousWeightDateObject.put(GMConstants.JsonForm.VALUE,    previousweightdatetimestamp);
+                        previousWeightDateObject.put(GrowthMonitoringConstants.JsonForm.KEY, "previous_weight_date");
+                        previousWeightDateObject.put(GrowthMonitoringConstants.JsonForm.OPENMRS_ENTITY, "");
+                        previousWeightDateObject.put(GrowthMonitoringConstants.JsonForm.OPENMRS_ENTITY_ID, "");
+                        previousWeightDateObject.put(GrowthMonitoringConstants.JsonForm.OPENMRS_ENTITY_PARENT, "");
+                        previousWeightDateObject.put(GrowthMonitoringConstants.JsonForm.OPENMRS_DATA_TYPE, "");
+                        previousWeightDateObject.put(GrowthMonitoringConstants.JsonForm.VALUE,    previousweightdatetimestamp);
 
                         jsonArray.put(previousWeightObject);
                         jsonArray.put(previousWeightDateObject);
@@ -168,9 +168,9 @@ public class GrowPlusWeightIntentService extends IntentService {
                     jsonArray.put(jsonObject);
                     jsonArray.put(zScoreObject);
 
-                    JsonFormUtils.createWeightEvent(getApplicationContext(), weight, EVENT_TYPE, ENTITY_TYPE, jsonArray);
+                    JsonFormUtils.createWeightEvent(weight, EVENT_TYPE, ENTITY_TYPE, jsonArray);
                     if (weight.getBaseEntityId() == null || weight.getBaseEntityId().isEmpty()) {
-                        JsonFormUtils.createWeightEvent(getApplicationContext(), weight, EVENT_TYPE_OUT_OF_CATCHMENT, ENTITY_TYPE, jsonArray);
+                        JsonFormUtils.createWeightEvent( weight, EVENT_TYPE_OUT_OF_CATCHMENT, ENTITY_TYPE, jsonArray);
                     }
                     weightRepository.close(weight.getId());
                 }

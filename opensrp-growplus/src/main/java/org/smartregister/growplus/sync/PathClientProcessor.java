@@ -98,7 +98,7 @@ public class PathClientProcessor extends ClientProcessor {
                         continue;
                     }
 
-                    processWeight(event, clientWeightClassificationJson, type.equals(WeightIntentService.EVENT_TYPE_OUT_OF_CATCHMENT));
+                    //processWeight(event, clientWeightClassificationJson, type.equals(WeightIntentService.EVENT_TYPE_OUT_OF_CATCHMENT));
                 } else if (type.equals(RecurringIntentService.EVENT_TYPE)) {
                     JSONObject clientServiceClassificationJson = new JSONObject(clientServiceStr);
                     if (isNullOrEmptyJSONObject(clientServiceClassificationJson)) {
@@ -238,7 +238,7 @@ public class PathClientProcessor extends ClientProcessor {
                         continue;
                     }
 
-                    processWeight(event, clientWeightClassificationJson, eventType.equals(WeightIntentService.EVENT_TYPE_OUT_OF_CATCHMENT));
+                    //processWeight(event, clientWeightClassificationJson, eventType.equals(WeightIntentService.EVENT_TYPE_OUT_OF_CATCHMENT));
                 } else if (eventType.equals(RecurringIntentService.EVENT_TYPE)) {
                     JSONObject clientServiceClassificationJson = new JSONObject(clientServiceStr);
                     if (isNullOrEmptyJSONObject(clientServiceClassificationJson)) {

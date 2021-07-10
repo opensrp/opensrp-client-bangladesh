@@ -33,10 +33,10 @@ import org.smartregister.Context;
 import org.smartregister.clientandeventmodel.Event;
 import org.smartregister.commonregistry.CommonPersonObjectClient;
 import org.smartregister.domain.Photo;
+import org.smartregister.growthmonitoring.domain.HeightWrapper;
 import org.smartregister.growthmonitoring.domain.Weight;
 import org.smartregister.growthmonitoring.domain.WeightWrapper;
-import org.smartregister.growthmonitoring.fragment.EditWeightDialogFragment;
-import org.smartregister.growthmonitoring.listener.WeightActionListener;
+import org.smartregister.growthmonitoring.listener.GMActionListener;
 import org.smartregister.growthmonitoring.repository.WeightRepository;
 import org.smartregister.immunization.domain.ServiceRecord;
 import org.smartregister.immunization.domain.Vaccine;
@@ -98,7 +98,7 @@ import static org.smartregister.util.Utils.startAsyncTask;
  * Created by raihan on 1/03/2017.
  */
 
-public class ChildDetailTabbedActivity extends BaseActivity implements VaccinationActionListener, WeightActionListener, StatusChangeListener {
+public class ChildDetailTabbedActivity extends BaseActivity implements VaccinationActionListener, GMActionListener, StatusChangeListener {
 
     public Menu overflow;
     private ChildDetailsToolbar detailtoolbar;
@@ -962,6 +962,11 @@ public class ChildDetailTabbedActivity extends BaseActivity implements Vaccinati
         } else {
             childUnderFiveFragment.loadView(false, false, false);
         }
+    }
+
+    @Override
+    public void onHeightTaken(HeightWrapper heightWrapper) {
+
     }
 
     public void showWeightDialog(int i) {

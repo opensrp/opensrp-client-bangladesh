@@ -39,6 +39,7 @@ public class HomeDashboardActivity extends BaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        VaccinatorApplication.getInstance().startZscoreRefreshService();
         final Bundle extras = this.getIntent().getExtras();
         LinearLayout household = (LinearLayout)findViewById(R.id.household_dashboard_button);
         household.setOnClickListener(new View.OnClickListener() {

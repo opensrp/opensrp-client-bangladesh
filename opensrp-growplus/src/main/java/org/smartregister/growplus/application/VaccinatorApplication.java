@@ -18,7 +18,7 @@ import org.smartregister.commonregistry.CommonFtsObject;
 import org.smartregister.growplus.repository.CounsellingRepository;
 import org.smartregister.growthmonitoring.GrowthMonitoringLibrary;
 import org.smartregister.growthmonitoring.repository.WeightRepository;
-import org.smartregister.growthmonitoring.repository.ZScoreRepository;
+import org.smartregister.growthmonitoring.service.intent.ZScoreRefreshIntentService;
 import org.smartregister.immunization.ImmunizationLibrary;
 import org.smartregister.immunization.db.VaccineRepo;
 import org.smartregister.immunization.domain.VaccineSchedule;
@@ -96,10 +96,14 @@ public class VaccinatorApplication extends DrishtiApplication
         //Initialize Modules
         CoreLibrary.init(context());
         GrowthMonitoringLibrary.init(context(), getRepository(), BuildConfig.VERSION_CODE, BuildConfig.DATABASE_VERSION);
+       // startZscoreRefreshService();
         ImmunizationLibrary.init(context(), getRepository(), createCommonFtsObject(), BuildConfig.VERSION_CODE, BuildConfig.DATABASE_VERSION);
 
     }
-
+    public void startZscoreRefreshService() {
+        Intent intent = new Intent(getInstance().getApplicationContext(), ZScoreRefreshIntentService.class);
+        this.getApplicationContext().startService(intent);
+    }
     public static synchronized VaccinatorApplication getInstance() {
         return (VaccinatorApplication) mInstance;
     }
@@ -259,9 +263,6 @@ public class VaccinatorApplication extends DrishtiApplication
         return ImmunizationLibrary.getInstance().vaccineRepository();
     }
 
-    public ZScoreRepository zScoreRepository() {
-        return GrowthMonitoringLibrary.getInstance().zScoreRepository();
-    }
 
     public CounsellingRepository counsellingRepository() {
         if (counsellingRepository == null) {

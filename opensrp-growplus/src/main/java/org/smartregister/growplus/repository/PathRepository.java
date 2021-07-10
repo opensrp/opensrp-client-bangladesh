@@ -8,8 +8,10 @@ import net.sqlcipher.database.SQLiteDatabase;
 import org.apache.commons.lang3.StringUtils;
 import org.smartregister.commonregistry.CommonFtsObject;
 import org.smartregister.domain.db.Column;
+import org.smartregister.growthmonitoring.repository.HeightRepository;
+import org.smartregister.growthmonitoring.repository.HeightZScoreRepository;
 import org.smartregister.growthmonitoring.repository.WeightRepository;
-import org.smartregister.growthmonitoring.repository.ZScoreRepository;
+import org.smartregister.growthmonitoring.repository.WeightZScoreRepository;
 import org.smartregister.immunization.repository.RecurringServiceRecordRepository;
 import org.smartregister.immunization.repository.RecurringServiceTypeRepository;
 import org.smartregister.immunization.repository.VaccineNameRepository;
@@ -50,11 +52,56 @@ public class PathRepository extends Repository {
         EventClientRepository.createTable(database, EventClientRepository.Table.event, EventClientRepository.event_column.values());
         EventClientRepository.createTable(database, EventClientRepository.Table.obs, EventClientRepository.obs_column.values());
         UniqueIdRepository.createTable(database);
-        WeightRepository.createTable(database);
         VaccineRepository.createTable(database);
         CounsellingRepository.createTable(database);
         onUpgrade(database, 1, PathConstants.DATABASE_VERSION);
 
+    }
+    private void upgradeForZscore(SQLiteDatabase database){
+
+        WeightRepository.createTable(database);
+        database.execSQL(WeightRepository.UPDATE_TABLE_ADD_EVENT_ID_COL);
+        database.execSQL(WeightRepository.EVENT_ID_INDEX);
+        database.execSQL(WeightRepository.UPDATE_TABLE_ADD_FORMSUBMISSION_ID_COL);
+        database.execSQL(WeightRepository.FORMSUBMISSION_INDEX);
+        database.execSQL(WeightRepository.UPDATE_TABLE_ADD_OUT_OF_AREA_COL);
+        database.execSQL(WeightRepository.UPDATE_TABLE_ADD_OUT_OF_AREA_COL_INDEX);
+
+        HeightRepository.createTable(database);
+        database.execSQL(HeightRepository.UPDATE_TABLE_ADD_EVENT_ID_COL);
+        database.execSQL(HeightRepository.EVENT_ID_INDEX);
+        database.execSQL(HeightRepository.UPDATE_TABLE_ADD_FORMSUBMISSION_ID_COL);
+        database.execSQL(HeightRepository.FORMSUBMISSION_INDEX);
+        database.execSQL(HeightRepository.UPDATE_TABLE_ADD_OUT_OF_AREA_COL);
+        database.execSQL(HeightRepository.UPDATE_TABLE_ADD_OUT_OF_AREA_COL_INDEX);
+        try {
+            WeightZScoreRepository.createTable(database);
+            HeightZScoreRepository.createTable(database);
+
+            database.execSQL(WeightRepository.ALTER_ADD_Z_SCORE_COLUMN);
+            database.execSQL(HeightRepository.ALTER_ADD_Z_SCORE_COLUMN);
+        } catch (Exception e) {
+            Log.e(TAG, "upgradeToVersion2 " + e.getMessage());
+        }
+        try {
+            database.execSQL(WeightRepository.ALTER_ADD_CREATED_AT_COLUMN);
+            database.execSQL(HeightRepository.ALTER_ADD_CREATED_AT_COLUMN);
+
+            WeightRepository.migrateCreatedAt(database);
+            HeightRepository.migrateCreatedAt(database);
+        } catch (Exception e) {
+            Log.e(TAG, "upgradeToVersion3 " + e.getMessage());
+        }
+        try {
+            database.execSQL(WeightRepository.UPDATE_TABLE_ADD_TEAM_COL);
+            database.execSQL(WeightRepository.UPDATE_TABLE_ADD_TEAM_ID_COL);
+            database.execSQL(WeightRepository.UPDATE_TABLE_ADD_CHILD_LOCATION_ID_COL);
+            database.execSQL(HeightRepository.UPDATE_TABLE_ADD_TEAM_COL);
+            database.execSQL(HeightRepository.UPDATE_TABLE_ADD_TEAM_ID_COL);
+            database.execSQL(HeightRepository.UPDATE_TABLE_ADD_CHILD_LOCATION_ID_COL);
+        } catch (Exception e) {
+            Log.e(TAG, "upgradeToVersion4 " + Log.getStackTraceString(e));
+        }
     }
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
@@ -76,9 +123,6 @@ public class PathRepository extends Repository {
                     break;
                 case 5:
                     upgradeToVersion5(db);
-                    break;
-                case 6:
-                    upgradeToVersion6(db);
                     break;
                 case 7:
                     upgradeToVersion7Stock(db);
@@ -194,12 +238,8 @@ public class PathRepository extends Repository {
         try {
             db.execSQL(VaccineRepository.UPDATE_TABLE_ADD_EVENT_ID_COL);
             db.execSQL(VaccineRepository.EVENT_ID_INDEX);
-            db.execSQL(WeightRepository.UPDATE_TABLE_ADD_EVENT_ID_COL);
-            db.execSQL(WeightRepository.EVENT_ID_INDEX);
             db.execSQL(VaccineRepository.UPDATE_TABLE_ADD_FORMSUBMISSION_ID_COL);
             db.execSQL(VaccineRepository.FORMSUBMISSION_INDEX);
-            db.execSQL(WeightRepository.UPDATE_TABLE_ADD_FORMSUBMISSION_ID_COL);
-            db.execSQL(WeightRepository.FORMSUBMISSION_INDEX);
         } catch (Exception e) {
             Log.e(TAG, "upgradeToVersion3 " + Log.getStackTraceString(e));
         }
@@ -226,22 +266,12 @@ public class PathRepository extends Repository {
         }
     }
 
-    private void upgradeToVersion6(SQLiteDatabase db) {
-        try {
-            ZScoreRepository.createTable(db);
-            db.execSQL(WeightRepository.ALTER_ADD_Z_SCORE_COLUMN);
-        } catch (Exception e) {
-            Log.e(TAG, "upgradeToVersion6" + Log.getStackTraceString(e));
-        }
-    }
 
     private void upgradeToVersion7Hia2(SQLiteDatabase db) {
         try {
             db.execSQL(VaccineRepository.UPDATE_TABLE_ADD_OUT_OF_AREA_COL);
             db.execSQL(VaccineRepository.UPDATE_TABLE_ADD_OUT_OF_AREA_COL_INDEX);
-            db.execSQL(WeightRepository.UPDATE_TABLE_ADD_OUT_OF_AREA_COL);
 //            db.execSQL(WeightRepository.UPDATE_TABLE_ADD_OUT_OF_AREA_COL_INDEX);
-            db.execSQL(WeightRepository.UPDATE_TABLE_ADD_OUT_OF_AREA_COL_INDEX);
 //            DailyTalliesRepository.createTable(db);
 //            MonthlyTalliesRepository.createTable(db);
             EventClientRepository.createTable(db, EventClientRepository.Table.path_reports, EventClientRepository.report_column.values());
@@ -339,10 +369,6 @@ public class PathRepository extends Repository {
         try {
             Column[] columns = {EventClientRepository.event_column.formSubmissionId};
             EventClientRepository.createIndex(db, EventClientRepository.Table.event, columns);
-
-            db.execSQL(WeightRepository.ALTER_ADD_CREATED_AT_COLUMN);
-            WeightRepository.migrateCreatedAt(db);
-
             db.execSQL(VaccineRepository.ALTER_ADD_CREATED_AT_COLUMN);
             VaccineRepository.migrateCreatedAt(db);
 
@@ -358,14 +384,9 @@ public class PathRepository extends Repository {
         try {
             db.execSQL(VaccineRepository.UPDATE_TABLE_ADD_TEAM_ID_COL);
             db.execSQL(VaccineRepository.UPDATE_TABLE_ADD_TEAM_COL);
-//            db.execSQL(WeightRepository.ALTER_ADD_Z_SCORE_COLUMN);
-            db.execSQL(WeightRepository.UPDATE_TABLE_ADD_TEAM_COL);
-            db.execSQL(WeightRepository.UPDATE_TABLE_ADD_TEAM_ID_COL);
-            db.execSQL(WeightRepository.UPDATE_TABLE_ADD_CHILD_LOCATION_ID_COL);
-            WeightRepository.migrateCreatedAt(db);
-
             db.execSQL(RecurringServiceRecordRepository.UPDATE_TABLE_ADD_TEAM_ID_COL);
             db.execSQL(RecurringServiceRecordRepository.UPDATE_TABLE_ADD_TEAM_COL);
+            upgradeForZscore(db);
         } catch (Exception e) {
             Log.e(TAG, "upgradeToVersion13 " + e.getMessage());
         }

@@ -13,6 +13,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.preference.PreferenceManager;
+import android.support.v4.app.FragmentActivity;
 import android.text.TextUtils;
 import android.util.Log;
 import android.util.Pair;
@@ -43,10 +44,12 @@ import org.smartregister.growplus.listener.ActivityListener;
 import org.smartregister.growplus.repository.CounsellingRepository;
 import org.smartregister.growplus.repository.UniqueIdRepository;
 import org.smartregister.growplus.view.LocationPickerView;
+import org.smartregister.growthmonitoring.domain.Height;
+import org.smartregister.growthmonitoring.domain.HeightWrapper;
 import org.smartregister.growthmonitoring.domain.Weight;
 import org.smartregister.growthmonitoring.domain.WeightWrapper;
 import org.smartregister.growthmonitoring.fragment.GrowthDialogFragment;
-import org.smartregister.growthmonitoring.listener.WeightActionListener;
+import org.smartregister.growthmonitoring.listener.GMActionListener;
 import org.smartregister.growthmonitoring.repository.WeightRepository;
 import org.smartregister.immunization.domain.ServiceRecord;
 import org.smartregister.immunization.domain.ServiceType;
@@ -118,7 +121,7 @@ import static org.smartregister.util.Utils.startAsyncTask;
  */
 
 public class WomanImmunizationActivity extends BaseActivity
-        implements LocationSwitcherToolbar.OnLocationChangeListener, WeightActionListener, VaccinationActionListener{
+        implements LocationSwitcherToolbar.OnLocationChangeListener, GMActionListener, VaccinationActionListener{
 
     private static final String TAG = "ChildImmunoActivity";
     private static final String VACCINES_FILE = "vaccines.json";
@@ -1205,6 +1208,11 @@ public class WomanImmunizationActivity extends BaseActivity
     }
 
     @Override
+    public void onHeightTaken(HeightWrapper heightWrapper) {
+
+    }
+
+    @Override
     public void onVaccinateToday(ArrayList<VaccineWrapper> tags, View v) {
         if (tags != null && !tags.isEmpty()) {
             View view = getLastOpenedView();
@@ -1929,16 +1937,20 @@ public class WomanImmunizationActivity extends BaseActivity
         protected void onPostExecute(List<Weight> allWeights) {
             super.onPostExecute(allWeights);
             hideProgressDialog();
-            FragmentTransaction ft = WomanImmunizationActivity.this.getFragmentManager().beginTransaction();
-            Fragment prev = WomanImmunizationActivity.this.getFragmentManager().findFragmentByTag(DIALOG_TAG);
-            if (prev != null) {
-                ft.remove(prev);
-            }
-            ft.addToBackStack(null);
 
+            GrowthDialogFragment growthDialogFragment = GrowthDialogFragment.newInstance(childDetails, allWeights,new ArrayList<Height>());
+            growthDialogFragment.show(initFragmentTransaction(WomanImmunizationActivity.this, DIALOG_TAG), DIALOG_TAG);
 
-            GrowthDialogFragment growthDialogFragment = GrowthDialogFragment.newInstance(childDetails, allWeights);
-            growthDialogFragment.show(ft, DIALOG_TAG);
         }
+
+    }
+    public static android.support.v4.app.FragmentTransaction initFragmentTransaction(FragmentActivity context, String tag) {
+        android.support.v4.app.FragmentTransaction ft = context.getSupportFragmentManager().beginTransaction();
+        android.support.v4.app.Fragment prev = context.getSupportFragmentManager().findFragmentByTag(tag);
+        if (prev != null) {
+            ft.remove(prev);
+        }
+        ft.addToBackStack(null);
+        return ft;
     }
 }

@@ -55,7 +55,6 @@ import org.smartregister.growplus.toolbar.ChildDetailsToolbar;
 import org.smartregister.growplus.toolbar.LocationSwitcherToolbar;
 import org.smartregister.growthmonitoring.domain.Weight;
 import org.smartregister.growthmonitoring.domain.WeightWrapper;
-import org.smartregister.growthmonitoring.listener.WeightActionListener;
 import org.smartregister.growthmonitoring.repository.WeightRepository;
 import org.smartregister.immunization.domain.ServiceRecord;
 import org.smartregister.immunization.domain.Vaccine;

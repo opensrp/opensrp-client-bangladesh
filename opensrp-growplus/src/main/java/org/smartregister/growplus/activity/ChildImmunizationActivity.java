@@ -13,6 +13,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.preference.PreferenceManager;
+import android.support.v4.app.FragmentActivity;
 import android.text.TextUtils;
 import android.util.Log;
 import android.util.Pair;
@@ -52,14 +53,15 @@ import org.smartregister.growplus.listener.ActivityListener;
 import org.smartregister.growplus.repository.CounsellingRepository;
 import org.smartregister.growplus.sync.ECSyncUpdater;
 import org.smartregister.growplus.viewComponents.WidgetFactory;
+import org.smartregister.growthmonitoring.domain.Height;
+import org.smartregister.growthmonitoring.domain.HeightWrapper;
 import org.smartregister.growthmonitoring.domain.Weight;
 import org.smartregister.growthmonitoring.domain.WeightWrapper;
 
-import org.smartregister.growthmonitoring.domain.ZScore;
+import org.smartregister.growthmonitoring.domain.WeightZScore;
 import org.smartregister.growthmonitoring.fragment.GrowthDialogFragment;
-import org.smartregister.growthmonitoring.fragment.RecordWeightDialogFragment;
-import org.smartregister.growthmonitoring.listener.ViewMeasureListener;
-import org.smartregister.growthmonitoring.listener.WeightActionListener;
+import org.smartregister.growthmonitoring.fragment.RecordGrowthDialogFragment;
+import org.smartregister.growthmonitoring.listener.GMActionListener;
 import org.smartregister.growthmonitoring.repository.WeightRepository;
 import org.smartregister.immunization.db.VaccineRepo;
 import org.smartregister.immunization.domain.Vaccine;
@@ -121,7 +123,7 @@ import static org.smartregister.util.Utils.kgStringSuffix;
  */
 
 public class ChildImmunizationActivity extends BaseActivity
-        implements LocationSwitcherToolbar.OnLocationChangeListener, WeightActionListener, VaccinationActionListener {
+        implements LocationSwitcherToolbar.OnLocationChangeListener, GMActionListener, VaccinationActionListener {
 
     private static final String TAG = "ChildImmunoActivity";
     private static final String EXTRA_CHILD_DETAILS = "child_details";
@@ -1141,8 +1143,9 @@ public class ChildImmunizationActivity extends BaseActivity
             }
         }
         WeightWrapper weightWrapper = (WeightWrapper) view.getTag();
-        RecordWeightDialogFragment recordWeightDialogFragment = RecordWeightDialogFragment.newInstance(dob,weightWrapper);
-        recordWeightDialogFragment.show(ft, DIALOG_TAG);
+        RecordGrowthDialogFragment recordGrowthDialogFragment = RecordGrowthDialogFragment
+                .newInstance(dob, weightWrapper, new HeightWrapper());
+        recordGrowthDialogFragment.show(initFragmentTransaction(ChildImmunizationActivity.this, DIALOG_TAG), DIALOG_TAG);
 
     }
 
@@ -1276,6 +1279,11 @@ public class ChildImmunizationActivity extends BaseActivity
             updateRecordWeightViews(tag);
             setLastModified(true);
         }
+    }
+
+    @Override
+    public void onHeightTaken(HeightWrapper heightWrapper) {
+
     }
 
     @Override
@@ -1737,17 +1745,20 @@ public class ChildImmunizationActivity extends BaseActivity
         protected void onPostExecute(List<Weight> allWeights) {
             super.onPostExecute(allWeights);
             hideProgressDialog();
-            FragmentTransaction ft = ChildImmunizationActivity.this.getFragmentManager().beginTransaction();
-            Fragment prev = ChildImmunizationActivity.this.getFragmentManager().findFragmentByTag(DIALOG_TAG);
-            if (prev != null) {
-                ft.remove(prev);
-            }
-            ft.addToBackStack(null);
 
 
-            GrowthDialogFragment growthDialogFragment = GrowthDialogFragment.newInstance(childDetails, allWeights);
-            growthDialogFragment.show(ft, DIALOG_TAG);
+            GrowthDialogFragment growthDialogFragment = GrowthDialogFragment.newInstance(childDetails, allWeights,new ArrayList<Height>());
+            growthDialogFragment.show(initFragmentTransaction(ChildImmunizationActivity.this, DIALOG_TAG), DIALOG_TAG);
         }
+    }
+    public static android.support.v4.app.FragmentTransaction initFragmentTransaction(FragmentActivity context, String tag) {
+        android.support.v4.app.FragmentTransaction ft = context.getSupportFragmentManager().beginTransaction();
+        android.support.v4.app.Fragment prev = context.getSupportFragmentManager().findFragmentByTag(tag);
+        if (prev != null) {
+            ft.remove(prev);
+        }
+        ft.addToBackStack(null);
+        return ft;
     }
 
     private class MarkBcgTwoAsDoneTask extends AsyncTask<Void, Void, Void> {
@@ -1965,7 +1976,7 @@ public class ChildImmunizationActivity extends BaseActivity
             TableRow.LayoutParams params = (TableRow.LayoutParams) divider.getLayoutParams();
             if (params == null) params = new TableRow.LayoutParams();
             params.width = TableRow.LayoutParams.MATCH_PARENT;
-            params.height = getResources().getDimensionPixelSize(org.smartregister.growthmonitoring.R.dimen.weight_table_divider_height);
+            params.height = getResources().getDimensionPixelSize(org.smartregister.growthmonitoring.R.dimen.table_divider_height);
             params.span = 3;
             divider.setLayoutParams(params);
             divider.setBackgroundColor(getResources().getColor(org.smartregister.growthmonitoring.R.color.client_list_header_dark_grey));
@@ -1977,7 +1988,7 @@ public class ChildImmunizationActivity extends BaseActivity
             TextView ageTextView = new TextView(previousweightholder.getContext());
             ageTextView.setHeight(getResources().getDimensionPixelSize(org.smartregister.growthmonitoring.R.dimen.table_contents_text_height));
             ageTextView.setTextSize(TypedValue.COMPLEX_UNIT_PX,
-                    getResources().getDimension(org.smartregister.growthmonitoring.R.dimen.weight_table_contents_text_size));
+                    getResources().getDimension(org.smartregister.growthmonitoring.R.dimen.table_contents_text_size));
             ageTextView.setText(DateUtil.getDuration(weight.getDate().getTime() - dob.getTime()));
             ageTextView.setGravity(Gravity.LEFT | Gravity.CENTER_VERTICAL);
             ageTextView.setTextColor(getResources().getColor(org.smartregister.growthmonitoring.R.color.client_list_grey));
@@ -1986,7 +1997,7 @@ public class ChildImmunizationActivity extends BaseActivity
             TextView weightTextView = new TextView(previousweightholder.getContext());
             weightTextView.setHeight(getResources().getDimensionPixelSize(org.smartregister.growthmonitoring.R.dimen.table_contents_text_height));
             weightTextView.setTextSize(TypedValue.COMPLEX_UNIT_PX,
-                    getResources().getDimension(org.smartregister.growthmonitoring.R.dimen.weight_table_contents_text_size));
+                    getResources().getDimension(org.smartregister.growthmonitoring.R.dimen.table_contents_text_size));
             weightTextView.setGravity(Gravity.LEFT | Gravity.CENTER_VERTICAL);
             weightTextView.setText(
                     String.format("%s %s", String.valueOf(weight.getKg()), getString(org.smartregister.growthmonitoring.R.string.kg)));
@@ -1996,16 +2007,16 @@ public class ChildImmunizationActivity extends BaseActivity
             TextView zScoreTextView = new TextView(previousweightholder.getContext());
             zScoreTextView.setHeight(getResources().getDimensionPixelSize(org.smartregister.growthmonitoring.R.dimen.table_contents_text_height));
             zScoreTextView.setTextSize(TypedValue.COMPLEX_UNIT_PX,
-                    getResources().getDimension(org.smartregister.growthmonitoring.R.dimen.weight_table_contents_text_size));
+                    getResources().getDimension(org.smartregister.growthmonitoring.R.dimen.table_contents_text_size));
             zScoreTextView.setGravity(Gravity.LEFT | Gravity.CENTER_VERTICAL);
             if (weight.getDate().compareTo(maxWeighingDate.getTime()) > 0) {
                 zScoreTextView.setText("");
             } else { //TODO
-                Double zScoreDouble = ZScore.calculate(gender, dob, weight.getDate(), weight.getKg());
+                Double zScoreDouble = WeightZScore.calculate(gender, dob, weight.getDate(), weight.getKg());
                 double zScore =  (zScoreDouble == null) ? 0 : zScoreDouble.doubleValue();
                // double zScore = ZScore.calculate(gender, dob, weight.getDate(), weight.getKg());
-                zScore = ZScore.roundOff(zScore);
-                zScoreTextView.setTextColor(getResources().getColor(ZScore.getZScoreColor(zScore)));
+                zScore = WeightZScore.roundOff(zScore);
+                zScoreTextView.setTextColor(getResources().getColor(WeightZScore.getZScoreColor(zScore)));
                 zScoreTextView.setText(String.valueOf(zScore));
             }
             curRow.addView(zScoreTextView);
@@ -2028,10 +2039,10 @@ public class ChildImmunizationActivity extends BaseActivity
             minGraphTime = Calendar.getInstance();
             maxGraphTime = Calendar.getInstance();
 
-            if (ZScore.getAgeInMonths(dob, maxGraphTime.getTime()) > ZScore.MAX_REPRESENTED_AGE) {
+            if (WeightZScore.getAgeInMonths(dob, maxGraphTime.getTime()) > WeightZScore.MAX_REPRESENTED_AGE) {
                 Calendar cal = Calendar.getInstance();
                 cal.setTime(dob);
-                cal.add(Calendar.MONTH, (int) Math.round(ZScore.MAX_REPRESENTED_AGE));
+                cal.add(Calendar.MONTH, (int) Math.round(WeightZScore.MAX_REPRESENTED_AGE));
                 maxGraphTime = cal;
                 minGraphTime = (Calendar) maxGraphTime.clone();
             }
