@@ -225,10 +225,10 @@ public class ChildImmunizationActivity extends BaseActivity
     private void updateGenderInChildDetails(){
         if(childDetails!=null){
             String genderString = Utils.getValue(childDetails, PathConstants.KEY.GENDER, false);
-            if(genderString.equalsIgnoreCase("ছেলে")){
+            if(genderString.equalsIgnoreCase("ছেলে") || genderString.equalsIgnoreCase("male")){
                 childDetails.getDetails().put("gender","male");
             }
-            else if(genderString.equalsIgnoreCase("মেয়ে")){
+            else if(genderString.equalsIgnoreCase("মেয়ে")|| genderString.equalsIgnoreCase("female")){
                 childDetails.getDetails().put("gender","female");
             }else{
                 childDetails.getDetails().put("gender","male");
