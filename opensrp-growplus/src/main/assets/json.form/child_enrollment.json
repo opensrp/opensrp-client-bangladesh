@@ -121,6 +121,10 @@
           "ছেলে",
           "মেয়ে"
         ],
+        "openmrs_choice_ids": {
+          "ছেলে": "male",
+          "মেয়ে": "female"
+        },
         "v_required": {
           "value": "true",
           "err": "লিঙ্গ লিখুন"

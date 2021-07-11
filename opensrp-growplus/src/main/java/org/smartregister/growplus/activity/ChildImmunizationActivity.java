@@ -197,6 +197,7 @@ public class ChildImmunizationActivity extends BaseActivity
             if (serializable != null && serializable instanceof RegisterClickables) {
                 registerClickables = (RegisterClickables) serializable;
             }
+            updateGenderInChildDetails();
         }
 
         bcgScarNotificationShown = false;
@@ -220,6 +221,19 @@ public class ChildImmunizationActivity extends BaseActivity
             e.printStackTrace();
         }
 
+    }
+    private void updateGenderInChildDetails(){
+        if(childDetails!=null){
+            String genderString = Utils.getValue(childDetails, PathConstants.KEY.GENDER, false);
+            if(genderString.equalsIgnoreCase("ছেলে")){
+                childDetails.getDetails().put("gender","male");
+            }
+            else if(genderString.equalsIgnoreCase("মেয়ে")){
+                childDetails.getDetails().put("gender","female");
+            }else{
+                childDetails.getDetails().put("gender","male");
+            }
+        }
     }
     private void showChildFollowupDetail() {
 
@@ -468,7 +482,7 @@ public class ChildImmunizationActivity extends BaseActivity
         }
 
         ////////////////////////////////////////////////
-        Gender gender = Gender.UNKNOWN;
+        Gender gender = Gender.FEMALE;
         if (isDataOk()) {
             String genderString = Utils.getValue(childDetails, PathConstants.KEY.GENDER, false);
             if (genderString != null && genderString.equalsIgnoreCase(PathConstants.GENDER.FEMALE)) {
