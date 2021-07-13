@@ -26,7 +26,6 @@ import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.ScrollView;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
@@ -40,7 +39,6 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.opensrp.api.constants.Gender;
-import org.smartregister.clientandeventmodel.Event;
 import org.smartregister.commonregistry.AllCommonsRepository;
 import org.smartregister.commonregistry.CommonPersonObject;
 import org.smartregister.commonregistry.CommonPersonObjectClient;
@@ -50,29 +48,37 @@ import org.smartregister.growplus.adapter.CounsellingCardAdapter;
 import org.smartregister.growplus.domain.Counselling;
 import org.smartregister.growplus.listener.ActivityListener;
 import org.smartregister.growplus.repository.CounsellingRepository;
-import org.smartregister.growplus.sync.ECSyncUpdater;
-import org.smartregister.growplus.viewComponents.WidgetFactory;
+import org.smartregister.growthmonitoring.GrowthMonitoringLibrary;
+import org.smartregister.growthmonitoring.domain.Height;
+import org.smartregister.growthmonitoring.domain.HeightWrapper;
+import org.smartregister.growthmonitoring.domain.MUAC;
+import org.smartregister.growthmonitoring.domain.MUACWrapper;
 import org.smartregister.growthmonitoring.domain.Weight;
 import org.smartregister.growthmonitoring.domain.WeightWrapper;
 
 import org.smartregister.growthmonitoring.domain.ZScore;
 import org.smartregister.growthmonitoring.fragment.GrowthDialogFragment;
+import org.smartregister.growthmonitoring.fragment.HeightMonitoringFragment;
+import org.smartregister.growthmonitoring.fragment.MUACMonitoringFragment;
 import org.smartregister.growthmonitoring.fragment.RecordWeightDialogFragment;
-import org.smartregister.growthmonitoring.listener.ViewMeasureListener;
+import org.smartregister.growthmonitoring.listener.HeightActionListener;
+import org.smartregister.growthmonitoring.listener.MUACActionListener;
 import org.smartregister.growthmonitoring.listener.WeightActionListener;
+import org.smartregister.growthmonitoring.repository.HeightRepository;
+import org.smartregister.growthmonitoring.repository.MUACRepository;
 import org.smartregister.growthmonitoring.repository.WeightRepository;
+import org.smartregister.growthmonitoring.util.HeightUtils;
+import org.smartregister.growthmonitoring.util.MUACUtils;
 import org.smartregister.immunization.db.VaccineRepo;
 import org.smartregister.immunization.domain.Vaccine;
 import org.smartregister.immunization.domain.VaccineSchedule;
 import org.smartregister.immunization.domain.VaccineWrapper;
-import org.smartregister.immunization.fragment.UndoVaccinationDialogFragment;
 import org.smartregister.immunization.fragment.VaccinationDialogFragment;
 import org.smartregister.immunization.listener.VaccinationActionListener;
 import org.smartregister.immunization.repository.RecurringServiceRecordRepository;
 import org.smartregister.immunization.repository.RecurringServiceTypeRepository;
 import org.smartregister.immunization.repository.VaccineRepository;
 import org.smartregister.immunization.util.VaccinateActionUtils;
-import org.smartregister.immunization.util.VaccinatorUtils;
 import org.smartregister.immunization.view.ExpandableHeightGridView;
 import org.smartregister.immunization.view.VaccineGroup;
 import org.smartregister.growplus.R;
@@ -82,7 +88,6 @@ import org.smartregister.growplus.toolbar.LocationSwitcherToolbar;
 import org.smartregister.growplus.view.SiblingPicturesGroup;
 import org.smartregister.repository.AllSharedPreferences;
 import org.smartregister.repository.DetailsRepository;
-import org.smartregister.repository.EventClientRepository;
 import org.smartregister.service.AlertService;
 import org.smartregister.util.DateUtil;
 import org.smartregister.util.FormUtils;
@@ -102,16 +107,17 @@ import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Random;
 import java.util.concurrent.TimeUnit;
 import java.util.regex.Pattern;
 
+import util.GrowthUtil;
 import util.ImageUtils;
 import util.JsonFormUtils;
 import util.PathConstants;
 
 import static org.smartregister.growplus.activity.WomanSmartRegisterActivity.REQUEST_CODE_GET_JSON;
 import static org.smartregister.util.DateUtil.getDuration;
+import static org.smartregister.util.Utils.dobToDateTime;
 import static org.smartregister.util.Utils.getValue;
 import static org.smartregister.util.Utils.kgStringSuffix;
 
@@ -121,7 +127,7 @@ import static org.smartregister.util.Utils.kgStringSuffix;
  */
 
 public class ChildImmunizationActivity extends BaseActivity
-        implements LocationSwitcherToolbar.OnLocationChangeListener, WeightActionListener, VaccinationActionListener {
+        implements LocationSwitcherToolbar.OnLocationChangeListener, WeightActionListener, HeightActionListener, MUACActionListener, VaccinationActionListener {
 
     private static final String TAG = "ChildImmunoActivity";
     private static final String EXTRA_CHILD_DETAILS = "child_details";
@@ -220,7 +226,49 @@ public class ChildImmunizationActivity extends BaseActivity
         } catch (Exception e) {
             e.printStackTrace();
         }
+        initViews();
 
+
+    }
+    TextView muacText;
+    private void initViews(){
+        muacText = findViewById(R.id.muac_text);
+        muacText.setVisibility(View.GONE);
+
+        ImageButton growthChartButton = (ImageButton) findViewById(R.id.growth_chart_button);
+        growthChartButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Utils.startAsyncTask(new ShowGrowthChartTask(), null);
+            }
+        });
+        findViewById(R.id.record_height).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                GrowthUtil.showHeightRecordDialog(ChildImmunizationActivity.this,childDetails,1,DIALOG_TAG);
+            }
+        });
+        findViewById(R.id.height_chart_button).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Utils.startAsyncTask(new ShowHeightChartTask(), null);
+            }
+        });
+
+        View recordMUAC = findViewById(R.id.recordMUAC);
+        recordMUAC.setClickable(true);
+        recordMUAC.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                GrowthUtil.showMuacRecordDialog(ChildImmunizationActivity.this,childDetails,DIALOG_TAG);
+            }
+        });
+        findViewById(R.id.muac_chart_button).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Utils.startAsyncTask(new ShowMuacChartTask(), null);
+            }
+        });
     }
     private void updateGenderInChildDetails(){
         if(childDetails!=null){
@@ -359,14 +407,13 @@ public class ChildImmunizationActivity extends BaseActivity
 
         UpdateViewTask updateViewTask = new UpdateViewTask();
         updateViewTask.setWeightRepository(weightRepository);
-//        updateViewTask.setVaccineRepository(vaccineRepository);
-
         updateViewTask.setAlertService(alertService);
         Utils.startAsyncTask(updateViewTask, null);
         createWeightLayout((LinearLayout) findViewById(R.id.weight_group_canvas_ll),false,getLayoutInflater());
         CounsellingRepository counsellingRepository= VaccinatorApplication.getInstance().counsellingRepository();
         updateCounsellingViews(counsellingRepository.findByEntityId(childDetails.entityId()),(LinearLayout)findViewById(R.id.counselling_group_canvas_ll));
-
+        refreshEditHeightLayout();
+        refreshEditMuacLayout();
     }
 
     private void updateProfilePicture(Gender gender) {
@@ -426,15 +473,7 @@ public class ChildImmunizationActivity extends BaseActivity
     }
 
     public void updateGenderViews() {
-        Gender gender = Gender.UNKNOWN;
-        if (isDataOk()) {
-            String genderString = Utils.getValue(childDetails, PathConstants.KEY.GENDER, false);
-            if (genderString != null && genderString.equalsIgnoreCase(PathConstants.GENDER.FEMALE)) {
-                gender = Gender.FEMALE;
-            } else if (genderString != null && genderString.equalsIgnoreCase(PathConstants.GENDER.MALE)) {
-                gender = Gender.MALE;
-            }
-        }
+        Gender gender = getGender();
         updateGenderViews(gender);
     }
 
@@ -482,86 +521,9 @@ public class ChildImmunizationActivity extends BaseActivity
         }
 
         ////////////////////////////////////////////////
-        Gender gender = Gender.FEMALE;
-        if (isDataOk()) {
-            String genderString = Utils.getValue(childDetails, PathConstants.KEY.GENDER, false);
-            if (genderString != null && genderString.equalsIgnoreCase(PathConstants.GENDER.FEMALE)) {
-                gender = Gender.FEMALE;
-            } else if (genderString != null && genderString.equalsIgnoreCase(PathConstants.GENDER.MALE)) {
-                gender = Gender.MALE;
-            }
-        }
-
-
-
-        ///////////////////////////////////////////////
+        Gender gender = getGender();
 
         refreshPreviousWeightsTable(fragmentContainer,gender,dob,weightlist);
-        /////////////////////////////////////////////////////
-
-
-
-//            ECSyncUpdater ecUpdater = ECSyncUpdater.getInstance(this);
-//
-//
-//        for (int i = 0; i < weightlist.size(); i++) {
-//            Weight weight = weightlist.get(i);
-//            String formattedAge = "";
-//            if (weight.getDate() != null) {
-//
-//                Date weighttaken = weight.getDate();
-//                String birthdate = getValue(childDetails.getColumnmaps(), "dob", false);
-//                DateTime birthday = new DateTime(birthdate);
-//                Date birth = birthday.toDate();
-//                long timeDiff = weighttaken.getTime() - birth.getTime();
-//                Log.v("timeDiff is ", timeDiff + "");
-//                if (timeDiff >= 0) {
-//                    formattedAge = getDuration(timeDiff);
-//                    Log.v("age is ", formattedAge);
-//                }
-//            }
-////            if (formattedAge.equalsIgnoreCase("0d")) {
-//                weightmap.put(weight.getId(), Pair.create(formattedAge, kgStringSuffix(weight.getKg())));
-//
-//                ////////////////////////check 3 months///////////////////////////////
-//                boolean less_than_three_months_event_created = false;
-//
-//                Event event = null;
-//                EventClientRepository db = (EventClientRepository) VaccinatorApplication.getInstance().eventClientRepository();
-//                if (weight.getEventId() != null) {
-//                    event = ecUpdater.convert(db.getEventsByEventId(weight.getEventId()), Event.class);
-//                } else if (weight.getFormSubmissionId() != null) {
-//                    event = ecUpdater.convert(db.getEventsByFormSubmissionId(weight.getFormSubmissionId()),Event.class);
-//                }
-//                if (event != null) {
-//                    Date weight_create_date = event.getDateCreated();
-//                    if (!ChildDetailTabbedActivity.check_if_date_three_months_older(weight_create_date)) {
-//                        less_than_three_months_event_created = true;
-//                    }
-//                } else {
-//                    less_than_three_months_event_created = true;
-//                }
-//                ///////////////////////////////////////////////////////////////////////
-//                if (less_than_three_months_event_created) {
-//                    weighteditmode.add(editmode);
-//                } else {
-//                    weighteditmode.add(false);
-//                }
-//
-//                final int finalI = i;
-//
-////            }
-//
-//        }
-//        listeners = new ArrayList<View.OnClickListener>();
-//        for(int i = 0;i<weighteditmode.size();i++){
-//            listeners.add(null);
-//        }
-//        WidgetFactory wd = new WidgetFactory();
-//        if (weightmap.size() > 0) {
-//            wd.createWeightWidget(inflater, fragmentContainer, weightmap, listeners, weighteditmode);
-//        }
-//        ((TextView)fragmentContainer.findViewById(R.id.textView3)).setText("Growth Chart");
     }
     private void updateVaccinationViews(List<Vaccine> vaccineList, List<Alert> alerts) {
 //        if(false) {
@@ -971,60 +933,7 @@ public class ChildImmunizationActivity extends BaseActivity
     }
 
     public void addVaccineGroup(int canvasId, JSONObject vaccineGroupData, List<Vaccine> vaccineList, List<Alert> alerts) {
-//        LinearLayout vaccineGroupCanvasLL = (LinearLayout) findViewById(R.id.vaccine_group_canvas_ll);
-//        VaccineGroup curGroup = new VaccineGroup(this);
-//        curGroup.setData(vaccineGroupData, childDetails, vaccineList, alerts, "child");
-//        curGroup.setOnRecordAllClickListener(new VaccineGroup.OnRecordAllClickListener() {
-//            @Override
-//            public void onClick(VaccineGroup vaccineGroup, ArrayList<VaccineWrapper> dueVaccines) {
-//                addVaccinationDialogFragment(dueVaccines, vaccineGroup);
-//            }
-//        });
-//        curGroup.setOnVaccineClickedListener(new VaccineGroup.OnVaccineClickedListener() {
-//            @Override
-//            public void onClick(VaccineGroup vaccineGroup, VaccineWrapper vaccine) {
-//                ArrayList<VaccineWrapper> vaccineWrappers = new ArrayList<>();
-//                vaccineWrappers.add(vaccine);
-//                addVaccinationDialogFragment(vaccineWrappers, vaccineGroup);
-//            }
-//        });
-//        curGroup.setOnVaccineUndoClickListener(new VaccineGroup.OnVaccineUndoClickListener() {
-//            @Override
-//            public void onUndoClick(VaccineGroup vaccineGroup, VaccineWrapper vaccine) {
-//                addVaccineUndoDialogFragment(vaccineGroup, vaccine);
-//            }
-//        });
-//
-//        LinearLayout parent;
-//        int groupParentId = canvasId;
-//        if (groupParentId == -1) {
-//            Random r = new Random();
-//            groupParentId = r.nextInt(RANDOM_MAX_RANGE - RANDOM_MIN_RANGE) + RANDOM_MIN_RANGE;
-//            parent = new LinearLayout(this);
-//            parent.setId(groupParentId);
-//            vaccineGroupCanvasLL.addView(parent);
-//        } else {
-//            parent = (LinearLayout) findViewById(groupParentId);
-//            parent.removeAllViews();
-//        }
-//        parent.addView(curGroup);
-//        curGroup.setTag(R.id.vaccine_group_vaccine_data, vaccineGroupData.toString());
-//        curGroup.setTag(R.id.vaccine_group_parent_id, String.valueOf(groupParentId));
-//        vaccineGroups.add(curGroup);
-    }
 
-    private void addVaccineUndoDialogFragment(VaccineGroup vaccineGroup, VaccineWrapper vaccineWrapper) {
-        FragmentTransaction ft = getFragmentManager().beginTransaction();
-        Fragment prev = getFragmentManager().findFragmentByTag(DIALOG_TAG);
-        if (prev != null) {
-            ft.remove(prev);
-        }
-
-        ft.addToBackStack(null);
-        vaccineGroup.setModalOpen(true);
-
-        UndoVaccinationDialogFragment undoVaccinationDialogFragment = UndoVaccinationDialogFragment.newInstance(vaccineWrapper);
-        undoVaccinationDialogFragment.show(ft, DIALOG_TAG);
     }
 
 
@@ -1084,13 +993,6 @@ public class ChildImmunizationActivity extends BaseActivity
 
         updateRecordWeightViews(weightWrapper);
 
-        ImageButton growthChartButton = (ImageButton) findViewById(R.id.growth_chart_button);
-        growthChartButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Utils.startAsyncTask(new ShowGrowthChartTask(), null);
-            }
-        });
     }
 
     private void updateRecordWeightViews(WeightWrapper weightWrapper) {
@@ -1252,27 +1154,17 @@ public class ChildImmunizationActivity extends BaseActivity
                 e.printStackTrace();
             }
 
-            Gender gender = Gender.UNKNOWN;
-            String genderString = Utils.getValue(childDetails, PathConstants.KEY.GENDER, false);
-            if (genderString != null && genderString.toLowerCase().equals(PathConstants.GENDER.FEMALE)) {
-                gender = Gender.FEMALE;
-            } else if (genderString != null && genderString.toLowerCase().equals(PathConstants.GENDER.MALE)) {
-                gender = Gender.MALE;
-            }
+            Gender gender = getGender();
 
             Date dob = null;
-            String dobString = Utils.getValue(childDetails.getColumnmaps(), PathConstants.KEY.DOB, false);
 
             String formattedAge = "";
-            String formattedDob = "";
             if (isDataOk()) {
-                dobString = Utils.getValue(childDetails.getColumnmaps(), PathConstants.KEY.DOB, false);
+                String dobString = Utils.getValue(childDetails.getColumnmaps(), PathConstants.KEY.DOB, false);
                 if (!TextUtils.isEmpty(dobString)) {
                     DateTime dateTime = new DateTime(dobString);
                     dob = dateTime.toDate();
-                    formattedDob = DATE_FORMAT.format(dob);
                     long timeDiff = Calendar.getInstance().getTimeInMillis() - dob.getTime();
-
                     if (timeDiff >= 0) {
                         formattedAge = DateUtil.getDuration(timeDiff);
                     }
@@ -1289,6 +1181,7 @@ public class ChildImmunizationActivity extends BaseActivity
             tag.setPatientAge(formattedAge);
             updateRecordWeightViews(tag);
             setLastModified(true);
+            updateViews();
         }
     }
 
@@ -1602,8 +1495,6 @@ public class ChildImmunizationActivity extends BaseActivity
 
 
 
-
-
     ////////////////////////////////////////////////////////////////
     // Inner classes
     ////////////////////////////////////////////////////////////////
@@ -1762,6 +1653,78 @@ public class ChildImmunizationActivity extends BaseActivity
             GrowthDialogFragment growthDialogFragment = GrowthDialogFragment.newInstance(childDetails, allWeights);
             growthDialogFragment.show(ft, DIALOG_TAG);
         }
+    }
+    private class ShowHeightChartTask extends AsyncTask<Void, Void, List<Height>> {
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            showProgressDialog();
+        }
+
+        @Override
+        protected List<Height> doInBackground(Void... params) {
+            HeightRepository heightRepository = GrowthMonitoringLibrary.getInstance().getHeightRepository();
+            List<Height> allHeight = heightRepository.findByEntityId(childDetails.entityId());
+            return allHeight;
+        }
+
+        @Override
+        protected void onPostExecute(List<Height> allHeight) {
+            super.onPostExecute(allHeight);
+            hideProgressDialog();
+            FragmentTransaction ft = ChildImmunizationActivity.this.getFragmentManager().beginTransaction();
+            Fragment prev = ChildImmunizationActivity.this.getFragmentManager().findFragmentByTag(DIALOG_TAG);
+            if (prev != null) {
+                ft.remove(prev);
+            }
+            ft.addToBackStack(null);
+            String dobString = Utils.getValue(childDetails.getColumnmaps(), PathConstants.KEY.DOB, false);
+
+            HeightMonitoringFragment growthDialogFragment = HeightMonitoringFragment.createInstance(dobString,getGender(), allHeight);
+            growthDialogFragment.show(ft, DIALOG_TAG);
+        }
+    }
+    private class ShowMuacChartTask extends AsyncTask<Void, Void, List<MUAC>> {
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            showProgressDialog();
+        }
+
+        @Override
+        protected List<MUAC> doInBackground(Void... params) {
+            MUACRepository heightRepository = GrowthMonitoringLibrary.getInstance().getMuacRepository();
+            List<MUAC> allHeight = heightRepository.findByEntityId(childDetails.entityId());
+            return allHeight;
+        }
+
+        @Override
+        protected void onPostExecute(List<MUAC> allHeight) {
+            super.onPostExecute(allHeight);
+            hideProgressDialog();
+            FragmentTransaction ft = ChildImmunizationActivity.this.getFragmentManager().beginTransaction();
+            Fragment prev = ChildImmunizationActivity.this.getFragmentManager().findFragmentByTag(DIALOG_TAG);
+            if (prev != null) {
+                ft.remove(prev);
+            }
+            ft.addToBackStack(null);
+            String dobString = Utils.getValue(childDetails.getColumnmaps(), PathConstants.KEY.DOB, false);
+
+            MUACMonitoringFragment growthDialogFragment = MUACMonitoringFragment.createInstance(dobString,getGender(), allHeight);
+            growthDialogFragment.show(ft, DIALOG_TAG);
+        }
+    }
+
+    private Gender getGender() {
+        Gender gender = Gender.UNKNOWN;
+        String genderString = Utils.getValue(childDetails, PathConstants.KEY.GENDER, false);
+
+        if (genderString != null && genderString.equalsIgnoreCase("female")) {
+            gender = Gender.FEMALE;
+        } else if (genderString != null && genderString.equalsIgnoreCase("male")) {
+            gender = Gender.MALE;
+        }
+        return gender;
     }
 
     private class MarkBcgTwoAsDoneTask extends AsyncTask<Void, Void, Void> {
@@ -2026,6 +1989,120 @@ public class ChildImmunizationActivity extends BaseActivity
             tableLayout.addView(curRow);
         }
         //Now set the expand button if items are too many
+
+    }
+
+
+    public void onHeightTaken(HeightWrapper heightWrapper) {
+        if (heightWrapper != null) {
+            final HeightRepository heightRepository = GrowthMonitoringLibrary.getInstance().getHeightRepository();
+            Height height = new Height();
+//            if (heightWrapper.getDbKey() != null) {
+//                height = heightRepository.find(heightWrapper.getDbKey());
+//            }
+            height.setBaseEntityId(childDetails.entityId());
+            height.setCm(heightWrapper.getHeight());
+            height.setDate(heightWrapper.getUpdatedHeightDate().toDate());
+            String anm = getOpenSRPContext().allSharedPreferences().fetchRegisteredANM();
+            height.setAnmId(getOpenSRPContext().allSharedPreferences().fetchRegisteredANM());
+            height.setLocationId(getOpenSRPContext().allSharedPreferences().fetchDefaultLocalityId(anm));
+            height.setTeam(getOpenSRPContext().allSharedPreferences().fetchDefaultTeam(anm));
+            height.setTeamId(getOpenSRPContext().allSharedPreferences().fetchDefaultTeamId(anm));
+
+
+            String g = childDetails.getColumnmaps().get("gender");
+            String dobstring = childDetails.getColumnmaps().get("dob");
+            GrowthUtil.DOB_STRING = dobstring;
+            Gender gender = getGender();
+
+            Date dob = null;
+            if (!TextUtils.isEmpty(GrowthUtil.DOB_STRING)) {
+                DateTime dateTime = new DateTime(GrowthUtil.DOB_STRING);
+                dob = dateTime.toDate();
+            }
+
+            if (dob != null && gender != Gender.UNKNOWN) {
+                heightRepository.add(dob, gender, height);
+            } else {
+                heightRepository.add(height);
+            }
+
+            heightWrapper.setDbKey(height.getId());
+
+        }
+
+        refreshEditHeightLayout();
+    }
+    @Override
+    public void onMUACTaken(MUACWrapper muacWrapper) {
+        if (muacWrapper != null) {
+            final MUACRepository heightRepository = GrowthMonitoringLibrary.getInstance().getMuacRepository();
+            MUAC height = new MUAC();
+//            if (muacWrapper.getDbKey() != null) {
+//                height = heightRepository.find(muacWrapper.getDbKey());
+//            }
+            height.setBaseEntityId(childDetails.entityId());
+            height.setCm(muacWrapper.getHeight());
+            height.setDate(muacWrapper.getUpdatedHeightDate().toDate());
+            String anm = getOpenSRPContext().allSharedPreferences().fetchRegisteredANM();
+            height.setAnmId(getOpenSRPContext().allSharedPreferences().fetchRegisteredANM());
+            height.setLocationId(getOpenSRPContext().allSharedPreferences().fetchDefaultLocalityId(anm));
+            height.setTeam(getOpenSRPContext().allSharedPreferences().fetchDefaultTeam(anm));
+            height.setTeamId(getOpenSRPContext().allSharedPreferences().fetchDefaultTeamId(anm));
+
+
+            String dobstring = childDetails.getColumnmaps().get("dob");
+            GrowthUtil.DOB_STRING = dobstring;
+
+
+            Date dob = null;
+            if (!TextUtils.isEmpty(GrowthUtil.DOB_STRING)) {
+                DateTime dateTime = new DateTime(GrowthUtil.DOB_STRING);
+                dob = dateTime.toDate();
+            }
+            Gender gender = getGender();
+
+            if (dob != null && gender != Gender.UNKNOWN) {
+                heightRepository.add(dob, gender, height);
+            } else {
+                heightRepository.add(height);
+            }
+
+            muacWrapper.setDbKey(height.getId());
+
+        }
+
+        refreshEditMuacLayout();
+    }
+
+    private void refreshEditHeightLayout() {
+        LinearLayout fragmentContainer = (LinearLayout) findViewById(R.id.height_group_canvas_ll);
+        fragmentContainer.removeAllViews();
+        fragmentContainer.addView(getLayoutInflater().inflate(R.layout.previous_height_view,null));
+        TableLayout heightTable = findViewById(R.id.heights_table);
+        HeightRepository wp = GrowthMonitoringLibrary.getInstance().getHeightRepository();
+        List<Height> heightList = wp.findLast5(childDetails.entityId());
+        if(heightList.size()>0){
+            HeightUtils.refreshPreviousHeightsTable(this,heightTable, getGender(), dobToDateTime(childDetails).toDate(),heightList,Calendar.getInstance());
+
+        }
+    }
+    private void refreshEditMuacLayout() {
+        LinearLayout fragmentContainer = (LinearLayout) findViewById(R.id.muac_group_canvas_ll);
+        fragmentContainer.removeAllViews();
+        fragmentContainer.addView(getLayoutInflater().inflate(R.layout.previous_muac_view,null));
+        TableLayout muacTable = findViewById(R.id.muac_table);
+        MUACRepository wp = GrowthMonitoringLibrary.getInstance().getMuacRepository();
+        List<MUAC> heightList = wp.findLast5(childDetails.entityId());
+        if(heightList.size()>0){
+            MUACUtils.refreshPreviousMuacTable(this,muacTable,getGender(),dobToDateTime(childDetails).toDate(),heightList);
+            MUAC latestMuac = heightList.get(0);
+            int color = ZScore.getMuacColor(latestMuac.getCm());
+            String text = ZScore.getMuacText(latestMuac.getCm());
+            muacText.setVisibility(View.VISIBLE);
+            muacText.setText(text);
+            muacText.setBackgroundColor(getResources().getColor(color));
+        }
 
     }
 

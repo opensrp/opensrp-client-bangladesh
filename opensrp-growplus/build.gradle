@@ -140,7 +140,7 @@ dependencies {
         exclude group: 'org.smartregister', module: 'opensrp-client-native-form'
         exclude group: 'com.android.support', module: 'appcompat-v7'
     }
-    implementation ('org.smartregister:opensrp-client-growth-monitoring:1.1.1-SNAPSHOT@aar') {
+    implementation ('org.smartregister:opensrp-client-growth-monitoring:1.1.2-giz-SNAPSHOT@aar') {
         transitive = true
         exclude group: 'org.smartregister', module: 'opensrp-client-core'
         exclude group: 'com.android.support', module: 'design'

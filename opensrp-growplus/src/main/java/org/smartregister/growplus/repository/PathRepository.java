@@ -8,6 +8,8 @@ import net.sqlcipher.database.SQLiteDatabase;
 import org.apache.commons.lang3.StringUtils;
 import org.smartregister.commonregistry.CommonFtsObject;
 import org.smartregister.domain.db.Column;
+import org.smartregister.growthmonitoring.repository.HeightRepository;
+import org.smartregister.growthmonitoring.repository.MUACRepository;
 import org.smartregister.growthmonitoring.repository.WeightRepository;
 import org.smartregister.growthmonitoring.repository.ZScoreRepository;
 import org.smartregister.immunization.repository.RecurringServiceRecordRepository;
@@ -53,6 +55,8 @@ public class PathRepository extends Repository {
         WeightRepository.createTable(database);
         VaccineRepository.createTable(database);
         CounsellingRepository.createTable(database);
+        HeightRepository.createTable(database);
+        MUACRepository.createTable(database);
         onUpgrade(database, 1, PathConstants.DATABASE_VERSION);
 
     }

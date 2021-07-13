@@ -33,18 +33,38 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:orientation="horizontal">
-
-
-                <ImageView
-                    android:id="@+id/profile_image_iv"
-                    android:layout_width="50dp"
-                    android:layout_height="50dp"
-                    android:adjustViewBounds="true"
-                    android:scaleType="centerCrop"
-                    android:src="@drawable/child_transgender_inflant"
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_gravity="center_horizontal"
                     android:layout_marginLeft="10dp"
-                    android:layout_gravity="top|center"
-                    android:layout_marginTop="10dp" />
+                    android:gravity="center_horizontal"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+                    <ImageView
+                        android:id="@+id/profile_image_iv"
+                        android:layout_width="50dp"
+                        android:layout_height="50dp"
+                        android:adjustViewBounds="true"
+                        android:scaleType="centerCrop"
+                        android:src="@drawable/child_transgender_inflant"
+
+                        android:layout_gravity="top|center"
+                        android:layout_marginTop="10dp" />
+                    <TextView
+                        android:id="@+id/muac_text"
+                        android:layout_margin="5dp"
+                        android:textStyle="bold"
+                        android:textSize="18sp"
+                        android:textColor="@color/white"
+                        android:background="@color/z_score_0"
+                        android:text="Normal"
+                        android:gravity="center"
+                        android:layout_width="100dp"
+                        android:layout_height="50dp"/>
+                </LinearLayout>
+
+
+
 
                 <LinearLayout
                     android:layout_width="wrap_content"
@@ -310,6 +330,93 @@
                             android:layout_marginLeft="@dimen/card_category_horizontal_margin"
                             android:layout_weight="0.5" />
                     </LinearLayout>
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal"
+                        android:weightSum="2">
+
+                        <LinearLayout
+                            android:id="@+id/record_height"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1.5"
+                            android:background="@drawable/record_weight_bg"
+                            android:gravity="center"
+                            android:orientation="horizontal"
+                            android:paddingBottom="16dp"
+                            android:paddingTop="16dp">
+
+                            <ImageView
+                                android:id="@+id/record_height_check"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:paddingRight="3dp"
+                                android:src="@drawable/ic_action_check"
+                                android:visibility="gone" />
+
+                            <TextView
+                                android:id="@+id/record_height_text"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:gravity="center"
+                                android:text="@string/record_height"
+                                android:textAllCaps="false"
+                                android:textAppearance="?android:attr/textAppearanceSmall"
+                                android:textColor="@color/text_black"
+                                android:textSize="19sp" />
+                        </LinearLayout>
+
+                        <ImageButton
+                            android:id="@+id/height_chart_button"
+                            android:src="@drawable/ic_icon_growth_chart"
+                            android:background="@null"
+                            android:layout_width="0dp"
+                            android:layout_height="70dp"
+                            android:layout_marginLeft="@dimen/card_category_horizontal_margin"
+                            android:layout_weight="0.5" />
+                    </LinearLayout>
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal"
+                        android:weightSum="2">
+
+                        <LinearLayout
+                            android:id="@+id/recordMUAC"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1.5"
+                            android:background="@drawable/record_weight_bg"
+                            android:gravity="center"
+                            android:orientation="horizontal"
+                            android:paddingBottom="16dp"
+                            android:paddingTop="16dp">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:gravity="center"
+                                android:text="@string/record_muac"
+                                android:textAllCaps="false"
+                                android:textAppearance="?android:attr/textAppearanceSmall"
+                                android:textColor="@color/text_black"
+                                android:textSize="19sp" />
+                        </LinearLayout>
+
+                        <ImageButton
+                            android:id="@+id/muac_chart_button"
+                            android:layout_width="0dp"
+                            android:layout_height="70dp"
+                            android:layout_marginLeft="@dimen/card_category_horizontal_margin"
+                            android:layout_weight="0.5"
+                            android:background="@null"
+                            android:src="@drawable/ic_icon_growth_chart" />
+                    </LinearLayout>
                 </LinearLayout>
             </android.support.v7.widget.CardView>
 
@@ -386,7 +493,6 @@
                         android:textSize="@dimen/activity_sub_title_size" />
 
                     <org.smartregister.view.customcontrols.CustomFontTextView
-                        android:id="@+id/dob_tv"
                         style="@style/CustomFontTextViewStyle.ClientList"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -521,11 +627,55 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical">
-
-
-
-
                 </LinearLayout>
+            </LinearLayout>
+        </android.support.v7.widget.CardView>
+        <android.support.v7.widget.CardView
+            android:id="@+id/height_widget"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:background="@color/white"
+            android:clickable="false"
+            android:foreground="?android:attr/selectableItemBackground"
+            android:minHeight="135dp"
+            app:cardCornerRadius="@dimen/card_view_corner_radius"
+            app:cardElevation="@dimen/card_elevation">
+
+            <LinearLayout
+                android:id="@+id/height_group_canvas_ll"
+
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:paddingTop="10dp"
+                android:paddingEnd="20dp"
+                android:paddingBottom="10dp">
+
+
+            </LinearLayout>
+        </android.support.v7.widget.CardView>
+        <android.support.v7.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:background="@color/white"
+            android:clickable="false"
+            android:foreground="?android:attr/selectableItemBackground"
+            android:minHeight="135dp"
+            app:cardCornerRadius="@dimen/card_view_corner_radius"
+            app:cardElevation="@dimen/card_elevation">
+
+            <LinearLayout
+                android:id="@+id/muac_group_canvas_ll"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:paddingTop="10dp"
+                android:paddingEnd="20dp"
+                android:paddingBottom="10dp">
+
+
             </LinearLayout>
         </android.support.v7.widget.CardView>
     </LinearLayout>

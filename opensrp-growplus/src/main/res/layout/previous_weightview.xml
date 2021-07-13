@@ -26,8 +26,8 @@
                     android:layout_centerVertical="true"
                     android:layout_gravity="left"
                     android:layout_marginLeft="10dp"
-                    android:layout_marginRight="20dp"
                     android:layout_marginTop="10dp"
+                    android:layout_marginRight="20dp"
                     android:text="@string/previous_weights"
                     android:textColor="@color/black"
                     android:textSize="@dimen/record_weight_tv_text_size" />
