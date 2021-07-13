@@ -40,8 +40,8 @@ android {
         applicationId "org.smartregister.growplus"
         minSdkVersion 19
         targetSdkVersion 28
-        versionCode 9
-        versionName "1.2.3"
+        versionCode 10
+        versionName "1.2.4"
         multiDexEnabled true
         buildConfigField "long", "BUILD_TIMESTAMP", System.currentTimeMillis() + "L"
         testInstrumentationRunner 'android.support.test.runner.AndroidJUnitRunner'
