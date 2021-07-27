@@ -17,7 +17,6 @@ import org.greenrobot.eventbus.ThreadMode;
 import org.smartregister.Context;
 import org.smartregister.CoreLibrary;
 import org.smartregister.cbhc.BuildConfig;
-import org.smartregister.cbhc.CBHCEventBusIndex;
 import org.smartregister.cbhc.activity.LoginActivity;
 import org.smartregister.cbhc.event.TriggerSyncEvent;
 import org.smartregister.cbhc.event.ViewConfigurationSyncCompleteEvent;

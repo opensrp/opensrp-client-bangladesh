@@ -119,6 +119,7 @@ public abstract class BaseRegisterFragment extends RecyclerViewFragment implemen
 //            setTotalPatients();
         }
     };
+    private String registerCondition;
 
     @Override
     protected SecuredNativeSmartRegisterActivity.DefaultOptionsProvider getDefaultOptionsProvider() {
