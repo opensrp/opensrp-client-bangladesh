@@ -23,8 +23,10 @@ import org.smartregister.growthmonitoring.domain.Height;
 import org.smartregister.growthmonitoring.domain.HeightWrapper;
 import org.smartregister.growthmonitoring.domain.MUAC;
 import org.smartregister.growthmonitoring.domain.MUACWrapper;
+import org.smartregister.growthmonitoring.domain.WeightWrapper;
 import org.smartregister.growthmonitoring.fragment.RecordHeightDialogFragment;
 import org.smartregister.growthmonitoring.fragment.RecordMUACDialogFragment;
+import org.smartregister.growthmonitoring.fragment.RecordWeightDialogFragment;
 import org.smartregister.growthmonitoring.repository.HeightRepository;
 import org.smartregister.growthmonitoring.repository.MUACRepository;
 import org.smartregister.growthmonitoring.util.ImageUtils;
@@ -79,12 +81,32 @@ public class GrowthUtil {
         HeightWrapper heightWrapper = new HeightWrapper();
         heightWrapper.setId(childDetails.entityId());
         HeightRepository wp = GrowthMonitoringLibrary.getInstance().getHeightRepository();
-        List<Height> heightList = wp.findLast5(childDetails.entityId());
-        if (!heightList.isEmpty()) {
-            heightWrapper.setHeight(heightList.get(position).getCm());
-            heightWrapper.setUpdatedHeightDate(new DateTime(heightList.get(position).getDate()), false);
-            heightWrapper.setDbKey(heightList.get(position).getId());
-        }
+//        List<Height> heightList = wp.findLast5(childDetails.entityId());
+//        if (!heightList.isEmpty()) {
+//            heightWrapper.setHeight(heightList.get(position).getCm());
+//            heightWrapper.setUpdatedHeightDate(new DateTime(heightList.get(position).getDate()), false);
+//            heightWrapper.setDbKey(heightList.get(position).getId());
+//        }
+
+        heightWrapper.setGender(gender);
+        heightWrapper.setPatientName(childName);
+        heightWrapper.setPatientNumber(zeirId);
+        heightWrapper.setPatientAge(duration);
+        heightWrapper.setPhoto(photo);
+        heightWrapper.setPmtctStatus(getValue(childDetails.getColumnmaps(), "pmtct_status", false));
+        return heightWrapper;
+    }
+    private static WeightWrapper getWeightWrapper(int position, CommonPersonObjectClient childDetails, String childName,
+                                                  String gender, String zeirId, String duration, Photo photo) {
+        WeightWrapper heightWrapper = new WeightWrapper();
+        heightWrapper.setId(childDetails.entityId());
+        HeightRepository wp = GrowthMonitoringLibrary.getInstance().getHeightRepository();
+//        List<Height> heightList = wp.findLast5(childDetails.entityId());
+//        if (!heightList.isEmpty()) {
+//            heightWrapper.setHeight(heightList.get(position).getCm());
+//            heightWrapper.setUpdatedHeightDate(new DateTime(heightList.get(position).getDate()), false);
+//            heightWrapper.setDbKey(heightList.get(position).getId());
+//        }
 
         heightWrapper.setGender(gender);
         heightWrapper.setPatientName(childName);
@@ -158,6 +180,30 @@ public class GrowthUtil {
 
         HeightWrapper heightWrapper = getHeightWrapper(position, childDetails, childName, gender, zeirId, duration, photo);
         RecordHeightDialogFragment heightDialogFragment = RecordHeightDialogFragment.newInstance(dobDateTime.toDate(),heightWrapper);
+        heightDialogFragment.show(initFragmentTransaction(context,tag),tag);
+
+    }
+    public static void showWeightRecordDialog(FragmentActivity context, CommonPersonObjectClient childDetails, int position, String tag) {
+
+        String firstName = org.smartregister.util.Utils.getValue(childDetails.getColumnmaps(), "first_name", true);
+        String lastName = Utils.getValue(childDetails.getColumnmaps(), "last_name", true);
+        String childName = getName(firstName, lastName).trim();
+
+        String gender = getValue(childDetails.getColumnmaps(), "gender", true);
+
+        String zeirId = getValue(childDetails.getColumnmaps(), "zeir_id", false);
+        String duration = "";
+        String dobString = getValue(childDetails.getColumnmaps(), "dob", false);
+        DateTime dobDateTime = new DateTime();
+        if (StringUtils.isNotBlank(dobString)) {
+            dobDateTime = new DateTime(getValue(childDetails.getColumnmaps(), "dob", false));
+            duration = DateUtil.getDuration(dobDateTime);
+        }
+
+        Photo photo = ImageUtils.profilePhotoByClient(childDetails);
+
+        WeightWrapper heightWrapper = getWeightWrapper(position, childDetails, childName, gender, zeirId, duration, photo);
+        RecordWeightDialogFragment heightDialogFragment = RecordWeightDialogFragment.newInstance(dobDateTime.toDate(),heightWrapper);
         heightDialogFragment.show(initFragmentTransaction(context,tag),tag);
 
     }

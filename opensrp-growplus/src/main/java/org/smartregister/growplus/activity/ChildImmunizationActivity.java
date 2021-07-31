@@ -248,6 +248,12 @@ public class ChildImmunizationActivity extends BaseActivity
                 GrowthUtil.showHeightRecordDialog(ChildImmunizationActivity.this,childDetails,1,DIALOG_TAG);
             }
         });
+        findViewById(R.id.record_weight).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                GrowthUtil.showWeightRecordDialog(ChildImmunizationActivity.this,childDetails,1,DIALOG_TAG);
+            }
+        });
         findViewById(R.id.height_chart_button).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -936,107 +942,107 @@ public class ChildImmunizationActivity extends BaseActivity
 
     }
 
+//
+//    private void updateWeightViews(Weight lastUnsyncedWeight) {
+//
+//        String childName = constructChildName();
+//        String gender = Utils.getValue(childDetails.getColumnmaps(), PathConstants.KEY.GENDER, true);
+//        String motherFirstName = Utils.getValue(childDetails.getColumnmaps(), PathConstants.KEY.MOTHER_FIRST_NAME, true);
+//        if (StringUtils.isBlank(childName) && StringUtils.isNotBlank(motherFirstName)) {
+//            childName = "B/o " + motherFirstName.trim();
+//        }
+//
+//        String zeirId = Utils.getValue(childDetails.getColumnmaps(), PathConstants.KEY.ZEIR_ID, false);
+//        String duration = "";
+//        String dobString = Utils.getValue(childDetails.getColumnmaps(), PathConstants.KEY.DOB, false);
+//        if (StringUtils.isNotBlank(dobString)) {
+//            DateTime dateTime = new DateTime(Utils.getValue(childDetails.getColumnmaps(), PathConstants.KEY.DOB, false));
+//            duration = DateUtil.getDuration(dateTime);
+//        }
+//
+//        Photo photo = ImageUtils.profilePhotoByClient(childDetails);
+//
+//        WeightWrapper weightWrapper = new WeightWrapper();
+//        weightWrapper.setId(childDetails.entityId());
+//        weightWrapper.setGender(gender);
+//        weightWrapper.setPatientName(childName);
+//        weightWrapper.setPatientNumber(zeirId);
+//        weightWrapper.setPatientAge(duration);
+//        weightWrapper.setPhoto(photo);
+//        weightWrapper.setPmtctStatus(Utils.getValue(childDetails.getColumnmaps(), PathConstants.KEY.PMTCT_STATUS, false));
+//
+//
+//        String formattedAge = "";
+//        String formattedDob = "";
+//        if (isDataOk()) {
+//            dobString = Utils.getValue(childDetails.getColumnmaps(), PathConstants.KEY.DOB, false);
+//            if (!TextUtils.isEmpty(dobString)) {
+//                DateTime dateTime = new DateTime(dobString);
+//                Date dob = dateTime.toDate();
+//                formattedDob = DATE_FORMAT.format(dob);
+//                long timeDiff = Calendar.getInstance().getTimeInMillis() - dob.getTime();
+//
+//                if (timeDiff >= 0) {
+//                    formattedAge = DateUtil.getDuration(timeDiff);
+//                }
+//            }
+//        }
+//
+//
+//        weightWrapper.setPatientAge(formattedAge);
+//
+//        if (lastUnsyncedWeight != null) {
+//            weightWrapper.setWeight(lastUnsyncedWeight.getKg());
+//            weightWrapper.setDbKey(lastUnsyncedWeight.getId());
+//            weightWrapper.setUpdatedWeightDate(new DateTime(lastUnsyncedWeight.getDate()), false);
+//        }
+//
+//        updateRecordWeightViews(weightWrapper);
+//
+//    }
 
-    private void updateWeightViews(Weight lastUnsyncedWeight) {
-
-        String childName = constructChildName();
-        String gender = Utils.getValue(childDetails.getColumnmaps(), PathConstants.KEY.GENDER, true);
-        String motherFirstName = Utils.getValue(childDetails.getColumnmaps(), PathConstants.KEY.MOTHER_FIRST_NAME, true);
-        if (StringUtils.isBlank(childName) && StringUtils.isNotBlank(motherFirstName)) {
-            childName = "B/o " + motherFirstName.trim();
-        }
-
-        String zeirId = Utils.getValue(childDetails.getColumnmaps(), PathConstants.KEY.ZEIR_ID, false);
-        String duration = "";
-        String dobString = Utils.getValue(childDetails.getColumnmaps(), PathConstants.KEY.DOB, false);
-        if (StringUtils.isNotBlank(dobString)) {
-            DateTime dateTime = new DateTime(Utils.getValue(childDetails.getColumnmaps(), PathConstants.KEY.DOB, false));
-            duration = DateUtil.getDuration(dateTime);
-        }
-
-        Photo photo = ImageUtils.profilePhotoByClient(childDetails);
-
-        WeightWrapper weightWrapper = new WeightWrapper();
-        weightWrapper.setId(childDetails.entityId());
-        weightWrapper.setGender(gender);
-        weightWrapper.setPatientName(childName);
-        weightWrapper.setPatientNumber(zeirId);
-        weightWrapper.setPatientAge(duration);
-        weightWrapper.setPhoto(photo);
-        weightWrapper.setPmtctStatus(Utils.getValue(childDetails.getColumnmaps(), PathConstants.KEY.PMTCT_STATUS, false));
-
-
-        String formattedAge = "";
-        String formattedDob = "";
-        if (isDataOk()) {
-            dobString = Utils.getValue(childDetails.getColumnmaps(), PathConstants.KEY.DOB, false);
-            if (!TextUtils.isEmpty(dobString)) {
-                DateTime dateTime = new DateTime(dobString);
-                Date dob = dateTime.toDate();
-                formattedDob = DATE_FORMAT.format(dob);
-                long timeDiff = Calendar.getInstance().getTimeInMillis() - dob.getTime();
-
-                if (timeDiff >= 0) {
-                    formattedAge = DateUtil.getDuration(timeDiff);
-                }
-            }
-        }
-
-
-        weightWrapper.setPatientAge(formattedAge);
-
-        if (lastUnsyncedWeight != null) {
-            weightWrapper.setWeight(lastUnsyncedWeight.getKg());
-            weightWrapper.setDbKey(lastUnsyncedWeight.getId());
-            weightWrapper.setUpdatedWeightDate(new DateTime(lastUnsyncedWeight.getDate()), false);
-        }
-
-        updateRecordWeightViews(weightWrapper);
-
-    }
-
-    private void updateRecordWeightViews(WeightWrapper weightWrapper) {
-        View recordWeight = findViewById(R.id.record_weight);
-        recordWeight.setClickable(true);
-        recordWeight.setBackground(getResources().getDrawable(R.drawable.record_weight_bg));
-
-        TextView recordWeightText = (TextView) findViewById(R.id.record_weight_text);
-        recordWeightText.setText(R.string.record_weight);
-
-        ImageView recordWeightCheck = (ImageView) findViewById(R.id.record_weight_check);
-        recordWeightCheck.setVisibility(View.GONE);
-        recordWeight.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                showWeightDialog(view);
-            }
-        });
-
-        if (weightWrapper.getDbKey() != null && weightWrapper.getWeight() != null) {
-            recordWeightText.setText(Utils.kgStringSuffix(weightWrapper.getWeight()));
-            recordWeightCheck.setVisibility(View.VISIBLE);
-
-            if (weightWrapper.getUpdatedWeightDate() != null) {
-                long timeDiff = Calendar.getInstance().getTimeInMillis() - weightWrapper.getUpdatedWeightDate().getMillis();
-
-                if (timeDiff <= TimeUnit.MILLISECONDS.convert(RECORD_WEIGHT_BUTTON_ACTIVE_MIN, TimeUnit.HOURS)) {
-                    //disable the button
-                    recordWeight.setClickable(false);
-                    recordWeight.setBackground(new ColorDrawable(getResources()
-                            .getColor(android.R.color.transparent)));
-                } else {
-                    //reset state
-                    recordWeight.setClickable(true);
-                    recordWeight.setBackground(getResources().getDrawable(R.drawable.record_weight_bg));
-                    recordWeightText.setText(R.string.record_weight);
-                    recordWeightCheck.setVisibility(View.GONE);
-                }
-            }
-        }
-
-        recordWeight.setTag(weightWrapper);
-
-    }
+//    private void updateRecordWeightViews(WeightWrapper weightWrapper) {
+//        View recordWeight = findViewById(R.id.record_weight);
+//        recordWeight.setClickable(true);
+//        recordWeight.setBackground(getResources().getDrawable(R.drawable.record_weight_bg));
+//
+//        TextView recordWeightText = (TextView) findViewById(R.id.record_weight_text);
+//        recordWeightText.setText(R.string.record_weight);
+//
+//        ImageView recordWeightCheck = (ImageView) findViewById(R.id.record_weight_check);
+//        recordWeightCheck.setVisibility(View.GONE);
+//        recordWeight.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                showWeightDialog(view);
+//            }
+//        });
+//
+////        if (weightWrapper.getDbKey() != null && weightWrapper.getWeight() != null) {
+////            recordWeightText.setText(Utils.kgStringSuffix(weightWrapper.getWeight()));
+////            recordWeightCheck.setVisibility(View.VISIBLE);
+////
+////            if (weightWrapper.getUpdatedWeightDate() != null) {
+////                long timeDiff = Calendar.getInstance().getTimeInMillis() - weightWrapper.getUpdatedWeightDate().getMillis();
+////
+////                if (timeDiff <= TimeUnit.MILLISECONDS.convert(RECORD_WEIGHT_BUTTON_ACTIVE_MIN, TimeUnit.HOURS)) {
+////                    //disable the button
+////                    recordWeight.setClickable(false);
+////                    recordWeight.setBackground(new ColorDrawable(getResources()
+////                            .getColor(android.R.color.transparent)));
+////                } else {
+////                    //reset state
+////                    recordWeight.setClickable(true);
+////                    recordWeight.setBackground(getResources().getDrawable(R.drawable.record_weight_bg));
+////                    recordWeightText.setText(R.string.record_weight);
+////                    recordWeightCheck.setVisibility(View.GONE);
+////                }
+////            }
+////        }
+//
+//        recordWeight.setTag(weightWrapper);
+//
+//    }
 
     private void showWeightDialog(View view) {
         FragmentTransaction ft = this.getFragmentManager().beginTransaction();
@@ -1140,9 +1146,9 @@ public class ChildImmunizationActivity extends BaseActivity
         if (tag != null) {
             final WeightRepository weightRepository = VaccinatorApplication.getInstance().weightRepository();
             Weight weight = new Weight();
-            if (tag.getDbKey() != null) {
-                weight = weightRepository.find(tag.getDbKey());
-            }
+//            if (tag.getDbKey() != null) {
+//                weight = weightRepository.find(tag.getDbKey());
+//            }
             weight.setBaseEntityId(childDetails.entityId());
             weight.setKg(tag.getWeight());
             weight.setDate(tag.getUpdatedWeightDate().toDate());
@@ -1179,10 +1185,11 @@ public class ChildImmunizationActivity extends BaseActivity
 
             tag.setDbKey(weight.getId());
             tag.setPatientAge(formattedAge);
-            updateRecordWeightViews(tag);
+           // updateRecordWeightViews(tag);
             setLastModified(true);
             updateViews();
         }
+
     }
 
     @Override
@@ -1565,7 +1572,7 @@ public class ChildImmunizationActivity extends BaseActivity
 
             }
 
-            updateWeightViews(weight);
+           // updateWeightViews(weight);
             updateVaccinationViews(vaccineList, alertList);
             performRegisterActions();
         }
@@ -1975,16 +1982,16 @@ public class ChildImmunizationActivity extends BaseActivity
             zScoreTextView.setTextSize(TypedValue.COMPLEX_UNIT_PX,
                     getResources().getDimension(org.smartregister.growthmonitoring.R.dimen.weight_table_contents_text_size));
             zScoreTextView.setGravity(Gravity.LEFT | Gravity.CENTER_VERTICAL);
-            if (weight.getDate().compareTo(maxWeighingDate.getTime()) > 0) {
-                zScoreTextView.setText("");
-            } else { //TODO
+//            if (weight.getDate().compareTo(maxWeighingDate.getTime()) > 0) {
+//                zScoreTextView.setText("");
+//            } else { //TODO
                 Double zScoreDouble = ZScore.calculate(gender, dob, weight.getDate(), weight.getKg());
                 double zScore =  (zScoreDouble == null) ? 0 : zScoreDouble.doubleValue();
                // double zScore = ZScore.calculate(gender, dob, weight.getDate(), weight.getKg());
                 zScore = ZScore.roundOff(zScore);
                 zScoreTextView.setTextColor(getResources().getColor(ZScore.getZScoreColor(zScore)));
                 zScoreTextView.setText(String.valueOf(zScore));
-            }
+            //}
             curRow.addView(zScoreTextView);
             tableLayout.addView(curRow);
         }
@@ -2083,7 +2090,11 @@ public class ChildImmunizationActivity extends BaseActivity
         HeightRepository wp = GrowthMonitoringLibrary.getInstance().getHeightRepository();
         List<Height> heightList = wp.findLast5(childDetails.entityId());
         if(heightList.size()>0){
-            HeightUtils.refreshPreviousHeightsTable(this,heightTable, getGender(), dobToDateTime(childDetails).toDate(),heightList,Calendar.getInstance());
+           try{
+               HeightUtils.refreshPreviousHeightsTable(this,heightTable, getGender(), dobToDateTime(childDetails).toDate(),heightList,Calendar.getInstance());
+           }catch (Exception e){
+               e.printStackTrace();
+           }
 
         }
     }
