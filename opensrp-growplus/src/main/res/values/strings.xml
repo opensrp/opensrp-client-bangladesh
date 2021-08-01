@@ -211,6 +211,7 @@
     <string name="weight_for_age">ওজন-বয়স</string>
     <string name="previous_weights">পূর্বের ওজন</string>
     <string name="previous_height">পূর্বের উচ্চতা</string>
+    <string name="height">উচ্চতা</string>
     <string name="previous_muac">পূর্বের MUAC</string>
     <string name="side_nav_hia2">HIA 2 Reports</string>
     <string name="hia2_daily_tallies">Daily Tallies</string>
