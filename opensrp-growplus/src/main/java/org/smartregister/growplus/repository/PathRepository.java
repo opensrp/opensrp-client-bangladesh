@@ -108,6 +108,9 @@ public class PathRepository extends Repository {
                 case 13:
                     upgradeToVersion13(db);
                     break;
+                case 14:
+                    upgradeToVersion14(db);
+                    break;
                 default:
                     break;
             }
@@ -230,11 +233,16 @@ public class PathRepository extends Repository {
             Log.e(TAG, "upgradeToVersion5 " + Log.getStackTraceString(e));
         }
     }
-
+    private void upgradeToVersion14(SQLiteDatabase db) {
+        try {
+            HeightZScoreRepository.createTable(db);
+        } catch (Exception e) {
+            Log.e(TAG, "upgradeToVersion6" + Log.getStackTraceString(e));
+        }
+    }
     private void upgradeToVersion6(SQLiteDatabase db) {
         try {
             ZScoreRepository.createTable(db);
-            HeightZScoreRepository.createTable(db);
             db.execSQL(WeightRepository.ALTER_ADD_Z_SCORE_COLUMN);
         } catch (Exception e) {
             Log.e(TAG, "upgradeToVersion6" + Log.getStackTraceString(e));
