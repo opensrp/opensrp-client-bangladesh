@@ -187,6 +187,14 @@
           }
         },
         {
+          "column_name": "health_center_name",
+          "type": "Event",
+          "json_mapping": {
+            "field": "obs.fieldCode",
+            "formSubmissionField": "health_center_name"
+          }
+        },
+        {
           "column_name": "Date_Of_next_appointment",
           "type": "Event",
           "json_mapping": {
@@ -360,11 +368,17 @@
           }
         },
         {
-          "column_name": "husband_name",
-          "type": "Event",
+          "column_name": "marital_status",
+          "type": "Client",
           "json_mapping": {
-            "field": "obs.fieldCode",
-            "concept": "161135AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
+            "field": "attributes.MaritalStatus"
+          }
+        },
+        {
+          "column_name": "husband_name",
+          "type": "Client",
+          "json_mapping": {
+            "field": "attributes.spouseName"
           }
         },
         {
@@ -592,6 +606,14 @@
           "json_mapping": {
             "field": "obs.fieldCode",
             "concept": "1594AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
+          }
+        },
+        {
+          "column_name": "grand_father_name",
+          "type": "Event",
+          "json_mapping": {
+            "field": "obs.fieldCode",
+            "concept": "5594AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
           }
         },
         {

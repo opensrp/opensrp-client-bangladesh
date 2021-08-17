@@ -260,6 +260,31 @@
         }
       },
       {
+        "key": "marital_status",
+        "openmrs_entity_parent": "",
+        "openmrs_entity": "person_attribute",
+        "openmrs_entity_id": "MaritalStatus",
+        "openmrs_data_type": "text",
+        "type": "spinner",
+        "hint": "বৈবাহিক অবস্থা",
+        "values": [
+          "বিবাহিত",
+          "দাম্পত্য বিছিন্ন",
+          "তালাক প্রাপ্ত",
+          "অবিবাহিত",
+          "বিধবা",
+          "বিপত্নীক"
+        ],
+        "openmrs_choice_ids": {
+          "বিবাহিত": "Married",
+          "দাম্পত্য বিছিন্ন": "Conjugal Separation",
+          "তালাক প্রাপ্ত": "Divorced",
+          "অবিবাহিত": "Unmarried",
+          "বিধবা": "Widow",
+          "বিপত্নীক": "Widower"
+        }
+      },
+      {
         "key": "husband_name",
         "openmrs_entity_parent": "",
         "openmrs_entity": "person_attribute",
@@ -267,13 +292,15 @@
         "openmrs_data_type": "text",
         "type": "edit_text",
         "hint": "স্বামীর নাম",
-        "v_required": {
-          "value": true,
-          "err": "স্বামীর নাম টাইপ করুন।"
-        },
         "v_regex": {
           "value": "[A-Za-z\\s\.\-]*",
           "err": "দয়া করে একটি বৈধ নাম লিখুন"
+        },
+        "relevance": {
+          "step1:marital_status": {
+            "type": "string",
+            "ex": "equalTo(., \"বিবাহিত\")"
+          }
         }
       },
       {
