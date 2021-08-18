@@ -186,7 +186,7 @@ dependencies {
 
     implementation 'com.evernote:android-job:1.2.6'
 
-    implementation 'com.github.lecho:hellocharts-android:v1.5.8'
+    //implementation 'com.github.lecho:hellocharts-android:v1.5.8'
     implementation 'id.zelory:compressor:1.0.4'
     implementation('com.android.support:design:27.1.1') {
         exclude group: 'com.android.support', module: 'recyclerview-v7'

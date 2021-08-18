@@ -2095,6 +2095,10 @@ public class ChildImmunizationActivity extends BaseActivity
            }catch (Exception e){
                e.printStackTrace();
            }
+           Height height = heightList.get(0);
+           int color = ZScore.getZScoreColor(height.getZScore());
+           String text = ZScore.getZScoreText(height.getZScore());
+           updateProfileColor(color,text);
 
         }
     }
@@ -2110,11 +2114,17 @@ public class ChildImmunizationActivity extends BaseActivity
             MUAC latestMuac = heightList.get(0);
             int color = ZScore.getMuacColor(latestMuac.getCm());
             String text = ZScore.getMuacText(latestMuac.getCm());
-            muacText.setVisibility(View.VISIBLE);
-            muacText.setText(text);
-            muacText.setBackgroundColor(getResources().getColor(color));
+            updateProfileColor(color,text);
         }
 
+    }
+    private void updateProfileColor(int color, String text){
+        //compare with text
+        // test case: sam,mam,normal = sam,
+        //if all are green, then green otherwise red/yellow
+        muacText.setVisibility(View.VISIBLE);
+        muacText.setText(text);
+        muacText.setBackgroundColor(getResources().getColor(color));
     }
 
     private static final int GRAPH_MONTHS_TIMELINE = 12;
