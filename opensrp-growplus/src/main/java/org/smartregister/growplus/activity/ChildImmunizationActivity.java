@@ -149,6 +149,7 @@ public class ChildImmunizationActivity extends BaseActivity
     private static final int RANDOM_MIN_RANGE = 213;
     private static final int RECORD_WEIGHT_BUTTON_ACTIVE_MIN = 12;
     private Counselling mEditCounselling;
+
     static {
         COMBINED_VACCINES = new ArrayList<>();
         COMBINED_VACCINES_MAP = new HashMap<>();
@@ -235,8 +236,10 @@ public class ChildImmunizationActivity extends BaseActivity
 
 
     }
+
     TextView muacText;
-    private void initViews(){
+
+    private void initViews() {
         muacText = findViewById(R.id.muac_text);
         muacText.setVisibility(View.GONE);
 
@@ -250,13 +253,13 @@ public class ChildImmunizationActivity extends BaseActivity
         findViewById(R.id.record_height).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                GrowthUtil.showHeightRecordDialog(ChildImmunizationActivity.this,childDetails,1,DIALOG_TAG);
+                GrowthUtil.showHeightRecordDialog(ChildImmunizationActivity.this, childDetails, 1, DIALOG_TAG);
             }
         });
         findViewById(R.id.record_weight).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                GrowthUtil.showWeightRecordDialog(ChildImmunizationActivity.this,childDetails,1,DIALOG_TAG);
+                GrowthUtil.showWeightRecordDialog(ChildImmunizationActivity.this, childDetails, 1, DIALOG_TAG);
             }
         });
         findViewById(R.id.height_chart_button).setOnClickListener(new View.OnClickListener() {
@@ -271,7 +274,7 @@ public class ChildImmunizationActivity extends BaseActivity
         recordMUAC.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                GrowthUtil.showMuacRecordDialog(ChildImmunizationActivity.this,childDetails,DIALOG_TAG);
+                GrowthUtil.showMuacRecordDialog(ChildImmunizationActivity.this, childDetails, DIALOG_TAG);
             }
         });
         findViewById(R.id.muac_chart_button).setOnClickListener(new View.OnClickListener() {
@@ -281,19 +284,20 @@ public class ChildImmunizationActivity extends BaseActivity
             }
         });
     }
-    private void updateGenderInChildDetails(){
-        if(childDetails!=null){
+
+    private void updateGenderInChildDetails() {
+        if (childDetails != null) {
             String genderString = Utils.getValue(childDetails, PathConstants.KEY.GENDER, false);
-            if(genderString.equalsIgnoreCase("ছেলে") || genderString.equalsIgnoreCase("male")){
-                childDetails.getDetails().put("gender","male");
-            }
-            else if(genderString.equalsIgnoreCase("মেয়ে")|| genderString.equalsIgnoreCase("female")){
-                childDetails.getDetails().put("gender","female");
-            }else{
-                childDetails.getDetails().put("gender","male");
+            if (genderString.equalsIgnoreCase("ছেলে") || genderString.equalsIgnoreCase("male")) {
+                childDetails.getDetails().put("gender", "male");
+            } else if (genderString.equalsIgnoreCase("মেয়ে") || genderString.equalsIgnoreCase("female")) {
+                childDetails.getDetails().put("gender", "female");
+            } else {
+                childDetails.getDetails().put("gender", "male");
             }
         }
     }
+
     private void showChildFollowupDetail() {
 
         String formMetadata = JsonFormUtils.getAutoPopulatedJsonEditFormString(this, mChildFollowupData, "child_followup", "Child Member Follow Up");
@@ -306,9 +310,9 @@ public class ChildImmunizationActivity extends BaseActivity
 
     private void showChildFollowupData() throws Exception {
         //Cursor c = db.rawQuery("SELECT Visit_date, is_pregnant, columnN FROM ec_followup;");
-        SQLiteDatabase database =  VaccinatorApplication.getInstance().getRepository().getReadableDatabase();
+        SQLiteDatabase database = VaccinatorApplication.getInstance().getRepository().getReadableDatabase();
         Log.e(ChildImmunizationActivity.TAG, childDetails.entityId());
-        Cursor cursor =  database.rawQuery("SELECT * FROM ec_followup_child where base_entity_id = '" + childDetails.entityId()+"'", null);
+        Cursor cursor = database.rawQuery("SELECT * FROM ec_followup_child where base_entity_id = '" + childDetails.entityId() + "'", null);
         // Cursor cursor =  database.rawQuery("SELECT * FROM ec_followup where base_entity_id = '" + childDetails.entityId()+"'", null);
         mChildFollowupKeys = cursor.getColumnNames();
         mChildFollowupData = new HashMap<>();
@@ -334,7 +338,7 @@ public class ChildImmunizationActivity extends BaseActivity
         //   String visitDate = detailmaps.get("Visit_date");
         cursor.close();
 
-        ((TextView)findViewById(R.id.child_visit_date)).setText(visitDate);
+        ((TextView) findViewById(R.id.child_visit_date)).setText(visitDate);
     }
 
     @Override
@@ -396,18 +400,17 @@ public class ChildImmunizationActivity extends BaseActivity
         util.Utils.putAll(childDetails.getColumnmaps(), details);
 
         updateGenderViews();
-      //  toolbar.setTitle(updateActivityTitle());
+        //  toolbar.setTitle(updateActivityTitle());
         updateAgeViews();
         updateChildIdViews();
 
-        TextView titleTV = (TextView)  toolbar.findViewById(R.id.title);
+        TextView titleTV = (TextView) toolbar.findViewById(R.id.title);
         String title = childDetails.getColumnmaps().get("first_name");
         titleTV.setText(title);
 
         String location = childDetails.getColumnmaps().get("stateProvince");
         toolbar.findViewById(R.id.location_name).setVisibility(View.VISIBLE);
-        ((TextView)toolbar.findViewById(R.id.location_name)).setText(location);
-
+        ((TextView) toolbar.findViewById(R.id.location_name)).setText(location);
 
 
         WeightRepository weightRepository = VaccinatorApplication.getInstance().weightRepository();
@@ -420,9 +423,9 @@ public class ChildImmunizationActivity extends BaseActivity
         updateViewTask.setWeightRepository(weightRepository);
         updateViewTask.setAlertService(alertService);
         Utils.startAsyncTask(updateViewTask, null);
-        createWeightLayout((LinearLayout) findViewById(R.id.weight_group_canvas_ll),false,getLayoutInflater());
-        CounsellingRepository counsellingRepository= VaccinatorApplication.getInstance().counsellingRepository();
-        updateCounsellingViews(counsellingRepository.findByEntityId(childDetails.entityId()),(LinearLayout)findViewById(R.id.counselling_group_canvas_ll));
+        createWeightLayout((LinearLayout) findViewById(R.id.weight_group_canvas_ll), false, getLayoutInflater());
+        CounsellingRepository counsellingRepository = VaccinatorApplication.getInstance().counsellingRepository();
+        updateCounsellingViews(counsellingRepository.findByEntityId(childDetails.entityId()), (LinearLayout) findViewById(R.id.counselling_group_canvas_ll));
         refreshEditHeightLayout();
         refreshEditMuacLayout();
     }
@@ -504,14 +507,15 @@ public class ChildImmunizationActivity extends BaseActivity
         toolbar.updateSeparatorView(toolbarResource);
 
         TextView childSiblingsTV = (TextView) findViewById(R.id.child_siblings_tv);
-      //  childSiblingsTV.setText(String.format(getString(R.string.child_siblings), identifier).toUpperCase()); TODO
+        //  childSiblingsTV.setText(String.format(getString(R.string.child_siblings), identifier).toUpperCase()); TODO
         updateProfilePicture(gender);
 
         return selectedColor;
     }
+
     private void createWeightLayout(LinearLayout fragmentContainer, boolean editmode, LayoutInflater inflater) {
         fragmentContainer.removeAllViews();
-        fragmentContainer.addView(inflater.inflate(R.layout.previous_weightview,null));
+        fragmentContainer.addView(inflater.inflate(R.layout.previous_weightview, null));
         LinkedHashMap<Long, Pair<String, String>> weightmap = new LinkedHashMap<>();
         ArrayList<Boolean> weighteditmode = new ArrayList<Boolean>();
         ArrayList<View.OnClickListener> listeners = new ArrayList<View.OnClickListener>();
@@ -534,9 +538,10 @@ public class ChildImmunizationActivity extends BaseActivity
         ////////////////////////////////////////////////
         Gender gender = getGender();
 
-        refreshPreviousWeightsTable(fragmentContainer,gender,dob,weightlist);
+        refreshPreviousWeightsTable(fragmentContainer, gender, dob, weightlist);
 
     }
+
     private void updateVaccinationViews(List<Vaccine> vaccineList, List<Alert> alerts) {
 //        if(false) {
 //            if (vaccineGroups == null) {
@@ -562,28 +567,29 @@ public class ChildImmunizationActivity extends BaseActivity
 //            showVaccineNotifications(vaccineList, alerts);
 //        }
     }
+
     private void updateCounsellingViews(List<Counselling> counsellingList, LinearLayout counsellingCanvas) {
         counsellingCanvas.removeAllViews();
-        LayoutInflater layoutInflater = (LayoutInflater)getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        LinearLayout counselling_group = (LinearLayout) layoutInflater.inflate(R.layout.view_counselling_group,null, true);
+        LayoutInflater layoutInflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        LinearLayout counselling_group = (LinearLayout) layoutInflater.inflate(R.layout.view_counselling_group, null, true);
         ViewGroup.LayoutParams layoutParams = new ViewGroup.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,
                 ViewGroup.LayoutParams.MATCH_PARENT);
 //        counselling_group.setLayoutParams(layoutParams);
         counsellingCanvas.addView(counselling_group);
-        CounsellingCardAdapter counsellingCardAdapter = new CounsellingCardAdapter(this,counsellingList);
-        ExpandableHeightGridView expandableHeightGridView = (ExpandableHeightGridView)counselling_group.findViewById(R.id.counselling_gv);
+        CounsellingCardAdapter counsellingCardAdapter = new CounsellingCardAdapter(this, counsellingList);
+        ExpandableHeightGridView expandableHeightGridView = (ExpandableHeightGridView) counselling_group.findViewById(R.id.counselling_gv);
 //        final float scale = getResources().getDisplayMetrics().density;
 //        GridView.LayoutParams gridlayoutparams = new GridView.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,
 //                ViewGroup.LayoutParams.WRAP_CONTENT);
 //        gridlayoutparams.height = (int)(scale*50*counsellingList.size());
-        TextView recordnewCounselling = (TextView)counselling_group.findViewById(R.id.record_all_tv);
+        TextView recordnewCounselling = (TextView) counselling_group.findViewById(R.id.record_all_tv);
         recordnewCounselling.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                    String metadata = getmetaDataForLactatingCounsellingForm(childDetails);
-                    Intent intent = new Intent(ChildImmunizationActivity.this, PathJsonFormActivity.class);
-                    intent.putExtra("json", metadata);
-                    startActivityForResult(intent, REQUEST_CODE_GET_JSON);
+                String metadata = getmetaDataForLactatingCounsellingForm(childDetails);
+                Intent intent = new Intent(ChildImmunizationActivity.this, PathJsonFormActivity.class);
+                intent.putExtra("json", metadata);
+                startActivityForResult(intent, REQUEST_CODE_GET_JSON);
             }
         });
         expandableHeightGridView.setExpanded(true);
@@ -593,7 +599,7 @@ public class ChildImmunizationActivity extends BaseActivity
         counsellingCardAdapter.setActivityListener(new ActivityListener() {
             @Override
             public void onCallbackActivity(Counselling counselling) {
-              Log.e(TAG, " Callback");
+                Log.e(TAG, " Callback");
                 mEditCounselling = counselling;
                 Map<String, String> counsellingFormData = counselling.getFormfields();
                 Intent intent = new Intent(ChildImmunizationActivity.this, PathJsonFormActivity.class);
@@ -639,16 +645,16 @@ public class ChildImmunizationActivity extends BaseActivity
                 JSONObject stepOne = form.getJSONObject(JsonFormUtils.STEP1);
                 JSONArray jsonArray = stepOne.getJSONArray(JsonFormUtils.FIELDS);
 
-                if(pc.getColumnmaps().get("lactating_woman_counselling_actions_for_next_meeting")!=null) {
-                    if(!pc.getColumnmaps().get("lactating_woman_counselling_actions_for_next_meeting").equalsIgnoreCase("")) {
+                if (pc.getColumnmaps().get("lactating_woman_counselling_actions_for_next_meeting") != null) {
+                    if (!pc.getColumnmaps().get("lactating_woman_counselling_actions_for_next_meeting").equalsIgnoreCase("")) {
                         String valuelist = pc.getColumnmaps().get("lactating_woman_counselling_actions_for_next_meeting");
                         String ValueString = "";
-                            if(valuelist.equalsIgnoreCase("If child is growth faltering for 2 or more months or severely underweight")){
-                                ValueString = "CHILD IS GROWTH FALTERING, SPEND MORE TIME ON ACTION PLAN AND ENSURING MOTHER UNDERSTANDS ALL ASPECTS DISCUSSED DURING INTERACTION. \n            Refer child to a social support program to receive extra assistance, or refer to health clinic\"";
-                            }
-                            if(valuelist.equalsIgnoreCase("All children")){
-                                ValueString = "Some possible actions:\n - Improve consistency of food that I give my child, make sure the food I give is thick enough (if between 6-23 months)\n- Give an egg to my child at least once every day\n- Talk to my husband to ask if he could feed the child one meal tomorrow\n- Corralling my chickens so my child is not exposed to them during the day and night";
-                            }
+                        if (valuelist.equalsIgnoreCase("If child is growth faltering for 2 or more months or severely underweight")) {
+                            ValueString = "CHILD IS GROWTH FALTERING, SPEND MORE TIME ON ACTION PLAN AND ENSURING MOTHER UNDERSTANDS ALL ASPECTS DISCUSSED DURING INTERACTION. \n            Refer child to a social support program to receive extra assistance, or refer to health clinic\"";
+                        }
+                        if (valuelist.equalsIgnoreCase("All children")) {
+                            ValueString = "Some possible actions:\n - Improve consistency of food that I give my child, make sure the food I give is thick enough (if between 6-23 months)\n- Give an egg to my child at least once every day\n- Talk to my husband to ask if he could feed the child one meal tomorrow\n- Corralling my chickens so my child is not exposed to them during the day and night";
+                        }
 
                         for (int i = 0; i < jsonArray.length(); i++) {
                             JSONObject fieldjsonObject = jsonArray.getJSONObject(i);
@@ -656,7 +662,7 @@ public class ChildImmunizationActivity extends BaseActivity
                             if (fieldjsonObject.getString(JsonFormUtils.KEY)
                                     .equalsIgnoreCase("lactating_counselling_actions_decided_previous_meeting")) {
 //                                fieldjsonObject.remove(JsonFormUtils.VALUE);
-                                fieldjsonObject.put("hint", "In the last session, your resolution was- "+ValueString+ "- Did you practice this resolution?");
+                                fieldjsonObject.put("hint", "In the last session, your resolution was- " + ValueString + "- Did you practice this resolution?");
                                 fieldjsonObject.remove("hidden");
                                 fieldjsonObject.put("hidden", false);
                             }
@@ -674,22 +680,22 @@ public class ChildImmunizationActivity extends BaseActivity
                     if (fieldjsonObject.getString(JsonFormUtils.KEY)
                             .equalsIgnoreCase("complimentary_feeding_negative")) {
 //                                fieldjsonObject.remove(JsonFormUtils.VALUE);
-                        if(age_in_months>=6 && age_in_months<=8) {
+                        if (age_in_months >= 6 && age_in_months <= 8) {
                             complimentary_feeding_negative_6_to_8_months(fieldjsonObject);
-                        }else if(age_in_months>=9 && age_in_months<=11) {
+                        } else if (age_in_months >= 9 && age_in_months <= 11) {
                             complimentary_feeding_negative_9_to_11_months(fieldjsonObject);
-                        }else if(age_in_months>=12 && age_in_months<=23) {
+                        } else if (age_in_months >= 12 && age_in_months <= 23) {
                             complimentary_feeding_negative_12_to_23_months(fieldjsonObject);
                         }
                     }
                     if (fieldjsonObject.getString(JsonFormUtils.KEY)
                             .equalsIgnoreCase("complimentary_feeding_positive")) {
 //                                fieldjsonObject.remove(JsonFormUtils.VALUE);
-                        if(age_in_months>=6 && age_in_months<=8) {
+                        if (age_in_months >= 6 && age_in_months <= 8) {
                             complimentary_feeding_positive_6_to_8_months(fieldjsonObject);
-                        }else if(age_in_months>=9 && age_in_months<=11) {
+                        } else if (age_in_months >= 9 && age_in_months <= 11) {
                             complimentary_feeding_positive_9_to_11_months(fieldjsonObject);
-                        }else if(age_in_months>=12 && age_in_months<=23) {
+                        } else if (age_in_months >= 12 && age_in_months <= 23) {
                             complimentary_feeding_positive_12_to_23_months(fieldjsonObject);
                         }
                     }
@@ -698,19 +704,19 @@ public class ChildImmunizationActivity extends BaseActivity
                     if (fieldjsonObject.getString(JsonFormUtils.KEY)
                             .equalsIgnoreCase("complimentary_feeding_amount_positive")) {
 //                                fieldjsonObject.remove(JsonFormUtils.VALUE);
-                        if(age_in_months>=6 && age_in_months<=8) {
-                            complimentary_feeding_positive_amount(fieldjsonObject," Give 2 to 3 tablespoonfuls (‘tastes’) at each feed.");
-                        }else if(age_in_months>=9 && age_in_months<=11) {
-                            complimentary_feeding_positive_amount(fieldjsonObject,"At each feed:Increase amount to half (½) cup (250 ml cup: show amount in cup brought by mother). Use a separate plate to make sure young child eats all the food given");
-                        }else if(age_in_months>=12 && age_in_months<=23) {
-                            complimentary_feeding_positive_amount(fieldjsonObject,"Increase amount to three-quarters (¾) to 1 cup (250 ml cup: how amount in cup brought by mother). Use a separate plate to make sure young child eats all the food given");
+                        if (age_in_months >= 6 && age_in_months <= 8) {
+                            complimentary_feeding_positive_amount(fieldjsonObject, " Give 2 to 3 tablespoonfuls (‘tastes’) at each feed.");
+                        } else if (age_in_months >= 9 && age_in_months <= 11) {
+                            complimentary_feeding_positive_amount(fieldjsonObject, "At each feed:Increase amount to half (½) cup (250 ml cup: show amount in cup brought by mother). Use a separate plate to make sure young child eats all the food given");
+                        } else if (age_in_months >= 12 && age_in_months <= 23) {
+                            complimentary_feeding_positive_amount(fieldjsonObject, "Increase amount to three-quarters (¾) to 1 cup (250 ml cup: how amount in cup brought by mother). Use a separate plate to make sure young child eats all the food given");
                         }
                     }
                     //////////////////////////////////////////////////////////////
                     if (fieldjsonObject.getString(JsonFormUtils.KEY)
                             .equalsIgnoreCase("complimentary_feeding_under_six_months")) {
 //                                fieldjsonObject.remove(JsonFormUtils.VALUE);
-                        if(age_in_months<6) {
+                        if (age_in_months < 6) {
 //                                    fieldjsonObject.remove("relevance");
                             complimentary_feeding_less_than_6_months(fieldjsonObject);
                         }
@@ -718,7 +724,7 @@ public class ChildImmunizationActivity extends BaseActivity
                     if (fieldjsonObject.getString(JsonFormUtils.KEY)
                             .equalsIgnoreCase("complimentary_feeding_4_months")) {
 //                                fieldjsonObject.remove(JsonFormUtils.VALUE);
-                        if(age_in_months==4) {
+                        if (age_in_months == 4) {
                             complimentary_feeding_less_than_6_months(fieldjsonObject);
 
                         }
@@ -726,14 +732,14 @@ public class ChildImmunizationActivity extends BaseActivity
                     if (fieldjsonObject.getString(JsonFormUtils.KEY)
                             .equalsIgnoreCase("complimentary_feeding_5_months")) {
 //                                fieldjsonObject.remove(JsonFormUtils.VALUE);
-                        if(age_in_months==5) {
+                        if (age_in_months == 5) {
                             complimentary_feeding_less_than_6_months(fieldjsonObject);
                         }
                     }
                     if (fieldjsonObject.getString(JsonFormUtils.KEY)
                             .equalsIgnoreCase("complimentary_feeding_amount_4_months")) {
 //                                fieldjsonObject.remove(JsonFormUtils.VALUE);
-                        if(age_in_months==4) {
+                        if (age_in_months == 4) {
                             complimentary_feeding_less_than_6_months(fieldjsonObject);
 
                         }
@@ -741,7 +747,7 @@ public class ChildImmunizationActivity extends BaseActivity
                     if (fieldjsonObject.getString(JsonFormUtils.KEY)
                             .equalsIgnoreCase("complimentary_feeding_amount_5_months")) {
 //                                fieldjsonObject.remove(JsonFormUtils.VALUE);
-                        if(age_in_months==5) {
+                        if (age_in_months == 5) {
                             complimentary_feeding_less_than_6_months(fieldjsonObject);
                         }
                     }
@@ -763,10 +769,10 @@ public class ChildImmunizationActivity extends BaseActivity
             JSONObject relevance = fieldjsonObject.getJSONObject("relevance");
             relevance.remove("step1:age_in_months_for_calculation_complimentary_feeding");
             JSONObject newCondition = new JSONObject();
-            newCondition.put("type","string");
-            newCondition.put("ex","regex(., \"(?i).*?\\bcomplementary_feeding\\b.*?\")");
-            relevance.put("step1:nutrition_to_discuss",newCondition);
-                   } catch (JSONException e) {
+            newCondition.put("type", "string");
+            newCondition.put("ex", "regex(., \"(?i).*?\\bcomplementary_feeding\\b.*?\")");
+            relevance.put("step1:nutrition_to_discuss", newCondition);
+        } catch (JSONException e) {
             e.printStackTrace();
         }
     }
@@ -778,25 +784,25 @@ public class ChildImmunizationActivity extends BaseActivity
             condition.remove("ex");
             condition.put("ex", "lessThan(., \"3\")");
             fieldjsonObject.remove("text");
-            fieldjsonObject.put("text","It is important to feed your baby complementary foods 3 times a day. Discuss ways to add another meal to a child’s diet.");
+            fieldjsonObject.put("text", "It is important to feed your baby complementary foods 3 times a day. Discuss ways to add another meal to a child’s diet.");
 
         } catch (JSONException e) {
             e.printStackTrace();
         }
     }
 
-    private void complimentary_feeding_positive_amount(JSONObject fieldjsonObject,String message) {
+    private void complimentary_feeding_positive_amount(JSONObject fieldjsonObject, String message) {
         try {
             JSONObject relevance = fieldjsonObject.getJSONObject("relevance");
             relevance.remove("step1:complimentary_amount");
             JSONObject newCondition = new JSONObject();
-            newCondition.put("type","string");
-            newCondition.put("ex","regex(., \"(?i).*?\\bcomplementary_feeding\\b.*?\")");
-            relevance.put("step1:nutrition_to_discuss",newCondition);
+            newCondition.put("type", "string");
+            newCondition.put("ex", "regex(., \"(?i).*?\\bcomplementary_feeding\\b.*?\")");
+            relevance.put("step1:nutrition_to_discuss", newCondition);
 
 
             fieldjsonObject.remove("text");
-            fieldjsonObject.put("text",message);
+            fieldjsonObject.put("text", message);
 
         } catch (JSONException e) {
             e.printStackTrace();
@@ -810,7 +816,7 @@ public class ChildImmunizationActivity extends BaseActivity
             condition.remove("ex");
             condition.put("ex", "greaterThanEqualTo(., \"3\")");
             fieldjsonObject.remove("text");
-            fieldjsonObject.put("text","Congratulate mother and encourage her to continue");
+            fieldjsonObject.put("text", "Congratulate mother and encourage her to continue");
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -823,7 +829,7 @@ public class ChildImmunizationActivity extends BaseActivity
             condition.remove("ex");
             condition.put("ex", "lessThan(., \"4\")");
             fieldjsonObject.remove("text");
-            fieldjsonObject.put("text","It is important to feed your baby complementary foods 4 times a day.");
+            fieldjsonObject.put("text", "It is important to feed your baby complementary foods 4 times a day.");
 
         } catch (JSONException e) {
             e.printStackTrace();
@@ -838,11 +844,12 @@ public class ChildImmunizationActivity extends BaseActivity
             condition.remove("ex");
             condition.put("ex", "greaterThanEqualTo(., \"4\")");
             fieldjsonObject.remove("text");
-            fieldjsonObject.put("text","Congratulate mother and encourage her to continue");
+            fieldjsonObject.put("text", "Congratulate mother and encourage her to continue");
         } catch (JSONException e) {
             e.printStackTrace();
         }
     }
+
     private void complimentary_feeding_negative_12_to_23_months(JSONObject fieldjsonObject) {
         try {
             JSONObject relevance = fieldjsonObject.getJSONObject("relevance");
@@ -850,7 +857,7 @@ public class ChildImmunizationActivity extends BaseActivity
             condition.remove("ex");
             condition.put("ex", "lessThan(., \"5\")");
             fieldjsonObject.remove("text");
-            fieldjsonObject.put("text"," It is important to feed your baby complementary foods 5 times a day");
+            fieldjsonObject.put("text", " It is important to feed your baby complementary foods 5 times a day");
 
         } catch (JSONException e) {
             e.printStackTrace();
@@ -864,12 +871,11 @@ public class ChildImmunizationActivity extends BaseActivity
             condition.remove("ex");
             condition.put("ex", "greaterThanEqualTo(., \"5\")");
             fieldjsonObject.remove("text");
-            fieldjsonObject.put("text","Congratulate mother and encourage her to continue");
+            fieldjsonObject.put("text", "Congratulate mother and encourage her to continue");
         } catch (JSONException e) {
             e.printStackTrace();
         }
     }
-
 
 
     @Override
@@ -886,7 +892,7 @@ public class ChildImmunizationActivity extends BaseActivity
                 JsonFormUtils.saveForm(this, context(), jsonString, allSharedPreferences.fetchRegisteredANM());
                 updateViews();
             }
-            if(requestCode == REQUEST_CODE_GET_JSON_COUNSELLING_UPDATE){
+            if (requestCode == REQUEST_CODE_GET_JSON_COUNSELLING_UPDATE) {
                 String jsonString = data.getStringExtra("json");
                 Log.d("JSONResult", jsonString);
 
@@ -895,18 +901,16 @@ public class ChildImmunizationActivity extends BaseActivity
                 JsonFormUtils.updateCounsellingForm(this, context(), jsonString, allSharedPreferences.fetchRegisteredANM());
                 mEditCounselling.setFormfields(JsonFormUtils.getCouncellingField());
                 VaccinatorApplication.getInstance().counsellingRepository().
-                        update(VaccinatorApplication.getInstance().getRepository().getReadableDatabase(),mEditCounselling);
+                        update(VaccinatorApplication.getInstance().getRepository().getReadableDatabase(), mEditCounselling);
             }
-
-
 
 
         }
     }
+
     protected org.smartregister.Context context() {
         return VaccinatorApplication.getInstance().context();
     }
-
 
 
     private void showVaccineNotifications(List<Vaccine> vaccineList, List<Alert> alerts) {
@@ -1069,7 +1073,7 @@ public class ChildImmunizationActivity extends BaseActivity
             }
         }
         WeightWrapper weightWrapper = (WeightWrapper) view.getTag();
-        RecordWeightDialogFragment recordWeightDialogFragment = RecordWeightDialogFragment.newInstance(dob,weightWrapper);
+        RecordWeightDialogFragment recordWeightDialogFragment = RecordWeightDialogFragment.newInstance(dob, weightWrapper);
         recordWeightDialogFragment.show(ft, DIALOG_TAG);
 
     }
@@ -1191,7 +1195,7 @@ public class ChildImmunizationActivity extends BaseActivity
 
             tag.setDbKey(weight.getId());
             tag.setPatientAge(formattedAge);
-           // updateRecordWeightViews(tag);
+            // updateRecordWeightViews(tag);
             setLastModified(true);
             updateViews();
         }
@@ -1407,7 +1411,7 @@ public class ChildImmunizationActivity extends BaseActivity
 
     private String constructChildName() {
         String firstName = Utils.getValue(childDetails.getColumnmaps(), PathConstants.KEY.FIRST_NAME, true);
-        String lastName = Utils.getValue(childDetails.getColumnmaps(), PathConstants.KEY.LAST_NAME, true).replaceAll(Pattern.quote("."),"");
+        String lastName = Utils.getValue(childDetails.getColumnmaps(), PathConstants.KEY.LAST_NAME, true).replaceAll(Pattern.quote("."), "");
         return Utils.getName(firstName, lastName).trim();
     }
 
@@ -1506,20 +1510,17 @@ public class ChildImmunizationActivity extends BaseActivity
     }
 
 
-
-
     ////////////////////////////////////////////////////////////////
     // Inner classes
     ////////////////////////////////////////////////////////////////
 
     private class UpdateViewTask extends AsyncTask<Void, Void, Map<String, NamedObject<?>>> {
 
-//        private VaccineRepository vaccineRepository;
+        //        private VaccineRepository vaccineRepository;
         private WeightRepository weightRepository;
         private RecurringServiceTypeRepository recurringServiceTypeRepository;
         private RecurringServiceRecordRepository recurringServiceRecordRepository;
         private AlertService alertService;
-
 
 
         public void setWeightRepository(WeightRepository weightRepository) {
@@ -1578,7 +1579,7 @@ public class ChildImmunizationActivity extends BaseActivity
 
             }
 
-           // updateWeightViews(weight);
+            // updateWeightViews(weight);
             updateVaccinationViews(vaccineList, alertList);
             performRegisterActions();
         }
@@ -1620,7 +1621,6 @@ public class ChildImmunizationActivity extends BaseActivity
             return map;
         }
     }
-
 
 
     private class ShowGrowthChartTask extends AsyncTask<Void, Void, List<Weight>> {
@@ -1667,6 +1667,7 @@ public class ChildImmunizationActivity extends BaseActivity
             growthDialogFragment.show(ft, DIALOG_TAG);
         }
     }
+
     private class ShowHeightChartTask extends AsyncTask<Void, Void, List<Height>> {
         @Override
         protected void onPreExecute() {
@@ -1693,10 +1694,11 @@ public class ChildImmunizationActivity extends BaseActivity
             ft.addToBackStack(null);
             String dobString = Utils.getValue(childDetails.getColumnmaps(), PathConstants.KEY.DOB, false);
 
-            HeightMonitoringFragment growthDialogFragment = HeightMonitoringFragment.createInstance(dobString,getGender(), allHeight);
+            HeightMonitoringFragment growthDialogFragment = HeightMonitoringFragment.createInstance(dobString, getGender(), allHeight);
             growthDialogFragment.show(ft, DIALOG_TAG);
         }
     }
+
     private class ShowMuacChartTask extends AsyncTask<Void, Void, List<MUAC>> {
         @Override
         protected void onPreExecute() {
@@ -1723,7 +1725,7 @@ public class ChildImmunizationActivity extends BaseActivity
             ft.addToBackStack(null);
             String dobString = Utils.getValue(childDetails.getColumnmaps(), PathConstants.KEY.DOB, false);
 
-            MUACMonitoringFragment growthDialogFragment = MUACMonitoringFragment.createInstance(dobString,getGender(), allHeight);
+            MUACMonitoringFragment growthDialogFragment = MUACMonitoringFragment.createInstance(dobString, getGender(), allHeight);
             growthDialogFragment.show(ft, DIALOG_TAG);
         }
     }
@@ -1913,7 +1915,9 @@ public class ChildImmunizationActivity extends BaseActivity
         }
     }
 
-    private void refreshPreviousWeightsTable(final LinearLayout previousweightholder, Gender gender, Date dob ,List<Weight> weights) {
+    double kg = 0;
+
+    private void refreshPreviousWeightsTable(final LinearLayout previousweightholder, Gender gender, Date dob, List<Weight> weights) {
         HashMap<Long, Weight> weightHashMap = new HashMap<>();
         for (Weight curWeight : weights) {
             if (curWeight.getDate() != null) {
@@ -1991,22 +1995,22 @@ public class ChildImmunizationActivity extends BaseActivity
 //            if (weight.getDate().compareTo(maxWeighingDate.getTime()) > 0) {
 //                zScoreTextView.setText("");
 //            } else { //TODO
-                Double zScoreDouble = ZScore.calculate(gender, dob, weight.getDate(), weight.getKg());
-                double zScore =  (zScoreDouble == null) ? 0 : zScoreDouble.doubleValue();
-               // double zScore = ZScore.calculate(gender, dob, weight.getDate(), weight.getKg());
-                zScore = ZScore.roundOff(zScore);
-                zScoreTextView.setTextColor(getResources().getColor(ZScore.getZScoreColor(zScore)));
-                zScoreTextView.setText(String.valueOf(zScore));
+            Double zScoreDouble = ZScore.calculate(gender, dob, weight.getDate(), weight.getKg());
+            double zScore = (zScoreDouble == null) ? 0 : zScoreDouble.doubleValue();
+            // double zScore = ZScore.calculate(gender, dob, weight.getDate(), weight.getKg());
+            zScore = ZScore.roundOff(zScore);
+            zScoreTextView.setTextColor(getResources().getColor(ZScore.getZScoreColor(zScore)));
+            zScoreTextView.setText(String.valueOf(zScore));
             //}
             curRow.addView(zScoreTextView);
             tableLayout.addView(curRow);
         }
         //Now set the expand button if items are too many
 
-        Weight weight = weights.get(0);
-        int color = ZScore.getZScoreColor(weight.getZScore());
-        String text = ZScore.getZScoreText(weight.getZScore());
-        updateProfileColor(color,text);
+        if (weights.size() > 0) {
+            kg = weights.get(0).getKg();
+            updateProfileColor();
+        }
     }
 
 
@@ -2050,6 +2054,7 @@ public class ChildImmunizationActivity extends BaseActivity
 
         refreshEditHeightLayout();
     }
+
     @Override
     public void onMUACTaken(MUACWrapper muacWrapper) {
         if (muacWrapper != null) {
@@ -2092,76 +2097,89 @@ public class ChildImmunizationActivity extends BaseActivity
         refreshEditMuacLayout();
     }
 
+    double cm = 0;
+
     private void refreshEditHeightLayout() {
         LinearLayout fragmentContainer = (LinearLayout) findViewById(R.id.height_group_canvas_ll);
         fragmentContainer.removeAllViews();
-        fragmentContainer.addView(getLayoutInflater().inflate(R.layout.previous_height_view,null));
+        fragmentContainer.addView(getLayoutInflater().inflate(R.layout.previous_height_view, null));
         TableLayout heightTable = findViewById(R.id.heights_table);
         HeightRepository wp = GrowthMonitoringLibrary.getInstance().getHeightRepository();
         List<Height> heightList = wp.findLast5(childDetails.entityId());
-        if(heightList.size()>0){
-           try{
-               HeightUtils.refreshPreviousHeightsTable(this,heightTable, getGender(), dobToDateTime(childDetails).toDate(),heightList,Calendar.getInstance());
-           }catch (Exception e){
-               e.printStackTrace();
-           }
-           Height height = heightList.get(0);
-           int color = ZScore.getZScoreColor(height.getZScore());
-           String text = ZScore.getZScoreText(height.getZScore());
-           updateProfileColor(color,text);
-
+        if (heightList.size() > 0) {
+            try {
+                HeightUtils.refreshPreviousHeightsTable(this, heightTable, getGender(), dobToDateTime(childDetails).toDate(), heightList, Calendar.getInstance());
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            Height height = heightList.get(0);
+            cm = height.getCm();
+            updateProfileColor();
         }
     }
+
+    int color = 0;
+    String text = "";
+
     private void refreshEditMuacLayout() {
         LinearLayout fragmentContainer = (LinearLayout) findViewById(R.id.muac_group_canvas_ll);
         fragmentContainer.removeAllViews();
-        fragmentContainer.addView(getLayoutInflater().inflate(R.layout.previous_muac_view,null));
+        fragmentContainer.addView(getLayoutInflater().inflate(R.layout.previous_muac_view, null));
         TableLayout muacTable = findViewById(R.id.muac_table);
         MUACRepository wp = GrowthMonitoringLibrary.getInstance().getMuacRepository();
         List<MUAC> heightList = wp.findLast5(childDetails.entityId());
-        if(heightList.size()>0){
-            MUACUtils.refreshPreviousMuacTable(this,muacTable,getGender(),dobToDateTime(childDetails).toDate(),heightList);
+        if (heightList.size() > 0) {
+            MUACUtils.refreshPreviousMuacTable(this, muacTable, getGender(), dobToDateTime(childDetails).toDate(), heightList);
             MUAC latestMuac = heightList.get(0);
-            int color = ZScore.getMuacColor(latestMuac.getCm());
-            String text = ZScore.getMuacText(latestMuac.getCm());
-            updateProfileColor(color,text);
+            color = ZScore.getMuacColor(latestMuac.getCm());
+            text = ZScore.getMuacText(latestMuac.getCm());
+            updateProfileColor();
         }
 
     }
-    private void  updateProfileColor(int color, String text){
-        //compare with text
-        // test case: sam,mam,normal = sam,
-        //if all are green, then green otherwise red/yellow
+
+    private void updateProfileColor() {
+        Log.v("MUAC", text+" "+cm+ " "+ kg);
         String resultText = "";
-        String[] textArray = textToArray(text);
-        if ( ArrayUtils.contains( textArray, "SAM" ) ) {
-            resultText = "SAM";
-        }
-        else {
-            int max = 0;
-            int curr = 0;
-            String currKey =  null;
-            List<String> list = Arrays.asList(textArray);
-            Set<String> unique = new HashSet<String>(list);
-            for (String key : unique) {
-                curr = Collections.frequency(list, key);
+        int resultColor = 0;
 
-                if(max < curr){
-                    max = curr;
-                    currKey = key;
+
+        if (cm == 0 | kg == 0) {
+            resultText = text;
+            resultColor = color;
+        } else {
+
+            String pemText = ZScore.getPEMStatus(kg, cm);
+            String[] textArray = {text, pemText};
+            if (ArrayUtils.contains(textArray, "SAM")) {
+                resultText = "SAM";
+                resultColor = ZScore.getPEMStatusColor(resultText);
+            } else {
+                int max = 0;
+                int curr = 0;
+                String currKey = null;
+                List<String> list = Arrays.asList(textArray);
+                Set<String> unique = new HashSet<String>(list);
+                for (String key : unique) {
+                    curr = Collections.frequency(list, key);
+
+                    if (max < curr) {
+                        max = curr;
+                        currKey = key;
+                    }
                 }
+                resultText = currKey;
+                resultColor = ZScore.getPEMStatusColor(resultText);
             }
-            resultText = currKey;
+        }
+        if(!resultText.isEmpty()){
+            muacText.setVisibility(View.VISIBLE);
+            muacText.setText(resultText);
+            muacText.setBackgroundColor(getResources().getColor(resultColor));
         }
 
-        muacText.setVisibility(View.VISIBLE);
-        muacText.setText(resultText);
-        muacText.setBackgroundColor(getResources().getColor(color));
     }
 
-    private String[] textToArray(String text){
-        return new String[] {text};
-    }
     private static final int GRAPH_MONTHS_TIMELINE = 12;
 
     private Calendar[] getMinAndMaxWeighingDates(Date dob) {
@@ -2198,6 +2216,7 @@ public class ChildImmunizationActivity extends BaseActivity
 
         return new Calendar[]{minGraphTime, maxGraphTime};
     }
+
     private static void standardiseCalendarDate(Calendar calendarDate) {
         calendarDate.set(Calendar.HOUR_OF_DAY, 0);
         calendarDate.set(Calendar.MINUTE, 0);
