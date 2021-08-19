@@ -46,6 +46,8 @@ import org.smartregister.domain.Alert;
 import org.smartregister.domain.Photo;
 import org.smartregister.growplus.adapter.CounsellingCardAdapter;
 import org.smartregister.growplus.domain.Counselling;
+import org.smartregister.growplus.job.HeightIntentServiceJob;
+import org.smartregister.growplus.job.MuactIntentServiceJob;
 import org.smartregister.growplus.listener.ActivityListener;
 import org.smartregister.growplus.repository.CounsellingRepository;
 import org.smartregister.growthmonitoring.GrowthMonitoringLibrary;
@@ -512,7 +514,7 @@ public class ChildImmunizationActivity extends BaseActivity
         ArrayList<View.OnClickListener> listeners = new ArrayList<View.OnClickListener>();
 
         WeightRepository wp = VaccinatorApplication.getInstance().weightRepository();
-        List<Weight> weightlist = wp.findByEntityId(childDetails.entityId());
+        List<Weight> weightlist = wp.getMaximum12(childDetails.entityId());
         /////////////////////////////////////////////////
         String dobString = Utils.getValue(childDetails.getColumnmaps(), PathConstants.KEY.DOB, false);
         Date dob = null;
@@ -2037,6 +2039,7 @@ public class ChildImmunizationActivity extends BaseActivity
             heightWrapper.setDbKey(height.getId());
 
         }
+        HeightIntentServiceJob.scheduleJobImmediately(HeightIntentServiceJob.TAG);
 
         refreshEditHeightLayout();
     }
@@ -2068,17 +2071,11 @@ public class ChildImmunizationActivity extends BaseActivity
                 dob = dateTime.toDate();
             }
             Gender gender = getGender();
-
-            if (dob != null && gender != Gender.UNKNOWN) {
-                heightRepository.add(dob, gender, height);
-            } else {
-                heightRepository.add(height);
-            }
-
+            heightRepository.add(height);
             muacWrapper.setDbKey(height.getId());
 
         }
-
+        MuactIntentServiceJob.scheduleJobImmediately(MuactIntentServiceJob.TAG);
         refreshEditMuacLayout();
     }
 
@@ -2088,7 +2085,7 @@ public class ChildImmunizationActivity extends BaseActivity
         fragmentContainer.addView(getLayoutInflater().inflate(R.layout.previous_height_view,null));
         TableLayout heightTable = findViewById(R.id.heights_table);
         HeightRepository wp = GrowthMonitoringLibrary.getInstance().getHeightRepository();
-        List<Height> heightList = wp.findLast5(childDetails.entityId());
+        List<Height> heightList = wp.getMaximum12(childDetails.entityId());
         if(heightList.size()>0){
            try{
                HeightUtils.refreshPreviousHeightsTable(this,heightTable, getGender(), dobToDateTime(childDetails).toDate(),heightList,Calendar.getInstance());
@@ -2108,7 +2105,7 @@ public class ChildImmunizationActivity extends BaseActivity
         fragmentContainer.addView(getLayoutInflater().inflate(R.layout.previous_muac_view,null));
         TableLayout muacTable = findViewById(R.id.muac_table);
         MUACRepository wp = GrowthMonitoringLibrary.getInstance().getMuacRepository();
-        List<MUAC> heightList = wp.findLast5(childDetails.entityId());
+        List<MUAC> heightList = wp.getMaximum12(childDetails.entityId());
         if(heightList.size()>0){
             MUACUtils.refreshPreviousMuacTable(this,muacTable,getGender(),dobToDateTime(childDetails).toDate(),heightList);
             MUAC latestMuac = heightList.get(0);
@@ -2119,6 +2116,8 @@ public class ChildImmunizationActivity extends BaseActivity
 
     }
     private void updateProfileColor(int color, String text){
+        //cm || kg == 0 return muac color and text
+        //
         //compare with text
         // test case: sam,mam,normal = sam,
         //if all are green, then green otherwise red/yellow

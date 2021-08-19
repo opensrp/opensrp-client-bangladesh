@@ -7,6 +7,7 @@ import android.content.Context;
 import android.content.Intent;
 
 import org.smartregister.growplus.service.intent.GrowPlusWeightIntentService;
+import org.smartregister.growthmonitoring.service.intent.MuacIntentService;
 import org.smartregister.growthmonitoring.service.intent.WeightIntentService;
 import org.smartregister.immunization.service.intent.RecurringIntentService;
 import org.smartregister.immunization.service.intent.VaccineIntentService;

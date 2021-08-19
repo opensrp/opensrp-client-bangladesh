@@ -14,8 +14,16 @@ import org.json.JSONException;
 import org.json.JSONObject;
 import org.smartregister.clientandeventmodel.DateUtil;
 import org.smartregister.growplus.domain.Counselling;
+import org.smartregister.growplus.job.HeightIntentServiceJob;
+import org.smartregister.growthmonitoring.GrowthMonitoringLibrary;
+import org.smartregister.growthmonitoring.domain.Height;
+import org.smartregister.growthmonitoring.domain.MUAC;
 import org.smartregister.growthmonitoring.domain.Weight;
+import org.smartregister.growthmonitoring.repository.HeightRepository;
+import org.smartregister.growthmonitoring.repository.MUACRepository;
 import org.smartregister.growthmonitoring.repository.WeightRepository;
+import org.smartregister.growthmonitoring.service.intent.HeightIntentService;
+import org.smartregister.growthmonitoring.service.intent.MuacIntentService;
 import org.smartregister.growthmonitoring.service.intent.WeightIntentService;
 import org.smartregister.immunization.domain.ServiceRecord;
 import org.smartregister.immunization.domain.ServiceSchedule;
@@ -73,6 +81,7 @@ public class PathClientProcessor extends ClientProcessor {
         String clientClassificationStr = getFileContents("ec_client_classification.json");
         String clientVaccineStr = getFileContents("ec_client_vaccine.json");
         String clientWeightStr = getFileContents("ec_client_weight.json");
+        String clientMuacStr = getFileContents("ec_client_muac.json");
         String clientServiceStr = getFileContents("ec_client_service.json");
 
         //this seems to be easy for now cloudant json to events model is crazy
@@ -99,7 +108,23 @@ public class PathClientProcessor extends ClientProcessor {
                     }
 
                     processWeight(event, clientWeightClassificationJson, type.equals(WeightIntentService.EVENT_TYPE_OUT_OF_CATCHMENT));
-                } else if (type.equals(RecurringIntentService.EVENT_TYPE)) {
+                }else if (type.equals(HeightIntentService.EVENT_TYPE) || type.equals(HeightIntentService.EVENT_TYPE_OUT_OF_CATCHMENT)) {
+                    JSONObject clientWeightClassificationJson = new JSONObject(clientWeightStr);
+                    if (isNullOrEmptyJSONObject(clientWeightClassificationJson)) {
+                        continue;
+                    }
+
+                    processHeight(event, clientWeightClassificationJson, type.equals(HeightIntentService.EVENT_TYPE_OUT_OF_CATCHMENT));
+                }
+                else if (type.equals(MuacIntentService.EVENT_TYPE) || type.equals(MuacIntentService.EVENT_TYPE_OUT_OF_CATCHMENT)) {
+                    JSONObject clientWeightClassificationJson = new JSONObject(clientMuacStr);
+                    if (isNullOrEmptyJSONObject(clientWeightClassificationJson)) {
+                        continue;
+                    }
+
+                    processMUAC(event, clientWeightClassificationJson, type.equals(MuacIntentService.EVENT_TYPE_OUT_OF_CATCHMENT));
+                }
+                else if (type.equals(RecurringIntentService.EVENT_TYPE)) {
                     JSONObject clientServiceClassificationJson = new JSONObject(clientServiceStr);
                     if (isNullOrEmptyJSONObject(clientServiceClassificationJson)) {
                         continue;
@@ -214,6 +239,8 @@ public class PathClientProcessor extends ClientProcessor {
         String clientClassificationStr = getFileContents("ec_client_classification.json");
         String clientVaccineStr = getFileContents("ec_client_vaccine.json");
         String clientWeightStr = getFileContents("ec_client_weight.json");
+        String clientHeightStr = getFileContents("ec_client_height.json");
+        String clientMuacStr = getFileContents("ec_client_muac.json");
         String clientServiceStr = getFileContents("ec_client_service.json");
 
         if (!events.isEmpty()) {
@@ -232,7 +259,23 @@ public class PathClientProcessor extends ClientProcessor {
                     }
 
                     processVaccine(event, clientVaccineClassificationJson, eventType.equals(VaccineIntentService.EVENT_TYPE_OUT_OF_CATCHMENT));
-                } else if (eventType.equals(WeightIntentService.EVENT_TYPE) || eventType.equals(WeightIntentService.EVENT_TYPE_OUT_OF_CATCHMENT)) {
+                }else if (eventType.equals(HeightIntentService.EVENT_TYPE) || eventType.equals(HeightIntentService.EVENT_TYPE_OUT_OF_CATCHMENT)) {
+                    JSONObject clientWeightClassificationJson = new JSONObject(clientHeightStr);
+                    if (isNullOrEmptyJSONObject(clientWeightClassificationJson)) {
+                        continue;
+                    }
+
+                    processHeight(event, clientWeightClassificationJson, eventType.equals(HeightIntentService.EVENT_TYPE_OUT_OF_CATCHMENT));
+                }
+                else if (eventType.equals(MuacIntentService.EVENT_TYPE) || eventType.equals(MuacIntentService.EVENT_TYPE_OUT_OF_CATCHMENT)) {
+                    JSONObject clientWeightClassificationJson = new JSONObject(clientMuacStr);
+                    if (isNullOrEmptyJSONObject(clientWeightClassificationJson)) {
+                        continue;
+                    }
+
+                    processMUAC(event, clientWeightClassificationJson, eventType.equals(MuacIntentService.EVENT_TYPE_OUT_OF_CATCHMENT));
+                }
+                else if (eventType.equals(WeightIntentService.EVENT_TYPE) || eventType.equals(WeightIntentService.EVENT_TYPE_OUT_OF_CATCHMENT)) {
                     JSONObject clientWeightClassificationJson = new JSONObject(clientWeightStr);
                     if (isNullOrEmptyJSONObject(clientWeightClassificationJson)) {
                         continue;
@@ -334,6 +377,134 @@ public class PathClientProcessor extends ClientProcessor {
             return null;
         }
     }
+    private Boolean processHeight(JSONObject height, JSONObject clientWeightClassificationJson, boolean outOfCatchment) throws Exception {
+
+        try {
+
+            if (height == null || height.length() == 0) {
+                return false;
+            }
+
+            if (clientWeightClassificationJson == null || clientWeightClassificationJson.length() == 0) {
+                return false;
+            }
+
+            ContentValues contentValues = processCaseModel(height, clientWeightClassificationJson);
+            Log.v("CLIENT_PROCESSOR","eventheight>>"+height);
+            Log.v("CLIENT_PROCESSOR","processHeight>>"+contentValues);
+
+            // save the values to db
+            if (contentValues != null && contentValues.size() > 0) {
+                Date date = null;
+                 try{
+                     date = DateUtil.getDateFromString(contentValues.getAsString(WeightRepository.DATE));
+                     if (date == null) {
+                         try {
+                             DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSXXX");
+                             date = dateFormat.parse(contentValues.getAsString(WeightRepository.DATE));
+                         } catch (Exception e) {
+                             DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS");
+                             date = dateFormat.parse(contentValues.getAsString(WeightRepository.DATE));
+                         }
+                     }
+                 }catch (Exception e){
+                     e.printStackTrace();
+                 }
+
+
+                HeightRepository heightRepository = GrowthMonitoringLibrary.getInstance().getHeightRepository();
+                Height heightObj = new Height();
+                heightObj.setBaseEntityId(contentValues.getAsString(WeightRepository.BASE_ENTITY_ID));
+                if (contentValues.containsKey(HeightRepository.CM)) {
+                    heightObj.setCm(parseFloat(contentValues.getAsString(HeightRepository.CM)));
+                }
+                try{
+                    heightObj.setDate(date);
+                }catch (Exception e){
+
+                }
+                heightObj.setZScore(Double.parseDouble(contentValues.getAsString(HeightRepository.Z_SCORE)));
+                heightObj.setAnmId(contentValues.getAsString(WeightRepository.ANMID));
+                heightObj.setLocationId(contentValues.getAsString(WeightRepository.LOCATIONID));
+                heightObj.setSyncStatus(WeightRepository.TYPE_Synced);
+                heightObj.setFormSubmissionId(height.has(WeightRepository.FORMSUBMISSION_ID) ? height.getString(WeightRepository.FORMSUBMISSION_ID) : null);
+                heightObj.setEventId(height.getString(PathConstants.ID));
+                heightObj.setOutOfCatchment(outOfCatchment ? 1 : 0);
+
+
+                heightRepository.add(heightObj);
+            }
+            return true;
+
+        } catch (Exception e) {
+            Log.e(TAG, e.toString(), e);
+            return null;
+        }
+    }
+    private Boolean processMUAC(JSONObject muac, JSONObject clientWeightClassificationJson, boolean outOfCatchment) throws Exception {
+
+        try {
+
+            if (muac == null || muac.length() == 0) {
+                return false;
+            }
+
+            if (clientWeightClassificationJson == null || clientWeightClassificationJson.length() == 0) {
+                return false;
+            }
+
+            ContentValues contentValues = processCaseModel(muac, clientWeightClassificationJson);
+            Log.v("CLIENT_PROCESSOR","eventMUAC>>"+muac);
+            Log.v("CLIENT_PROCESSOR","processMUAC>>"+contentValues);
+
+            // save the values to db
+            if (contentValues != null && contentValues.size() > 0) {
+                Date date = null;
+                try{
+                    date = DateUtil.getDateFromString(contentValues.getAsString(WeightRepository.DATE));
+                    if (date == null) {
+                        try {
+                            DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSXXX");
+                            date = dateFormat.parse(contentValues.getAsString(WeightRepository.DATE));
+                        } catch (Exception e) {
+                            DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS");
+                            date = dateFormat.parse(contentValues.getAsString(WeightRepository.DATE));
+                        }
+                    }
+                }catch (Exception e){
+                    e.printStackTrace();
+                }
+
+
+                MUACRepository muacRepository = GrowthMonitoringLibrary.getInstance().getMuacRepository();
+                MUAC muacObj = new MUAC();
+                muacObj.setBaseEntityId(contentValues.getAsString(WeightRepository.BASE_ENTITY_ID));
+                if (contentValues.containsKey(HeightRepository.CM)) {
+                    muacObj.setCm(parseFloat(contentValues.getAsString(HeightRepository.CM)));
+                }
+                try{
+                    muacObj.setDate(date);
+                }catch (Exception e){
+
+                }
+                muacObj.setAnmId(contentValues.getAsString(WeightRepository.ANMID));
+                muacObj.setLocationId(contentValues.getAsString(WeightRepository.LOCATIONID));
+                muacObj.setSyncStatus(WeightRepository.TYPE_Synced);
+                muacObj.setFormSubmissionId(muac.has(WeightRepository.FORMSUBMISSION_ID) ? muac.getString(WeightRepository.FORMSUBMISSION_ID) : null);
+                muacObj.setEventId(muac.getString(PathConstants.ID));
+                muacObj.setOutOfCatchment(outOfCatchment ? 1 : 0);
+
+
+                muacRepository.add(muacObj);
+            }
+            return true;
+
+        } catch (Exception e) {
+            Log.e(TAG, e.toString(), e);
+            return null;
+        }
+    }
+
 
     private Boolean processWeight(JSONObject weight, JSONObject clientWeightClassificationJson, boolean outOfCatchment) throws Exception {
 

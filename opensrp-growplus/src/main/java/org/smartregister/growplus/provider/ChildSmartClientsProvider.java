@@ -174,10 +174,10 @@ public class ChildSmartClientsProvider implements SmartRegisterCLientsProviderFo
         record_weight_text.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(SyncStatusBroadcastReceiver.getInstance().isSyncing()){
-                    Toast.makeText((Activity)context, "Syncing is not finished", Toast.LENGTH_SHORT).show();
-                    return;
-                }
+//                if(SyncStatusBroadcastReceiver.getInstance().isSyncing()){
+//                    Toast.makeText((Activity)context, "Syncing is not finished", Toast.LENGTH_SHORT).show();
+//                    return;
+//                }
                 String metadata = getmetaDataForEditForm(pc);
                 Intent intent = new Intent(context, PathJsonFormActivity.class);
 

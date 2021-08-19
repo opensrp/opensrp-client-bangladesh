@@ -10,11 +10,13 @@ import android.util.Pair;
 import android.widget.Toast;
 
 import com.crashlytics.android.Crashlytics;
+import com.evernote.android.job.JobManager;
 
 import org.json.JSONArray;
 import org.smartregister.Context;
 import org.smartregister.CoreLibrary;
 import org.smartregister.commonregistry.CommonFtsObject;
+import org.smartregister.growplus.job.GrowPlusJobCreator;
 import org.smartregister.growplus.repository.CounsellingRepository;
 import org.smartregister.growthmonitoring.GrowthMonitoringLibrary;
 import org.smartregister.growthmonitoring.repository.WeightRepository;
@@ -97,7 +99,7 @@ public class VaccinatorApplication extends DrishtiApplication
         CoreLibrary.init(context());
         GrowthMonitoringLibrary.init(context(), getRepository(), BuildConfig.VERSION_CODE, BuildConfig.DATABASE_VERSION);
         ImmunizationLibrary.init(context(), getRepository(), createCommonFtsObject(), BuildConfig.VERSION_CODE, BuildConfig.DATABASE_VERSION);
-
+        JobManager.create(this).addJobCreator(new GrowPlusJobCreator());
     }
 
     public static synchronized VaccinatorApplication getInstance() {

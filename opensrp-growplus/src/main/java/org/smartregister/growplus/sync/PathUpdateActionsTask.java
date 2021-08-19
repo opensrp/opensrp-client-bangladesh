@@ -272,6 +272,7 @@ public class PathUpdateActionsTask {
 
                 request.put("reports", pendingReports);
                 String jsonPayload = request.toString();
+                Log.v("SYNC","jsonPayload:"+jsonPayload);
                 Response<String> response = httpAgent.post(
                         MessageFormat.format("{0}/{1}",
                                 baseUrl,

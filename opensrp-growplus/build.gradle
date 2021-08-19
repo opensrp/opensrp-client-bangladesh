@@ -78,6 +78,7 @@ android {
             buildConfigField "int", "COVERAGE_DROPOUT_GENERATION_MINUTES", '5'
             buildConfigField "int", "IMAGE_UPLOAD_MINUTES", '7'
             buildConfigField "int", "PULL_UNIQUE_IDS_MINUTES", '10'
+            buildConfigField "int", "WEIGHT_SYNC_TIME", '5'
         }
 
         debug {
@@ -98,6 +99,7 @@ android {
             buildConfigField "int", "COVERAGE_DROPOUT_GENERATION_MINUTES", '5'
             buildConfigField "int", "IMAGE_UPLOAD_MINUTES", '7'
             buildConfigField "int", "PULL_UNIQUE_IDS_MINUTES", '10'
+            buildConfigField "int", "WEIGHT_SYNC_TIME", '0'
             testCoverageEnabled true
         }
     }
@@ -123,6 +125,7 @@ android {
 }
 
 dependencies {
+    api 'com.evernote:android-job:1.2.6'
     implementation 'com.android.support.constraint:constraint-layout:1.1.2'
     implementation('org.smartregister:opensrp-client-native-form:1.2.4-SNAPSHOT@aar') {
         transitive = true

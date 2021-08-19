@@ -141,7 +141,7 @@ public class GrowPlusWeightIntentService extends IntentService {
                         previousWeightObject.put(GMConstants.JsonForm.OPENMRS_ENTITY_ID, "");
                         previousWeightObject.put(GMConstants.JsonForm.OPENMRS_ENTITY_PARENT, "");
                         previousWeightObject.put(GMConstants.JsonForm.OPENMRS_DATA_TYPE, "");
-                        previousWeightObject.put(GMConstants.JsonForm.VALUE, previousWeight.getDate());
+                        previousWeightObject.put(GMConstants.JsonForm.VALUE, previousWeight.getKg());
                         String previousweightdatetimestamp ="";
                         if(previousWeight.getId()!=-1) {
                             Cursor previousweightcursor = commonRepository.rawCustomQueryForAdapter("select date from weights where _id = '" + previousWeight.getId() + "'");
