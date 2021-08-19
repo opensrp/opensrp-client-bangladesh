@@ -1916,7 +1916,7 @@ public class ChildImmunizationActivity extends BaseActivity
         }
     }
 
-    double kg = 0;
+    String weightText = "";
 
     private void refreshPreviousWeightsTable(final LinearLayout previousweightholder, Gender gender, Date dob, List<Weight> weights) {
         HashMap<Long, Weight> weightHashMap = new HashMap<>();
@@ -2009,7 +2009,12 @@ public class ChildImmunizationActivity extends BaseActivity
         //Now set the expand button if items are too many
 
         if (weights.size() > 0) {
-            kg = weights.get(0).getKg();
+            Weight weight = weights.get(0);
+            Double zScoreDouble = ZScore.calculate(gender, dob, weight.getDate(), weight.getKg());
+            double zScore = (zScoreDouble == null) ? 0 : zScoreDouble.doubleValue();
+            // double zScore = ZScore.calculate(gender, dob, weight.getDate(), weight.getKg());
+            zScore = ZScore.roundOff(zScore);
+            weightText = ZScore.getZScoreText(zScore);
         }
     }
 
@@ -2099,7 +2104,7 @@ public class ChildImmunizationActivity extends BaseActivity
         updateProfileColor();
     }
 
-    double cm = 0;
+    String heightText = "";
 
     private void refreshEditHeightLayout() {
         LinearLayout fragmentContainer = (LinearLayout) findViewById(R.id.height_group_canvas_ll);
@@ -2115,12 +2120,12 @@ public class ChildImmunizationActivity extends BaseActivity
                 e.printStackTrace();
             }
             Height height = heightList.get(0);
-            cm = height.getCm();
+            heightText = ZScore.getZScoreText(height.getZScore());
         }
     }
 
-    int color = 0;
-    String text = "";
+    int muakColor = 0;
+    String muakText = "";
 
     private void refreshEditMuacLayout() {
         LinearLayout fragmentContainer = (LinearLayout) findViewById(R.id.muac_group_canvas_ll);
@@ -2132,46 +2137,50 @@ public class ChildImmunizationActivity extends BaseActivity
         if (heightList.size() > 0) {
             MUACUtils.refreshPreviousMuacTable(this, muacTable, getGender(), dobToDateTime(childDetails).toDate(), heightList);
             MUAC latestMuac = heightList.get(0);
-            color = ZScore.getMuacColor(latestMuac.getCm());
-            text = ZScore.getMuacText(latestMuac.getCm());
+            muakColor = ZScore.getMuacColor(latestMuac.getCm());
+            muakText = ZScore.getMuacText(latestMuac.getCm());
         }
 
     }
 
     private void updateProfileColor() {
-        Log.v("MUAC", text+" "+cm+ " "+ kg);
+        Log.v("MUAC", weightText+" "+heightText+ " "+ muakText);
         String resultText = "";
         int resultColor = 0;
 
-
-        if (cm == 0 | kg == 0) {
-            resultText = text;
-            resultColor = color;
-        } else {
-
-            String pemText = ZScore.getPEMStatus(kg, cm);
-            String[] textArray = {text, pemText};
-            if (ArrayUtils.contains(textArray, "SAM")) {
-                resultText = "SAM";
-                resultColor = ZScore.getPEMStatusColor(resultText);
-            } else {
-                int max = 0;
-                int curr = 0;
-                String currKey = null;
-                List<String> list = Arrays.asList(textArray);
-                Set<String> unique = new HashSet<String>(list);
-                for (String key : unique) {
-                    curr = Collections.frequency(list, key);
-
-                    if (max < curr) {
-                        max = curr;
-                        currKey = key;
-                    }
-                }
-                resultText = currKey;
-                resultColor = ZScore.getPEMStatusColor(resultText);
-            }
+        if(weightText.isEmpty() && heightText.isEmpty()){
+            resultText = muakText;
+            resultColor = muakColor;
         }
+        if(weightText.contains("OVER WEIGHT") || heightText.contains("OVER WEIGHT")){
+            resultText = "OVER WEIGHT";
+            resultColor = ZScore.getZscoreColorByText(resultText);
+        }
+        else if(weightText.contains("SAM") || heightText.contains("SAM")){
+            resultText = "SAM";
+            resultColor = ZScore.getZscoreColorByText(resultText);
+        }
+        else if(muakText.contains("SAM")){
+            resultText = muakText;
+            resultColor = muakColor;
+        }
+        else if(muakText.contains("MAM")){
+            resultText = muakText;
+            resultColor = muakColor;
+        }
+        else if(weightText.contains("MAM") || heightText.contains("MAM")){
+            resultText = "MAM";
+            resultColor = ZScore.getZscoreColorByText(resultText);
+        }
+        else if(weightText.contains("DARK YELLOW") || heightText.contains("DARK YELLOW")){
+            resultText = "DARK YELLOW";
+            resultColor = ZScore.getZscoreColorByText(resultText);
+        }
+        else {
+            resultText = "NORMAL";
+            resultColor = ZScore.getZscoreColorByText(resultText);
+        }
+
         if(!resultText.isEmpty()){
             muacText.setVisibility(View.VISIBLE);
             muacText.setText(resultText);
