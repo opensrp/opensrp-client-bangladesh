@@ -428,6 +428,7 @@ public class ChildImmunizationActivity extends BaseActivity
         updateCounsellingViews(counsellingRepository.findByEntityId(childDetails.entityId()), (LinearLayout) findViewById(R.id.counselling_group_canvas_ll));
         refreshEditHeightLayout();
         refreshEditMuacLayout();
+        updateProfileColor();
     }
 
     private void updateProfilePicture(Gender gender) {
@@ -2009,7 +2010,6 @@ public class ChildImmunizationActivity extends BaseActivity
 
         if (weights.size() > 0) {
             kg = weights.get(0).getKg();
-            updateProfileColor();
         }
     }
 
@@ -2053,6 +2053,7 @@ public class ChildImmunizationActivity extends BaseActivity
         }
 
         refreshEditHeightLayout();
+        updateProfileColor();
     }
 
     @Override
@@ -2095,6 +2096,7 @@ public class ChildImmunizationActivity extends BaseActivity
         }
 
         refreshEditMuacLayout();
+        updateProfileColor();
     }
 
     double cm = 0;
@@ -2114,7 +2116,6 @@ public class ChildImmunizationActivity extends BaseActivity
             }
             Height height = heightList.get(0);
             cm = height.getCm();
-            updateProfileColor();
         }
     }
 
@@ -2133,7 +2134,6 @@ public class ChildImmunizationActivity extends BaseActivity
             MUAC latestMuac = heightList.get(0);
             color = ZScore.getMuacColor(latestMuac.getCm());
             text = ZScore.getMuacText(latestMuac.getCm());
-            updateProfileColor();
         }
 
     }
