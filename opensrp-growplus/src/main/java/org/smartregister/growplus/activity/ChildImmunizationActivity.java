@@ -32,6 +32,7 @@ import android.widget.TextView;
 
 import net.sqlcipher.database.SQLiteDatabase;
 
+import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.time.DateUtils;
 import org.joda.time.DateTime;
@@ -69,6 +70,7 @@ import org.smartregister.growthmonitoring.repository.MUACRepository;
 import org.smartregister.growthmonitoring.repository.WeightRepository;
 import org.smartregister.growthmonitoring.util.HeightUtils;
 import org.smartregister.growthmonitoring.util.MUACUtils;
+import org.smartregister.growthmonitoring.util.WeightUtils;
 import org.smartregister.immunization.db.VaccineRepo;
 import org.smartregister.immunization.domain.Vaccine;
 import org.smartregister.immunization.domain.VaccineSchedule;
@@ -100,13 +102,16 @@ import java.io.InputStream;
 import java.io.Serializable;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.concurrent.TimeUnit;
 import java.util.regex.Pattern;
 
@@ -530,6 +535,7 @@ public class ChildImmunizationActivity extends BaseActivity
         Gender gender = getGender();
 
         refreshPreviousWeightsTable(fragmentContainer,gender,dob,weightlist);
+
     }
     private void updateVaccinationViews(List<Vaccine> vaccineList, List<Alert> alerts) {
 //        if(false) {
@@ -1997,6 +2003,10 @@ public class ChildImmunizationActivity extends BaseActivity
         }
         //Now set the expand button if items are too many
 
+        Weight weight = weights.get(0);
+        int color = ZScore.getZScoreColor(weight.getZScore());
+        String text = ZScore.getZScoreText(weight.getZScore());
+        updateProfileColor(color,text);
     }
 
 
@@ -2118,15 +2128,40 @@ public class ChildImmunizationActivity extends BaseActivity
         }
 
     }
-    private void updateProfileColor(int color, String text){
+    private void  updateProfileColor(int color, String text){
         //compare with text
         // test case: sam,mam,normal = sam,
         //if all are green, then green otherwise red/yellow
+        String resultText = "";
+        String[] textArray = textToArray(text);
+        if ( ArrayUtils.contains( textArray, "SAM" ) ) {
+            resultText = "SAM";
+        }
+        else {
+            int max = 0;
+            int curr = 0;
+            String currKey =  null;
+            List<String> list = Arrays.asList(textArray);
+            Set<String> unique = new HashSet<String>(list);
+            for (String key : unique) {
+                curr = Collections.frequency(list, key);
+
+                if(max < curr){
+                    max = curr;
+                    currKey = key;
+                }
+            }
+            resultText = currKey;
+        }
+
         muacText.setVisibility(View.VISIBLE);
-        muacText.setText(text);
+        muacText.setText(resultText);
         muacText.setBackgroundColor(getResources().getColor(color));
     }
 
+    private String[] textToArray(String text){
+        return new String[] {text};
+    }
     private static final int GRAPH_MONTHS_TIMELINE = 12;
 
     private Calendar[] getMinAndMaxWeighingDates(Date dob) {
