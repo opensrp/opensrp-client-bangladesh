@@ -383,10 +383,9 @@
         },
         {
           "column_name": "father_name",
-          "type": "Event",
+          "type": "Client",
           "json_mapping": {
-            "field": "obs.fieldCode",
-            "concept": "1594AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
+            "field": "attributes.fatherName"
           }
         },
         {
