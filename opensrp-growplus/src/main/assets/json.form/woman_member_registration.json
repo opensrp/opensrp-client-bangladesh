@@ -107,6 +107,20 @@
         }
       },
       {
+        "key": "father_name",
+        "openmrs_entity_parent": "",
+        "openmrs_entity": "person_attribute",
+        "openmrs_entity_id": "fatherName",
+        "openmrs_data_type": "text",
+        "type": "edit_text",
+        "hint": "বাবার নাম",
+        "edit_type": "name",
+        "v_regex": {
+          "value": "[A-Za-z\\s\.\-]*",
+          "err": "একটি সঙ্গত নাম লিখুন"
+        }
+      },
+      {
         "key": "member_unique_ID",
         "openmrs_entity_parent": "",
         "openmrs_entity": "person_attribute",
