@@ -265,6 +265,25 @@
         ]
       },
       {
+        "key": "health_center_name",
+        "openmrs_entity_parent": "",
+        "openmrs_entity": "concept",
+        "openmrs_entity_id": "health_center_name",
+        "openmrs_data_type": "text",
+        "type": "edit_text",
+        "hint": "স্বাস্থ্য কেন্দ্রের নাম",
+        "v_regex": {
+          "value": "[A-Za-z\\s\.\-]*",
+          "err": "দয়া করে একটি বৈধ নাম লিখুন"
+        },
+        "relevance": {
+          "step1:visit_clinic_after_last_meeting": {
+            "type": "string",
+            "ex": "equalTo(., \"হ্যাঁ\")"
+          }
+        }
+      },
+      {
         "key": "Date_Of_next_appointment",
         "openmrs_entity_parent": "",
         "openmrs_entity": "concept",
