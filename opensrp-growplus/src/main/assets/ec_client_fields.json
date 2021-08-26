@@ -584,7 +584,7 @@
           }
         },
         {
-          "column_name": "mother_first_name",
+          "column_name": "Mother_Guardian_First_Name",
           "type": "Event",
           "json_mapping": {
             "field": "obs.fieldCode",
