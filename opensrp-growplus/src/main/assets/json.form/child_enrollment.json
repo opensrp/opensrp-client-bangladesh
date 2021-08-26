@@ -113,7 +113,7 @@
       {
         "key": "Sex",
         "openmrs_entity_parent": "",
-        "openmrs_entity": "person",
+        "openmrs_entity": "person_attribute",
         "openmrs_entity_id": "gender",
         "type": "spinner",
         "hint": "লিঙ্গ",
@@ -172,8 +172,8 @@
       {
         "key": "Mother_Guardian_First_Name",
         "openmrs_entity_parent": "",
-        "openmrs_entity": "person",
-        "openmrs_entity_id": "first_name",
+        "openmrs_entity": "concept",
+        "openmrs_entity_id": "Mother_Guardian_First_Name",
         "household_id":"",
         "entity_id": "mother",
         "type": "edit_text",
@@ -235,7 +235,7 @@
         "openmrs_entity_id": "5594AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
         "openmrs_data_type": "text",
         "type": "edit_text",
-        "hint": "দাদার নাম",
+        "hint": "অভিভাবকের নাম",
         "edit_type": "name",
         "v_regex": {
           "value": "[A-Za-z\\s\.\-]*",
