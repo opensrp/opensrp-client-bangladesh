@@ -235,7 +235,7 @@
         "openmrs_entity_id": "5594AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
         "openmrs_data_type": "text",
         "type": "edit_text",
-        "hint": "দাদার নাম",
+        "hint": "অভিভাবকের নাম",
         "edit_type": "name",
         "v_regex": {
           "value": "[A-Za-z\\s\.\-]*",
