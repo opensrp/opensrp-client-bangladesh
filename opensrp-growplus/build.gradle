@@ -81,7 +81,9 @@ android {
         }
 
         debug {
-            resValue "string", 'opensrp_url', '"http://giz-growplus.dev.mpower-social.com:1971/opensrp/"'
+           // resValue "string", 'opensrp_url', '" http://27.147.138.61:1971/opensrp/"'
+            resValue "string", 'opensrp_url', '"http://192.168.19.84:1971/opensrp/"'
+
             buildConfigField "String", 'OPENMRS_URL', '"http://27.147.138.61:1971/openmrs/"'
             buildConfigField "String", 'OPENMRS_IDGEN_URL', '"/module/idgen/exportIdentifiers.form"'
             buildConfigField "int", "OPENMRS_UNIQUE_ID_INITIAL_BATCH_SIZE", '250'
@@ -123,6 +125,7 @@ android {
 }
 
 dependencies {
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation 'com.android.support.constraint:constraint-layout:1.1.2'
     implementation('org.smartregister:opensrp-client-native-form:1.2.4-SNAPSHOT@aar') {
         transitive = true
@@ -140,12 +143,19 @@ dependencies {
         exclude group: 'org.smartregister', module: 'opensrp-client-native-form'
         exclude group: 'com.android.support', module: 'appcompat-v7'
     }
-    implementation ('org.smartregister:opensrp-client-growth-monitoring:1.1.1-SNAPSHOT@aar') {
+    /*implementation ('org.smartregister:opensrp-client-growth-monitoring:1.1.1-SNAPSHOT@aar') {
         transitive = true
         exclude group: 'org.smartregister', module: 'opensrp-client-core'
         exclude group: 'com.android.support', module: 'design'
         exclude group: 'com.android.support', module: 'appcompat-v7'
 
+    }*/
+    implementation('org.smartregister:opensrp-client-growth-monitoring:1.1.2-giz-SNAPSHOT') {
+        transitive = true
+        exclude group: 'org.smartregister', module: 'opensrp-client-core'
+        exclude group: 'com.android.support', module: 'design'
+        exclude group: 'com.android.support', module: 'appcompat-v7'
+        exclude group:'com.github.lecho',module:'hellocharts-android'
     }
     implementation ("com.android.support:gridlayout-v7:28.0.0"){
 

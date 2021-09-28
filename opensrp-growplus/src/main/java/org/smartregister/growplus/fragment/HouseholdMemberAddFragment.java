@@ -16,7 +16,6 @@ import android.widget.FrameLayout;
 import android.widget.Toast;
 
 import org.apache.commons.lang3.StringUtils;
-import org.smartregister.growthmonitoring.listener.WeightActionListener;
 import org.smartregister.growplus.R;
 import org.smartregister.growplus.activity.PathJsonFormActivity;
 import org.smartregister.growplus.application.VaccinatorApplication;
@@ -32,7 +31,7 @@ import util.JsonFormUtils;
 @SuppressLint("ValidFragment")
 public class HouseholdMemberAddFragment extends DialogFragment {
     private final Context context;
-    private WeightActionListener listener;
+    //private WeightActionListener listener;
     private static final int REQUEST_CODE_GET_JSON = 3432;
     private static final String TAG = "AddFragment";
     public static final String DIALOG_TAG = "HouseholdMemberAddFragment";
