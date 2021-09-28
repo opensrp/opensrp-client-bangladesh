@@ -232,7 +232,7 @@
           "err": "Please enter the last name"
         },
         "v_regex": {
-          "value": "[A-Za-z .]*",
+          "value": "[A-Z][A-Za-z .]*",
           "err": "Please enter a valid name"
         }
       },

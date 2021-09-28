@@ -84,8 +84,8 @@ public class NotificationIntentService extends IntentService {
                 lastSynTime ="0";
             }
             //testing
-            String url;// = baseUrl + NOTIFICATION_URL + "username=" + userName+"&timestamp="+lastSynTime;
-            url = "http://cbhc.mpower-social.com:8080/opensrp/message?username=cc10006957@mhv.3.3&timestamp=0";
+            String url = baseUrl + NOTIFICATION_URL + "username=" + userName+"&timestamp="+lastSynTime;
+            //url = "http://cbhc.mpower-social.com:8080/opensrp/message?username=cc10006957@mhv.3.3&timestamp=0";
 
             Log.v("NOTIFICATION_FETCH","url:"+url);
             org.smartregister.domain.Response resp = httpAgent.fetch(url);

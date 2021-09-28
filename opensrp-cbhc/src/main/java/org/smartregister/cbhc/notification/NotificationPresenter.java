@@ -46,6 +46,7 @@ public class NotificationPresenter implements NotificationContract.Presenter {
                     long timestamp = 0;
                     JSONArray jsonArray = getNotificaionList();
                     Log.v("JSON array: ",jsonArray+"");
+                    if(jsonArray == null) return;
 
                     for(int i=0;i<jsonArray.length();i++){
                         try {
