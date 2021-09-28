@@ -30,6 +30,7 @@ import net.sqlcipher.database.SQLiteDatabase;
 
 import org.apache.commons.lang3.StringUtils;
 import org.smartregister.cbhc.R;
+import org.smartregister.cbhc.activity.BaseRegisterActivity;
 import org.smartregister.cbhc.activity.HomeRegisterActivity;
 import org.smartregister.cbhc.activity.ProfileActivity;
 import org.smartregister.cbhc.application.AncApplication;
@@ -83,6 +84,7 @@ public abstract class BaseRegisterFragment extends RecyclerViewFragment implemen
     protected TextView filterStatus;
     protected RelativeLayout filterRelativeLayout;
     protected MenuItem menuItem;
+    String registerCondition = "";
     protected View.OnKeyListener hideKeyboard = new View.OnKeyListener() {
 
         @Override

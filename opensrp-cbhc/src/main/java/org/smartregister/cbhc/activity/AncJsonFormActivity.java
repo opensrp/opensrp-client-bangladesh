@@ -37,7 +37,7 @@ public class AncJsonFormActivity extends JsonFormActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        OpenSRPImageLoader.IMAGE_QUALITY = 10;
+        //OpenSRPImageLoader.IMAGE_QUALITY = 10;
 //        showform();
     }
 

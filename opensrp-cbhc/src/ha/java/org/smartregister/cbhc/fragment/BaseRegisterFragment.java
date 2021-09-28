@@ -98,6 +98,7 @@ public abstract class BaseRegisterFragment extends RecyclerViewFragment implemen
     private ImageView qrCodeScanImageView;
     private ProgressBar syncProgressBar;
     private boolean globalQrSearch = false;
+    String registerCondition = "";
     private String default_sort_query = DBConstants.KEY.LAST_INTERACTED_WITH + " DESC";
     protected final TextWatcher textWatcher = new TextWatcher() {
         @Override
