@@ -211,7 +211,7 @@
         "hint": "পরিবারের প্রধানের নাম এর \nপ্রথম অংশ",
         "edit_type": "name",
         "v_regex": {
-          "value": "[A-Za-z .]*",
+          "value": "[A-Z][A-Za-z .]*",
           "err": "Please enter a valid name"
         },
         "v_required": {

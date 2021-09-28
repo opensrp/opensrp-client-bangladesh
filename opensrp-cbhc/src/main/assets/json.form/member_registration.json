@@ -369,7 +369,7 @@
           "err": "Please Enter a Valid Name"
         },
         "v_regex": {
-          "value": "[A-Za-z .]*",
+          "value": "[A-Z][A-Za-z .]*",
           "err": "Please Enter a Valid Name"
         }
       },
@@ -423,7 +423,7 @@
           "err": "Please enter the mother/guardian's first name"
         },
         "v_regex": {
-          "value": "[A-Za-z .]*",
+          "value": "[A-Z][A-Za-z .]*",
           "err": "Please enter a valid name"
         }
       },
@@ -460,7 +460,7 @@
           "err": "Please enter the mother/guardian's first name"
         },
         "v_regex": {
-          "value": "[A-Za-z .]*",
+          "value": "[A-Z][A-Za-z .]*",
           "err": "Please enter a valid name"
         }
       },
