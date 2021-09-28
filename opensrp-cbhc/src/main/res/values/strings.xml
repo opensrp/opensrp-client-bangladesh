@@ -264,6 +264,8 @@
     <string name="start_new_form">start new form</string>
     <string name="relation_with_hh">খানা প্রধানের সাথে সম্পর্ক</string>
     <string name="total_unregister_child">+Child: %1$s</string>
+    <string name="new_notification_msg">নতুন নোটিফিকেশন এসেছে</string>
+    <string name="all_notification">সব নোটিফিকেশন</string>
     <string-array name="occupation">
         <item>--পেশা সিলেক্ট করুন--</item>
         <item>হিসাবরক্ষক</item>

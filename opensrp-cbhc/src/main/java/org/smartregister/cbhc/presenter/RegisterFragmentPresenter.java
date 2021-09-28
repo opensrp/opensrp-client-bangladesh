@@ -1,5 +1,7 @@
 package org.smartregister.cbhc.presenter;
 
+import android.util.Log;
+
 import org.apache.commons.lang3.StringUtils;
 import org.json.JSONArray;
 import org.smartregister.cbhc.R;
@@ -8,6 +10,7 @@ import org.smartregister.cbhc.contract.RegisterFragmentContract;
 import org.smartregister.cbhc.cursor.AdvancedMatrixCursor;
 import org.smartregister.cbhc.interactor.AdvancedSearchInteractor;
 import org.smartregister.cbhc.model.RegisterFramentModel;
+import org.smartregister.cbhc.notification.NotificationServiceJob;
 import org.smartregister.cbhc.util.DBConstants;
 import org.smartregister.configurableviews.model.Field;
 import org.smartregister.configurableviews.model.RegisterConfiguration;
@@ -80,7 +83,9 @@ public class RegisterFragmentPresenter implements RegisterFragmentContract.Prese
 
     @Override
     public void startSync() {
+
         //ServiceTools.startSyncService(getActivity());
+
     }
     
     @Override

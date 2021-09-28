@@ -73,8 +73,7 @@
         android:id="@+id/top_right_layout"
         android:layout_width="35dp"
         android:layout_height="35dp"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentRight="true"
+        android:layout_toLeftOf="@+id/notification_list"
         android:layout_centerVertical="true">
 
         <ImageView
@@ -101,5 +100,14 @@
             android:layout_height="18dp" />
 
     </RelativeLayout>
+    <ImageView
+        android:id="@+id/notification_list"
+        android:layout_marginLeft="5dp"
+        android:layout_alignParentRight="true"
+        android:src="@drawable/ic_notification"
+        android:layout_centerVertical="true"
+        android:tint="@color/white"
+        android:layout_width="35dp"
+        android:layout_height="35dp"/>
 
 </RelativeLayout>

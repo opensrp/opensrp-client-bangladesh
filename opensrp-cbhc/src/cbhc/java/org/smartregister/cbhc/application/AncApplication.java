@@ -25,6 +25,7 @@ import org.smartregister.cbhc.helper.ECSyncHelper;
 import org.smartregister.cbhc.helper.LocationHelper;
 import org.smartregister.cbhc.job.AncJobCreator;
 import org.smartregister.cbhc.job.ViewConfigurationsServiceJob;
+import org.smartregister.cbhc.notification.NotificationRepository;
 import org.smartregister.cbhc.receiver.SyncStatusBroadcastReceiver;
 import org.smartregister.cbhc.repository.AncRepository;
 import org.smartregister.cbhc.repository.EventLogRepository;
@@ -65,6 +66,7 @@ public class AncApplication extends DrishtiApplication implements TimeChangedBro
     private static final String TAG = AncApplication.class.getCanonicalName();
     private static JsonSpecHelper jsonSpecHelper;
     private static CommonFtsObject commonFtsObject;
+    private static NotificationRepository notificationRepository;
     private ConfigurableViewsRepository configurableViewsRepository;
     private EventClientRepository eventClientRepository;
     private ConfigurableViewsHelper configurableViewsHelper;
@@ -268,7 +270,12 @@ public class AncApplication extends DrishtiApplication implements TimeChangedBro
 //        }
         ViewConfigurationsServiceJob.scheduleJobImmediately(ViewConfigurationsServiceJob.TAG);
     }
-
+    public static NotificationRepository getNotificationRepository() {
+        if ( notificationRepository == null) {
+            notificationRepository = new NotificationRepository(getInstance().getRepository());
+        }
+        return notificationRepository;
+    }
     public ConfigurableViewsRepository getConfigurableViewsRepository() {
         if (configurableViewsRepository == null)
             configurableViewsRepository = new ConfigurableViewsRepository(getRepository());

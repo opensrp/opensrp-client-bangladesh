@@ -9,6 +9,7 @@ import org.smartregister.AllConstants;
 import org.smartregister.cbhc.BuildConfig;
 import org.smartregister.cbhc.application.AncApplication;
 import org.smartregister.cbhc.helper.ECSyncHelper;
+import org.smartregister.cbhc.notification.NotificationRepository;
 import org.smartregister.cbhc.util.Utils;
 import org.smartregister.configurableviews.repository.ConfigurableViewsRepository;
 import org.smartregister.domain.db.Column;
@@ -55,12 +56,12 @@ public class AncRepository extends Repository {
 
         //onUpgrade(database, 1, 2);
 
-        onUpgrade(database, 1, 8);
+        onUpgrade(database, 1, BuildConfig.DATABASE_VERSION);
     }
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-        Log.w(AncRepository.class.getName(),
+        Log.v("DB_UPGRADE",
                 "Upgrading database from version " + oldVersion + " to "
                         + newVersion + ", which will destroy all old data");
 //        if(oldVersion<newVersion&&newVersion==6){
@@ -86,6 +87,9 @@ public class AncRepository extends Repository {
                     break;
                 case 8:
                     upgradeToVersion8(db);
+                    break;
+                case 11:
+                    upgradeToVersion11(db);
                     break;
                 default:
                     break;
@@ -371,6 +375,17 @@ public class AncRepository extends Repository {
 
     private void upgradeToVersion8(SQLiteDatabase db) {
 
-        UnSendDataRepository.createTable(db);
+       try{
+           UnSendDataRepository.createTable(db);
+       }catch (Exception e){
+
+       }
+    }
+    private void upgradeToVersion11(SQLiteDatabase db){
+        try{
+            NotificationRepository.createTable(db);
+        }catch (Exception e){
+
+        }
     }
 }

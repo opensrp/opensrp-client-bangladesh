@@ -48,6 +48,8 @@ import org.smartregister.cbhc.event.SyncEvent;
 import org.smartregister.cbhc.job.ImageUploadServiceJob;
 import org.smartregister.cbhc.job.SyncServiceJob;
 import org.smartregister.cbhc.model.UnsendData;
+import org.smartregister.cbhc.notification.NotificationActivity;
+import org.smartregister.cbhc.notification.NotificationServiceJob;
 import org.smartregister.cbhc.provider.RegisterProvider;
 import org.smartregister.cbhc.receiver.SyncStatusBroadcastReceiver;
 import org.smartregister.cbhc.repository.AncRepository;
@@ -204,6 +206,12 @@ public abstract class BaseRegisterFragment extends RecyclerViewFragment implemen
             @Override
             public void onClick(View v) {
                 createReferJson();
+            }
+        });
+        toolbar.findViewById(R.id.notification_list).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(getActivity(), NotificationActivity.class));
             }
         });
         setupViews(view);
@@ -678,6 +686,8 @@ public abstract class BaseRegisterFragment extends RecyclerViewFragment implemen
     public void onSyncComplete(FetchStatus fetchStatus) {
         refreshSyncStatusViews(fetchStatus);
         EventLogServiceJob.scheduleJobImmediately(EventLogServiceJob.TAG);
+        NotificationServiceJob.scheduleJobImmediately(NotificationServiceJob.TAG);
+        Log.v("NOTIFICATION_FETCH","startSync");
 
     }
 

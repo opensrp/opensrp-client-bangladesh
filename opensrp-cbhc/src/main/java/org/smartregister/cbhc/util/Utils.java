@@ -1,6 +1,7 @@
 package org.smartregister.cbhc.util;
 
 import android.app.Activity;
+import android.app.Dialog;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
@@ -17,7 +18,9 @@ import android.util.DisplayMetrics;
 import android.util.Log;
 import android.util.TypedValue;
 import android.view.View;
+import android.view.Window;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.vijay.jsonwizard.widgets.DatePickerFactory;
@@ -32,6 +35,7 @@ import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
 import org.json.JSONArray;
 import org.json.JSONObject;
+import org.smartregister.cbhc.R;
 import org.smartregister.cbhc.application.AncApplication;
 import org.smartregister.cbhc.domain.FormLocation;
 import org.smartregister.cbhc.event.BaseEvent;
@@ -66,6 +70,23 @@ import static org.smartregister.util.Log.logError;
  */
 
 public class Utils {
+
+    public static void showDialog(Context context,String title, String text){
+        final Dialog dialog = new Dialog(context, android.R.style.Theme_NoTitleBar_Fullscreen);
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialog.setContentView(R.layout.new_notification_view);
+        TextView textViewTitle = dialog.findViewById(R.id.stock_new_text);
+        TextView titleTxt = dialog.findViewById(R.id.textview_detail_two);
+        titleTxt.setText(title);
+        textViewTitle.setText(text);
+        dialog.findViewById(R.id.cross_btn).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+            }
+        });
+        dialog.show();
+    }
 
     public static ArrayList<UnsendData> getCmedDataFromRepo(AncRepository repo){
         UnSendDataRepository followupFormRepository = new UnSendDataRepository(repo);

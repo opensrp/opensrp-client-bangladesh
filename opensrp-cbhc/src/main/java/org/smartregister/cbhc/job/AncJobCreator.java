@@ -6,6 +6,7 @@ import android.support.annotation.Nullable;
 import com.evernote.android.job.Job;
 import com.evernote.android.job.JobCreator;
 
+import org.smartregister.cbhc.notification.NotificationServiceJob;
 import org.smartregister.cbhc.task.EventLogServiceJob;
 
 /**
@@ -26,8 +27,8 @@ public class AncJobCreator implements JobCreator {
                 return new PullUniqueIdsServiceJob();
             case PullHealthIdsServiceJob.TAG:
                 return new PullHealthIdsServiceJob();
-//            case ValidateSyncDataServiceJob.TAG:
-//                return new ValidateSyncDataServiceJob();
+            case NotificationServiceJob.TAG:
+                return new NotificationServiceJob();
             case ViewConfigurationsServiceJob.TAG:
                 return new ViewConfigurationsServiceJob();
             case DeleteIntentServiceJob.TAG:

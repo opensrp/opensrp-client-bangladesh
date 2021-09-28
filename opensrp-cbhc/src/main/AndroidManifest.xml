@@ -71,6 +71,12 @@
             android:launchMode="singleTask"
             android:screenOrientation="portrait"
             android:theme="@style/AncAppTheme.NoActionBar" />
+        <activity
+            android:name=".notification.NotificationActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize"
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait"
+            android:theme="@style/AncAppTheme.NoActionBar" />
 
         <activity
             android:name=".activity.SettingsActivity"
@@ -93,7 +99,7 @@
         <service android:name=".service.intent.DeleteIntentService" />
         <service android:name=".service.intent.ValidateIntentService" />
         <service android:name=".service.intent.ExtendedSyncIntentService" />
-
+        <service android:name=".notification.NotificationIntentService" />
         <activity android:name=".activity.DetailActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"
             android:launchMode="singleTask"
