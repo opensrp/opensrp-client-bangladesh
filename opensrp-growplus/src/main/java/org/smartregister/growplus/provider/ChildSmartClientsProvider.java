@@ -149,7 +149,12 @@ public class ChildSmartClientsProvider implements SmartRegisterCLientsProviderFo
 
         String gender = getValue(pc.getColumnmaps(), PathConstants.KEY.GENDER, true);
 
-
+        Gender validGender;
+        try{
+         validGender = Gender.valueOf(gender);
+        }catch (Exception ex){
+            gender = "UNKNOWN";
+        }
 
         final ImageView profilePic = (ImageView) convertView.findViewById(R.id.child_profilepic);
         int defaultImageResId = ImageUtils.profileImageResourceByGender(gender);

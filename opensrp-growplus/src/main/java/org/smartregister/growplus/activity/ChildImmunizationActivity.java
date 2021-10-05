@@ -1655,6 +1655,7 @@ public class ChildImmunizationActivity extends BaseActivity
             String dobString = Utils.getValue(childDetails.getColumnmaps(), PathConstants.KEY.DOB, false);
             if (!TextUtils.isEmpty(dobString)) {
                 DateTime dateTime = new DateTime(dobString);
+               // Log.d("ttttChild",childDetails.entityId()+"   "+dateTime+"   "+PathConstants.KEY.CHILD);
                 VaccineSchedule.updateOfflineAlerts(childDetails.entityId(), dateTime, PathConstants.KEY.CHILD);
             }
 
@@ -1986,7 +1987,10 @@ public class ChildImmunizationActivity extends BaseActivity
             if (weight.getDate().compareTo(maxWeighingDate.getTime()) > 0) {
                 zScoreTextView.setText("");
             } else { //TODO
-                double zScore = ZScore.calculate(gender, dob, weight.getDate(), weight.getKg());
+                double zScore = 0.0;
+                if(ZScore.calculate(gender, dob, weight.getDate(), weight.getKg())!=null){
+                    zScore = ZScore.calculate(gender, dob, weight.getDate(), weight.getKg());
+                }
                 zScore = ZScore.roundOff(zScore);
                 zScoreTextView.setTextColor(getResources().getColor(ZScore.getZScoreColor(zScore)));
                 zScoreTextView.setText(String.valueOf(zScore));
