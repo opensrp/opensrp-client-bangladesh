@@ -428,6 +428,7 @@ public class WomanImmunizationActivity extends BaseActivity
 
 
                 String metadata = getmetaDataForEditForm(childDetails);
+                Log.d("tttMetadata","metadata "+childDetails.entityId());
                 Intent intent = new Intent(WomanImmunizationActivity.this, PathJsonFormActivity.class);
 
                 intent.putExtra("json", metadata);
@@ -490,8 +491,14 @@ public class WomanImmunizationActivity extends BaseActivity
                 Map<String, String> details = detailsRepository.getAllDetailsForClient(pc.entityId());
                 locationid = JsonFormUtils.getOpenMrsLocationId(context,getValue(details, "address3", false) );
 
-                String birthFacilityHierarchy = JsonFormUtils.getOpenMrsLocationHierarchy(
-                        context,locationid ).toString();
+                //TODO {Need to fix this}
+              /*  String birthFacilityHierarchy="";
+
+                if(JsonFormUtils.getOpenMrsLocationHierarchy(context,locationid).length()>0){
+                     birthFacilityHierarchy = JsonFormUtils.getOpenMrsLocationHierarchy(
+                            context,locationid ).toString();
+                }*/
+
                 //inject zeir id into the form
                 JSONObject stepOne = form.getJSONObject(JsonFormUtils.STEP1);
                 JSONArray jsonArray = stepOne.getJSONArray(JsonFormUtils.FIELDS);
@@ -501,10 +508,12 @@ public class WomanImmunizationActivity extends BaseActivity
                         jsonObject.remove(JsonFormUtils.VALUE);
                         jsonObject.put(JsonFormUtils.VALUE, entityId);
                     }
-                    if (jsonObject.getString(JsonFormUtils.KEY).equalsIgnoreCase("HIE_FACILITIES")) {
+
+                    //TODO {Need to fix this}
+                    /*if (jsonObject.getString(JsonFormUtils.KEY).equalsIgnoreCase("HIE_FACILITIES")) {
                         jsonObject.put(JsonFormUtils.VALUE, birthFacilityHierarchy);
 
-                    }
+                    }*/
                     if (jsonObject.getString(JsonFormUtils.KEY).equalsIgnoreCase("Mother_Guardian_First_Name")) {
                         jsonObject.put(JsonFormUtils.READ_ONLY, true);
                         jsonObject.put(JsonFormUtils.VALUE, (getValue(pc.getDetails(), "first_name", true).isEmpty() ? getValue(pc.getDetails(), "first_name", true) : getValue(pc.getDetails(), "first_name", true)));
@@ -537,12 +546,14 @@ public class WomanImmunizationActivity extends BaseActivity
                 }
 //            intent.putExtra("json", form.toString());
 //            startActivityForResult(intent, REQUEST_CODE_GET_JSON);
+
+                Log.d("tttFormSuc",form.toString());
                 return form.toString();
             }
         } catch (Exception e) {
-            Log.e("exception in addchild", e.getMessage());
+            e.printStackTrace();
         }
-
+        Log.d("tttFormFaild","failed");
         return "";
     }
 
@@ -1101,6 +1112,7 @@ public class WomanImmunizationActivity extends BaseActivity
     }
 
     public static void launchActivity(Context fromContext, CommonPersonObjectClient childDetails, RegisterClickables registerClickables) {
+        Log.d("ttt",childDetails.getName());
         Intent intent = new Intent(fromContext, WomanImmunizationActivity.class);
         Bundle bundle = new Bundle();
         bundle.putSerializable(EXTRA_CHILD_DETAILS, childDetails);
