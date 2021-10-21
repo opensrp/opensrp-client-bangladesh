@@ -144,15 +144,15 @@
     <string name="red">RED</string>
 
     <string name="record_birth">Record Birth</string>
-	<string name="woman_filter">Filter</string>
-	<string name="clients">%1$d Households</string>
-	<string name="client">%1$d Household</string>
+    <string name="woman_filter">Filter</string>
+    <string name="clients">%1$d Households</string>
+    <string name="client">%1$d Household</string>
     <string name="register">Register</string>
     <string name="library">Library</string>
     <string name="me">Me</string>
     <string name="clients_menu">Households</string>
-	<string name="_0_clients_sort_updated">0 Clients (Sort: updated)</string>
-	<string name="the_qr_code_scanner_button">The QR Code Scanner button</string>
+    <string name="_0_clients_sort_updated">0 Clients (Sort: updated)</string>
+    <string name="the_qr_code_scanner_button">The QR Code Scanner button</string>
 
     <!-- Quick Check -->
     <string name="quick_check">Quick Check</string>
@@ -235,11 +235,11 @@
     <string name="any_treatment">Any treatment given\nbefore referral?</string>
     <string name="yes">Yes</string>
     <string name="no">No</string>
-	<string name="contact">CONTACT&#10;22/05/2018</string>
+    <string name="contact">CONTACT&#10;22/05/2018</string>
     <string name="add_member">ADD&#10;MEMBER</string>
 
     <string name="library_placeholder">Library Placeholder</string>
-	<string name="me_page_placeholder">Me Page Placeholder</string>
+    <string name="me_page_placeholder">Me Page Placeholder</string>
     <string name="action_me">action_me</string>
     <string name="population_characteristics">Population Characteristics</string>
 

@@ -16,6 +16,7 @@ import android.widget.TextView;
 import org.apache.commons.lang3.StringUtils;
 import org.smartregister.cbhc.BuildConfig;
 import org.smartregister.cbhc.R;
+import org.smartregister.cbhc.activity.CampaignActivity;
 import org.smartregister.cbhc.application.AncApplication;
 import org.smartregister.cbhc.contract.MeContract;
 import org.smartregister.cbhc.activity.BlocksDialog;
@@ -41,6 +42,8 @@ public class MeFragment extends Fragment implements MeContract.View {
         Button Logout = view.findViewById(R.id.logout);
         Button Force_Logout = view.findViewById(R.id.force_logout);
         Button update_blocks = view.findViewById(R.id.update_blocks);
+        Button campaign_bt = view.findViewById(R.id.campaign_bt);
+
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
         AllSharedPreferences allSharedPreferences = new AllSharedPreferences(preferences);
         String anm_name = allSharedPreferences.fetchRegisteredANM();
@@ -71,6 +74,13 @@ public class MeFragment extends Fragment implements MeContract.View {
             @Override
             public void onClick(View v) {
                 startActivity(new Intent(getActivity(),BlocksDialog.class));
+            }
+        });
+
+        campaign_bt.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(getActivity(), CampaignActivity.class));
             }
         });
         return view;

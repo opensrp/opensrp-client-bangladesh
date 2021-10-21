@@ -127,7 +127,7 @@ public class LoginActivity extends AppCompatActivity implements LoginContract.Vi
         if(!StringUtils.isEmpty(anm_name)){
             userNameEditText.setText(anm_name);
         }
-        app_version_status();
+       // app_version_status();
     }
 
     @Override
