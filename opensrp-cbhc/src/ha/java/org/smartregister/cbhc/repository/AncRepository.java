@@ -6,6 +6,7 @@ import android.util.Log;
 import net.sqlcipher.database.SQLiteDatabase;
 
 import org.smartregister.AllConstants;
+import org.smartregister.cbhc.BuildConfig;
 import org.smartregister.cbhc.application.AncApplication;
 import org.smartregister.cbhc.util.Utils;
 import org.smartregister.configurableviews.repository.ConfigurableViewsRepository;
@@ -37,7 +38,7 @@ public class AncRepository extends Repository {
     private Context context;
 
     public AncRepository(Context context, org.smartregister.Context openSRPContext) {
-        super(context, AllConstants.DATABASE_NAME, AllConstants.DATABASE_VERSION, openSRPContext.session(), AncApplication.createCommonFtsObject(), openSRPContext.sharedRepositoriesArray());
+        super(context, AllConstants.DATABASE_NAME, BuildConfig.DATABASE_VERSION, openSRPContext.session(), AncApplication.createCommonFtsObject(), openSRPContext.sharedRepositoriesArray());
         this.context = context;
     }
 
@@ -84,7 +85,7 @@ public class AncRepository extends Repository {
         //onUpgrade(database, 1, 2);
         RecurringServiceTypeRepository recurringServiceTypeRepository = ImmunizationLibrary.getInstance().recurringServiceTypeRepository();
         IMDatabaseUtils.populateRecurringServices(context, database, recurringServiceTypeRepository);
-        onUpgrade(database, 1, 5);
+        onUpgrade(database, 1, 6);
     }
 
     @Override
@@ -106,6 +107,9 @@ public class AncRepository extends Repository {
                     break;
                 case 5:
                     upgradeToVersion5(db);
+                    break;
+                case 6:
+                    upgradeToVersion6(db);
                     break;
                 default:
                     break;
@@ -273,5 +277,10 @@ public class AncRepository extends Repository {
             Log.e(TAG, "upgradeToVersion5 " + Log.getStackTraceString(e));
         }
     }
+
+    private void upgradeToVersion6(SQLiteDatabase db) {
+        CampaignRepository.createTable(db);
+    }
+
 }
 
