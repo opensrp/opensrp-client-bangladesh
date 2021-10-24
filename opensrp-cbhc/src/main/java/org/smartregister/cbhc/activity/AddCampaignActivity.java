@@ -1,11 +1,13 @@
 package org.smartregister.cbhc.activity;
 
 import android.app.DatePickerDialog;
+import android.content.Intent;
 import android.os.Build;
 import android.support.annotation.RequiresApi;
 import android.support.design.widget.TextInputEditText;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
@@ -17,14 +19,17 @@ import com.mobsandgeeks.saripaar.ValidationError;
 import com.mobsandgeeks.saripaar.Validator;
 import com.mobsandgeeks.saripaar.annotation.NotEmpty;
 
+import java.text.DateFormat;
 import java.time.LocalDateTime;
 
 import org.joda.time.DateTime;
 import org.smartregister.cbhc.R;
 import org.smartregister.cbhc.application.AncApplication;
 import org.smartregister.cbhc.domain.CampaignForm;
+import org.smartregister.cbhc.domain.ScheduleData;
 import org.smartregister.cbhc.repository.CampaignRepository;
 import org.smartregister.cbhc.repository.FollowupRepository;
+import org.smartregister.cbhc.repository.ScheduleRepository;
 
 import java.text.SimpleDateFormat;
 import java.time.format.DateTimeFormatter;
@@ -40,11 +45,15 @@ public class AddCampaignActivity extends AppCompatActivity implements Validator.
     private Calendar calendar;
     private Validator validator;
     private CampaignRepository campaignRepository;
+    private ScheduleRepository scheduleRepository;
+    private Date targetDate;
+    private CampaignForm campaignForm;
+    private String type;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_campaign);
-        getSupportActionBar().setTitle("Add Campaign");
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
         initView();
@@ -53,7 +62,25 @@ public class AddCampaignActivity extends AppCompatActivity implements Validator.
         validator = new Validator(this);
         validator.setValidationListener(this);
 
+        Intent intent = new Intent();
+        type = getIntent().getStringExtra("from");
+        if(type.equals("update")){
+            getSupportActionBar().setTitle("Update Campaign");
+            add_campaign_bt.setText("Update");
+            campaignForm = (CampaignForm) getIntent().getSerializableExtra("content");
+            calendar.setTime(campaignForm.getTargetDate());
+            SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd/MM/yyyy");
+            DateFormat dateFormat = DateFormat.getDateInstance();
+
+            campaign_name_et.setText(campaignForm.getName());
+            campaign_type_et.setText(campaignForm.getType());
+            target_et.setText(calendar.get(Calendar.DAY_OF_MONTH)+"/"+calendar.get(Calendar.MONTH)+"/"+calendar.get(Calendar.YEAR));
+        }else{
+            getSupportActionBar().setTitle("Add Campaign");
+            add_campaign_bt.setText("Add");
+        }
         campaignRepository = new CampaignRepository(AncApplication.getInstance().getRepository());
+        scheduleRepository = new ScheduleRepository(AncApplication.getInstance().getRepository());
 
         target_et.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -78,14 +105,23 @@ public class AddCampaignActivity extends AppCompatActivity implements Validator.
     @RequiresApi(api = Build.VERSION_CODES.O)
     private void campaignAddOperations() {
         String base_entity_id = UUID.randomUUID().toString();
-       DateTimeFormatter dateFormat =DateTimeFormatter.ofPattern("dd/MM/yyyy");
        Date date = new Date();
-        Toast.makeText(this, "date    "+date, Toast.LENGTH_SHORT).show();
-        long status = campaignRepository.saveData(new CampaignForm(campaign_name_et.getText().toString(),campaign_type_et.getText().toString(),base_entity_id,target_et.getText().toString(), date,date));
+        long status = campaignRepository.saveData(new CampaignForm(campaign_name_et.getText().toString(),campaign_type_et.getText().toString(),base_entity_id,targetDate, date,date));
         if(status>=0){
-            Toast.makeText(AddCampaignActivity.this, "Campaign Added Successfully", Toast.LENGTH_SHORT).show();
+            addSchedule(base_entity_id);
             finish();
         }
+    }
+
+    private void addSchedule(String base_entity_id) {
+        Date date = new Date();
+        Calendar scheduleCalendar = calendar;
+        for(int i=0;i<(52*7);i+=28){
+            scheduleCalendar.add(Calendar.DATE,28);
+            long st = scheduleRepository.saveData(new ScheduleData(base_entity_id,calendar.getTime(), date,date,"true"));
+        }
+        Toast.makeText(AddCampaignActivity.this, "Campaign Added Successfully", Toast.LENGTH_SHORT).show();
+
     }
 
     /**
@@ -107,6 +143,7 @@ public class AddCampaignActivity extends AppCompatActivity implements Validator.
         new DatePickerDialog(AddCampaignActivity.this, date, calendar
                 .get(Calendar.YEAR), calendar.get(Calendar.MONTH),
                 calendar.get(Calendar.DAY_OF_MONTH)).show();
+        targetDate = calendar.getTime();
     }
 
     /**
@@ -139,7 +176,25 @@ public class AddCampaignActivity extends AppCompatActivity implements Validator.
     @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
     public void onValidationSucceeded() {
-        campaignAddOperations();
+        if(type.equals("add")){
+            campaignAddOperations();
+        }else{
+            campaignUpdateOperation();
+        }
+
+    }
+
+    /**
+     * campaign update operation
+     */
+    private void campaignUpdateOperation() {
+        String base_entity_id = UUID.randomUUID().toString();
+        Date date = new Date();
+        long status = campaignRepository.updateData(new CampaignForm(campaign_name_et.getText().toString(),campaign_type_et.getText().toString(),campaignForm.getBaseEntityId(),targetDate, date,date));
+        if(status>=0){
+            Toast.makeText(AddCampaignActivity.this, "successfully updated", Toast.LENGTH_SHORT).show();
+            finish();
+        }
     }
 
     /**

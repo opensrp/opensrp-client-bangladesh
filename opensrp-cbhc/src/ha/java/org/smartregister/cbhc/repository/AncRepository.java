@@ -280,6 +280,7 @@ public class AncRepository extends Repository {
 
     private void upgradeToVersion6(SQLiteDatabase db) {
         CampaignRepository.createTable(db);
+        ScheduleRepository.createTable(db);
     }
 
 }

@@ -18,6 +18,16 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1.5dp"
+        android:layout_marginTop="15dp"
+        android:layout_marginBottom="4dp"
+        android:background="#D1D1D1"
+        app:layout_constraintBottom_toTopOf="@+id/campaign_list_rv"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/add_campaign_bt" />
     <TextView
         android:id="@+id/not_fount_tv"
         android:layout_width="wrap_content"

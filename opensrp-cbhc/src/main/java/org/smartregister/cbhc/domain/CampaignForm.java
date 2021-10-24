@@ -1,12 +1,13 @@
 package org.smartregister.cbhc.domain;
 
+import java.io.Serializable;
 import java.util.Date;
 
-public class CampaignForm {
-    String name,type,baseEntityId,targetDate;
-    Date updatedDate,createdDate;
+public class CampaignForm implements Serializable {
+    String name,type,baseEntityId;
+    Date updatedDate,createdDate,targetDate;
 
-    public CampaignForm(String name, String type,String baseEntityId, String targetDate,Date updatedDate,Date createdDate) {
+    public CampaignForm(String name, String type,String baseEntityId, Date targetDate,Date updatedDate,Date createdDate) {
         this.name = name;
         this.type = type;
         this.baseEntityId = baseEntityId;
@@ -27,7 +28,7 @@ public class CampaignForm {
         return baseEntityId;
     }
 
-    public String getTargetDate() {
+    public Date getTargetDate() {
         return targetDate;
     }
 
