@@ -410,7 +410,7 @@ public class LoginActivity extends AppCompatActivity {
             return;
         }
 
-        final LinearLayout canvasRL = (LinearLayout) findViewById(R.id.canvasRL);
+        final RelativeLayout canvasRL = (RelativeLayout) findViewById(R.id.canvasRL);
         final LinearLayout logoCanvasLL = (LinearLayout) findViewById(R.id.logoCanvasLL);
         final LinearLayout credentialsCanvasLL = (LinearLayout) findViewById(R.id.credentialsCanvasLL);
 
@@ -425,12 +425,12 @@ public class LoginActivity extends AppCompatActivity {
                         - (credentialsCanvasLL.getHeight() / 2)
                         - logoCanvasLL.getHeight();
                 topMargin = topMargin / 2;
-
+/*
                 LinearLayout.LayoutParams logoCanvasLP = (LinearLayout.LayoutParams) logoCanvasLL.getLayoutParams();
                 logoCanvasLP.setMargins(0, topMargin, 0, 0);
                 logoCanvasLL.setLayoutParams(logoCanvasLP);
 
-                canvasRL.setMinimumHeight(windowHeight);
+                canvasRL.setMinimumHeight(windowHeight);*/
             }
         });
     }

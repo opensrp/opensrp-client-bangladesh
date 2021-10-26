@@ -9,6 +9,7 @@ import org.smartregister.growplus.BuildConfig;
 
 public abstract class Constants {
     public static final String SQLITE_DATE_TIME_FORMAT = "yyyy-MM-dd";
+    public static String LOCATION_UPDATED = "LOCATION_HIERARCHY";
     public static final int OPENMRS_UNIQUE_ID_INITIAL_BATCH_SIZE = BuildConfig.OPENMRS_UNIQUE_ID_INITIAL_BATCH_SIZE;
     public static final int OPENMRS_UNIQUE_ID_BATCH_SIZE = BuildConfig.OPENMRS_UNIQUE_ID_BATCH_SIZE;
     public static final int OPENMRS_UNIQUE_ID_SOURCE = BuildConfig.OPENMRS_UNIQUE_ID_SOURCE;

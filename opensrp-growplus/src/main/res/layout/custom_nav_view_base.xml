@@ -265,6 +265,69 @@
                         android:layout_gravity="center_vertical"
                         android:text="@string/report" />
                 </LinearLayout>
+
+
+                <LinearLayout
+                    android:orientation="horizontal"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/block_update"
+                    android:layout_marginTop="5dp">
+
+                    <ImageView
+                        android:layout_width="55dp"
+                        android:id="@+id/block_update_imageview"
+                        android:src="@drawable/ic_daily_tallies"
+                        android:paddingTop="10dp"
+                        android:paddingBottom="10dp"
+                        android:paddingRight="10dp"
+                        android:layout_marginTop="5dp"
+                        android:layout_marginRight="5dp"
+                        android:layout_marginBottom="5dp"
+                        android:layout_marginLeft="7dp"
+                        android:layout_height="55dp" />
+                    <org.smartregister.view.customcontrols.CustomFontTextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        style="@style/CustomFontTextViewStyle.ClientList.Light.twoline"
+                        android:id="@+id/block_update_tv"
+                        android:textColor="@color/white"
+                        android:textSize="@dimen/label_text_size"
+                        android:layout_weight="1"
+                        android:layout_gravity="center_vertical"
+                        android:text="@string/block_update" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:orientation="horizontal"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/campaign_lay"
+                    android:layout_marginTop="5dp">
+
+                    <ImageView
+                        android:layout_width="55dp"
+                        android:id="@+id/campaign_imageview"
+                        android:src="@drawable/ic_daily_tallies"
+                        android:paddingTop="10dp"
+                        android:paddingBottom="10dp"
+                        android:paddingRight="10dp"
+                        android:layout_marginTop="5dp"
+                        android:layout_marginRight="5dp"
+                        android:layout_marginBottom="5dp"
+                        android:layout_marginLeft="7dp"
+                        android:layout_height="55dp" />
+                    <org.smartregister.view.customcontrols.CustomFontTextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        style="@style/CustomFontTextViewStyle.ClientList.Light.twoline"
+                        android:id="@+id/campaign_tv"
+                        android:textColor="@color/white"
+                        android:textSize="@dimen/label_text_size"
+                        android:layout_weight="1"
+                        android:layout_gravity="center_vertical"
+                        android:text="@string/campaign_add" />
+                </LinearLayout>
             </LinearLayout>
         </ScrollView>
 

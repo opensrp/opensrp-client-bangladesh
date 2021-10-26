@@ -7,6 +7,7 @@ import java.util.List;
  */
 
 public class FormLocation {
+    public String id;
     public String name;
     public String key;
     public String level;

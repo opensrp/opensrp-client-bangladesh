@@ -61,13 +61,18 @@ android {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro' 
-            resValue "string", 'opensrp_url', '"http://giz-growplus.dev.mpower-social.com:1971/opensrp/"'
+            /*resValue "string", 'opensrp_url', '"http://giz-growplus.dev.mpower-social.com:1971/opensrp/"'
+            resValue "string", 'opensrp_url', '"http://giz-growplus.dev.mpower-social.com:1971/opensrp/"'*/
+            resValue "string", 'opensrp_url', '"http://192.168.19.167:8080/opensrp/"'
+            //resValue "string", 'opensrp_url', '"http://123.200.18.23:8080/opensrp/"'
+            //resValue "string", 'opensrp_url', '"http://123.200.18.23:8080/opensrp/"'
+            //resValue "string", 'opensrp_url', '"http://opensrpha.mpower-social.com:8080/opensrp/"'
             buildConfigField "String", 'OPENMRS_URL', '"http://openmrs.zeir.smartregister.org/openmrs"'
             buildConfigField "String", 'OPENMRS_IDGEN_URL', '"/module/idgen/exportIdentifiers.form"' 
             buildConfigField "int", "OPENMRS_UNIQUE_ID_INITIAL_BATCH_SIZE", '250'
             buildConfigField "int", "OPENMRS_UNIQUE_ID_BATCH_SIZE", '100'
             buildConfigField "int", "OPENMRS_UNIQUE_ID_SOURCE", '2'
-            buildConfigField "int", "DATABASE_VERSION", '14'
+            buildConfigField "int", "DATABASE_VERSION", '15'
             buildConfigField "long", "MAX_SERVER_TIME_DIFFERENCE", "1800000l"
             buildConfigField "boolean", "TIME_CHECK", "false"
             buildConfigField "int", "AUTO_SYNC_DURATION", '2'
@@ -82,13 +87,17 @@ android {
         }
 
         debug {
-            resValue "string", 'opensrp_url', '"http://giz-growplus.dev.mpower-social.com:1971/opensrp/"'
+            //resValue "string", 'opensrp_url', '"http://giz-growplus.dev.mpower-social.com:1971/opensrp/"'
+            resValue "string", 'opensrp_url', '"http://192.168.19.167:8080/opensrp/"'
+            //resValue "string", 'opensrp_url', '"http://123.200.18.23:8080/opensrp/"'
+            //resValue "string", 'opensrp_url', '"http://123.200.18.23:8080/opensrp/"'
+            //resValue "string", 'opensrp_url', '"http://opensrpha.mpower-social.com:8080/opensrp/"'
             buildConfigField "String", 'OPENMRS_URL', '"http://27.147.138.61:1971/openmrs/"'
             buildConfigField "String", 'OPENMRS_IDGEN_URL', '"/module/idgen/exportIdentifiers.form"'
             buildConfigField "int", "OPENMRS_UNIQUE_ID_INITIAL_BATCH_SIZE", '250'
             buildConfigField "int", "OPENMRS_UNIQUE_ID_BATCH_SIZE", '100'
             buildConfigField "int", "OPENMRS_UNIQUE_ID_SOURCE", '2'
-            buildConfigField "int", "DATABASE_VERSION", '14'
+            buildConfigField "int", "DATABASE_VERSION", '15'
             buildConfigField "long", "MAX_SERVER_TIME_DIFFERENCE", "1800000l"
             buildConfigField "boolean", "TIME_CHECK", "false"
             buildConfigField "int", "AUTO_SYNC_DURATION", '2'
@@ -120,6 +129,10 @@ android {
 
     testOptions {
         unitTests.returnDefaultValues = true
+    }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
     }
 
 }
@@ -208,6 +221,9 @@ dependencies {
             exclude group: 'com.android.support', module: 'appcompat-v7'
 
     }
+
+    //saripaar
+    implementation 'com.mobsandgeeks:android-saripaar:2.0.3'
 }
 
 //Testing and coveralls

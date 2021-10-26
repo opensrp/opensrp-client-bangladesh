@@ -47,6 +47,15 @@
             android:launchMode="singleTask"
             android:screenOrientation="portrait"
             android:theme="@style/AppThemeNoActionBarAndTitle" />
+        <activity android:name=".activity.BlocksDialog" />
+        <activity
+            android:theme="@style/Theme.AppCompat.Light"
+            android:name=".activity.CampaignActivity"
+            android:exported="true" />
+        <activity
+            android:theme="@style/Theme.AppCompat.Light"
+            android:name=".activity.AddCampaignActivity"
+            android:exported="true" />
         <activity
             android:name=".activity.HouseholdDetailActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"

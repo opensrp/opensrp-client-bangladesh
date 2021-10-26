@@ -336,6 +336,20 @@ public abstract class BaseActivity extends AppCompatActivity
 
             }
         });
+
+        drawer.findViewById(R.id.block_update).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(BaseActivity.this,BlocksDialog.class));
+            }
+        });
+
+        drawer.findViewById(R.id.campaign_lay).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(BaseActivity.this,CampaignActivity.class));
+            }
+        });
         /////disabling buttons
         outofcatchment.setVisibility(View.GONE);
         stockregister.setVisibility(View.GONE);

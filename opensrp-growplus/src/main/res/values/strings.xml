@@ -316,5 +316,13 @@
     <string name="birth_weight">জন্মের সময় ওজন</string>
     <string name="version">ভার্সন</string>
     <string name="built_on">নির্মিত হয়েছে:</string>
+    <string name="show_password_text">Show Password</string>
+    <string name="url_separator">/</string>
+    <string name="block_update">ব্লক আপডেট</string>
+
+
+    <string name="update">আপডেট</string>
+    <string name="add">অ্যাড</string>
+    <string name="campaign_add">ক্যাম্পেইন অ্যাড করুন</string>
 
 </resources>

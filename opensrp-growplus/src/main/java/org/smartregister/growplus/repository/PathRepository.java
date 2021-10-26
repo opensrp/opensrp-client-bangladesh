@@ -8,6 +8,7 @@ import net.sqlcipher.database.SQLiteDatabase;
 import org.apache.commons.lang3.StringUtils;
 import org.smartregister.commonregistry.CommonFtsObject;
 import org.smartregister.domain.db.Column;
+import org.smartregister.growplus.BuildConfig;
 import org.smartregister.growthmonitoring.repository.HeightRepository;
 import org.smartregister.growthmonitoring.repository.HeightZScoreRepository;
 import org.smartregister.growthmonitoring.repository.MUACRepository;
@@ -41,7 +42,7 @@ public class PathRepository extends Repository {
     private final Context context;
 
     public PathRepository(Context context, org.smartregister.Context opensrpContext) {
-        super(context, PathConstants.DATABASE_NAME, PathConstants.DATABASE_VERSION, opensrpContext.session(), VaccinatorApplication.createCommonFtsObject(), opensrpContext.sharedRepositoriesArray());
+        super(context, PathConstants.DATABASE_NAME, BuildConfig.DATABASE_VERSION, opensrpContext.session(), VaccinatorApplication.createCommonFtsObject(), opensrpContext.sharedRepositoriesArray());
         this.context = context;
     }
 
@@ -58,7 +59,7 @@ public class PathRepository extends Repository {
         CounsellingRepository.createTable(database);
         HeightRepository.createTable(database);
         MUACRepository.createTable(database);
-        onUpgrade(database, 1, PathConstants.DATABASE_VERSION);
+        onUpgrade(database, 1, BuildConfig.DATABASE_VERSION);
 
     }
     @Override
@@ -110,6 +111,9 @@ public class PathRepository extends Repository {
                     break;
                 case 14:
                     upgradeToVersion14(db);
+                    break;
+                case 15:
+                    upgradeToVersion15(db);
                     break;
                 default:
                     break;
@@ -233,17 +237,19 @@ public class PathRepository extends Repository {
             Log.e(TAG, "upgradeToVersion5 " + Log.getStackTraceString(e));
         }
     }
-    private void upgradeToVersion14(SQLiteDatabase db) {
+   /* private void upgradeToVersion14(SQLiteDatabase db) {
         try {
             HeightZScoreRepository.createTable(db);
         } catch (Exception e) {
             Log.e(TAG, "upgradeToVersion6" + Log.getStackTraceString(e));
         }
-    }
+    }*/
     private void upgradeToVersion6(SQLiteDatabase db) {
         try {
             ZScoreRepository.createTable(db);
             db.execSQL(WeightRepository.ALTER_ADD_Z_SCORE_COLUMN);
+            CampaignRepository.createTable(db);
+            ScheduleRepository.createTable(db);
         } catch (Exception e) {
             Log.e(TAG, "upgradeToVersion6" + Log.getStackTraceString(e));
         }
@@ -382,6 +388,26 @@ public class PathRepository extends Repository {
             db.execSQL(RecurringServiceRecordRepository.UPDATE_TABLE_ADD_TEAM_COL);
         } catch (Exception e) {
             Log.e(TAG, "upgradeToVersion13 " + e.getMessage());
+        }
+    }
+
+    private void upgradeToVersion14(SQLiteDatabase db) {
+        try {
+            ZScoreRepository.createTable(db);
+            db.execSQL(WeightRepository.ALTER_ADD_Z_SCORE_COLUMN);
+            CampaignRepository.createTable(db);
+            ScheduleRepository.createTable(db);
+        } catch (Exception e) {
+            Log.e(TAG, "upgradeToVersion6" + Log.getStackTraceString(e));
+        }
+    }
+
+    private void upgradeToVersion15(SQLiteDatabase db) {
+        try {
+            CampaignRepository.createTable(db);
+            ScheduleRepository.createTable(db);
+        } catch (Exception e) {
+            Log.e(TAG, "upgradeToVersion6" + Log.getStackTraceString(e));
         }
     }
 

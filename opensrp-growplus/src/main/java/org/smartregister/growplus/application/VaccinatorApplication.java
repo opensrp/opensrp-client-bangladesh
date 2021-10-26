@@ -89,17 +89,19 @@ public class VaccinatorApplication extends DrishtiApplication
         TimeChangedBroadcastReceiver.init(this);
         TimeChangedBroadcastReceiver.getInstance().addOnTimeChangedListener(this);
 
-        applyUserLanguagePreference();
-        cleanUpSyncState();
-        initOfflineSchedules();
-//        setCrashlyticsUser(context);
-        PathUpdateActionsTask.setAlarms(this);
 
         //Initialize Modules
         CoreLibrary.init(context());
         GrowthMonitoringLibrary.init(context(), getRepository(), BuildConfig.VERSION_CODE, BuildConfig.DATABASE_VERSION);
         ImmunizationLibrary.init(context(), getRepository(), createCommonFtsObject(), BuildConfig.VERSION_CODE, BuildConfig.DATABASE_VERSION);
         JobManager.create(this).addJobCreator(new GrowPlusJobCreator());
+
+        applyUserLanguagePreference();
+        cleanUpSyncState();
+        initOfflineSchedules();
+//        setCrashlyticsUser(context);
+        PathUpdateActionsTask.setAlarms(this);
+
     }
 
     public static synchronized VaccinatorApplication getInstance() {
@@ -121,6 +123,10 @@ public class VaccinatorApplication extends DrishtiApplication
     protected void cleanUpSyncState() {
         DrishtiSyncScheduler.stop(getApplicationContext());
         context.allSharedPreferences().saveIsSyncInProgress(false);
+    }
+
+    public Context getContext() {
+        return context;
     }
 
 

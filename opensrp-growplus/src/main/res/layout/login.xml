@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!--
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/canvasSV"
@@ -26,13 +27,13 @@
 
                 android:layout_gravity="left"
                 android:src="@drawable/up_logo" />
-<!--            <ImageView-->
-<!--                android:layout_width="80dp"-->
-<!--                android:layout_height="wrap_content"-->
-<!--                android:layout_gravity="center"-->
-<!--                android:scaleType="centerInside">-->
+&lt;!&ndash;            <ImageView&ndash;&gt;
+&lt;!&ndash;                android:layout_width="80dp"&ndash;&gt;
+&lt;!&ndash;                android:layout_height="wrap_content"&ndash;&gt;
+&lt;!&ndash;                android:layout_gravity="center"&ndash;&gt;
+&lt;!&ndash;                android:scaleType="centerInside">&ndash;&gt;
 
-<!--            </ImageView>-->
+&lt;!&ndash;            </ImageView>&ndash;&gt;
 
             <ImageView
                 android:layout_width="160dp"
@@ -46,9 +47,9 @@
 
 
 
-        <!-- Most important group of views goes in last to avoid being overlapped by other less important views -->
+        &lt;!&ndash; Most important group of views goes in last to avoid being overlapped by other less important views &ndash;&gt;
 
-        <!-- Bottom section -->
+        &lt;!&ndash; Bottom section &ndash;&gt;
         <LinearLayout
             android:id="@+id/logoCanvasLL"
             android:layout_width="match_parent"
@@ -191,8 +192,262 @@
 
         </LinearLayout>
 
+        &lt;!&ndash; Top section &ndash;&gt;
+
+        &lt;!&ndash; Middle section &ndash;&gt;
+    </LinearLayout>
+</ScrollView>-->
+
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/canvasSV"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fillViewport="true"
+    android:isScrollContainer="false">
+
+    <RelativeLayout
+        android:id="@+id/canvasRL"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="1.0"
+        android:background="@color/customAppThemeBlue"
+        android:paddingBottom="15dp">
+
+
         <!-- Top section -->
+        <LinearLayout
+            android:id="@+id/logoCanvasLL"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_marginTop="10dp"
+            android:orientation="vertical"
+            android:paddingTop="5dp">
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:gravity="top"
+                android:orientation="vertical">
+
+                <ImageView
+                    android:id="@+id/imageView3"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:adjustViewBounds="false"
+                    android:cropToPadding="false"
+                    android:scaleType="fitCenter"
+                    app:srcCompat="@drawable/mhfw" />
+
+                <ImageView
+                    android:id="@+id/login_logo"
+                    android:layout_width="180dp"
+                    android:layout_height="60dp"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginTop="20dp"
+                    android:layout_weight="1"
+                    android:contentDescription="logo"
+                    android:scaleType="fitCenter"
+                    android:src="@drawable/cbhclogo_two" />
+
+                <TextView
+                    android:id="@+id/login_build_text_view"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="5dp"
+                    android:gravity="center_horizontal"
+                    android:text="build_number"
+                    android:textColor="@color/white"
+                    android:textSize="12sp"
+                    />
+            </LinearLayout>
+
+
+        </LinearLayout>
 
         <!-- Middle section -->
-    </LinearLayout>
+        <LinearLayout
+            android:id="@+id/credentialsCanvasLL"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/logoCanvasLL"
+            android:layout_centerInParent="true"
+            android:orientation="vertical"
+            android:paddingLeft="@dimen/login_horizontal_margin"
+            android:paddingRight="@dimen/login_horizontal_margin">
+
+            <EditText
+                android:id="@+id/login_userNameText"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_marginTop="25dp"
+                android:layout_weight="8"
+                android:background="@drawable/rounded_corner_login_button"
+                android:cursorVisible="true"
+                android:ems="10"
+                android:hint="Username"
+                android:imeOptions="actionNext"
+                android:inputType="text"
+                android:lines="1"
+                android:paddingLeft="12dp"
+                android:textColor="#666666"
+                android:textColorHint="#6fc8e8"
+                android:textCursorDrawable="@null"
+                android:textSize="16sp"
+                android:typeface="sans" />
+
+            <EditText
+                android:id="@+id/login_passwordText"
+                style="@style/CustomFontTextViewStyle.ListView.Medium.NoPadding"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="5dp"
+                android:layout_weight="8"
+                android:background="@drawable/rounded_corner_login_button"
+                android:cursorVisible="true"
+                android:ems="10"
+                android:hint="Password"
+                android:imeActionId="100"
+                android:inputType="textPassword"
+                android:lines="1"
+                android:paddingLeft="12dp"
+                android:textColor="#666666"
+                android:textColorHint="#6fc8e8"
+                android:textCursorDrawable="@null"
+                android:textSize="16sp"
+                android:typeface="normal" />
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/client_profile_pic_margin_right">
+
+                <CheckBox
+                    android:id="@+id/login_show_password_checkbox"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginTop="15dp"
+                    android:layout_marginRight="5dp"
+                    android:button="@drawable/white_checkbox_bg_selector"
+                    android:scaleX="1.7"
+                    android:scaleY="1.7" />
+
+                <TextView
+                    android:id="@+id/login_show_password_text_view"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="10dp"
+                    android:layout_toRightOf="@id/login_show_password_checkbox"
+                    android:text="@string/show_password_text"
+                    android:textColor="@android:color/white"
+                    android:textSize="16sp" />
+            </RelativeLayout>
+
+            <Button
+                android:id="@+id/login_loginButton"
+                style="@style/CustomFontTextViewStyle.ClientList.Light"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:onClick="login"
+                android:layout_gravity="center_horizontal"
+                android:layout_weight="8"
+                android:background="@drawable/rounded_corner_login_button"
+                android:ems="10"
+                android:shadowColor="#ffffff"
+                android:shadowDx="0"
+                android:shadowDy="1"
+                android:shadowRadius="0.5"
+                android:text="LOGIN"
+                android:textAllCaps="true"
+                android:textColor="#6fc8e8"
+                android:textSize="18sp" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:layout_marginBottom="5dp"
+                android:gravity="center_horizontal"
+                android:text="Population Registration and Information Management Application - HA"
+                android:textColor="@color/white"
+                android:textSize="18sp"
+                android:typeface="sans" />
+        </LinearLayout>
+        <!-- Bottom section -->
+
+        <LinearLayout
+            android:id="@+id/top_section"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+
+            android:orientation="horizontal"
+            android:gravity="bottom"
+            >
+            <LinearLayout
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_weight="1">
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:paddingBottom="3dp"
+                    android:paddingTop="3dp"
+                    android:text="Powered by"
+                    android:textAlignment="center"
+                    android:textColor="#A6ffffff" />
+
+                <ImageView
+                    android:id="@+id/opensrp_logo_image_view"
+                    android:layout_width="60dp"
+                    android:layout_height="20dp"
+                    android:layout_gravity="center_horizontal"
+                    android:adjustViewBounds="false"
+                    android:cropToPadding="false"
+                    android:scaleType="fitCenter"
+                    android:src="@drawable/opensrp_label" />
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="1dp"
+                android:layout_height="fill_parent"
+                android:background="@android:color/white">
+
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_weight="1">
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:paddingBottom="3dp"
+                    android:paddingTop="3dp"
+                    android:text="Developed by"
+                    android:textAlignment="center"
+                    android:textColor="#A6ffffff" />
+
+                <ImageView
+
+                    android:layout_width="60dp"
+                    android:layout_height="20dp"
+                    android:layout_gravity="center_horizontal"
+                    android:adjustViewBounds="false"
+                    android:cropToPadding="false"
+                    android:scaleType="fitCenter"
+                    android:src="@drawable/ic_logo_mpower" />
+            </LinearLayout>
+
+        </LinearLayout>
+    </RelativeLayout>
 </ScrollView>
