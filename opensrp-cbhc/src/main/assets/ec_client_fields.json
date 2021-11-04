@@ -322,10 +322,17 @@
           }
         },
         {
+          "column_name": "birthRegistrationID",
+          "type": "Client",
+          "json_mapping": {
+            "field": "attributes.member_BRID"
+          }
+        },
+        {
           "column_name": "Patient_Identifier",
           "type": "Client",
           "json_mapping": {
-            "field": "identifiers.Patient_Identifier"
+            "field": "attributes.Patient_Identifier"
           }
         },
         {
@@ -350,17 +357,73 @@
           }
         },
         {
+          "column_name": "relation_with_household",
+          "type": "Client",
+          "json_mapping": {
+            "field": "attributes.relation_with_household_head"
+          }
+        },
+        {
+          "column_name": "member_f_name_bengali",
+          "type": "Client",
+          "json_mapping": {
+            "field": "attributes.givenNameLocal"
+          }
+        },
+        {
+          "column_name": "motherNameEnglish",
+          "type": "Client",
+          "json_mapping": {
+            "field": "attributes.motherNameEnglish"
+          }
+        },
+
+        {
+          "column_name": "motherNameBangla",
+          "type": "Client",
+          "json_mapping": {
+            "field": "attributes.motherNameBangla"
+          }
+        },
+
+        {
+          "column_name": "fatherNameEnglish",
+          "type": "Client",
+          "json_mapping": {
+            "field": "attributes.fatherNameEnglish"
+          }
+        },
+
+        {
+          "column_name": "fathernameBangla",
+          "type": "Client",
+          "json_mapping": {
+            "field": "attributes.fathernameBangla"
+          }
+        },
+
+        {
           "column_name": "dob",
           "type": "Client",
           "json_mapping": {
-            "field": "birthdate"
+            "field": "attributes.birthdate"
           }
         },
+
+        {
+          "column_name": "age",
+          "type": "Client",
+          "json_mapping": {
+            "field": "attributes.age"
+          }
+        },
+
+
         {
           "column_name": "dob_unknown",
           "type": "Client",
           "json_mapping": {
-            "field": "birthdateApprox"
+            "field": "attributes.birthdateApprox"
           }
         },
         {
@@ -368,6 +431,78 @@
           "type": "Client",
           "json_mapping": {
             "field": "gender"
+          }
+        },
+
+        {
+          "column_name": "Child_birth_weight",
+          "type": "Client",
+          "json_mapping": {
+            "field": "1e58da4d-60b9-4c60-a079-9a5371d3cfa9"
+          }
+        },
+
+        {
+          "column_name": "birthPlace",
+          "type": "Client",
+          "json_mapping": {
+            "field": "attributes.birthPlace"
+          }
+        },
+
+        {
+          "column_name": "disable",
+          "type": "Client",
+          "json_mapping": {
+            "field": "attributes.disable"
+          }
+        },
+
+        {
+          "column_name": "ethnicity",
+          "type": "Client",
+          "json_mapping": {
+            "field": "attributes.ethnicity"
+          }
+        },
+
+        {
+          "column_name": "Religion",
+          "type": "Client",
+          "json_mapping": {
+            "field": "attributes.Religion"
+          }
+        },
+
+        {
+          "column_name": "bloodgroup",
+          "type": "Client",
+          "json_mapping": {
+            "field": "attributes.bloodgroup"
+          }
+        },
+
+        {
+          "column_name": "has_disease",
+          "type": "Client",
+          "json_mapping": {
+            "field": "attributes.has_disease"
+          }
+        },
+
+        {
+          "column_name": "CommunicableDisease",
+          "type": "Client",
+          "json_mapping": {
+            "field": "attributes.Comm_Disease"
+          }
+        },
+
+        {
+          "column_name": "NonComDisease",
+          "type": "Client",
+          "json_mapping": {
+            "field": "attributes.NonComnta_Disease"
           }
         },
         {

@@ -65,7 +65,9 @@ import org.smartregister.util.DateUtil;
 import org.smartregister.util.PermissionUtils;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 import static org.smartregister.cbhc.fragment.ProfileOverviewFragment.EXTRA_HOUSEHOLD_DETAILS;
 import static org.smartregister.cbhc.util.Constants.FOLLOWUP_FORM.Followup_Form_MHV_Transfer;
@@ -247,6 +249,7 @@ Utils.appendLog(getClass().getName(),e);
 
                 if (patient_identifier == null || (patient_identifier != null && patient_identifier.isEmpty()) || patient_identifier.equalsIgnoreCase("null")) {
                     UniqueId uniqueId = getUniqueIdRepository().getNextUniqueId();
+                    //final String entityId = uniqueId != null ? uniqueId.getOpenmrsId() : "";
                     final String entityId = uniqueId != null ? uniqueId.getOpenmrsId() : "";
                     if (StringUtils.isBlank(entityId)) {
                         displayShortToast(R.string.no_openmrs_id);
@@ -307,6 +310,23 @@ Utils.appendLog(getClass().getName(),e);
 
                 break;
         }
+    }
+
+
+    private void sampleUniqueIds() {
+        List<String> ids = generateIds(20);
+        AncApplication.getInstance().getUniqueIdRepository().bulkInserOpenmrsIds(ids);
+    }
+    private List<String> generateIds(int size) {
+        List<String> ids = new ArrayList<>();
+        Random r = new Random();
+
+        for (int i = 0; i < size; i++) {
+            Integer randomInt = r.nextInt(1000) + 1;
+            ids.add(randomInt.toString());
+        }
+
+        return ids;
     }
 
     private void launchFormEdit(CommonPersonObjectClient pclient) {

@@ -1,15 +1,12 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginBottom="@dimen/activity_vertical_margin"
-    android:layout_marginLeft="@dimen/activity_horizontal_margin"
-    android:layout_marginRight="@dimen/activity_horizontal_margin"
-    android:layout_marginTop="@dimen/activity_vertical_margin"
     android:gravity="center"
     android:orientation="vertical"
     android:theme="@style/ThemeOverlay.AppCompat.Dark">
 
-    <TextView
+    <!--<TextView
         android:id="@+id/name_tv"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -20,9 +17,30 @@
         android:singleLine="true"
         android:text="Healthworker username"
         android:textColor="@android:color/white"
-        android:textSize="@dimen/nav_view_text_max_size" />
+        android:textSize="@dimen/nav_view_text_max_size" />-->
 
-    <Button
+    <ImageView
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginBottom="20dp"
+        android:src="@drawable/ic_baseline_account_circle_24"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageView
+        android:id="@+id/close_drawer"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/ic_cross"
+        android:layout_marginRight="8dp"
+        android:layout_marginTop="8dp"
+        android:tint="@color/black"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+   <!-- <Button
         android:id="@+id/logout"
         android:layout_width="wrap_content"
         android:layout_height="45dp"
@@ -34,6 +52,6 @@
         android:text="Logout"
         android:textAllCaps="false"
         android:textColor="@android:color/white"
-        android:textSize="@dimen/nav_view_text_min_size" />
+        android:textSize="@dimen/nav_view_text_min_size" />-->
 
-</LinearLayout>
+</android.support.constraint.ConstraintLayout>

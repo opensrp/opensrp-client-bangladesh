@@ -13,15 +13,24 @@
         android:layout_width="35dp"
         android:layout_height="35dp"
         android:layout_centerVertical="true">
-
         <ImageView
-            android:id="@+id/scanQrCode"
+            android:id="@+id/drawerMenu"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_alignParentBottom="true"
             android:layout_margin="3dp"
             android:gravity="center"
-            android:src="@drawable/opensrp_white_logo_back" />
+            android:src="@drawable/ic_action_menu" />
+
+        <!--<ImageView
+            android:id="@+id/scanQrCode"
+            android:visibility="gone"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_alignParentBottom="true"
+            android:layout_margin="3dp"
+            android:gravity="center"
+            android:src="@drawable/opensrp_white_logo_back" />-->
 
         <ProgressBar
             android:id="@+id/sync_progress_bar"

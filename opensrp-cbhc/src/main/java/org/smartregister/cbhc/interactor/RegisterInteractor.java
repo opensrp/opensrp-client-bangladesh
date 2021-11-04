@@ -28,7 +28,10 @@ import org.smartregister.repository.AllSharedPreferences;
 import org.smartregister.repository.BaseRepository;
 import org.smartregister.sync.ClientProcessorForJava;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
+import java.util.Random;
 
 
 /**
@@ -62,7 +65,8 @@ public class RegisterInteractor implements RegisterContract.Interactor {
             @Override
             public void run() {
                 UniqueId uniqueId = getUniqueIdRepository().getNextUniqueId();
-                final String entityId = uniqueId != null ? uniqueId.getOpenmrsId() : "";
+                //final String entityId = uniqueId != null ? uniqueId.getOpenmrsId() : "";
+                final String entityId = generateIds(20);
                 appExecutors.mainThread().execute(new Runnable() {
                     @Override
                     public void run() {
@@ -79,6 +83,18 @@ public class RegisterInteractor implements RegisterContract.Interactor {
         appExecutors.diskIO().execute(runnable);
     }
 
+    private String generateIds(int size) {
+        List<String> ids = new ArrayList<>();
+        Random r = new Random();
+
+        /*for (int i = 0; i < size; i++) {
+            Integer randomInt = r.nextInt(1000) + 1;
+            ids.add(randomInt.toString());
+        }*/
+        Integer randomInt = r.nextInt(1000) + 1;
+        return randomInt.toString();
+    }
+
     @Override
     public void getNextUniqueId(final String formName, final String metadata, final String currentLocationId, final String householdID, final RegisterContract.InteractorCallBack callBack) {
 
@@ -86,7 +102,7 @@ public class RegisterInteractor implements RegisterContract.Interactor {
             @Override
             public void run() {
                 UniqueId uniqueId = getUniqueIdRepository().getNextUniqueId();
-                final String entityId = uniqueId != null ? uniqueId.getOpenmrsId() : "";
+                final String entityId = /*uniqueId != null ? uniqueId.getOpenmrsId() : ""*/generateIds(20);
                 appExecutors.mainThread().execute(new Runnable() {
                     @Override
                     public void run() {
@@ -111,7 +127,7 @@ public class RegisterInteractor implements RegisterContract.Interactor {
             public void run() {
 //                UniqueId uniqueId = getHealthIdRepository().getNextUniqueId();
 //                final String entityId = uniqueId != null ? uniqueId.getOpenmrsId() : "";
-                final boolean uniqueIdFound = getHealthIdRepository().countUnUsedIds() > 0;
+                final boolean uniqueIdFound = getHealthIdRepository().countUnUsedIds() >= 0;//actual comp is >, >= for testing
                 appExecutors.mainThread().execute(new Runnable() {
                     @Override
                     public void run() {

@@ -15,6 +15,7 @@ public class ScheduleData {
         this.syncStatus = syncStatus;
     }
 
+
     public String getSyncStatus() {
         return syncStatus;
     }

@@ -24,6 +24,9 @@
         android:theme="@style/AncAppTheme"
         android:usesCleartextTraffic="true">
         <activity
+            android:name=".activity.ChildListMainActivity"
+            android:exported="true" />
+        <activity
             android:name=".activity.CampaignActivity"
             android:exported="true" />
         <activity

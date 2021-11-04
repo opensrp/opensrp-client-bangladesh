@@ -31,6 +31,7 @@
             android:layout_marginRight="25dp"
             android:gravity="center"
             android:text="@string/logout_text" />
+
         <Button
             android:id="@+id/force_logout"
             android:layout_width="match_parent"
@@ -40,6 +41,7 @@
             android:layout_marginRight="25dp"
             android:gravity="center"
             android:text="Location Update \nAND LOGOUT" />
+
         <Button
             android:id="@+id/update_blocks"
             android:layout_width="match_parent"

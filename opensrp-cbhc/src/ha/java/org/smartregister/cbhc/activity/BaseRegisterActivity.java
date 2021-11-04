@@ -61,7 +61,9 @@ import org.smartregister.view.activity.SecuredNativeSmartRegisterActivity;
 import org.smartregister.view.viewpager.OpenSRPViewPager;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -118,6 +120,25 @@ public abstract class BaseRegisterActivity extends SecuredNativeSmartRegisterAct
 
         registerBottomNavigation();
         createAttentionFlagsAlertDialog();
+
+        sampleUniqueIds();
+    }
+
+
+    private void sampleUniqueIds() {
+        List<String> ids = generateIds(20);
+        AncApplication.getInstance().getUniqueIdRepository().bulkInserOpenmrsIds(ids);
+    }
+    private List<String> generateIds(int size) {
+        List<String> ids = new ArrayList<>();
+        Random r = new Random();
+
+        for (int i = 0; i < size; i++) {
+            Integer randomInt = r.nextInt(1000) + 1;
+            ids.add(randomInt.toString());
+        }
+
+        return ids;
     }
 
     private void registerBottomNavigation() {
@@ -128,7 +149,6 @@ public abstract class BaseRegisterActivity extends SecuredNativeSmartRegisterAct
                     .setIcon(bottomNavigationHelper
                             .writeOnDrawable(R.drawable.initials_background, userInitials, getResources()));
             bottomNavigationHelper.disableShiftMode(bottomNavigationView);
-
             BottomNavigationListener bottomNavigationListener = new BottomNavigationListener(this);
             bottomNavigationView.setOnNavigationItemSelectedListener(bottomNavigationListener);
         }

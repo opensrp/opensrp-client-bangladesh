@@ -146,4 +146,8 @@
 
     <dimen name="card_elevation">2dp</dimen>
 
+
+    //drawer
+    <dimen name="custom_navigation_icon_size">35dp</dimen>
+
 </resources>

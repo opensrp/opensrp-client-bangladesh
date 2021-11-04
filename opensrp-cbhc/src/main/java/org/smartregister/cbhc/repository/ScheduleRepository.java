@@ -35,45 +35,27 @@ public class ScheduleRepository extends BaseRepository {
         super(repository);
     }
 
-
-    //private static final String BASE_ENTITY_ID_INDEX = "CREATE INDEX " + CAMPAIGN_TABLE_NAME + "_" + BASE_ENTITY_ID + "_index ON " + CAMPAIGN_TABLE_NAME + "(" + BASE_ENTITY_ID + " COLLATE NOCASE);";
-    //private s/tatic final String UPDATED_AT_INDEX = "CREATE INDEX " + CAMPAIGN_TABLE_NAME + "_" + UPDATED_AT_COLUMN + "_index ON " + CAMPAIGN_TABLE_NAME + "(" + UPDATED_AT_COLUMN + ");";
-
     public static void createTable(SQLiteDatabase database) {
         database.execSQL(SCHEDULE_SQL);
     }
 
-    /*public ArrayList<CampaignForm> getAllSchedule() {
-        ArrayList<CampaignForm> campaignFormList = new ArrayList<>();
-        SQLiteDatabase sqLiteDatabase = getWritableDatabase();
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("EEE MMM dd");
-        Cursor cursor = sqLiteDatabase.rawQuery("select * from campaign order by updated_at DESC", null);
-        if (cursor != null && cursor.getCount() > 0 && cursor.moveToFirst()) {
-            while (!cursor.isAfterLast()) {
-                try {
-                    campaignFormList.add(new CampaignForm(
-                            cursor.getString(cursor.getColumnIndex(NAME)),
-                            cursor.getString(cursor.getColumnIndex(TYPE)),
-                            cursor.getString(cursor.getColumnIndex(BASE_ENTITY_ID)),
-                            cursor.getString(cursor.getColumnIndex(TARGET_DATE)),
-                            simpleDateFormat.parse(cursor.getString(cursor.getColumnIndex(UPDATED_AT_COLUMN))),
-                            simpleDateFormat.parse(cursor.getString(cursor.getColumnIndex(CREATED_AT)))));
-                } catch (ParseException e) {
-                    e.printStackTrace();
-                }
-                cursor.moveToNext();
-            }
-        }
-        return campaignFormList;
-    }*/
-
+    /**
+     * saving schedule data here
+     * @param form
+     * @return
+     */
     public long saveData(ScheduleData form) {
         SQLiteDatabase database = getWritableDatabase();
         return database.insert(SCHEDULE_TABLE_NAME,null,createFormValues(form));
     }
 
+    /**
+     * ContentValues to add specific data to sqlite db
+     * @param object
+     * @return
+     */
     private ContentValues createFormValues(ScheduleData object) {
-        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
+        SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
         ContentValues values = new ContentValues();
         values.put(BASE_ENTITY_ID,object.getCampaignBaseEntityId());
         values.put(TARGET_DATE, dateFormat.format(object.getTargetDate()));
@@ -83,8 +65,62 @@ public class ScheduleRepository extends BaseRepository {
         return values;
     }
 
-    public void removeScheduleFromToday(Date updatedDate) {
+
+    public long updateData(ScheduleData form) {
         SQLiteDatabase database = getWritableDatabase();
-        database.delete(SCHEDULE_TABLE_NAME,TARGET_DATE+"<= ?",new String[]{updatedDate.toString()});
+        return database.update(SCHEDULE_TABLE_NAME,updateFormValues(form),BASE_ENTITY_ID+" =?", new String[]{form.getCampaignBaseEntityId()});
+    }
+
+    /**
+     * all schedule update
+     * @param object
+     * @return
+     */
+    private ContentValues updateFormValues(ScheduleData object) {
+        SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
+        ContentValues values = new ContentValues();
+        values.put(TARGET_DATE, dateFormat.format(object.getTargetDate()));
+        values.put(UPDATED_AT_COLUMN, dateFormat.format(object.getUpdatedDate()));
+        values.put(SYNC_STATUS,  object.getSyncStatus());
+        return values;
+    }
+
+    /**
+     * remove all schedule when target date updated
+     * @param updateTargetDate
+     * @param baseEntityId
+     */
+    public void removeScheduleFromToday(Date updateTargetDate,String baseEntityId) {
+        SQLiteDatabase database = getWritableDatabase();
+        database.delete(SCHEDULE_TABLE_NAME,TARGET_DATE+"<= ? and "+BASE_ENTITY_ID+" =?",new String[]{updateTargetDate.toString(),baseEntityId});
+    }
+
+    /**
+     * getting all schedule data according to base entity id
+     * @param baseEntityId
+     * @return
+     */
+    public ArrayList<ScheduleData> getAllScheduleData(String baseEntityId) {
+        ArrayList<ScheduleData> scheduleDataArrayList = new ArrayList<>();
+        SQLiteDatabase sqLiteDatabase = getWritableDatabase();
+        SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
+        Cursor cursor = sqLiteDatabase.rawQuery("select * from schedule where campaign_base_entity_id =?"+" order by datetime(target_date) DESC", new String[]{baseEntityId});
+        if (cursor != null && cursor.getCount() > 0 && cursor.moveToFirst()) {
+            while (!cursor.isAfterLast()) {
+                try {
+                    scheduleDataArrayList.add(new ScheduleData(
+                            cursor.getString(cursor.getColumnIndex(BASE_ENTITY_ID)),
+                            dateFormat.parse(cursor.getString(cursor.getColumnIndex(TARGET_DATE))),
+                            dateFormat.parse(cursor.getString(cursor.getColumnIndex(UPDATED_AT_COLUMN))),
+                            dateFormat.parse(cursor.getString(cursor.getColumnIndex(CREATED_AT))),
+                            cursor.getString(cursor.getColumnIndex(SYNC_STATUS)))
+                    );
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
+                cursor.moveToNext();
+            }
+        }
+        return scheduleDataArrayList;
     }
 }

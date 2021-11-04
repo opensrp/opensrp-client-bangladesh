@@ -76,8 +76,10 @@ android {
         }
 
         debug {
-            resValue "string", 'opensrp_url', '"http://192.168.19.167:8080/opensrp/"'
+           // resValue "string", 'opensrp_url', '"http://192.168.19.167:8080/opensrp/"'
             //resValue "string", 'opensrp_url', '"http://123.200.18.23:8080/opensrp/"'
+            //resValue "string", 'opensrp_url', '"http://123.200.18.23:8080/opensrp/"'
+            resValue "string", 'opensrp_url', '"http://opensrpha.mpower-social.com:8080/opensrp/"'
 
             buildConfigField "int", "OPENMRS_UNIQUE_ID_INITIAL_BATCH_SIZE", '250'
             buildConfigField "int", "OPENMRS_UNIQUE_ID_BATCH_SIZE", '100'
@@ -208,6 +210,7 @@ dependencies {
         exclude group: 'com.android.support', module: 'appcompat-v7'
     }
     implementation 'com.android.support:appcompat-v7:28.0.0'
+    implementation 'com.android.support:support-v4:28.0.0'
     annotationProcessor 'com.jakewharton:butterknife:7.0.0'
     implementation 'net.zetetic:android-database-sqlcipher:3.5.9@aar'
     implementation 'commons-validator:commons-validator:1.6'

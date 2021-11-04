@@ -34,10 +34,7 @@ public class CampaignRepository extends BaseRepository {
     public static final String UPDATED_AT_COLUMN = "updated_at";
     public static final String CREATED_AT = "created_at";
 
-    public static final String[] CAMPAIGN_TABLE_COLUMNS = {ID_COLUMN, NAME, TYPE,TARGET_DATE, SYNC_STATUS, UPDATED_AT_COLUMN, EVENT_ID, FORMSUBMISSION_ID, CREATED_AT};
 
-    //private static final String BASE_ENTITY_ID_INDEX = "CREATE INDEX " + CAMPAIGN_TABLE_NAME + "_" + BASE_ENTITY_ID + "_index ON " + CAMPAIGN_TABLE_NAME + "(" + BASE_ENTITY_ID + " COLLATE NOCASE);";
-    //private s/tatic final String UPDATED_AT_INDEX = "CREATE INDEX " + CAMPAIGN_TABLE_NAME + "_" + UPDATED_AT_COLUMN + "_index ON " + CAMPAIGN_TABLE_NAME + "(" + UPDATED_AT_COLUMN + ");";
     public CampaignRepository(Repository repository) {
         super(repository);
     }
@@ -45,12 +42,15 @@ public class CampaignRepository extends BaseRepository {
         database.execSQL(CAMPAIGN_SQL);
     }
 
+    /**
+     * getting all campaign data here
+     * @return
+     */
     public ArrayList<CampaignForm> getAllCampaign() {
         ArrayList<CampaignForm> campaignFormList = new ArrayList<>();
         SQLiteDatabase sqLiteDatabase = getWritableDatabase();
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd/MM/yyyy");
         Cursor cursor = sqLiteDatabase.rawQuery("select * from campaign order by updated_at DESC", null);
-        Log.d("ttttCur","tt   "+cursor.getCount());
         if (cursor != null && cursor.getCount() > 0 && cursor.moveToFirst()) {
             while (!cursor.isAfterLast()) {
                 try {
@@ -62,7 +62,6 @@ public class CampaignRepository extends BaseRepository {
                             simpleDateFormat.parse(cursor.getString(cursor.getColumnIndex(UPDATED_AT_COLUMN))),
                             simpleDateFormat.parse(cursor.getString(cursor.getColumnIndex(CREATED_AT)))));
                 } catch (ParseException e) {
-                    Log.d("ttttCur",e.getMessage());
                 }
                 cursor.moveToNext();
             }
@@ -70,13 +69,22 @@ public class CampaignRepository extends BaseRepository {
         return campaignFormList;
     }
 
+    /**
+     * saving campaign data here
+     * @param form
+     * @return
+     */
     public long saveData(CampaignForm form) {
         SQLiteDatabase database = getWritableDatabase();
         return database.insert(CAMPAIGN_TABLE_NAME,null,createFormValues(form));
     }
 
+    /**
+     * ContentValues to add specific data to sqlite db
+     * @param object
+     * @return
+     */
     private ContentValues createFormValues(CampaignForm object) {
-        Log.d("ttttDt",object.getTargetDate().toString());
         SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
 
         ContentValues values = new ContentValues();
@@ -91,8 +99,12 @@ public class CampaignRepository extends BaseRepository {
         return values;
     }
 
+    /**
+     * ContentValues to update specific data to sqlite db
+     * @param object
+     * @return
+     */
     private ContentValues updateFormValues(CampaignForm object) {
-        Log.d("ttttDt",object.getTargetDate().toString());
         SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
 
         ContentValues values = new ContentValues();
@@ -105,6 +117,10 @@ public class CampaignRepository extends BaseRepository {
         return values;
     }
 
+    /**
+     * updating campaign data here
+     * @return
+     */
     public long updateData(CampaignForm campaignForm) {
         SQLiteDatabase database = getWritableDatabase();
         return database.update(CAMPAIGN_TABLE_NAME,updateFormValues(campaignForm),BASE_ENTITY_ID+" =?", new String[]{campaignForm.getBaseEntityId()});

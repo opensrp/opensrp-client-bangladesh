@@ -5,21 +5,26 @@ import android.database.Cursor;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.design.widget.NavigationView;
 import android.support.design.widget.Snackbar;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
+import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.Editable;
 import android.text.Html;
 import android.text.TextWatcher;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -31,6 +36,7 @@ import net.sqlcipher.database.SQLiteDatabase;
 import org.apache.commons.lang3.StringUtils;
 import org.smartregister.cbhc.R;
 import org.smartregister.cbhc.activity.BaseRegisterActivity;
+import org.smartregister.cbhc.activity.ChildListMainActivity;
 import org.smartregister.cbhc.activity.HomeRegisterActivity;
 import org.smartregister.cbhc.activity.ProfileActivity;
 import org.smartregister.cbhc.application.AncApplication;
@@ -83,6 +89,9 @@ public abstract class BaseRegisterFragment extends RecyclerViewFragment implemen
     protected TextView filterStatus;
     protected RelativeLayout filterRelativeLayout;
     protected MenuItem menuItem;
+    private DrawerLayout drawer;
+    private NavigationView navigationView;
+    private ActionBarDrawerToggle actionBarDrawerToggle;
     protected View.OnKeyListener hideKeyboard = new View.OnKeyListener() {
 
         @Override
@@ -95,7 +104,7 @@ public abstract class BaseRegisterFragment extends RecyclerViewFragment implemen
         }
     };
     private Snackbar syncStatusSnackbar;
-    private ImageView qrCodeScanImageView;
+    private ImageView qrCodeScanImageView,menuDrawerIm;
     private ProgressBar syncProgressBar;
     private boolean globalQrSearch = false;
     String registerCondition = "";
@@ -171,7 +180,44 @@ public abstract class BaseRegisterFragment extends RecyclerViewFragment implemen
         activity.getSupportActionBar().setLogo(R.drawable.round_white_background);
         activity.getSupportActionBar().setDisplayUseLogoEnabled(false);
         activity.getSupportActionBar().setDisplayShowTitleEnabled(false);
+
         unsyncView = (TextView)toolbar.findViewById(R.id.unsync_count);
+
+
+        drawer = (DrawerLayout) view.findViewById(R.id.drawer_lay);
+        navigationView = (NavigationView) view.findViewById(R.id.nav_view);
+
+        actionBarDrawerToggle = new ActionBarDrawerToggle(getActivity(),drawer,R.string.app_name,R.string.app_name);
+        drawer.addDrawerListener(actionBarDrawerToggle);
+        actionBarDrawerToggle.syncState();
+
+        ImageView closeDrawerIm = drawer.findViewById(R.id.close_drawer);
+        LinearLayout householdRegLL = drawer.findViewById(R.id.household_register);
+        LinearLayout childListLay = drawer.findViewById(R.id.child_list_lay);
+
+        //close button listeners
+        closeDrawerIm.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                drawer.closeDrawer(Gravity.LEFT);
+            }
+        });
+
+        //household reg listeners
+        householdRegLL.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                ((HomeRegisterActivity) getActivity()).startRegistration();
+            }
+        });
+
+        //childList click listeners
+        childListLay.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(getActivity(), ChildListMainActivity.class));
+            }
+        });
         setupViews(view);
         renderView();
         return view;
@@ -234,7 +280,7 @@ Utils.appendLog(getClass().getName(),e);
         setServiceModeViewDrawableRight(null);
 
         // QR Code
-        qrCodeScanImageView = view.findViewById(R.id.scanQrCode);
+       /* qrCodeScanImageView = view.findViewById(R.id.scanQrCode);
         if (qrCodeScanImageView != null) {
             qrCodeScanImageView.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -245,7 +291,18 @@ Utils.appendLog(getClass().getName(),e);
                     }
                 }
             });
+        }*/
+
+        menuDrawerIm = view.findViewById(R.id.drawerMenu);
+        if (menuDrawerIm != null) {
+             menuDrawerIm.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                drawer.openDrawer(Gravity.LEFT);
+            }
+        });
         }
+
 
         //Sync
         ImageView womanSync = view.findViewById(R.id.woman_sync);
@@ -267,7 +324,7 @@ Utils.appendLog(getClass().getName(),e);
             topLeftLayout.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    qrCodeScanImageView.performLongClick();
+                   // qrCodeScanImageView.performLongClick();
                 }
             });
         }

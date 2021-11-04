@@ -212,7 +212,7 @@
       {
         "key": "member_Reg_Date",
         "openmrs_entity_parent": "",
-        "openmrs_entity": "",
+        "openmrs_entity": "person_attribute",
         "openmrs_entity_id": "member_Reg_Date",
         "openmrs_data_type": "text",
         "type": "date_picker",
@@ -230,7 +230,7 @@
       {
         "key": "Patient_Identifier",
         "openmrs_entity_parent": "",
-        "openmrs_entity": "person_identifier",
+        "openmrs_entity": "person_attribute",
         "openmrs_entity_id": "Patient_Identifier",
         "type": "edit_text",
         "hint": "সিস্টেম নম্বর",
@@ -321,8 +321,8 @@
       {
         "key": "relation_other_1",
         "openmrs_entity_parent": "",
-        "openmrs_entity": "",
-        "openmrs_entity_id": "",
+        "openmrs_entity": "person_attribute",
+        "openmrs_entity_id": "relation_other_1",
         "type": "edit_text",
         "hint": "অন্যান্য আত্মীয়",
         "v_required": {
@@ -339,8 +339,8 @@
       {
         "key": "relation_other_2",
         "openmrs_entity_parent": "",
-        "openmrs_entity": "",
-        "openmrs_entity_id": "",
+        "openmrs_entity": "person_attribute",
+        "openmrs_entity_id": "relation_other_2",
         "type": "edit_text",
         "hint": "অন্যান্য অনাত্মীয়",
         "v_required": {
@@ -354,6 +354,7 @@
           }
         }
       },
+
       {
         "key": "member_f_name",
         "openmrs_entity_parent": "",
@@ -390,6 +391,7 @@
           "err": "Please enter a valid name"
         }
       },
+
       {
         "key": "member_f_name_bengali",
         "openmrs_entity_parent": "",
@@ -408,6 +410,7 @@
           "err": "Please Enter a Valid Name"
         }
       },
+
       {
         "key": "Mother_Guardian_First_Name_english",
         "openmrs_entity_parent": "",
@@ -485,8 +488,8 @@
       {
         "key": "member_birth_date_known",
         "openmrs_entity_parent": "",
-        "openmrs_entity": "",
-        "openmrs_entity_id": "",
+        "openmrs_entity": "person_attribute",
+        "openmrs_entity_id": "member_birth_date_known",
         "openmrs_data_type": "text",
         "type": "spinner",
         "hint": "জন্ম তারিখ জানা আছে কি?",
@@ -506,7 +509,7 @@
       {
         "key": "member_birth_date",
         "openmrs_entity_parent": "",
-        "openmrs_entity": "person",
+        "openmrs_entity": "person_attribute",
         "openmrs_entity_id": "birthdate",
         "openmrs_data_type": "text",
         "type": "date_picker",
@@ -530,8 +533,8 @@
       {
         "key": "age",
         "openmrs_entity_parent": "",
-        "openmrs_entity": "",
-        "openmrs_entity_id": "",
+        "openmrs_entity": "person_attribute",
+        "openmrs_entity_id": "age",
         "openmrs_data_type": "text",
         "type": "edit_text",
         "hint": "না জানলে বয়স লিখুন (বছর)",
@@ -551,7 +554,7 @@
       {
         "key": "gender",
         "openmrs_entity_parent": "",
-        "openmrs_entity": "person",
+        "openmrs_entity": "person_attribute",
         "openmrs_entity_id": "gender",
         "openmrs_data_type": "text",
         "type": "spinner",
@@ -574,7 +577,7 @@
       {
         "key": "Child_birth_weight",
         "openmrs_entity_parent": "",
-        "openmrs_entity": "concept",
+        "openmrs_entity": "person_attribute",
         "openmrs_entity_id": "1e58da4d-60b9-4c60-a079-9a5371d3cfa9",
         "openmrs_data_type": "text",
         "type": "spinner",
@@ -598,7 +601,7 @@
       {
         "key": "Birth_weight",
         "openmrs_entity_parent": "",
-        "openmrs_entity": "concept",
+        "openmrs_entity": "person_attribute",
         "openmrs_entity_id": "9d4aa237-b866-43a1-a75b-9b9490d4a3b9",
         "openmrs_data_type": "text",
         "type": "edit_text",
@@ -618,7 +621,7 @@
       {
         "key": "Used_7_1_Chlorohexidin",
         "openmrs_entity_parent": "",
-        "openmrs_entity": "concept",
+        "openmrs_entity": "person_attribute",
         "openmrs_entity_id": "1f011039-e2dc-49a0-8804-1a96d1d5ba49",
         "openmrs_data_type": "text",
         "type": "spinner",
@@ -951,8 +954,8 @@
       {
         "key": "education_other",
         "openmrs_entity_parent": "",
-        "openmrs_entity": "",
-        "openmrs_entity_id": "",
+        "openmrs_entity": "person_attribute",
+        "openmrs_entity_id": "education_other",
         "type": "edit_text",
         "hint": "অন্যান্য শিক্ষাগত যোগ্যতা",
         "v_required": {
@@ -1964,8 +1967,8 @@
       {
         "key": "illness_other",
         "openmrs_entity_parent": "",
-        "openmrs_entity": "",
-        "openmrs_entity_id": "",
+        "openmrs_entity": "person_attribute",
+        "openmrs_entity_id": "illness_other",
         "type": "edit_text",
         "hint": "অন্যান্য রোগ  সম্পর্কিত পারিবারিক তথ্য",
         "v_required": {
@@ -2056,8 +2059,8 @@
       {
         "key": "habits_other",
         "openmrs_entity_parent": "",
-        "openmrs_entity": "",
-        "openmrs_entity_id": "",
+        "openmrs_entity": "person_attribute",
+        "openmrs_entity_id": "habits_other",
         "type": "edit_text",
         "hint": "অন্যান্য ঝুঁকিপূর্ণ অভ্যাস",
         "v_required": {
@@ -2079,8 +2082,8 @@
       {
         "key": "comments",
         "openmrs_entity_parent": "",
-        "openmrs_entity": "",
-        "openmrs_entity_id": "",
+        "openmrs_entity": "person_attribute",
+        "openmrs_entity_id": "comments",
         "openmrs_data_type": "",
         "type": "edit_text",
         "hint": "মন্তব্য"
@@ -2088,7 +2091,7 @@
       {
         "key": "household_photo",
         "openmrs_entity_parent": "",
-        "openmrs_entity": "",
+        "openmrs_entity": "person_attribute",
         "openmrs_entity_id": "member_photo",
         "type": "choose_image",
         "uploadButtonText": "ছবি তুলুন*",
