@@ -146,7 +146,7 @@ public class LoginActivity extends AppCompatActivity implements LoginContract.Vi
             goToHome(false);
         }
         mActivity = this;
-//        app_version_status();
+        if(!BuildConfig.DEBUG)app_version_status();
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
         AllSharedPreferences allSharedPreferences = new AllSharedPreferences(preferences);
         String anm_name = allSharedPreferences.fetchRegisteredANM();

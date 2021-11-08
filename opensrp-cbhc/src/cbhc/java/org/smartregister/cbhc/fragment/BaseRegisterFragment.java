@@ -108,7 +108,7 @@ public abstract class BaseRegisterFragment extends RecyclerViewFragment implemen
     protected TextView filterStatus;
     protected RelativeLayout filterRelativeLayout;
     protected MenuItem menuItem;
-    protected String registerCondition;
+//    protected String registerCondition;
     String typeofMember;
     protected View.OnKeyListener hideKeyboard = new View.OnKeyListener() {
 

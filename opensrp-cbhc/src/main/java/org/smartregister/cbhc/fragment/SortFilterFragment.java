@@ -23,6 +23,7 @@ import org.smartregister.cbhc.R;
 import org.smartregister.cbhc.activity.HomeRegisterActivity;
 import org.smartregister.cbhc.contract.SortFilterContract;
 import org.smartregister.cbhc.presenter.SortFilterPresenter;
+import org.smartregister.cbhc.util.Utils;
 import org.smartregister.configurableviews.model.Field;
 
 import java.util.ArrayList;
