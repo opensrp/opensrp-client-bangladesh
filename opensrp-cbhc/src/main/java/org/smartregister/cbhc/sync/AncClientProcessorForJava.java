@@ -72,7 +72,8 @@ public class AncClientProcessorForJava extends ClientProcessorForJava {
                         || eventType.equals(Constants.EventType.MemberREGISTRATION)
                         || eventType.equals(Constants.EventType.WomanMemberREGISTRATION)
                         || eventType.equals(Constants.EventType.Child_REGISTRATION)
-                        || eventType.equals(Constants.EventType.UPDATE_REGISTRATION)
+                        || eventType.equals(Constants.EventType.UPDATE_REGISTRATION )
+                        || eventType.equals(Constants.EventType.OOCMemberREGISTRATION)
                         || !Utils.notFollowUp(eventType)
                 ) {
                     if (clientClassification == null) {
