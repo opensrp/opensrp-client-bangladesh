@@ -169,6 +169,14 @@
             "field": "baseEntityId"
           }
         },
+
+        {
+          "column_name": "relation_with_household",
+          "type": "Client",
+          "json_mapping": {
+            "field": "attributes.Realtion_With_Household_Head"
+          }
+        },
         {
           "column_name": "Patient_Identifier",
           "type": "Client",
@@ -201,21 +209,31 @@
           "column_name": "dob",
           "type": "Client",
           "json_mapping": {
-            "field": "birthdate"
+            "field": "attributes.birthdate"
           }
         },
         {
           "column_name": "dob_unknown",
           "type": "Client",
           "json_mapping": {
-            "field": "birthdateApprox"
+            "field": "attributes.birthdateApprox"
           }
         },
+
+        {
+          "column_name": "age",
+          "type": "Client",
+          "json_mapping": {
+            "field": "attributes.age"
+          }
+        },
+
+
         {
           "column_name": "gender",
           "type": "Client",
           "json_mapping": {
-            "field": "gender"
+            "field": "attributes.gender"
           }
         },
         {
@@ -360,7 +378,7 @@
           "column_name": "relation_with_household",
           "type": "Client",
           "json_mapping": {
-            "field": "attributes.relation_with_household_head"
+            "field": "attributes.Realtion_With_Household_Head"
           }
         },
         {
@@ -609,6 +627,13 @@
           }
         },
         {
+          "column_name": "relation_with_household",
+          "type": "Client",
+          "json_mapping": {
+            "field": "attributes.Realtion_With_Household_Head"
+          }
+        },
+        {
           "column_name": "first_name",
           "type": "Client",
           "json_mapping": {
@@ -633,21 +658,296 @@
           "column_name": "dob",
           "type": "Client",
           "json_mapping": {
-            "field": "birthdate"
+            "field": "attributes.birthdate"
           }
         },
         {
           "column_name": "dob_unknown",
           "type": "Client",
           "json_mapping": {
-            "field": "birthdateApprox"
+            "field": "attributes.birthdateApprox"
           }
         },
         {
           "column_name": "gender",
           "type": "Client",
           "json_mapping": {
-            "field": "gender"
+            "field": "attributes.gender"
+          }
+        },
+        {
+          "column_name": "age",
+          "type": "Client",
+          "json_mapping": {
+            "field": "attributes.age"
+          }
+        },
+        {
+          "column_name": "last_interacted_with",
+          "type": "Event",
+          "json_mapping": {
+            "field": "version"
+          }
+        },
+        {
+          "column_name": "date_removed",
+          "type": "Client",
+          "json_mapping": {
+            "field": "attributes.dateRemoved"
+          }
+        },
+        {
+          "column_name": "phone_number",
+          "type": "Client",
+          "json_mapping": {
+            "field": "attributes.phoneNumber"
+          }
+        },
+        {
+          "column_name": "person_nid",
+          "type": "Client",
+          "json_mapping": {
+            "field": "attributes.nationalId"
+          }
+        },
+        {
+          "column_name": "person_brid",
+          "type": "Client",
+          "json_mapping": {
+            "field": "attributes.birthRegistrationID"
+          }
+        },
+        {
+          "column_name": "person_epi",
+          "type": "Client",
+          "json_mapping": {
+            "field": "attributes.epicardnumber"
+          }
+        },
+        {
+          "column_name": "person_address",
+          "type": "Client",
+          "json_mapping": {
+            "field": "address7"
+          }
+        },
+        {
+          "column_name": "alt_name",
+          "type": "Client",
+          "json_mapping": {
+            "field": "attributes.alt_name"
+          }
+        },
+        {
+          "column_name": "alt_phone_number",
+          "type": "Client",
+          "json_mapping": {
+            "field": "attributes.alt_phone_number"
+          }
+        },
+        {
+          "column_name": "PregnancyStatus",
+          "type": "Client",
+          "json_mapping": {
+            "field": "attributes.PregnancyStatus"
+          }
+        },
+        {
+          "column_name": "tasks",
+          "type": "Event",
+          "json_mapping": {
+            "field": ""
+          }
+        },
+        {
+          "column_name": "reminders",
+          "type": "Client",
+          "json_mapping": {
+            "field": "attributes.reminders"
+          }
+        }
+      ]
+    },
+
+    {
+      "name": "ec_guest_member",
+      "columns": [
+        {
+          "column_name": "base_entity_id",
+          "type": "Client",
+          "json_mapping": {
+            "field": "baseEntityId"
+          }
+        },
+        {
+          "column_name": "birthRegistrationID",
+          "type": "Client",
+          "json_mapping": {
+            "field": "attributes.member_BRID"
+          }
+        },
+        {
+          "column_name": "Patient_Identifier",
+          "type": "Client",
+          "json_mapping": {
+            "field": "attributes.Patient_Identifier"
+          }
+        },
+        {
+          "column_name": "first_name",
+          "type": "Client",
+          "json_mapping": {
+            "field": "firstName"
+          }
+        },
+        {
+          "column_name": "last_name",
+          "type": "Client",
+          "json_mapping": {
+            "field": "lastName"
+          }
+        },
+
+        {
+          "column_name": "member_f_name_bengali",
+          "type": "Client",
+          "json_mapping": {
+            "field": "attributes.givenNameLocal"
+          }
+        },
+        {
+          "column_name": "motherNameEnglish",
+          "type": "Client",
+          "json_mapping": {
+            "field": "attributes.motherNameEnglish"
+          }
+        },
+
+        {
+          "column_name": "motherNameBangla",
+          "type": "Client",
+          "json_mapping": {
+            "field": "attributes.motherNameBangla"
+          }
+        },
+
+        {
+          "column_name": "fatherNameEnglish",
+          "type": "Client",
+          "json_mapping": {
+            "field": "attributes.fatherNameEnglish"
+          }
+        },
+
+        {
+          "column_name": "fathernameBangla",
+          "type": "Client",
+          "json_mapping": {
+            "field": "attributes.fathernameBangla"
+          }
+        },
+
+        {
+          "column_name": "dob",
+          "type": "Client",
+          "json_mapping": {
+            "field": "attributes.birthdate"
+          }
+        },
+
+        {
+          "column_name": "age",
+          "type": "Client",
+          "json_mapping": {
+            "field": "attributes.age"
+          }
+        },
+
+
+        {
+          "column_name": "dob_unknown",
+          "type": "Client",
+          "json_mapping": {
+            "field": "attributes.birthdateApprox"
+          }
+        },
+        {
+          "column_name": "gender",
+          "type": "Client",
+          "json_mapping": {
+            "field": "attributes.gender"
+          }
+        },
+
+        {
+          "column_name": "Child_birth_weight",
+          "type": "Client",
+          "json_mapping": {
+            "field": "1e58da4d-60b9-4c60-a079-9a5371d3cfa9"
+          }
+        },
+
+        {
+          "column_name": "birthPlace",
+          "type": "Client",
+          "json_mapping": {
+            "field": "attributes.birthPlace"
+          }
+        },
+
+        {
+          "column_name": "disable",
+          "type": "Client",
+          "json_mapping": {
+            "field": "attributes.disable"
+          }
+        },
+
+        {
+          "column_name": "ethnicity",
+          "type": "Client",
+          "json_mapping": {
+            "field": "attributes.ethnicity"
+          }
+        },
+
+        {
+          "column_name": "Religion",
+          "type": "Client",
+          "json_mapping": {
+            "field": "attributes.Religion"
+          }
+        },
+
+        {
+          "column_name": "bloodgroup",
+          "type": "Client",
+          "json_mapping": {
+            "field": "attributes.bloodgroup"
+          }
+        },
+
+        {
+          "column_name": "has_disease",
+          "type": "Client",
+          "json_mapping": {
+            "field": "attributes.has_disease"
+          }
+        },
+
+        {
+          "column_name": "CommunicableDisease",
+          "type": "Client",
+          "json_mapping": {
+            "field": "attributes.Comm_Disease"
+          }
+        },
+
+        {
+          "column_name": "NonComDisease",
+          "type": "Client",
+          "json_mapping": {
+            "field": "attributes.NonComnta_Disease"
           }
         },
         {
