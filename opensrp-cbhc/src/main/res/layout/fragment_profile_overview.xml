@@ -15,11 +15,17 @@
         android:orientation="vertical">
 
 
-        <ListView
+<!--        <ListView
             android:id="@+id/household_list"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_gravity="center_horizontal" />
+            android:layout_gravity="center_horizontal" />-->
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/members_rv"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            />
 
     </LinearLayout>
 
