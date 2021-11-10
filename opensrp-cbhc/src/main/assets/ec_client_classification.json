@@ -113,6 +113,15 @@
             "creates_case": [
               "ec_child"
             ]
+          },
+
+
+          {
+            "field": "eventType",
+            "field_value": "OOC Member Registration",
+            "creates_case": [
+              "ec_guest_member"
+            ]
           }
         ]
       }
