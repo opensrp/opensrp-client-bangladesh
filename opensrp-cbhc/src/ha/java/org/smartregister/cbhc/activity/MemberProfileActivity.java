@@ -82,6 +82,7 @@ import static org.smartregister.cbhc.util.Constants.FOLLOWUP_FORM.Followup_Form_
 import static org.smartregister.cbhc.util.Constants.FOLLOWUP_FORM.Followup_Form_MHV_Pregnant;
 import static org.smartregister.cbhc.util.Constants.FOLLOWUP_FORM.Followup_Form_MHV_Risky_Habit;
 import static org.smartregister.cbhc.util.Constants.FOLLOWUP_FORM.Followup_Form_MHV_Transfer;
+import static org.smartregister.cbhc.util.JsonFormUtils.DATE_FORMAT;
 import static org.smartregister.util.Utils.getName;
 import static org.smartregister.util.Utils.getValue;
 
@@ -188,7 +189,7 @@ public class MemberProfileActivity extends BaseProfileActivity implements Profil
         String durationString = "";
         if (StringUtils.isNotBlank(dobString)) {
             try {
-                DateTime birthDateTime = new DateTime(dobString);
+                DateTime birthDateTime = new DateTime(DATE_FORMAT.parse(dobString));
 
                 String duration = DateUtil.getDuration(birthDateTime);
                 if (duration != null) {
@@ -311,7 +312,7 @@ Utils.appendLog(getClass().getName(),e);
                 String durationString = "";
                 if (StringUtils.isNotBlank(dobString)) {
                     try {
-                        DateTime birthDateTime = new DateTime(dobString);
+                        DateTime birthDateTime = new DateTime(DATE_FORMAT.parse(dobString));
 
                         String duration = DateUtil.getDuration(birthDateTime);
                         if (duration != null) {

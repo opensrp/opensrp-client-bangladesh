@@ -115,6 +115,15 @@ public class RegisterPresenter implements RegisterContract.Presenter, RegisterCo
 
     }
 
+    public void startGuestMemberRegistrationForm(String formName, String entityId, String metadata, String currentLocationId, String householdID) throws Exception {
+
+
+        JSONObject form = FormUtils.getInstance(AncApplication.getInstance().getApplicationContext()).getFormJson("guest_member_register");
+
+        getView().startFormActivity(form);
+
+    }
+
 
     @Override
     public void closeAncRecord(String jsonString) {

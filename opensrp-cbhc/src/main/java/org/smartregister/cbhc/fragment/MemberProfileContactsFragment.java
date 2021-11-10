@@ -2,6 +2,7 @@ package org.smartregister.cbhc.fragment;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,7 +17,10 @@ import org.json.JSONObject;
 import org.smartregister.cbhc.R;
 import org.smartregister.cbhc.application.AncApplication;
 import org.smartregister.cbhc.util.Constants;
+import org.smartregister.cbhc.util.DBConstants;
+import org.smartregister.cbhc.util.JsonFormUtils;
 import org.smartregister.cbhc.util.Utils;
+import org.smartregister.commonregistry.CommonPersonObject;
 import org.smartregister.commonregistry.CommonPersonObjectClient;
 import org.smartregister.util.FormUtils;
 
@@ -37,6 +41,7 @@ public class MemberProfileContactsFragment extends BaseProfileFragment {
 
     LayoutInflater inflater;
     View fragmentView;
+    String typeofMember;
     private CommonPersonObjectClient householdDetails;
 
     public static MemberProfileContactsFragment newInstance(Bundle bundle) {
@@ -57,13 +62,34 @@ public class MemberProfileContactsFragment extends BaseProfileFragment {
             Serializable serializable = extras.getSerializable(EXTRA_HOUSEHOLD_DETAILS);
             if (serializable != null && serializable instanceof CommonPersonObjectClient) {
                 householdDetails = (CommonPersonObjectClient) serializable;
-                householdDetails.getColumnmaps().putAll(AncApplication.getInstance().getContext().detailsRepository().getAllDetailsForClient(householdDetails.entityId()));
+                typeofMember = extras.getString("type_of_member");
+                setUpMemberDetails(typeofMember);
+                //  householdDetails.getColumnmaps().putAll(AncApplication.getInstance().getContext().detailsRepository().getAllDetailsForClient(householdDetails.entityId()));
 
             }
         }
 
     }
+    private CommonPersonObjectClient CommonPersonObjectToClient(CommonPersonObject commonPersonObject,String tableName) {
+        CommonPersonObjectClient commonPersonObjectClient = new CommonPersonObjectClient(commonPersonObject.getCaseId(), commonPersonObject.getDetails(), tableName);
+        commonPersonObjectClient.setColumnmaps(commonPersonObject.getColumnmaps());
+        return commonPersonObjectClient;
+    }
 
+    public void setUpMemberDetails(String typeofMember){
+        if (typeofMember != null) {
+            if (typeofMember.equalsIgnoreCase("malechild") || typeofMember.equalsIgnoreCase("femalechild")) {
+                CommonPersonObject commonPersonObject = AncApplication.getInstance().getContext().commonrepository(DBConstants.CHILD_TABLE_NAME).findByBaseEntityId(householdDetails.entityId());
+                householdDetails =  CommonPersonObjectToClient(commonPersonObject,DBConstants.CHILD_TABLE_NAME);
+            }
+            else if (typeofMember.equalsIgnoreCase("woman")) {
+                householdDetails =  CommonPersonObjectToClient(AncApplication.getInstance().getContext().commonrepository(DBConstants.WOMAN_TABLE_NAME).findByBaseEntityId(householdDetails.entityId()),DBConstants.WOMAN_TABLE_NAME);
+            }
+            else if (typeofMember.equalsIgnoreCase("member")) {
+                householdDetails =  CommonPersonObjectToClient(AncApplication.getInstance().getContext().commonrepository(DBConstants.MEMBER_TABLE_NAME).findByBaseEntityId(householdDetails.entityId()),DBConstants.MEMBER_TABLE_NAME);
+            }
+        }
+    }
     @Override
     protected void onCreation() {
         //Overriden
@@ -84,7 +110,8 @@ public class MemberProfileContactsFragment extends BaseProfileFragment {
     }
 
     public void reloadView() {
-        householdDetails.getColumnmaps().putAll(AncApplication.getInstance().getContext().detailsRepository().getAllDetailsForClient(householdDetails.entityId()));
+  //      householdDetails.getColumnmaps().putAll(AncApplication.getInstance().getContext().detailsRepository().getAllDetailsForClient(householdDetails.entityId()));
+        setUpMemberDetails(typeofMember);
         LinearLayout linearLayoutholder = fragmentView.findViewById(R.id.profile_overview_details_holder);
         linearLayoutholder.removeAllViews();
         setupView();

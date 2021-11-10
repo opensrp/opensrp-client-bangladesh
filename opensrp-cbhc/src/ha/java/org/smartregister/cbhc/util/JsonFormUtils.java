@@ -45,6 +45,7 @@ import org.smartregister.configurableviews.model.Field;
 import org.smartregister.domain.Photo;
 import org.smartregister.domain.ProfileImage;
 import org.smartregister.domain.tag.FormTag;
+import org.smartregister.immunization.ImmunizationLibrary;
 import org.smartregister.repository.AllSharedPreferences;
 import org.smartregister.repository.EventClientRepository;
 import org.smartregister.repository.ImageRepository;
@@ -71,6 +72,8 @@ import java.util.Set;
 import java.util.UUID;
 
 import static org.apache.commons.lang3.StringUtils.isBlank;
+
+import timber.log.Timber;
 
 /**
  * Created by keyman on 27/06/2018.
@@ -234,6 +237,49 @@ public class JsonFormUtils extends org.smartregister.util.JsonFormUtils {
             }
         }
         return uniqueId;
+    }
+
+    protected static void lastInteractedWith(JSONArray fields) {
+        try {
+            JSONObject lastInteractedWith = new JSONObject();
+            lastInteractedWith.put(Constants.KEY.KEY, Constants.JSON_FORM_KEY.LAST_INTERACTED_WITH);
+            lastInteractedWith.put(Constants.KEY.VALUE, Calendar.getInstance().getTimeInMillis());
+            fields.put(lastInteractedWith);
+        } catch (JSONException e) {
+            Timber.e(e);
+        }
+    }
+
+
+    public static JSONArray processAttributesWithChoiceIDsForSave(JSONArray fields) {
+        for (int i = 0; i < fields.length(); i++) {
+            try {
+                JSONObject fieldObject = fields.getJSONObject(i);
+//                if(fieldObject.has("openmrs_entity")){
+//                    if(fieldObject.getString("openmrs_entity").equalsIgnoreCase("person_attribute")){
+                if (fieldObject.has("openmrs_choice_ids")&&fieldObject.getJSONObject("openmrs_choice_ids").length()>0) {
+                    if (fieldObject.has("value")) {
+                        String valueEntered = fieldObject.getString("value");
+                        fieldObject.put("value", fieldObject.getJSONObject("openmrs_choice_ids").get(valueEntered));
+                    }
+                }
+//                    }
+//                }
+            } catch (JSONException e) {
+
+                e.printStackTrace();
+            }
+        }
+        return fields;
+    }
+
+
+    protected static FormTag formTag(AllSharedPreferences allSharedPreferences) {
+        FormTag formTag = new FormTag();
+        formTag.providerId = allSharedPreferences.fetchRegisteredANM();
+        formTag.appVersion = ImmunizationLibrary.getInstance().getApplicationVersion();
+        formTag.databaseVersion = ImmunizationLibrary.getInstance().getDatabaseVersion();
+        return formTag;
     }
 
     public static void removeEmptyFields(JSONArray fields) {
@@ -1766,13 +1812,32 @@ public class JsonFormUtils extends org.smartregister.util.JsonFormUtils {
                 "", vall, new ArrayList<>(), null, formSubmissionField);
     }
 
-    private static Event tagSyncMetadata(AllSharedPreferences allSharedPreferences, Event event) {
+    protected static Event tagSyncMetadata(AllSharedPreferences allSharedPreferences, Event event) {
         String providerId = allSharedPreferences.fetchRegisteredANM();
         event.setProviderId(providerId);
         event.setLocationId(allSharedPreferences.fetchDefaultLocalityId(providerId));
         event.setTeam(allSharedPreferences.fetchDefaultTeam(providerId));
         event.setTeamId(allSharedPreferences.fetchDefaultTeamId(providerId));
         return event;
+    }
+
+
+    public static void updateFormSubmissionID(String encounterType, String entity_id, Event baseEvent) throws JSONException{
+        String formSubmissionID = "";
+
+        EventClientRepository eventClientRepository = AncApplication.getInstance().getEventClientRepository();
+        JSONObject evenjsonobject = eventClientRepository.getEventsByBaseEntityIdAndEventType(entity_id, encounterType);
+        if (evenjsonobject == null) {
+            if (encounterType.contains("Update")) {
+                evenjsonobject = eventClientRepository.getEventsByBaseEntityIdAndEventType(entity_id, encounterType.replace("Update", "").trim());
+            }
+        }
+        if (evenjsonobject != null) {
+            formSubmissionID = evenjsonobject.getString("formSubmissionId");
+        }
+        if (!isBlank(formSubmissionID)) {
+            baseEvent.setFormSubmissionId(formSubmissionID);
+        }
     }
 
     public static void launchANCCloseForm(Activity activity) {

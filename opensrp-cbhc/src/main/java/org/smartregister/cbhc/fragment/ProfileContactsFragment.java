@@ -1,6 +1,7 @@
 package org.smartregister.cbhc.fragment;
 
 import android.content.Context;
+import android.database.Cursor;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -8,6 +9,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+
+import org.joda.time.DateTime;
 import org.smartregister.cbhc.util.JsonFormUtils;
 import com.google.common.reflect.TypeToken;
 
@@ -21,7 +24,9 @@ import org.smartregister.cbhc.util.Constants;
 import org.smartregister.cbhc.util.DBConstants;
 import org.smartregister.cbhc.util.ImageUtils;
 import org.smartregister.cbhc.util.Utils;
+import org.smartregister.commonregistry.CommonPersonObject;
 import org.smartregister.commonregistry.CommonPersonObjectClient;
+import org.smartregister.commonregistry.CommonRepository;
 import org.smartregister.domain.Photo;
 import org.smartregister.util.AssetHandler;
 import org.smartregister.util.FormUtils;
@@ -138,7 +143,11 @@ public class ProfileContactsFragment extends BaseProfileFragment {
         } else if (jsonObject.getString(JsonFormUtils.KEY).equalsIgnoreCase(DBConstants.KEY.AGE)) {
 
             jsonObject.put(JsonFormUtils.READ_ONLY, false);
-            jsonObject.put(JsonFormUtils.VALUE, age = Utils.getAgeFromDate(womanClient.get(DBConstants.KEY.DOB)));
+            try {
+                jsonObject.put(JsonFormUtils.VALUE, age = Utils.getAgeFromDate(new DateTime(DATE_FORMAT.parse(womanClient.get(DBConstants.KEY.DOB))).toString()));
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
 
         } else if (jsonObject.getString(JsonFormUtils.KEY).equalsIgnoreCase(DBConstants.KEY.ANC_ID)) {
 
@@ -215,11 +224,20 @@ public class ProfileContactsFragment extends BaseProfileFragment {
             Serializable serializable = extras.getSerializable(EXTRA_HOUSEHOLD_DETAILS);
             if (serializable != null && serializable instanceof CommonPersonObjectClient) {
                 householdDetails = (CommonPersonObjectClient) serializable;
-                householdDetails.getColumnmaps().putAll(AncApplication.getInstance().getContext().detailsRepository().getAllDetailsForClient(householdDetails.entityId()));
+
+
+                householdDetails =  CommonPersonObjectToClient(AncApplication.getInstance().getContext().commonrepository(DBConstants.HOUSEHOLD_TABLE_NAME).findByBaseEntityId(householdDetails.entityId()));
+
+               //householdDetails.getColumnmaps().putAll(AncApplication.getInstance().getContext().detailsRepository().getAllDetailsForClient(householdDetails.entityId()));
 
             }
         }
 
+    }
+    private CommonPersonObjectClient CommonPersonObjectToClient(CommonPersonObject commonPersonObject) {
+        CommonPersonObjectClient commonPersonObjectClient = new CommonPersonObjectClient(commonPersonObject.getCaseId(), commonPersonObject.getDetails(), DBConstants.HOUSEHOLD_TABLE_NAME);
+        commonPersonObjectClient.setColumnmaps(commonPersonObject.getColumnmaps());
+        return commonPersonObjectClient;
     }
 
     @Override

@@ -37,6 +37,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.smartregister.cbhc.R;
 import org.smartregister.cbhc.activity.BaseRegisterActivity;
 import org.smartregister.cbhc.activity.ChildListMainActivity;
+import org.smartregister.cbhc.activity.GuestMemberActivity;
 import org.smartregister.cbhc.activity.HomeRegisterActivity;
 import org.smartregister.cbhc.activity.ProfileActivity;
 import org.smartregister.cbhc.application.AncApplication;
@@ -107,7 +108,7 @@ public abstract class BaseRegisterFragment extends RecyclerViewFragment implemen
     private ImageView qrCodeScanImageView,menuDrawerIm;
     private ProgressBar syncProgressBar;
     private boolean globalQrSearch = false;
-    String registerCondition = "";
+//    String registerCondition = "";
     private String default_sort_query = DBConstants.KEY.LAST_INTERACTED_WITH + " DESC";
     protected final TextWatcher textWatcher = new TextWatcher() {
         @Override
@@ -218,6 +219,14 @@ public abstract class BaseRegisterFragment extends RecyclerViewFragment implemen
                 startActivity(new Intent(getActivity(), ChildListMainActivity.class));
             }
         });
+
+        drawer.findViewById(R.id.child_register)
+                .setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        startActivity(new Intent(getActivity(), GuestMemberActivity.class));
+                    }
+                });
         setupViews(view);
         renderView();
         return view;

@@ -1,14 +1,18 @@
 package org.smartregister.cbhc.fragment;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.widget.CursorAdapter;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -19,8 +23,15 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import net.sqlcipher.database.SQLiteDatabase;
+
+import org.smartregister.cbhc.activity.MemberProfileActivity;
+import org.smartregister.cbhc.adapter.MembersAdapter;
+import org.smartregister.cbhc.domain.GuestMemberData;
+import org.smartregister.cbhc.domain.MembersData;
+import org.smartregister.cbhc.util.Constants;
 import org.smartregister.cbhc.util.JsonFormUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.joda.time.DateTime;
@@ -39,10 +50,12 @@ import org.smartregister.view.activity.DrishtiApplication;
 
 import java.io.Serializable;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 
+import static org.smartregister.cbhc.util.JsonFormUtils.getHealthIdRepository;
 import static org.smartregister.util.Utils.getName;
 import static org.smartregister.util.Utils.getValue;
 
@@ -59,6 +72,9 @@ public class ProfileOverviewFragment extends BaseProfileFragment {
     private ListView householdList;
     private Handler myHandler;
     private Activity mActivity;
+    private ArrayList<MembersData> membersDataArrayList;
+    private RecyclerView membersRv;
+
 
     public static ProfileOverviewFragment newInstance(Bundle bundle) {
         Bundle args = bundle;
@@ -181,6 +197,7 @@ public class ProfileOverviewFragment extends BaseProfileFragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
         fragmentView = inflater.inflate(R.layout.fragment_profile_overview, container, false);
+        membersDataArrayList= new ArrayList<>();
 //        refreshadapter();
         return fragmentView;
     }
@@ -193,6 +210,7 @@ public class ProfileOverviewFragment extends BaseProfileFragment {
 
     public void refreshadapter() {
         if (fragmentView == null) return;
+
         (new AsyncTask() {
             ProgressDialog dialog;
 
@@ -238,44 +256,166 @@ public class ProfileOverviewFragment extends BaseProfileFragment {
 
             }
 
+            @SuppressLint("StaticFieldLeak")
             @Override
             protected void onPostExecute(Object o) {
                 super.onPostExecute(o);
+
                 if (mActivity == null) return;
                 if (dialog != null && dialog.isShowing()) dialog.dismiss();
-                householdList = fragmentView.findViewById(R.id.household_list);
+               // householdList = fragmentView.findViewById(R.id.household_list);
+                membersRv = fragmentView.findViewById(R.id.members_rv);
+
                 profile_photo.clear();
+                membersDataArrayList.clear();
                 if (o != null && o instanceof Cursor) {
                     Cursor cursor = (Cursor) o;
-                    HouseholdCursorAdpater cursorAdpater;
+                    /*HouseholdCursorAdpater cursorAdpater;
                     cursorAdpater = new HouseholdCursorAdpater(getContext(), cursor);
 
 
-                    householdList.setAdapter(cursorAdpater);
+                    householdList.setAdapter(cursorAdpater);*/
+
+                    if (cursor != null && cursor.getCount() >= 1) {
+
+                        cursor.moveToFirst();
+
+
+                        while (!cursor.isAfterLast()) {
+                                CommonRepository commonRepository = org.smartregister.Context.getInstance().commonrepository(DBConstants.WOMAN_TABLE_NAME);
+                                CommonPersonObject personinlist = commonRepository.readAllcommonforCursorAdapter(cursor);
+                                //personinlist.setCaseId(cursor.getString(cursor.getColumnIndex("_id")));
+                            CommonPersonObjectClient pClient   = new CommonPersonObjectClient(personinlist.getCaseId(), personinlist.getDetails(), personinlist.getDetails().get("FWHOHFNAME"));
+                                pClient.setColumnmaps(personinlist.getColumnmaps());
+
+
+                            int baseEntity = cursor.getColumnIndex("_id");
+                            int fname = cursor.getColumnIndex("first_name");
+                            int lname = cursor.getColumnIndex("last_name");
+                            int dob = cursor.getColumnIndex("dob");
+                            int gender = cursor.getColumnIndex("gender");
+                            int age = cursor.getColumnIndex("age");
+                            int relation = cursor.getColumnIndex("relation");
+
+                            membersDataArrayList.add(new MembersData(
+                                    cursor.isNull(baseEntity) ? "" : cursor.getString(baseEntity),
+                                    cursor.isNull(fname) ? "" : cursor.getString(fname),
+                                    cursor.isNull(lname) ? "" : cursor.getString(lname),
+                                    cursor.isNull(dob) ? "" : cursor.getString(dob),
+                                    cursor.isNull(age) ? "" : cursor.getString(age),
+                                    cursor.isNull(relation) ? "" : cursor.getString(relation),
+                                    cursor.isNull(gender) ? "" : cursor.getString(gender),
+                                    pClient
+                            ));
+
+
+                            cursor.moveToNext();
+                        }
+
+                        if(cursor!=null) cursor.close();
+
+                        membersRv.setLayoutManager(new LinearLayoutManager(getActivity()));
+                        membersRv.setAdapter(new MembersAdapter(
+                                membersDataArrayList,
+                                new MembersAdapter.OnItemClick() {
+                                    @Override
+                                    public void onClick(int position, MembersData membersData, String c) {
+
+                                        if (membersData.getAge().equals("") && membersData.getDob().equals("")) {
+                                            Toast.makeText(getActivity(), "Age not found.", Toast.LENGTH_SHORT).show();
+                                            return;
+                                        }
+
+                                        CommonPersonObjectClient memberclient = membersData.getpClient();
+                                        memberclient.getColumnmaps().put("relational_id", householdDetails.getCaseId());
+                                        String clienttype = c;
+                                        Intent intent = new Intent(getActivity(), MemberProfileActivity.class);
+                                        intent.putExtra(Constants.INTENT_KEY.BASE_ENTITY_ID, memberclient.getCaseId());
+                                        intent.putExtra(ProfileOverviewFragment.EXTRA_HOUSEHOLD_DETAILS, memberclient);
+                                        intent.putExtra("type_of_member", clienttype);
+                                        startActivityForResult(intent, 1002);
+                                    }
+                                },
+
+
+                                new MembersAdapter.OnEditClick() {
+                                    @Override
+                                    public void onClick(int position, MembersData membersData, String clientType) {
+                                        String patient_identifier = householdDetails.getColumnmaps().get("Patient_Identifier");
+                                        CommonPersonObjectClient pclient = membersData.getpClient();
+                                        pclient.getColumnmaps().putAll(AncApplication.getInstance().getContext().detailsRepository().getAllDetailsForClient(pclient.entityId()));
+                                        patient_identifier = pclient.getColumnmaps().get("Patient_Identifier");
+                                        pclient.getColumnmaps().put("relational_id", householdDetails.getCaseId());
+                                        if (patient_identifier == null || (patient_identifier != null && patient_identifier.isEmpty()) || patient_identifier.equalsIgnoreCase("null")) {
+                                            Long unUsedIds = getHealthIdRepository().countUnUsedIds();
+                                            if (unUsedIds > 0l) {
+                                                householdDetails.getColumnmaps().put("Patient_Identifier", Utils.DEFAULT_IDENTIFIER);
+                                                launchFormEdit(pclient);
+                                            } else {
+                                                Toast.makeText(getActivity(), R.string.no_openmrs_id, Toast.LENGTH_SHORT).show();
+                                            }
+                                        } else {
+                                            launchFormEdit(pclient);
+                                        }
+
+
+                                    }
+                                }
+                        ));
+                    }
                 }
 
             }
         }).execute();
+
+
         //setAdapter data of Household member
 
     }
 
+
+    private void launchFormEdit(CommonPersonObjectClient pclient) {
+        String formMetadataformembers = JsonFormUtils.getMemberJsonEditFormString(getActivity(), pclient.getColumnmaps());
+        try {
+            JsonFormUtils.startFormForEdit(getActivity(), JsonFormUtils.REQUEST_CODE_GET_JSON, formMetadataformembers);
+        } catch (Exception e) {
+            Utils.appendLog(getClass().getName(),e);
+
+        }
+    }
+
     public String queryfortheadapterthing(String id) {
         String query = "SELECT * FROM " +
-                "        (select woman.id as _id , woman.relationalid , woman.Patient_Identifier, woman.first_name , woman.last_name , woman.dob , woman.gender, woman.details, woman.PregnancyStatus, woman.tasks, details.value as relation " +
-                "FROM ec_woman as woman left join ec_details as details on (details.base_entity_id = woman.id and details.key = 'Realtion_With_Household_Head') " +
-                "WHERE (woman.relational_id = '</>' and woman.date_removed IS NULL)" +
-                " " + "Union all  Select member.id as _id , member.relationalid , member.Patient_Identifier, member.first_name , member.last_name , member.dob,member.gender, member.details, member.PregnancyStatus, member.tasks, details.value as relation " +
-                "FROM ec_member as member left join ec_details as details on (details.base_entity_id = member.id and details.key = 'Realtion_With_Household_Head') " +
+                "        (select woman.id as _id , woman.relationalid , woman.Patient_Identifier, woman.first_name , woman.last_name , woman.dob , woman.gender, woman.PregnancyStatus, woman.tasks,woman.relation_with_household as relation, woman.age as age" +
+                " FROM ec_woman as woman " +
+                "WHERE (relational_id = '</>' and date_removed IS NULL)" +
+                " " + "Union all  Select member.id as _id , member.relationalid , member.Patient_Identifier, member.first_name , member.last_name , member.dob,member.gender, member.PregnancyStatus,member.tasks, member.relation_with_household as relation, member.age as age" +
+                " FROM ec_member as member " +
                 "WHERE (member.relational_id = '</>' and member.date_removed IS NULL)" +
                 " " +
-                "Union all Select child.id as _id , child.relationalid , child.Patient_Identifier, child.first_name , child.last_name , child.dob ,child.gender, child.details, child.PregnancyStatus, child.tasks, details.value as relation " +
-                "FROM ec_child as child left join ec_details as details on (details.base_entity_id = child.id and details.key = 'Realtion_With_Household_Head') " +
+                "Union all Select child.id as _id , child.relationalid , child.Patient_Identifier, child.first_name , child.last_name , child.dob ,child.gender, child.PregnancyStatus, child.tasks, child.relation_with_household as relation, child.age as age" +
+                " FROM ec_child as child " +
                 "WHERE (child.relational_id = '</>' and child.date_removed IS NULL)) group by _id" +
                 " ORDER BY CASE WHEN relation = 'খানা প্রধান' THEN 1 " +
                 " WHEN relation = 'Household_Head' THEN 1 " +
                 "Else relation END ASC;";
-        return query.replaceAll("</>", id);
+
+        /*String queryNew = "SELECT * FROM " +
+                "        (select id as _id ,relationalid , Patient_Identifier, first_name , last_name , dob, gender, details, PregnancyStatus, tasks, relation_with_household as relation, NULL as age FROM ec_woman" +
+
+                "WHERE (relational_id = '</>' and date_removed IS NULL)" +
+                 " Union all Select id as _id , relationalid , Patient_Identifier,first_name , last_name , dob, gender, details,PregnancyStatus, tasks, relation_with_household as relation, null as age FROM ec_member" +
+                "WHERE (relational_id = '</>' and date_removed IS NULL)" +
+
+                " Union all Select child.id as _id , child.relationalid , child.Patient_Identifier, child.first_name , child.last_name , child.dob, child.gender, child.details, child.PregnancyStatus, child.tasks, child.relation_with_household as relation, child.age FROM ec_child as child" +
+
+                "WHERE (child.relational_id = '</>' and child.date_removed IS NULL)) group by _id" +
+                " ORDER BY CASE WHEN relation = 'খানা প্রধান' THEN 1 " +
+                " WHEN relation = 'Household_Head' THEN 1 " +
+                "Else relation END ASC";*/
+
+        //String query2 = "select * from ec_woman w, ec_child c, ec_member m where w.relational_id = '</>' or c.relational_id = '</>' or m.relational_id = '</>'";
+        return query.replaceAll("</>", id);/*query2.replace("</>",id);*/
     }
 
     @Override
@@ -335,6 +475,7 @@ public class ProfileOverviewFragment extends BaseProfileFragment {
             CommonPersonObject personinlist = commonRepository.readAllcommonforCursorAdapter(cursor);
             final CommonPersonObjectClient pClient = new CommonPersonObjectClient(personinlist.getCaseId(), personinlist.getDetails(), personinlist.getDetails().get("FWHOHFNAME"));
             pClient.setColumnmaps(personinlist.getColumnmaps());
+
             TextView member_name = view.findViewById(R.id.name_tv);
             TextView relation_tv = view.findViewById(R.id.relation_tv);
             TextView member_age = view.findViewById(R.id.age_tv);

@@ -146,7 +146,6 @@ public class RegisterInteractor implements RegisterContract.Interactor {
 
     @Override
     public void saveRegistration(final Pair<Client, Event> pair, final String jsonString, final boolean isEditMode, final RegisterContract.InteractorCallBack callBack) {
-
         Runnable runnable = new Runnable() {
             @Override
             public void run() {
@@ -262,7 +261,6 @@ public class RegisterInteractor implements RegisterContract.Interactor {
                 } else {
                     if (baseClient != null) {
                         String opensrpId = baseClient.getIdentifier(DBConstants.KEY.Patient_Identifier);
-
                         //mark OPENSRP ID as used
                         getUniqueIdRepository().close(opensrpId);
                         getHealthIdRepository().close(opensrpId);
@@ -279,8 +277,7 @@ public class RegisterInteractor implements RegisterContract.Interactor {
             long lastSyncTimeStamp = getAllSharedPreferences().fetchLastUpdatedAtDate(0);
             Date lastSyncDate = new Date(lastSyncTimeStamp);
 
-
-            getClientProcessorForJava().processClient(getSyncHelper().getEvents(lastSyncDate, BaseRepository.TYPE_Unsynced));
+            getClientProcessorForJava().processClient(getSyncHelper().getEvents(lastSyncDate, BaseRepository.TYPE_Unprocessed));
             getAllSharedPreferences().saveLastUpdatedAtDate(lastSyncDate.getTime());
 
             /////////////////////////try this out////////////////

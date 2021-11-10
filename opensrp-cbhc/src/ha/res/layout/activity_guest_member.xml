@@ -1,0 +1,229 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v4.widget.DrawerLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context=".activity.GuestMemberActivity"
+    android:id="@+id/drawer_lay_guest"
+    tools:ignore="MissingDefaultResource">
+
+    <android.support.constraint.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#FFFFFF">
+
+        <android.support.constraint.ConstraintLayout
+            android:id="@+id/action_bar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:background="@color/customAppThemeBlue"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <ImageView
+                android:id="@+id/back_btn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="15dp"
+                android:src="@drawable/ic_back"
+                android:tint="@color/white"
+                android:onClick="back"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <org.smartregister.view.customcontrols.CustomFontTextView
+                android:id="@+id/textview_detail_two"
+                style="@style/CustomFontTextViewStyle.ClientList.Light"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_centerVertical="true"
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:paddingStart="0dp"
+                android:paddingLeft="0dp"
+                android:text="Member List"
+                android:textColor="@color/white"
+                android:textSize="20sp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="@+id/back_btn"
+                app:layout_constraintTop_toTopOf="parent" />
+
+        </android.support.constraint.ConstraintLayout>
+
+      <!--  <RelativeLayout
+            android:id="@+id/search_bar"
+            android:layout_width="match_parent"
+
+            android:padding="10dp"
+            app:layout_constraintTop_toBottomOf="@+id/action_bar"
+            android:background="@color/colorPrimary"
+            android:layout_height="wrap_content">
+
+            <EditText
+                android:id="@+id/search_edit_text"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:drawableRight="@drawable/ic_action_search"
+                android:hint="নাম বা মোবাইল নম্বর দিয়ে খুজুন"
+                android:maxWidth="300dp"
+                android:textColor="@color/white"
+                android:textColorHint="@color/white" />
+            &lt;!&ndash;<LinearLayout
+                android:id="@+id/ss_name_view"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+                <TextView
+                    android:text="@string/ss_name_bangla"
+                    android:textColor="@color/white"
+                    android:padding="10dp"
+                    android:textStyle="bold"
+                    android:textSize="18sp"
+                    android:layout_gravity="center_vertical"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+                <Spinner
+                    android:id="@+id/ss_filter_spinner"
+                    android:layout_marginBottom="20dp"
+                    android:layout_width="150dp"
+                    android:background="@drawable/spinner_resource"
+                    android:layout_margin="5dp"
+                    android:layout_height="50dp">
+                </Spinner>
+            </LinearLayout>&ndash;&gt;
+        </RelativeLayout>-->
+
+
+        <!--search bar-->
+        <LinearLayout
+            android:id="@+id/search_bar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:layout_weight="2"
+            android:background="@color/client_list_header_text_color"
+            android:gravity="center_vertical"
+            android:padding="10dp"
+            app:layout_constraintTop_toBottomOf="@+id/action_bar"
+           >
+
+            <RelativeLayout
+                android:layout_width="0dp"
+                android:layout_height="@dimen/ec_main_header_search_layout_height"
+                android:layout_marginLeft="@dimen/register_search_bar_margin"
+                android:layout_marginRight="@dimen/register_search_bar_min_margin"
+                android:layout_weight="1.7">
+
+                <EditText
+                    android:id="@+id/search_edit_text"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_alignParentLeft="true"
+                    android:layout_marginRight="0dp"
+                    android:background="@drawable/white_edit_text_shape"
+                    android:ellipsize="end"
+                    android:hint="@string/find_name"
+                    android:maxLines="1"
+                    android:minWidth="100dp"
+                    android:padding="@dimen/register_search_bar_padding"
+                    android:textColor="@color/search_textfield_text_color"
+                    android:textColorHint="@color/search_hint_white"
+                    android:textSize="@dimen/default_font_size_search_bar" />
+
+                <ImageButton
+                    android:id="@+id/btn_search_cancel"
+                    android:layout_width="@dimen/ec_main_header_search_cancel_button_width"
+                    android:layout_height="match_parent"
+                    android:layout_alignParentRight="true"
+                    android:layout_marginRight="@dimen/search_view_cancel_image_margin_right"
+                    android:background="@android:color/transparent"
+                    android:src="@drawable/ic_cross"
+                    android:visibility="gone" />
+
+            </RelativeLayout>
+        </LinearLayout>
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/guest_recycler_view"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_below="@+id/search_bar"
+            android:padding="10dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/search_bar"
+            app:layout_constraintVertical_bias="0.0" />
+
+        <ProgressBar
+            android:id="@+id/progress_bar"
+            android:visibility="gone"
+            android:layout_centerInParent="true"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            tools:ignore="MissingConstraints" />
+
+
+        <android.support.design.widget.FloatingActionButton
+            android:id="@+id/fab_add_member"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentBottom="true"
+            android:layout_margin="20dp"
+            android:src="@drawable/add_member"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="@+id/guest_recycler_view" />
+
+    </android.support.constraint.ConstraintLayout>
+
+    <android.support.design.widget.NavigationView
+        android:id="@+id/nav_bar_guest"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_gravity="start"
+        android:fitsSystemWindows="true">
+        <android.support.constraint.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/nav_recycler_view_guest"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                app:layout_constraintBottom_toTopOf="@+id/log_out_lay"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <LinearLayout
+                android:id="@+id/log_out_lay"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="15dp"
+                android:background="#EAEAEA"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Logout"
+                    android:textColor="@color/black"
+                    android:textSize="20sp"/>
+            </LinearLayout>
+        </android.support.constraint.ConstraintLayout>
+
+    </android.support.design.widget.NavigationView>
+</android.support.v4.widget.DrawerLayout>

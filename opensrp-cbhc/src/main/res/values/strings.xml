@@ -271,4 +271,10 @@
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="child_list">Child List</string>
 
+    <string name="age2"><br>Age : </br> %s</string>
+    <string name="phone2"><br>Phone No :</br> %s</string>
+    <string name="gender"><br>Gender :</br> %s</string>
+    <string name="name2"><br>Name :</br> %s</string>
+    <string name="find_name">Find name</string>
+
 </resources>

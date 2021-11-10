@@ -304,7 +304,7 @@ Utils.appendLog(getClass().getName(),e);
                 try {
                     presenter.startMemberRegistrationForm(Constants.JSON_FORM.MEMBER_REGISTER, null, null, null, householdDetails.entityId());
                 } catch (Exception e) {
-Utils.appendLog(getClass().getName(),e);
+                    Utils.appendLog(getClass().getName(),e);
                     e.printStackTrace();
                 }
 

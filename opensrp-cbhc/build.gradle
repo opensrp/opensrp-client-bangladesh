@@ -76,6 +76,7 @@ android {
         }
 
         debug {
+            minifyEnabled false
            // resValue "string", 'opensrp_url', '"http://192.168.19.167:8080/opensrp/"'
             //resValue "string", 'opensrp_url', '"http://123.200.18.23:8080/opensrp/"'
             //resValue "string", 'opensrp_url', '"http://123.200.18.23:8080/opensrp/"'
@@ -197,7 +198,7 @@ dependencies {
     //    use issue158 branch for local build
     //    build from issue268
     //    core version 2.6.51 for older build 2.7.26 for latest build
-    implementation('org.smartregister:opensrp-client-core:2.7.26-SNAPSHOT') {
+    implementation('org.smartregister:opensrp-client-core:2.6.51-SNAPSHOT') {
         transitive = true
         exclude group: 'com.github.bmelnychuk', module: 'atv'
         exclude group: 'com.google.guava', module: 'guava'

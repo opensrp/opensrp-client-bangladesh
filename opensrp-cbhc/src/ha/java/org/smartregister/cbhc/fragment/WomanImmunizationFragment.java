@@ -52,6 +52,7 @@ import org.smartregister.immunization.view.VaccineGroup;
 import org.smartregister.service.AlertService;
 import org.smartregister.util.DateUtil;
 
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -61,6 +62,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Random;
 
+import static org.smartregister.cbhc.util.JsonFormUtils.DATE_FORMAT;
 import static org.smartregister.util.Utils.getName;
 
 public class WomanImmunizationFragment extends BaseProfileFragment {
@@ -201,7 +203,12 @@ public class WomanImmunizationFragment extends BaseProfileFragment {
         if (isDataOk()) {
             String dobString = org.smartregister.util.Utils.getValue(childDetails.getColumnmaps(), "dob", false);
             if (!TextUtils.isEmpty(dobString)) {
-                DateTime dateTime = new DateTime(dobString);
+                DateTime dateTime = null;
+                try {
+                    dateTime = new DateTime(DATE_FORMAT.parse(dobString));
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
                 Date dob = dateTime.toDate();
                 formattedDob = Utils.DATE_FORMAT.format(dob);
                 timeDiff = Calendar.getInstance().getTimeInMillis() - dob.getTime();
@@ -330,6 +337,8 @@ Utils.appendLog(getClass().getName(),e);
         LinearLayout vaccineGroupCanvasLL = (LinearLayout) view.findViewById(R.id.vaccine_group_canvas_ll);
         VaccineGroup curGroup = new VaccineGroup(getActivity());
         curGroup.setChildActive(isChildActive);
+        String dobString = org.smartregister.util.Utils.getValue(childDetails.getColumnmaps(), "dob", false);
+
         curGroup.setData(vaccineGroupData, childDetails, vaccineList, alerts, "woman");
         curGroup.setOnRecordAllClickListener(new VaccineGroup.OnRecordAllClickListener() {
             @Override
@@ -439,9 +448,15 @@ Utils.appendLog(getClass().getName(),e);
         ft.addToBackStack(null);
         vaccineGroup.setModalOpen(true);
         String dobString = org.smartregister.util.Utils.getValue(childDetails.getColumnmaps(), "dob", false);
+
         Date dob = Calendar.getInstance().getTime();
         if (!TextUtils.isEmpty(dobString)) {
-            DateTime dateTime = new DateTime(dobString);
+            DateTime dateTime = null;
+            try {
+                dateTime = new DateTime(DATE_FORMAT.parse(dobString));
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
             dob = dateTime.toDate();
         }
 
@@ -602,7 +617,12 @@ Utils.appendLog(getClass().getName(),e);
             Pair<ArrayList<VaccineWrapper>, List<Vaccine>> pair = new Pair<>(list, vaccineList);
             String dobString = org.smartregister.util.Utils.getValue(childDetails.getColumnmaps(), "dob", false);
             if (!TextUtils.isEmpty(dobString)) {
-                DateTime dateTime = new DateTime(dobString);
+                DateTime dateTime = null;
+                try {
+                    dateTime = new DateTime(DATE_FORMAT.parse(dobString));
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
                 affectedVaccines = VaccineSchedule.updateOfflineAlerts(childDetails.entityId(), dateTime, "woman");
             }
             vaccineList = vaccineRepository.findByEntityId(childDetails.entityId());
@@ -709,7 +729,12 @@ Utils.appendLog(getClass().getName(),e);
         protected Map<String, WomanImmunizationFragment.NamedObject<?>> doInBackground(Void... voids) {
             String dobString = org.smartregister.util.Utils.getValue(childDetails.getColumnmaps(), "dob", false);
             if (!TextUtils.isEmpty(dobString)) {
-                DateTime dateTime = new DateTime(dobString);
+                DateTime dateTime = null;
+                try {
+                    dateTime = new DateTime(DATE_FORMAT.parse(dobString));
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
                 VaccineSchedule.updateOfflineAlerts(childDetails.entityId(), dateTime, "woman");
                 ServiceSchedule.updateOfflineAlerts(childDetails.entityId(), dateTime);
             }
@@ -795,7 +820,12 @@ Utils.appendLog(getClass().getName(),e);
                     vaccineRepository.deleteVaccine(dbKey);
                     String dobString = org.smartregister.util.Utils.getValue(childDetails.getColumnmaps(), "dob", false);
                     if (!TextUtils.isEmpty(dobString)) {
-                        DateTime dateTime = new DateTime(dobString);
+                        DateTime dateTime = null;
+                        try {
+                            dateTime = new DateTime(DATE_FORMAT.parse(dobString));
+                        } catch (ParseException e) {
+                            e.printStackTrace();
+                        }
                         affectedVaccines = VaccineSchedule.updateOfflineAlerts(childDetails.entityId(), dateTime, "woman");
                         vaccineList = vaccineRepository.findByEntityId(childDetails.entityId());
                         alertList = alertService.findByEntityIdAndAlertNames(childDetails.entityId(),
