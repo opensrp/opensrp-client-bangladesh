@@ -79,8 +79,7 @@ public class MemberProfileContactsFragment extends BaseProfileFragment {
     public void setUpMemberDetails(String typeofMember){
         if (typeofMember != null) {
             if (typeofMember.equalsIgnoreCase("malechild") || typeofMember.equalsIgnoreCase("femalechild")) {
-                CommonPersonObject commonPersonObject = AncApplication.getInstance().getContext().commonrepository(DBConstants.CHILD_TABLE_NAME).findByBaseEntityId(householdDetails.entityId());
-                householdDetails =  CommonPersonObjectToClient(commonPersonObject,DBConstants.CHILD_TABLE_NAME);
+                householdDetails =  CommonPersonObjectToClient(AncApplication.getInstance().getContext().commonrepository(DBConstants.CHILD_TABLE_NAME).findByBaseEntityId(householdDetails.entityId()),DBConstants.CHILD_TABLE_NAME);
             }
             else if (typeofMember.equalsIgnoreCase("woman")) {
                 householdDetails =  CommonPersonObjectToClient(AncApplication.getInstance().getContext().commonrepository(DBConstants.WOMAN_TABLE_NAME).findByBaseEntityId(householdDetails.entityId()),DBConstants.WOMAN_TABLE_NAME);

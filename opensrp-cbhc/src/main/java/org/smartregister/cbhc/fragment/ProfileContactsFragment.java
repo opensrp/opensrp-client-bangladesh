@@ -157,7 +157,7 @@ public class ProfileContactsFragment extends BaseProfileFragment {
             String keyname = jsonObject.getString(JsonFormUtils.KEY);
             keyname = processAttributesForEdit(jsonObject, keyname);
             String value = womanClient.get(keyname);
-            value = processValueWithChoiceIds(jsonObject, value);
+            //value = processValueWithChoiceIds(jsonObject, value);
             jsonObject.put(JsonFormUtils.READ_ONLY, false);
             jsonObject.put(JsonFormUtils.VALUE, value);
         } else {
@@ -165,7 +165,7 @@ public class ProfileContactsFragment extends BaseProfileFragment {
             keyname = processAttributesForEdit(jsonObject, keyname);
             String value = womanClient.get(keyname);
             if (value != null) {
-                value = processValueWithChoiceIds(jsonObject, value);
+               // value = processValueWithChoiceIds(jsonObject, value);
                 jsonObject.put(JsonFormUtils.READ_ONLY, false);
                 jsonObject.put(JsonFormUtils.VALUE, value);
             }
@@ -178,9 +178,13 @@ public class ProfileContactsFragment extends BaseProfileFragment {
                 JSONObject choiceObject = jsonObject.getJSONObject("openmrs_choice_ids");
 
                 for (int i = 0; i < choiceObject.names().length(); i++) {
-                    if (value.equalsIgnoreCase(choiceObject.getString(choiceObject.names().getString(i)))) {
-                        value = choiceObject.names().getString(i);
+                    if(choiceObject.getString(choiceObject.names().getString(i))!=null){
+                        if (value.equalsIgnoreCase(choiceObject.getString(choiceObject.names().getString(i)))) {
+                            value = choiceObject.names().getString(i);
+                        }
+                        value = "";
                     }
+
                 }
 
 
