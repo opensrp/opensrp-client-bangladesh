@@ -103,12 +103,20 @@ public class ChildListFragment extends Fragment {
         Cursor cursor = sqLiteDatabase.rawQuery( "select * from ec_child order by last_interacted_with DESC", null);
         if (cursor != null && cursor.getCount() > 0 && cursor.moveToFirst()) {
             while (!cursor.isAfterLast()) {
+
+                int baseEntity = cursor.getColumnIndex("base_entity_id");
+                int fName = cursor.getColumnIndex("first_name");
+                int lName = cursor.getColumnIndex("last_name");
+                int dob = cursor.getColumnIndex("dob");
+                int gender = cursor.getColumnIndex("gender");
+
+
                 childItemDataArrayList.add(new ChildItemData(
-                        cursor.getString(cursor.getColumnIndex("base_entity_id")),
-                        cursor.getString(cursor.getColumnIndex("first_name")),
-                        cursor.getString(cursor.getColumnIndex("last_name")),
-                        cursor.getString(cursor.getColumnIndex("dob")),
-                        cursor.getString(cursor.getColumnIndex("gender")),
+                        cursor.isNull(baseEntity)?"":cursor.getString(baseEntity),
+                        cursor.isNull(fName)?"":cursor.getString(fName),
+                        cursor.isNull(lName)?"":cursor.getString(lName),
+                        cursor.isNull(dob)?"":cursor.getString(dob),
+                        cursor.isNull(gender)?"":cursor.getString(gender),
                         ""));
                 cursor.moveToNext();
             }
