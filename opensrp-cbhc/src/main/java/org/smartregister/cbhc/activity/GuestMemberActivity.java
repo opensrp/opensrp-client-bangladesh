@@ -1,4 +1,3 @@
-/*
 package org.smartregister.cbhc.activity;
 
 import android.app.Activity;
@@ -9,6 +8,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.NavigationView;
+import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
@@ -16,7 +16,9 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.text.Editable;
+import android.text.TextUtils;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.EditText;
@@ -25,36 +27,52 @@ import android.widget.ProgressBar;
 import android.widget.Spinner;
 import android.widget.Toast;
 
+import com.vijay.jsonwizard.activities.JsonFormActivity;
+import com.vijay.jsonwizard.constants.JsonFormConstants;
+import com.vijay.jsonwizard.domain.Form;
+
 import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.tuple.Triple;
+import org.joda.time.format.FormatUtils;
 import org.json.JSONArray;
 import org.json.JSONObject;
-import org.smartregister.growplus.R;
-import org.smartregister.growplus.adapter.GuestMemberAdapter;
-import org.smartregister.growplus.application.VaccinatorApplication;
-import org.smartregister.growplus.contract.GuestMemberContract;
-import org.smartregister.growplus.domain.GuestMemberData;
-import org.smartregister.growplus.presenter.GuestMemberPresenter;
-import org.smartregister.growplus.repository.UniqueIdRepository;
+
+import org.smartregister.cbhc.R;
+import org.smartregister.cbhc.adapter.GuestMemberAdapter;
+import org.smartregister.cbhc.application.AncApplication;
+import org.smartregister.cbhc.contract.GuestMemberContract;
+import org.smartregister.cbhc.contract.ProfileContract;
+import org.smartregister.cbhc.contract.RegisterContract;
+import org.smartregister.cbhc.domain.AttentionFlag;
+import org.smartregister.cbhc.domain.GuestMemberData;
+import org.smartregister.cbhc.presenter.GuestMemberPresenter;
+import org.smartregister.cbhc.presenter.RegisterPresenter;
+import org.smartregister.cbhc.repository.UniqueIdRepository;
+import org.smartregister.cbhc.util.Constants;
+import org.smartregister.cbhc.util.CustomFormUtils;
+import org.smartregister.cbhc.util.DBConstants;
+import org.smartregister.cbhc.util.JsonFormUtils;
+import org.smartregister.cbhc.util.LookUpUtils;
+import org.smartregister.cbhc.util.Utils;
+import org.smartregister.commonregistry.CommonPersonObjectClient;
+import org.smartregister.domain.FetchStatus;
 import org.smartregister.util.FormUtils;
 
-import util.JsonFormUtils;
+import java.util.List;
 
-public class GuestMemberActivity extends AppCompatActivity implements GuestMemberContract.View,View.OnClickListener {
+import timber.log.Timber;
+
+public class GuestMemberActivity extends AppCompatActivity implements GuestMemberContract.View,View.OnClickListener,ProfileContract.View, RegisterContract.View {
     private RecyclerView recyclerView;
     private RecyclerView navRecyclerView;
     private ProgressBar progressBar;
     private GuestMemberAdapter adapter;
     private Spinner ssSpinner;
     private GuestMemberPresenter presenter;
+    RegisterPresenter registerPresenter;
     private String ssName="";
     private String query ="";
     private EditText editTextSearch;
-    private DrawerLayout drawer;
-    private NavigationView navigationView;
-    private ActionBarDrawerToggle actionBarDrawerToggle;
-    //private AppBarConfiguration mAppBarConfiguration;
-    private Toolbar toolbar;
-    private LinearLayout logoutLay;
 
     public static void startGuestMemberProfileActivity(Activity activity , String baseEntityId){
         Intent intent = new Intent(activity,GuestMemberActivity.class);
@@ -67,24 +85,19 @@ public class GuestMemberActivity extends AppCompatActivity implements GuestMembe
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_guest_member);
 
-        //drawer = (DrawerLayout) findViewById(R.id.drawer_lay_guest);
-        //navigationView = (NavigationView) findViewById(R.id.nav_bar_guest);
-
-       // actionBarDrawerToggle = new ActionBarDrawerToggle(this,drawer,R.string.app_name,R.string.app_name);
-       // drawer.addDrawerListener(actionBarDrawerToggle);
-       // actionBarDrawerToggle.syncState();
         presenter = new GuestMemberPresenter(this);
         presenter.fetchData();
 
         editTextSearch = findViewById(R.id.search_edit_text);
         recyclerView = findViewById(R.id.guest_recycler_view);
-        //navRecyclerView = findViewById(R.id.nav_recycler_view_guest);
         progressBar = findViewById(R.id.progress_bar);
-       // logoutLay = findViewById(R.id.log_out_lay);
 
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        //navRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         findViewById(R.id.fab_add_member).setOnClickListener(this);
+
+        registerPresenter = new RegisterPresenter(GuestMemberActivity.this);
+
+        fetchProfileData();
 
         editTextSearch.addTextChangedListener(new TextWatcher() {
             @Override
@@ -105,20 +118,11 @@ public class GuestMemberActivity extends AppCompatActivity implements GuestMembe
             }
         });
 
-       */
-/* logoutLay.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                logOutDialog();
-            }
-        });*//*
-
-
         if(adapter == null){
             adapter = new GuestMemberAdapter(this, new GuestMemberAdapter.OnClickAdapter() {
                 @Override
                 public void onClick(int position, GuestMemberData content) {
-                    openProfile(content.getBaseEntityId());
+                    openProfile(content.getBaseEntity());
                 }
             });
 
@@ -153,39 +157,33 @@ public class GuestMemberActivity extends AppCompatActivity implements GuestMembe
         presenter.filterData(query,ssName);
 
     }
-*/
-/*
-    @Override
     protected void initializePresenter() {
         presenter = new GuestMemberPresenter(this);
         fetchProfileData();
         fetchMemberData();
-    }*//*
+    }
 
 
     @Override
     protected void onResume() {
         super.onResume();
+        Log.d("tttt","onresume called");
         presenter.fetchData();
-        fetchMemberData();
     }
 
     private void fetchMemberData() {
         presenter.fetchMemberData();
     }
 
- */
-/*   @Override
     protected ViewPager setupViewPager(ViewPager viewPager) {
         return null;
-    }*//*
+    }
 
 
-   */
-/* @Override
+
     protected void fetchProfileData() {
         presenter.fetchData();
-    }*//*
+    }
 
 
     @Override
@@ -204,7 +202,7 @@ public class GuestMemberActivity extends AppCompatActivity implements GuestMembe
             adapter = new GuestMemberAdapter(this, new GuestMemberAdapter.OnClickAdapter() {
                 @Override
                 public void onClick(int position, GuestMemberData content) {
-                    openProfile(content.getBaseEntityId());
+                    openProfile(content.getBaseEntity());
                 }
             });
 
@@ -239,8 +237,12 @@ public class GuestMemberActivity extends AppCompatActivity implements GuestMembe
     }
 
     @Override
+    public void displaySyncNotification() {
+
+    }
+
+    @Override
     public void updateNavAdapter() {
-        */
 /*if(guestNavAdapter == null){
             guestNavAdapter = new GuestNavAdapter(context());
             guestNavAdapter.setData(getPresenter().getNAvData());
@@ -248,7 +250,7 @@ public class GuestMemberActivity extends AppCompatActivity implements GuestMembe
         }else{
             guestNavAdapter.setData(getPresenter().getNAvData());
             guestNavAdapter.notifyDataSetChanged();
-        }*//*
+        }*/
 
     }
 
@@ -256,41 +258,7 @@ public class GuestMemberActivity extends AppCompatActivity implements GuestMembe
     @Override
     public void onClick(View v) {
         switch (v.getId()){
-            */
-/*case R.id.backBtn:
-                finish();
-                break;*//*
-
             case R.id.fab_add_member:
-                */
-/*HnppConstants.getGPSLocation(this, new OnPostDataWithGps() {
-                    @Override
-                    public void onPost(double latitude, double longitude) {
-                        try{
-                            Intent intent = new Intent(GuestMemberActivity.this, GuestAddMemberJsonFormActivity.class);
-                            JSONObject jsonForm = FormUtils.getInstance(GuestMemberActivity.this).getFormJson(HnppConstants.JSON_FORMS.GUEST_MEMBER_FORM);
-                            HnppJsonFormUtils.updateFormWithSSName(jsonForm, SSLocationHelper.getInstance().getSsModels());
-                            HnppJsonFormUtils.updateLatitudeLongitude(jsonForm,latitude,longitude);
-                            intent.putExtra(Constants.JSON_FORM_EXTRA.JSON, jsonForm.toString());
-                            Form form = new Form();
-                            form.setWizard(false);
-                            if(!HnppConstants.isReleaseBuild()){
-                                form.setActionBarBackground(R.color.test_app_color);
-
-                            }else{
-                                form.setActionBarBackground(org.smartregister.family.R.color.customAppThemeBlue);
-
-                            }
-
-                            intent.putExtra(JsonFormConstants.JSON_FORM_KEY.FORM, form);
-
-                            startActivityForResult(intent, Constants.REQUEST_CODE_GET_JSON);
-                        }catch (Exception e){
-                            e.printStackTrace();
-                        }
-                    }
-                });*//*
-
 
                 String entityId = null;
                 try {
@@ -299,7 +267,7 @@ public class GuestMemberActivity extends AppCompatActivity implements GuestMembe
                     if(form!=null){
 
                         if (StringUtils.isBlank(entityId)) {
-                            UniqueIdRepository uniqueIdRepo = VaccinatorApplication.getInstance().uniqueIdRepository();
+                            UniqueIdRepository uniqueIdRepo = AncApplication.getInstance().getUniqueIdRepository();
                             entityId = uniqueIdRepo.getNextUniqueId() != null ? uniqueIdRepo.getNextUniqueId().getOpenmrsId() : "";
                             if (entityId.isEmpty()) {
                                 Toast.makeText(this, this.getString(R.string.no_openmrs_id), Toast.LENGTH_SHORT).show();
@@ -311,20 +279,18 @@ public class GuestMemberActivity extends AppCompatActivity implements GuestMembe
                         for (int i = 0; i < jsonArray.length(); i++) {
                             JSONObject jsonObject = jsonArray.getJSONObject(i);
                             if (jsonObject.getString(JsonFormUtils.KEY)
-                                    .equalsIgnoreCase(JsonFormUtils.OpenMRS_ID)) {
+                                    .equalsIgnoreCase("Patient_Identifier")) {
                                 jsonObject.remove(JsonFormUtils.VALUE);
                                 jsonObject.put(JsonFormUtils.VALUE, entityId);
                                 continue;
                             }
                         }
 
-                        Intent intent = new Intent(this, PathJsonFormActivity.class);
+                        Intent intent = new Intent(this,AncJsonFormActivity.class);
 
 
                         intent.putExtra("json", form.toString());
-                        startActivityForResult(intent, */
-/*Constant.REQUEST_CODE_GET_JSON*//*
-3432);
+                        startActivityForResult(intent,  JsonFormUtils.REQUEST_CODE_GET_JSON);
                     }
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -333,14 +299,6 @@ public class GuestMemberActivity extends AppCompatActivity implements GuestMembe
         }
     }
     protected FormUtils getFormUtils() {
-       */
-/* if (formUtils == null) {
-            try {
-                formUtils = FormUtils.getInstance(Utils.context().applicationContext());
-            } catch (Exception e) {
-                Timber.e(e);
-            }
-        }*//*
 
         FormUtils formUtils=null;
         try {
@@ -355,20 +313,115 @@ public class GuestMemberActivity extends AppCompatActivity implements GuestMembe
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == 3432 && resultCode == RESULT_OK) {
+        if (requestCode == JsonFormUtils.REQUEST_CODE_GET_JSON && resultCode == RESULT_OK) {
             try {
                 String jsonString = data.getStringExtra("json");
-                presenter.saveMember(jsonString);
-
+                registerPresenter.saveForm(jsonString,false);
 
             } catch (Exception e) {
             }
         }
     }
 
-    public void opeDrawerBtClick(View view) {
-        drawer.openDrawer(Gravity.LEFT);
+    @Override
+    public void setProfileName(String fullName) {
+
     }
 
+    @Override
+    public void setProfileID(String ancId) {
+
+    }
+
+    @Override
+    public void setProfileAge(String age) {
+
+    }
+
+    @Override
+    public void setProfileGestationAge(String gestationAge) {
+
+    }
+
+    @Override
+    public void setProfileImage(String baseEntityId) {
+
+    }
+
+    @Override
+    public void showProgressDialog(int messageStringIdentifier) {
+
+    }
+
+    @Override
+    public void hideProgressDialog() {
+
+    }
+
+    @Override
+    public void showAttentionFlagsDialog(List<AttentionFlag> attentionFlags) {
+
+    }
+
+    @Override
+    public void updateInitialsText(String initials) {
+
+    }
+
+    @Override
+    public void displayToast(int resourceId) {
+
+    }
+
+    @Override
+    public void displayToast(String message) {
+
+    }
+
+    @Override
+    public void displayShortToast(int resourceId) {
+
+    }
+
+    @Override
+    public void showLanguageDialog(List<String> displayValues) {
+
+    }
+
+    @Override
+    public String getIntentString(String intentKey) {
+        return null;
+    }
+
+    @Override
+    public void setWomanPhoneNumber(String phoneNumber) {
+
+    }
+
+    @Override
+    public void startFormActivity(JSONObject form) {
+        try {
+            Intent intent = new Intent(this, AncJsonFormActivity.class);
+            intent.putExtra("json", form.toString());
+            startActivityForResult(intent, JsonFormUtils.REQUEST_CODE_GET_JSON);
+
+        } catch (Exception e) {
+            Utils.appendLog(getClass().getName(),e);
+
+        }
+    }
+
+    @Override
+    public void refreshList(FetchStatus fetchStatus) {
+        presenter.fetchData();
+    }
+
+    @Override
+    public ProfileContract.View getView() {
+        return this;
+    }
+
+    public void back(View view) {
+        finish();
+    }
 }
-*/
