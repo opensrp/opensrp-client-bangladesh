@@ -14,6 +14,9 @@ import android.widget.TextView;
 import org.smartregister.cbhc.R;
 import org.smartregister.cbhc.application.AncApplication;
 import org.smartregister.cbhc.util.Constants;
+import org.smartregister.cbhc.util.DBConstants;
+import org.smartregister.cbhc.util.JsonFormUtils;
+import org.smartregister.commonregistry.CommonPersonObject;
 import org.smartregister.commonregistry.CommonPersonObjectClient;
 import org.smartregister.immunization.view.ExpandableHeightGridView;
 
@@ -40,6 +43,7 @@ public class FollowupFragment extends BaseProfileFragment {
     int gender = -1;
     int marital_status = 0;
     int pregnant_status = 0;
+    String typeofMember;
     ExpandableHeightGridView formList;
     ExpandableHeightGridView form_history;
     ArrayList<Constants.FOLLOWUP_FORM.FOLLOWUPFORMS> active_forms;
@@ -65,7 +69,9 @@ public class FollowupFragment extends BaseProfileFragment {
             Serializable serializable = extras.getSerializable(EXTRA_HOUSEHOLD_DETAILS);
             if (serializable != null && serializable instanceof CommonPersonObjectClient) {
                 householdDetails = (CommonPersonObjectClient) serializable;
-                householdDetails.getColumnmaps().putAll(AncApplication.getInstance().getContext().detailsRepository().getAllDetailsForClient(householdDetails.entityId()));
+                typeofMember = extras.getString("type_of_member");
+                setUpMemberDetails(typeofMember);
+//                householdDetails.getColumnmaps().putAll(AncApplication.getInstance().getContext().detailsRepository().getAllDetailsForClient(householdDetails.entityId()));
 
             }
         }
@@ -73,7 +79,8 @@ public class FollowupFragment extends BaseProfileFragment {
     }
 
     public void notifyAdapter() {
-        householdDetails.getColumnmaps().putAll(AncApplication.getInstance().getContext().detailsRepository().getAllDetailsForClient(householdDetails.entityId()));
+        setUpMemberDetails(typeofMember);
+//        householdDetails.getColumnmaps().putAll(AncApplication.getInstance().getContext().detailsRepository().getAllDetailsForClient(householdDetails.entityId()));
         if (formListRowAdapter != null) {
             active_forms = getactivateforms();
             formListRowAdapter = new FormListRowAdapter(getActivity(), active_forms);
@@ -110,7 +117,25 @@ public class FollowupFragment extends BaseProfileFragment {
     protected void onResumption() {
 
     }
+    private CommonPersonObjectClient CommonPersonObjectToClient(CommonPersonObject commonPersonObject,String tableName) {
+        CommonPersonObjectClient commonPersonObjectClient = new CommonPersonObjectClient(commonPersonObject.getCaseId(), commonPersonObject.getDetails(), tableName);
+        commonPersonObjectClient.setColumnmaps(commonPersonObject.getColumnmaps());
+        return commonPersonObjectClient;
+    }
 
+    public void setUpMemberDetails(String typeofMember){
+        if (typeofMember != null) {
+            if (typeofMember.equalsIgnoreCase("malechild") || typeofMember.equalsIgnoreCase("femalechild")) {
+                householdDetails =  CommonPersonObjectToClient(AncApplication.getInstance().getContext().commonrepository(DBConstants.CHILD_TABLE_NAME).findByBaseEntityId(householdDetails.entityId()),DBConstants.CHILD_TABLE_NAME);
+            }
+            else if (typeofMember.equalsIgnoreCase("woman")) {
+                householdDetails =  CommonPersonObjectToClient(AncApplication.getInstance().getContext().commonrepository(DBConstants.WOMAN_TABLE_NAME).findByBaseEntityId(householdDetails.entityId()),DBConstants.WOMAN_TABLE_NAME);
+            }
+            else if (typeofMember.equalsIgnoreCase("member")) {
+                householdDetails =  CommonPersonObjectToClient(AncApplication.getInstance().getContext().commonrepository(DBConstants.MEMBER_TABLE_NAME).findByBaseEntityId(householdDetails.entityId()),DBConstants.MEMBER_TABLE_NAME);
+            }
+        }
+    }
     private int getPregnantStatus() {
         String ps = householdDetails.getColumnmaps().get("PregnancyStatus");
 
