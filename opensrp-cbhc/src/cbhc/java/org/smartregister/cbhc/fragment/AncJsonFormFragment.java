@@ -844,7 +844,7 @@ public class AncJsonFormFragment extends JsonFormFragment {
                                     CommonPersonObject household = commonRepository.findByBaseEntityId(relational_id);
                                     headOfHouseholdFirstName = getValue(household.getColumnmaps(), "first_name", false);
                                     headOfHouseholdLastName = getValue(household.getColumnmaps(), "last_name", false);
-                                    headOfHouseholdMobileNumber = getValue(household.getColumnmaps(), "phone_number", false);
+                                    headOfHouseholdMobileNumber = getValue(household.getColumnmaps(), DBConstants.KEY.PHONE_NUMBER, false);
                                     headOfHouseholdDOB = getValue(household.getColumnmaps(), "dob", false);
                                     headOfHouseholdDOBUnknown = getValue(household.getColumnmaps(), "dob_unknown", false);
                                     ImageRepository imageRepo = CoreLibrary.getInstance().context().imageRepository();

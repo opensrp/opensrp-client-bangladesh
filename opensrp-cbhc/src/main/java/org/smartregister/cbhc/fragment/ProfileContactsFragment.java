@@ -143,11 +143,7 @@ public class ProfileContactsFragment extends BaseProfileFragment {
         } else if (jsonObject.getString(JsonFormUtils.KEY).equalsIgnoreCase(DBConstants.KEY.AGE)) {
 
             jsonObject.put(JsonFormUtils.READ_ONLY, false);
-            try {
-                jsonObject.put(JsonFormUtils.VALUE, age = Utils.getAgeFromDate(new DateTime(DATE_FORMAT.parse(womanClient.get(DBConstants.KEY.DOB))).toString()));
-            } catch (ParseException e) {
-                e.printStackTrace();
-            }
+            jsonObject.put(JsonFormUtils.VALUE, age = Utils.getAgeFromDate(womanClient.get(DBConstants.KEY.DOB)));
 
         } else if (jsonObject.getString(JsonFormUtils.KEY).equalsIgnoreCase(DBConstants.KEY.ANC_ID)) {
 
@@ -156,18 +152,32 @@ public class ProfileContactsFragment extends BaseProfileFragment {
         } else if (womanClient.containsKey(jsonObject.getString(JsonFormUtils.KEY))) {
             String keyname = jsonObject.getString(JsonFormUtils.KEY);
             keyname = processAttributesForEdit(jsonObject, keyname);
-            String value = womanClient.get(keyname);
-            //value = processValueWithChoiceIds(jsonObject, value);
-            jsonObject.put(JsonFormUtils.READ_ONLY, false);
-            jsonObject.put(JsonFormUtils.VALUE, value);
+            String value = null;
+            value = womanClient.get(keyname);
+            try{
+                if(value != null){
+                    value = processValueWithChoiceIds(jsonObject, value);
+                    jsonObject.put(JsonFormUtils.READ_ONLY, false);
+                    jsonObject.put(JsonFormUtils.VALUE, value);
+                }
+            }catch (Exception e){
+
+            }
+
+
         } else {
             String keyname = jsonObject.getString(JsonFormUtils.KEY);
             keyname = processAttributesForEdit(jsonObject, keyname);
-            String value = womanClient.get(keyname);
-            if (value != null) {
-               // value = processValueWithChoiceIds(jsonObject, value);
-                jsonObject.put(JsonFormUtils.READ_ONLY, false);
-                jsonObject.put(JsonFormUtils.VALUE, value);
+            String value = null;
+            value = womanClient.get(keyname);
+            try{
+                if (value != null) {
+                    value = processValueWithChoiceIds(jsonObject, value);
+                    jsonObject.put(JsonFormUtils.READ_ONLY, false);
+                    jsonObject.put(JsonFormUtils.VALUE, value);
+                }
+            }catch (Exception e){
+
             }
         }
     }
@@ -178,11 +188,8 @@ public class ProfileContactsFragment extends BaseProfileFragment {
                 JSONObject choiceObject = jsonObject.getJSONObject("openmrs_choice_ids");
 
                 for (int i = 0; i < choiceObject.names().length(); i++) {
-                    if(choiceObject.getString(choiceObject.names().getString(i))!=null){
-                        if (value.equalsIgnoreCase(choiceObject.getString(choiceObject.names().getString(i)))) {
-                            value = choiceObject.names().getString(i);
-                        }
-                        value = "";
+                    if (value.equalsIgnoreCase(choiceObject.getString(choiceObject.names().getString(i)))) {
+                        value = choiceObject.names().getString(i);
                     }
 
                 }

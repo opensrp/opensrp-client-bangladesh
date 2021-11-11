@@ -187,18 +187,25 @@ public class MemberProfileActivity extends BaseProfileActivity implements Profil
         setProfileName(patientName);
         String dobString = getValue(householdDetails.getColumnmaps(), "dob", true);
         String durationString = "";
-        if (StringUtils.isNotBlank(dobString)) {
-            try {
-                DateTime birthDateTime = new DateTime(DATE_FORMAT.parse(dobString));
 
-                String duration = DateUtil.getDuration(birthDateTime);
-                if (duration != null) {
-                    durationString = duration;
+        if(dobString!=null){
+            if (StringUtils.isNotBlank(dobString)) {
+                try {
+                    DateTime birthDateTime = new DateTime(dobString);
+
+                    String duration = DateUtil.getDuration(birthDateTime);
+                    if (duration != null) {
+                        durationString = duration;
+                    }
+                } catch (Exception e) {
+                    Utils.appendLog(getClass().getName(),e);
+                    Log.e(getClass().getName(), e.toString(), e);
                 }
-            } catch (Exception e) {
-Utils.appendLog(getClass().getName(),e);
-                Log.e(getClass().getName(), e.toString(), e);
             }
+        }else{
+            String age = getValue(householdDetails.getColumnmaps(), "age", true);
+            durationString = age;
+
         }
         ImageRepository imageRepo = CoreLibrary.getInstance().context().imageRepository();
         ProfileImage imageRecord = imageRepo.findByEntityId(householdDetails.entityId());
@@ -312,7 +319,7 @@ Utils.appendLog(getClass().getName(),e);
                 String durationString = "";
                 if (StringUtils.isNotBlank(dobString)) {
                     try {
-                        DateTime birthDateTime = new DateTime(DATE_FORMAT.parse(dobString));
+                        DateTime birthDateTime = new DateTime(dobString);
 
                         String duration = DateUtil.getDuration(birthDateTime);
                         if (duration != null) {

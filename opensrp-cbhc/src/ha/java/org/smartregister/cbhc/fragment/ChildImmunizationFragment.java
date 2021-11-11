@@ -356,7 +356,9 @@ Utils.appendLog(getClass().getName(),e);
         LinearLayout vaccineGroupCanvasLL = (LinearLayout) view.findViewById(R.id.vaccine_group_canvas_ll);
         VaccineGroup curGroup = new VaccineGroup(getActivity());
         curGroup.setChildActive(isChildActive);
-        curGroup.setData(vaccineGroupData, childDetails, vaccineList, alerts, "child");
+        try{
+            curGroup.setData(vaccineGroupData, childDetails, vaccineList, alerts, "child");
+        }catch (Exception e){}
         curGroup.setOnRecordAllClickListener(new VaccineGroup.OnRecordAllClickListener() {
             @Override
             public void onClick(VaccineGroup vaccineGroup, ArrayList<VaccineWrapper> dueVaccines) {

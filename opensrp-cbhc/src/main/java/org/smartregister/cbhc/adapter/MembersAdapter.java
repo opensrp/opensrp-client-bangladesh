@@ -66,12 +66,9 @@ public class MembersAdapter extends RecyclerView.Adapter<MembersAdapter.Holder> 
         if(content.getAge().equals("")){
             String dobString = Utils.getDuration(content.getDob());
            // if(content.getDob().length()>10){
-            try {
-                age = String.valueOf(getAge((new DateTime(JsonFormUtils.DATE_FORMAT.parse(content.getDob())))));
-            } catch (ParseException e) {
-                e.printStackTrace();
-            }
-            holder.textViewAge.setText(age+"y");
+                age = String.valueOf(Utils.getAgeFromDate(content.getDob()));
+
+            holder.textViewAge.setText(Utils.getDuration(content.getDob()));
            // }
 
         }else{
@@ -79,7 +76,6 @@ public class MembersAdapter extends RecyclerView.Adapter<MembersAdapter.Holder> 
             holder.textViewAge.setText(age+"y");
         }
 
-        Log.d("tttt","age   "+age);
         try{
             if (Integer.parseInt(age) < 5) {
                 if (!TextUtils.isEmpty(content.getGender()) && content.getGender().equalsIgnoreCase("m")) {

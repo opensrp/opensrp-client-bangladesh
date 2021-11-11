@@ -230,7 +230,7 @@
       {
         "key": "Patient_Identifier",
         "openmrs_entity_parent": "",
-        "openmrs_entity": "person_attribute",
+        "openmrs_entity": "person_identifier",
         "openmrs_entity_id": "Patient_Identifier",
         "type": "edit_text",
         "hint": "সিস্টেম নম্বর",
@@ -436,7 +436,7 @@
       {
         "key": "member_birth_date",
         "openmrs_entity_parent": "",
-        "openmrs_entity": "person_attribute",
+        "openmrs_entity": "person",
         "openmrs_entity_id": "birthdate",
         "openmrs_data_type": "text",
         "type": "date_picker",
@@ -494,7 +494,7 @@
       {
         "key": "gender",
         "openmrs_entity_parent": "",
-        "openmrs_entity": "person_attribute",
+        "openmrs_entity": "person",
         "openmrs_entity_id": "gender",
         "openmrs_data_type": "text",
         "type": "spinner",
