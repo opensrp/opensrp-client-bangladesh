@@ -580,14 +580,14 @@ public class WomanSmartClientsProvider implements SmartRegisterCLientsProviderFo
 //                        continue;
 //                    }
 //                }
-                String locationid = "";
+             /*   String locationid = "";
                 DetailsRepository detailsRepository;
                 detailsRepository = org.smartregister.Context.getInstance().detailsRepository();
                 Map<String, String> details = detailsRepository.getAllDetailsForClient(pc.entityId());
                 locationid = JsonFormUtils.getOpenMrsLocationId(context,getValue(details, "address3", false) );
 
                 String birthFacilityHierarchy = JsonFormUtils.getOpenMrsLocationHierarchy(
-                        context,locationid ).toString();
+                        context,locationid ).toString();*/
                 //inject zeir id into the form
                 JSONObject stepOne = form.getJSONObject(JsonFormUtils.STEP1);
                 JSONArray jsonArray = stepOne.getJSONArray(JsonFormUtils.FIELDS);
@@ -597,10 +597,10 @@ public class WomanSmartClientsProvider implements SmartRegisterCLientsProviderFo
                         jsonObject.remove(JsonFormUtils.VALUE);
                         jsonObject.put(JsonFormUtils.VALUE, entityId);
                     }
-                    if (jsonObject.getString(JsonFormUtils.KEY).equalsIgnoreCase("HIE_FACILITIES")) {
+                 /*   if (jsonObject.getString(JsonFormUtils.KEY).equalsIgnoreCase("HIE_FACILITIES")) {
                         jsonObject.put(JsonFormUtils.VALUE, birthFacilityHierarchy);
 
-                    }
+                    }*/
                     if (jsonObject.getString(JsonFormUtils.KEY).equalsIgnoreCase("Mother_Guardian_First_Name")) {
                         jsonObject.put(JsonFormUtils.READ_ONLY, true);
                         jsonObject.put(JsonFormUtils.VALUE, (getValue(pc.getDetails(), "first_name", true).isEmpty() ? getValue(pc.getDetails(), "first_name", true) : getValue(pc.getDetails(), "first_name", true)));
