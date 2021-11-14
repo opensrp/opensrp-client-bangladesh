@@ -342,6 +342,254 @@
           }
         },
         {
+          "column_name": "givenNameLocal",
+          "type": "Client",
+          "json_mapping": {
+            "field": "attributes.givenNameLocal"
+          }
+        },
+        {
+          "column_name": "motherNameEnglish",
+          "type": "Client",
+          "json_mapping": {
+            "field": "attributes.motherNameEnglish"
+          }
+        },
+        {
+          "column_name": "motherNameBangla",
+          "type": "Client",
+          "json_mapping": {
+            "field": "attributes.motherNameBangla"
+          }
+        },
+        {
+          "column_name": "fatherNameEnglish",
+          "type": "Client",
+          "json_mapping": {
+            "field": "attributes.fatherNameEnglish"
+          }
+        },
+        {
+          "column_name": "fathernameBangla",
+          "type": "Client",
+          "json_mapping": {
+            "field": "attributes.fathernameBangla"
+          }
+        },
+        {
+          "column_name": "member_Reg_Date",
+          "type": "Client",
+          "json_mapping": {
+            "field": "attributes.member_Reg_Date"
+          }
+        },
+        {
+          "column_name": "Child_birth_weight",
+          "type": "Event",
+          "json_mapping": {
+            "field": "obs.fieldCode",
+            "formSubmissionField": "1e58da4d-60b9-4c60-a079-9a5371d3cfa9"
+          }
+        },
+        {
+          "column_name": "Birth_weight",
+          "type": "Event",
+          "json_mapping": {
+            "field": "obs.fieldCode",
+            "formSubmissionField": "9d4aa237-b866-43a1-a75b-9b9490d4a3b9"
+          }
+        },
+        {
+          "column_name": "use_chlorohexidin",
+          "type": "Event",
+          "json_mapping": {
+            "field": "obs.fieldCode",
+            "formSubmissionField": "1f011039-e2dc-49a0-8804-1a96d1d5ba49"
+          }
+        },
+        {
+          "column_name": "MaritalStatus",
+          "type": "Client",
+          "json_mapping": {
+            "field": "attributes.MaritalStatus"
+          }
+        },
+        {
+          "column_name": "spouseNameEnglish",
+          "type": "Client",
+          "json_mapping": {
+            "field": "attributes.spouseNameEnglish"
+          }
+        },
+        {
+          "column_name": "spouseNameBangla",
+          "type": "Client",
+          "json_mapping": {
+            "field": "attributes.spouseNameBangla"
+          }
+        },
+        {
+          "column_name": "birthPlace",
+          "type": "Client",
+          "json_mapping": {
+            "field": "attributes.birthPlace"
+          }
+        },
+        {
+          "column_name": "disable",
+          "type": "Client",
+          "json_mapping": {
+            "field": "attributes.disable"
+          }
+        },
+        {
+          "column_name": "Disability_Type",
+          "type": "Client",
+          "json_mapping": {
+            "field": "attributes.Disability_Type"
+          }
+        },
+        {
+          "column_name": "ethnicity",
+          "type": "Client",
+          "json_mapping": {
+            "field": "attributes.ethnicity"
+          }
+        },
+        {
+          "column_name": "education",
+          "type": "Client",
+          "json_mapping": {
+            "field": "attributes.education"
+          }
+        },
+        {
+          "column_name": "Occupation_Category",
+          "type": "Client",
+          "json_mapping": {
+            "field": "attributes.Occupation_Category"
+          }
+        },
+        {
+          "column_name": "technical_professionals",
+          "type": "Client",
+          "json_mapping": {
+            "field": "attributes.technical_professionals"
+          }
+        },
+        {
+          "column_name": "labor_service",
+          "type": "Client",
+          "json_mapping": {
+            "field": "attributes.labor_service"
+          }
+        },
+        {
+          "column_name": "Unskilled_labor",
+          "type": "Client",
+          "json_mapping": {
+            "field": "attributes.Unskilled_labor"
+          }
+        },
+        {
+          "column_name": "blue_collar_service",
+          "type": "Client",
+          "json_mapping": {
+            "field": "attributes.blue_collar_service"
+          }
+        },
+        {
+          "column_name": "Home_based_manufacturing",
+          "type": "Client",
+          "json_mapping": {
+            "field": "attributes.Home_based_manufacturing"
+          }
+        },
+        {
+          "column_name": "Business",
+          "type": "Client",
+          "json_mapping": {
+            "field": "attributes.Business"
+          }
+        },
+        {
+          "column_name": "Domestic_Servant",
+          "type": "Client",
+          "json_mapping": {
+            "field": "attributes.Domestic_Servant"
+          }
+        },
+        {
+          "column_name": "Religion",
+          "type": "Client",
+          "json_mapping": {
+            "field": "attributes.Religion"
+          }
+        },
+        {
+          "column_name": "bloodgroup",
+          "type": "Client",
+          "json_mapping": {
+            "field": "attributes.bloodgroup"
+          }
+        },
+        {
+          "column_name": "has_disease",
+          "type": "Client",
+          "json_mapping": {
+            "field": "attributes.has_disease"
+          }
+        },
+        {
+          "column_name": "lmp_date",
+          "type": "Client",
+          "json_mapping": {
+            "field": "attributes.lmp_date"
+          }
+        },
+        {
+          "column_name": "delivery_date",
+          "type": "Client",
+          "json_mapping": {
+            "field": "attributes.delivery_date"
+          }
+        },
+        {
+          "column_name": "Disease_Below_2Month_Age",
+          "type": "Client",
+          "json_mapping": {
+            "field": "attributes.Disease_Below_2Month_Age"
+          }
+        },
+        {
+          "column_name": "Disease_2Month_5Years",
+          "type": "Client",
+          "json_mapping": {
+            "field": "attributes.Disease_2Month_5Years"
+          }
+        },
+        {
+          "column_name": "familyplanning",
+          "type": "Client",
+          "json_mapping": {
+            "field": "attributes.familyplanning"
+          }
+        },
+        {
+          "column_name": "family_diseases_details",
+          "type": "Client",
+          "json_mapping": {
+            "field": "attributes.family_diseases_details"
+          }
+        },
+        {
+          "column_name": "RiskyHabit",
+          "type": "Client",
+          "json_mapping": {
+            "field": "attributes.RiskyHabit"
+          }
+        },
+        {
           "column_name": "relational_id",
           "type": "Client",
           "json_mapping": {
@@ -481,128 +729,32 @@
         },
 
         {
-          "column_name": "motherNameEnglish",
-          "type": "Client",
-          "json_mapping": {
-            "field": "attributes.motherNameEnglish"
-          }
-        },
-        {
-          "column_name": "fatherNameEnglish",
-          "type": "Client",
-          "json_mapping": {
-            "field": "attributes.fatherNameEnglish"
-          }
-        },
-
-        {
-          "column_name": "member_birth_date_known",
-          "type": "Client",
-          "json_mapping": {
-            "field": "attributes.member_birth_date_known"
-          }
-        },
-
-        {
-          "column_name": "birthPlace",
-          "type": "Client",
-          "json_mapping": {
-            "field": "attributes.birthPlace"
-          }
-        },
-
-        {
-          "column_name": "disable",
-          "type": "Client",
-          "json_mapping": {
-            "field": "attributes.disable"
-          }
-        },
-
-        {
-          "column_name": "ethnicity",
-          "type": "Client",
-          "json_mapping": {
-            "field": "attributes.ethnicity"
-          }
-        },
-
-        {
-          "column_name": "technical_professionals",
-          "type": "Client",
-          "json_mapping": {
-            "field": "attributes.technical_professionals"
-          }
-        },
-
-        {
-          "column_name": "labor_service",
-          "type": "Client",
-          "json_mapping": {
-            "field": "attributes.labor_service"
-          }
-        },
-        {
-          "column_name": "Unskilled_labor",
-          "type": "Client",
-          "json_mapping": {
-            "field": "attributes.Unskilled_labor"
-          }
-        },
-        {
-          "column_name": "blue_collar_service",
-          "type": "Client",
-          "json_mapping": {
-            "field": "attributes.blue_collar_service"
-          }
-        },
-        {
-          "column_name": "Home_based_manufacturing",
-          "type": "Client",
-          "json_mapping": {
-            "field": "attributes.Home_based_manufacturing"
-          }
-        },
-        {
-          "column_name": "Domestic_Servant",
-          "type": "Client",
-          "json_mapping": {
-            "field": "attributes.Domestic_Servant"
-          }
-        },
-        {
-          "column_name": "Religion",
-          "type": "Client",
-          "json_mapping": {
-            "field": "attributes.Religion"
-          }
-        },
-        {
-          "column_name": "bloodgroup",
-          "type": "Client",
-          "json_mapping": {
-            "field": "attributes.bloodgroup"
-          }
-        },
-        {
-          "column_name": "has_disease",
-          "type": "Client",
-          "json_mapping": {
-            "field": "attributes.has_disease"
-          }
-        },
-        {
-          "column_name": "CommunicableDisease",
+          "column_name": "Comm_Disease",
           "type": "Client",
           "json_mapping": {
             "field": "attributes.Comm_Disease"
           }
         },
         {
-          "column_name": "NonComDisease",
+          "column_name": "NonComnta_Disease",
           "type": "Client",
           "json_mapping": {
             "field": "attributes.NonComnta_Disease"
+          }
+        },
+
+        {
+          "column_name": "Disease_Type",
+          "type": "Client",
+          "json_mapping": {
+            "field": "attributes.Disease_Type"
+          }
+        },
+        {
+          "column_name": "Disease_Type",
+          "type": "Client",
+          "json_mapping": {
+            "field": "attributes.Disease_Type"
           }
         }
       ]
@@ -705,8 +857,13 @@
             "field": "attributes.age"
           }
         },
-
-
+        {
+          "column_name": "comments",
+          "type": "Client",
+          "json_mapping": {
+            "field": "attributes.comments"
+          }
+        },
         {
           "column_name": "dob_unknown",
           "type": "Client",
@@ -791,6 +948,14 @@
           "type": "Client",
           "json_mapping": {
             "field": "attributes.NonComnta_Disease"
+          }
+        },
+
+        {
+          "column_name": "Disease_Type",
+          "type": "Client",
+          "json_mapping": {
+            "field": "attributes.Disease_Type"
           }
         },
         {
@@ -1173,6 +1338,13 @@
           }
         },
         {
+          "column_name": "Business",
+          "type": "Client",
+          "json_mapping": {
+            "field": "attributes.Business"
+          }
+        },
+        {
           "column_name": "Domestic_Servant",
           "type": "Client",
           "json_mapping": {
@@ -1212,6 +1384,14 @@
           "type": "Client",
           "json_mapping": {
             "field": "attributes.NonComnta_Disease"
+          }
+        },
+
+        {
+          "column_name": "Disease_Type",
+          "type": "Client",
+          "json_mapping": {
+            "field": "attributes.Disease_Type"
           }
         },
         {
@@ -1487,6 +1667,41 @@
           "type": "Client",
           "json_mapping": {
             "field": "attributes.reminders"
+          }
+        },
+        {
+          "column_name": "Realtion_With_Household_Head",
+          "type": "Client",
+          "json_mapping": {
+            "field": "attributes.Realtion_With_Household_Head"
+          }
+        },
+        {
+          "column_name": "idtype",
+          "type": "Client",
+          "json_mapping": {
+            "field": "attributes.idtype"
+          }
+        },
+        {
+          "column_name": "DiseaseType",
+          "type": "Client",
+          "json_mapping": {
+            "field": "attributes.DiseaseType"
+          }
+        },
+        {
+          "column_name": "Comm_Disease",
+          "type": "Client",
+          "json_mapping": {
+            "field": "attributes.Comm_Disease"
+          }
+        },
+        {
+          "column_name": "NonComnta_Disease",
+          "type": "Client",
+          "json_mapping": {
+            "field": "attributes.NonComnta_Disease"
           }
         }
       ]

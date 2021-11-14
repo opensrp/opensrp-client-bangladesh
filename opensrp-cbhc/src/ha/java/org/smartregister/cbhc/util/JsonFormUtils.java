@@ -1959,6 +1959,17 @@ public class JsonFormUtils extends org.smartregister.util.JsonFormUtils {
 
                             object.put(VALUE, value);
                         }
+                    }else if(key != null && !key.startsWith("Disease_Type")){
+                        String Disease_Type = column_maps.get("DiseaseType");
+                        if (Disease_Type != null) {
+                            String[] tmp = Disease_Type.split(",");
+                            JSONArray Disease_TypeArray = new JSONArray();
+                            for (String t : tmp) {
+                                Disease_TypeArray.put(t);
+                            }
+                            processValueWithChoiceIds(object, Disease_TypeArray.toString());
+                            object.put(JsonFormUtils.VALUE, Disease_TypeArray);
+                        }
                     }
 
                 }

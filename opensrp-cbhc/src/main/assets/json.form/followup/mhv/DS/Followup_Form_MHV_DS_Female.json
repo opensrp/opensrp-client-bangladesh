@@ -90,7 +90,7 @@
         "key": "Disease_Type",
         "openmrs_entity_parent": "",
         "openmrs_entity": "person_attribute",
-        "openmrs_entity_id": "Disease Type",
+        "openmrs_entity_id": "Disease_Type",
         "openmrs_data_type": "text",
         "type": "check_box",
         "label": "রোগের ধরণ",
@@ -118,10 +118,10 @@
       },
 
       {
-        "key": "Communicable Disease",
+        "key": "Comm_Disease",
         "openmrs_entity_parent": "",
         "openmrs_entity": "person_attribute",
-        "openmrs_entity_id": "Communicable Disease",
+        "openmrs_entity_id": "Comm_Disease",
         "openmrs_data_type": "text",
         "type": "check_box",
         "label": "সংক্রামক রোগ",
@@ -214,10 +214,10 @@
       },
 
       {
-        "key": "Non Communicable Disease",
+        "key": "NonComnta_Disease",
         "openmrs_entity_parent": "",
         "openmrs_entity": "person_attribute",
-        "openmrs_entity_id": "Non Communicable Disease",
+        "openmrs_entity_id": "NonComnta_Disease",
         "openmrs_data_type": "text",
         "type": "check_box",
         "label": "অসংক্রামক রোগ",
@@ -294,7 +294,7 @@
       {
         "key":"Place_of_Refer",
         "openmrs_entity_parent":"",
-        "openmrs_entity":"concept",
+        "openmrs_entity":"person_attribute",
         "openmrs_entity_id":"ec28ec95-0f6a-4910-8efc-c2925f9b36b1",
         "openmrs_data_type":"text",
         "type":"spinner",
