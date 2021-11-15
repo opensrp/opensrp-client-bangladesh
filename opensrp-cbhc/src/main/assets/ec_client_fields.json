@@ -750,11 +750,12 @@
             "field": "attributes.Disease_Type"
           }
         },
+
         {
-          "column_name": "Disease_Type",
+          "column_name": "Place_of_Refer",
           "type": "Client",
           "json_mapping": {
-            "field": "attributes.Disease_Type"
+            "field": "attributes.Place_of_Refer"
           }
         }
       ]
