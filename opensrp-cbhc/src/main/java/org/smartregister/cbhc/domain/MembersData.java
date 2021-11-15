@@ -3,10 +3,11 @@ package org.smartregister.cbhc.domain;
 import org.smartregister.commonregistry.CommonPersonObjectClient;
 
 public class MembersData {
-    String  baseEntityId,fName,lName,dob,age,relation,gender;
+    String  baseEntityId,fName,lName,dob,age,relation,gender,tasks,PregnancyStatus,MaritalStatus;
     CommonPersonObjectClient pClient;
 
-    public MembersData(String baseEntityId, String fName, String lName, String dob, String age, String relation,String gender,CommonPersonObjectClient pClient) {
+    public MembersData(String baseEntityId, String fName, String lName, String dob, String age,
+                       String relation,String gender,String tasks,String PregnancyStatus,String MaritalStatus, CommonPersonObjectClient pClient) {
         this.baseEntityId = baseEntityId;
         this.fName = fName;
         this.lName = lName;
@@ -15,6 +16,9 @@ public class MembersData {
         this.relation = relation;
         this.gender = gender;
         this.pClient = pClient;
+        this.tasks = tasks;
+        this.PregnancyStatus = PregnancyStatus;
+        this.MaritalStatus = MaritalStatus;
     }
 
 
@@ -48,5 +52,17 @@ public class MembersData {
 
     public CommonPersonObjectClient getpClient() {
         return pClient;
+    }
+
+    public String getTasks() {
+        return tasks;
+    }
+
+    public String getPregnancyStatus() {
+        return PregnancyStatus;
+    }
+
+    public String getMaritalStatus() {
+        return MaritalStatus;
     }
 }

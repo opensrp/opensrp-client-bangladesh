@@ -52,6 +52,7 @@ import org.smartregister.cbhc.repository.AncRepository;
 import org.smartregister.cbhc.util.Constants;
 import org.smartregister.cbhc.util.DBConstants;
 import org.smartregister.cbhc.util.Jilla;
+import org.smartregister.cbhc.util.LookUpUtils;
 import org.smartregister.cbhc.util.Utils;
 import org.smartregister.commonregistry.CommonPersonObjectClient;
 import org.smartregister.configurableviews.ConfigurableViewsLibrary;
@@ -394,6 +395,11 @@ public abstract class BaseRegisterActivity extends SecuredNativeSmartRegisterAct
     @Override
     public void startFormActivity(JSONObject form) {
         Intent intent = new Intent(this, AncJsonFormActivity.class);
+        JSONArray campTypeArr = new JSONArray();
+        campTypeArr.put("Type 1");
+        campTypeArr.put("Type 2");
+        JsonFormUtils.setCampType(form, campTypeArr);
+
         intent.putExtra("json", form.toString());
         startActivityForResult(intent, JsonFormUtils.REQUEST_CODE_GET_JSON);
     }

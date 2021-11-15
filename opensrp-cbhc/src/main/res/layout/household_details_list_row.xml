@@ -103,7 +103,7 @@
                     android:layout_height="20dp"
                     android:paddingLeft="5dp"
                     android:paddingRight="5dp"
-                    android:visibility="gone"
+                    android:visibility="visible"
                     android:textColor="@color/white"
                     android:textSize="12sp" />
             </LinearLayout>

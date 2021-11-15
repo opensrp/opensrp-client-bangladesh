@@ -296,6 +296,9 @@ public class ProfileOverviewFragment extends BaseProfileFragment {
                             int gender = cursor.getColumnIndex("gender");
                             int age = cursor.getColumnIndex("age");
                             int relation = cursor.getColumnIndex("relation");
+                            int tasks = cursor.getColumnIndex("tasks");
+                            int pregnancyStatus = cursor.getColumnIndex("PregnancyStatus");
+                            int MaritalStatus = cursor.getColumnIndex("MaritalStatus");
 
                             membersDataArrayList.add(new MembersData(
                                     cursor.isNull(baseEntity) ? "" : cursor.getString(baseEntity),
@@ -305,6 +308,9 @@ public class ProfileOverviewFragment extends BaseProfileFragment {
                                     cursor.isNull(age) ? "" : cursor.getString(age),
                                     cursor.isNull(relation) ? "" : cursor.getString(relation),
                                     cursor.isNull(gender) ? "" : cursor.getString(gender),
+                                    cursor.isNull(tasks) ? "0" : cursor.getString(tasks),
+                                    cursor.isNull(pregnancyStatus) ? "" : cursor.getString(pregnancyStatus),
+                                    cursor.isNull(MaritalStatus) ? "" : cursor.getString(MaritalStatus),
                                     pClient
                             ));
 
@@ -316,6 +322,7 @@ public class ProfileOverviewFragment extends BaseProfileFragment {
 
                         membersRv.setLayoutManager(new LinearLayoutManager(getActivity()));
                         membersRv.setAdapter(new MembersAdapter(
+                                getActivity().getApplicationContext(),
                                 membersDataArrayList,
                                 new MembersAdapter.OnItemClick() {
                                     @Override
@@ -360,6 +367,24 @@ public class ProfileOverviewFragment extends BaseProfileFragment {
 
 
                                     }
+                                },
+
+                                new MembersAdapter.OnBirthClick() {
+                                    @Override
+                                    public void onClick(int position, MembersData membersData) {
+                                        CommonPersonObjectClient pClient = membersData.getpClient();
+                                        String firstNameEnglish = org.smartregister.util.Utils.getValue(pClient.getColumnmaps(), DBConstants.KEY.FIRST_NAME, true);
+                                        String lastNameEnglish = org.smartregister.util.Utils.getValue(pClient.getColumnmaps(), DBConstants.KEY.LAST_NAME, true);
+                                         String  motherNameEnglish = getName(firstNameEnglish, lastNameEnglish);
+                                        try {
+                                            ((ProfileActivity)getActivity()).setMotherName(motherNameEnglish);
+
+                                            ((ProfileActivity)getActivity()).getPresenter().startMemberRegistrationForm(Constants.JSON_FORM.MEMBER_REGISTER, null, null, null, householdDetails.entityId());
+                                        } catch (Exception e) {
+                                            Utils.appendLog(getClass().getName(),e);
+                                            e.printStackTrace();
+                                        }
+                                    }
                                 }
                         ));
                     }
@@ -374,6 +399,7 @@ public class ProfileOverviewFragment extends BaseProfileFragment {
     }
 
 
+
     private void launchFormEdit(CommonPersonObjectClient pclient) {
         String formMetadataformembers = JsonFormUtils.getMemberJsonEditFormString(getActivity(), pclient.getColumnmaps());
         try {
@@ -386,14 +412,14 @@ public class ProfileOverviewFragment extends BaseProfileFragment {
 
     public String queryfortheadapterthing(String id) {
         String query = "SELECT * FROM " +
-                "        (select woman.id as _id , woman.relationalid , woman.Patient_Identifier, woman.first_name , woman.last_name , woman.dob , woman.gender, woman.PregnancyStatus, woman.tasks,woman.relation_with_household as relation, woman.age as age" +
+                "        (select woman.id as _id , woman.relationalid , woman.Patient_Identifier, woman.first_name , woman.last_name , woman.dob , woman.gender, woman.PregnancyStatus, woman.tasks,woman.relation_with_household as relation, woman.age as age, woman.MaritalStatus" +
                 " FROM ec_woman as woman " +
                 "WHERE (relational_id = '</>' and date_removed IS NULL)" +
-                " " + "Union all  Select member.id as _id , member.relationalid , member.Patient_Identifier, member.first_name , member.last_name , member.dob,member.gender, member.PregnancyStatus,member.tasks, member.relation_with_household as relation, member.age as age" +
+                " " + "Union all  Select member.id as _id , member.relationalid , member.Patient_Identifier, member.first_name , member.last_name , member.dob,member.gender, member.PregnancyStatus,member.tasks, member.relation_with_household as relation, member.age as age, member.MaritalStatus" +
                 " FROM ec_member as member " +
                 "WHERE (member.relational_id = '</>' and member.date_removed IS NULL)" +
                 " " +
-                "Union all Select child.id as _id , child.relationalid , child.Patient_Identifier, child.first_name , child.last_name , child.dob ,child.gender, child.PregnancyStatus, child.tasks, child.relation_with_household as relation, child.age as age" +
+                "Union all Select child.id as _id , child.relationalid , child.Patient_Identifier, child.first_name , child.last_name , child.dob ,child.gender, child.PregnancyStatus, child.tasks, child.relation_with_household as relation, child.age as age, NULL as MaritalStatus" +
                 " FROM ec_child as child " +
                 "WHERE (child.relational_id = '</>' and child.date_removed IS NULL)) group by _id" +
                 " ORDER BY CASE WHEN relation = 'খানা প্রধান' THEN 1 " +

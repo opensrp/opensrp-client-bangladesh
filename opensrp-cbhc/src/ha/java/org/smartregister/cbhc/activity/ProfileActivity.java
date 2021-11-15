@@ -115,6 +115,10 @@ public class ProfileActivity extends BaseProfileActivity implements ProfileContr
         presenter = new RegisterPresenter(ProfileActivity.this);
     }
 
+    public RegisterPresenter getPresenter() {
+        return presenter;
+    }
+
     private void setUpViews() {
 
         TabLayout tabLayout = findViewById(R.id.tabs);
@@ -798,6 +802,10 @@ Utils.appendLog(getClass().getName(),e);
             }
         }), null);
 
+    }
+
+    public void setMotherName(String motherNameEnglish) {
+        this.motherNameEnglish = motherNameEnglish;
     }
 }
 

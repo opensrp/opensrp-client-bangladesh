@@ -2,6 +2,7 @@ package org.smartregister.cbhc.adapter;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
+import android.content.res.Resources;
 import android.os.AsyncTask;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
@@ -10,8 +11,11 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+
+import com.bumptech.glide.load.engine.Resource;
 
 import org.joda.time.DateTime;
 import org.smartregister.Context;
@@ -35,19 +39,21 @@ import java.util.Calendar;
 import java.util.Date;
 
 public class MembersAdapter extends RecyclerView.Adapter<MembersAdapter.Holder> {
-    private Context context;
+    private android.content.Context context;
     private ArrayList<MembersData> membersDataArrayList;
     private OnItemClick onItemClick;
     private OnEditClick onEditClick;
+    private OnBirthClick onBirthClick;
     String clientype="";
 
-    public MembersAdapter(ArrayList<MembersData> membersDataArrayList,
-                          OnItemClick onItemClick,OnEditClick onEditClick) {
+    public MembersAdapter(android.content.Context context,ArrayList<MembersData> membersDataArrayList,
+                          OnItemClick onItemClick,OnEditClick onEditClick,OnBirthClick onBirthClick) {
+        this.context= context;
         this.membersDataArrayList = membersDataArrayList;
         this.onItemClick = onItemClick;
         this.onEditClick = onEditClick;
+        this.onBirthClick = onBirthClick;
     }
-
     @NonNull
     @Override
     public Holder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
@@ -76,6 +82,37 @@ public class MembersAdapter extends RecyclerView.Adapter<MembersAdapter.Holder> 
             holder.textViewAge.setText(age+"y");
         }
 
+
+        //total birth button visible invisible logic
+        if (!content.getTasks().equals("0") && !content.getTasks().isEmpty()) {
+            try {
+                int tasks_count = Integer.valueOf(content.getTasks());
+                if (tasks_count > 0) {
+                    holder.total_birth_btn.setText(context.getString(R.string.total_unregister_child, tasks_count + ""));
+                    holder.total_birth_btn.setVisibility(View.VISIBLE);
+                } else {
+                    holder.total_birth_btn.setVisibility(View.GONE);
+                }
+            } catch (Exception e) {
+                Utils.appendLog(ProfileOverviewFragment.class.getName(), e);
+
+            }
+
+        } else {
+            try{
+                int tasks_count = Integer.valueOf(content.getTasks());
+                if(content.getMaritalStatus().equalsIgnoreCase("Married") && content.getGender().equalsIgnoreCase("f")){
+                    holder.total_birth_btn.setText("+Child");
+                    holder.total_birth_btn.setVisibility(View.VISIBLE);
+                }else {
+                    holder.total_birth_btn.setVisibility(View.GONE);
+                }
+            }catch (Exception e){
+                Utils.appendLog(ProfileOverviewFragment.class.getName(), e);
+            }
+        }
+
+        //member type logic
         try{
             if (Integer.parseInt(age) < 5) {
                 if (!TextUtils.isEmpty(content.getGender()) && content.getGender().equalsIgnoreCase("m")) {
@@ -122,10 +159,17 @@ public class MembersAdapter extends RecyclerView.Adapter<MembersAdapter.Holder> 
 
         }catch (Exception e){}
 
+        //click listeners
         holder.itemView.setOnClickListener(view -> onItemClick.onClick(i,content,getClientType(content)));
         holder.editLay.setOnClickListener(view -> onEditClick.onClick(i,content,getClientType(content)));
+        holder.total_birth_btn.setOnClickListener(view -> onBirthClick.onClick(i,content));
     }
 
+    /**
+     * getting user type here
+     * @param content
+     * @return
+     */
     String getClientType(MembersData content) {
         String age = "0";
         if(content.getAge().equals("")){
@@ -173,6 +217,7 @@ public class MembersAdapter extends RecyclerView.Adapter<MembersAdapter.Holder> 
         public CustomFontTextView textViewForumDate,textViewName,textViewAge,textViewGender;
         LinearLayout editLay;
         ImageView profileImage,smallImg;
+        Button total_birth_btn;
         public Holder(@NonNull View itemView) {
             super(itemView);
             textViewName = itemView.findViewById(R.id.name_tv);
@@ -182,6 +227,8 @@ public class MembersAdapter extends RecyclerView.Adapter<MembersAdapter.Holder> 
             editLay = itemView.findViewById(R.id.editLay);
             profileImage = itemView.findViewById(R.id.profile_image);
             smallImg = itemView.findViewById(R.id.small_image);
+
+            total_birth_btn = itemView.findViewById(R.id.total_birth_btn);
         }
     }
 
@@ -245,5 +292,12 @@ public class MembersAdapter extends RecyclerView.Adapter<MembersAdapter.Holder> 
      */
     public interface OnEditClick{
         void onClick(int position, MembersData membersData,String clientType);
+    }
+
+    /**
+     * total birth listeners
+     */
+    public interface OnBirthClick{
+        void onClick(int position, MembersData membersData);
     }
 }

@@ -2014,4 +2014,30 @@ public class JsonFormUtils extends org.smartregister.util.JsonFormUtils {
         event.addObs(obs);
         return event;
     }
+
+
+
+    public static JSONObject setCampType(JSONObject form,JSONArray campList){
+        try {
+            JSONObject stepOne = form.getJSONObject(JsonFormUtils.STEP1);
+            JSONArray jsonArray = stepOne.getJSONArray(JsonFormUtils.FIELDS);
+
+
+            for (int i = 0; i < jsonArray.length(); i++) {
+                JSONObject jsonObject = jsonArray.getJSONObject(i);
+
+                if (jsonObject.getString(JsonFormUtils.KEY).equalsIgnoreCase("camp_type")) {
+//                    jsonObject.put("mother_id",motherId);
+                    jsonObject.put(JsonFormUtils.VALUES, campList);
+                }
+
+            }
+        } catch (Exception e) {
+            Utils.appendLog(LookUpUtils.class.getName(), e);
+            e.printStackTrace();
+
+        }
+
+        return form;
+    }
 }

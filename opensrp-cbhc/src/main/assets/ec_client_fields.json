@@ -299,6 +299,14 @@
           "json_mapping": {
             "field": "attributes.birthPlace"
           }
+        },
+
+        {
+          "column_name": "camp_type",
+          "type": "Client",
+          "json_mapping": {
+            "field": "attributes.camp_type"
+          }
         }
       ]
     },
@@ -1400,6 +1408,14 @@
           "type": "Client",
           "json_mapping": {
             "field": "attributes.fatherNameEnglish"
+          }
+        },
+
+        {
+          "column_name": "MaritalStatus",
+          "type": "Client",
+          "json_mapping": {
+            "field": "attributes.MaritalStatus"
           }
         }
       ]

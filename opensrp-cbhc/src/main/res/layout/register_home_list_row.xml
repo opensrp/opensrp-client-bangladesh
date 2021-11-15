@@ -199,7 +199,7 @@
 					android:layout_height="25dp"
 					android:layout_margin="1dp"
 					android:layout_weight="1"
-                    android:visibility="gone"
+                    android:visibility="visible"
 					android:scaleType="fitXY"
 					app:srcCompat="@drawable/pregnant_woman" />
 
