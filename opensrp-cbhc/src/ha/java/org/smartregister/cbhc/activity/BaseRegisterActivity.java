@@ -4,6 +4,7 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.database.Cursor;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
@@ -25,6 +26,9 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import net.sqlcipher.database.SQLiteDatabase;
+
+import org.json.JSONException;
+import org.smartregister.cbhc.domain.GuestMemberData;
 import org.smartregister.cbhc.util.JsonFormUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.greenrobot.eventbus.EventBus;
@@ -394,6 +398,18 @@ public abstract class BaseRegisterActivity extends SecuredNativeSmartRegisterAct
 
     @Override
     public void startFormActivity(JSONObject form) {
+        try {
+            JSONObject encounter_type = form.getJSONObject(JsonFormUtils.ENCOUNTER_TYPE);
+
+            if(encounter_type.equals("Member Registration")){
+                JSONObject relationalId = form.getJSONObject("relational_id");
+                getCampTypeFromDb();
+            }
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
         Intent intent = new Intent(this, AncJsonFormActivity.class);
         JSONArray campTypeArr = new JSONArray();
         campTypeArr.put("Type 1");
@@ -402,6 +418,29 @@ public abstract class BaseRegisterActivity extends SecuredNativeSmartRegisterAct
 
         intent.putExtra("json", form.toString());
         startActivityForResult(intent, JsonFormUtils.REQUEST_CODE_GET_JSON);
+    }
+
+    private void getCampTypeFromDb() {
+        String query =  "select * from ec_guest_member";
+        try (Cursor cursor = AncApplication.getInstance().getRepository().getReadableDatabase().rawQuery(query, new String[]{})) {
+            if (cursor != null && cursor.getCount() > 0) {
+
+
+                cursor.moveToFirst();
+                while (!cursor.isAfterLast()) {
+                    int baseEntity = cursor.getColumnIndex("base_entity_id");
+                    int fname = cursor.getColumnIndex("first_name");
+                    int lname = cursor.getColumnIndex("last_name");
+                    int dob = cursor.getColumnIndex("dob");
+                    int gender = cursor.getColumnIndex("gender");
+                    int age = cursor.getColumnIndex("age");
+
+
+                    cursor.moveToNext();
+                }
+            }
+        } catch (Exception e) {
+        }
     }
 
     @Override

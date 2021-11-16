@@ -574,6 +574,25 @@
           "তৃতীয় লিঙ্গ": "O"
         }
       },
+
+      {
+        "key": "camp_type",
+        "openmrs_entity_parent": "",
+        "openmrs_entity": "person_attribute",
+        "openmrs_entity_id": "camp_type",
+        "openmrs_data_type": "Coded",
+        "type": "spinner",
+        "hint": "ক্যাম্পেইন টাইপ নির্বাচন করুন",
+        "values": [
+        ],
+        "openmrs_choice_ids": {
+        },
+        "v_required": {
+          "value": "true",
+          "err": "Please answer the question"
+        }
+      },
+
       {
         "key": "Child_birth_weight",
         "openmrs_entity_parent": "",

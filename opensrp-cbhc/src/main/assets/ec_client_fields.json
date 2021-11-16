@@ -765,6 +765,14 @@
           "json_mapping": {
             "field": "attributes.Place_of_Refer"
           }
+        },
+
+        {
+          "column_name": "camp_type",
+          "type": "Client",
+          "json_mapping": {
+            "field": "attributes.camp_type"
+          }
         }
       ]
     },
@@ -1109,6 +1117,14 @@
           "json_mapping": {
             "field": "attributes.fatherNameEnglish"
           }
+        },
+
+        {
+          "column_name": "camp_type",
+          "type": "Client",
+          "json_mapping": {
+            "field": "attributes.camp_type"
+          }
         }
       ]
     },
@@ -1416,6 +1432,14 @@
           "type": "Client",
           "json_mapping": {
             "field": "attributes.MaritalStatus"
+          }
+        },
+
+        {
+          "column_name": "camp_type",
+          "type": "Client",
+          "json_mapping": {
+            "field": "attributes.camp_type"
           }
         }
       ]
