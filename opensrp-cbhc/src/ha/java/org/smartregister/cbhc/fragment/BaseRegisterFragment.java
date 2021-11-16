@@ -473,13 +473,18 @@ Utils.appendLog(getClass().getName(),e);
 //        clientAdapter.notifyDataSetChanged();
     }
 
-    public void updateSortAndFilter(List<Field> filterList, Field sortField) {
+    public void updateSortAndFilter(List<Field> filterList, Field sortField,String camp_type) {
 //        presenter.updateSortAndFilter(filterList, sortField);
         if(filterList.size()==0){
-            this.registerCondition = "";
-            presenter.initializeQueries(getMainCondition());
+            if(!camp_type.equals("")){
+                mainSelect = filterSelect("",camp_type);
+            }else{
+                this.registerCondition = "";
+                presenter.initializeQueries(getMainCondition());
+            }
+
         }else{
-            mainSelect = filterSelect(filterList.get(0).getDbAlias());
+            mainSelect = filterSelect(filterList.get(0).getDbAlias(),camp_type);
         }
         this.Sortqueries = sortField.getDbAlias();
         filter(this.filters,this.joinTable,this.mainCondition,false);
@@ -763,7 +768,7 @@ Utils.appendLog(getClass().getName(),e);
         }
     }
 
-    public String filterSelect(String filter) {
+    public String filterSelect(String filter,String camp_type) {
         SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
         String dateString = format.format( new Date() );
         String TWO_MONTHS = format.format( new Date(new Date().getTime()-2l*32l*24l*60l*60l*1000l));
@@ -771,6 +776,15 @@ Utils.appendLog(getClass().getName(),e);
         String FIFTY_YEAR = format.format( new Date(new Date().getTime()-50l*12l*30l*24l*60l*60l*1000l));
 
         SmartRegisterQueryBuilder queryBUilder = new SmartRegisterQueryBuilder();
+        String camp_type_condition="";
+        if(!camp_type.equals("")){
+            if(filter.isEmpty()){
+                camp_type_condition = " ec_household.camp_type = '"+camp_type+"'";
+            }else{
+                camp_type_condition = "AND ec_household.camp_type = '"+camp_type+"'";
+            }
+
+        }
         String tableName = "ec_household";
         String[] columns = new String[]{
                 tableName + ".relationalid",
@@ -783,6 +797,7 @@ Utils.appendLog(getClass().getName(),e);
                 tableName + "." + DBConstants.KEY.PHONE_NUMBER,
                 tableName + "." + DBConstants.KEY.PRESENT_ADDRESS
         };
+        registerCondition = camp_type_condition;
 
         if(filter.equals("pregnant")){
             columns = new String[]{
@@ -797,7 +812,7 @@ Utils.appendLog(getClass().getName(),e);
                     "(select ec_woman.PregnancyStatus from ec_woman where (ec_woman.PregnancyStatus = 'Antenatal Period' or ec_woman.PregnancyStatus like '%প্রসব পূর্ব%') and ec_household.id=ec_woman.relational_id) as PregnancyStatus"
                     };
             //"(select ec_details.value from ec_details where ec_details.key='Disease_status' and ec_details.value = 'Antenatal Period' and ec_details.base_entity_id=(select ec_woman.id from ec_woman where  ec_household.id=ec_woman.relational_id )) as Disease_status"
-            registerCondition = " PregnancyStatus IS NOT NULL";
+            registerCondition = " PregnancyStatus IS NOT NULL "+camp_type_condition;
         }else if(filter.equals("infant")){
             columns = new String[]{
                     tableName + ".relationalid",
@@ -810,7 +825,7 @@ Utils.appendLog(getClass().getName(),e);
                     tableName + "." + DBConstants.KEY.PHONE_NUMBER,
                     "(select ec_child.dob from ec_child where ec_child.relational_id = ec_household.id and ec_child.dob > DATE('"+TWO_MONTHS+"')) as child_dob"
             };
-            registerCondition = " child_dob IS NOT NULL";
+            registerCondition = " child_dob IS NOT NULL "+camp_type_condition;
         }else if(filter.equals("toddler")){
             columns = new String[]{
                     tableName + ".relationalid",
@@ -823,7 +838,7 @@ Utils.appendLog(getClass().getName(),e);
                     tableName + "." + DBConstants.KEY.PHONE_NUMBER,
                     "(select ec_child.dob from ec_child where ec_child.relational_id = ec_household.id and (ec_child.dob < DATE('"+TWO_MONTHS+"') and ec_child.dob > DATE('"+FIVE_YEAR+"'))) as child_dob"
             };
-            registerCondition = " child_dob IS NOT NULL";
+            registerCondition = " child_dob IS NOT NULL "+camp_type_condition;
         }else if(filter.equals("adult")){
             columns = new String[]{
                     tableName + ".relationalid",
@@ -839,7 +854,7 @@ Utils.appendLog(getClass().getName(),e);
                             "(select ec_woman.dob from ec_woman where (ec_woman.relational_id = ec_household.id and ec_woman.dob < DATE('"+FIFTY_YEAR+"'))) as  woman_dob" ,
                             "(select ec_child.dob from ec_child where (ec_child.relational_id = ec_household.id and ec_child.dob < DATE('"+FIFTY_YEAR+"'))) as child_dob"
             };
-            registerCondition = "(child_dob IS NOT NULL OR member_dob IS NOT NULL OR woman_dob IS NOT NULL ) ";
+            registerCondition = "(child_dob IS NOT NULL OR member_dob IS NOT NULL OR woman_dob IS NOT NULL ) "+camp_type_condition;
 
         }
 
@@ -847,7 +862,7 @@ Utils.appendLog(getClass().getName(),e);
 
         queryBUilder.SelectInitiateMainTable(tableName, columns);
         String query = queryBUilder.mainCondition(mainCondition);
-        this.countSelect = "SELECT COUNT(*) FROM ( "+ query +" AND "+registerCondition +" ) ";
+        this.countSelect = "SELECT COUNT(*) FROM ( "+ query +" AND "+registerCondition+" ) ";
 //        this.countSelect = query;
         return query;
     }

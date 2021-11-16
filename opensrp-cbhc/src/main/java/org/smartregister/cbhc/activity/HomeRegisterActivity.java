@@ -84,8 +84,8 @@ public class HomeRegisterActivity extends BaseRegisterActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    public void updateSortAndFilter(List<Field> filterList, Field sortField) {
-        mBaseFragment.updateSortAndFilter(filterList, sortField);
+    public void updateSortAndFilter(List<Field> filterList, Field sortField,String camp_type) {
+        mBaseFragment.updateSortAndFilter(filterList, sortField,camp_type);
         switchToBaseFragment();
     }
 

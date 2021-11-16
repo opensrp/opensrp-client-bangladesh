@@ -14,8 +14,10 @@ import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.CheckedTextView;
+import android.widget.Spinner;
 import android.widget.TextView;
 
 import org.apache.commons.lang3.StringUtils;
@@ -37,6 +39,8 @@ public class SortFilterFragment extends Fragment implements SortFilterContract.V
     private SortFilterContract.Presenter presenter;
 
     private FilterAdapter filterAdapter;
+    private String[] typeArr = new String[]{"Select Type", "Type 1", "Type 2"};
+    private String selectedType="";
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -70,6 +74,23 @@ public class SortFilterFragment extends Fragment implements SortFilterContract.V
 
         View cancel = view.findViewById(R.id.cancel_filter);
         cancel.setOnClickListener(actionHandler);
+
+        Spinner type_sp = view.findViewById(R.id.type_sp);
+        type_sp.setAdapter(new ArrayAdapter(getActivity(),android.R.layout.simple_spinner_item,typeArr));
+
+        type_sp.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                if(i!=0){
+                    selectedType = typeArr[i];
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
+            }
+        });
         return view;
     }
 
@@ -86,7 +107,8 @@ public class SortFilterFragment extends Fragment implements SortFilterContract.V
     @Override
     public void updateSortAndFilter(List<Field> filterList, Field sortField) {
         if (getActivity() != null) {
-            ((HomeRegisterActivity) getActivity()).updateSortAndFilter(filterList, sortField);
+                ((HomeRegisterActivity) getActivity()).updateSortAndFilter(filterList, sortField,selectedType);
+
         }
     }
 
