@@ -238,24 +238,6 @@
       },
 
       {
-        "key": "camp_type",
-        "openmrs_entity_parent": "",
-        "openmrs_entity": "person_attribute",
-        "openmrs_entity_id": "camp_type",
-        "openmrs_data_type": "Coded",
-        "type": "spinner",
-        "hint": "ক্যাম্পেইন টাইপ নির্বাচন করুন",
-        "values": [
-        ],
-        "openmrs_choice_ids": {
-        },
-        "v_required": {
-          "value": "true",
-          "err": "Please answer the question"
-        }
-      },
-
-      {
         "key": "Patient_Identifier",
         "openmrs_entity_parent": "",
         "openmrs_entity": "person_identifier",
@@ -273,6 +255,26 @@
           "err": "Please enter the valid ID"
         }
       },
+
+      {
+        "key": "camp_type",
+        "openmrs_entity_parent": "",
+        "openmrs_entity": "person_attribute",
+        "openmrs_entity_id": "camp_type",
+        "openmrs_data_type": "Coded",
+        "type": "spinner",
+        "hint": "ক্যাম্পেইন টাইপ নির্বাচন করুন",
+        "values": [
+        ],
+        "openmrs_choice_ids": {
+        },
+        "v_required": {
+          "value": "true",
+          "err": "Please answer the question"
+        }
+      },
+
+
       {
         "key": "dob_unknown",
         "openmrs_entity_parent": "",

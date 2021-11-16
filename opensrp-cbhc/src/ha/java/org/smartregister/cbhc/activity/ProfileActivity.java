@@ -92,6 +92,7 @@ public class ProfileActivity extends BaseProfileActivity implements ProfileContr
     public static final String DIALOG_TAG = "PROFILE_DIALOG_TAG";
     private CommonPersonObjectClient householdDetails;
     public ProfileOverviewFragment profileOverviewFragment;
+    private String campType="";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -134,6 +135,7 @@ public class ProfileActivity extends BaseProfileActivity implements ProfileContr
 
         String firstName = org.smartregister.util.Utils.getValue(householdDetails.getColumnmaps(), DBConstants.KEY.FIRST_NAME, true);
         String lastName = org.smartregister.util.Utils.getValue(householdDetails.getColumnmaps(), DBConstants.KEY.LAST_NAME, true);
+        campType = org.smartregister.util.Utils.getValue(householdDetails.getColumnmaps(), DBConstants.KEY.CHAMP_TYPE, true);
         if (lastName.equalsIgnoreCase("null") || lastName == null) {
             lastName = "";
         }
@@ -548,8 +550,12 @@ Utils.appendLog(getClass().getName(),e);
                             break;
                         case "[+] নতুন সদস্য":
                             try {
+                                if(campType.equals("")){
+                                    presenter.startMemberRegistrationForm(Constants.JSON_FORM.MEMBER_REGISTER, null, null, null, householdDetails.entityId());
+                                }else {
+                                    presenter.startMemberRegistrationForm(Constants.JSON_FORM.MEMBER_REGISTER, null, null, null, householdDetails.entityId(),campType);
 
-                                presenter.startMemberRegistrationForm(Constants.JSON_FORM.MEMBER_REGISTER, null, null, null, householdDetails.entityId());
+                                }
                             } catch (Exception e) {
 Utils.appendLog(getClass().getName(),e);
                                 e.printStackTrace();

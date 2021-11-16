@@ -155,6 +155,7 @@ public class HomeRegisterActivity extends BaseRegisterActivity {
                 draftFormSelectorFragment.setContext(getContext());
                 draftFormSelectorFragment.setFamilyBaseEntityId(client.getColumnmaps().get(DBConstants.KEY.BASE_ENTITY_ID));
                 draftFormSelectorFragment.setDraftForms(draftFormObjects);
+                draftFormSelectorFragment.setCampType(client.getColumnmaps().get(DBConstants.KEY.CHAMP_TYPE));
                 draftFormSelectorFragment.show(((HomeRegisterActivity) getContext()).getFragmentManager(), DIALOG_TAG);
 
 
@@ -173,6 +174,14 @@ public class HomeRegisterActivity extends BaseRegisterActivity {
     public void startMemberRegistrationForm(String householdEntityID) {
         try {
             getPresenter().startMemberRegistrationForm(Constants.JSON_FORM.MEMBER_REGISTER, null, null, null, householdEntityID);
+        } catch (Exception e) {
+            Utils.appendLog(getClass().getName(), e);
+            e.printStackTrace();
+        }
+    }
+    public void startMemberRegistrationForm(String householdEntityID,String campType) {
+        try {
+            getPresenter().startMemberRegistrationForm(Constants.JSON_FORM.MEMBER_REGISTER, null, null, null, householdEntityID,campType);
         } catch (Exception e) {
             Utils.appendLog(getClass().getName(), e);
             e.printStackTrace();

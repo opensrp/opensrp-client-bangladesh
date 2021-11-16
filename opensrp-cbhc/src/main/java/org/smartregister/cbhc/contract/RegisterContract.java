@@ -92,6 +92,7 @@ public interface RegisterContract {
 
 
         void getNextHealthId(String formName,String metadata,String currentLocationId,String householdID, RegisterContract.InteractorCallBack callBack);
+        void getNextHealthId(String formName,String metadata,String currentLocationId,String householdID, RegisterContract.InteractorCallBack callBack,String campType);
         void saveRegistration(final Pair<Client, Event> pair, final String jsonString, final boolean isEditMode, final RegisterContract.InteractorCallBack callBack);
 
         void removeWomanFromANCRegister(String closeFormJsonString, String providerId);
@@ -102,6 +103,7 @@ public interface RegisterContract {
         void onUniqueIdFetched(Triple<String, String, String> triple, String entityId);
 
         void onUniqueIdFetched(String formName,String metadata,String currentLocationId,String householdID, String entityId) ;
+        void onUniqueIdFetched(String formName,String metadata,String currentLocationId,String householdID, String entityId,String campType) ;
 
         void onNoUniqueId();
 

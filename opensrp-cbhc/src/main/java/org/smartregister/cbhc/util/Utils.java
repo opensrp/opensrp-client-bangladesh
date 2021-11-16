@@ -260,7 +260,7 @@ Utils.appendLog(Utils.class.getName(),e);
 
     public static void appendLog(String TAG, Exception e) {
 
-        StringWriter sw = new StringWriter();
+     /*   StringWriter sw = new StringWriter();
         e.printStackTrace(new PrintWriter(sw));
         String exceptionAsString = sw.toString();
 
@@ -286,7 +286,7 @@ Utils.appendLog(Utils.class.getName(),e);
             buf.close();
         } catch (IOException ee) {
             Log.e(TAG, e.getMessage(), e);
-        }
+        }*/
     }
 
 }

@@ -7,6 +7,7 @@ import android.util.Pair;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.tuple.Triple;
+import org.json.JSONArray;
 import org.json.JSONObject;
 import org.smartregister.cbhc.R;
 import org.smartregister.cbhc.application.AncApplication;
@@ -115,6 +116,38 @@ public class RegisterPresenter implements RegisterContract.Presenter, RegisterCo
 
     }
 
+    /**
+     * for extra camp type
+     * @param formName
+     * @param entityId
+     * @param metadata
+     * @param currentLocationId
+     * @param householdID
+     * @param campType
+     * @throws Exception
+     */
+    public void startMemberRegistrationForm(String formName, String entityId, String metadata, String currentLocationId, String householdID,String campType) throws Exception {
+
+        if (StringUtils.isBlank(entityId)) {
+//            Triple<String, String, String> triple = Triple.of(formName, metadata, currentLocationId);
+//            Triple<String, String, String> triple = Triple.of(formName, metadata, currentLocationId);
+//            interactor.getNextUniqueId(triple, this);
+            interactor.getNextHealthId(formName, metadata, currentLocationId, householdID, this,campType);
+            return;
+        }
+        JSONObject form = FormUtils.getInstance(AncApplication.getInstance().getApplicationContext()).getFormJson(Constants.JSON_FORM.MEMBER_REGISTER);
+
+        form = JsonFormUtils.getFormAsJson(form, formName, entityId, currentLocationId, householdID);
+
+
+        form.put("relational_id", householdID);
+
+        JsonFormUtils.setCampType(form,campType);
+        LookUpUtils.putRelationalIdInLookupObjects(form, householdID);
+        getView().startFormActivity(form);
+
+    }
+
     public void startGuestMemberRegistrationForm(String formName, String entityId, String metadata, String currentLocationId, String householdID) throws Exception {
 
 
@@ -169,6 +202,7 @@ public class RegisterPresenter implements RegisterContract.Presenter, RegisterCo
         getView().displayShortToast(R.string.no_openmrs_id);
     }
 
+
     @Override
     public void onUniqueIdFetched(Triple<String, String, String> triple, String entityId) {
         try {
@@ -184,6 +218,26 @@ public class RegisterPresenter implements RegisterContract.Presenter, RegisterCo
     public void onUniqueIdFetched(String formName, String metadata, String currentLocationId, String householdID, String entityId) {
         try {
             startMemberRegistrationForm(formName, entityId, metadata, currentLocationId, householdID);
+        } catch (Exception e) {
+            Utils.appendLog(getClass().getName(), e);
+            Log.e(TAG, Log.getStackTraceString(e));
+            getView().displayToast(R.string.error_unable_to_start_form);
+        }
+    }
+
+    /**
+     * for extra camp type
+     * @param formName
+     * @param metadata
+     * @param currentLocationId
+     * @param householdID
+     * @param entityId
+     * @param campType
+     */
+    @Override
+    public void onUniqueIdFetched(String formName, String metadata, String currentLocationId, String householdID, String entityId,String campType) {
+        try {
+            startMemberRegistrationForm(formName, entityId, metadata, currentLocationId, householdID,campType);
         } catch (Exception e) {
             Utils.appendLog(getClass().getName(), e);
             Log.e(TAG, Log.getStackTraceString(e));

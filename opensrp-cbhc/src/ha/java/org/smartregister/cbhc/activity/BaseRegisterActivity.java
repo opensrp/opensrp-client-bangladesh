@@ -28,6 +28,7 @@ import android.widget.TextView;
 import net.sqlcipher.database.SQLiteDatabase;
 
 import org.json.JSONException;
+import org.json.JSONString;
 import org.smartregister.cbhc.domain.GuestMemberData;
 import org.smartregister.cbhc.util.JsonFormUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -399,11 +400,13 @@ public abstract class BaseRegisterActivity extends SecuredNativeSmartRegisterAct
     @Override
     public void startFormActivity(JSONObject form) {
         try {
-            JSONObject encounter_type = form.getJSONObject(JsonFormUtils.ENCOUNTER_TYPE);
+            String encounter_type = form.getString(JsonFormUtils.ENCOUNTER_TYPE);
 
-            if(encounter_type.equals("Member Registration")){
-                JSONObject relationalId = form.getJSONObject("relational_id");
-                getCampTypeFromDb();
+            if(encounter_type.equals("Household Registration")){
+                JSONArray campTypeArr = new JSONArray();
+                campTypeArr.put("Type 1");
+                campTypeArr.put("Type 2");
+                JsonFormUtils.setCampTypeArr(form, campTypeArr);
             }
 
         } catch (JSONException e) {
@@ -411,10 +414,20 @@ public abstract class BaseRegisterActivity extends SecuredNativeSmartRegisterAct
         }
 
         Intent intent = new Intent(this, AncJsonFormActivity.class);
-        JSONArray campTypeArr = new JSONArray();
-        campTypeArr.put("Type 1");
-        campTypeArr.put("Type 2");
-        JsonFormUtils.setCampType(form, campTypeArr);
+
+        intent.putExtra("json", form.toString());
+        startActivityForResult(intent, JsonFormUtils.REQUEST_CODE_GET_JSON);
+    }
+
+    /**
+     * for extra camp type
+     * @param form
+     * @param campType
+     */
+    public void startFormActivity(JSONObject form,String campType) {
+
+        Intent intent = new Intent(this, AncJsonFormActivity.class);
+        JsonFormUtils.setCampType(form, campType);
 
         intent.putExtra("json", form.toString());
         startActivityForResult(intent, JsonFormUtils.REQUEST_CODE_GET_JSON);

@@ -46,6 +46,7 @@ public class DraftFormSelectorFragment extends DialogFragment implements View.On
     private List<draft_form_object> draftFormObjects;
     private draftFormSelectorAdapter draft_FormSelector_Adapter;
     private ListView listview;
+    private String campType;
 
     public static DraftFormSelectorFragment newInstance() {
         DraftFormSelectorFragment draftFormSelectorFragment = new DraftFormSelectorFragment();
@@ -148,7 +149,7 @@ public class DraftFormSelectorFragment extends DialogFragment implements View.On
                 try {
                     String draftForm = ((draft_form_object) v.getTag()).getDraftFormJson();
                     draftFormRepository.deleteDraftForms(((draft_form_object) v.getTag()).getID_COLUMN());
-                    ((HomeRegisterActivity) context).startFormActivity(new JSONObject((draftForm)));
+                    ((HomeRegisterActivity) context).startFormActivity(new JSONObject((draftForm)),campType);
                 } catch (JSONException e) {
                     org.smartregister.cbhc.util.Utils.appendLog(getClass().getName(), e);
                     e.printStackTrace();
@@ -159,7 +160,7 @@ public class DraftFormSelectorFragment extends DialogFragment implements View.On
                 if (familyBaseEntityId == null) {
                     ((HomeRegisterActivity) context).startFormActivity(Constants.JSON_FORM.Household_REGISTER, null, null);
                 } else {
-                    ((HomeRegisterActivity) context).startMemberRegistrationForm(familyBaseEntityId);
+                    ((HomeRegisterActivity) context).startMemberRegistrationForm(familyBaseEntityId,campType);
                 }
                 dismiss();
                 break;
@@ -204,6 +205,10 @@ public class DraftFormSelectorFragment extends DialogFragment implements View.On
 
     public void setDraftForms(List<draft_form_object> draftFormObjects) {
         this.draftFormObjects = draftFormObjects;
+    }
+
+    public void setCampType(String s) {
+        this.campType = s;
     }
 
     class draftFormSelectorAdapter extends ArrayAdapter<draft_form_object> {
