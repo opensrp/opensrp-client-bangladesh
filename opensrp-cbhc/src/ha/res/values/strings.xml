@@ -263,5 +263,10 @@
     <string name="household_register">Household Register</string>
     <string name="start_new_form">start new form</string>
     <string name="total_unregister_child">+Child: %1$s</string>
-
+    <string name="birthdate_age">বয়স</string>
+    <string name="child_contact_number">ওজন</string>
+    <string name="previous_height">পূর্বের উচ্চতা</string>
+    <string name="previous_weights">পূর্বের ওজন</string>
+    <string name="weight_for_age">ওজন-বয়স</string>
+    <string name="previous_muac">পূর্বের MUAC</string>
 </resources>

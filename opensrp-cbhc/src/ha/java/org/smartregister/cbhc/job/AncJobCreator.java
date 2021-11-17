@@ -14,6 +14,10 @@ public class AncJobCreator implements JobCreator {
     @Override
     public Job create(@NonNull String tag) {
         switch (tag) {
+            case HeightIntentServiceJob.TAG:
+                return new HeightIntentServiceJob();
+            case MuactIntentServiceJob.TAG:
+                return new MuactIntentServiceJob();
             case SyncServiceJob.TAG:
                 return new SyncServiceJob();
             case ExtendedSyncServiceJob.TAG:

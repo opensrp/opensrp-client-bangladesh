@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <org.smartregister.view.customcontrols.CustomFontTextView
+        style="@style/CustomFontTextViewStyle.ClientList.Light"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_centerVertical="true"
+        android:layout_gravity="left"
+        android:layout_marginTop="10dp"
+        android:layout_marginRight="20dp"
+        android:text="@string/previous_height"
+        android:textColor="@color/black"
+        android:textSize="@dimen/record_weight_tv_text_size" />
+
+    <TableLayout
+        android:id="@+id/heights_table"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="10dp"
+        android:layout_marginStart="10dp"
+        android:layout_marginEnd="30dp"
+        android:layout_marginTop="10dp"
+        android:stretchColumns="2">
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <org.smartregister.view.customcontrols.CustomFontTextView
+                style="@style/CustomFontTextViewStyle.ClientList.Medium"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="0dp"
+                android:layout_marginEnd="10dp"
+                android:gravity="start|center_vertical"
+                android:minWidth="@dimen/weight_table_column_min_width"
+                android:paddingStart="0dp"
+                android:text="@string/age"
+                android:textColor="@color/client_list_grey"
+                android:textSize="@dimen/record_weight_tv_text_size"
+                android:textStyle="bold" />
+
+            <org.smartregister.view.customcontrols.CustomFontTextView
+                style="@style/CustomFontTextViewStyle.ClientList.Medium"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="0dp"
+                android:layout_marginEnd="10dp"
+                android:gravity="start|center_vertical"
+                android:minWidth="@dimen/weight_table_column_min_width"
+                android:paddingStart="0dp"
+                android:text="@string/height"
+                android:textColor="@color/client_list_grey"
+                android:textSize="@dimen/record_weight_tv_text_size"
+                android:textStyle="bold" />
+
+            <org.smartregister.view.customcontrols.CustomFontTextView
+                style="@style/CustomFontTextViewStyle.ClientList.Medium"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="0dp"
+                android:layout_marginEnd="10dp"
+                android:gravity="start|center_vertical"
+                android:minWidth="@dimen/weight_table_column_min_width"
+                android:paddingStart="0dp"
+                android:text="@string/z_score"
+                android:textColor="@color/client_list_grey"
+                android:textSize="@dimen/record_weight_tv_text_size"
+                android:textStyle="bold" />
+        </TableRow>
+    </TableLayout>
+
+</LinearLayout>

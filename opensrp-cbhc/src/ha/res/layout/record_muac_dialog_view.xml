@@ -215,7 +215,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="@string/set"
+                    android:text="Set"
                     android:textAllCaps="false"
                     android:textAppearance="?android:textAppearanceSmall"
                     android:textColor="@color/client_list_grey"

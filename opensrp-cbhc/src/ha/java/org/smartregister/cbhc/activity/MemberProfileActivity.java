@@ -20,6 +20,8 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import org.smartregister.cbhc.fragment.GMPFragment;
 import org.smartregister.cbhc.util.JsonFormUtils;
 import net.sqlcipher.Cursor;
 import net.sqlcipher.database.SQLiteDatabase;
@@ -36,7 +38,6 @@ import org.smartregister.cbhc.contract.ProfileContract;
 import org.smartregister.cbhc.domain.UniqueId;
 import org.smartregister.cbhc.fragment.ChildImmunizationFragment;
 import org.smartregister.cbhc.fragment.FollowupFragment;
-import org.smartregister.cbhc.fragment.GrowthFragment;
 import org.smartregister.cbhc.fragment.MemberProfileContactsFragment;
 import org.smartregister.cbhc.fragment.ProfileTasksFragment;
 import org.smartregister.cbhc.fragment.WomanImmunizationFragment;
@@ -54,8 +55,11 @@ import org.smartregister.commonregistry.CommonPersonObject;
 import org.smartregister.commonregistry.CommonPersonObjectClient;
 import org.smartregister.domain.ProfileImage;
 import org.smartregister.growthmonitoring.domain.HeightWrapper;
+import org.smartregister.growthmonitoring.domain.MUACWrapper;
 import org.smartregister.growthmonitoring.domain.WeightWrapper;
-import org.smartregister.growthmonitoring.listener.GMActionListener;
+import org.smartregister.growthmonitoring.listener.HeightActionListener;
+import org.smartregister.growthmonitoring.listener.MUACActionListener;
+import org.smartregister.growthmonitoring.listener.WeightActionListener;
 import org.smartregister.immunization.domain.ServiceWrapper;
 import org.smartregister.immunization.domain.VaccineWrapper;
 import org.smartregister.immunization.listener.ServiceActionListener;
@@ -89,7 +93,7 @@ import static org.smartregister.util.Utils.getValue;
 /**
  * Created by ndegwamartin on 10/07/2018.
  */
-public class MemberProfileActivity extends BaseProfileActivity implements ProfileContract.View, VaccinationActionListener, ServiceActionListener, GMActionListener {
+public class MemberProfileActivity extends BaseProfileActivity implements ProfileContract.View, VaccinationActionListener, ServiceActionListener, WeightActionListener, HeightActionListener, MUACActionListener {
 
     private TextView nameView;
     private TextView ageView;
@@ -400,7 +404,7 @@ Utils.appendLog(getClass().getName(),e);
 
     WomanImmunizationFragment womanImmunizationFragment;
     ChildImmunizationFragment childImmunizationFragment;
-    GrowthFragment growthFragment;
+    GMPFragment growthFragment;
     //    public ProfileOverviewFragment profileOverviewFragment;
     public MemberProfileContactsFragment profileOverviewFragment;
     FollowupFragment followupFragment;
@@ -412,7 +416,7 @@ Utils.appendLog(getClass().getName(),e);
         profileOverviewFragment = MemberProfileContactsFragment.newInstance(this.getIntent().getExtras());
         followupFragment = FollowupFragment.newInstance(this.getIntent().getExtras());
         ProfileTasksFragment profileTasksFragment = ProfileTasksFragment.newInstance(this.getIntent().getExtras());
-        growthFragment = GrowthFragment.newInstance(this.getIntent().getExtras());
+        growthFragment = GMPFragment.newInstance(this.getIntent().getExtras());
         growthFragment.setChildDetails(householdDetails);
         childImmunizationFragment = ChildImmunizationFragment.newInstance(this.getIntent().getExtras());
         childImmunizationFragment.setChildDetails(householdDetails);
@@ -428,7 +432,7 @@ Utils.appendLog(getClass().getName(),e);
         if (((typeofMember.equalsIgnoreCase("malechild") || (typeofMember.equalsIgnoreCase("femalechild"))) && getAge() <= 5)) {
             womanImmunizationFragment = null;
             adapter.addFragment(childImmunizationFragment, "IMMUNIZATION");
-            adapter.addFragment(growthFragment, "GROWTH");
+            adapter.addFragment(growthFragment, "GMP");
             tabLayout.setTabMode(TabLayout.MODE_SCROLLABLE);
         }else{
             if (getGender()==0&&getAge()>=15) {
@@ -437,7 +441,7 @@ Utils.appendLog(getClass().getName(),e);
                 tabLayout.setTabMode(TabLayout.MODE_SCROLLABLE);
             }
             if (delivery_status.equalsIgnoreCase("প্রসব পূর্ব") || delivery_status.equalsIgnoreCase("Antenatal Period")) {
-                growthFragment.setIsChild(false);
+                //growthFragment.setIsChild(false);
                 adapter.addFragment(growthFragment, "GROWTH");
                 tabLayout.setTabMode(TabLayout.MODE_SCROLLABLE);
             }
@@ -759,7 +763,10 @@ Utils.appendLog(getClass().getName(),e);
     public void onHeightTaken(HeightWrapper heightWrapper) {
         growthFragment.onHeightTaken(heightWrapper);
     }
-
+    @Override
+    public void onMUACTaken(MUACWrapper muacWrapper) {
+        growthFragment.onMUACTaken(muacWrapper);
+    }
     public int getGender() {
         String gender = householdDetails.getColumnmaps().get("gender");
         if (gender == null)
@@ -958,6 +965,7 @@ Utils.appendLog(getClass().getName(),e);
         }), null);
 
     }
+
 
 }
 

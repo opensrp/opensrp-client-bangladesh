@@ -22,6 +22,7 @@ public class DBConstants {
         public static final String DOB = "dob";//Date Of Birth
         public static final String MEMBER_DOB = "member_birth_date";//Date Of Birth
         public static final String DOB_UNKNOWN = "dob_unknown";
+        public static final String BIRTH_WEIGHT = "Child_birth_weight";
         public static final String EDD = "edd";
         public static final String GENDER = "gender";
         public static final String PRESENT_ADDRESS = "ADDRESS_LINE";
