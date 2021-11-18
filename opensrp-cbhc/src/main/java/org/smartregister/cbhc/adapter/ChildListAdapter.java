@@ -48,7 +48,7 @@ public class ChildListAdapter extends RecyclerView.Adapter<ChildListAdapter.Hold
         ChildItemData childItemData = tempChildItemDataArrayList.get(i);
         holder.nameTv.setText(childItemData.getFirstName()+" "+childItemData.getLastName());
         holder.ageTv.setText(Utils.getDuration(childItemData.getDob()));
-        holder.weightTv.setText(childItemData.getWeight());
+//        holder.weightTv.setText(childItemData.getWeight());
         if(childItemData.getGender().equals("F")) {
             holder.profileImage.setImageResource(R.drawable.child_girl_infant);
             holder.childImageSmall.setImageResource(R.drawable.female_child_cbhc);
@@ -108,6 +108,12 @@ public class ChildListAdapter extends RecyclerView.Adapter<ChildListAdapter.Hold
         return results;
     }
 
+    public void setData( ArrayList<ChildItemData> childItemDataArrayList) {
+        this.childItemDataArrayList = childItemDataArrayList;
+        this.tempChildItemDataArrayList= childItemDataArrayList;
+        notifyDataSetChanged();
+    }
+
     public class Holder extends RecyclerView.ViewHolder {
         CustomFontTextView nameTv,ageTv,weightTv;
         ImageView profileImage,childImageSmall;
@@ -115,7 +121,7 @@ public class ChildListAdapter extends RecyclerView.Adapter<ChildListAdapter.Hold
             super(itemView);
             nameTv = itemView.findViewById(R.id.name_tv);
             ageTv = itemView.findViewById(R.id.age_tv);
-            weightTv= itemView.findViewById(R.id.weight_tv);
+            //weightTv= itemView.findViewById(R.id.weight_tv);
 
             profileImage = itemView.findViewById(R.id.profile_image_iv);
             childImageSmall= itemView.findViewById(R.id.childSmallImageView);

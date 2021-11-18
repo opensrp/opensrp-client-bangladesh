@@ -195,6 +195,8 @@ public abstract class BaseRegisterFragment extends RecyclerViewFragment implemen
         ImageView closeDrawerIm = drawer.findViewById(R.id.close_drawer);
         LinearLayout householdRegLL = drawer.findViewById(R.id.household_register);
         LinearLayout childListLay = drawer.findViewById(R.id.child_list_lay);
+        LinearLayout syncLay = drawer.findViewById(R.id.sync_lay);
+
 
         //close button listeners
         closeDrawerIm.setOnClickListener(new View.OnClickListener() {
@@ -209,6 +211,18 @@ public abstract class BaseRegisterFragment extends RecyclerViewFragment implemen
             @Override
             public void onClick(View view) {
                 ((HomeRegisterActivity) getActivity()).startRegistration();
+            }
+        });
+
+
+        syncLay.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getActivity().getApplicationContext(), SyncIntentService.class);
+                getActivity().getApplicationContext().startService(intent);
+                Intent intent1= new Intent(getActivity().getApplicationContext(), ImageUploadSyncService.class);
+                getActivity().getApplicationContext().startService(intent1);
+                drawer.closeDrawer(Gravity.LEFT);
             }
         });
 

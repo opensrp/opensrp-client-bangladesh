@@ -1125,6 +1125,14 @@
           "json_mapping": {
             "field": "attributes.camp_type"
           }
+        },
+
+        {
+          "column_name": "child_status",
+          "type": "Client",
+          "json_mapping": {
+            "field": "child_status"
+          }
         }
       ]
     },
@@ -1743,6 +1751,13 @@
           "type": "Client",
           "json_mapping": {
             "field": "attributes.NonComnta_Disease"
+          }
+        },
+        {
+          "column_name": "child_status",
+          "type": "Client",
+          "json_mapping": {
+            "field": "child_status"
           }
         }
       ]
