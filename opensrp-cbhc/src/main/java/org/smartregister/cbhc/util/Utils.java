@@ -27,6 +27,7 @@ import org.joda.time.Weeks;
 import org.joda.time.Years;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
+import org.json.JSONArray;
 import org.smartregister.cbhc.application.AncApplication;
 import org.smartregister.cbhc.event.BaseEvent;
 import org.smartregister.repository.AllSharedPreferences;
@@ -61,6 +62,29 @@ public class Utils {
 
     private static final SimpleDateFormat DB_DF = new SimpleDateFormat(Constants.SQLITE_DATE_TIME_FORMAT);
     private static final DateTimeFormatter SQLITE_DATE_DF = DateTimeFormat.forPattern(Constants.SQLITE_DATE_TIME_FORMAT);
+    public static final String[] TYPE_LIST=
+            new String[]{
+            "Select Camp Type",
+            "Outreach 1",
+            "Outreach 2",
+            "Outreach 3",
+            "Outreach 4",
+            "Outreach 5",
+            "Outreach 6",
+            "Outreach 7",
+            "Outreach 8"};
+
+    public static JSONArray CAMP_TYPE_JSON_ARR
+            = new JSONArray()
+            .put( "Outreach 1")
+            .put( "Outreach 2")
+            .put( "Outreach 3")
+            .put( "Outreach 4")
+            .put( "Outreach 5")
+            .put( "Outreach 6")
+            .put( "Outreach 7")
+            .put( "Outreach 8");
+
    public static boolean VIEWREFRESH = false;
 
     public static void showToast(Context context, String message) {

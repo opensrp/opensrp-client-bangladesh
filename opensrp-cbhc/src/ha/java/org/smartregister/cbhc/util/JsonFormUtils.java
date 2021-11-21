@@ -1378,12 +1378,8 @@ public class JsonFormUtils extends org.smartregister.util.JsonFormUtils {
 
         else if (jsonObject.getString(JsonFormUtils.KEY).equalsIgnoreCase(DBConstants.KEY.CHAMP_TYPE)) {
 
-            JSONArray jsonArray = new JSONArray();
-            jsonArray.put("Type 1");
-            jsonArray.put("Type 2");
-
             jsonObject.put(JsonFormUtils.READ_ONLY, false);
-            jsonObject.put(JsonFormUtils.VALUES, jsonArray);
+            jsonObject.put(JsonFormUtils.VALUES, Utils.CAMP_TYPE_JSON_ARR);
             jsonObject.put(JsonFormUtils.VALUE, womanClient.get(DBConstants.KEY.CHAMP_TYPE));
 
         }else if (jsonObject.getString(JsonFormUtils.KEY).equalsIgnoreCase(DBConstants.KEY.ANC_ID)) {

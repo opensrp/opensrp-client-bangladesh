@@ -403,10 +403,7 @@ public abstract class BaseRegisterActivity extends SecuredNativeSmartRegisterAct
             String encounter_type = form.getString(JsonFormUtils.ENCOUNTER_TYPE);
 
             if(encounter_type.equals("Household Registration")){
-                JSONArray campTypeArr = new JSONArray();
-                campTypeArr.put("Type 1");
-                campTypeArr.put("Type 2");
-                JsonFormUtils.setCampTypeArr(form, campTypeArr);
+                JsonFormUtils.setCampTypeArr(form, Utils.CAMP_TYPE_JSON_ARR);
             }
 
         } catch (JSONException e) {

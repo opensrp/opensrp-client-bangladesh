@@ -27,6 +27,7 @@ import org.smartregister.cbhc.contract.ChildSortFilterContract;
 import org.smartregister.cbhc.contract.SortFilterContract;
 import org.smartregister.cbhc.presenter.ChildSortFilterPresenter;
 import org.smartregister.cbhc.presenter.SortFilterPresenter;
+import org.smartregister.cbhc.util.Utils;
 import org.smartregister.configurableviews.model.Field;
 
 import java.util.ArrayList;
@@ -39,7 +40,6 @@ public class ChildSortFilterFragment extends Fragment implements ChildSortFilter
     private ChildSortFilterPresenter presenter;
 
     private FilterAdapter filterAdapter;
-    private String[] typeArr = new String[]{"Select Type", "Type 1", "Type 2"};
     private String selectedType="";
 
     @Override
@@ -76,13 +76,13 @@ public class ChildSortFilterFragment extends Fragment implements ChildSortFilter
         cancel.setOnClickListener(actionHandler);
 
         Spinner type_sp = view.findViewById(R.id.type_sp);
-        type_sp.setAdapter(new ArrayAdapter(getActivity(),android.R.layout.simple_spinner_item,typeArr));
+        type_sp.setAdapter(new ArrayAdapter(getActivity(),android.R.layout.simple_spinner_item,Utils.TYPE_LIST));
 
         type_sp.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                 if(i!=0){
-                    selectedType = typeArr[i];
+                    selectedType = Utils.TYPE_LIST[i];
                 }
             }
 
