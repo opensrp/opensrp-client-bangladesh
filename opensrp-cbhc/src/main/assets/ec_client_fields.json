@@ -1133,6 +1133,21 @@
           "json_mapping": {
             "field": "child_status"
           }
+        },
+
+        {
+          "column_name": "child_weight",
+          "type": "Client",
+          "json_mapping": {
+            "field": "child_weight"
+          }
+        },
+        {
+          "column_name": "child_height",
+          "type": "Client",
+          "json_mapping": {
+            "field": "child_height"
+          }
         }
       ]
     },
@@ -1758,6 +1773,20 @@
           "type": "Client",
           "json_mapping": {
             "field": "child_status"
+          }
+        },
+        {
+          "column_name": "child_weight",
+          "type": "Client",
+          "json_mapping": {
+            "field": "child_weight"
+          }
+        },
+        {
+          "column_name": "child_height",
+          "type": "Client",
+          "json_mapping": {
+            "field": "child_height"
           }
         }
       ]
