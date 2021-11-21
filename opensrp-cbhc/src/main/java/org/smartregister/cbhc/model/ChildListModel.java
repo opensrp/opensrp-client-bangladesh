@@ -48,6 +48,7 @@ public class ChildListModel implements ChildListContract.Model {
                 int lName = cursor.getColumnIndex("last_name");
                 int dob = cursor.getColumnIndex("dob");
                 int gender = cursor.getColumnIndex("gender");
+                int child_status = cursor.getColumnIndex("child_status");
 
 
                 childItemDataArrayList.add(new ChildItemData(
@@ -56,7 +57,9 @@ public class ChildListModel implements ChildListContract.Model {
                         cursor.isNull(lName)?"":cursor.getString(lName),
                         cursor.isNull(dob)?"":cursor.getString(dob),
                         cursor.isNull(gender)?"":cursor.getString(gender),
-                        "",pClient));
+                        "",
+                        cursor.isNull(child_status)?"":cursor.getString(child_status),
+                        pClient));
                 cursor.moveToNext();
             }
         }

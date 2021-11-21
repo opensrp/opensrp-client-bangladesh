@@ -258,6 +258,9 @@ dependencies {
 
     //saripaar
     implementation 'com.mobsandgeeks:android-saripaar:2.0.3'
+
+    //graphview
+    implementation 'com.jjoe64:graphview:4.2.1'
 }
 
 task jacocoTestReport(type: JacocoReport, dependsOn: ['testDebugUnitTest', 'createDebugCoverageReport']) {

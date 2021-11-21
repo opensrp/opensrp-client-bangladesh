@@ -23,6 +23,7 @@ import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
@@ -196,6 +197,8 @@ public abstract class BaseRegisterFragment extends RecyclerViewFragment implemen
         LinearLayout householdRegLL = drawer.findViewById(R.id.household_register);
         LinearLayout childListLay = drawer.findViewById(R.id.child_list_lay);
         LinearLayout syncLay = drawer.findViewById(R.id.sync_lay);
+        Button logOutBtn = drawer.findViewById(R.id.logoutButton);
+
 
 
         //close button listeners
@@ -212,6 +215,13 @@ public abstract class BaseRegisterFragment extends RecyclerViewFragment implemen
             public void onClick(View view) {
                 ((HomeRegisterActivity) getActivity()).startRegistration();
             }
+        });
+
+        //logout listeners
+        logOutBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                AncApplication.getInstance().logoutUser();            }
         });
 
 

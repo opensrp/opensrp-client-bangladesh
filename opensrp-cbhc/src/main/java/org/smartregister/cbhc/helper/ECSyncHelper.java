@@ -23,6 +23,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import static org.smartregister.configurableviews.ConfigurableViewsLibrary.getContext;
 import static org.smartregister.configurableviews.util.Constants.CONFIGURATION.LOGIN;
 import static org.smartregister.configurableviews.util.Constants.LAST_VIEWS_SYNC_TIMESTAMP;
 import static org.smartregister.configurableviews.util.Constants.VIEW_CONFIGURATION_PREFIX;
@@ -102,6 +103,9 @@ public class ECSyncHelper implements PrefsHelper {
 
     public void addClient(String baseEntityId, JSONObject jsonObject) {
         try {
+            String username = getContext().userService().getAllSharedPreferences().fetchRegisteredANM();
+
+            jsonObject.put("provider_id",username);
             eventClientRepository.addorUpdateClient(baseEntityId, jsonObject);
         } catch (Exception e) {
             Utils.appendLog(getClass().getName(), e);

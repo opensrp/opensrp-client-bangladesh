@@ -58,7 +58,6 @@
       {
         "key": "followup_Date",
         "openmrs_entity_parent": "",
-        "openmrs_entity": "",
         "openmrs_entity_id": "",
         "openmrs_data_type": "text",
         "type": "date_picker",
