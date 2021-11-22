@@ -9,6 +9,7 @@ public class DBConstants {
     public static final String HOUSEHOLD_TABLE_NAME = "ec_household";
     public static final String CHILD_TABLE_NAME = "ec_child";
     public static final String MEMBER_TABLE_NAME = "ec_member";
+    public static final String GUEST_MEMBER_TABLE_NAME = "ec_guest_member";
 
 
     public static final class KEY {

@@ -49,6 +49,7 @@ public class FollowupFragment extends BaseProfileFragment {
     ArrayList<Constants.FOLLOWUP_FORM.FOLLOWUPFORMS> active_forms;
     FormListRowAdapter formListRowAdapter;
     private CommonPersonObjectClient householdDetails;
+    private String from = "";
 
     public static FollowupFragment newInstance(Bundle bundle) {
         Bundle args = bundle;
@@ -70,6 +71,7 @@ public class FollowupFragment extends BaseProfileFragment {
             if (serializable != null && serializable instanceof CommonPersonObjectClient) {
                 householdDetails = (CommonPersonObjectClient) serializable;
                 typeofMember = extras.getString("type_of_member");
+                from = extras.getString("from")==null?"":extras.getString("from");
                 setUpMemberDetails(typeofMember);
 //                householdDetails.getColumnmaps().putAll(AncApplication.getInstance().getContext().detailsRepository().getAllDetailsForClient(householdDetails.entityId()));
 
@@ -124,15 +126,22 @@ public class FollowupFragment extends BaseProfileFragment {
     }
 
     public void setUpMemberDetails(String typeofMember){
-        if (typeofMember != null) {
-            if (typeofMember.equalsIgnoreCase("malechild") || typeofMember.equalsIgnoreCase("femalechild")) {
-                householdDetails =  CommonPersonObjectToClient(AncApplication.getInstance().getContext().commonrepository(DBConstants.CHILD_TABLE_NAME).findByBaseEntityId(householdDetails.entityId()),DBConstants.CHILD_TABLE_NAME);
+
+        if (from.equals("")){
+            if (typeofMember != null) {
+                if (typeofMember.equalsIgnoreCase("malechild") || typeofMember.equalsIgnoreCase("femalechild")) {
+                    householdDetails =  CommonPersonObjectToClient(AncApplication.getInstance().getContext().commonrepository(DBConstants.CHILD_TABLE_NAME).findByBaseEntityId(householdDetails.entityId()),DBConstants.CHILD_TABLE_NAME);
+                }
+                else if (typeofMember.equalsIgnoreCase("woman")) {
+                    householdDetails =  CommonPersonObjectToClient(AncApplication.getInstance().getContext().commonrepository(DBConstants.WOMAN_TABLE_NAME).findByBaseEntityId(householdDetails.entityId()),DBConstants.WOMAN_TABLE_NAME);
+                }
+                else if (typeofMember.equalsIgnoreCase("member")) {
+                    householdDetails =  CommonPersonObjectToClient(AncApplication.getInstance().getContext().commonrepository(DBConstants.MEMBER_TABLE_NAME).findByBaseEntityId(householdDetails.entityId()),DBConstants.MEMBER_TABLE_NAME);
+                }
             }
-            else if (typeofMember.equalsIgnoreCase("woman")) {
-                householdDetails =  CommonPersonObjectToClient(AncApplication.getInstance().getContext().commonrepository(DBConstants.WOMAN_TABLE_NAME).findByBaseEntityId(householdDetails.entityId()),DBConstants.WOMAN_TABLE_NAME);
-            }
-            else if (typeofMember.equalsIgnoreCase("member")) {
-                householdDetails =  CommonPersonObjectToClient(AncApplication.getInstance().getContext().commonrepository(DBConstants.MEMBER_TABLE_NAME).findByBaseEntityId(householdDetails.entityId()),DBConstants.MEMBER_TABLE_NAME);
+        }else{
+            if (typeofMember != null) {
+                householdDetails =  CommonPersonObjectToClient(AncApplication.getInstance().getContext().commonrepository(DBConstants.GUEST_MEMBER_TABLE_NAME).findByBaseEntityId(householdDetails.entityId()),DBConstants.CHILD_TABLE_NAME);
             }
         }
     }
