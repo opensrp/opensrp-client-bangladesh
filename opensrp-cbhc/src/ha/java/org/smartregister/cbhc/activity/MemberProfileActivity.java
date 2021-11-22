@@ -10,7 +10,9 @@ import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewPager;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -57,6 +59,7 @@ import org.smartregister.domain.ProfileImage;
 import org.smartregister.growthmonitoring.domain.HeightWrapper;
 import org.smartregister.growthmonitoring.domain.MUACWrapper;
 import org.smartregister.growthmonitoring.domain.WeightWrapper;
+import org.smartregister.growthmonitoring.domain.ZScore;
 import org.smartregister.growthmonitoring.listener.HeightActionListener;
 import org.smartregister.growthmonitoring.listener.MUACActionListener;
 import org.smartregister.growthmonitoring.listener.WeightActionListener;
@@ -452,6 +455,21 @@ Utils.appendLog(getClass().getName(),e);
         viewPager.setAdapter(adapter);
 
         return viewPager;
+    }
+    private void updateProfileColorByText(String resultText){
+        updateProfileIconColor(ZScore.getZscoreColorByText(resultText),"");
+    }
+    public void updateProfileIconColor(int color,String text){
+        imageView.setColorFilter(ContextCompat.getColor(this, color), android.graphics.PorterDuff.Mode.MULTIPLY);
+
+        if(!TextUtils.isEmpty(text)){
+
+        }
+    }
+    public void updateWeightHeightStatus(){
+        AncRepository repo = (AncRepository) AncApplication.getInstance().getRepository();
+        SQLiteDatabase db = repo.getReadableDatabase();
+
     }
 
     @Override

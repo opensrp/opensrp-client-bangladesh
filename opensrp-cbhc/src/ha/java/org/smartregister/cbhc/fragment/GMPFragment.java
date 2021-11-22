@@ -4,6 +4,7 @@ import static org.smartregister.cbhc.task.RemoteLoginTask.getOpenSRPContext;
 import static org.smartregister.util.Utils.dobToDateTime;
 
 import android.app.Activity;
+import android.app.Dialog;
 import android.app.Fragment;
 import android.app.FragmentTransaction;
 import android.content.Context;
@@ -17,18 +18,23 @@ import android.util.Pair;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
+import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.TableLayout;
+import android.widget.TextView;
 
 import org.joda.time.DateTime;
 import org.json.JSONException;
 import org.opensrp.api.constants.Gender;
 import org.smartregister.cbhc.R;
+import org.smartregister.cbhc.activity.MemberProfileActivity;
 import org.smartregister.cbhc.application.AncApplication;
 import org.smartregister.cbhc.helper.LocationHelper;
 import org.smartregister.cbhc.job.HeightIntentServiceJob;
 import org.smartregister.cbhc.job.MuactIntentServiceJob;
+import org.smartregister.cbhc.job.WeightIntentServiceJob;
 import org.smartregister.cbhc.util.DBConstants;
 import org.smartregister.cbhc.util.GrowthUtil;
 import org.smartregister.commonregistry.CommonPersonObjectClient;
@@ -107,9 +113,9 @@ public class GMPFragment extends BaseProfileFragment implements WeightActionList
         super.onViewCreated(view, savedInstanceState);
         initViews();
         updateGenderInChildDetails();
-        refreshEditWeightLayout();
-        refreshEditHeightLayout();
-        refreshEditMuacLayout();
+        refreshEditWeightLayout(false);
+        refreshEditHeightLayout(false);
+        refreshEditMuacLayout(false);
         updateProfileColor();
     }
 
@@ -160,7 +166,7 @@ public class GMPFragment extends BaseProfileFragment implements WeightActionList
     }
     String heightText = "";
     String weightText = "";
-    private void refreshEditWeightLayout(){
+    private void refreshEditWeightLayout(boolean isNeedToUpdateDb){
         LinearLayout fragmentContainer = (LinearLayout) fragmentView.findViewById(R.id.weight_group_canvas_ll);
         fragmentContainer.removeAllViews();
         fragmentContainer.addView(getLayoutInflater().inflate(R.layout.previous_weightview, null));
@@ -185,9 +191,9 @@ public class GMPFragment extends BaseProfileFragment implements WeightActionList
         }
         Gender gender = getGender();
 
-        weightText = GrowthUtil.refreshPreviousWeightsTable(mActivity,weightTable, gender, dob, weightlist);
+        weightText = GrowthUtil.refreshPreviousWeightsTable(mActivity,weightTable, gender, dob, weightlist,isNeedToUpdateDb);
     }
-    private void refreshEditHeightLayout() {
+    private void refreshEditHeightLayout(boolean isNeedToUpdateDB) {
         LinearLayout fragmentContainer = (LinearLayout) fragmentView.findViewById(R.id.height_group_canvas_ll);
         fragmentContainer.removeAllViews();
         fragmentContainer.addView(getLayoutInflater().inflate(R.layout.previous_height_view, null));
@@ -202,13 +208,14 @@ public class GMPFragment extends BaseProfileFragment implements WeightActionList
             }
             Height height = heightList.get(0);
             heightText = ZScore.getZScoreText(height.getZScore());
+            if(isNeedToUpdateDB) GrowthUtil.updateLastHeight(height.getCm(),height.getBaseEntityId(),heightText);
         }
     }
 
     int muakColor = 0;
     String muakText = "";
 
-    private void refreshEditMuacLayout() {
+    private void refreshEditMuacLayout(boolean isNeedToUpdateDB) {
         LinearLayout fragmentContainer = (LinearLayout) fragmentView.findViewById(R.id.muac_group_canvas_ll);
         fragmentContainer.removeAllViews();
         fragmentContainer.addView(getLayoutInflater().inflate(R.layout.previous_muac_view, null));
@@ -220,6 +227,7 @@ public class GMPFragment extends BaseProfileFragment implements WeightActionList
             MUAC latestMuac = heightList.get(0);
             muakColor = ZScore.getMuacColor(latestMuac.getCm());
             muakText = ZScore.getMuacText(latestMuac.getCm());
+            if(isNeedToUpdateDB)GrowthUtil.updateLastMuac(latestMuac.getCm(),childDetails.entityId(),muakText);
         }
 
     }
@@ -268,7 +276,14 @@ public class GMPFragment extends BaseProfileFragment implements WeightActionList
 //            muacText.setText(resultText);
 //            muacText.setBackgroundColor(getResources().getColor(resultColor));
         }
+        updateChildProfileColor(resultColor);
+    }
+    private void updateChildProfileColor(int resultColor){
+        if(mActivity!=null && !mActivity.isFinishing()){
+            MemberProfileActivity profileActivity = (MemberProfileActivity) mActivity;
+            profileActivity.updateProfileIconColor(resultColor,muacText);
 
+        }
     }
     private void updateGenderInChildDetails() {
         if (childDetails != null) {
@@ -323,7 +338,7 @@ public class GMPFragment extends BaseProfileFragment implements WeightActionList
         }
         HeightIntentServiceJob.scheduleJobImmediately(HeightIntentServiceJob.TAG);
 
-        refreshEditHeightLayout();
+        refreshEditHeightLayout(true);
         updateProfileColor();
     }
 
@@ -360,7 +375,7 @@ public class GMPFragment extends BaseProfileFragment implements WeightActionList
 
         }
         MuactIntentServiceJob.scheduleJobImmediately(MuactIntentServiceJob.TAG);
-        refreshEditMuacLayout();
+        refreshEditMuacLayout(true);
         updateProfileColor();
     }
 
@@ -409,8 +424,35 @@ public class GMPFragment extends BaseProfileFragment implements WeightActionList
 
             tag.setDbKey(weight.getId());
             tag.setPatientAge(formattedAge);
-            refreshEditWeightLayout();
+            WeightIntentServiceJob.scheduleJobImmediately(WeightIntentServiceJob.TAG);
+            refreshEditWeightLayout(true);
+            showGMPDialog();
         }
+    }
+    private void showGMPDialog(){
+        boolean isSam = muacText.equalsIgnoreCase("SAM");
+        Dialog dialog = new Dialog(mActivity);
+        dialog.setCancelable(false);
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialog.setContentView(R.layout.dialog_with_one_button);
+        TextView titleTv = dialog.findViewById(R.id.title_tv);
+        titleTv.setText(isSam?"Inadequate Growth!!Please refer to the nearest clinic ":"Congratulation!Your child growth is adequacte");
+        titleTv.setTextColor(isSam?mActivity.getResources().getColor(R.color.alert_urgent_red):mActivity.getResources().getColor(R.color.alert_completed));
+        Button ok_btn = dialog.findViewById(R.id.ok_btn);
+        if(isSam){
+            fragmentView.findViewById(R.id.refer_btn).setVisibility(View.VISIBLE);
+        }else{
+            fragmentView.findViewById(R.id.refer_btn).setVisibility(View.GONE);
+        }
+
+        ok_btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+            }
+        });
+        dialog.show();
+
     }
     private boolean isDataOk() {
         return childDetails != null && childDetails.getDetails() != null;

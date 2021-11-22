@@ -21,6 +21,8 @@ import org.joda.time.LocalDate;
 import org.joda.time.LocalTime;
 import org.opensrp.api.constants.Gender;
 import org.smartregister.cbhc.R;
+import org.smartregister.cbhc.application.AncApplication;
+import org.smartregister.cbhc.repository.AncRepository;
 import org.smartregister.commonregistry.CommonPersonObjectClient;
 import org.smartregister.domain.Photo;
 import org.smartregister.growthmonitoring.GrowthMonitoringLibrary;
@@ -52,6 +54,8 @@ import static org.smartregister.growthmonitoring.util.GrowthMonitoringConstants.
 import static org.smartregister.growthmonitoring.util.GrowthMonitoringUtils.standardiseCalendarDate;
 import static org.smartregister.util.Utils.getName;
 import static org.smartregister.util.Utils.getValue;
+
+import net.sqlcipher.database.SQLiteDatabase;
 
 public class GrowthUtil {
     public static String DOB_STRING = "2012-01-01T00:00:00.000Z";
@@ -218,7 +222,7 @@ public class GrowthUtil {
         heightDialogFragment.show(initFragmentTransaction(context,tag),tag);
 
     }
-    public static String refreshPreviousWeightsTable(Activity context, TableLayout previousweightholder, Gender gender, Date dob, List<Weight> weights) {
+    public static String refreshPreviousWeightsTable(Activity context, TableLayout previousweightholder, Gender gender, Date dob, List<Weight> weights,boolean isNeedToUpdateDB) {
         String weightText = "";
         HashMap<Long, Weight> weightHashMap = new HashMap<>();
         for (Weight curWeight : weights) {
@@ -314,8 +318,27 @@ public class GrowthUtil {
             // double zScore = ZScore.calculate(gender, dob, weight.getDate(), weight.getKg());
             zScore = ZScore.roundOff(zScore);
             weightText = ZScore.getZScoreText(zScore);
+            if(isNeedToUpdateDB) updateLastWeight(weight.getKg(),weight.getBaseEntityId(),weightText);
         }
         return weightText;
+    }
+    public static void updateLastWeight(float kg,String baseEntityId,String status){
+        AncRepository repo = (AncRepository) AncApplication.getInstance().getRepository();
+        SQLiteDatabase db = repo.getReadableDatabase();
+        String sql = "UPDATE ec_child SET last_weight = '" + kg + "',child_status = '"+status+"' WHERE base_entity_id = '" + baseEntityId + "';";
+        db.execSQL(sql);
+    }
+    public static void updateLastHeight(float kg,String baseEntityId,String status){
+        AncRepository repo = (AncRepository) AncApplication.getInstance().getRepository();
+        SQLiteDatabase db = repo.getReadableDatabase();
+        String sql = "UPDATE ec_child SET last_height = '" + kg + "',child_status = '"+status+"' WHERE base_entity_id = '" + baseEntityId + "';";
+        db.execSQL(sql);
+    }
+    public static void updateLastMuac(float cm,String baseEntityId,String status){
+        AncRepository repo = (AncRepository) AncApplication.getInstance().getRepository();
+        SQLiteDatabase db = repo.getReadableDatabase();
+        String sql = "UPDATE ec_child SET last_muac = '" + cm + "',child_status = '"+status+"' WHERE base_entity_id = '" + baseEntityId + "';";
+        db.execSQL(sql);
     }
     private static Calendar[] getMinAndMaxWeighingDates(Date dob) {
         Calendar minGraphTime = null;

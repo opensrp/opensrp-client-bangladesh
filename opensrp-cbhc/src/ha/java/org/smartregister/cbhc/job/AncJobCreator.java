@@ -18,6 +18,8 @@ public class AncJobCreator implements JobCreator {
                 return new HeightIntentServiceJob();
             case MuactIntentServiceJob.TAG:
                 return new MuactIntentServiceJob();
+            case WeightIntentServiceJob.TAG:
+                return new WeightIntentServiceJob();
             case SyncServiceJob.TAG:
                 return new SyncServiceJob();
             case ExtendedSyncServiceJob.TAG:
