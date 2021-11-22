@@ -144,6 +144,40 @@ public class RegisterInteractor implements RegisterContract.Interactor {
         appExecutors.diskIO().execute(runnable);
     }
 
+    /**
+     * for passing extra camp type
+     * @param formName
+     * @param metadata
+     * @param currentLocationId
+     * @param householdID
+     * @param callBack
+     * @param campType
+     */
+    @Override
+    public void getNextHealthId(final String formName, final String metadata, final String currentLocationId, final String householdID, final RegisterContract.InteractorCallBack callBack,String campType) {
+
+        Runnable runnable = new Runnable() {
+            @Override
+            public void run() {
+//                UniqueId uniqueId = getHealthIdRepository().getNextUniqueId();
+//                final String entityId = uniqueId != null ? uniqueId.getOpenmrsId() : "";
+                final boolean uniqueIdFound = getHealthIdRepository().countUnUsedIds() >= 0;//actual comp is >, >= for testing
+                appExecutors.mainThread().execute(new Runnable() {
+                    @Override
+                    public void run() {
+                        if (!uniqueIdFound) {
+                            callBack.onNoUniqueId();
+                        } else {
+                            callBack.onUniqueIdFetched(formName, metadata, currentLocationId, householdID, Utils.DEFAULT_IDENTIFIER,campType);
+                        }
+                    }
+                });
+            }
+        };
+
+        appExecutors.diskIO().execute(runnable);
+    }
+
     @Override
     public void saveRegistration(final Pair<Client, Event> pair, final String jsonString, final boolean isEditMode, final RegisterContract.InteractorCallBack callBack) {
         Runnable runnable = new Runnable() {

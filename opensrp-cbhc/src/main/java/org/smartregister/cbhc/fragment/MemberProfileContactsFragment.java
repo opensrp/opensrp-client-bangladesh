@@ -43,6 +43,7 @@ public class MemberProfileContactsFragment extends BaseProfileFragment {
     View fragmentView;
     String typeofMember;
     private CommonPersonObjectClient householdDetails;
+    private String from="";
 
     public static MemberProfileContactsFragment newInstance(Bundle bundle) {
         Bundle args = bundle;
@@ -63,7 +64,8 @@ public class MemberProfileContactsFragment extends BaseProfileFragment {
             if (serializable != null && serializable instanceof CommonPersonObjectClient) {
                 householdDetails = (CommonPersonObjectClient) serializable;
                 typeofMember = extras.getString("type_of_member");
-                setUpMemberDetails(typeofMember);
+                from = extras.getString("from")==null?"":extras.getString("from");
+                setUpMemberDetails(typeofMember,from);
                 //  householdDetails.getColumnmaps().putAll(AncApplication.getInstance().getContext().detailsRepository().getAllDetailsForClient(householdDetails.entityId()));
 
             }
@@ -76,18 +78,25 @@ public class MemberProfileContactsFragment extends BaseProfileFragment {
         return commonPersonObjectClient;
     }
 
-    public void setUpMemberDetails(String typeofMember){
-        if (typeofMember != null) {
-            if (typeofMember.equalsIgnoreCase("malechild") || typeofMember.equalsIgnoreCase("femalechild")) {
-                householdDetails =  CommonPersonObjectToClient(AncApplication.getInstance().getContext().commonrepository(DBConstants.CHILD_TABLE_NAME).findByBaseEntityId(householdDetails.entityId()),DBConstants.CHILD_TABLE_NAME);
+    public void setUpMemberDetails(String typeofMember,String from){
+        if (from.equals("")){
+            if (typeofMember != null) {
+                if (typeofMember.equalsIgnoreCase("malechild") || typeofMember.equalsIgnoreCase("femalechild")) {
+                    householdDetails =  CommonPersonObjectToClient(AncApplication.getInstance().getContext().commonrepository(DBConstants.CHILD_TABLE_NAME).findByBaseEntityId(householdDetails.entityId()),DBConstants.CHILD_TABLE_NAME);
+                }
+                else if (typeofMember.equalsIgnoreCase("woman")) {
+                    householdDetails =  CommonPersonObjectToClient(AncApplication.getInstance().getContext().commonrepository(DBConstants.WOMAN_TABLE_NAME).findByBaseEntityId(householdDetails.entityId()),DBConstants.WOMAN_TABLE_NAME);
+                }
+                else if (typeofMember.equalsIgnoreCase("member")) {
+                    householdDetails =  CommonPersonObjectToClient(AncApplication.getInstance().getContext().commonrepository(DBConstants.MEMBER_TABLE_NAME).findByBaseEntityId(householdDetails.entityId()),DBConstants.MEMBER_TABLE_NAME);
+                }
             }
-            else if (typeofMember.equalsIgnoreCase("woman")) {
-                householdDetails =  CommonPersonObjectToClient(AncApplication.getInstance().getContext().commonrepository(DBConstants.WOMAN_TABLE_NAME).findByBaseEntityId(householdDetails.entityId()),DBConstants.WOMAN_TABLE_NAME);
-            }
-            else if (typeofMember.equalsIgnoreCase("member")) {
-                householdDetails =  CommonPersonObjectToClient(AncApplication.getInstance().getContext().commonrepository(DBConstants.MEMBER_TABLE_NAME).findByBaseEntityId(householdDetails.entityId()),DBConstants.MEMBER_TABLE_NAME);
+        }else{
+            if (typeofMember != null) {
+                householdDetails =  CommonPersonObjectToClient(AncApplication.getInstance().getContext().commonrepository(DBConstants.GUEST_MEMBER_TABLE_NAME).findByBaseEntityId(householdDetails.entityId()),DBConstants.CHILD_TABLE_NAME);
             }
         }
+
     }
     @Override
     protected void onCreation() {
@@ -110,7 +119,9 @@ public class MemberProfileContactsFragment extends BaseProfileFragment {
 
     public void reloadView() {
         if(fragmentView==null) return;
-        setUpMemberDetails(typeofMember);
+
+        //      householdDetails.getColumnmaps().putAll(AncApplication.getInstance().getContext().detailsRepository().getAllDetailsForClient(householdDetails.entityId()));
+        setUpMemberDetails(typeofMember,from);
         LinearLayout linearLayoutholder = fragmentView.findViewById(R.id.profile_overview_details_holder);
         linearLayoutholder.removeAllViews();
         setupView();

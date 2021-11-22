@@ -1373,7 +1373,16 @@ public class JsonFormUtils extends org.smartregister.util.JsonFormUtils {
             jsonObject.put(JsonFormUtils.READ_ONLY, false);
             jsonObject.put(JsonFormUtils.VALUE, Utils.getAgeFromDate(womanClient.get(DBConstants.KEY.DOB)));
 
-        } else if (jsonObject.getString(JsonFormUtils.KEY).equalsIgnoreCase(DBConstants.KEY.ANC_ID)) {
+        }
+
+
+        else if (jsonObject.getString(JsonFormUtils.KEY).equalsIgnoreCase(DBConstants.KEY.CHAMP_TYPE)) {
+
+            jsonObject.put(JsonFormUtils.READ_ONLY, false);
+            jsonObject.put(JsonFormUtils.VALUES, Utils.CAMP_TYPE_JSON_ARR);
+            jsonObject.put(JsonFormUtils.VALUE, womanClient.get(DBConstants.KEY.CHAMP_TYPE));
+
+        }else if (jsonObject.getString(JsonFormUtils.KEY).equalsIgnoreCase(DBConstants.KEY.ANC_ID)) {
 
             jsonObject.put(JsonFormUtils.VALUE, womanClient.get(DBConstants.KEY.ANC_ID).replace("-", ""));
 
@@ -2017,7 +2026,7 @@ public class JsonFormUtils extends org.smartregister.util.JsonFormUtils {
 
 
 
-    public static JSONObject setCampType(JSONObject form,JSONArray campList){
+    public static JSONObject setCampType(JSONObject form,String campType){
         try {
             JSONObject stepOne = form.getJSONObject(JsonFormUtils.STEP1);
             JSONArray jsonArray = stepOne.getJSONArray(JsonFormUtils.FIELDS);
@@ -2028,7 +2037,31 @@ public class JsonFormUtils extends org.smartregister.util.JsonFormUtils {
 
                 if (jsonObject.getString(JsonFormUtils.KEY).equalsIgnoreCase("camp_type")) {
 //                    jsonObject.put("mother_id",motherId);
-                    jsonObject.put(JsonFormUtils.VALUES, campList);
+                    jsonObject.put(JsonFormUtils.VALUE, campType);
+                }
+
+            }
+        } catch (Exception e) {
+            Utils.appendLog(LookUpUtils.class.getName(), e);
+            e.printStackTrace();
+
+        }
+
+        return form;
+    }
+
+    public static JSONObject setCampTypeArr(JSONObject form, JSONArray campTypeArr) {
+        try {
+            JSONObject stepOne = form.getJSONObject(JsonFormUtils.STEP1);
+            JSONArray jsonArray = stepOne.getJSONArray(JsonFormUtils.FIELDS);
+
+
+            for (int i = 0; i < jsonArray.length(); i++) {
+                JSONObject jsonObject = jsonArray.getJSONObject(i);
+
+                if (jsonObject.getString(JsonFormUtils.KEY).equalsIgnoreCase("camp_type")) {
+//                    jsonObject.put("mother_id",motherId);
+                    jsonObject.put(JsonFormUtils.VALUES, campTypeArr);
                 }
 
             }

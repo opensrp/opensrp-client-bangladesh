@@ -175,7 +175,8 @@ public class AddCampaignActivity extends AppCompatActivity implements Validator.
      * date picker dialog
      */
     private void openDatePicker(String from,Date targetDt) {
-        calendar.setTime(targetDt);
+        if(targetDt!=null) calendar.setTime(targetDt);
+        else calendar = Calendar.getInstance();
 
         DatePickerDialog.OnDateSetListener date = (view, year, monthOfYear, dayOfMonth) -> {
             calendar.set(Calendar.YEAR, year);

@@ -61,5 +61,15 @@
             android:layout_marginRight="25dp"
             android:gravity="center"
             android:text="campaign" />
+
+        <Button
+            android:id="@+id/report_bt"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginLeft="25dp"
+            android:layout_marginRight="25dp"
+            android:gravity="center"
+            android:text="Report" />
     </LinearLayout>
 </RelativeLayout>

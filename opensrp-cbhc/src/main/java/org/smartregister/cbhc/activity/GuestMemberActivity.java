@@ -45,6 +45,7 @@ import org.smartregister.cbhc.contract.ProfileContract;
 import org.smartregister.cbhc.contract.RegisterContract;
 import org.smartregister.cbhc.domain.AttentionFlag;
 import org.smartregister.cbhc.domain.GuestMemberData;
+import org.smartregister.cbhc.fragment.ProfileOverviewFragment;
 import org.smartregister.cbhc.presenter.GuestMemberPresenter;
 import org.smartregister.cbhc.presenter.RegisterPresenter;
 import org.smartregister.cbhc.repository.UniqueIdRepository;
@@ -122,7 +123,7 @@ public class GuestMemberActivity extends AppCompatActivity implements GuestMembe
             adapter = new GuestMemberAdapter(this, new GuestMemberAdapter.OnClickAdapter() {
                 @Override
                 public void onClick(int position, GuestMemberData content) {
-                    openProfile(content.getBaseEntity());
+                    openProfile(content);
                 }
             });
 
@@ -167,7 +168,6 @@ public class GuestMemberActivity extends AppCompatActivity implements GuestMembe
     @Override
     protected void onResume() {
         super.onResume();
-        Log.d("tttt","onresume called");
         presenter.fetchData();
     }
 
@@ -202,7 +202,7 @@ public class GuestMemberActivity extends AppCompatActivity implements GuestMembe
             adapter = new GuestMemberAdapter(this, new GuestMemberAdapter.OnClickAdapter() {
                 @Override
                 public void onClick(int position, GuestMemberData content) {
-                    openProfile(content.getBaseEntity());
+                    openProfile(content);
                 }
             });
 
@@ -214,9 +214,18 @@ public class GuestMemberActivity extends AppCompatActivity implements GuestMembe
         }
     }
 
-    private void openProfile(String baseEntityId){
+    private void openProfile(GuestMemberData memberData){
 
-        GuestMemberActivity.startGuestMemberProfileActivity(this,baseEntityId);
+      /*  GuestMemberActivity.startGuestMemberProfileActivity(this,baseEntityId);*/
+        CommonPersonObjectClient memberclient = memberData.getpClient();
+        //memberclient.getColumnmaps().put("relational_id", householdDetails.getCaseId());
+        String clienttype = memberData.getGender().equalsIgnoreCase("m")?"malechild":"femalechild";
+        Intent intent = new Intent(this, MemberProfileActivity.class);
+        intent.putExtra(Constants.INTENT_KEY.BASE_ENTITY_ID, memberclient.getCaseId());
+        intent.putExtra(ProfileOverviewFragment.EXTRA_HOUSEHOLD_DETAILS, memberclient);
+        intent.putExtra("type_of_member", clienttype);
+        intent.putExtra("from", "guest");
+        startActivityForResult(intent, 1002);
 
     }
 

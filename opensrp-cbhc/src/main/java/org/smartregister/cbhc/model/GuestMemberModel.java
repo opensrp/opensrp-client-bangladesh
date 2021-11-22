@@ -15,9 +15,13 @@ import org.smartregister.cbhc.contract.GuestMemberContract;
 import org.smartregister.cbhc.domain.GuestMemberData;
 import org.smartregister.cbhc.helper.ECSyncHelper;
 import org.smartregister.cbhc.sync.AncClientProcessorForJava;
+import org.smartregister.cbhc.util.DBConstants;
 import org.smartregister.cbhc.util.JsonFormUtils;
 import org.smartregister.clientandeventmodel.Client;
 import org.smartregister.clientandeventmodel.Event;
+import org.smartregister.commonregistry.CommonPersonObject;
+import org.smartregister.commonregistry.CommonPersonObjectClient;
+import org.smartregister.commonregistry.CommonRepository;
 import org.smartregister.domain.tag.FormTag;
 import org.smartregister.repository.AllSharedPreferences;
 import org.smartregister.repository.BaseRepository;
@@ -194,13 +198,22 @@ public class GuestMemberModel extends JsonFormUtils implements GuestMemberContra
         guestMemberDataArrayList.clear();
        /* String query =  "select ec_guest_member.base_entity_id,ec_guest_member.opensrp_id,ec_guest_member.first_name,ec_guest_member.dob,ec_guest_member.gender,ec_guest_member.phone_number from ec_guest_member " +
          " where ec_guest_member.date_removed is null order by ec_guest_member.last_interacted_with desc ";*/
-        String query =  "select * from ec_guest_member";
+        //String query =  "select * from ec_guest_member";
+        //String query =  "select * from ec_guest_member";
+        // String query = "Select child.id as _id , child.relationalid , child.Patient_Identifier, child.first_name , child.last_name , child.dob ,child.gender, child.PregnancyStatus, child.tasks, child.age as age, NULL as MaritalStatus, child.camp_type, child.child_status FROM ec_guest_member as child";
+        String query = "Select child.id as _id , child.relationalid , child.Patient_Identifier, child.first_name , child.last_name , child.dob ,child.gender, child.PregnancyStatus, child.tasks, child.age as age, NULL as MaritalStatus, child.child_status FROM ec_guest_member as child";
+
         try (Cursor cursor = AncApplication.getInstance().getRepository().getReadableDatabase().rawQuery(query, new String[]{})) {
             if (cursor != null && cursor.getCount() > 0) {
-
-
                 cursor.moveToFirst();
                 while (!cursor.isAfterLast()) {
+
+                    CommonRepository commonRepository = org.smartregister.Context.getInstance().commonrepository("ec_guest_member");
+                    CommonPersonObject personinlist = commonRepository.readAllcommonforCursorAdapter(cursor);
+                    //personinlist.setCaseId(cursor.getString(cursor.getColumnIndex("_id")));
+                    CommonPersonObjectClient pClient   = new CommonPersonObjectClient(personinlist.getCaseId(), personinlist.getDetails(), personinlist.getDetails().get("FWHOHFNAME"));
+                    pClient.setColumnmaps(personinlist.getColumnmaps());
+
                     int baseEntity = cursor.getColumnIndex("base_entity_id");
                     int fname = cursor.getColumnIndex("first_name");
                     int lname = cursor.getColumnIndex("last_name");
@@ -214,13 +227,15 @@ public class GuestMemberModel extends JsonFormUtils implements GuestMemberContra
                             cursor.isNull(lname) ? "" : cursor.getString(lname),
                             cursor.isNull(dob) ? "" : cursor.getString(dob),
                             cursor.isNull(gender) ? "" : cursor.getString(gender),
-                            cursor.isNull(age) ? "" : cursor.getString(age)
+                            cursor.isNull(age) ? "" : cursor.getString(age),
+                            pClient
                     ));
 
                     cursor.moveToNext();
                 }
             }
         } catch (Exception e) {
+            e.printStackTrace();
         }
 
 

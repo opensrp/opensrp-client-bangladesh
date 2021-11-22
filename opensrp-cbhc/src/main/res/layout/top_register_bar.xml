@@ -82,9 +82,12 @@
             android:id="@+id/woman_sync"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:layout_alignParentBottom="true"
             android:layout_alignParentEnd="true"
-            android:layout_margin="3dp"
+            android:layout_alignParentBottom="true"
+            android:layout_marginStart="3dp"
+            android:layout_marginTop="3dp"
+            android:layout_marginEnd="3dp"
+            android:layout_marginBottom="3dp"
             android:gravity="center"
             android:src="@drawable/ic_icon_synchronize" />
         <com.vijay.jsonwizard.views.CustomTextView

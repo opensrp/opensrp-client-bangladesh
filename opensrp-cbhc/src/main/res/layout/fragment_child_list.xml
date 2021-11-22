@@ -5,6 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@color/customAppThemeGray"
     tools:context=".fragment.ChildListFragment">
    <include
        android:id="@+id/toolbar"

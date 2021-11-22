@@ -1,57 +1,36 @@
 package org.smartregister.cbhc.contract;
 
-import android.app.Activity;
+import android.content.Context;
 
-import org.smartregister.Context;
+import org.smartregister.cbhc.domain.ChildItemData;
 
-import java.lang.ref.WeakReference;
+import java.util.ArrayList;
 
 public interface ChildListContract {
-    interface Presenter {
-        void getUserList();
-    }
+
 
     interface View {
-
-        void setUsernameError(int resourceId);
-
-        void resetUsernameError();
-
-        void setPasswordError(int resourceId);
-
-        void resetPaswordError();
-
-        void showProgress(final boolean show);
-
-        void hideKeyboard();
-
-        void showErrorDialog(String message);
-
-        void enableLoginButton(boolean isClickable);
-
-        void goToHome(boolean isRemote);
-
-        Activity getActivityContext();
+        Presenter getPresenter();
+        Context getContext();
+        void updateChildList();
     }
 
     interface Interactor {
-
-        void onDestroy(boolean isChangingConfiguration);
-
-        void login(WeakReference<LoginContract.View> view, String userName, String password);
+        void fetchData(String query, InteractorCallBack callBack);
+        ArrayList<ChildItemData> getChildData();
     }
 
     interface Model {
+        void fetchChildList(String query);
+        ArrayList<ChildItemData> getChildData();
+    }
+    interface Presenter{
+        ArrayList<ChildItemData>  getChildList();
 
-        boolean isEmptyUsername(String username);
+        void fetchChildList(String query);
+    }
 
-        boolean isPasswordValid(String password);
-
-        Context getOpenSRPContext();
-
-        String getBuildDate();
-
-        boolean isUserLoggedOut();
-
+    interface InteractorCallBack{
+        void updateList();
     }
 }

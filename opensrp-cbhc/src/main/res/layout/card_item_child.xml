@@ -5,6 +5,8 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_margin="5dp"
+    android:layout_marginLeft="5dp"
+    android:layout_marginRight="5dp"
     >
 
     <android.support.v7.widget.CardView
@@ -15,66 +17,104 @@
         app:cardCornerRadius="@dimen/cardview_default_radius"
         app:cardElevation="@dimen/cardview_default_elevation">
 
-        <LinearLayout
+        <android.support.constraint.ConstraintLayout
             android:id="@+id/profile_name_layout"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            android:layout_gravity="center"
+           >
 
-
-            <ImageView
-                android:id="@+id/profile_image_iv"
-                android:layout_width="@dimen/client_profile_pic_height"
-                android:layout_height="@dimen/client_profile_pic_height"
-                android:adjustViewBounds="true"
-                android:scaleType="centerCrop"
-                android:src="@drawable/child_boy_infant" />
 
             <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:gravity="center_vertical"
-                android:orientation="vertical"
-                android:paddingLeft="10dp"
-                android:paddingRight="20dp">
+                android:id="@+id/linearLayout2"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="28dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/childStatusImg"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
 
-                <org.smartregister.view.customcontrols.CustomFontTextView
-                    android:id="@+id/name_tv"
-                    style="@style/CustomFontTextViewStyle.ClientList.Medium"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:gravity="center_vertical"
-                    android:text="Joyce Mwansa"
-                    android:textColor="@android:color/black"
-                    android:textSize="14sp" />
+                <ImageView
+                    android:id="@+id/profile_image_iv"
+                    android:layout_width="70dp"
+                    android:layout_height="@dimen/client_profile_pic_height"
+                    android:adjustViewBounds="true"
+                    android:maxWidth="70dp"
+                    android:scaleType="centerCrop"
+                    android:src="@drawable/child_boy_infant" />
 
                 <LinearLayout
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp"
-                    android:orientation="horizontal">
+                    android:layout_height="match_parent"
+                    android:gravity="center_vertical"
+                    android:orientation="vertical"
+                    android:paddingLeft="10dp"
+                    android:paddingRight="20dp">
 
                     <org.smartregister.view.customcontrols.CustomFontTextView
-                        android:id="@+id/age_tv"
-                        style="@style/CustomFontTextViewStyle.ClientList.Light"
+                        android:id="@+id/name_tv"
+                        style="@style/CustomFontTextViewStyle.ClientList.Medium"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Age"
-                        android:textColor="@color/dark_grey"
-                        android:textSize="12sp" />
+                        android:gravity="center_vertical"
+                        android:text="Joyce Mwansa"
+                        android:textColor="@android:color/black"
+                        android:textSize="14sp" />
 
-                    <ImageView
-                        android:id="@+id/childSmallImageView"
-                        android:layout_width="25dp"
-                        android:layout_height="25dp"
-                        android:layout_marginLeft="10dp"
-                        android:src="@drawable/female_child_cbhc"
-                        />
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+                        android:orientation="horizontal">
+
+                        <org.smartregister.view.customcontrols.CustomFontTextView
+                            android:id="@+id/age_tv"
+                            style="@style/CustomFontTextViewStyle.ClientList.Light"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Age"
+                            android:textColor="@color/dark_grey"
+                            android:textSize="12sp" />
+
+                        <ImageView
+                            android:id="@+id/childSmallImageView"
+                            android:layout_width="25dp"
+                            android:layout_height="25dp"
+                            android:layout_marginLeft="10dp"
+                            android:src="@drawable/female_child_cbhc" />
+                    </LinearLayout>
                 </LinearLayout>
             </LinearLayout>
-        </LinearLayout>
 
-        <org.smartregister.view.customcontrols.CustomFontTextView
+
+            <ImageView
+                android:id="@+id/childStatusImg"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="20dp"
+                android:src="@drawable/child"
+                android:tint="@color/vaccine_red_bg_end"
+                app:layout_constraintBottom_toBottomOf="@+id/imageView6"
+                app:layout_constraintEnd_toStartOf="@+id/imageView6"
+                app:layout_constraintTop_toTopOf="@+id/imageView6" />
+
+            <ImageView
+                android:id="@+id/imageView6"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="end|center"
+                android:layout_marginEnd="5dp"
+                android:layout_weight="1"
+                android:src="@drawable/ic_action_next"
+                android:tint="@color/primary"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+        </android.support.constraint.ConstraintLayout>
+
+        <!--<org.smartregister.view.customcontrols.CustomFontTextView
             android:id="@+id/weight_tv"
             android:gravity="center"
             android:layout_width="wrap_content"
@@ -82,7 +122,8 @@
             android:layout_gravity="right"
             android:text="12 kg"
             android:layout_marginRight="12.5dp"
-            android:src="@drawable/ic_menu_edit" />
+            android:src="@drawable/ic_menu_edit" />-->
+
     </android.support.v7.widget.CardView>
 
 </LinearLayout>

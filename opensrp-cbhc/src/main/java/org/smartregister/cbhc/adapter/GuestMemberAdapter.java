@@ -13,6 +13,8 @@ import org.joda.time.DateTime;
 import org.smartregister.cbhc.R;
 import org.smartregister.cbhc.domain.GuestMemberData;
 import org.smartregister.cbhc.util.Utils;
+import org.smartregister.util.OpenSRPImageLoader;
+import org.smartregister.view.activity.DrishtiApplication;
 import org.smartregister.view.customcontrols.CustomFontTextView;
 
 import java.util.ArrayList;
@@ -29,7 +31,7 @@ public class GuestMemberAdapter extends RecyclerView.Adapter<GuestMemberAdapter.
     }
     public static class GuestMemberViewHolder extends RecyclerView.ViewHolder{
         public CustomFontTextView textViewForumDate,textViewName,textViewAge,textViewGender;
-        public ImageView profileImage,smallImage;
+        public ImageView profileImage,smallImage,nextArrowImageview;
 
         public GuestMemberViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -39,6 +41,7 @@ public class GuestMemberAdapter extends RecyclerView.Adapter<GuestMemberAdapter.
 
             profileImage= itemView.findViewById(R.id.profile_image);
             smallImage = itemView.findViewById(R.id.small_image);
+            nextArrowImageview = itemView.findViewById(R.id.nextArrowImageView);
         }
     }
 
@@ -58,6 +61,7 @@ public class GuestMemberAdapter extends RecyclerView.Adapter<GuestMemberAdapter.
     @Override
     public void onBindViewHolder(@NonNull final GuestMemberViewHolder viewHolder, int position) {
         final GuestMemberData content = contentList.get(position);
+        viewHolder.nextArrowImageview.setVisibility(View.VISIBLE);
         viewHolder.profileImage.setVisibility(View.VISIBLE);
         viewHolder.smallImage.setVisibility(View.VISIBLE);
 
@@ -72,11 +76,15 @@ public class GuestMemberAdapter extends RecyclerView.Adapter<GuestMemberAdapter.
        }
 
        if(content.getGender().equalsIgnoreCase("f")) {
-           viewHolder.profileImage.setImageResource(R.drawable.child_girl_infant);
-           viewHolder.smallImage.setImageResource(R.drawable.female_child_cbhc);
+        /*   viewHolder.profileImage.setImageResource(R.drawable.child_girl_infant);
+           viewHolder.smallImage.setImageResource(R.drawable.female_child_cbhc);*/
+           viewHolder.profileImage.setTag(org.smartregister.R.id.entity_id, content.getpClient().entityId());
+           DrishtiApplication.getCachedImageLoaderInstance().getImageByClientId(content.getpClient().entityId(), OpenSRPImageLoader.getStaticImageListener(viewHolder.profileImage, R.drawable.child_boy_infant, R.drawable.child_boy_infant));
        }else{
-           viewHolder.profileImage.setImageResource(R.drawable.child_boy_infant);
-           viewHolder.smallImage.setImageResource(R.drawable.male_child_cbhc);
+          /* viewHolder.profileImage.setImageResource(R.drawable.child_boy_infant);
+           viewHolder.smallImage.setImageResource(R.drawable.male_child_cbhc);*/
+           viewHolder.profileImage.setTag(org.smartregister.R.id.entity_id, content.getpClient().entityId());
+           DrishtiApplication.getCachedImageLoaderInstance().getImageByClientId(content.getpClient().entityId(), OpenSRPImageLoader.getStaticImageListener(viewHolder.profileImage, R.drawable.child_girl_infant, R.drawable.child_girl_infant));
        }
 
         viewHolder.itemView.setOnClickListener(v -> onClickAdapter.onClick(position, content));

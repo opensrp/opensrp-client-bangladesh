@@ -23,7 +23,9 @@ import android.widget.TextView;
 import org.apache.commons.lang3.StringUtils;
 import org.smartregister.cbhc.R;
 import org.smartregister.cbhc.activity.HomeRegisterActivity;
+import org.smartregister.cbhc.contract.ChildSortFilterContract;
 import org.smartregister.cbhc.contract.SortFilterContract;
+import org.smartregister.cbhc.presenter.ChildSortFilterPresenter;
 import org.smartregister.cbhc.presenter.SortFilterPresenter;
 import org.smartregister.cbhc.util.Utils;
 import org.smartregister.configurableviews.model.Field;
@@ -31,13 +33,11 @@ import org.smartregister.configurableviews.model.Field;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Created by keyman on 29/06/18.
- */
-public class SortFilterFragment extends Fragment implements SortFilterContract.View {
+
+public class ChildSortFilterFragment extends Fragment implements ChildSortFilterContract.View {
 
     private FilterDialogClickListener actionHandler = new FilterDialogClickListener();
-    private SortFilterContract.Presenter presenter;
+    private ChildSortFilterPresenter presenter;
 
     private FilterAdapter filterAdapter;
     private String selectedType="";
@@ -55,7 +55,7 @@ public class SortFilterFragment extends Fragment implements SortFilterContract.V
                              @Nullable Bundle savedInstanceState) {
 
         View view = inflater.inflate(
-                R.layout.fragment_sort_filter,
+                R.layout.fragment_child_sort_filter,
                 container, false);
 
         updateFilterList(view, presenter.getConfig().getFilterFields());
@@ -101,28 +101,30 @@ public class SortFilterFragment extends Fragment implements SortFilterContract.V
     }
 
     private void initializePresenter() {
-        presenter = new SortFilterPresenter(this);
+        presenter = new ChildSortFilterPresenter(this);
     }
 
     @Override
     public void updateSortAndFilter(List<Field> filterList, Field sortField) {
-        if (getActivity() != null) {
+        /*if (getActivity() != null) {
                 ((HomeRegisterActivity) getActivity()).updateSortAndFilter(filterList, sortField,selectedType);
 
-        }
+        }*/
+
+        ChildListFragment.getInstance().filter(filterList, sortField,selectedType);
     }
 
-    private void switchToRegister() {
-        if (getActivity() != null) {
-            ((HomeRegisterActivity) getActivity()).switchToBaseFragment();
-        }
+    private void switchToChidList() {
+        ChildListFragment.getInstance().removeFromBackStack();
     }
 
     @Override
     public void clearFilter() {
-        if (getActivity() != null) {
+      /*  if (getActivity() != null) {
             ((HomeRegisterActivity) getActivity()).clearFilter();
-        }
+        }*/
+
+        ChildListFragment.getInstance().clearFilter();
     }
 
     public void updateSortLabel(String sortText) {
@@ -137,6 +139,10 @@ public class SortFilterFragment extends Fragment implements SortFilterContract.V
         if (filterList == null) {
             return;
         }
+        //removed pregnant, adult and above 50 item from list
+        filterList.remove(0);
+        filterList.remove(2);
+        filterList.remove(2);
 
         RecyclerView recyclerView = view.findViewById(R.id.filter_recycler_view);
         recyclerView.setHasFixedSize(true);
@@ -195,7 +201,7 @@ public class SortFilterFragment extends Fragment implements SortFilterContract.V
 
             switch (v.getId()) {
                 case R.id.cancel_filter:
-                    switchToRegister();
+                    switchToChidList();
                     break;
                 case R.id.apply_layout:
                     v.findViewById(R.id.button_apply).performClick();
@@ -211,6 +217,7 @@ public class SortFilterFragment extends Fragment implements SortFilterContract.V
                     presenter.clearSortAndFilter();
                     break;
                 case R.id.sort_layout:
+                    presenter.getConfig().getSortFields();
                     updateSortList(presenter.getConfig().getSortFields());
                     break;
                 default:
@@ -227,7 +234,7 @@ public class SortFilterFragment extends Fragment implements SortFilterContract.V
         }
 
         @Override
-        public FilterAdapter.ViewHolder onCreateViewHolder(ViewGroup parent,
+        public ViewHolder onCreateViewHolder(ViewGroup parent,
                                                            int viewType) {
             CheckedTextView v = (CheckedTextView) LayoutInflater.from(parent.getContext())
                     .inflate(R.layout.register_filter_item, parent, false);

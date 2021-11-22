@@ -263,6 +263,13 @@
     <string name="household_register">Household Register</string>
     <string name="start_new_form">start new form</string>
     <string name="total_unregister_child">+Child: %1$s</string>
+
+    <string name="report">রিপোর্ট</string>
+    <string name="key_achievement_firstline">অর্জন</string>
+    <string name="key_achievement_secondline">সমূহ</string>
+    <string name="total_registered_child">মোট নিবন্ধিত শিশু</string>
+    <string name="total_registered_prg_wmn">মোট নিবন্ধিত গর্ভবতী মহিলা</string>
+
     <string name="birthdate_age">বয়স</string>
     <string name="child_contact_number">ওজন</string>
     <string name="previous_height">পূর্বের উচ্চতা</string>

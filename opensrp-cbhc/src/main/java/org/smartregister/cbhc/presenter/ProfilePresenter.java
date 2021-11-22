@@ -80,8 +80,33 @@ public class ProfilePresenter implements ProfileContract.Presenter, RegisterCont
         }
     }
 
-    @Override
+    /**
+     * for extra camp type
+     * @param formName
+     * @param entityId
+     * @param metadata
+     * @param currentLocationId
+     * @param householdID
+     * @param campType
+     * @throws Exception
+     */
+    void startMemberRegistrationForm(String formName, String entityId, String metadata, String currentLocationId, String householdID,String campType)throws Exception{
+        if (StringUtils.isBlank(entityId)) {
+//            Triple<String, String, String> triple = Triple.of(formName, metadata, currentLocationId);
+//            Triple<String, String, String> triple = Triple.of(formName, metadata, currentLocationId);
+//            interactor.getNextUniqueId(triple, this);
+            if(StringUtils.isBlank(campType)){
+                interactor.getNextHealthId(formName, metadata, currentLocationId, householdID, this);
+            }else{
+                interactor.getNextHealthId(formName, metadata, currentLocationId, householdID, this,campType);
+            }
 
+//            return;
+        }
+
+    }
+
+    @Override
     public void startMemberRegistrationForm(String formName, String entityId, String metadata, String currentLocationId, String householdID) throws Exception {
 
         if (StringUtils.isBlank(entityId)) {
@@ -94,6 +119,7 @@ public class ProfilePresenter implements ProfileContract.Presenter, RegisterCont
 
 
     }
+
 
     @Override
     public void saveForm(String jsonString, boolean isEditMode) {
@@ -192,6 +218,26 @@ public class ProfilePresenter implements ProfileContract.Presenter, RegisterCont
         } catch (Exception e) {
             Utils.appendLog(getClass().getName(), e);
             e.printStackTrace();
+        }
+    }
+
+    /**
+     * for extra camp type
+     * @param formName
+     * @param metadata
+     * @param currentLocationId
+     * @param householdID
+     * @param entityId
+     * @param campType
+     */
+    @Override
+    public void onUniqueIdFetched(String formName, String metadata, String currentLocationId, String householdID, String entityId,String campType) {
+        try {
+            startMemberRegistrationForm(formName, entityId, metadata, currentLocationId, householdID,campType);
+        } catch (Exception e) {
+            Utils.appendLog(getClass().getName(), e);
+            Log.e(TAG, Log.getStackTraceString(e));
+            getView().displayToast(R.string.error_unable_to_start_form);
         }
     }
 

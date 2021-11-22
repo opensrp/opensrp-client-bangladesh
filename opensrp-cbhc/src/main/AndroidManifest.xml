@@ -32,6 +32,10 @@
             android:name=".activity.ChildListMainActivity"
             android:exported="true" />
         <activity
+            android:name=".activity.GrowthReportActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme" />
+        <activity
             android:name=".activity.CampaignActivity"
             android:exported="true" />
         <activity

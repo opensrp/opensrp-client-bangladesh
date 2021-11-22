@@ -1125,6 +1125,29 @@
           "json_mapping": {
             "field": "attributes.camp_type"
           }
+        },
+
+        {
+          "column_name": "child_status",
+          "type": "Client",
+          "json_mapping": {
+            "field": "child_status"
+          }
+        },
+
+        {
+          "column_name": "child_weight",
+          "type": "Client",
+          "json_mapping": {
+            "field": "child_weight"
+          }
+        },
+        {
+          "column_name": "child_height",
+          "type": "Client",
+          "json_mapping": {
+            "field": "child_height"
+          }
         }
       ]
     },
@@ -1743,6 +1766,27 @@
           "type": "Client",
           "json_mapping": {
             "field": "attributes.NonComnta_Disease"
+          }
+        },
+        {
+          "column_name": "child_status",
+          "type": "Client",
+          "json_mapping": {
+            "field": "child_status"
+          }
+        },
+        {
+          "column_name": "child_weight",
+          "type": "Client",
+          "json_mapping": {
+            "field": "child_weight"
+          }
+        },
+        {
+          "column_name": "child_height",
+          "type": "Client",
+          "json_mapping": {
+            "field": "child_height"
           }
         }
       ]
