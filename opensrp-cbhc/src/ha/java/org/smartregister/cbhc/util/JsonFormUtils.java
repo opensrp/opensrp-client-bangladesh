@@ -433,6 +433,25 @@ public class JsonFormUtils extends org.smartregister.util.JsonFormUtils {
                 dobJSONObject.put(VALUE, Utils.getDob(100));
             }
 
+            if(encounterType.equalsIgnoreCase(Constants.EventType.OOCMemberREGISTRATION)){
+                String agestring = "";
+                String dobstring = "";
+                JSONObject dobknownObject = getFieldJSONObject(fields, "member_birth_date_known");
+                String dobknownObjectvalue = dobknownObject.getString("value");
+                if (dobknownObjectvalue.equalsIgnoreCase("হ্যাঁ") || dobknownObjectvalue.equalsIgnoreCase("YES")) {
+                    dobstring = getFieldJSONObject(fields, "member_birth_date").getString("value");
+                    DATE_FORMAT.parse(dobstring);
+                    agestring = "" + Utils.getAgeFromDate((new DateTime(DATE_FORMAT.parse(dobstring)).toString()));
+                    JSONObject ageJsonObject = getFieldJSONObject(fields, "age");
+                    ageJsonObject.put("value", agestring);
+                } else if (dobknownObjectvalue.equalsIgnoreCase("না") || dobknownObjectvalue.equalsIgnoreCase("NO")) {
+                    agestring = getFieldJSONObject(fields, "age").getString("value");
+                    dobstring = "" + Utils.getDob(Integer.parseInt(agestring));
+                    JSONObject dobJsonObject = getFieldJSONObject(fields, "member_birth_date");
+                    dobJsonObject.put("value", dobstring);
+                }
+            }
+
             FormTag formTag = new FormTag();
             formTag.providerId = allSharedPreferences.fetchRegisteredANM();
             formTag.appVersion = BuildConfig.VERSION_CODE;
@@ -1085,6 +1104,63 @@ public class JsonFormUtils extends org.smartregister.util.JsonFormUtils {
         return "";
     }
 
+    public static String getGuestMemberJsonEditFormString(Context context, Map<String, String> womanClient) {
+        try {
+
+            JSONObject form = FormUtils.getInstance(context).getFormJson("guest_member_register");
+          /*  form.put("relational_id", womanClient.get("relational_id"));*/
+          /*  if (womanClient.get("dataApprovalStatus") != null && womanClient.get("dataApprovalComments") != null) {
+                form.put("dataApprovalStatus", womanClient.get("dataApprovalStatus"));
+                form.put("dataApprovalComments", womanClient.get("dataApprovalComments"));
+            }
+*/
+            LookUpUtils.putRelationalIdInLookupObjects(form, womanClient.get("relational_id"));
+
+
+            ///////////////////////[o-o]///put household id in metadata lookup//////////////////
+         /*   JSONObject metaDataJson = form.getJSONObject("metadata");
+            JSONObject lookup = metaDataJson.getJSONObject("look_up");
+            lookup.put("entity_id", "household");
+            lookup.put("value", womanClient.get("relational_id"));*/
+            /////////////////////////////////////////////////////////////////////////////
+
+            LocationPickerView lpv = new LocationPickerView(context);
+            lpv.init();
+            JsonFormUtils.addWomanRegisterHierarchyQuestions(form);
+            Log.d(TAG, "Form is " + form.toString());
+            if (form != null) {
+                form.put(JsonFormUtils.ENTITY_ID, womanClient.get(DBConstants.KEY.BASE_ENTITY_ID));
+                form.put(JsonFormUtils.ENCOUNTER_TYPE, Constants.EventType.MemberREGISTRATION);
+
+                JSONObject metadata = form.getJSONObject(JsonFormUtils.METADATA);
+                String lastLocationId = LocationHelper.getInstance().getOpenMrsLocationId(lpv.getSelectedItem());
+
+                metadata.put(JsonFormUtils.ENCOUNTER_LOCATION, lastLocationId);
+
+                form.put(JsonFormUtils.CURRENT_OPENSRP_ID, womanClient.get("Patient_Identifier").replace("-", ""));
+
+                //inject opensrp id into the form
+
+                JSONObject stepOne = form.getJSONObject(JsonFormUtils.STEP1);
+                JSONArray jsonArray = stepOne.getJSONArray(JsonFormUtils.FIELDS);
+                for (int i = 0; i < jsonArray.length(); i++) {
+                    JSONObject jsonObject = jsonArray.getJSONObject(i);
+
+                    processPopulatableFieldsForHouseholds(womanClient, jsonObject);
+
+                }
+//                Log.v("test language",womanClient.get("type_of_nearest_clinic"));
+
+                return form.toString();
+            }
+        } catch (Exception e) {
+            Utils.appendLog(JsonFormUtils.class.getName(), e);
+            Log.e(TAG, Log.getStackTraceString(e));
+        }
+
+        return "";
+    }
+
     public static String getMemberJsonEditFormString(Context context, Map<String, String> womanClient) {
         try {
 
@@ -1641,6 +1717,14 @@ public class JsonFormUtils extends org.smartregister.util.JsonFormUtils {
 
         Log.d(TAG, "form is " + metaData);
 
+        context.startActivityForResult(intent, jsonFormActivityRequestCode);
+
+    }
+
+    public static void startFormForEdit(Activity context, int jsonFormActivityRequestCode, String metaData,String from) {
+        Intent intent = new Intent(context, AncJsonFormActivity.class);
+        intent.putExtra(Constants.INTENT_KEY.JSON, metaData);
+        intent.putExtra("from",from);
         context.startActivityForResult(intent, jsonFormActivityRequestCode);
 
     }

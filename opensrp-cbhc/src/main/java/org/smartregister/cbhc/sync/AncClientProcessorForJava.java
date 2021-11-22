@@ -61,6 +61,7 @@ public class AncClientProcessorForJava extends ClientProcessorForJava {
                 }
 
                 String eventType = event.getEventType();
+                Log.d("eventttt","evv "+eventType);
                 if (eventType == null) {
                     continue;
                 }

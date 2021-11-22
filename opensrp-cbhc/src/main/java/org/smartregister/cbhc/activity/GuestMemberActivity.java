@@ -292,7 +292,10 @@ public class GuestMemberActivity extends AppCompatActivity implements GuestMembe
                                 jsonObject.remove(JsonFormUtils.VALUE);
                                 jsonObject.put(JsonFormUtils.VALUE, entityId);
                                 continue;
-                            }
+                            }/*else if(jsonObject.getString(JsonFormUtils.KEY)
+                                    .equalsIgnoreCase("camp_type")){
+                                jsonObject.put(JsonFormUtils.VALUES,Utils.CAMP_TYPE_JSON_ARR);
+                            }*/
                         }
 
                         Intent intent = new Intent(this,AncJsonFormActivity.class);

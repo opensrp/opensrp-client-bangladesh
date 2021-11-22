@@ -1554,11 +1554,21 @@
           }
         },
 
+
+
         {
           "column_name": "age",
           "type": "Client",
           "json_mapping": {
             "field": "attributes.age"
+          }
+        },
+
+        {
+          "column_name": "member_birth_date_known",
+          "type": "Client",
+          "json_mapping": {
+            "field": "attributes.member_birth_date_known"
           }
         },
 
@@ -1787,6 +1797,14 @@
           "type": "Client",
           "json_mapping": {
             "field": "child_height"
+          }
+        },
+
+        {
+          "column_name": "camp_type",
+          "type": "Client",
+          "json_mapping": {
+            "field": "attributes.camp_type"
           }
         }
       ]

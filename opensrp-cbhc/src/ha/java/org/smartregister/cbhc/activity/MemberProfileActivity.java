@@ -110,6 +110,7 @@ public class MemberProfileActivity extends BaseProfileActivity implements Profil
     int age = -1;
     int gender = -1;
     int marital_status = 0;
+    private String from = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -121,6 +122,7 @@ public class MemberProfileActivity extends BaseProfileActivity implements Profil
                 householdDetails = (CommonPersonObjectClient) serializable;
             }
             typeofMember = extras.getString("type_of_member");
+            from = extras.getString("from")==null?"":extras.getString("from");
         } else {
             Toast.makeText(this, "Details not found", Toast.LENGTH_SHORT).show();
             finish();
@@ -377,9 +379,14 @@ Utils.appendLog(getClass().getName(),e);
                         householdDetails.getColumnmaps().put("Patient_Identifier", entityId);
                     }
                 }
-                String formMetadataformembers = JsonFormUtils.getMemberJsonEditFormString(this, householdDetails.getColumnmaps());
+                String formMetadataformembers;
+                if(from.equals("")){
+                    formMetadataformembers = JsonFormUtils.getMemberJsonEditFormString(this, householdDetails.getColumnmaps());
+                }else{
+                    formMetadataformembers = JsonFormUtils.getGuestMemberJsonEditFormString(this, householdDetails.getColumnmaps());
+                }
                 try {
-                    JsonFormUtils.startFormForEdit(this, JsonFormUtils.REQUEST_CODE_GET_JSON, formMetadataformembers);
+                    JsonFormUtils.startFormForEdit(this, JsonFormUtils.REQUEST_CODE_GET_JSON, formMetadataformembers,from);
                 } catch (Exception e) {
 Utils.appendLog(getClass().getName(),e);
 
