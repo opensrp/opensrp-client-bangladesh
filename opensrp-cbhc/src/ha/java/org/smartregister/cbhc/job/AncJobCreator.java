@@ -36,6 +36,10 @@ public class AncJobCreator implements JobCreator {
                 return new ViewConfigurationsServiceJob();
             case DeleteIntentServiceJob.TAG:
                 return new DeleteIntentServiceJob();
+            case VaccineIntentServiceJob.TAG:
+                return new VaccineIntentServiceJob();
+            case RecurringServiceIntentServiceJob.TAG:
+                return new RecurringServiceIntentServiceJob();
             default:
                 return null;
         }

@@ -325,19 +325,34 @@ public class GrowthUtil {
     public static void updateLastWeight(float kg,String baseEntityId,String status){
         AncRepository repo = (AncRepository) AncApplication.getInstance().getRepository();
         SQLiteDatabase db = repo.getReadableDatabase();
-        String sql = "UPDATE ec_child SET last_weight = '" + kg + "',child_status = '"+status+"' WHERE base_entity_id = '" + baseEntityId + "';";
+        String sql = "UPDATE ec_child SET child_weight = '" + kg + "',child_status = '"+status+"' WHERE base_entity_id = '" + baseEntityId + "';";
         db.execSQL(sql);
+        if(status.equalsIgnoreCase("sam")){
+            updateIsRefered(baseEntityId,"true");
+        }
     }
     public static void updateLastHeight(float kg,String baseEntityId,String status){
         AncRepository repo = (AncRepository) AncApplication.getInstance().getRepository();
         SQLiteDatabase db = repo.getReadableDatabase();
-        String sql = "UPDATE ec_child SET last_height = '" + kg + "',child_status = '"+status+"' WHERE base_entity_id = '" + baseEntityId + "';";
+        String sql = "UPDATE ec_child SET child_height = '" + kg + "',child_status = '"+status+"' WHERE base_entity_id = '" + baseEntityId + "';";
         db.execSQL(sql);
+        if(status.equalsIgnoreCase("sam")){
+            updateIsRefered(baseEntityId,"true");
+        }
     }
     public static void updateLastMuac(float cm,String baseEntityId,String status){
         AncRepository repo = (AncRepository) AncApplication.getInstance().getRepository();
         SQLiteDatabase db = repo.getReadableDatabase();
-        String sql = "UPDATE ec_child SET last_muac = '" + cm + "',child_status = '"+status+"' WHERE base_entity_id = '" + baseEntityId + "';";
+        String sql = "UPDATE ec_child SET child_muac = '" + cm + "',child_status = '"+status+"' WHERE base_entity_id = '" + baseEntityId + "';";
+        db.execSQL(sql);
+        if(status.equalsIgnoreCase("sam")){
+            updateIsRefered(baseEntityId,"true");
+        }
+    }
+    public static void updateIsRefered(String baseEntityId,String state){
+        AncRepository repo = (AncRepository) AncApplication.getInstance().getRepository();
+        SQLiteDatabase db = repo.getReadableDatabase();
+        String sql = "UPDATE ec_child SET is_refered = '"+state+"' WHERE base_entity_id = '" + baseEntityId + "';";
         db.execSQL(sql);
     }
     private static Calendar[] getMinAndMaxWeighingDates(Date dob) {

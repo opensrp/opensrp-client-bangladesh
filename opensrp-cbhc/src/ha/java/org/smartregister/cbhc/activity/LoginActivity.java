@@ -31,6 +31,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 import org.joda.time.DateTime;
+import org.smartregister.cbhc.BuildConfig;
 import org.smartregister.cbhc.R;
 import org.smartregister.cbhc.contract.LoginContract;
 import org.smartregister.cbhc.domain.FormLocation;
@@ -126,6 +127,10 @@ public class LoginActivity extends AppCompatActivity implements LoginContract.Vi
         String anm_name = allSharedPreferences.fetchRegisteredANM();
         if(!StringUtils.isEmpty(anm_name)){
             userNameEditText.setText(anm_name);
+        }
+        if(BuildConfig.DEBUG){
+            userNameEditText.setText("mdfazlurrahman96@gmail.com");
+            passwordEditText.setText("mis@1234");
         }
        // app_version_status();
     }

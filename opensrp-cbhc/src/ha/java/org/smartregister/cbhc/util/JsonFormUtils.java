@@ -32,6 +32,7 @@ import org.smartregister.cbhc.helper.LocationHelper;
 import org.smartregister.cbhc.repository.AncRepository;
 import org.smartregister.cbhc.repository.HealthIdRepository;
 import org.smartregister.cbhc.repository.UniqueIdRepository;
+import org.smartregister.cbhc.sync.AncClientProcessorForJava;
 import org.smartregister.cbhc.view.LocationPickerView;
 import org.smartregister.clientandeventmodel.Address;
 import org.smartregister.clientandeventmodel.Client;
@@ -45,8 +46,10 @@ import org.smartregister.configurableviews.model.Field;
 import org.smartregister.domain.Photo;
 import org.smartregister.domain.ProfileImage;
 import org.smartregister.domain.tag.FormTag;
+import org.smartregister.growthmonitoring.GrowthMonitoringLibrary;
 import org.smartregister.immunization.ImmunizationLibrary;
 import org.smartregister.repository.AllSharedPreferences;
+import org.smartregister.repository.BaseRepository;
 import org.smartregister.repository.EventClientRepository;
 import org.smartregister.repository.ImageRepository;
 import org.smartregister.util.AssetHandler;
@@ -81,6 +84,7 @@ import timber.log.Timber;
 public class JsonFormUtils extends org.smartregister.util.JsonFormUtils {
     public static final String METADATA = "metadata";
     public static final String ENCOUNTER_TYPE = "encounter_type";
+    public static final String REFEREL_EVENT_TYPE = "Referral Clinic";
     public static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("dd-MM-yyyy",Locale.ENGLISH);
     public static final String CURRENT_OPENSRP_ID = "current_opensrp_id";
     public static final String ANC_ID = "ANC_ID";
@@ -93,6 +97,49 @@ public class JsonFormUtils extends org.smartregister.util.JsonFormUtils {
     private static final String SELECT_MULTIPLE_DATA_TYPE = "select multiple";
     private static HealthIdRepository healthIdRepository;
     private static UniqueIdRepository uniqueIdRepository;
+
+    public static boolean updateClientStatusAsEvent(Context context,String baseEntityId, String attributeName, Object attributeValue, String entityType, String eventType) {
+        try {
+
+            ECSyncHelper syncHelper = AncApplication.getInstance().getEcSyncHelper();
+
+
+            Date date = new Date();
+            EventClientRepository db = AncApplication.getInstance().getEventClientRepository();
+
+
+            JSONObject client = db.getClientByBaseEntityId(baseEntityId);
+            AllSharedPreferences allSharedPreferences = GrowthMonitoringLibrary.getInstance().context()
+                    .allSharedPreferences();
+
+            Event event = (Event) new Event()
+                    .withBaseEntityId(baseEntityId)
+                    .withEventDate(new Date())
+                    .withEventType(eventType)
+                    .withLocationId(allSharedPreferences.fetchCurrentLocality())
+                    .withProviderId(allSharedPreferences.fetchRegisteredANM())
+                    .withEntityType(entityType)
+                    .withFormSubmissionId(JsonFormUtils.generateRandomUUIDString())
+                    .withDateCreated(new Date());
+            event.addObs((new Obs()).withFormSubmissionField(attributeName).withValue(attributeValue).withFieldCode(attributeName).withFieldType("formsubmissionField").withFieldDataType("text").withParentCode("").withHumanReadableValues(new ArrayList<Object>()));
+
+
+            addMetaData(context, event, date);
+            JSONObject eventJson = new JSONObject(JsonFormUtils.gson.toJson(event));
+            db.addEvent(baseEntityId, eventJson);
+            long lastSyncTimeStamp = allSharedPreferences.fetchLastUpdatedAtDate(0);
+            Date lastSyncDate = new Date(lastSyncTimeStamp);
+            AncClientProcessorForJava.getInstance(context).processClient(syncHelper.getEvents(lastSyncDate, BaseRepository.TYPE_Unsynced));
+            allSharedPreferences.saveLastUpdatedAtDate(lastSyncDate.getTime());
+
+            return true;
+
+
+        } catch (Exception e) {
+            Log.e(TAG, e.getMessage());
+        }
+        return false;
+    }
 
     public static JSONObject getFormAsJson(JSONObject form,
                                            String formName, String id,

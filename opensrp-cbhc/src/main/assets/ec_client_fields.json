@@ -1134,7 +1134,6 @@
             "field": "child_status"
           }
         },
-
         {
           "column_name": "child_weight",
           "type": "Client",
@@ -1147,6 +1146,20 @@
           "type": "Client",
           "json_mapping": {
             "field": "child_height"
+          }
+        },
+        {
+          "column_name": "child_muac",
+          "type": "Client",
+          "json_mapping": {
+            "field": "child_muac"
+          }
+        },
+        {
+          "column_name": "is_refered",
+          "type": "Client",
+          "json_mapping": {
+            "field": "is_refered"
           }
         }
       ]
@@ -1787,6 +1800,20 @@
           "type": "Client",
           "json_mapping": {
             "field": "child_height"
+          }
+        },
+        {
+          "column_name": "child_muac",
+          "type": "Client",
+          "json_mapping": {
+            "field": "child_muac"
+          }
+        },
+        {
+          "column_name": "is_refered",
+          "type": "Client",
+          "json_mapping": {
+            "field": "is_refered"
           }
         }
       ]

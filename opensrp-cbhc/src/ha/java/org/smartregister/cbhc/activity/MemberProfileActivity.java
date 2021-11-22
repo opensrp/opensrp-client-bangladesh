@@ -221,6 +221,8 @@ public class MemberProfileActivity extends BaseProfileActivity implements Profil
         setProfileAge(durationString);
         setProfileID(getValue(householdDetails.getColumnmaps(), "Patient_Identifier", true));
         gestationAgeView.setVisibility(View.GONE);
+        String profileColorText = getValue(householdDetails.getColumnmaps(), "child_status", false);
+        updateProfileColorByText(profileColorText);
     }
 
     public void updateEDD(final String entity_id) {

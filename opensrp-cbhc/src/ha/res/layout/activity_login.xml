@@ -90,7 +90,7 @@
                 android:cursorVisible="true"
                 android:ems="10"
                 android:hint="Username"
-                android:text="mdfazlurrahman96@gmail.com"
+                android:text=""
                 android:imeOptions="actionNext"
                 android:inputType="text"
                 android:lines="1"
