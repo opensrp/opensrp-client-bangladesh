@@ -118,7 +118,9 @@ public class MemberProfileContactsFragment extends BaseProfileFragment {
     }
 
     public void reloadView() {
-  //      householdDetails.getColumnmaps().putAll(AncApplication.getInstance().getContext().detailsRepository().getAllDetailsForClient(householdDetails.entityId()));
+        if(fragmentView==null) return;
+
+        //      householdDetails.getColumnmaps().putAll(AncApplication.getInstance().getContext().detailsRepository().getAllDetailsForClient(householdDetails.entityId()));
         setUpMemberDetails(typeofMember,from);
         LinearLayout linearLayoutholder = fragmentView.findViewById(R.id.profile_overview_details_holder);
         linearLayoutholder.removeAllViews();

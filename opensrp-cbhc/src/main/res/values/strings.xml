@@ -276,5 +276,8 @@
     <string name="gender"><br>Gender :</br> %s</string>
     <string name="name2"><br>Name :</br> %s</string>
     <string name="find_name">Find name</string>
-
+    <string name="record_weight_with_nl">ওজন রেকর্ড\nকরুন</string>
+    <string name="record_weight">ওজন রেকর্ড করুন</string>
+    <string name="record_height">উচ্চতা রেকর্ড করুন</string>
+    <string name="record_muac">MUAC রেকর্ড করুন</string>
 </resources>

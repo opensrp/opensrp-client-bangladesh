@@ -13,8 +13,9 @@ import org.smartregister.configurableviews.repository.ConfigurableViewsRepositor
 import org.smartregister.domain.db.Column;
 import org.smartregister.growthmonitoring.repository.HeightRepository;
 import org.smartregister.growthmonitoring.repository.HeightZScoreRepository;
+import org.smartregister.growthmonitoring.repository.MUACRepository;
 import org.smartregister.growthmonitoring.repository.WeightRepository;
-import org.smartregister.growthmonitoring.repository.WeightZScoreRepository;
+import org.smartregister.growthmonitoring.repository.ZScoreRepository;
 import org.smartregister.immunization.ImmunizationLibrary;
 import org.smartregister.immunization.repository.RecurringServiceRecordRepository;
 import org.smartregister.immunization.repository.RecurringServiceTypeRepository;
@@ -54,6 +55,8 @@ public class AncRepository extends Repository {
         VaccineTypeRepository.createTable(database);
         WeightRepository.createTable(database);
         HeightRepository.createTable(database);
+        MUACRepository.createTable(database);
+        ZScoreRepository.createTable(database);
         //////////////////DraftFormRepository////////////////
         DraftFormRepository.createTable(database);
         ////////////////////////////////////////////////////
@@ -70,13 +73,6 @@ public class AncRepository extends Repository {
         database.execSQL(WeightRepository.FORMSUBMISSION_INDEX);
         database.execSQL(WeightRepository.UPDATE_TABLE_ADD_OUT_OF_AREA_COL);
         database.execSQL(WeightRepository.UPDATE_TABLE_ADD_OUT_OF_AREA_COL_INDEX);
-
-        database.execSQL(HeightRepository.UPDATE_TABLE_ADD_EVENT_ID_COL);
-        database.execSQL(HeightRepository.EVENT_ID_INDEX);
-        database.execSQL(HeightRepository.UPDATE_TABLE_ADD_FORMSUBMISSION_ID_COL);
-        database.execSQL(HeightRepository.FORMSUBMISSION_INDEX);
-        database.execSQL(HeightRepository.UPDATE_TABLE_ADD_OUT_OF_AREA_COL);
-        database.execSQL(HeightRepository.UPDATE_TABLE_ADD_OUT_OF_AREA_COL_INDEX);
 
         HealthIdRepository.createTable(database);
         UniqueIdRepository.createTable(database);
@@ -198,11 +194,8 @@ public class AncRepository extends Repository {
         }
         try {
 
-            WeightZScoreRepository.createTable(db);
             HeightZScoreRepository.createTable(db);
-
             db.execSQL(WeightRepository.ALTER_ADD_Z_SCORE_COLUMN);
-            db.execSQL(HeightRepository.ALTER_ADD_Z_SCORE_COLUMN);
         } catch (Exception e) {
             Utils.appendLog(getClass().getName(), e);
             Log.e(TAG, "upgradeToVersion2 " + e.getMessage());
@@ -219,6 +212,10 @@ public class AncRepository extends Repository {
 
             db.execSQL(RecurringServiceRecordRepository.ALTER_ADD_CREATED_AT_COLUMN);
             RecurringServiceRecordRepository.migrateCreatedAt(db);
+            db.execSQL(WeightRepository.UPDATE_TABLE_ADD_EVENT_ID_COL);
+            db.execSQL(WeightRepository.EVENT_ID_INDEX);
+            db.execSQL(WeightRepository.UPDATE_TABLE_ADD_FORMSUBMISSION_ID_COL);
+            db.execSQL(WeightRepository.FORMSUBMISSION_INDEX);
         } catch (Exception e) {
             Utils.appendLog(getClass().getName(), e);
             Log.e(TAG, "upgradeToVersion3 " + Log.getStackTraceString(e));
@@ -228,9 +225,7 @@ public class AncRepository extends Repository {
             EventClientRepository.createIndex(db, EventClientRepository.Table.event, columns);
 
             db.execSQL(WeightRepository.ALTER_ADD_CREATED_AT_COLUMN);
-            db.execSQL(HeightRepository.ALTER_ADD_CREATED_AT_COLUMN);
             WeightRepository.migrateCreatedAt(db);
-            HeightRepository.migrateCreatedAt(db);
         } catch (Exception e) {
             Utils.appendLog(getClass().getName(), e);
             Log.e(TAG, "upgradeToVersion3 " + e.getMessage());
@@ -251,10 +246,6 @@ public class AncRepository extends Repository {
             db.execSQL(WeightRepository.UPDATE_TABLE_ADD_TEAM_COL);
             db.execSQL(WeightRepository.UPDATE_TABLE_ADD_TEAM_ID_COL);
             db.execSQL(WeightRepository.UPDATE_TABLE_ADD_CHILD_LOCATION_ID_COL);
-
-            db.execSQL(HeightRepository.UPDATE_TABLE_ADD_TEAM_COL);
-            db.execSQL(HeightRepository.UPDATE_TABLE_ADD_TEAM_ID_COL);
-            db.execSQL(HeightRepository.UPDATE_TABLE_ADD_CHILD_LOCATION_ID_COL);
         } catch (Exception e) {
             Utils.appendLog(getClass().getName(), e);
             Log.e(TAG, "upgradeToVersion4 " + Log.getStackTraceString(e));

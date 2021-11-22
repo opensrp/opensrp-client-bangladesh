@@ -693,7 +693,7 @@ public class MemberProfileActivity extends BaseProfileActivity implements Profil
         return maritalStatus != null && (maritalStatus.equals("Married") || maritalStatus.equalsIgnoreCase("বিবাহিত")) ? 1 : 0;
     }
 
-    public void updateClientStatusAsEvent(String attributeName, Object attributeValue, String entityType) {
+    public void updateClientStatusAsEvent(String attributeName, Object attributeValue, String entityType, String eventType) {
         try {
 
             ECSyncHelper syncHelper = AncApplication.getInstance().getEcSyncHelper();
@@ -709,7 +709,7 @@ public class MemberProfileActivity extends BaseProfileActivity implements Profil
             Event event = (Event) new Event()
                     .withBaseEntityId(householdDetails.entityId())
                     .withEventDate(new Date())
-                    .withEventType("")
+                    .withEventType(eventType)
                     .withLocationId(context().allSharedPreferences().fetchCurrentLocality())
                     .withProviderId(context().allSharedPreferences().fetchRegisteredANM())
                     .withEntityType(entityType)

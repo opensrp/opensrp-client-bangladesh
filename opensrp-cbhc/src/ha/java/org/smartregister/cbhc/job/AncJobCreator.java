@@ -14,6 +14,12 @@ public class AncJobCreator implements JobCreator {
     @Override
     public Job create(@NonNull String tag) {
         switch (tag) {
+            case HeightIntentServiceJob.TAG:
+                return new HeightIntentServiceJob();
+            case MuactIntentServiceJob.TAG:
+                return new MuactIntentServiceJob();
+            case WeightIntentServiceJob.TAG:
+                return new WeightIntentServiceJob();
             case SyncServiceJob.TAG:
                 return new SyncServiceJob();
             case ExtendedSyncServiceJob.TAG:
@@ -30,6 +36,10 @@ public class AncJobCreator implements JobCreator {
                 return new ViewConfigurationsServiceJob();
             case DeleteIntentServiceJob.TAG:
                 return new DeleteIntentServiceJob();
+            case VaccineIntentServiceJob.TAG:
+                return new VaccineIntentServiceJob();
+            case RecurringServiceIntentServiceJob.TAG:
+                return new RecurringServiceIntentServiceJob();
             default:
                 return null;
         }

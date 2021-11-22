@@ -17,7 +17,6 @@ import org.greenrobot.eventbus.ThreadMode;
 import org.smartregister.Context;
 import org.smartregister.CoreLibrary;
 import org.smartregister.cbhc.BuildConfig;
-import org.smartregister.cbhc.CBHCEventBusIndex;
 import org.smartregister.cbhc.activity.LoginActivity;
 import org.smartregister.cbhc.event.TriggerSyncEvent;
 import org.smartregister.cbhc.event.ViewConfigurationSyncCompleteEvent;
@@ -41,6 +40,7 @@ import org.smartregister.configurableviews.helper.JsonSpecHelper;
 import org.smartregister.configurableviews.repository.ConfigurableViewsRepository;
 import org.smartregister.configurableviews.service.PullConfigurableViewsIntentService;
 import org.smartregister.growthmonitoring.GrowthMonitoringLibrary;
+import org.smartregister.growthmonitoring.repository.WeightRepository;
 import org.smartregister.growthmonitoring.service.intent.ZScoreRefreshIntentService;
 import org.smartregister.immunization.ImmunizationLibrary;
 import org.smartregister.immunization.domain.VaccineSchedule;
@@ -116,7 +116,9 @@ public class AncApplication extends DrishtiApplication implements TimeChangedBro
     public static synchronized AncApplication getInstance() {
         return (AncApplication) mInstance;
     }
-
+    public WeightRepository weightRepository() {
+        return GrowthMonitoringLibrary.getInstance().weightRepository();
+    }
     public static JsonSpecHelper getJsonSpecHelper() {
         return jsonSpecHelper;
     }
@@ -348,7 +350,6 @@ public class AncApplication extends DrishtiApplication implements TimeChangedBro
 
         try {
 
-            EventBus.builder().addIndex(new CBHCEventBusIndex()).installDefaultEventBus();
             LocalBroadcastManager.getInstance(this).registerReceiver(syncCompleteMessageReceiver, new IntentFilter(PullConfigurableViewsIntentService.EVENT_SYNC_COMPLETE));
 
         } catch
