@@ -540,33 +540,55 @@ public class JsonFormUtils extends org.smartregister.util.JsonFormUtils {
                 ArrayList<Address> adresses = new ArrayList<Address>();
                 Address address1 = new Address();
                 try {
-                    for (int i = 0; i < fields.length(); i++) {
-                        String key = fields.getJSONObject(i).optString("key");
-
-                        if (key.equals("HIE_FACILITIES")) {
-                            if (!TextUtils.isEmpty(fields.getJSONObject(i).getString("value"))) {
-                                String address = fields.getJSONObject(i).getString("value");
-                                address = address.replace("[", "").replace("]", "");
+                    //custom address for guest member
+                    if(encounterType.equalsIgnoreCase(Constants.EventType.OOCMemberREGISTRATION)){
+                        String address = "[BANGLADESH,RAJSHAHi,NATORE,SINGRA,CHAUGRAM,CHAUGRAM:WARD 1,CHAUGRAM:WARD 1:GHA1,guest]";
+                        address = address.replace("[", "").replace("]", "");
 //                                if(!address.startsWith("BANGLADESH")){
 //                                    address = "BANGLADESH," + address;
 //                                }
-                                String[] addressStringArray = address.split(",");
-                                if (addressStringArray.length > 0) {
-                                    address1.setAddressType("usual_residence");
-                                    address1.addAddressField("country", addressStringArray[0].replaceAll("^\"|\"$", ""));
-                                    address1.addAddressField("stateProvince", addressStringArray[1].replaceAll("^\"|\"$", ""));
-                                    address1.addAddressField("countyDistrict", addressStringArray[2].replaceAll("^\"|\"$", ""));
-                                    address1.addAddressField("cityVillage", addressStringArray[3].replaceAll("^\"|\"$", ""));
-                                    address1.addAddressField("address1", addressStringArray[4].replaceAll("^\"|\"$", ""));
-                                    address1.addAddressField("address2", addressStringArray[5].replaceAll("^\"|\"$", ""));
-                                    address1.addAddressField("address3", addressStringArray[6].replaceAll("^\"|\"$", ""));
-                                    address1.addAddressField("address4", addressStringArray[7].replaceAll("^\"|\"$", ""));
-                                }
-                                Log.v("address", address);
+                        String[] addressStringArray = address.split(",");
+                        if (addressStringArray.length > 0) {
+                            address1.setAddressType("usual_residence");
+                            address1.addAddressField("country", addressStringArray[0].replaceAll("^\"|\"$", ""));
+                            address1.addAddressField("stateProvince", addressStringArray[1].replaceAll("^\"|\"$", ""));
+                            address1.addAddressField("countyDistrict", addressStringArray[2].replaceAll("^\"|\"$", ""));
+                            address1.addAddressField("cityVillage", addressStringArray[3].replaceAll("^\"|\"$", ""));
+                            address1.addAddressField("address1", addressStringArray[4].replaceAll("^\"|\"$", ""));
+                            address1.addAddressField("address2", addressStringArray[5].replaceAll("^\"|\"$", ""));
+                            address1.addAddressField("address3", addressStringArray[6].replaceAll("^\"|\"$", ""));
+                            address1.addAddressField("address4", addressStringArray[7].replaceAll("^\"|\"$", ""));
+                        }
+                    }else{
+                        for (int i = 0; i < fields.length(); i++) {
+                            String key = fields.getJSONObject(i).optString("key");
 
+                            if (key.equals("HIE_FACILITIES")) {
+                                if (!TextUtils.isEmpty(fields.getJSONObject(i).getString("value"))) {
+                                    String address = fields.getJSONObject(i).getString("value");
+                                    address = address.replace("[", "").replace("]", "");
+//                                if(!address.startsWith("BANGLADESH")){
+//                                    address = "BANGLADESH," + address;
+//                                }
+                                    String[] addressStringArray = address.split(",");
+                                    if (addressStringArray.length > 0) {
+                                        address1.setAddressType("usual_residence");
+                                        address1.addAddressField("country", addressStringArray[0].replaceAll("^\"|\"$", ""));
+                                        address1.addAddressField("stateProvince", addressStringArray[1].replaceAll("^\"|\"$", ""));
+                                        address1.addAddressField("countyDistrict", addressStringArray[2].replaceAll("^\"|\"$", ""));
+                                        address1.addAddressField("cityVillage", addressStringArray[3].replaceAll("^\"|\"$", ""));
+                                        address1.addAddressField("address1", addressStringArray[4].replaceAll("^\"|\"$", ""));
+                                        address1.addAddressField("address2", addressStringArray[5].replaceAll("^\"|\"$", ""));
+                                        address1.addAddressField("address3", addressStringArray[6].replaceAll("^\"|\"$", ""));
+                                        address1.addAddressField("address4", addressStringArray[7].replaceAll("^\"|\"$", ""));
+                                    }
+                                    Log.v("address", address);
+
+                                }
                             }
                         }
                     }
+
                 } catch (Exception e) {
                     Utils.appendLog(JsonFormUtils.class.getName(), e);
 
@@ -643,6 +665,8 @@ public class JsonFormUtils extends org.smartregister.util.JsonFormUtils {
                 entitytypeName = DBConstants.MEMBER_TABLE_NAME;
             } else if (encounterType.equalsIgnoreCase(Constants.EventType.WomanMemberREGISTRATION)) {
                 entitytypeName = DBConstants.WOMAN_TABLE_NAME;
+            }else if (encounterType.equalsIgnoreCase(Constants.EventType.OOCMemberREGISTRATION)) {
+                entitytypeName = DBConstants.GUEST_MEMBER_TABLE_NAME;
             }
             String formSubmissionID = "";
             EventClientRepository eventClientRepository = AncApplication.getInstance().getEventClientRepository();
