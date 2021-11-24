@@ -271,7 +271,7 @@ public class GuestMemberActivity extends AppCompatActivity implements GuestMembe
 
                 String entityId = null;
                 try {
-                    JSONObject form = FormUtils.getInstance(this).getFormJson("guest_member_register");
+                   /* JSONObject form = FormUtils.getInstance(this).getFormJson("guest_member_register");
 
                     if(form!=null){
 
@@ -292,7 +292,10 @@ public class GuestMemberActivity extends AppCompatActivity implements GuestMembe
                                 jsonObject.remove(JsonFormUtils.VALUE);
                                 jsonObject.put(JsonFormUtils.VALUE, entityId);
                                 continue;
-                            }
+                            }*//*else if(jsonObject.getString(JsonFormUtils.KEY)
+                                    .equalsIgnoreCase("camp_type")){
+                                jsonObject.put(JsonFormUtils.VALUES,Utils.CAMP_TYPE_JSON_ARR);
+                            }*//*
                         }
 
                         Intent intent = new Intent(this,AncJsonFormActivity.class);
@@ -300,7 +303,13 @@ public class GuestMemberActivity extends AppCompatActivity implements GuestMembe
 
                         intent.putExtra("json", form.toString());
                         startActivityForResult(intent,  JsonFormUtils.REQUEST_CODE_GET_JSON);
-                    }
+
+                        registerPresenter.startMemberRegistrationForm("","","","","");
+                        registerPresenter.startMemberRegistrationForm("guest_member_register", null, null, null,null);
+
+                    }*/
+                    registerPresenter.startMemberRegistrationForm("guest_member_register", null, null, null,"f1e27635-c451-4212-866f-e73dbdbaa0cf");
+
                 } catch (Exception e) {
                     e.printStackTrace();
                 }

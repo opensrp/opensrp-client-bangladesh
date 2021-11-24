@@ -1575,6 +1575,14 @@
           }
         },
 
+        {
+          "column_name": "member_birth_date_known",
+          "type": "Client",
+          "json_mapping": {
+            "field": "attributes.member_birth_date_known"
+          }
+        },
+
 
         {
           "column_name": "dob_unknown",
@@ -1814,6 +1822,30 @@
           "type": "Client",
           "json_mapping": {
             "field": "is_refered"
+          }
+        },
+
+        {
+          "column_name": "camp_type",
+          "type": "Client",
+          "json_mapping": {
+            "field": "attributes.camp_type"
+          }
+        },
+
+
+        {
+          "column_name": "relational_id",
+          "type": "Client",
+          "json_mapping": {
+            "field": "relationships.household"
+          }
+        },
+        {
+          "column_name": "relation_with_household",
+          "type": "Client",
+          "json_mapping": {
+            "field": "attributes.Realtion_With_Household_Head"
           }
         }
       ]

@@ -93,7 +93,7 @@ public class MemberProfileContactsFragment extends BaseProfileFragment {
             }
         }else{
             if (typeofMember != null) {
-                householdDetails =  CommonPersonObjectToClient(AncApplication.getInstance().getContext().commonrepository(DBConstants.GUEST_MEMBER_TABLE_NAME).findByBaseEntityId(householdDetails.entityId()),DBConstants.CHILD_TABLE_NAME);
+                householdDetails =  CommonPersonObjectToClient(AncApplication.getInstance().getContext().commonrepository(DBConstants.GUEST_MEMBER_TABLE_NAME).findByBaseEntityId(householdDetails.entityId()),DBConstants.GUEST_MEMBER_TABLE_NAME);
             }
         }
 
@@ -221,7 +221,12 @@ public class MemberProfileContactsFragment extends BaseProfileFragment {
         LinearLayout linearLayoutholder = fragmentView.findViewById(R.id.profile_overview_details_holder);
         LinearLayout.LayoutParams mainparams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
         try {
-            JSONObject form = FormUtils.getInstance(AncApplication.getInstance().getApplicationContext()).getFormJson(Constants.JSON_FORM.MEMBER_REGISTER);
+            JSONObject form;
+            if(from.equals("")){
+             form = FormUtils.getInstance(AncApplication.getInstance().getApplicationContext()).getFormJson(Constants.JSON_FORM.MEMBER_REGISTER);
+            }else{
+                form = FormUtils.getInstance(AncApplication.getInstance().getApplicationContext()).getFormJson("guest_member_register");
+            }
             JSONArray field = fields(form);
             setPregnantStatus(householdDetails.getColumnmaps());
             ProfileContactsFragment.date_of_birth = null;

@@ -107,7 +107,7 @@ public class RegisterPresenter implements RegisterContract.Presenter, RegisterCo
             interactor.getNextHealthId(formName, metadata, currentLocationId, householdID, this);
             return;
         }
-        JSONObject form = FormUtils.getInstance(AncApplication.getInstance().getApplicationContext()).getFormJson(Constants.JSON_FORM.MEMBER_REGISTER);
+        JSONObject form = FormUtils.getInstance(AncApplication.getInstance().getApplicationContext()).getFormJson(formName);
 
         form = JsonFormUtils.getFormAsJson(form, formName, entityId, currentLocationId, householdID);
         form.put("relational_id", householdID);

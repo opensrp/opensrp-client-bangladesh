@@ -19,6 +19,7 @@ import org.smartregister.repository.BaseRepository;
 import org.smartregister.repository.EventClientRepository;
 import org.smartregister.service.HTTPAgent;
 
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -106,6 +107,9 @@ public class ECSyncHelper implements PrefsHelper {
             String username = getContext().userService().getAllSharedPreferences().fetchRegisteredANM();
 
             jsonObject.put("provider_id",username);
+           /* jsonObject.put("isSendToOpenMRS","yes");
+            jsonObject.put("serverVersion",String.valueOf(new Timestamp(System.currentTimeMillis()).getTime()));
+            jsonObject.put("revision","v1");*/
             eventClientRepository.addorUpdateClient(baseEntityId, jsonObject);
         } catch (Exception e) {
             Utils.appendLog(getClass().getName(), e);

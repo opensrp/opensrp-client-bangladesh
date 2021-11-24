@@ -133,6 +133,7 @@
                     android:background="@drawable/white_edit_text_shape"
                     android:ellipsize="end"
                     android:hint="@string/find_name"
+                    android:focusable="true"
                     android:maxLines="1"
                     android:minWidth="100dp"
                     android:padding="@dimen/register_search_bar_padding"
