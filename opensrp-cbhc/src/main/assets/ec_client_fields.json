@@ -1161,6 +1161,20 @@
           "json_mapping": {
             "field": "is_refered"
           }
+        },
+        {
+          "column_name": "last_vaccine_date",
+          "type": "Client",
+          "json_mapping": {
+            "field": "last_vaccine_date"
+          }
+        },
+        {
+          "column_name": "last_vaccine_name",
+          "type": "Client",
+          "json_mapping": {
+            "field": "last_vaccine_name"
+          }
         }
       ]
     },
@@ -1815,6 +1829,20 @@
           "type": "Client",
           "json_mapping": {
             "field": "child_muac"
+          }
+        },
+        {
+          "column_name": "last_vaccine_date",
+          "type": "Client",
+          "json_mapping": {
+            "field": "last_vaccine_date"
+          }
+        },
+        {
+          "column_name": "last_vaccine_name",
+          "type": "Client",
+          "json_mapping": {
+            "field": "last_vaccine_name"
           }
         },
         {

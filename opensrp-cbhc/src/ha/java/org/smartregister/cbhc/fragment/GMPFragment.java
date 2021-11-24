@@ -268,7 +268,7 @@ public class GMPFragment extends BaseProfileFragment implements WeightActionList
             resultColor = ZScore.getZscoreColorByText(resultText);
         }
         else if(weightText.contains("SAM") || heightText.contains("SAM")){
-            resultText = "SAM";
+            reblob:https://teams.microsoft.com/516cf240-34cf-419f-a8bd-a5853e6e1ea0sultText = "SAM";
             resultColor = ZScore.getZscoreColorByText(resultText);
         }
         else if(muakText.contains("SAM")){

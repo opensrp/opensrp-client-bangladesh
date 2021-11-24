@@ -26,6 +26,7 @@ import org.joda.time.DateTime;
 import org.smartregister.cbhc.R;
 import org.smartregister.cbhc.activity.DetailActivity;
 
+import org.smartregister.cbhc.util.GrowthUtil;
 import org.smartregister.cbhc.util.Utils;
 import org.smartregister.commonregistry.CommonPersonObjectClient;
 import org.smartregister.domain.Alert;
@@ -68,6 +69,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Random;
 
+import static org.smartregister.cbhc.activity.DetailActivity.DATE_FORMAT;
 import static org.smartregister.util.Utils.getName;
 
 public class ChildImmunizationFragment extends BaseProfileFragment {
@@ -546,6 +548,9 @@ Utils.appendLog(getClass().getName(),e);
         vaccine.setChildLocationId("testChildLocationId");
         vaccineRepository.add(vaccine);
         tag.setDbKey(vaccine.getId());
+        if(tag.getDbKey()!=null){
+            GrowthUtil.updateLastVaccineDate(childDetails.entityId(),DATE_FORMAT.format(vaccine.getDate()),vaccine.getName());
+        }
     }
 
     private void updateVaccineGroupViews(View view, final ArrayList<VaccineWrapper> wrappers, List<Vaccine> vaccineList) {
