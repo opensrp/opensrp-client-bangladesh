@@ -8,7 +8,8 @@
     tools:context=".activity.GuestMemberActivity"
     android:id="@+id/drawer_lay_guest"
     android:background="@color/customAppThemeGray"
-    tools:ignore="MissingDefaultResource">
+    tools:ignore="MissingDefaultResource"
+    android:focusableInTouchMode="true">
 
     <android.support.constraint.ConstraintLayout
         android:layout_width="match_parent"
@@ -114,6 +115,8 @@
             android:background="@color/client_list_header_text_color"
             android:gravity="center_vertical"
             android:padding="10dp"
+            android:focusable="true"
+            android:focusableInTouchMode="true"
             app:layout_constraintTop_toBottomOf="@+id/action_bar"
            >
 
@@ -133,7 +136,6 @@
                     android:background="@drawable/white_edit_text_shape"
                     android:ellipsize="end"
                     android:hint="@string/find_name"
-                    android:focusable="true"
                     android:maxLines="1"
                     android:minWidth="100dp"
                     android:padding="@dimen/register_search_bar_padding"
