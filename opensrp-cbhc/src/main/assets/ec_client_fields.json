@@ -773,9 +773,49 @@
           "json_mapping": {
             "field": "attributes.camp_type"
           }
+        },
+
+        {
+          "column_name": "Pregnancy_Status",
+          "type": "Client",
+          "json_mapping": {
+            "field": "attributes.Pregnancy_Status"
+          }
+        },
+        {
+          "column_name": "Number_Of_Service_Received_Last_three_Months",
+          "type": "Client",
+          "json_mapping": {
+            "field": "attributes.Number_Of_Service_Received_Last_three_Months"
+          }
+        },
+
+        {
+          "column_name": "Service_Received_Date",
+          "type": "Client",
+          "json_mapping": {
+            "field": "attributes.Service_Received_Date"
+          }
+        },
+
+        {
+          "column_name": "Place_of_Service",
+          "type": "Client",
+          "json_mapping": {
+            "field": "attributes.Place_of_Service"
+          }
+        },
+
+        {
+          "column_name": "Denger_Signs_During_Pregnancy",
+          "type": "Client",
+          "json_mapping": {
+            "field": "attributes.Denger_Signs_During_Pregnancy"
+          }
         }
       ]
     },
+
     {
       "name": "ec_child",
       "columns": [
@@ -1161,9 +1201,34 @@
           "json_mapping": {
             "field": "is_refered"
           }
+        },
+
+
+        {
+          "column_name": "Disease_Below_2Month_Age",
+          "type": "Client",
+          "json_mapping": {
+            "field": "attributes.Disease_Below_2Month_Age"
+          }
+        },
+        {
+          "column_name": "Disease_2Month_5Years",
+          "type": "Client",
+          "json_mapping": {
+            "field": "attributes.Disease_2Month_5Years"
+          }
+        },
+
+        {
+          "column_name": "place_of_refer",
+          "type": "Client",
+          "json_mapping": {
+            "field": "ec28ec95-0f6a-4910-8efc-c2925f9b36b1"
+          }
         }
       ]
     },
+
     {
       "name": "ec_member",
       "columns": [
@@ -1433,15 +1498,16 @@
             "field": "attributes.has_disease"
           }
         },
+
         {
-          "column_name": "CommunicableDisease",
+          "column_name": "Comm_Disease",
           "type": "Client",
           "json_mapping": {
             "field": "attributes.Comm_Disease"
           }
         },
         {
-          "column_name": "NonComDisease",
+          "column_name": "NonComnta_Disease",
           "type": "Client",
           "json_mapping": {
             "field": "attributes.NonComnta_Disease"
@@ -1846,6 +1912,29 @@
           "type": "Client",
           "json_mapping": {
             "field": "attributes.Realtion_With_Household_Head"
+          }
+        },
+
+        {
+          "column_name": "Disease_Below_2Month_Age",
+          "type": "Client",
+          "json_mapping": {
+            "field": "attributes.Disease_Below_2Month_Age"
+          }
+        },
+        {
+          "column_name": "Disease_2Month_5Years",
+          "type": "Client",
+          "json_mapping": {
+            "field": "attributes.Disease_2Month_5Years"
+          }
+        },
+
+        {
+          "column_name": "place_of_refer",
+          "type": "Client",
+          "json_mapping": {
+            "field": "attributes.ec28ec95-0f6a-4910-8efc-c2925f9b36b1"
           }
         }
       ]

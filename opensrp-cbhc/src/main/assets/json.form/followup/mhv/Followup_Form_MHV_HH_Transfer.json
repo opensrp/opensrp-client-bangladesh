@@ -78,11 +78,11 @@
         "hint": "খানার অবস্থান",
         "values": [
           "খানা স্থানান্তর",
-          "খানা পাওয়া যায়নি "
+          "খানা পাওয়া যায়নি"
         ],
         "openmrs_choice_ids": {
           "খানা স্থানান্তর": "Household_Migrated",
-          "খানা পাওয়া যায়নি ": "Household_Not_Found"
+          "খানা পাওয়া যায়নি": "Household_Not_Found"
         },
         "v_required": {
           "value": true,

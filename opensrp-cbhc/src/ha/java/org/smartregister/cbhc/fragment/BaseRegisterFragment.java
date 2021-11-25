@@ -835,7 +835,7 @@ Utils.appendLog(getClass().getName(),e);
                     tableName + "." + DBConstants.KEY.PHONE_NUMBER,
                     "(select ec_woman.PregnancyStatus from ec_woman where (ec_woman.PregnancyStatus = 'Antenatal Period' or ec_woman.PregnancyStatus like '%প্রসব পূর্ব%') and ec_household.id=ec_woman.relational_id) as PregnancyStatus"
                     };
-            //"(select ec_details.value from ec_details where ec_details.key='Disease_status' and ec_details.value = 'Antenatal Period' and ec_details.base_entity_id=(select ec_woman.id from ec_woman where  ec_household.id=ec_woman.relational_id )) as Disease_status"
+            //"(select DBConstantsils.value from ec_details where ec_details.key='Disease_status' and ec_details.value = 'Antenatal Period' and ec_details.base_entity_id=(select ec_woman.id from ec_woman where  ec_household.id=ec_woman.relational_id )) as Disease_status"
             registerCondition = " PregnancyStatus IS NOT NULL "+camp_type_condition;
         }else if(filter.equals("infant")){
             columns = new String[]{

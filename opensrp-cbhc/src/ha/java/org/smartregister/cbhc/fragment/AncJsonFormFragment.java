@@ -164,7 +164,9 @@ public class AncJsonFormFragment extends JsonFormFragment {
 
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
+        try{
+            super.onViewCreated(view, savedInstanceState);
+        }catch (Exception e){}
         updateMemberCount();
         new Handler().postDelayed(new Runnable() {
             @Override
