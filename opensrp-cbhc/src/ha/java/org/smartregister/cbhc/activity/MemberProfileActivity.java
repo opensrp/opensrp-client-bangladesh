@@ -252,7 +252,7 @@ public class MemberProfileActivity extends BaseProfileActivity implements Profil
                             try {
                                 c.setTime(sdf.parse(lmp_date));
                             } catch (ParseException e) {
-Utils.appendLog(getClass().getName(),e);
+                                Utils.appendLog(getClass().getName(),e);
                                 e.printStackTrace();
                             }
                             c.add(Calendar.DATE, 280);  // number of days to add
