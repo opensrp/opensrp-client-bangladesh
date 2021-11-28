@@ -392,6 +392,8 @@ public class LoginActivity extends AppCompatActivity implements LoginContract.Vi
                     if (!StringUtils.isEmpty(baseurl) && baseurl.contains("opensrp")) {
                         base_url = baseurl.replace("opensrp/", "");
                     }
+                    Log.v("VERSION_CODE","base_url:"+base_url);
+
                     URL url = new URL(base_url + "opt/multimedia/app-version.txt");
 
                     // Read all the text returned by the server
@@ -417,6 +419,7 @@ public class LoginActivity extends AppCompatActivity implements LoginContract.Vi
                 try {
                     PackageInfo pInfo = LoginActivity.this.getPackageManager().getPackageInfo(getPackageName(), 0);
                     version = pInfo.versionName;
+                    Log.v("VERSION_CODE","version:"+version+":version_code:"+version_code);
                     if (!version_code.trim().isEmpty() && !version.equalsIgnoreCase(version_code.trim())) {
                         alertDialog = new android.support.v7.app.AlertDialog.Builder(LoginActivity.this).create();
                         alertDialog.setTitle("New version available");
