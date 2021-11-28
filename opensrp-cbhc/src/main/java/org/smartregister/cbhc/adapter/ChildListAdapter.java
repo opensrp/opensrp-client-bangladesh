@@ -53,6 +53,7 @@ public class ChildListAdapter extends RecyclerView.Adapter<ChildListAdapter.Hold
         ChildItemData childItemData = tempChildItemDataArrayList.get(i);
         holder.nameTv.setText(childItemData.getFirstName()+" "+childItemData.getLastName());
         holder.ageTv.setText(Utils.getDuration(childItemData.getDob()));
+        holder.idTv.setText("ID: "+childItemData.getId());
         StringBuilder builder = new StringBuilder();
         if(!TextUtils.isEmpty(childItemData.getWeight())){
             builder.append("W:"+childItemData.getWeight()+" kg ");
@@ -144,11 +145,12 @@ public class ChildListAdapter extends RecyclerView.Adapter<ChildListAdapter.Hold
     }
 
     public class Holder extends RecyclerView.ViewHolder {
-        CustomFontTextView nameTv,ageTv,weightTv,vaccineTv;
+        CustomFontTextView nameTv,idTv,ageTv,weightTv,vaccineTv;
         ImageView profileImage,childImageSmall,childStatusImg;
         public Holder(@NonNull View itemView) {
             super(itemView);
             nameTv = itemView.findViewById(R.id.name_tv);
+            idTv = itemView.findViewById(R.id.id_tv);
             ageTv = itemView.findViewById(R.id.age_tv);
             weightTv= itemView.findViewById(R.id.weight_tv);
             vaccineTv= itemView.findViewById(R.id.last_vaccine_tv);

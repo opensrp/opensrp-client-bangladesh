@@ -3,7 +3,7 @@ package org.smartregister.cbhc.domain;
 import org.smartregister.commonregistry.CommonPersonObjectClient;
 
 public class ChildItemData {
-    String baseEntityId,firstName,lastName,dob,gender,weight,child_status,height,vaccineName,vaccineDate;
+    String baseEntityId,firstName,lastName,id,dob,gender,weight,child_status,height,vaccineName,vaccineDate;
     CommonPersonObjectClient pClient;
 
     public String getBaseEntityId() {
@@ -16,6 +16,10 @@ public class ChildItemData {
 
     public String getLastName() {
         return lastName;
+    }
+
+    public String getId() {
+        return id;
     }
 
     public String getDob() {
@@ -50,10 +54,11 @@ public class ChildItemData {
         return child_status;
     }
 
-    public ChildItemData(String baseEntityId, String firstName, String lastName, String dob, String gender, String weight,String height,String vaccineName, String vaccineDate, String child_status, CommonPersonObjectClient pClient) {
+    public ChildItemData(String baseEntityId, String firstName, String lastName, String id,String dob, String gender, String weight,String height,String vaccineName, String vaccineDate, String child_status, CommonPersonObjectClient pClient) {
         this.baseEntityId = baseEntityId;
         this.firstName = firstName;
         this.lastName = lastName;
+        this.id = id;
         this.dob = dob;
         this.gender = gender;
         this.weight= weight;

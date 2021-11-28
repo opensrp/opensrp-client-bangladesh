@@ -46,6 +46,7 @@ public class ChildListModel implements ChildListContract.Model {
                 int baseEntity = cursor.getColumnIndex("base_entity_id");
                 int fName = cursor.getColumnIndex("first_name");
                 int lName = cursor.getColumnIndex("last_name");
+                int id = cursor.getColumnIndex("Patient_Identifier");
                 int dob = cursor.getColumnIndex("dob");
                 int gender = cursor.getColumnIndex("gender");
                 int child_status = cursor.getColumnIndex("child_status");
@@ -59,6 +60,7 @@ public class ChildListModel implements ChildListContract.Model {
                         cursor.isNull(baseEntity)?"":cursor.getString(baseEntity),
                         cursor.isNull(fName)?"":cursor.getString(fName),
                         cursor.isNull(lName)?"":cursor.getString(lName),
+                        cursor.isNull(id)?"":cursor.getString(id),
                         cursor.isNull(dob)?"":cursor.getString(dob),
                         cursor.isNull(gender)?"":cursor.getString(gender),
                         cursor.getString(child_weight),cursor.getString(child_height)
