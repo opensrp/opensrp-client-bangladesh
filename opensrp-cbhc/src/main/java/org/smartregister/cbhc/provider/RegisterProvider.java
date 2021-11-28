@@ -448,7 +448,7 @@ public class RegisterProvider implements RecyclerViewProvider<RegisterProvider.R
             }
             try {
                 cursor = AncApplication.getInstance().getContext().commonrepository("ec_child").rawCustomQueryForAdapter("Select Count(*) from ec_child where relational_id = '" + pc.getCaseId() + "'"
-                        + " and ec_child.id in (Select base_entity_id from ec_details where key = 'gender' and value = 'F') and date_removed IS NULL;"
+                        + " and ec_child.id in (Select base_entity_id from ec_child gender = 'F') and date_removed IS NULL;"
                 );
                 cursor.moveToFirst();
                 femalechild = femalechild + Integer.parseInt(cursor.getString(0));
@@ -459,7 +459,7 @@ public class RegisterProvider implements RecyclerViewProvider<RegisterProvider.R
             }
             try {
                 cursor = AncApplication.getInstance().getContext().commonrepository("ec_child").rawCustomQueryForAdapter("Select Count(*) from ec_child where relational_id = '" + pc.getCaseId() + "'"
-                        + " and ec_child.id in (Select base_entity_id from ec_details where key = 'gender' and value = 'M') and date_removed IS NULL;"
+                        + " and ec_child.id in (Select base_entity_id from ec_child where gender = 'M') and date_removed IS NULL;"
                 );
                 cursor.moveToFirst();
                 malechild = malechild + Integer.parseInt(cursor.getString(0));
@@ -470,7 +470,7 @@ public class RegisterProvider implements RecyclerViewProvider<RegisterProvider.R
             }
             try {
                 cursor = AncApplication.getInstance().getContext().commonrepository("ec_woman").rawCustomQueryForAdapter("Select Count(*) from ec_woman where relational_id = '" + pc.getCaseId() + "'"
-                        + " and ec_woman.id in (Select base_entity_id from ec_details where key = 'PregnancyStatus' and (value like '%Antenatal Period%' or value like '%প্রসব পূর্ব%')) and date_removed IS NULL;"
+                        + " and ec_woman.id in (Select base_entity_id from ec_woman where (PregnancyStatus like '%Antenatal Period%' or PregnancyStatus like '%প্রসব পূর্ব%')) and date_removed IS NULL;"
                 );
                 cursor.moveToFirst();
                 pregnantcount = pregnantcount + Integer.parseInt(cursor.getString(0));
