@@ -72,7 +72,7 @@
       {
         "key": "has_disease",
         "openmrs_entity_parent": "",
-        "openmrs_entity": "person_attribute",
+        "openmrs_entity": "",
         "openmrs_entity_id": "has_disease",
         "openmrs_data_type": "text",
         "type": "spinner",
@@ -89,7 +89,7 @@
       {
         "key":"Disease_status_two_month_to_five_year_by_age",
         "openmrs_entity_parent":"",
-        "openmrs_entity":"person_attribute",
+        "openmrs_entity":"",
         "openmrs_entity_id":"Disease_2Month_5Years",
         "openmrs_data_type":"text",
         "type":"check_box",
@@ -198,7 +198,7 @@
       {
         "key":"Place_of_Refer",
         "openmrs_entity_parent":"",
-        "openmrs_entity":"concept",
+        "openmrs_entity":"",
         "openmrs_entity_id":"ec28ec95-0f6a-4910-8efc-c2925f9b36b1",
         "openmrs_data_type":"text",
         "type":"spinner",

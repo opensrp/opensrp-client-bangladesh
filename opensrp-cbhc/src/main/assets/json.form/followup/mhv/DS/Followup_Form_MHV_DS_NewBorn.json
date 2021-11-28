@@ -89,7 +89,7 @@
       {
         "key":"Disease_status_zero_to_two_month_by_age",
         "openmrs_entity_parent":"",
-        "openmrs_entity":"person_attribute",
+        "openmrs_entity":"",
         "openmrs_entity_id":"Disease_Below_2Month_Age",
         "openmrs_data_type":"text",
         "type":"check_box",
@@ -167,7 +167,7 @@
       {
         "key":"Place_of_Refer",
         "openmrs_entity_parent":"",
-        "openmrs_entity":"concept",
+        "openmrs_entity":"",
         "openmrs_entity_id":"ec28ec95-0f6a-4910-8efc-c2925f9b36b1",
         "openmrs_data_type":"text",
         "type":"spinner",

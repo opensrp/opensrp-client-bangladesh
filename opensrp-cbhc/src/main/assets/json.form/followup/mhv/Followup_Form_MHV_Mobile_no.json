@@ -71,7 +71,7 @@
       {
         "key": "contact_phone_number_by_age",
         "openmrs_entity_parent": "",
-        "openmrs_entity": "person_attribute",
+        "openmrs_entity": "",
         "openmrs_entity_id": "phoneNumber",
         "openmrs_data_type": "text",
         "type": "edit_text",

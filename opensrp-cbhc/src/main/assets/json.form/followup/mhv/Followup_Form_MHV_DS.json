@@ -117,7 +117,7 @@
       {
         "key": "General_Disease_Male",
         "openmrs_entity_parent": "",
-        "openmrs_entity": "person_attribute",
+        "openmrs_entity": "",
         "openmrs_entity_id": "",
         "openmrs_data_type": "text",
         "type": "check_box",
@@ -155,7 +155,7 @@
       {
         "key": "General_Disease_Female",
         "openmrs_entity_parent": "",
-        "openmrs_entity": "person_attribute",
+        "openmrs_entity": "",
         "openmrs_entity_id": "",
         "openmrs_data_type": "text",
         "type": "check_box",
@@ -205,7 +205,7 @@
       {
         "key": "Disease_Below_2Month_Age",
         "openmrs_entity_parent": "",
-        "openmrs_entity": "person_attribute",
+        "openmrs_entity": "",
         "openmrs_entity_id": "",
         "openmrs_data_type": "text",
         "type": "check_box",
@@ -285,7 +285,7 @@
       {
         "key": "Disease_2Month_5Years",
         "openmrs_entity_parent": "",
-        "openmrs_entity": "person_attribute",
+        "openmrs_entity": "",
         "openmrs_entity_id": "",
         "openmrs_data_type": "text",
         "type": "check_box",

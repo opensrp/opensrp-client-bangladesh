@@ -57,7 +57,7 @@
       {
         "key":"Member_Migrated",
         "openmrs_entity_parent":"",
-        "openmrs_entity":"person_attribute",
+        "openmrs_entity":"",
         "openmrs_entity_id":"Cause_of_Member_Migration",
         "openmrs_data_type":"text",
         "type":"spinner",

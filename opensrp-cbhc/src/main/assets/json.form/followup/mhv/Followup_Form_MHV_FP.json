@@ -71,7 +71,7 @@
       {
         "key":"family_planning",
         "openmrs_entity_parent":"",
-        "openmrs_entity":"person_attribute",
+        "openmrs_entity":"",
         "openmrs_entity_id":"familyplanning",
         "openmrs_data_type":"text",
         "type":"spinner",
