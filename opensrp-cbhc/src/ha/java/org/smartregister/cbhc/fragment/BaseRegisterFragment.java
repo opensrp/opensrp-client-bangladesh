@@ -1,5 +1,6 @@
 package org.smartregister.cbhc.fragment;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.os.AsyncTask;
@@ -11,6 +12,7 @@ import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.Editable;
@@ -29,12 +31,15 @@ import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.github.ybq.android.spinkit.style.FadingCircle;
 
 import net.sqlcipher.database.SQLiteDatabase;
 
 import org.apache.commons.lang3.StringUtils;
+import org.json.JSONException;
+import org.json.JSONObject;
 import org.smartregister.cbhc.R;
 import org.smartregister.cbhc.activity.BaseRegisterActivity;
 import org.smartregister.cbhc.activity.ChildListMainActivity;
@@ -47,10 +52,13 @@ import org.smartregister.cbhc.contract.RegisterFragmentContract;
 import org.smartregister.cbhc.cursor.AdvancedMatrixCursor;
 import org.smartregister.cbhc.domain.AttentionFlag;
 import org.smartregister.cbhc.event.SyncEvent;
+import org.smartregister.cbhc.exception.PullUniqueIdsException;
 import org.smartregister.cbhc.provider.RegisterProvider;
 import org.smartregister.cbhc.receiver.SyncStatusBroadcastReceiver;
 import org.smartregister.cbhc.repository.AncRepository;
+import org.smartregister.cbhc.service.intent.PullUniqueIdsIntentService;
 import org.smartregister.cbhc.service.intent.SyncIntentService;
+import org.smartregister.cbhc.util.AppExecutors;
 import org.smartregister.cbhc.util.Constants;
 import org.smartregister.cbhc.util.DBConstants;
 import org.smartregister.cbhc.util.NetworkUtils;
@@ -61,7 +69,9 @@ import org.smartregister.cursoradapter.RecyclerViewFragment;
 import org.smartregister.cursoradapter.RecyclerViewPaginatedAdapter;
 import org.smartregister.cursoradapter.SmartRegisterQueryBuilder;
 import org.smartregister.domain.FetchStatus;
+import org.smartregister.domain.Response;
 import org.smartregister.provider.SmartRegisterClientsProvider;
+import org.smartregister.service.HTTPAgent;
 import org.smartregister.service.ImageUploadSyncService;
 import org.smartregister.view.activity.SecuredNativeSmartRegisterActivity;
 import org.smartregister.view.dialog.DialogOption;
@@ -95,6 +105,8 @@ public abstract class BaseRegisterFragment extends RecyclerViewFragment implemen
     private DrawerLayout drawer;
     private NavigationView navigationView;
     private ActionBarDrawerToggle actionBarDrawerToggle;
+    private AppExecutors appExecutors;
+    JSONObject jsonObject;
     protected View.OnKeyListener hideKeyboard = new View.OnKeyListener() {
 
         @Override
@@ -186,6 +198,8 @@ public abstract class BaseRegisterFragment extends RecyclerViewFragment implemen
 
         unsyncView = (TextView)toolbar.findViewById(R.id.unsync_count);
 
+        appExecutors = new AppExecutors();
+
 
         drawer = (DrawerLayout) view.findViewById(R.id.drawer_lay);
         navigationView = (NavigationView) view.findViewById(R.id.nav_view);
@@ -216,6 +230,7 @@ public abstract class BaseRegisterFragment extends RecyclerViewFragment implemen
             @Override
             public void onClick(View view) {
                 ((HomeRegisterActivity) getActivity()).startRegistration();
+                drawer.closeDrawer(Gravity.LEFT);
             }
         });
 
@@ -232,6 +247,7 @@ public abstract class BaseRegisterFragment extends RecyclerViewFragment implemen
             public void onClick(View view) {
                 Intent intent = new Intent(getActivity(), GrowthReportActivity.class);
                 startActivity(intent);
+                drawer.closeDrawer(Gravity.LEFT);
             }
         });
 
@@ -252,6 +268,7 @@ public abstract class BaseRegisterFragment extends RecyclerViewFragment implemen
             @Override
             public void onClick(View view) {
                 startActivity(new Intent(getActivity(), ChildListMainActivity.class));
+                drawer.closeDrawer(Gravity.LEFT);
             }
         });
 
@@ -260,11 +277,74 @@ public abstract class BaseRegisterFragment extends RecyclerViewFragment implemen
                     @Override
                     public void onClick(View view) {
                         startActivity(new Intent(getActivity(), GuestMemberActivity.class));
+                        drawer.closeDrawer(Gravity.LEFT);
+                    }
+                });
+
+        drawer.findViewById(R.id.announceIm)
+                .setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        callAnnouncementApi();
+                        drawer.closeDrawer(Gravity.LEFT);
                     }
                 });
         setupViews(view);
         renderView();
         return view;
+    }
+
+    private void callAnnouncementApi() {
+        Runnable runnable = () -> {
+            try {
+                jsonObject = getAnn();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
+            appExecutors.mainThread().execute(this::showAnnounceDialog);
+        };
+        appExecutors.diskIO().execute(runnable);
+    }
+
+    private JSONObject getAnn() throws Exception {
+        HTTPAgent httpAgent = AncApplication.getInstance().getContext().getHttpAgent();
+        String baseUrl = AncApplication.getInstance().getContext().
+                configuration().dristhiBaseURL();
+        String endString = "/";
+        if (baseUrl.endsWith(endString)) {
+            baseUrl = baseUrl.substring(0, baseUrl.lastIndexOf(endString));
+        }
+
+        String url = baseUrl + "/rest/event/announcement";
+        Log.i(PullUniqueIdsIntentService.class.getName(), "URL: " + url);
+
+        if (httpAgent == null) {
+           // throw new PullUniqueIdsException(ID_URL + " http agent is null");
+        }
+
+        Response resp = httpAgent.fetch(url);
+        if (resp.isFailure()) {
+           // throw new PullUniqueIdsException(ID_URL + " not returned data");
+        }
+
+        return new JSONObject(resp.payload().toString());
+    }
+
+    void showAnnounceDialog(){
+        try {
+            new AlertDialog.Builder(getActivity())
+                    .setTitle("Alert!")
+                    .setMessage(jsonObject.getString("msg"))
+                    .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+                            dialogInterface.dismiss();
+                        }
+                    }).show();
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
     }
 
     protected abstract void initializePresenter();

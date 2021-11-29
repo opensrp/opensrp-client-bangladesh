@@ -18,6 +18,7 @@ import org.smartregister.cbhc.domain.ReportData;
 import org.smartregister.commonregistry.CommonRepository;
 import org.smartregister.repository.DetailsRepository;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 
 public class ReportFragment extends Fragment {
@@ -122,16 +123,16 @@ public class ReportFragment extends Fragment {
                 underWeightChild++;
             }
         }
+        DecimalFormat decimalFormat = new DecimalFormat("##.#");
+        reportDataList.add(new ReportData(R.drawable.male_child_cbhc,decimalFormat.format((gmpChildren*100.0)/totalChild),"% of children reaching for GMP",R.color.black));
+        reportDataList.add(new ReportData(R.drawable.male_child_cbhc,decimalFormat.format((normalChild*100.0)/gmpChildren),"% of children who have normal growth",R.color.green));
+        reportDataList.add(new ReportData(R.drawable.male_child_cbhc,decimalFormat.format((samChild*100.0)/gmpChildren),"% of children who are SAM",R.color.red));
+        reportDataList.add(new ReportData(R.drawable.male_child_cbhc,decimalFormat.format((mamChild*100.0)/gmpChildren),"% of children who are MAM",R.color.yellow));
+        reportDataList.add(new ReportData(R.drawable.male_child_cbhc,decimalFormat.format((edemaChild*100.0)/gmpChildren),"% of children who have Edema",R.color.black));
 
-        reportDataList.add(new ReportData(R.drawable.male_child_cbhc,String.valueOf((totalChild/100.0)*gmpChildren),"% of children reaching for GMP",R.color.black));
-        reportDataList.add(new ReportData(R.drawable.male_child_cbhc,String.valueOf((gmpChildren/100.0)*normalChild),"% of children who have normal growth",R.color.green));
-        reportDataList.add(new ReportData(R.drawable.male_child_cbhc,String.valueOf((gmpChildren/100.0)*samChild),"% of children who are SAM",R.color.red));
-        reportDataList.add(new ReportData(R.drawable.male_child_cbhc,String.valueOf((gmpChildren/100.0)*mamChild),"% of children who are MAM",R.color.yellow));
-        reportDataList.add(new ReportData(R.drawable.male_child_cbhc,String.valueOf((gmpChildren/100.0)*edemaChild),"% of children who have Edema",R.color.black));
-
-        reportDataList.add(new ReportData(R.drawable.male_child_cbhc,String.valueOf((totalChild/100.0)*overWeightChild),"% of children who are overweight",R.color.black));
-        reportDataList.add(new ReportData(R.drawable.male_child_cbhc,String.valueOf((totalChild/100.0)*underWeightChild),"% of children who are Severly Underweight",R.color.black));
-        reportDataList.add(new ReportData(R.drawable.male_child_cbhc,String.valueOf((totalChild/100.0)*severlyStunted),"% of children who are Severly Stunted",R.color.black));
+        reportDataList.add(new ReportData(R.drawable.male_child_cbhc,decimalFormat.format((overWeightChild*100.0)/gmpChildren),"% of children who are overweight",R.color.black));
+        reportDataList.add(new ReportData(R.drawable.male_child_cbhc,decimalFormat.format((underWeightChild*100.0)/gmpChildren),"% of children who are Severly Underweight",R.color.black));
+        reportDataList.add(new ReportData(R.drawable.male_child_cbhc,decimalFormat.format((severlyStunted*100.0)/totalChild),"% of children who are Severly Stunted",R.color.black));
 
         reportRv.setAdapter(new ReportRecyclerViewAdapter(getActivity(),reportDataList));
     }
