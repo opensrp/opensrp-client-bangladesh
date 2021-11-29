@@ -2,6 +2,11 @@
     <!-- Actions -->
     <string name="action_logout">Logout</string>
     <string name="action_language">Language</string>
+    <string-array name="report_segment">
+        <item>MUAC</item>
+        <item>Weight</item>
+        <item>Stunting</item>
+    </string-array>
 
     <!-- General -->
     <string name="app_name">OPENSRP-HA</string>
