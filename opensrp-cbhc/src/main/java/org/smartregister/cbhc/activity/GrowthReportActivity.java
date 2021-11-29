@@ -14,6 +14,7 @@ import org.opensrp.api.constants.Gender;
 import org.smartregister.cbhc.R;
 import org.smartregister.cbhc.fragment.GrowthFalteringTrendReportFragment;
 import org.smartregister.cbhc.fragment.KeyAchievementFragment;
+import org.smartregister.cbhc.fragment.ReportFragment;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -131,7 +132,8 @@ public class GrowthReportActivity extends AppCompatActivity {
     private void setupViewPager(ViewPager viewPager) {
         adapter = new ViewPagerAdapter(getSupportFragmentManager());
 
-        adapter.addFragment(new KeyAchievementFragment(), "Key Achievement");
+       // adapter.addFragment(new KeyAchievementFragment(), "Key Achievement");
+        adapter.addFragment(new ReportFragment(), "Key Achievement");
        // adapter.addFragment(new ReportGeoMapFragment(), "Geo Map");
         adapter.addFragment(new GrowthFalteringTrendReportFragment(), "Growth Faltering Trend");
         viewPager.setAdapter(adapter);
