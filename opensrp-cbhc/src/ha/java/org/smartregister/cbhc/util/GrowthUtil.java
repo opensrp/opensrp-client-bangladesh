@@ -340,10 +340,11 @@ public class GrowthUtil {
             updateIsRefered(baseEntityId,"true");
         }
     }
-    public static void updateLastMuac(float cm,String baseEntityId,String status){
+    public static void updateLastMuac(float cm,String baseEntityId,String status,String muacValue){
         AncRepository repo = (AncRepository) AncApplication.getInstance().getRepository();
         SQLiteDatabase db = repo.getReadableDatabase();
-        String sql = "UPDATE ec_child SET child_muac = '" + cm + "',child_status = '"+status+"' WHERE base_entity_id = '" + baseEntityId + "';";
+        boolean hasEdema = muacValue.equalsIgnoreCase("yes");
+        String sql = "UPDATE ec_child SET child_muac = '" + cm + "',child_status = '"+status+"',has_edema ='"+hasEdema+"' WHERE base_entity_id = '" + baseEntityId + "';";
         db.execSQL(sql);
         if(status.equalsIgnoreCase("sam")){
             updateIsRefered(baseEntityId,"true");

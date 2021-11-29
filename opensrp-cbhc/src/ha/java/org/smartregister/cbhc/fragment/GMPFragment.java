@@ -248,7 +248,7 @@ public class GMPFragment extends BaseProfileFragment implements WeightActionList
             MUAC latestMuac = heightList.get(0);
             muakColor = ZScore.getMuacColor(latestMuac.getCm());
             muakText = ZScore.getMuacText(latestMuac.getCm());
-            if(isNeedToUpdateDB)GrowthUtil.updateLastMuac(latestMuac.getCm(),childDetails.entityId(),muakText);
+            if(isNeedToUpdateDB)GrowthUtil.updateLastMuac(latestMuac.getCm(),childDetails.entityId(),muakText,latestMuac.getEdemaValue());
         }
         return muakText;
 
