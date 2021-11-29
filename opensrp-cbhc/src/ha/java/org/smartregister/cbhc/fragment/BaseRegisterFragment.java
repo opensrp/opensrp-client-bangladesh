@@ -38,6 +38,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.smartregister.cbhc.R;
 import org.smartregister.cbhc.activity.BaseRegisterActivity;
 import org.smartregister.cbhc.activity.ChildListMainActivity;
+import org.smartregister.cbhc.activity.GrowthReportActivity;
 import org.smartregister.cbhc.activity.GuestMemberActivity;
 import org.smartregister.cbhc.activity.HomeRegisterActivity;
 import org.smartregister.cbhc.activity.ProfileActivity;
@@ -201,6 +202,7 @@ public abstract class BaseRegisterFragment extends RecyclerViewFragment implemen
 
 
 
+
         //close button listeners
         closeDrawerIm.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -222,6 +224,15 @@ public abstract class BaseRegisterFragment extends RecyclerViewFragment implemen
             @Override
             public void onClick(View view) {
                 AncApplication.getInstance().logoutUser();            }
+        });
+
+        //report
+        drawer.findViewById(R.id.report_lay).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getActivity(), GrowthReportActivity.class);
+                startActivity(intent);
+            }
         });
 
 

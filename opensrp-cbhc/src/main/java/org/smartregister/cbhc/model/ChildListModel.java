@@ -37,7 +37,7 @@ public class ChildListModel implements ChildListContract.Model {
         Cursor cursor = sqLiteDatabase.rawQuery( query, null);
         if (cursor != null && cursor.getCount() > 0 && cursor.moveToFirst()) {
             while (!cursor.isAfterLast()) {
-                CommonRepository commonRepository = org.smartregister.Context.getInstance().commonrepository(DBConstants.WOMAN_TABLE_NAME);
+                CommonRepository commonRepository = org.smartregister.Context.getInstance().commonrepository(DBConstants.CHILD_TABLE_NAME);
                 CommonPersonObject personinlist = commonRepository.readAllcommonforCursorAdapter(cursor);
                 //personinlist.setCaseId(cursor.getString(cursor.getColumnIndex("_id")));
                 CommonPersonObjectClient pClient   = new CommonPersonObjectClient(personinlist.getCaseId(), personinlist.getDetails(), personinlist.getDetails().get("FWHOHFNAME"));
@@ -46,18 +46,25 @@ public class ChildListModel implements ChildListContract.Model {
                 int baseEntity = cursor.getColumnIndex("base_entity_id");
                 int fName = cursor.getColumnIndex("first_name");
                 int lName = cursor.getColumnIndex("last_name");
+                int id = cursor.getColumnIndex("Patient_Identifier");
                 int dob = cursor.getColumnIndex("dob");
                 int gender = cursor.getColumnIndex("gender");
                 int child_status = cursor.getColumnIndex("child_status");
+                int child_weight = cursor.getColumnIndex("child_weight");
+                int child_height = cursor.getColumnIndex("child_height");
+                int last_vaccine_name = cursor.getColumnIndex("last_vaccine_name");
+                int last_vaccine_date = cursor.getColumnIndex("last_vaccine_date");
 
 
                 childItemDataArrayList.add(new ChildItemData(
                         cursor.isNull(baseEntity)?"":cursor.getString(baseEntity),
                         cursor.isNull(fName)?"":cursor.getString(fName),
                         cursor.isNull(lName)?"":cursor.getString(lName),
+                        cursor.isNull(id)?"":cursor.getString(id),
                         cursor.isNull(dob)?"":cursor.getString(dob),
                         cursor.isNull(gender)?"":cursor.getString(gender),
-                        "",
+                        cursor.getString(child_weight),cursor.getString(child_height)
+                        ,cursor.getString(last_vaccine_name),cursor.getString(last_vaccine_date),
                         cursor.isNull(child_status)?"":cursor.getString(child_status),
                         pClient));
                 cursor.moveToNext();

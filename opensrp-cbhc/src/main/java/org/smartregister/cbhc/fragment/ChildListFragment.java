@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -52,7 +53,10 @@ public class ChildListFragment extends Fragment implements ChildListContract.Vie
     private  FragmentManager fragmentManager;
     private boolean fromFilter=false;
     ChildListPresenter presenter;
-    private String selectQuery = "Select child.id as _id , child.relationalid , child.Patient_Identifier, child.first_name , child.last_name , child.dob ,child.gender, child.PregnancyStatus, child.tasks, child.relation_with_household as relation, child.age as age, NULL as MaritalStatus, child.camp_type, child.child_status FROM ec_child as child";
+    //TODO need to remove this query
+    private String selectQuery = "Select child.id as _id , child.relationalid , child.Patient_Identifier, child.first_name , child.last_name , child.dob ,child.gender, child.PregnancyStatus, child.tasks, child.relation_with_household as relation, child.age as age, NULL as MaritalStatus, child.camp_type, " +
+            "child.child_status,child.child_weight,child.child_height,child.child_muac,child.child_muac,child.last_vaccine_date,child.last_vaccine_name " +
+            "FROM ec_child as child order by child.last_interacted_with DESC";
     //private Childl
 
     public ChildListFragment() {
@@ -60,9 +64,14 @@ public class ChildListFragment extends Fragment implements ChildListContract.Vie
     }
 
     @Override
-    public void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
         presenter = new ChildListPresenter(this);
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
         presenter.fetchChildList(selectQuery);
     }
 

@@ -1201,34 +1201,9 @@
           "json_mapping": {
             "field": "is_refered"
           }
-        },
-
-
-        {
-          "column_name": "Disease_Below_2Month_Age",
-          "type": "Client",
-          "json_mapping": {
-            "field": "attributes.Disease_Below_2Month_Age"
-          }
-        },
-        {
-          "column_name": "Disease_2Month_5Years",
-          "type": "Client",
-          "json_mapping": {
-            "field": "attributes.Disease_2Month_5Years"
-          }
-        },
-
-        {
-          "column_name": "place_of_refer",
-          "type": "Client",
-          "json_mapping": {
-            "field": "ec28ec95-0f6a-4910-8efc-c2925f9b36b1"
-          }
         }
       ]
     },
-
     {
       "name": "ec_member",
       "columns": [
@@ -1498,16 +1473,15 @@
             "field": "attributes.has_disease"
           }
         },
-
         {
-          "column_name": "Comm_Disease",
+          "column_name": "CommunicableDisease",
           "type": "Client",
           "json_mapping": {
             "field": "attributes.Comm_Disease"
           }
         },
         {
-          "column_name": "NonComnta_Disease",
+          "column_name": "NonComDisease",
           "type": "Client",
           "json_mapping": {
             "field": "attributes.NonComnta_Disease"
@@ -1912,29 +1886,6 @@
           "type": "Client",
           "json_mapping": {
             "field": "attributes.Realtion_With_Household_Head"
-          }
-        },
-
-        {
-          "column_name": "Disease_Below_2Month_Age",
-          "type": "Client",
-          "json_mapping": {
-            "field": "attributes.Disease_Below_2Month_Age"
-          }
-        },
-        {
-          "column_name": "Disease_2Month_5Years",
-          "type": "Client",
-          "json_mapping": {
-            "field": "attributes.Disease_2Month_5Years"
-          }
-        },
-
-        {
-          "column_name": "place_of_refer",
-          "type": "Client",
-          "json_mapping": {
-            "field": "attributes.ec28ec95-0f6a-4910-8efc-c2925f9b36b1"
           }
         }
       ]

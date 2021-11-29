@@ -355,6 +355,18 @@ public class GrowthUtil {
         String sql = "UPDATE ec_child SET is_refered = '"+state+"' WHERE base_entity_id = '" + baseEntityId + "';";
         db.execSQL(sql);
     }
+    public static void updateLastVaccineDate(String baseEntityId,String lastVaccineDate, String vaccineName){
+       try{
+           AncRepository repo = (AncRepository) AncApplication.getInstance().getRepository();
+           SQLiteDatabase db = repo.getReadableDatabase();
+           String sql = "UPDATE ec_child SET last_vaccine_date = '"+lastVaccineDate+"',last_vaccine_name ='"+vaccineName+"' WHERE base_entity_id = '" + baseEntityId + "';";
+           db.execSQL(sql);
+       }catch (Exception e){
+           e.printStackTrace();
+
+       }
+
+    }
     private static Calendar[] getMinAndMaxWeighingDates(Date dob) {
         Calendar minGraphTime = null;
         Calendar maxGraphTime = null;

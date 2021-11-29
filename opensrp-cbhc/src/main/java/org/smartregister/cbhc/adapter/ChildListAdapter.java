@@ -5,6 +5,7 @@ import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,6 +18,7 @@ import org.smartregister.cbhc.R;
 import org.smartregister.cbhc.application.AncApplication;
 import org.smartregister.cbhc.domain.ChildItemData;
 import org.smartregister.cbhc.util.Utils;
+import org.smartregister.growthmonitoring.domain.ZScore;
 import org.smartregister.util.OpenSRPImageLoader;
 import org.smartregister.view.activity.DrishtiApplication;
 import org.smartregister.view.customcontrols.CustomFontTextView;
@@ -51,7 +53,23 @@ public class ChildListAdapter extends RecyclerView.Adapter<ChildListAdapter.Hold
         ChildItemData childItemData = tempChildItemDataArrayList.get(i);
         holder.nameTv.setText(childItemData.getFirstName()+" "+childItemData.getLastName());
         holder.ageTv.setText(Utils.getDuration(childItemData.getDob()));
-//        holder.weightTv.setText(childItemData.getWeight());
+        holder.idTv.setText("ID: "+childItemData.getId());
+        StringBuilder builder = new StringBuilder();
+        if(!TextUtils.isEmpty(childItemData.getWeight())){
+            builder.append("W:"+childItemData.getWeight()+" kg ");
+        }
+        if(!TextUtils.isEmpty(childItemData.getHeight())){
+            builder.append("H:"+childItemData.getHeight()+" cm");
+        }
+        holder.weightTv.setText(builder.toString());
+        StringBuilder builder2 = new StringBuilder();
+        if(!TextUtils.isEmpty(childItemData.getVaccineName())){
+            builder2.append(childItemData.getVaccineName());
+        }
+        if(!TextUtils.isEmpty(childItemData.getVaccineDate())){
+            builder2.append(" given at "+childItemData.getVaccineDate());
+        }
+        holder.vaccineTv.setText(builder2.toString());
         if(childItemData.getGender().equals("F")) {
             holder.profileImage.setTag(org.smartregister.R.id.entity_id, childItemData.getpClient().entityId());
             DrishtiApplication.getCachedImageLoaderInstance().getImageByClientId(childItemData.getpClient().entityId(), OpenSRPImageLoader.getStaticImageListener(holder.profileImage, R.drawable.child_boy_infant, R.drawable.child_boy_infant));
@@ -73,7 +91,7 @@ public class ChildListAdapter extends RecyclerView.Adapter<ChildListAdapter.Hold
     }
 
     private int getChildStatusColor(String child_status) {
-        return R.color.pnc_circle_yellow;
+        return ZScore.getZscoreColorByText(child_status);
     }
 
     @Override
@@ -127,14 +145,15 @@ public class ChildListAdapter extends RecyclerView.Adapter<ChildListAdapter.Hold
     }
 
     public class Holder extends RecyclerView.ViewHolder {
-        CustomFontTextView nameTv,ageTv,weightTv;
+        CustomFontTextView nameTv,idTv,ageTv,weightTv,vaccineTv;
         ImageView profileImage,childImageSmall,childStatusImg;
         public Holder(@NonNull View itemView) {
             super(itemView);
             nameTv = itemView.findViewById(R.id.name_tv);
+            idTv = itemView.findViewById(R.id.id_tv);
             ageTv = itemView.findViewById(R.id.age_tv);
-            //weightTv= itemView.findViewById(R.id.weight_tv);
-
+            weightTv= itemView.findViewById(R.id.weight_tv);
+            vaccineTv= itemView.findViewById(R.id.last_vaccine_tv);
             profileImage = itemView.findViewById(R.id.profile_image_iv);
             childImageSmall= itemView.findViewById(R.id.childSmallImageView);
             childStatusImg = itemView.findViewById(R.id.childStatusImg);

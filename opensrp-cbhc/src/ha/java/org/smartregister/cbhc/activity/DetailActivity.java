@@ -25,6 +25,9 @@ import org.json.JSONObject;
 import org.opensrp.api.constants.Gender;
 import org.smartregister.cbhc.R;
 import org.smartregister.cbhc.fragment.ImmunizationFragment;
+import org.smartregister.cbhc.job.RecurringServiceIntentServiceJob;
+import org.smartregister.cbhc.job.VaccineIntentServiceJob;
+import org.smartregister.cbhc.util.GrowthUtil;
 import org.smartregister.commonregistry.CommonPersonObjectClient;
 import org.smartregister.domain.Alert;
 import org.smartregister.immunization.ImmunizationLibrary;
@@ -40,6 +43,7 @@ import org.smartregister.immunization.listener.VaccinationActionListener;
 import org.smartregister.immunization.repository.RecurringServiceRecordRepository;
 import org.smartregister.immunization.repository.RecurringServiceTypeRepository;
 import org.smartregister.immunization.repository.VaccineRepository;
+import org.smartregister.immunization.service.intent.VaccineIntentService;
 import org.smartregister.immunization.util.RecurringServiceUtils;
 import org.smartregister.immunization.util.VaccinateActionUtils;
 import org.smartregister.immunization.util.VaccinatorUtils;
@@ -407,6 +411,9 @@ public class DetailActivity extends AppCompatActivity implements VaccinationActi
         }
         vaccineRepository.add(vaccine);
         tag.setDbKey(vaccine.getId());
+        if(tag.getDbKey()!=null){
+            GrowthUtil.updateLastVaccineDate(childDetails.entityId(),DATE_FORMAT.format(vaccine.getDate()),vaccine.getName());
+        }
     }
 
 
@@ -506,6 +513,7 @@ public class DetailActivity extends AppCompatActivity implements VaccinationActi
         @Override
         protected void onPostExecute(Triple<ArrayList<ServiceWrapper>, List<ServiceRecord>, List<Alert>> triple) {
             RecurringServiceUtils.updateServiceGroupViews(view, triple.getLeft(), triple.getMiddle(), triple.getRight());
+            RecurringServiceIntentServiceJob.scheduleJobImmediately(RecurringServiceIntentServiceJob.TAG);
         }
 
         @Override
@@ -599,6 +607,12 @@ public class DetailActivity extends AppCompatActivity implements VaccinationActi
                 VaccineSchedule.updateOfflineAlerts(childDetails.entityId(), birthDateTime, "child");
             }
             return null;
+        }
+
+        @Override
+        protected void onPostExecute(Void unused) {
+            super.onPostExecute(unused);
+            VaccineIntentServiceJob.scheduleJobImmediately(VaccineIntentServiceJob.TAG);
         }
     }
 
