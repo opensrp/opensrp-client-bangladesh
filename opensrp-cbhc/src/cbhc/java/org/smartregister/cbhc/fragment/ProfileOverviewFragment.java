@@ -209,7 +209,8 @@ public class ProfileOverviewFragment extends BaseProfileFragment {
 
             @Override
             protected Object doInBackground(Object[] objects) {
-                //householdDetails.getColumnmaps().putAll(AncApplication.getInstance().getContext().detailsRepository().getAllDetailsForClient(householdDetails.entityId()));
+                //householdDetails.getColumnmaps().putAll(AncApplication.getInstance().getContext().
+                // detailsRepository().getAllDetailsForClient(householdDetails.entityId()));
                 AncRepository repo = (AncRepository) AncApplication.getInstance().getRepository();
                 SQLiteDatabase db = repo.getReadableDatabase();
                 String mother_id = householdDetails.getDetails().get("_id");

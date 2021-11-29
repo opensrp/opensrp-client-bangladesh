@@ -24,6 +24,7 @@ import org.smartregister.cbhc.util.DBConstants;
 import org.smartregister.cbhc.util.JsonFormUtils;
 import org.smartregister.cbhc.util.Utils;
 import org.smartregister.commonregistry.AllCommonsRepository;
+import org.smartregister.commonregistry.CommonRepository;
 import org.smartregister.domain.db.Client;
 import org.smartregister.domain.db.Event;
 import org.smartregister.domain.db.EventClient;
@@ -329,8 +330,8 @@ Utils.appendLog(getClass().getName(),e);
                 Log.d(getClass().getName(), "EVENT_DELETED: " + eventDeleted);
                 Log.d(getClass().getName(), "ClIENT_DELETED: " + clientDeleted);
 
-                boolean detailsDeleted = detailsRepository.deleteDetails(baseEntityId);
-                Log.d(getClass().getName(), "DETAILS_DELETED: " + detailsDeleted);
+                //boolean detailsDeleted = detailsRepository.deleteDetails(baseEntityId);
+                //Log.d(getClass().getName(), "DETAILS_DELETED: " + detailsDeleted);
 
                 for (Table bindObject : bindObjects) {
                     String tableName = bindObject.name;
@@ -347,7 +348,10 @@ Utils.appendLog(getClass().getName(),e);
         }
         return false;
     }
-
+    public boolean deleteCase(String tableName, String baseEntityId) {
+        CommonRepository cr = org.smartregister.CoreLibrary.getInstance().context().commonrepository(tableName);
+        return cr.deleteCase(baseEntityId, tableName);
+    }
     private boolean unSync(List<Event> events) {
         try {
 
@@ -365,11 +369,12 @@ Utils.appendLog(getClass().getName(),e);
             }
 
             List<Table> bindObjects = clientField.bindobjects;
-            DetailsRepository detailsRepository = AncApplication.getInstance().getContext().detailsRepository();
+            //DetailsRepository detailsRepository = AncApplication.getInstance().getContext().detailsRepository();
             ECSyncHelper ecUpdater = ECSyncHelper.getInstance(getContext());
 
             for (Event event : events) {
-                unSync(ecUpdater, detailsRepository, bindObjects, event, registeredAnm);
+//                unSync(ecUpdater, detailsRepository, bindObjects, event, registeredAnm);
+                unSync(ecUpdater, null, bindObjects, event, registeredAnm);
             }
 
             return true;
@@ -382,6 +387,8 @@ Utils.appendLog(getClass().getName(),e);
         return false;
     }
 
+    @Override
+    public void updateClientDetailsTable(Event event, Client client) { }
 
     @Override
     public String[] getOpenmrsGenIds() {
