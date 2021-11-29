@@ -11,6 +11,7 @@ import android.util.Log;
 import android.util.Pair;
 
 import com.google.common.reflect.TypeToken;
+import com.google.gson.JsonObject;
 
 import net.sqlcipher.database.SQLiteDatabase;
 
@@ -30,6 +31,7 @@ import org.smartregister.cbhc.domain.UniqueId;
 import org.smartregister.cbhc.helper.ECSyncHelper;
 import org.smartregister.cbhc.helper.LocationHelper;
 import org.smartregister.cbhc.repository.AncRepository;
+import org.smartregister.cbhc.repository.FollowupRepository;
 import org.smartregister.cbhc.repository.HealthIdRepository;
 import org.smartregister.cbhc.repository.UniqueIdRepository;
 import org.smartregister.cbhc.sync.AncClientProcessorForJava;
@@ -2042,6 +2044,70 @@ public class JsonFormUtils extends org.smartregister.util.JsonFormUtils {
 
             JSONObject form = FormUtils.getInstance(activity).getFormJson(form_name);
             followupPopulateFields(form, column_maps);
+            if (form != null) {
+                form.put(Constants.JSON_FORM_KEY.ENTITY_ID, activity.getIntent().getStringExtra(Constants.INTENT_KEY.BASE_ENTITY_ID));
+                intent.putExtra(Constants.INTENT_KEY.JSON, form.toString());
+                activity.startActivityForResult(intent, JsonFormUtils.REQUEST_CODE_GET_JSON);
+            }
+        } catch (Exception e) {
+            Utils.appendLog(JsonFormUtils.class.getName(), e);
+            Log.e(TAG, e.getMessage());
+        }
+    }
+    private static String getEventTypeFromFormName(String formName){
+        //mhv
+        if(formName.equals("followup/mhv/Followup_Form_MHV_ANC")){
+            return "Followup ANC";
+        }else if(formName.equals("followup/mhv/Followup_Form_MHV_Death")){
+            return "Followup Death Status";
+        }else if(formName.equals("followup/mhv/Followup_Form_MHV_Delivery")){
+            return "Followup Delivery";
+        }else if(formName.equals("followup/mhv/Followup_Form_MHV_DS")){
+            return "Member Registration";
+        }else if(formName.equals("followup/mhv/Followup_Form_MHV_FP")){
+            return "Followup Family Planning";
+        }else if(formName.equals("followup/mhv/Followup_Form_MHV_HH_Transfer")){
+            return "Followup HH Transfer";
+        }else if(formName.equals("followup/mhv/Followup_Form_MHV_Marital_F")){
+            return "Followup Marital Status Female";
+        }else if(formName.equals("followup/mhv/Followup_Form_MHV_Marital_M")){
+            return "Followup Marital Status Male";
+        }else if(formName.equals("followup/mhv/Followup_Form_MHV_Member_Transfer")){
+            return "Followup Member Transfer";
+        }else if(formName.equals("followup/mhv/Followup_Form_MHV_Mobile_no")){
+            return "Followup Mobile Number";
+        }else if(formName.equals("followup/mhv/Followup_Form_MHV_PNC")){
+            return "Followup PNC";
+        }else if(formName.equals("followup/mhv/Followup_Form_MHV_Pregnant")){
+            return "Followup Pregnant Status";
+        }else if(formName.equals("followup/mhv/Followup_Form_MHV_Risky_Habit")){
+            return "Followup Risky Habit";
+        }
+        //DS
+        else if(formName.equals("followup/mhv/DS/Followup_Form_MHV_DS_Female")){
+            return "Followup Disease Female";
+        }else if(formName.equals("followup/mhv/DS/Followup_Form_MHV_DS_Male")){
+            return "Followup Disease Male";
+        }else if(formName.equals("followup/mhv/DS/Followup_Form_MHV_DS_NewBorn")){
+            return "Followup Disease Child";
+        }else if(formName.equals("followup/mhv/DS/Followup_Form_MHV_DS_Toddler")){
+            return "Followup Disease Toddler";
+        }
+        return "";
+    }
+    public static void launchFollowUpForm(Activity activity, final String form_name,String  baseEntityId) {
+        try {
+            Intent intent = new Intent(activity, AncJsonFormActivity.class);
+            JSONObject getfollowUpFormFromDB = FollowupRepository.getJsonObjectFromField(baseEntityId,getEventTypeFromFormName(form_name));
+            JSONObject form;
+            if(getfollowUpFormFromDB==null){
+                form = FormUtils.getInstance(activity).getFormJson(form_name);
+            }else{
+                form = getfollowUpFormFromDB;
+            }
+
+
+//            followupPopulateFields(form, column_maps);
             if (form != null) {
                 form.put(Constants.JSON_FORM_KEY.ENTITY_ID, activity.getIntent().getStringExtra(Constants.INTENT_KEY.BASE_ENTITY_ID));
                 intent.putExtra(Constants.INTENT_KEY.JSON, form.toString());

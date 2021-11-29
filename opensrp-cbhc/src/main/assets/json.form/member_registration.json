@@ -758,12 +758,6 @@
         "v_min_length": {
           "value": "1",
           "err": "Please Enter 11 digit Mobile number"
-        },
-        "relevance": {
-          "step1:age": {
-            "type": "numeric",
-            "ex": "greaterThanEqualTo(., \"10\")"
-          }
         }
       },
       {

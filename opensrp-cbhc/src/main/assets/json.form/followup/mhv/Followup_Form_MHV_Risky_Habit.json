@@ -71,7 +71,7 @@
       {
         "key": "risky_habits",
         "openmrs_entity_parent": "",
-        "openmrs_entity": "person_attribute",
+        "openmrs_entity": "",
         "openmrs_entity_id": "RiskyHabit",
         "openmrs_data_type": "text",
         "type": "check_box",

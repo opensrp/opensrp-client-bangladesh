@@ -66,7 +66,7 @@
       {
         "key": "pregnant_status",
         "openmrs_entity_parent": "",
-        "openmrs_entity": "person_attribute",
+        "openmrs_entity": "",
         "openmrs_entity_id": "PregnancyStatus",
         "openmrs_data_type": "",
         "type": "spinner",
@@ -91,7 +91,7 @@
       {
         "key": "lmp_date",
         "openmrs_entity_parent": "",
-        "openmrs_entity": "person_attribute",
+        "openmrs_entity": "",
         "openmrs_entity_id": "LMP",
         "type": "date_picker",
         "hint": "শেষ মাসিকের তারিখ।",
@@ -116,7 +116,7 @@
       {
         "key": "Delivery_date",
         "openmrs_entity_parent": "",
-        "openmrs_entity": "person_attribute",
+        "openmrs_entity": "",
         "openmrs_entity_id": "delivery_date",
         "type": "date_picker",
         "hint": "প্রসবের তারিখ",
@@ -139,7 +139,7 @@
       {
         "key":"Delivery_time",
         "openmrs_entity_parent":"",
-        "openmrs_entity":"person_attribute",
+        "openmrs_entity":"",
         "openmrs_entity_id":"Delivery_time",
         "openmrs_data_type":"text",
         "type":"time_picker",
@@ -205,7 +205,7 @@
       {
         "key":"MOTHER_VITAL",
         "openmrs_entity_parent":"",
-        "openmrs_entity":"concept",
+        "openmrs_entity":"",
         "openmrs_entity_id":"1bc12372-1635-4b27-a5c4-5d22ed8b7a93",
         "openmrs_data_type":"text",
         "type":"spinner",
@@ -228,7 +228,7 @@
       {
         "key": "Outcome of delivery",
         "openmrs_entity_parent": "",
-        "openmrs_entity": "person_attribute",
+        "openmrs_entity": "",
         "openmrs_entity_id": "Outcome of delivery",
         "openmrs_data_type": "text",
         "type": "check_box",
@@ -297,7 +297,7 @@
       {
         "key":"delivery_type",
         "openmrs_entity_parent":"",
-        "openmrs_entity":"concept",
+        "openmrs_entity":"",
         "openmrs_entity_id":"050739a2-5e26-44c5-8a51-9658dedf5455",
         "openmrs_data_type":"text",
         "type":"spinner",
@@ -322,7 +322,7 @@
       {
         "key":"Place_of_Delivery",
         "openmrs_entity_parent":"",
-        "openmrs_entity":"concept",
+        "openmrs_entity":"",
         "openmrs_entity_id":"6544f312-e596-4249-86f0-ba1361c0b9eb",
         "openmrs_data_type":"text",
         "type":"spinner",
@@ -371,7 +371,7 @@
       {
         "key":"if_home_delivery_how_helpers",
         "openmrs_entity_parent":"",
-        "openmrs_entity":"concept",
+        "openmrs_entity":"",
         "openmrs_entity_id":"eaa90231-3a04-43f6-b245-486b1a25e51e",
         "openmrs_data_type":"text",
         "type":"spinner",

@@ -238,7 +238,7 @@ public class MemberProfileActivity extends BaseProfileActivity implements Profil
             protected Object doInBackground(Object[] objects) {
                 AncRepository repo = (AncRepository) AncApplication.getInstance().getRepository();
                 SQLiteDatabase db = repo.getReadableDatabase();
-                String sql = "SELECT VALUE FROM ec_details WHERE (KEY = 'lmp_date' OR KEY = 'LMP') AND base_entity_id = '" + entity_id + "'";
+                String sql = "SELECT lmp_date FROM ec_woman WHERE base_entity_id = '" + entity_id + "'";
                 Cursor cursor = db.rawQuery(sql, new String[]{});
 
                 try {
@@ -252,7 +252,7 @@ public class MemberProfileActivity extends BaseProfileActivity implements Profil
                             try {
                                 c.setTime(sdf.parse(lmp_date));
                             } catch (ParseException e) {
-Utils.appendLog(getClass().getName(),e);
+                                Utils.appendLog(getClass().getName(),e);
                                 e.printStackTrace();
                             }
                             c.add(Calendar.DATE, 280);  // number of days to add

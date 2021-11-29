@@ -773,9 +773,49 @@
           "json_mapping": {
             "field": "attributes.camp_type"
           }
+        },
+
+        {
+          "column_name": "Pregnancy_Status",
+          "type": "Client",
+          "json_mapping": {
+            "field": "attributes.Pregnancy_Status"
+          }
+        },
+        {
+          "column_name": "Number_Of_Service_Received_Last_three_Months",
+          "type": "Client",
+          "json_mapping": {
+            "field": "attributes.Number_Of_Service_Received_Last_three_Months"
+          }
+        },
+
+        {
+          "column_name": "Service_Received_Date",
+          "type": "Client",
+          "json_mapping": {
+            "field": "attributes.Service_Received_Date"
+          }
+        },
+
+        {
+          "column_name": "Place_of_Service",
+          "type": "Client",
+          "json_mapping": {
+            "field": "attributes.Place_of_Service"
+          }
+        },
+
+        {
+          "column_name": "Denger_Signs_During_Pregnancy",
+          "type": "Client",
+          "json_mapping": {
+            "field": "attributes.Denger_Signs_During_Pregnancy"
+          }
         }
       ]
     },
+
     {
       "name": "ec_child",
       "columns": [
@@ -1174,6 +1214,14 @@
           "type": "Client",
           "json_mapping": {
             "field": "last_vaccine_name"
+          }
+        },
+
+        {
+          "column_name": "has_edema",
+          "type": "Client",
+          "json_mapping": {
+            "field": "has_edema"
           }
         }
       ]

@@ -297,7 +297,8 @@ public class FollowupFragment extends BaseProfileFragment {
                 public void onClick(View v) {
                     getActivity().getIntent().putExtra(Constants.INTENT_KEY.BASE_ENTITY_ID, householdDetails.getCaseId());
 
-                    JsonFormUtils.launchFollowUpForm(getActivity(), householdDetails.getColumnmaps(), form_list.get(position).getForm_name());
+                    //JsonFormUtils.launchFollowUpForm(getActivity(), householdDetails.getColumnmaps(), form_list.get(position).getForm_name());
+                    JsonFormUtils.launchFollowUpForm(getActivity(), form_list.get(position).getForm_name(),householdDetails.getCaseId());
                 }
             });
             TextView form_view = view.findViewById(R.id.form_name);

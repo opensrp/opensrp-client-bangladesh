@@ -1,17 +1,25 @@
 package org.smartregister.cbhc.repository;
 
 import android.content.ContentValues;
+import android.database.Cursor;
 
-import net.sqlcipher.Cursor;
 import net.sqlcipher.database.SQLiteDatabase;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+import org.smartregister.cbhc.application.AncApplication;
 import org.smartregister.cbhc.domain.FollowupForm;
+import org.smartregister.cbhc.domain.GuestMemberData;
 import org.smartregister.cbhc.domain.draft_form_object;
+import org.smartregister.commonregistry.CommonPersonObject;
+import org.smartregister.commonregistry.CommonPersonObjectClient;
+import org.smartregister.commonregistry.CommonRepository;
 import org.smartregister.repository.BaseRepository;
 import org.smartregister.repository.Repository;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Locale;
 
 public class FollowupRepository extends BaseRepository {
@@ -40,6 +48,8 @@ public class FollowupRepository extends BaseRepository {
     public FollowupRepository(Repository repository) {
         super(repository);
     }
+    private static ArrayList<String> formFieldList = new ArrayList<>();
+
     public static void createTable(SQLiteDatabase database) {
         database.execSQL(FOLLOWUP_SQL);
     }
@@ -47,6 +57,35 @@ public class FollowupRepository extends BaseRepository {
     public void saveForm(FollowupForm form) {
         SQLiteDatabase database = getWritableDatabase();
         database.insert(FOLLOWUP_TABLE_NAME,null,createFormValues(form));
+    }
+    public static JSONObject getJsonObjectFromField(String baseEntityId,String eventType){
+        formFieldList.clear();
+        String query = "select * from followup where followup.base_entity_id = '"+baseEntityId+"' and followup.name = '"+eventType+"'";
+
+        try (Cursor cursor = AncApplication.getInstance().getRepository().getReadableDatabase().rawQuery(query, new String[]{})) {
+            if (cursor != null && cursor.getCount() > 0) {
+                cursor.moveToFirst();
+                while (!cursor.isAfterLast()) {
+
+                    int formfields = cursor.getColumnIndex("formfields");
+                    formFieldList.add( cursor.isNull(formfields) ? "" : cursor.getString(formfields));
+
+                    cursor.moveToNext();
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        JSONObject jsonObject=null;
+        if(formFieldList.size()>0){
+            try {
+                jsonObject = new JSONObject(formFieldList.get(formFieldList.size()-1));
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
+
+        return jsonObject;
     }
 
     private ContentValues createFormValues(FollowupForm object) {

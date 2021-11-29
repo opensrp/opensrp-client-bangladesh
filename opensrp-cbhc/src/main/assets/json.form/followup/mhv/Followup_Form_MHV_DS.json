@@ -54,7 +54,6 @@
   "step1": {
     "title": "Member Registration",
     "fields": [
-
       {
         "key": "followup_Date",
         "openmrs_entity_parent": "",
@@ -70,96 +69,372 @@
         }
       },
       {
-        "key":"Visit_status",
-        "openmrs_entity_parent":"",
-        "openmrs_entity":"",
-        "openmrs_entity_id":"",
-        "openmrs_data_type":"text",
-        "type":"spinner",
-        "hint":"ভিজিটের অবস্থা",
-        "values":["দেখা হয়েছে ", "অন্য কেউ তথ্য দিয়েছেন ", "উত্তর দিতে রাজী হননি ", "কারো সাথে দেখা হয়নি ", "স্বামী/স্ত্রী " ],
-        "openmrs_choice_ids":{"দেখা হয়েছে ":"Met", "অন্য কেউ তথ্য দিয়েছেন ":"Anyone_else_gave_information", "উত্তর দিতে রাজী হননি ":"Refused_to_answer", "কারো সাথে দেখা হয়নি ":"Did_not_met_anyone", "স্বামী/স্ত্রী ":"Husband_or_Wife" }
-
-
-      },
-
-      {
-        "key":"Visit_status_anyone_else_who_gave_information",
-        "openmrs_entity_parent":"",
-        "openmrs_entity":"",
-        "openmrs_entity_id":"",
-        "openmrs_data_type":"text",
-        "type":"spinner",
-        "hint":"অন্য কেউ তথ্য দিয়েছেন ",
-        "values":["দেখা হয়েছে ", "অন্য কেউ তথ্য দিয়েছেন ", "উত্তর দিতে রাজী হননি ", "কারো সাথে দেখা হয়নি ", "স্বামী/স্ত্রী " ],
-        "openmrs_choice_ids":{"দেখা হয়েছে ":"Met", "অন্য কেউ তথ্য দিয়েছেন ":"Anyone_else_gave_information", "উত্তর দিতে রাজী হননি ":"Refused_to_answer", "কারো সাথে দেখা হয়নি ":"Did_not_met_anyone", "স্বামী/স্ত্রী ":"Husband_or_Wife" }
-
-      },
-
-      {
-        "key":"General_Disease_Male",
-        "openmrs_entity_parent":"",
-        "openmrs_entity":"person_attribute",
-        "openmrs_entity_id":"",
-        "openmrs_data_type":"text",
-        "type":"check_box",
-        "label":"সাধারন রোগ পুরুষ",
-        "exclusive": ["None"],
-        "options":[{"key":"High Blood Pressure","text":"উচ্চ রক্তচাপ ","value":"false","openmrs_choice_id":"High Blood Pressure"},{"key":"Diabetes","text":"ডায়াবেটিস ","value":"false","openmrs_choice_id":"Diabetes"},{"key":"Tuberculosis","text":"যক্ষ্মা ","value":"false","openmrs_choice_id":"Tuberculosis"},{"key":"Others_member_disease","text":"অন্যান্য ","value":"false","openmrs_choice_id":"Others_member_disease"}]
-
-
+        "key": "Visit_status",
+        "openmrs_entity_parent": "",
+        "openmrs_entity": "",
+        "openmrs_entity_id": "",
+        "openmrs_data_type": "text",
+        "type": "spinner",
+        "hint": "ভিজিটের অবস্থা",
+        "values": [
+          "দেখা হয়েছে",
+          "অন্য কেউ তথ্য দিয়েছেন",
+          "উত্তর দিতে রাজী হননি",
+          "কারো সাথে দেখা হয়নি",
+          "স্বামী/স্ত্রী"
+        ],
+        "openmrs_choice_ids": {
+          "দেখা হয়েছে": "Met",
+          "অন্য কেউ তথ্য দিয়েছেন": "Anyone_else_gave_information",
+          "উত্তর দিতে রাজী হননি": "Refused_to_answer",
+          "কারো সাথে দেখা হয়নি": "Did_not_met_anyone",
+          "স্বামী/স্ত্রী": "Husband_or_Wife"
+        }
       },
       {
-        "key":"General_Disease_Female",
-        "openmrs_entity_parent":"",
-        "openmrs_entity":"person_attribute",
-        "openmrs_entity_id":"",
-        "openmrs_data_type":"text",
-        "type":"check_box",
-        "label":"সাধারন রোগ মহিলা",
-        "exclusive": ["None"],
-        "options":[{"key":"High Blood Pressure","text":"উচ্চ রক্তচাপ ","value":"false","openmrs_choice_id":"High Blood Pressure"},{"key":"Diabetes","text":"ডায়াবেটিস ","value":"false","openmrs_choice_id":"Diabetes"},{"key":"Tuberculosis","text":"যক্ষ্মা ","value":"false","openmrs_choice_id":"Tuberculosis"},{"key":"Antenatal Period","text":"প্রসব পূর্ব ","value":"false","openmrs_choice_id":"Antenatal Period"},{"key":"Postnatal","text":"প্রসবোত্তর ","value":"false","openmrs_choice_id":"Postnatal"},{"key":"Others_member_disease","text":"অন্যান্য ","value":"false","openmrs_choice_id":"Others_member_disease"}]
-
-
+        "key": "Visit_status_anyone_else_who_gave_information",
+        "openmrs_entity_parent": "",
+        "openmrs_entity": "",
+        "openmrs_entity_id": "",
+        "openmrs_data_type": "text",
+        "type": "spinner",
+        "hint": "অন্য কেউ তথ্য দিয়েছেন ",
+        "values": [
+          "দেখা হয়েছে",
+          "অন্য কেউ তথ্য দিয়েছেন",
+          "উত্তর দিতে রাজী হননি",
+          "কারো সাথে দেখা হয়নি",
+          "স্বামী/স্ত্রী"
+        ],
+        "openmrs_choice_ids": {
+          "দেখা হয়েছে": "Met",
+          "অন্য কেউ তথ্য দিয়েছেন": "Anyone_else_gave_information",
+          "উত্তর দিতে রাজী হননি": "Refused_to_answer",
+          "কারো সাথে দেখা হয়নি": "Did_not_met_anyone",
+          "স্বামী/স্ত্রী": "Husband_or_Wife"
+        }
       },
       {
-        "key":"Disease_Below_2Month_Age",
-        "openmrs_entity_parent":"",
-        "openmrs_entity":"person_attribute",
-        "openmrs_entity_id":"",
-        "openmrs_data_type":"text",
-        "type":"check_box",
-        "label":"০ - ২ মাসের বাচ্চার অসুখ ",
-        "exclusive": ["None"],
-        "options":[{"key":"Very_severe_disease","text":"খুব মারাত্বক রোগ ","value":"false","openmrs_choice_id":"Very_severe_disease"},{"key":"Probable_Limited_Infection","text":"সম্ভাব্য সীমিত সংক্রামণ ","value":"false","openmrs_choice_id":"Probable_Limited_Infection"},{"key":"Jaundice","text":"জন্ডিস ","value":"false","openmrs_choice_id":"Jaundice"},{"key":"Probable_Limited_Infection","text":"পানি স্বল্পতাহীন ডায়রিয়া ","value":"false","openmrs_choice_id":"Probable_Limited_Infection"},{"key":"Bellybutton_infection","text":"নাভিতে সংক্রামন ","value":"false","openmrs_choice_id":"Bellybutton_infection"},{"key":"Injury","text":"আঘাত ","value":"false","openmrs_choice_id":"Injury"},{"key":"Fever","text":"জ্বর ","value":"false","openmrs_choice_id":"Fever"},{"key":"Pneumonia","text":"নিউমোনিয়া ","value":"false","openmrs_choice_id":"Pneumonia"},{"key":"Pneumonia, unspec.","text":"নিউমোনিয়া নয় সর্দি, কাশী ","value":"false","openmrs_choice_id":"Pneumonia, unspec."},{"key":"Others_member_disease","text":"অন্যান্য ","value":"false","openmrs_choice_id":"Others_member_disease"},{"key":"None","text":"নেই ","value":"false","openmrs_choice_id":"None"}]
-
+        "key": "General_Disease_Male",
+        "openmrs_entity_parent": "",
+        "openmrs_entity": "",
+        "openmrs_entity_id": "",
+        "openmrs_data_type": "text",
+        "type": "check_box",
+        "label": "সাধারন রোগ পুরুষ",
+        "exclusive": [
+          "None"
+        ],
+        "options": [
+          {
+            "key": "High Blood Pressure",
+            "text": "উচ্চ রক্তচাপ ",
+            "value": "false",
+            "openmrs_choice_id": "High Blood Pressure"
+          },
+          {
+            "key": "Diabetes",
+            "text": "ডায়াবেটিস ",
+            "value": "false",
+            "openmrs_choice_id": "Diabetes"
+          },
+          {
+            "key": "Tuberculosis",
+            "text": "যক্ষ্মা ",
+            "value": "false",
+            "openmrs_choice_id": "Tuberculosis"
+          },
+          {
+            "key": "Others_member_disease",
+            "text": "অন্যান্য ",
+            "value": "false",
+            "openmrs_choice_id": "Others_member_disease"
+          }
+        ]
       },
-
       {
-        "key":"Disease_2Month_5Years",
-        "openmrs_entity_parent":"",
-        "openmrs_entity":"person_attribute",
-        "openmrs_entity_id":"",
-        "openmrs_data_type":"text",
-        "type":"check_box",
-        "label":"২ মাস থেকে ৫ বছরের বাচ্চার অসুখ ",
-        "exclusive": ["None"],
-        "options":[{"key":"Very_severe_disease","text":"খুব মারাত্বক রোগ ","value":"false","openmrs_choice_id":"Very_severe_disease"},{"key":"Pneumonia","text":"নিউমোনিয়া ","value":"false","openmrs_choice_id":"Pneumonia"},{"key":"Pneumonia, unspec.","text":"নিউমোনিয়া নয় সর্দি, কাশী ","value":"false","openmrs_choice_id":"Pneumonia, unspec."},{"key":"dieriaanddysentry","text":"ডায়ারিয়া ও আমাশয় ","value":"false","openmrs_choice_id":"dieriaanddysentry"},{"key":"Fever","text":"জ্বর ","value":"false","openmrs_choice_id":"Fever"},{"key":"maleria","text":"জ্বর (ম্যালারিয়া) ","value":"false","openmrs_choice_id":"maleria"},{"key":" Hearing loss, unspec.","text":"কানের সমস্যা ","value":"false","openmrs_choice_id":" Hearing loss, unspec."},{"key":"Measles","text":"হাম ","value":"false","openmrs_choice_id":"Measles"},{"key":"Bellybutton_infection","text":"নাভিতে সংক্রামন ","value":"false","openmrs_choice_id":"Bellybutton_infection"},{"key":"Conjunctivitis, unspec.","text":"চোখ উঠা ","value":"false","openmrs_choice_id":"Conjunctivitis, unspec."},{"key":"Jaundice","text":"জন্ডিস ","value":"false","openmrs_choice_id":"Jaundice"},{"key":"Injury","text":"আঘাত ","value":"false","openmrs_choice_id":"Injury"},{"key":"Malnutrition","text":"অপুষ্টি ","value":"false","openmrs_choice_id":"Malnutrition"},{"key":"Anemia","text":"রক্ত স্বল্পতা ","value":"false","openmrs_choice_id":"Anemia"},{"key":"Others_member_disease","text":"অন্যান্য ","value":"false","openmrs_choice_id":"Others_member_disease"},{"key":"None","text":"নেই ","value":"false","openmrs_choice_id":"None"}]
-
+        "key": "General_Disease_Female",
+        "openmrs_entity_parent": "",
+        "openmrs_entity": "",
+        "openmrs_entity_id": "",
+        "openmrs_data_type": "text",
+        "type": "check_box",
+        "label": "সাধারন রোগ মহিলা",
+        "exclusive": [
+          "None"
+        ],
+        "options": [
+          {
+            "key": "High Blood Pressure",
+            "text": "উচ্চ রক্তচাপ ",
+            "value": "false",
+            "openmrs_choice_id": "High Blood Pressure"
+          },
+          {
+            "key": "Diabetes",
+            "text": "ডায়াবেটিস ",
+            "value": "false",
+            "openmrs_choice_id": "Diabetes"
+          },
+          {
+            "key": "Tuberculosis",
+            "text": "যক্ষ্মা ",
+            "value": "false",
+            "openmrs_choice_id": "Tuberculosis"
+          },
+          {
+            "key": "Antenatal Period",
+            "text": "প্রসব পূর্ব ",
+            "value": "false",
+            "openmrs_choice_id": "Antenatal Period"
+          },
+          {
+            "key": "Postnatal",
+            "text": "প্রসবোত্তর ",
+            "value": "false",
+            "openmrs_choice_id": "Postnatal"
+          },
+          {
+            "key": "Others_member_disease",
+            "text": "অন্যান্য ",
+            "value": "false",
+            "openmrs_choice_id": "Others_member_disease"
+          }
+        ]
       },
       {
-        "key":"Place_of_Refer",
-        "openmrs_entity_parent":"",
-        "openmrs_entity":"",
-        "openmrs_entity_id":"",
-        "openmrs_data_type":"text",
-        "type":"spinner",
-        "hint":"রেফারের স্থান",
-        "values":["কমিউনিটি ক্লিনিক ", "ইউনিয়ন উপস্বাস্থ্য কেন্দ্র ", "ইউনিয়ন পরিবার কল্যাণ কেন্দ্র ", "ইউনিয়ন স্বাস্থ্য ও পরিবার কল্যাণ কেন্দ্র ", "মা ও শিশু কল্যাণ কেন্দ্র ", "১০ শয্যা বিশিষ্ট হাসপাতাল ","২০ শয্যা বিশিষ্ট হাসপাতাল ","উপজেলা স্বাস্থ্য কমপ্লেক্স ","সদর হাসপাতাল ","মেডিকেল কলেজ হাসপাতাল ","বেসরকারী ক্লিনিক/হাসপাতাল ","এনজিও ","বিশেষায়িত হাসপাতাল ","অন্যান্য ","রেফার করা হয়নি "],
-        "openmrs_choice_ids":{"কমিউনিটি ক্লিনিক ":"Community_Clinic", "ইউনিয়ন উপস্বাস্থ্য কেন্দ্র ":"Union_Sub_Center", "ইউনিয়ন পরিবার কল্যাণ কেন্দ্র ":"Union_Family_Welfare_Center", "ইউনিয়ন স্বাস্থ্য ও পরিবার কল্যাণ কেন্দ্র ":"Union_Health_and_Family_Welfare_Center", "মা ও শিশু কল্যাণ কেন্দ্র ":"Metarnal_and_Child_Wellfare_Center", "১০ শয্যা বিশিষ্ট হাসপাতাল ":"10_Bed_Hospital","২০ শয্যা বিশিষ্ট হাসপাতাল ":"20_Beds_Hospital","উপজেলা স্বাস্থ্য কমপ্লেক্স ":"Upazila_Health_Complex","সদর হাসপাতাল ":"District_Hospital","মেডিকেল কলেজ হাসপাতাল ":"Medical_College_and_Hospital","বেসরকারী ক্লিনিক/হাসপাতাল ":"Private_Clinic_and_Hospital","এনজিও ":"Non-governmental_Organization","বিশেষায়িত হাসপাতাল ":"Specialized_Hospital","অন্যান্য ":"Others_Health_Facility","রেফার করা হয়নি ":"Not_referred"}
-
+        "key": "Disease_Below_2Month_Age",
+        "openmrs_entity_parent": "",
+        "openmrs_entity": "",
+        "openmrs_entity_id": "",
+        "openmrs_data_type": "text",
+        "type": "check_box",
+        "label": "০ - ২ মাসের বাচ্চার অসুখ ",
+        "exclusive": [
+          "None"
+        ],
+        "options": [
+          {
+            "key": "Very_severe_disease",
+            "text": "খুব মারাত্বক রোগ ",
+            "value": "false",
+            "openmrs_choice_id": "Very_severe_disease"
+          },
+          {
+            "key": "Probable_Limited_Infection",
+            "text": "সম্ভাব্য সীমিত সংক্রামণ ",
+            "value": "false",
+            "openmrs_choice_id": "Probable_Limited_Infection"
+          },
+          {
+            "key": "Jaundice",
+            "text": "জন্ডিস ",
+            "value": "false",
+            "openmrs_choice_id": "Jaundice"
+          },
+          {
+            "key": "Probable_Limited_Infection",
+            "text": "পানি স্বল্পতাহীন ডায়রিয়া ",
+            "value": "false",
+            "openmrs_choice_id": "Probable_Limited_Infection"
+          },
+          {
+            "key": "Bellybutton_infection",
+            "text": "নাভিতে সংক্রামন ",
+            "value": "false",
+            "openmrs_choice_id": "Bellybutton_infection"
+          },
+          {
+            "key": "Injury",
+            "text": "আঘাত ",
+            "value": "false",
+            "openmrs_choice_id": "Injury"
+          },
+          {
+            "key": "Fever",
+            "text": "জ্বর ",
+            "value": "false",
+            "openmrs_choice_id": "Fever"
+          },
+          {
+            "key": "Pneumonia",
+            "text": "নিউমোনিয়া ",
+            "value": "false",
+            "openmrs_choice_id": "Pneumonia"
+          },
+          {
+            "key": "Pneumonia, unspec.",
+            "text": "নিউমোনিয়া নয় সর্দি, কাশী ",
+            "value": "false",
+            "openmrs_choice_id": "Pneumonia, unspec."
+          },
+          {
+            "key": "Others_member_disease",
+            "text": "অন্যান্য ",
+            "value": "false",
+            "openmrs_choice_id": "Others_member_disease"
+          },
+          {
+            "key": "None",
+            "text": "নেই ",
+            "value": "false",
+            "openmrs_choice_id": "None"
+          }
+        ]
+      },
+      {
+        "key": "Disease_2Month_5Years",
+        "openmrs_entity_parent": "",
+        "openmrs_entity": "",
+        "openmrs_entity_id": "",
+        "openmrs_data_type": "text",
+        "type": "check_box",
+        "label": "২ মাস থেকে ৫ বছরের বাচ্চার অসুখ ",
+        "exclusive": [
+          "None"
+        ],
+        "options": [
+          {
+            "key": "Very_severe_disease",
+            "text": "খুব মারাত্বক রোগ ",
+            "value": "false",
+            "openmrs_choice_id": "Very_severe_disease"
+          },
+          {
+            "key": "Pneumonia",
+            "text": "নিউমোনিয়া ",
+            "value": "false",
+            "openmrs_choice_id": "Pneumonia"
+          },
+          {
+            "key": "Pneumonia, unspec.",
+            "text": "নিউমোনিয়া নয় সর্দি, কাশী ",
+            "value": "false",
+            "openmrs_choice_id": "Pneumonia, unspec."
+          },
+          {
+            "key": "dieriaanddysentry",
+            "text": "ডায়ারিয়া ও আমাশয় ",
+            "value": "false",
+            "openmrs_choice_id": "dieriaanddysentry"
+          },
+          {
+            "key": "Fever",
+            "text": "জ্বর ",
+            "value": "false",
+            "openmrs_choice_id": "Fever"
+          },
+          {
+            "key": "maleria",
+            "text": "জ্বর (ম্যালারিয়া) ",
+            "value": "false",
+            "openmrs_choice_id": "maleria"
+          },
+          {
+            "key": " Hearing loss, unspec.",
+            "text": "কানের সমস্যা ",
+            "value": "false",
+            "openmrs_choice_id": " Hearing loss, unspec."
+          },
+          {
+            "key": "Measles",
+            "text": "হাম ",
+            "value": "false",
+            "openmrs_choice_id": "Measles"
+          },
+          {
+            "key": "Bellybutton_infection",
+            "text": "নাভিতে সংক্রামন ",
+            "value": "false",
+            "openmrs_choice_id": "Bellybutton_infection"
+          },
+          {
+            "key": "Conjunctivitis, unspec.",
+            "text": "চোখ উঠা ",
+            "value": "false",
+            "openmrs_choice_id": "Conjunctivitis, unspec."
+          },
+          {
+            "key": "Jaundice",
+            "text": "জন্ডিস ",
+            "value": "false",
+            "openmrs_choice_id": "Jaundice"
+          },
+          {
+            "key": "Injury",
+            "text": "আঘাত ",
+            "value": "false",
+            "openmrs_choice_id": "Injury"
+          },
+          {
+            "key": "Malnutrition",
+            "text": "অপুষ্টি ",
+            "value": "false",
+            "openmrs_choice_id": "Malnutrition"
+          },
+          {
+            "key": "Anemia",
+            "text": "রক্ত স্বল্পতা ",
+            "value": "false",
+            "openmrs_choice_id": "Anemia"
+          },
+          {
+            "key": "Others_member_disease",
+            "text": "অন্যান্য ",
+            "value": "false",
+            "openmrs_choice_id": "Others_member_disease"
+          },
+          {
+            "key": "None",
+            "text": "নেই ",
+            "value": "false",
+            "openmrs_choice_id": "None"
+          }
+        ]
+      },
+      {
+        "key": "Place_of_Refer",
+        "openmrs_entity_parent": "",
+        "openmrs_entity": "",
+        "openmrs_entity_id": "",
+        "openmrs_data_type": "text",
+        "type": "spinner",
+        "hint": "রেফারের স্থান",
+        "values": [
+          "কমিউনিটি ক্লিনিক",
+          "ইউনিয়ন উপস্বাস্থ্য কেন্দ্র",
+          "ইউনিয়ন পরিবার কল্যাণ কেন্দ্র",
+          "ইউনিয়ন স্বাস্থ্য ও পরিবার কল্যাণ কেন্দ্র",
+          "মা ও শিশু কল্যাণ কেন্দ্র",
+          "১০ শয্যা বিশিষ্ট হাসপাতাল",
+          "২০ শয্যা বিশিষ্ট হাসপাতাল",
+          "উপজেলা স্বাস্থ্য কমপ্লেক্স",
+          "সদর হাসপাতাল",
+          "মেডিকেল কলেজ হাসপাতাল",
+          "বেসরকারী ক্লিনিক/হাসপাতাল",
+          "এনজিও",
+          "বিশেষায়িত হাসপাতাল",
+          "অন্যান্য",
+          "রেফার করা হয়নি"
+        ],
+        "openmrs_choice_ids": {
+          "কমিউনিটি ক্লিনিক": "Community_Clinic",
+          "ইউনিয়ন উপস্বাস্থ্য কেন্দ্র": "Union_Sub_Center",
+          "ইউনিয়ন পরিবার কল্যাণ কেন্দ্র": "Union_Family_Welfare_Center",
+          "ইউনিয়ন স্বাস্থ্য ও পরিবার কল্যাণ কেন্দ্র": "Union_Health_and_Family_Welfare_Center",
+          "মা ও শিশু কল্যাণ কেন্দ্র": "Metarnal_and_Child_Wellfare_Center",
+          "১০ শয্যা বিশিষ্ট হাসপাতাল": "10_Bed_Hospital",
+          "২০ শয্যা বিশিষ্ট হাসপাতাল": "20_Beds_Hospital",
+          "উপজেলা স্বাস্থ্য কমপ্লেক্স": "Upazila_Health_Complex",
+          "সদর হাসপাতাল": "District_Hospital",
+          "মেডিকেল কলেজ হাসপাতাল": "Medical_College_and_Hospital",
+          "বেসরকারী ক্লিনিক/হাসপাতাল": "Private_Clinic_and_Hospital",
+          "এনজিও": "Non-governmental_Organization",
+          "বিশেষায়িত হাসপাতাল": "Specialized_Hospital",
+          "অন্যান্য": "Others_Health_Facility",
+          "রেফার করা হয়নি": "Not_referred"
+        }
       }
-
-      ]
+    ]
   }
 }

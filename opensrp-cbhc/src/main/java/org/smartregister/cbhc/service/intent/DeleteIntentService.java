@@ -178,7 +178,7 @@ public class DeleteIntentService extends IntentService {
             @Override
             protected Object doInBackground(Object[] objects) {
 
-                String[] tablename = {"ec_details", "ec_household", "ec_household_search", "ec_woman", "ec_woman_search", "ec_child", "ec_child_search", "ec_member", "ec_member_search"};
+                String[] tablename = {"ec_household", "ec_household_search", "ec_woman", "ec_woman_search", "ec_child", "ec_child_search", "ec_member", "ec_member_search"};
                 AncRepository repo = (AncRepository) AncApplication.getInstance().getRepository();
                 SQLiteDatabase db = repo.getReadableDatabase();
                 if (!ArrayUtils.isEmpty(ids)) {
