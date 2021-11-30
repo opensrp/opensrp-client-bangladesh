@@ -56,7 +56,7 @@ public class ChildListFragment extends Fragment implements ChildListContract.Vie
     //TODO need to remove this query
     private String selectQuery = "Select child.id as _id , child.relationalid , child.Patient_Identifier, child.first_name , child.last_name , child.dob ,child.gender, child.PregnancyStatus, child.tasks, child.relation_with_household as relation, child.age as age, NULL as MaritalStatus, child.camp_type, " +
             "child.child_status,child.child_weight,child.child_height,child.child_muac,child.child_muac,child.last_vaccine_date,child.last_vaccine_name " +
-            "FROM ec_child as child order by child.last_interacted_with DESC";
+            "FROM ec_child as child";
     //private Childl
 
     public ChildListFragment() {
@@ -72,7 +72,11 @@ public class ChildListFragment extends Fragment implements ChildListContract.Vie
     @Override
     public void onResume() {
         super.onResume();
-        presenter.fetchChildList(selectQuery);
+        if(!fromFilter){
+            presenter.fetchChildList(selectQuery+" order by child.last_interacted_with DESC");
+            fromFilter = false;
+        }
+
     }
 
     @Override
@@ -180,7 +184,7 @@ public class ChildListFragment extends Fragment implements ChildListContract.Vie
             if(!selectedType.isEmpty()){
                 presenter.fetchChildList(selectQuery+" where child.camp_type = '"+selectedType+"'"+sortQuery);
             }else{
-                presenter.fetchChildList(selectQuery+" "+sortQuery);
+                presenter.fetchChildList(selectQuery+sortQuery);
             }
             fragmentManager.popBackStack();
         }

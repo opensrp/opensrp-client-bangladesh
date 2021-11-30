@@ -5,8 +5,7 @@ public class ReportData {
     String title;
     String subTitle;
 
-    public ReportData(int image, String title, String subTitle, int color) {
-        this.image = image;
+    public ReportData(String title, String subTitle, int color) {
         this.title = title;
         this.subTitle = subTitle;
         this.color = color;
