@@ -132,7 +132,7 @@ public class ReportFragment extends Fragment {
 
         reportDataList.add(new ReportData(R.drawable.male_child_cbhc,decimalFormat.format((overWeightChild*100.0)/gmpChildren),"% of children who are overweight",R.color.black));
         reportDataList.add(new ReportData(R.drawable.male_child_cbhc,decimalFormat.format((underWeightChild*100.0)/gmpChildren),"% of children who are Severly Underweight",R.color.black));
-        reportDataList.add(new ReportData(R.drawable.male_child_cbhc,decimalFormat.format((severlyStunted*100.0)/totalChild),"% of children who are Severly Stunted",R.color.black));
+        reportDataList.add(new ReportData(R.drawable.male_child_cbhc,decimalFormat.format((severlyStunted*100.0)/gmpChildren),"% of children who are Severly Stunted",R.color.black));
 
         reportRv.setAdapter(new ReportRecyclerViewAdapter(getActivity(),reportDataList));
     }
