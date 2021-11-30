@@ -34,7 +34,6 @@ public class ReportRecyclerViewAdapter extends RecyclerView.Adapter<ReportRecycl
     public void onBindViewHolder(@NonNull ReportRecyclerViewAdapter.Holder holder, int i) {
         ReportData reportData = arrayList.get(i);
 
-        holder.thumbnail.setImageResource(reportData.getImage());
         holder.thumbnail.setColorFilter(ContextCompat.getColor(context, reportData.getColor()));
 
         holder.title.setText(reportData.getTitle());
