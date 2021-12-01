@@ -42,6 +42,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 import org.smartregister.cbhc.R;
 import org.smartregister.cbhc.activity.BaseRegisterActivity;
+import org.smartregister.cbhc.activity.BlocksDialog;
 import org.smartregister.cbhc.activity.ChildListMainActivity;
 import org.smartregister.cbhc.activity.GrowthReportActivity;
 import org.smartregister.cbhc.activity.GuestMemberActivity;
@@ -286,6 +287,15 @@ public abstract class BaseRegisterFragment extends RecyclerViewFragment implemen
                     @Override
                     public void onClick(View view) {
                         callAnnouncementApi();
+                        drawer.closeDrawer(Gravity.LEFT);
+                    }
+                });
+
+        drawer.findViewById(R.id.update_block_lay)
+                .setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        startActivity(new Intent(getActivity(), BlocksDialog.class));
                         drawer.closeDrawer(Gravity.LEFT);
                     }
                 });
