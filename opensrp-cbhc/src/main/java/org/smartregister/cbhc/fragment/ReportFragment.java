@@ -1,5 +1,7 @@
 package org.smartregister.cbhc.fragment;
 
+import static org.smartregister.growthmonitoring.domain.ZScore.getZScoreText;
+
 import android.database.Cursor;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -64,8 +66,6 @@ public class ReportFragment extends Fragment {
     private void populateReportList() {
         childDataList.clear();
         reportDataList.clear();
-
-        AncApplication.getInstance().getRepository().getReadableDatabase();
         String query = "select * from ec_child";
         Cursor cursor = commonRepository.rawCustomQueryForAdapter(query);
 
@@ -90,7 +90,7 @@ public class ReportFragment extends Fragment {
             }
 
             totalChild = cursor.getCount();
-            reportDataList.add(new ReportData(R.drawable.male_child_cbhc,String.valueOf(totalChild),"Total Registered Children(0-5 years)",R.color.black));
+            reportDataList.add(new ReportData(String.valueOf(totalChild),"Total Registered Children(0-5 years)",R.color.black));
 
         }
 
@@ -107,7 +107,7 @@ public class ReportFragment extends Fragment {
                 normalChild++;
             }
 
-            if(childData.getHas_edema().equals("1")){
+            if(childData.getHas_edema().equals("true")){
                 edemaChild++;
             }
 
@@ -124,22 +124,22 @@ public class ReportFragment extends Fragment {
             }
         }
         DecimalFormat decimalFormat = new DecimalFormat("##.#");
-        reportDataList.add(new ReportData(R.drawable.male_child_cbhc,decimalFormat.format((gmpChildren*100.0)/totalChild),"% of children reaching for GMP",R.color.black));
-        reportDataList.add(new ReportData(R.drawable.male_child_cbhc,decimalFormat.format((normalChild*100.0)/gmpChildren),"% of children who have normal growth",R.color.green));
-        reportDataList.add(new ReportData(R.drawable.male_child_cbhc,decimalFormat.format((samChild*100.0)/gmpChildren),"% of children who are SAM",R.color.red));
-        reportDataList.add(new ReportData(R.drawable.male_child_cbhc,decimalFormat.format((mamChild*100.0)/gmpChildren),"% of children who are MAM",R.color.yellow));
-        reportDataList.add(new ReportData(R.drawable.male_child_cbhc,decimalFormat.format((edemaChild*100.0)/gmpChildren),"% of children who have Edema",R.color.black));
+        reportDataList.add(new ReportData(decimalFormat.format((gmpChildren*100.0)/totalChild).replace("NaN","0"),"% of children reaching for GMP",R.color.black));
+        reportDataList.add(new ReportData(decimalFormat.format((normalChild*100.0)/gmpChildren).replace("NaN","0"),"% of children who have normal growth",R.color.green));
+        reportDataList.add(new ReportData(decimalFormat.format((samChild*100.0)/gmpChildren).replace("NaN","0"),"% of children who are SAM",R.color.red));
+        reportDataList.add(new ReportData(decimalFormat.format((mamChild*100.0)/gmpChildren).replace("NaN","0"),"% of children who are MAM",R.color.yellow));
+        reportDataList.add(new ReportData(decimalFormat.format((edemaChild*100.0)/gmpChildren).replace("NaN","0"),"% of children who have Edema",R.color.black));
 
-        reportDataList.add(new ReportData(R.drawable.male_child_cbhc,decimalFormat.format((overWeightChild*100.0)/gmpChildren),"% of children who are overweight",R.color.black));
-        reportDataList.add(new ReportData(R.drawable.male_child_cbhc,decimalFormat.format((underWeightChild*100.0)/gmpChildren),"% of children who are Severly Underweight",R.color.black));
-        reportDataList.add(new ReportData(R.drawable.male_child_cbhc,decimalFormat.format((severlyStunted*100.0)/totalChild),"% of children who are Severly Stunted",R.color.black));
+        reportDataList.add(new ReportData(decimalFormat.format((overWeightChild*100.0)/gmpChildren).replace("NaN","0"),"% of children who are overweight",R.color.black));
+        reportDataList.add(new ReportData(decimalFormat.format((underWeightChild*100.0)/gmpChildren).replace("NaN","0"),"% of children who are Severly Underweight",R.color.black));
+        reportDataList.add(new ReportData(decimalFormat.format((severlyStunted*100.0)/gmpChildren).replace("NaN","0"),"% of children who are Severly Stunted",R.color.black));
 
         reportRv.setAdapter(new ReportRecyclerViewAdapter(getActivity(),reportDataList));
     }
 
 
 
-    public static String getZScoreText(final double absScore) {
+/*    public static String getZScoreText(final double absScore) {
         //double absScore = Math.abs(zScore);
         if (absScore <= -3.0) {
             Log.v("ZSCORE", "zscore:" + absScore + ":color:red");
@@ -157,6 +157,6 @@ public class ReportFragment extends Fragment {
             Log.v("ZSCORE", "zscore:" + absScore + ":color:black");
             return "OVER WEIGHT";
         }
-    }
+    }*/
 }
 
