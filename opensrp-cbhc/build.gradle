@@ -50,6 +50,9 @@ android {
             }
         }
     }
+    packagingOptions {
+        exclude 'META-INF/proguard/androidx-annotations.pro'
+    }
     dexOptions {
         javaMaxHeapSize "4g"
     }
