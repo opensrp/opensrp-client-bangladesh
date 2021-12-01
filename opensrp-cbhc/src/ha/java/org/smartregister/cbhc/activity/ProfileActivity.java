@@ -174,11 +174,13 @@ Utils.appendLog(getClass().getName(),e);
     }
 
     public void refreshProfileViews() {
+        //householdDetails.getColumnmaps().putAll(AncApplication.getInstance().getContext().detailsRepository().getAllDetailsForClient(householdDetails.entityId()));
+
         org.smartregister.util.Utils.startAsyncTask(new AsyncTask() {
             @Override
             protected Object doInBackground(Object[] objects) {
 //                householdDetails = CommonPersonObjectToClient(AncApplication.getInstance().getContext().commonrepository(DBConstants.HOUSEHOLD_TABLE_NAME).findByBaseEntityId(householdDetails.entityId()));
-                householdDetails.getColumnmaps().putAll(AncApplication.getInstance().getContext().detailsRepository().getAllDetailsForClient(householdDetails.entityId()));
+                //householdDetails.getColumnmaps().putAll(AncApplication.getInstance().getContext().detailsRepository().getAllDetailsForClient(householdDetails.entityId()));
                 return null;
             }
 
@@ -627,7 +629,7 @@ Utils.appendLog(getClass().getName(),e);
         super.onResume();
 //        String baseEntityId = getIntent().getStringExtra(Constants.INTENT_KEY.BASE_ENTITY_ID);
 //        mProfilePresenter.refreshProfileView(baseEntityId);
-//        refreshProfileViews();
+        refreshProfileViews();
     }
 
     @Override

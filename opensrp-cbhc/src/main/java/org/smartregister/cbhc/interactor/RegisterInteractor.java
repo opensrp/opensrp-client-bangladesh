@@ -4,6 +4,8 @@ import android.content.ContentValues;
 import android.support.annotation.VisibleForTesting;
 import android.util.Log;
 import android.util.Pair;
+
+import org.smartregister.cbhc.sync.AncClientProcessorForJava;
 import org.smartregister.cbhc.util.JsonFormUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.tuple.Triple;
@@ -46,7 +48,7 @@ public class RegisterInteractor implements RegisterContract.Interactor {
     private HealthIdRepository healthIdRepository;
     private ECSyncHelper syncHelper;
     private AllSharedPreferences allSharedPreferences;
-    private ClientProcessorForJava clientProcessorForJava;
+    private AncClientProcessorForJava clientProcessorForJava;
     private AllCommonsRepository allCommonsRepository;
 
     @VisibleForTesting
@@ -398,7 +400,7 @@ public class RegisterInteractor implements RegisterContract.Interactor {
         return clientProcessorForJava;
     }
 
-    public void setClientProcessorForJava(ClientProcessorForJava clientProcessorForJava) {
+    public void setClientProcessorForJava(AncClientProcessorForJava clientProcessorForJava) {
         this.clientProcessorForJava = clientProcessorForJava;
     }
 

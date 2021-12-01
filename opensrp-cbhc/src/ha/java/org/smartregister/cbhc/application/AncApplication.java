@@ -29,6 +29,7 @@ import org.smartregister.cbhc.repository.HealthIdRepository;
 import org.smartregister.cbhc.repository.UniqueIdRepository;
 import org.smartregister.cbhc.service.intent.PullHealthIdsIntentService;
 import org.smartregister.cbhc.service.intent.PullUniqueIdsIntentService;
+import org.smartregister.cbhc.sync.AncClientProcessorForJava;
 import org.smartregister.cbhc.sync.AncSyncConfiguration;
 import org.smartregister.cbhc.util.Constants;
 import org.smartregister.cbhc.util.DBConstants;
@@ -90,7 +91,7 @@ public class AncApplication extends DrishtiApplication implements TimeChangedBro
     private HealthIdRepository healthIdRepository;
     private ECSyncHelper ecSyncHelper;
     private Compressor compressor;
-    private ClientProcessorForJava clientProcessorForJava;
+    private AncClientProcessorForJava clientProcessorForJava;
     private String password;
     private String DEFAULT_PASSWORD = "1e815e13-f6ca-42ef-97c8-83394c201a47";
     // This Broadcast Receiver is the handler called whenever an Intent with an action named PullConfigurableViewsIntentService.EVENT_SYNC_COMPLETE is broadcast.
@@ -339,9 +340,9 @@ public class AncApplication extends DrishtiApplication implements TimeChangedBro
         return compressor;
     }
 
-    public ClientProcessorForJava getClientProcessorForJava() {
+    public AncClientProcessorForJava getClientProcessorForJava() {
         if (clientProcessorForJava == null) {
-            clientProcessorForJava = ClientProcessorForJava.getInstance(getApplicationContext());
+            clientProcessorForJava = /*ClientProcessorForJava.getInstance(getApplicationContext())*/AncClientProcessorForJava.getInstance(getApplicationContext());
         }
         return clientProcessorForJava;
     }

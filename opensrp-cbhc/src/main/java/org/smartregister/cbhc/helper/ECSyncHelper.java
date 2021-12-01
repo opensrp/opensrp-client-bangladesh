@@ -84,6 +84,7 @@ public class ECSyncHelper implements PrefsHelper {
 
     public List<EventClient> getEvents(Date lastSyncDate, String syncStatus) {
         try {
+            return eventClientRepository.fetchEventClients(lastSyncDate, syncStatus);
         } catch (Exception e) {
             Utils.appendLog(getClass().getName(), e);
             Log.e(getClass().getName(), "Exception", e);
