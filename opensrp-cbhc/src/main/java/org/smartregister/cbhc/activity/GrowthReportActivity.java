@@ -15,6 +15,7 @@ import org.smartregister.cbhc.R;
 import org.smartregister.cbhc.fragment.GrowthFalteringTrendReportFragment;
 import org.smartregister.cbhc.fragment.KeyAchievementFragment;
 import org.smartregister.cbhc.fragment.ReportFragment;
+import org.smartregister.cbhc.fragment.ReportGrowthFalterFragment;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -135,7 +136,7 @@ public class GrowthReportActivity extends AppCompatActivity {
        // adapter.addFragment(new KeyAchievementFragment(), "Key Achievement");
         adapter.addFragment(new ReportFragment(), "Key Achievement");
        // adapter.addFragment(new ReportGeoMapFragment(), "Geo Map");
-        adapter.addFragment(new GrowthFalteringTrendReportFragment(), "Growth Faltering Trend");
+        adapter.addFragment(new ReportGrowthFalterFragment(), "Growth Faltering Trend");
         viewPager.setAdapter(adapter);
     }
 

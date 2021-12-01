@@ -1,5 +1,7 @@
 package org.smartregister.cbhc.fragment;
 
+import static org.smartregister.growthmonitoring.domain.ZScore.getZScoreText;
+
 import android.database.Cursor;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -64,8 +66,6 @@ public class ReportFragment extends Fragment {
     private void populateReportList() {
         childDataList.clear();
         reportDataList.clear();
-
-        AncApplication.getInstance().getRepository().getReadableDatabase();
         String query = "select * from ec_child";
         Cursor cursor = commonRepository.rawCustomQueryForAdapter(query);
 
@@ -139,7 +139,7 @@ public class ReportFragment extends Fragment {
 
 
 
-    public static String getZScoreText(final double absScore) {
+/*    public static String getZScoreText(final double absScore) {
         //double absScore = Math.abs(zScore);
         if (absScore <= -3.0) {
             Log.v("ZSCORE", "zscore:" + absScore + ":color:red");
@@ -157,6 +157,6 @@ public class ReportFragment extends Fragment {
             Log.v("ZSCORE", "zscore:" + absScore + ":color:black");
             return "OVER WEIGHT";
         }
-    }
+    }*/
 }
 
