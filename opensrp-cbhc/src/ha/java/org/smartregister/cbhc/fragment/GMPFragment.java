@@ -123,7 +123,7 @@ public class GMPFragment extends BaseProfileFragment implements WeightActionList
         refreshEditWeightLayout(false);
         refreshEditHeightLayout(false);
         refreshEditMuacLayout(false);
-        updateProfileColor(false);
+        updateProfileColor();
     }
 
 //    String muacText;
@@ -253,49 +253,37 @@ public class GMPFragment extends BaseProfileFragment implements WeightActionList
         return muakText;
 
     }
+    private void updateProfileColor() {
+        String resultText = getOverallStatus();
+        Log.v("CHILD_STATUS", " resultText>>>"+resultText);
+        if(!resultText.isEmpty()){
+            GrowthUtil.updateChildStatus(childDetails.entityId(),resultText);
+            int resultColor = ZScore.getZscoreColorByText(resultText);
+            updateChildProfileColor(resultColor,resultText);
+        }
 
-    private void updateProfileColor(boolean isNeedToUpdateStatus) {
-        Log.v("MUAC", weightText+" "+heightText+ " "+ muakText);
-        String resultText = "";
-        int resultColor = 0;
-
+    }
+    private String getOverallStatus(){
+        if(muakText.isEmpty()&&weightText.isEmpty()&&heightText.isEmpty()){
+            return "";
+        }
         if(weightText.isEmpty() && heightText.isEmpty()){
-            resultText = muakText;
-            resultColor = muakColor;
+            return muakText;
         }
         if(weightText.contains("OVER WEIGHT") || heightText.contains("OVER WEIGHT")){
-            resultText = "OVER WEIGHT";
-            resultColor = ZScore.getZscoreColorByText(resultText);
+            return "OVER WEIGHT";
         }
-        else if(weightText.contains("SAM") || heightText.contains("SAM")){
-            resultText= "SAM";
-            resultColor = ZScore.getZscoreColorByText(resultText);
+        if(weightText.contains("SAM") || heightText.contains("SAM") || muakText.contains("SAM")){
+            return "SAM";
         }
-        else if(muakText.contains("SAM")){
-            resultText = muakText;
-            resultColor = muakColor;
+        if(weightText.contains("MAM") || heightText.contains("MAM")| muakText.contains("MAM")){
+            return "MAM";
         }
-        else if(muakText.contains("MAM")){
-            resultText = muakText;
-            resultColor = muakColor;
+        if(weightText.contains("DARK YELLOW") || heightText.contains("DARK YELLOW")){
+            return "DARK YELLOW";
         }
-        else if(weightText.contains("MAM") || heightText.contains("MAM")){
-            resultText = "MAM";
-            resultColor = ZScore.getZscoreColorByText(resultText);
-        }
-        else if(weightText.contains("DARK YELLOW") || heightText.contains("DARK YELLOW")){
-            resultText = "DARK YELLOW";
-            resultColor = ZScore.getZscoreColorByText(resultText);
-        }
-        else {
-            resultText = "NORMAL";
-            resultColor = ZScore.getZscoreColorByText(resultText);
-        }
+        return "NORMAL";
 
-        if(isNeedToUpdateStatus && !resultText.isEmpty()){
-            GrowthUtil.updateChildStatus(resultText,childDetails.entityId());
-        }
-        updateChildProfileColor(resultColor,resultText);
     }
     private void updateChildProfileColor(int resultColor,String text){
         if(mActivity!=null && !mActivity.isFinishing()){
@@ -359,7 +347,7 @@ public class GMPFragment extends BaseProfileFragment implements WeightActionList
         HeightIntentServiceJob.scheduleJobImmediately(HeightIntentServiceJob.TAG);
 
         String text = refreshEditHeightLayout(true);
-        updateProfileColor(true);
+        updateProfileColor();
         showGMPDialog(text);
     }
 
@@ -397,7 +385,7 @@ public class GMPFragment extends BaseProfileFragment implements WeightActionList
         }
         MuactIntentServiceJob.scheduleJobImmediately(MuactIntentServiceJob.TAG);
         String text = refreshEditMuacLayout(true);
-        updateProfileColor(true);
+        updateProfileColor();
         showGMPDialog(text);
     }
 
@@ -449,7 +437,7 @@ public class GMPFragment extends BaseProfileFragment implements WeightActionList
             WeightIntentServiceJob.scheduleJobImmediately(WeightIntentServiceJob.TAG);
             String text = refreshEditWeightLayout(true);
             showGMPDialog(text);
-            updateProfileColor(true);
+            updateProfileColor();
         }
     }
     private void showGMPDialog(String text){

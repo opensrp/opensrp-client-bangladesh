@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.app.Fragment;
 import android.app.FragmentTransaction;
 import android.support.v4.app.FragmentActivity;
+import android.util.Log;
 import android.util.Pair;
 import android.util.TypedValue;
 import android.view.Gravity;
@@ -303,7 +304,8 @@ public class GrowthUtil {
             double zScore = (zScoreDouble == null) ? 0 : zScoreDouble.doubleValue();
             // double zScore = ZScore.calculate(gender, dob, weight.getDate(), weight.getKg());
             zScore = ZScore.roundOff(zScore);
-            zScoreTextView.setTextColor(context.getResources().getColor(ZScore.getZScoreColor(zScore)));
+            String text = ZScore.getZScoreText(zScore);
+            zScoreTextView.setTextColor(context.getResources().getColor(ZScore.getZscoreColorByText(text)));
             zScoreTextView.setText(String.valueOf(zScore));
             //}
             curRow.addView(zScoreTextView);
@@ -325,6 +327,7 @@ public class GrowthUtil {
     public static void updateLastWeight(float kg,String baseEntityId,String status){
         AncRepository repo = (AncRepository) AncApplication.getInstance().getRepository();
         SQLiteDatabase db = repo.getReadableDatabase();
+        Log.v("CHILD_STATUS","updateLastWeight>>"+status);
         String sql = "UPDATE ec_child SET child_weight = '" + kg + "',child_status = '"+status+"', weight_status = '"+status+"' WHERE base_entity_id = '" + baseEntityId + "';";
         db.execSQL(sql);
         if(status.equalsIgnoreCase("sam")){
@@ -334,6 +337,7 @@ public class GrowthUtil {
     public static void updateLastHeight(float kg,String baseEntityId,String status){
         AncRepository repo = (AncRepository) AncApplication.getInstance().getRepository();
         SQLiteDatabase db = repo.getReadableDatabase();
+        Log.v("CHILD_STATUS","updateLastHeight>>"+status);
         String sql = "UPDATE ec_child SET child_height = '" + kg + "',child_status = '"+status+"', height_status = '"+status+"' WHERE base_entity_id = '" + baseEntityId + "';";
         db.execSQL(sql);
         if(status.equalsIgnoreCase("sam")){
@@ -344,6 +348,7 @@ public class GrowthUtil {
         AncRepository repo = (AncRepository) AncApplication.getInstance().getRepository();
         SQLiteDatabase db = repo.getReadableDatabase();
         boolean hasEdema = muacValue.equalsIgnoreCase("yes");
+        Log.v("CHILD_STATUS","updateLastMuac>>"+status);
         String sql = "UPDATE ec_child SET child_muac = '" + cm + "',child_status = '"+status+"',has_edema ='"+hasEdema+"', muac_status = '"+status+"' WHERE base_entity_id = '" + baseEntityId + "';";
         db.execSQL(sql);
         if(status.equalsIgnoreCase("sam")){
@@ -359,6 +364,7 @@ public class GrowthUtil {
     public static void updateChildStatus(String baseEntityId,String status){
         AncRepository repo = (AncRepository) AncApplication.getInstance().getRepository();
         SQLiteDatabase db = repo.getReadableDatabase();
+        Log.v("CHILD_STATUS","updateChildStatus>>"+status);
         String sql = "UPDATE ec_child SET child_status = '"+status+"' WHERE base_entity_id = '" + baseEntityId + "';";
         db.execSQL(sql);
     }
