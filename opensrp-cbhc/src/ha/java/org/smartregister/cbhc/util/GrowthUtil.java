@@ -356,6 +356,12 @@ public class GrowthUtil {
         String sql = "UPDATE ec_child SET is_refered = '"+state+"' WHERE base_entity_id = '" + baseEntityId + "';";
         db.execSQL(sql);
     }
+    public static void updateChildStatus(String baseEntityId,String status){
+        AncRepository repo = (AncRepository) AncApplication.getInstance().getRepository();
+        SQLiteDatabase db = repo.getReadableDatabase();
+        String sql = "UPDATE ec_child SET child_status = '"+status+"' WHERE base_entity_id = '" + baseEntityId + "';";
+        db.execSQL(sql);
+    }
     public static void updateLastVaccineDate(String baseEntityId,String lastVaccineDate, String vaccineName){
        try{
            AncRepository repo = (AncRepository) AncApplication.getInstance().getRepository();

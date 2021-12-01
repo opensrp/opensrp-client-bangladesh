@@ -123,7 +123,7 @@ public class GMPFragment extends BaseProfileFragment implements WeightActionList
         refreshEditWeightLayout(false);
         refreshEditHeightLayout(false);
         refreshEditMuacLayout(false);
-        updateProfileColor();
+        updateProfileColor(false);
     }
 
 //    String muacText;
@@ -254,7 +254,7 @@ public class GMPFragment extends BaseProfileFragment implements WeightActionList
 
     }
 
-    private void updateProfileColor() {
+    private void updateProfileColor(boolean isNeedToUpdateStatus) {
         Log.v("MUAC", weightText+" "+heightText+ " "+ muakText);
         String resultText = "";
         int resultColor = 0;
@@ -268,7 +268,7 @@ public class GMPFragment extends BaseProfileFragment implements WeightActionList
             resultColor = ZScore.getZscoreColorByText(resultText);
         }
         else if(weightText.contains("SAM") || heightText.contains("SAM")){
-            reblob:https://teams.microsoft.com/516cf240-34cf-419f-a8bd-a5853e6e1ea0sultText = "SAM";
+            resultText= "SAM";
             resultColor = ZScore.getZscoreColorByText(resultText);
         }
         else if(muakText.contains("SAM")){
@@ -292,12 +292,9 @@ public class GMPFragment extends BaseProfileFragment implements WeightActionList
             resultColor = ZScore.getZscoreColorByText(resultText);
         }
 
-//        if(!resultText.isEmpty()){
-//            muacText = resultText;
-////            muacText.setVisibility(View.VISIBLE);
-////            muacText.setText(resultText);
-////            muacText.setBackgroundColor(getResources().getColor(resultColor));
-//        }
+        if(isNeedToUpdateStatus && !resultText.isEmpty()){
+            GrowthUtil.updateChildStatus(resultText,childDetails.entityId());
+        }
         updateChildProfileColor(resultColor,resultText);
     }
     private void updateChildProfileColor(int resultColor,String text){
@@ -362,7 +359,7 @@ public class GMPFragment extends BaseProfileFragment implements WeightActionList
         HeightIntentServiceJob.scheduleJobImmediately(HeightIntentServiceJob.TAG);
 
         String text = refreshEditHeightLayout(true);
-        updateProfileColor();
+        updateProfileColor(true);
         showGMPDialog(text);
     }
 
@@ -400,7 +397,7 @@ public class GMPFragment extends BaseProfileFragment implements WeightActionList
         }
         MuactIntentServiceJob.scheduleJobImmediately(MuactIntentServiceJob.TAG);
         String text = refreshEditMuacLayout(true);
-        updateProfileColor();
+        updateProfileColor(true);
         showGMPDialog(text);
     }
 
@@ -452,6 +449,7 @@ public class GMPFragment extends BaseProfileFragment implements WeightActionList
             WeightIntentServiceJob.scheduleJobImmediately(WeightIntentServiceJob.TAG);
             String text = refreshEditWeightLayout(true);
             showGMPDialog(text);
+            updateProfileColor(true);
         }
     }
     private void showGMPDialog(String text){
