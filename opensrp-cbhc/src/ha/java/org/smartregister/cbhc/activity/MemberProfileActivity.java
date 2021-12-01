@@ -397,8 +397,7 @@ Utils.appendLog(getClass().getName(),e);
                 try {
                     JsonFormUtils.startFormForEdit(this, JsonFormUtils.REQUEST_CODE_GET_JSON, formMetadataformembers,from);
                 } catch (Exception e) {
-Utils.appendLog(getClass().getName(),e);
-
+                    Utils.appendLog(getClass().getName(),e);
                 }
                 break;
             case R.id.edit_member:
@@ -854,6 +853,8 @@ Utils.appendLog(getClass().getName(),e);
         if (requestCode == JsonFormUtils.REQUEST_CODE_GET_JSON && resultCode == RESULT_OK) {
             try {
                 String jsonString = data.getStringExtra("json");
+
+                Log.d("nnnnnnn",jsonString);
                 final JSONObject form = new JSONObject(jsonString);
                 if (form.getString(JsonFormUtils.ENCOUNTER_TYPE).equals("Followup Delivery")) {
                     android.support.v7.app.AlertDialog alertDialog = new android.support.v7.app.AlertDialog.Builder(this).create();

@@ -5,6 +5,7 @@ import static org.smartregister.growthmonitoring.domain.ZScore.getZScoreText;
 
 import android.database.Cursor;
 import android.graphics.Color;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -16,6 +17,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.SeekBar;
 import android.widget.Toast;
+
+import androidx.annotation.RequiresApi;
 
 import com.github.mikephil.charting.charts.BarChart;
 import com.github.mikephil.charting.components.Legend;
@@ -70,6 +73,9 @@ public class ReportGrowthFalterFragment extends Fragment implements SeekBar.OnSe
         return view;
     }
 
+    /**
+     * getting child data from db
+     */
     private void getChildData() {
         childDataList.clear();
         String query = "select * from ec_child where child_status is not NULL";
@@ -100,13 +106,23 @@ public class ReportGrowthFalterFragment extends Fragment implements SeekBar.OnSe
         }
     }
 
-    private void setupGraph(int pos,View view) {
+    /**
+     * graphview setup for each positions of segmented tab
+     * @param pos
+     * @param view
+     */
+    private void setupGraph(int pos, View view) {
         chart.setDrawBarShadow(false);
         chart.setDrawValueAboveBar(true);
         chart.getDescription().setEnabled(false);
         chart.setMaxVisibleValueCount(60);
         chart.setPinchZoom(false);
         chart.setDrawGridBackground(false);
+        chart.setClickable(false);
+        chart.setDoubleTapToZoomEnabled(false);
+        chart.setHighlightFullBarEnabled(false);
+        chart.setDrawBarShadow(false);
+        chart.setEnabled(false);
 
 
 
@@ -180,7 +196,13 @@ public class ReportGrowthFalterFragment extends Fragment implements SeekBar.OnSe
     }
 
 
-
+    /**
+     * data setting to chart
+     * @param count
+     * @param range
+     * @param pos
+     * @param chart
+     */
     private void setData(int count, float range,int pos,BarChart chart) {
          int normalChildMuac=0;
          int samChildMuac=0;
@@ -289,6 +311,7 @@ public class ReportGrowthFalterFragment extends Fragment implements SeekBar.OnSe
             barDataSet = (BarDataSet) chart.getData().getDataSetByIndex(0);
             barDataSet.setColors(colors);
             barDataSet.setValues(values);
+            barDataSet.setHighlightEnabled(false);
             chart.getData().notifyDataChanged();
             chart.notifyDataSetChanged();
             chart.invalidate();
@@ -298,6 +321,8 @@ public class ReportGrowthFalterFragment extends Fragment implements SeekBar.OnSe
 
             barDataSet.setDrawIcons(false);
             barDataSet.setColors(colors);
+            barDataSet.setHighlightEnabled(false);
+
             ArrayList<IBarDataSet> dataSets = new ArrayList<>();
             dataSets.add(barDataSet);
 
@@ -332,9 +357,10 @@ public class ReportGrowthFalterFragment extends Fragment implements SeekBar.OnSe
     }
 
 
-
-
-
+    /**
+     * view initialization
+     * @param view
+     */
     private void initUi(View view) {
         chart = view.findViewById(R.id.idBarChart);
 
