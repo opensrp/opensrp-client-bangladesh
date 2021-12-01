@@ -325,7 +325,7 @@ public class GrowthUtil {
     public static void updateLastWeight(float kg,String baseEntityId,String status){
         AncRepository repo = (AncRepository) AncApplication.getInstance().getRepository();
         SQLiteDatabase db = repo.getReadableDatabase();
-        String sql = "UPDATE ec_child SET child_weight = '" + kg + "',child_status = '"+status+"' WHERE base_entity_id = '" + baseEntityId + "';";
+        String sql = "UPDATE ec_child SET child_weight = '" + kg + "',child_status = '"+status+"', weight_status = '"+status+"' WHERE base_entity_id = '" + baseEntityId + "';";
         db.execSQL(sql);
         if(status.equalsIgnoreCase("sam")){
             updateIsRefered(baseEntityId,"true");
@@ -334,7 +334,7 @@ public class GrowthUtil {
     public static void updateLastHeight(float kg,String baseEntityId,String status){
         AncRepository repo = (AncRepository) AncApplication.getInstance().getRepository();
         SQLiteDatabase db = repo.getReadableDatabase();
-        String sql = "UPDATE ec_child SET child_height = '" + kg + "',child_status = '"+status+"' WHERE base_entity_id = '" + baseEntityId + "';";
+        String sql = "UPDATE ec_child SET child_height = '" + kg + "',child_status = '"+status+"', height_status = '"+status+"' WHERE base_entity_id = '" + baseEntityId + "';";
         db.execSQL(sql);
         if(status.equalsIgnoreCase("sam")){
             updateIsRefered(baseEntityId,"true");
@@ -344,7 +344,7 @@ public class GrowthUtil {
         AncRepository repo = (AncRepository) AncApplication.getInstance().getRepository();
         SQLiteDatabase db = repo.getReadableDatabase();
         boolean hasEdema = muacValue.equalsIgnoreCase("yes");
-        String sql = "UPDATE ec_child SET child_muac = '" + cm + "',child_status = '"+status+"',has_edema ='"+hasEdema+"' WHERE base_entity_id = '" + baseEntityId + "';";
+        String sql = "UPDATE ec_child SET child_muac = '" + cm + "',child_status = '"+status+"',has_edema ='"+hasEdema+"', muac_status = '"+status+"' WHERE base_entity_id = '" + baseEntityId + "';";
         db.execSQL(sql);
         if(status.equalsIgnoreCase("sam")){
             updateIsRefered(baseEntityId,"true");

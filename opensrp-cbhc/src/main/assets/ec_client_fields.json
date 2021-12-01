@@ -1223,6 +1223,31 @@
           "json_mapping": {
             "field": "has_edema"
           }
+        },
+
+        {
+          "column_name": "muac_status",
+          "type": "Client",
+          "json_mapping": {
+            "field": "muac_status"
+          }
+        },
+
+        {
+          "column_name": "height_status",
+          "type": "Client",
+          "json_mapping": {
+            "field": "height_status"
+          }
+        },
+
+
+        {
+          "column_name": "weight_status",
+          "type": "Client",
+          "json_mapping": {
+            "field": "weight_status"
+          }
         }
       ]
     },
