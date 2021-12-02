@@ -73,12 +73,12 @@ public class ChildListAdapter extends RecyclerView.Adapter<ChildListAdapter.Hold
         if(childItemData.getGender().equals("F")) {
             holder.profileImage.setTag(org.smartregister.R.id.entity_id, childItemData.getpClient().entityId());
             DrishtiApplication.getCachedImageLoaderInstance().getImageByClientId(childItemData.getpClient().entityId(), OpenSRPImageLoader.getStaticImageListener(holder.profileImage, R.drawable.child_boy_infant, R.drawable.child_boy_infant));
-            holder.childImageSmall.setImageResource(R.drawable.female_child_cbhc);
+            holder.childImageSmall.setImageResource(R.drawable.male_child_cbhc);
         }
         else {
             holder.profileImage.setTag(org.smartregister.R.id.entity_id, childItemData.getpClient().entityId());
             DrishtiApplication.getCachedImageLoaderInstance().getImageByClientId(childItemData.getpClient().entityId(), OpenSRPImageLoader.getStaticImageListener(holder.profileImage, R.drawable.child_girl_infant, R.drawable.child_girl_infant));
-            holder.childImageSmall.setImageResource(R.drawable.male_child_cbhc);
+            holder.childImageSmall.setImageResource(R.drawable.female_child_cbhc);
         }
 
         //TODO: child status color
