@@ -853,8 +853,6 @@ Utils.appendLog(getClass().getName(),e);
         if (requestCode == JsonFormUtils.REQUEST_CODE_GET_JSON && resultCode == RESULT_OK) {
             try {
                 String jsonString = data.getStringExtra("json");
-
-                Log.d("nnnnnnn",jsonString);
                 final JSONObject form = new JSONObject(jsonString);
                 if (form.getString(JsonFormUtils.ENCOUNTER_TYPE).equals("Followup Delivery")) {
                     android.support.v7.app.AlertDialog alertDialog = new android.support.v7.app.AlertDialog.Builder(this).create();
@@ -906,8 +904,9 @@ Utils.appendLog(getClass().getName(),e);
                     alertDialog.show();
                 } else if (form.getString(JsonFormUtils.ENCOUNTER_TYPE).equals("Followup Pregnant Status")) {
                     updateScheduledTasks(form);
-                } else if (form.getString(JsonFormUtils.ENCOUNTER_TYPE).equals(Constants.EventType.MemberREGISTRATION)) {
-                    mProfilePresenter.saveForm(jsonString, false);
+                } else if (form.getString(JsonFormUtils.ENCOUNTER_TYPE).equals(Constants.EventType.MemberREGISTRATION) ||
+                        form.getString(JsonFormUtils.ENCOUNTER_TYPE).equals(Constants.EventType.OOCMemberREGISTRATION)) {
+                    mProfilePresenter.saveForm(jsonString, true);
                 }
 
             } catch (Exception e) {

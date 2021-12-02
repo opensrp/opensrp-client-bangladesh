@@ -398,6 +398,7 @@ public class JsonFormUtils extends org.smartregister.util.JsonFormUtils {
             fields.put(lastInteractedWith);
             Gender gender = null;
             if (!(encounterType.equalsIgnoreCase(Constants.EventType.MemberREGISTRATION)
+                    || encounterType.equalsIgnoreCase(Constants.EventType.OOCMemberREGISTRATION)
                     || encounterType.equalsIgnoreCase(Constants.EventType.Child_REGISTRATION)
                     || encounterType.equalsIgnoreCase(Constants.EventType.WomanMemberREGISTRATION)
                     || !Utils.notFollowUp(encounterType)
@@ -461,16 +462,19 @@ public class JsonFormUtils extends org.smartregister.util.JsonFormUtils {
                     gender = Gender.UNKNOWN;
                 }
 
-                if (age < 5) {
-                    encounterType = Constants.EventType.Child_REGISTRATION;
-                } else {
-                    if (gender.equals(Gender.FEMALE)) {
-                        encounterType = Constants.EventType.WomanMemberREGISTRATION;
+                if(!encounterType.equalsIgnoreCase(Constants.EventType.OOCMemberREGISTRATION)){
+                    if (age < 5) {
+                        encounterType = Constants.EventType.Child_REGISTRATION;
+                    } else {
+                        if (gender.equals(Gender.FEMALE)) {
+                            encounterType = Constants.EventType.WomanMemberREGISTRATION;
 
-                    } else if (gender.equals(Gender.MALE)) {
-                        encounterType = Constants.EventType.MemberREGISTRATION;
+                        } else if (gender.equals(Gender.MALE)) {
+                            encounterType = Constants.EventType.MemberREGISTRATION;
+                        }
                     }
                 }
+
                 if(!StringUtils.isEmpty(relational_id))
                     updateHouseholdLastInteractedWith(db,relational_id,lastInteractedTime);
 
@@ -1203,7 +1207,6 @@ public class JsonFormUtils extends org.smartregister.util.JsonFormUtils {
             Log.d(TAG, "Form is " + form.toString());
             if (form != null) {
                 form.put(JsonFormUtils.ENTITY_ID, womanClient.get(DBConstants.KEY.BASE_ENTITY_ID));
-                form.put(JsonFormUtils.ENCOUNTER_TYPE, Constants.EventType.MemberREGISTRATION);
 
                 JSONObject metadata = form.getJSONObject(JsonFormUtils.METADATA);
                 String lastLocationId = LocationHelper.getInstance().getOpenMrsLocationId(lpv.getSelectedItem());
