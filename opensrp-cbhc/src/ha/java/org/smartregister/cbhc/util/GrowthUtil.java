@@ -3,7 +3,10 @@ package org.smartregister.cbhc.util;
 import android.app.Activity;
 import android.app.Fragment;
 import android.app.FragmentTransaction;
+import android.database.Cursor;
 import android.support.v4.app.FragmentActivity;
+import android.text.TextUtils;
+import android.util.Log;
 import android.util.Pair;
 import android.util.TypedValue;
 import android.view.Gravity;
@@ -303,7 +306,8 @@ public class GrowthUtil {
             double zScore = (zScoreDouble == null) ? 0 : zScoreDouble.doubleValue();
             // double zScore = ZScore.calculate(gender, dob, weight.getDate(), weight.getKg());
             zScore = ZScore.roundOff(zScore);
-            zScoreTextView.setTextColor(context.getResources().getColor(ZScore.getZScoreColor(zScore)));
+            String text = ZScore.getZScoreText(zScore);
+            zScoreTextView.setTextColor(context.getResources().getColor(ZScore.getZscoreColorByText(text)));
             zScoreTextView.setText(String.valueOf(zScore));
             //}
             curRow.addView(zScoreTextView);
@@ -325,8 +329,15 @@ public class GrowthUtil {
     public static void updateLastWeight(float kg,String baseEntityId,String status){
         AncRepository repo = (AncRepository) AncApplication.getInstance().getRepository();
         SQLiteDatabase db = repo.getReadableDatabase();
-        String sql = "UPDATE ec_child SET child_weight = '" + kg + "',child_status = '"+status+"', weight_status = '"+status+"' WHERE base_entity_id = '" + baseEntityId + "';";
+        Log.v("CHILD_STATUS","updateLastWeight>>"+status);
+        String sql = "UPDATE ec_child SET child_weight = '" + kg + "',weight_status = '"+status+"' WHERE base_entity_id = '" + baseEntityId + "';";
         db.execSQL(sql);
+        try{
+            String sqlOCA = "UPDATE ec_guest_member SET child_weight = '" + kg + "',weight_status = '"+status+"' WHERE base_entity_id = '" + baseEntityId + "';";
+            db.execSQL(sqlOCA);
+        }catch (Exception e){
+
+        }
         if(status.equalsIgnoreCase("sam")){
             updateIsRefered(baseEntityId,"true");
         }
@@ -334,8 +345,15 @@ public class GrowthUtil {
     public static void updateLastHeight(float kg,String baseEntityId,String status){
         AncRepository repo = (AncRepository) AncApplication.getInstance().getRepository();
         SQLiteDatabase db = repo.getReadableDatabase();
-        String sql = "UPDATE ec_child SET child_height = '" + kg + "',child_status = '"+status+"', height_status = '"+status+"' WHERE base_entity_id = '" + baseEntityId + "';";
+        Log.v("CHILD_STATUS","updateLastHeight>>"+status);
+        String sql = "UPDATE ec_child SET child_height = '" + kg + "',height_status = '"+status+"' WHERE base_entity_id = '" + baseEntityId + "';";
         db.execSQL(sql);
+        try{
+            String sqlOCA = "UPDATE ec_guest_member SET child_height = '" + kg + "',height_status = '"+status+"' WHERE base_entity_id = '" + baseEntityId + "';";
+            db.execSQL(sqlOCA);
+        }catch (Exception e){
+            e.printStackTrace();
+        }
         if(status.equalsIgnoreCase("sam")){
             updateIsRefered(baseEntityId,"true");
         }
@@ -344,8 +362,16 @@ public class GrowthUtil {
         AncRepository repo = (AncRepository) AncApplication.getInstance().getRepository();
         SQLiteDatabase db = repo.getReadableDatabase();
         boolean hasEdema = muacValue.equalsIgnoreCase("yes");
-        String sql = "UPDATE ec_child SET child_muac = '" + cm + "',child_status = '"+status+"',has_edema ='"+hasEdema+"', muac_status = '"+status+"' WHERE base_entity_id = '" + baseEntityId + "';";
+        Log.v("CHILD_STATUS","updateLastMuac>>"+status);
+        String sql = "UPDATE ec_child SET child_muac = '" + cm + "',has_edema ='"+hasEdema+"', muac_status = '"+status+"' WHERE base_entity_id = '" + baseEntityId + "';";
         db.execSQL(sql);
+        try{
+            String sqlOCA = "UPDATE ec_guest_member SET child_muac = '" + cm + "',has_edema ='"+hasEdema+"', muac_status = '"+status+"' WHERE base_entity_id = '" + baseEntityId + "';";
+            db.execSQL(sqlOCA);
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+
         if(status.equalsIgnoreCase("sam")){
             updateIsRefered(baseEntityId,"true");
         }
@@ -355,6 +381,57 @@ public class GrowthUtil {
         SQLiteDatabase db = repo.getReadableDatabase();
         String sql = "UPDATE ec_child SET is_refered = '"+state+"' WHERE base_entity_id = '" + baseEntityId + "';";
         db.execSQL(sql);
+        try{
+            String sqlOCA = "UPDATE ec_child SET is_refered = '"+state+"' WHERE base_entity_id = '" + baseEntityId + "';";
+            db.execSQL(sqlOCA);
+        }catch (Exception e){
+
+        }
+    }
+//    public static void updateChildStatus(String baseEntityId,String status){
+//        AncRepository repo = (AncRepository) AncApplication.getInstance().getRepository();
+//        SQLiteDatabase db = repo.getReadableDatabase();
+//        Log.v("CHILD_STATUS","updateChildStatus>>"+status);
+//        String sql = "UPDATE ec_child SET child_status = '"+status+"' WHERE base_entity_id = '" + baseEntityId + "';";
+//        db.execSQL(sql);
+//    }
+    public static String getChildStatus(String baseEntityId){
+        SQLiteDatabase sqLiteDatabase = AncApplication.getInstance().getRepository().getWritableDatabase();
+        String query = "select muac_status,weight_status,height_status from ec_child where base_entity_id = '"+baseEntityId+"'";
+        Cursor cursor = sqLiteDatabase.rawQuery( query, null);
+        String finalStatus = "";
+        if (cursor != null && cursor.getCount() > 0 && cursor.moveToFirst()) {
+            while (!cursor.isAfterLast()) {
+                String muac_status = cursor.getString(cursor.getColumnIndex("muac_status"));
+                String weight_status = cursor.getString(cursor.getColumnIndex("weight_status"));
+                String height_status = cursor.getString(cursor.getColumnIndex("height_status"));
+                finalStatus = GrowthUtil.getOverallChildStatus(muac_status,weight_status,height_status);
+
+            }
+        }
+        if(cursor!=null) cursor.close();
+        return finalStatus;
+    }
+    public static String getOverallChildStatus(String muacStatus, String weightStatus, String heightStatus){
+        if(TextUtils.isEmpty(muacStatus)&&TextUtils.isEmpty(weightStatus)&&TextUtils.isEmpty(heightStatus)){
+            return "";
+        }
+        if(TextUtils.isEmpty(weightStatus)&& TextUtils.isEmpty(heightStatus)){
+            return muacStatus;
+        }
+        if(weightStatus.equalsIgnoreCase("OVER WEIGHT") || heightStatus.equalsIgnoreCase("OVER WEIGHT")){
+            return "OVER WEIGHT";
+        }
+        if(weightStatus.equalsIgnoreCase("SAM") || heightStatus.equalsIgnoreCase("SAM") || muacStatus.equalsIgnoreCase("SAM")){
+            return "SAM";
+        }
+        if(weightStatus.equalsIgnoreCase("MAM") || heightStatus.equalsIgnoreCase("MAM")| muacStatus.equalsIgnoreCase("MAM")){
+            return "MAM";
+        }
+        if(weightStatus.equalsIgnoreCase("DARK YELLOW") || heightStatus.equalsIgnoreCase("DARK YELLOW")){
+            return "DARK YELLOW";
+        }
+        return "NORMAL";
     }
     public static void updateLastVaccineDate(String baseEntityId,String lastVaccineDate, String vaccineName){
        try{

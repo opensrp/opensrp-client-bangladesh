@@ -85,7 +85,7 @@ public class GrowthReportActivity extends AppCompatActivity {
     }
     private void createTabIcons() {
         TextView tabOne = new TextView(this);
-        tabOne.setText(getResources().getText(R.string.key_achievement_firstline)+ System.getProperty("line.separator") +getResources().getString(R.string.key_achievement_secondline));
+        tabOne.setText("Report");
         tabOne.setCompoundDrawablesWithIntrinsicBounds(0, R.mipmap.bargraph, 0, 0);
         tabOne.setGravity(Gravity.CENTER);
         tabOne.setTextColor(getResources().getColor(R.color.status_bar_text_almost_white));
@@ -134,7 +134,7 @@ public class GrowthReportActivity extends AppCompatActivity {
         adapter = new ViewPagerAdapter(getSupportFragmentManager());
 
        // adapter.addFragment(new KeyAchievementFragment(), "Key Achievement");
-        adapter.addFragment(new ReportFragment(), "Key Achievement");
+        adapter.addFragment(new ReportFragment(), "Report");
        // adapter.addFragment(new ReportGeoMapFragment(), "Geo Map");
         adapter.addFragment(new ReportGrowthFalterFragment(), "Growth Faltering Trend");
         viewPager.setAdapter(adapter);

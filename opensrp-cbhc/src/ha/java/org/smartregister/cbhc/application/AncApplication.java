@@ -23,6 +23,7 @@ import org.smartregister.cbhc.event.ViewConfigurationSyncCompleteEvent;
 import org.smartregister.cbhc.helper.ECSyncHelper;
 import org.smartregister.cbhc.job.AncJobCreator;
 import org.smartregister.cbhc.job.ViewConfigurationsServiceJob;
+import org.smartregister.cbhc.job.ZScoreRefreshServiceJob;
 import org.smartregister.cbhc.receiver.SyncStatusBroadcastReceiver;
 import org.smartregister.cbhc.repository.AncRepository;
 import org.smartregister.cbhc.repository.HealthIdRepository;
@@ -405,8 +406,9 @@ public class AncApplication extends DrishtiApplication implements TimeChangedBro
 
 
     public void startZscoreRefreshService() {
-        Intent intent = new Intent(getInstance().getApplicationContext(), ZScoreRefreshIntentService.class);
-        this.getApplicationContext().startService(intent);
+        ZScoreRefreshServiceJob.scheduleJobImmediately(ZScoreRefreshServiceJob.TAG);
+//        Intent intent = new Intent(getInstance().getApplicationContext(), ZScoreRefreshIntentService.class);
+//        this.getApplicationContext().startService(intent);
     }
     public void forcelogoutCurrentUser() {
         getContext().userService().getAllSharedPreferences().saveForceRemoteLogin(true);

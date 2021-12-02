@@ -224,6 +224,7 @@ public class MemberProfileActivity extends BaseProfileActivity implements Profil
         setProfileID(getValue(householdDetails.getColumnmaps(), "Patient_Identifier", true));
         gestationAgeView.setVisibility(View.GONE);
         String profileColorText = getValue(householdDetails.getColumnmaps(), "child_status", false);
+        Log.v("CHILD_STATUS","profileColorText>> from db>>"+profileColorText);
         updateProfileColorByText(profileColorText);
     }
 
@@ -465,12 +466,12 @@ Utils.appendLog(getClass().getName(),e);
         return viewPager;
     }
     private void updateProfileColorByText(String resultText){
-        updateProfileIconColor(ZScore.getZscoreColorByText(resultText),"");
+        updateProfileIconColor(ZScore.getZscoreColorByText(resultText),resultText);
     }
     public void updateProfileIconColor(int color,String text){
-        imageView.setColorFilter(ContextCompat.getColor(this, color), android.graphics.PorterDuff.Mode.MULTIPLY);
 
         if(!TextUtils.isEmpty(text)){
+            imageView.setColorFilter(ContextCompat.getColor(this, color), android.graphics.PorterDuff.Mode.MULTIPLY);
 
         }
     }
