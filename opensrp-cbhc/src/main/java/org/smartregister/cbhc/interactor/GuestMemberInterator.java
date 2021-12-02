@@ -32,7 +32,6 @@ public class GuestMemberInterator implements GuestMemberContract.Interactor {
     public void processAndSaveRegistration(String jsonString, GuestMemberContract.InteractorCallBack callBack) {
         Runnable runnable = () -> {
             Pair<Client, Event> processEventClient = model.processRegistration(jsonString);
-            Log.d("ttttProcess",processEventClient.toString());
             if(processEventClient != null){
                 model.saveRegistration(processEventClient);
             }

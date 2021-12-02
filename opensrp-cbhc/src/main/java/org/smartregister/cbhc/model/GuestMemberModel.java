@@ -202,7 +202,9 @@ public class GuestMemberModel extends JsonFormUtils implements GuestMemberContra
         //String query =  "select * from ec_guest_member";
         //String query =  "select * from ec_guest_member";
         // String query = "Select child.id as _id , child.relationalid , child.Patient_Identifier, child.first_name , child.last_name , child.dob ,child.gender, child.PregnancyStatus, child.tasks, child.age as age, NULL as MaritalStatus, child.camp_type, child.child_status FROM ec_guest_member as child";
-        String query = "Select child.id as _id , child.relationalid , child.Patient_Identifier, child.first_name , child.last_name , child.dob ,child.gender, child.PregnancyStatus, child.tasks, child.age as age, NULL as MaritalStatus, child.muac_status,child.height_status,child.weight_status FROM ec_guest_member as child";
+        String query = "Select child.id as _id , child.relationalid , child.Patient_Identifier, child.first_name , child.last_name , child.dob ,child.gender, child.PregnancyStatus, " +
+                "child.tasks, child.age as age, NULL as MaritalStatus, child.muac_status,child.height_status,child.weight_status,child.has_edema, child.child_height, child.child_weight, " +
+                "child.last_vaccine_date,child.last_vaccine_name FROM ec_guest_member as child";
 
         try (Cursor cursor = AncApplication.getInstance().getRepository().getReadableDatabase().rawQuery(query, new String[]{})) {
             if (cursor != null && cursor.getCount() > 0) {
@@ -221,10 +223,34 @@ public class GuestMemberModel extends JsonFormUtils implements GuestMemberContra
                     int dob = cursor.getColumnIndex("dob");
                     int gender = cursor.getColumnIndex("gender");
                     int age = cursor.getColumnIndex("age");
-                    String muac_status = cursor.getString(cursor.getColumnIndex("muac_status"));
-                    String weight_status = cursor.getString(cursor.getColumnIndex("weight_status"));
-                    String height_status = cursor.getString(cursor.getColumnIndex("height_status"));
-                    String finalStatus = GrowthUtil.getOverallChildStatus(muac_status,weight_status,height_status);
+
+
+                    int muac_status = cursor.getColumnIndex("muac_status");
+                    int weight_status = cursor.getColumnIndex("weight_status");
+                    int height_status = cursor.getColumnIndex("height_status");
+                    int child_weight = cursor.getColumnIndex("child_weight");
+                    int child_height = cursor.getColumnIndex("child_height");
+
+                    int has_edema = cursor.getColumnIndex("has_edema");
+                    int last_vaccine_date = cursor.getColumnIndex("last_vaccine_date");
+                    int last_vaccine_name = cursor.getColumnIndex("last_vaccine_name");
+
+
+                    String muac_st = cursor.getString(cursor.getColumnIndex("muac_status"));
+                    String weight_st = cursor.getString(cursor.getColumnIndex("weight_status"));
+                    String height_st = cursor.getString(cursor.getColumnIndex("height_status"));
+
+                    String child_wt = cursor.getString(cursor.getColumnIndex("child_weight"));
+                    String child_ht = cursor.getString(cursor.getColumnIndex("child_height"));
+                    String hasEdema = cursor.getString(cursor.getColumnIndex("has_edema"));
+
+                    String vaccine_date = cursor.getString(cursor.getColumnIndex("last_vaccine_date"));
+                    String vaccine_name = cursor.getString(cursor.getColumnIndex("last_vaccine_name"));
+
+                    String finalStatus = GrowthUtil.getOverallChildStatus(
+                            cursor.isNull(muac_status) ? "" : cursor.getString(muac_status),
+                            cursor.isNull(weight_status) ? "" : cursor.getString(weight_status),
+                            cursor.isNull(height_status) ? "" : cursor.getString(height_status));
                     pClient.getColumnmaps().put("child_status", finalStatus);
 
                     guestMemberDataArrayList.add(new GuestMemberData(
@@ -234,7 +260,13 @@ public class GuestMemberModel extends JsonFormUtils implements GuestMemberContra
                             cursor.isNull(dob) ? "" : cursor.getString(dob),
                             cursor.isNull(gender) ? "" : cursor.getString(gender),
                             cursor.isNull(age) ? "" : cursor.getString(age),
-                            pClient
+                            pClient,
+                            child_wt,
+                            child_ht,
+                            muac_st,
+                            hasEdema,
+                            vaccine_date,
+                            vaccine_name
                     ));
 
                     cursor.moveToNext();

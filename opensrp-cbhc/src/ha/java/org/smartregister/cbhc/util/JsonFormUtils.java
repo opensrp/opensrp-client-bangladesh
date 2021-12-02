@@ -100,6 +100,8 @@ public class JsonFormUtils extends org.smartregister.util.JsonFormUtils {
     private static HealthIdRepository healthIdRepository;
     private static UniqueIdRepository uniqueIdRepository;
 
+
+
     public static boolean updateClientStatusAsEvent(Context context,String baseEntityId, String attributeName, Object attributeValue, String entityType, String eventType) {
         try {
 
@@ -398,6 +400,7 @@ public class JsonFormUtils extends org.smartregister.util.JsonFormUtils {
             fields.put(lastInteractedWith);
             Gender gender = null;
             if (!(encounterType.equalsIgnoreCase(Constants.EventType.MemberREGISTRATION)
+                    || encounterType.equalsIgnoreCase(Constants.EventType.OOCMemberREGISTRATION)
                     || encounterType.equalsIgnoreCase(Constants.EventType.Child_REGISTRATION)
                     || encounterType.equalsIgnoreCase(Constants.EventType.WomanMemberREGISTRATION)
                     || !Utils.notFollowUp(encounterType)
@@ -461,16 +464,19 @@ public class JsonFormUtils extends org.smartregister.util.JsonFormUtils {
                     gender = Gender.UNKNOWN;
                 }
 
-                if (age < 5) {
-                    encounterType = Constants.EventType.Child_REGISTRATION;
-                } else {
-                    if (gender.equals(Gender.FEMALE)) {
-                        encounterType = Constants.EventType.WomanMemberREGISTRATION;
+                if(!encounterType.equalsIgnoreCase(Constants.EventType.OOCMemberREGISTRATION)){
+                    if (age < 5) {
+                        encounterType = Constants.EventType.Child_REGISTRATION;
+                    } else {
+                        if (gender.equals(Gender.FEMALE)) {
+                            encounterType = Constants.EventType.WomanMemberREGISTRATION;
 
-                    } else if (gender.equals(Gender.MALE)) {
-                        encounterType = Constants.EventType.MemberREGISTRATION;
+                        } else if (gender.equals(Gender.MALE)) {
+                            encounterType = Constants.EventType.MemberREGISTRATION;
+                        }
                     }
                 }
+
                 if(!StringUtils.isEmpty(relational_id))
                     updateHouseholdLastInteractedWith(db,relational_id,lastInteractedTime);
 
@@ -1203,7 +1209,6 @@ public class JsonFormUtils extends org.smartregister.util.JsonFormUtils {
             Log.d(TAG, "Form is " + form.toString());
             if (form != null) {
                 form.put(JsonFormUtils.ENTITY_ID, womanClient.get(DBConstants.KEY.BASE_ENTITY_ID));
-                form.put(JsonFormUtils.ENCOUNTER_TYPE, Constants.EventType.MemberREGISTRATION);
 
                 JSONObject metadata = form.getJSONObject(JsonFormUtils.METADATA);
                 String lastLocationId = LocationHelper.getInstance().getOpenMrsLocationId(lpv.getSelectedItem());
@@ -1219,7 +1224,7 @@ public class JsonFormUtils extends org.smartregister.util.JsonFormUtils {
                 for (int i = 0; i < jsonArray.length(); i++) {
                     JSONObject jsonObject = jsonArray.getJSONObject(i);
 
-                    processPopulatableFieldsForHouseholds(womanClient, jsonObject);
+                    processPopulatableFieldsForHouseholds(womanClient, jsonObject,"household");
 
                 }
 //                Log.v("test language",womanClient.get("type_of_nearest_clinic"));
@@ -1276,7 +1281,7 @@ public class JsonFormUtils extends org.smartregister.util.JsonFormUtils {
                 for (int i = 0; i < jsonArray.length(); i++) {
                     JSONObject jsonObject = jsonArray.getJSONObject(i);
 
-                    processPopulatableFieldsForHouseholds(womanClient, jsonObject);
+                    processPopulatableFieldsForHouseholds(womanClient, jsonObject,"");
 
                 }
 //                Log.v("test language",womanClient.get("type_of_nearest_clinic"));
@@ -1316,7 +1321,7 @@ public class JsonFormUtils extends org.smartregister.util.JsonFormUtils {
                 for (int i = 0; i < jsonArray.length(); i++) {
                     JSONObject jsonObject = jsonArray.getJSONObject(i);
 
-                    processPopulatableFieldsForHouseholds(womanClient, jsonObject);
+                    processPopulatableFieldsForHouseholds(womanClient, jsonObject,"household");
 
                 }
 //                Log.v("test language",womanClient.get("type_of_nearest_clinic"));
@@ -1331,8 +1336,9 @@ public class JsonFormUtils extends org.smartregister.util.JsonFormUtils {
         return "";
     }
 
-    public static void processPopulatableFieldsForHouseholds(Map<String, String> womanClient, JSONObject jsonObject) throws JSONException {
-
+    public static void processPopulatableFieldsForHouseholds(Map<String, String> womanClient, JSONObject jsonObject,String from) throws JSONException {
+        HashMap<String, String> rmap = new HashMap<String, String>();
+        setRelationMap(rmap);
         if ((jsonObject.getString(JsonFormUtils.KEY).equalsIgnoreCase("member_unique_ID"))) {
             String idtype = womanClient.get("idtype");
             if (idtype != null) {
@@ -1405,7 +1411,19 @@ public class JsonFormUtils extends org.smartregister.util.JsonFormUtils {
                 jsonObject.put(JsonFormUtils.VALUE, Disease_TypeArray);
             }
 
-        } else if ((jsonObject.getString(JsonFormUtils.KEY).equalsIgnoreCase("illness_information"))) {
+        } else if ((jsonObject.getString(JsonFormUtils.KEY).equalsIgnoreCase("relation_with_household"))) {
+            String relation = womanClient.get("relation_with_household");
+            if (relation != null) {
+                /*String[] tmp = Disease_Type.split(",");
+                JSONArray relation_TypeArray = new JSONArray();
+                for (String t : tmp) {
+                    relation_TypeArray.put(t);
+                }
+                processValueWithChoiceIds(jsonObject, relation_TypeArray.toString());*/
+                jsonObject.put(JsonFormUtils.VALUE, rmap.get(relation));
+            }
+
+        }else if ((jsonObject.getString(JsonFormUtils.KEY).equalsIgnoreCase("illness_information"))) {
             String family_diseases_details = womanClient.get("family_diseases_details");
             if (family_diseases_details != null) {
                 String[] tmp = family_diseases_details.split(",");
@@ -1526,8 +1544,11 @@ public class JsonFormUtils extends org.smartregister.util.JsonFormUtils {
 
 
         else if (jsonObject.getString(JsonFormUtils.KEY).equalsIgnoreCase(DBConstants.KEY.CHAMP_TYPE)) {
+            if(from.equalsIgnoreCase("household"))
+                jsonObject.put(JsonFormUtils.READ_ONLY, false);
 
-            jsonObject.put(JsonFormUtils.READ_ONLY, false);
+            else jsonObject.put(JsonFormUtils.READ_ONLY, true);
+
             jsonObject.put(JsonFormUtils.VALUES, Utils.CAMP_TYPE_JSON_ARR);
             jsonObject.put(JsonFormUtils.VALUE, womanClient.get(DBConstants.KEY.CHAMP_TYPE));
 
@@ -1553,6 +1574,40 @@ public class JsonFormUtils extends org.smartregister.util.JsonFormUtils {
             }
             Log.e(TAG, "ERROR:: Unprocessed Form Object Key " + jsonObject.getString(JsonFormUtils.KEY));
         }
+    }
+
+    public static void setRelationMap(HashMap<String, String> rmap) {
+        rmap.clear();
+        rmap.put("Household_Head", "খানা প্রধান");
+        rmap.put("Husband_or_Wife", "স্বামী/স্ত্রী");
+        rmap.put("Husband", "স্বামী");
+        rmap.put("Wife", "স্ত্রী");
+        rmap.put("Son", "পুত্র");
+        rmap.put("Daughter", "কন্যা");
+        rmap.put("Daughter_in_law", "পুত্রবধূ");
+        rmap.put("Grandson", "নাতি");
+        rmap.put("Granddaughter", "নাতনি");
+        rmap.put("father", "পিতা");
+        rmap.put("Mother", "মাতা");
+        rmap.put("Brother", "ভাই");
+        rmap.put("Sister", "বোন");
+        rmap.put("Nephew(Paternal)", "ভাইপো");
+        rmap.put("Niece(Paternal)", "ভাইঝি");
+        rmap.put("Nephew(Maternal)", "ভাগ্নে");
+        rmap.put("Niece(Maternal)", "ভাগ্নি");
+        rmap.put("Father_in_Law", "শ্বশুর");
+        rmap.put("Mother in Law", "শাশুড়ি");
+        rmap.put("Brother_in_Law", "শ্যালক");
+        rmap.put("Sister_in_Law", "শ্যালিকা");
+        rmap.put("Brother_in_Law(Wife)", "দেবর");
+        rmap.put("Brother_in_Law_Wife(Wife)", "জা");
+        rmap.put("Sister_in_Law(Wife)", "ননদ");
+        rmap.put("Wife_of_Brother", "ভাইয়ের স্ত্রী");
+        rmap.put("Husband_of_Sister", "ভগ্নিপতি");
+        rmap.put("Son_in_Law", "জামাতা");
+        rmap.put("Others_Relative", "অন্যান্য আত্মীয়");
+        rmap.put("Others_Non_Relative", "অন্যান্য অনাত্মীয়");
+
     }
 
     private static String processValueWithChoiceIds(JSONObject jsonObject, String value) {

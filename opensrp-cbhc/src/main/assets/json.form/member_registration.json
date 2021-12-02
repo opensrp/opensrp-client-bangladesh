@@ -257,7 +257,7 @@
         "read_only": "true"
       },
       {
-        "key": "relation_with_household_head",
+        "key": "relation_with_household",
         "openmrs_entity_parent": "",
         "openmrs_entity": "person_attribute",
         "openmrs_entity_id": "Realtion_With_Household_Head",
@@ -433,7 +433,7 @@
         "hint": "মাতার নাম (ইংরেজীতে)",
         "edit_type": "name",
         "v_required": {
-          "value": "true",
+          "value": "false",
           "err": "Please enter the mother/guardian's first name"
         },
         "v_regex": {
@@ -721,7 +721,7 @@
           "err": "Please enter a valid name"
         },
         "v_required": {
-          "value": true,
+          "value": false,
           "err": "Please enter spouse name"
         },
         "relevance": {

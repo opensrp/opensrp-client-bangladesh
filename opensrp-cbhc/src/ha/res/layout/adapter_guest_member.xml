@@ -42,8 +42,7 @@
                 android:textColor="@android:color/black"
                 android:textSize="16sp"
                 app:layout_constraintBottom_toTopOf="@+id/age_tv"
-                app:layout_constraintEnd_toStartOf="@+id/editLay"
-                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintEnd_toStartOf="@+id/status_view"
                 app:layout_constraintStart_toEndOf="@+id/profile_image"
                 app:layout_constraintTop_toTopOf="parent" />
 
@@ -148,6 +147,49 @@
                 app:layout_constraintEnd_toEndOf="@+id/editLay"
                 app:layout_constraintStart_toStartOf="@+id/editLay"
                 app:layout_constraintTop_toBottomOf="@+id/editLay" />
+
+
+            <LinearLayout
+                android:id="@+id/status_view"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center_horizontal"
+                android:orientation="vertical"
+                android:visibility="gone"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/nextArrowImageView"
+                app:layout_constraintStart_toEndOf="@+id/name_tv"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <ImageView
+                    android:id="@+id/childStatusImg"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="right"
+                    android:layout_marginEnd="20dp"
+                    android:src="@drawable/child"
+                    android:tint="@color/vaccine_red_bg_end" />
+
+                <org.smartregister.view.customcontrols.CustomFontTextView
+                    android:id="@+id/weight_tv"
+                    style="@style/CustomFontTextViewStyle.ClientList.Medium"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_vertical"
+                    android:text="w:2kg h:13cm"
+                    android:textColor="@android:color/black"
+                    android:textSize="14sp" />
+
+                <org.smartregister.view.customcontrols.CustomFontTextView
+                    android:id="@+id/last_vaccine_tv"
+                    style="@style/CustomFontTextViewStyle.ClientList.Medium"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_vertical"
+                    android:text="bcg given at 21/10/21"
+                    android:textColor="@color/dark_grey"
+                    android:textSize="12sp" />
+            </LinearLayout>
 
 
             <View
