@@ -151,9 +151,9 @@ public abstract class BaseRegisterActivity extends SecuredNativeSmartRegisterAct
         bottomNavigationHelper = new BottomNavigationHelper();
         bottomNavigationView = findViewById(R.id.bottom_navigation);
         if (bottomNavigationView != null) {
-            bottomNavigationView.getMenu().add(Menu.NONE, R.string.action_me, Menu.NONE, "Profile")
+            /*bottomNavigationView.getMenu().add(Menu.NONE, R.string.action_me, Menu.NONE, "Profile")
                     .setIcon(bottomNavigationHelper
-                            .writeOnDrawable(R.drawable.initials_background, userInitials, getResources()));
+                            .writeOnDrawable(R.drawable.initials_background, userInitials, getResources()));*/
             bottomNavigationHelper.disableShiftMode(bottomNavigationView);
             BottomNavigationListener bottomNavigationListener = new BottomNavigationListener(this);
             bottomNavigationView.setOnNavigationItemSelectedListener(bottomNavigationListener);

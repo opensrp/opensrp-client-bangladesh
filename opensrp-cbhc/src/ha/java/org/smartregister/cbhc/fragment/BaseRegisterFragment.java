@@ -40,6 +40,7 @@ import net.sqlcipher.database.SQLiteDatabase;
 import org.apache.commons.lang3.StringUtils;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.smartregister.cbhc.BuildConfig;
 import org.smartregister.cbhc.R;
 import org.smartregister.cbhc.activity.BaseRegisterActivity;
 import org.smartregister.cbhc.activity.BlocksDialog;
@@ -75,12 +76,14 @@ import org.smartregister.provider.SmartRegisterClientsProvider;
 import org.smartregister.service.HTTPAgent;
 import org.smartregister.service.ImageUploadSyncService;
 import org.smartregister.view.activity.SecuredNativeSmartRegisterActivity;
+import org.smartregister.view.customcontrols.CustomFontTextView;
 import org.smartregister.view.dialog.DialogOption;
 
 import java.text.SimpleDateFormat;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 import java.util.Set;
 
 /**
@@ -215,8 +218,13 @@ public abstract class BaseRegisterFragment extends RecyclerViewFragment implemen
         LinearLayout syncLay = drawer.findViewById(R.id.sync_lay);
         Button logOutBtn = drawer.findViewById(R.id.logoutButton);
 
+        String version_name = BuildConfig.VERSION_NAME;
+        String build_date = new SimpleDateFormat("dd MMM yyyy", Locale.ENGLISH).format(new Date(BuildConfig.BUILD_TIMESTAMP));
+        String version_text = "Version " + version_name + ", Built on: " + build_date;
 
 
+        CustomFontTextView versionTv = drawer.findViewById(R.id.app_version_tv);
+        versionTv.setText(version_text);
 
         //close button listeners
         closeDrawerIm.setOnClickListener(new View.OnClickListener() {

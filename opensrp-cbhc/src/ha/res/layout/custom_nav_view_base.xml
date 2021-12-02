@@ -27,7 +27,7 @@
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:fillViewport="true"
-            app:layout_constraintBottom_toTopOf="@+id/logoutButton"
+            app:layout_constraintBottom_toTopOf="@+id/linearLayout3"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/include">
@@ -219,10 +219,10 @@
                         android:layout_marginRight="5dp"
                         android:layout_marginBottom="10dp"
                         android:paddingTop="10dp"
-                        android:tint="#FFFFFF"
                         android:paddingRight="10dp"
                         android:paddingBottom="10dp"
-                        android:src="@drawable/ic_icon_location" />
+                        android:src="@drawable/ic_icon_location"
+                        android:tint="#FFFFFF" />
 
                     <org.smartregister.view.customcontrols.CustomFontTextView
                         android:id="@+id/update_block_Textview"
@@ -239,19 +239,38 @@
             </LinearLayout>
         </ScrollView>
 
-        <Button
-            android:id="@+id/logoutButton"
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:id="@+id/linearLayout3"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="1dp"
-            android:layout_margin="10dp"
-            android:textAllCaps="false"
-            android:text="@string/logout_text"
-            android:textColor="@color/white"
-            android:background="@drawable/bg_blue_gradient"
+            android:gravity="center"
+            android:orientation="vertical"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/scrollView2" />
+            app:layout_constraintStart_toStartOf="parent">
+
+            <org.smartregister.view.customcontrols.CustomFontTextView
+                android:id="@+id/app_version_tv"
+                style="@style/CustomFontTextViewStyle.ClientList.Light.twoline"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:text="Sync"
+                android:textColor="@color/white"
+                android:textSize="14sp" />
+
+            <Button
+                android:id="@+id/logoutButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                android:layout_marginTop="1dp"
+                android:background="@drawable/bg_blue_gradient"
+                android:text="@string/logout_text"
+                android:textAllCaps="false"
+                android:textColor="@color/white" />
+        </LinearLayout>
     </android.support.constraint.ConstraintLayout>
 </android.support.design.widget.NavigationView>
