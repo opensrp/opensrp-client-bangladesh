@@ -439,6 +439,8 @@ public class GrowthUtil {
            SQLiteDatabase db = repo.getReadableDatabase();
            String sql = "UPDATE ec_child SET last_vaccine_date = '"+lastVaccineDate+"',last_vaccine_name ='"+vaccineName+"' WHERE base_entity_id = '" + baseEntityId + "';";
            db.execSQL(sql);
+           String sqlOCA = "UPDATE ec_guest_member SET last_vaccine_date = '"+lastVaccineDate+"',last_vaccine_name ='"+vaccineName+"' WHERE base_entity_id = '" + baseEntityId + "';";
+           db.execSQL(sqlOCA);
        }catch (Exception e){
            e.printStackTrace();
 
