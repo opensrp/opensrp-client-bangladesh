@@ -1928,6 +1928,15 @@
             "field": "weight_status"
           }
         },
+
+        {
+          "column_name": "has_edema",
+          "type": "Client",
+          "json_mapping": {
+            "field": "has_edema"
+          }
+        },
+
         {
           "column_name": "last_vaccine_date",
           "type": "Client",

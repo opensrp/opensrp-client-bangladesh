@@ -4,10 +4,12 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 
 import org.joda.time.DateTime;
 import org.smartregister.cbhc.R;
@@ -30,8 +32,9 @@ public class GuestMemberAdapter extends RecyclerView.Adapter<GuestMemberAdapter.
         contentList = new ArrayList<>();
     }
     public static class GuestMemberViewHolder extends RecyclerView.ViewHolder{
-        public CustomFontTextView textViewForumDate,textViewName,textViewAge,textViewGender;
+        public CustomFontTextView textViewForumDate,textViewName,textViewAge,textViewGender,weightTv,vaccineTv;;
         public ImageView profileImage,smallImage,nextArrowImageview;
+        public LinearLayout statusLay;
 
         public GuestMemberViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -42,6 +45,11 @@ public class GuestMemberAdapter extends RecyclerView.Adapter<GuestMemberAdapter.
             profileImage= itemView.findViewById(R.id.profile_image);
             smallImage = itemView.findViewById(R.id.small_image);
             nextArrowImageview = itemView.findViewById(R.id.nextArrowImageView);
+
+            statusLay = itemView.findViewById(R.id.status_view);
+
+            weightTv= itemView.findViewById(R.id.weight_tv);
+            vaccineTv= itemView.findViewById(R.id.last_vaccine_tv);
         }
     }
 
@@ -61,12 +69,33 @@ public class GuestMemberAdapter extends RecyclerView.Adapter<GuestMemberAdapter.
     @Override
     public void onBindViewHolder(@NonNull final GuestMemberViewHolder viewHolder, int position) {
         final GuestMemberData content = contentList.get(position);
+
+        viewHolder.statusLay.setVisibility(View.VISIBLE);
+
         viewHolder.nextArrowImageview.setVisibility(View.VISIBLE);
         viewHolder.profileImage.setVisibility(View.VISIBLE);
         viewHolder.smallImage.setVisibility(View.VISIBLE);
 
         viewHolder.textViewName.setText(context.getString(R.string.name2,(content.getfName()+" "+content.getlName())));
         viewHolder.textViewGender.setText(context.getString(R.string.gender,getGender(content.getGender())));
+
+        StringBuilder builder = new StringBuilder();
+        if(!TextUtils.isEmpty(content.getWeight())){
+            builder.append("W:"+content.getWeight()+" kg ");
+        }
+        if(!TextUtils.isEmpty(content.getHeight())){
+            builder.append("H:"+content.getHeight()+" cm");
+        }
+        viewHolder.weightTv.setText(builder.toString());
+        StringBuilder builder2 = new StringBuilder();
+        if(!TextUtils.isEmpty(content.getVaccName())){
+            builder2.append(content.getVaccName());
+        }
+        if(!TextUtils.isEmpty(content.getVacDate())){
+            builder2.append(" given at "+content.getVacDate());
+        }
+        viewHolder.vaccineTv.setText(builder2.toString());
+
 
        if(content.getAge().equals("")){
            String dobString = Utils.getDuration(content.getDob());
