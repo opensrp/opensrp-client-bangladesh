@@ -108,12 +108,16 @@ public class GuestMemberAdapter extends RecyclerView.Adapter<GuestMemberAdapter.
         /*   viewHolder.profileImage.setImageResource(R.drawable.child_girl_infant);
            viewHolder.smallImage.setImageResource(R.drawable.female_child_cbhc);*/
            viewHolder.profileImage.setTag(org.smartregister.R.id.entity_id, content.getpClient().entityId());
-           DrishtiApplication.getCachedImageLoaderInstance().getImageByClientId(content.getpClient().entityId(), OpenSRPImageLoader.getStaticImageListener(viewHolder.profileImage, R.drawable.child_boy_infant, R.drawable.child_boy_infant));
+           DrishtiApplication.getCachedImageLoaderInstance().getImageByClientId(content.getpClient().entityId(), OpenSRPImageLoader.getStaticImageListener(viewHolder.profileImage, R.drawable.child_girl_infant, R.drawable.child_girl_infant));
+           viewHolder.smallImage.setImageResource(R.drawable.female_child_cbhc);
+
        }else{
           /* viewHolder.profileImage.setImageResource(R.drawable.child_boy_infant);
            viewHolder.smallImage.setImageResource(R.drawable.male_child_cbhc);*/
            viewHolder.profileImage.setTag(org.smartregister.R.id.entity_id, content.getpClient().entityId());
-           DrishtiApplication.getCachedImageLoaderInstance().getImageByClientId(content.getpClient().entityId(), OpenSRPImageLoader.getStaticImageListener(viewHolder.profileImage, R.drawable.child_girl_infant, R.drawable.child_girl_infant));
+           DrishtiApplication.getCachedImageLoaderInstance().getImageByClientId(content.getpClient().entityId(), OpenSRPImageLoader.getStaticImageListener(viewHolder.profileImage, R.drawable.child_boy_infant, R.drawable.child_boy_infant));
+           viewHolder.smallImage.setImageResource(R.drawable.male_child_cbhc);
+
        }
 
         viewHolder.itemView.setOnClickListener(v -> onClickAdapter.onClick(position, content));
