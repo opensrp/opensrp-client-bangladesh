@@ -257,32 +257,13 @@ public class GMPFragment extends BaseProfileFragment implements WeightActionList
         String resultText = getOverallStatus();
         Log.v("CHILD_STATUS", " resultText>>>"+resultText);
         if(!resultText.isEmpty()){
-            GrowthUtil.updateChildStatus(childDetails.entityId(),resultText);
             int resultColor = ZScore.getZscoreColorByText(resultText);
             updateChildProfileColor(resultColor,resultText);
         }
 
     }
     private String getOverallStatus(){
-        if(muakText.isEmpty()&&weightText.isEmpty()&&heightText.isEmpty()){
-            return "";
-        }
-        if(weightText.isEmpty() && heightText.isEmpty()){
-            return muakText;
-        }
-        if(weightText.contains("OVER WEIGHT") || heightText.contains("OVER WEIGHT")){
-            return "OVER WEIGHT";
-        }
-        if(weightText.contains("SAM") || heightText.contains("SAM") || muakText.contains("SAM")){
-            return "SAM";
-        }
-        if(weightText.contains("MAM") || heightText.contains("MAM")| muakText.contains("MAM")){
-            return "MAM";
-        }
-        if(weightText.contains("DARK YELLOW") || heightText.contains("DARK YELLOW")){
-            return "DARK YELLOW";
-        }
-        return "NORMAL";
+        return GrowthUtil.getOverallChildStatus(muakText,weightText,heightText);
 
     }
     private void updateChildProfileColor(int resultColor,String text){

@@ -43,6 +43,7 @@ import org.smartregister.cbhc.adapters.AppSegmentAdapter;
 import org.smartregister.cbhc.application.AncApplication;
 import org.smartregister.cbhc.domain.ChildData;
 import org.smartregister.cbhc.domain.ReportData;
+import org.smartregister.cbhc.util.GrowthUtil;
 import org.smartregister.commonregistry.CommonRepository;
 
 import java.util.ArrayList;
@@ -78,7 +79,7 @@ public class ReportGrowthFalterFragment extends Fragment implements SeekBar.OnSe
      */
     private void getChildData() {
         childDataList.clear();
-        String query = "select * from ec_child where child_status is not NULL";
+        String query = "select * from ec_child where muac_status is not NULL or weight_status is not null or height_status is not null";
         Cursor cursor = commonRepository.rawCustomQueryForAdapter(query);
 
         if(cursor!=null && cursor.getCount()>0){
@@ -87,14 +88,17 @@ public class ReportGrowthFalterFragment extends Fragment implements SeekBar.OnSe
                 int child_height = cursor.getColumnIndex("child_height");
                 int child_weight = cursor.getColumnIndex("child_weight");
                 int child_muac = cursor.getColumnIndex("child_muac");
-                int child_status = cursor.getColumnIndex("child_status");
                 int has_edema = cursor.getColumnIndex("has_edema");
+                String muac_status = cursor.getString(cursor.getColumnIndex("muac_status"));
+                String weight_status = cursor.getString(cursor.getColumnIndex("weight_status"));
+                String height_status = cursor.getString(cursor.getColumnIndex("height_status"));
+                String finalStatus = GrowthUtil.getOverallChildStatus(muac_status,weight_status,height_status);
 
                 childDataList.add(new ChildData(
                         cursor.isNull(child_height)?"":cursor.getString(child_height),
                         cursor.isNull(child_weight)?"":cursor.getString(child_weight),
                         cursor.isNull(child_muac)?"":cursor.getString(child_muac),
-                        cursor.isNull(child_status)?"":cursor.getString(child_status),
+                        finalStatus,
                         cursor.isNull(has_edema)?"":cursor.getString(has_edema)
 
                 ));

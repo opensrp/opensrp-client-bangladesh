@@ -16,6 +16,7 @@ import org.smartregister.cbhc.domain.GuestMemberData;
 import org.smartregister.cbhc.helper.ECSyncHelper;
 import org.smartregister.cbhc.sync.AncClientProcessorForJava;
 import org.smartregister.cbhc.util.DBConstants;
+import org.smartregister.cbhc.util.GrowthUtil;
 import org.smartregister.cbhc.util.JsonFormUtils;
 import org.smartregister.clientandeventmodel.Client;
 import org.smartregister.clientandeventmodel.Event;
@@ -201,7 +202,7 @@ public class GuestMemberModel extends JsonFormUtils implements GuestMemberContra
         //String query =  "select * from ec_guest_member";
         //String query =  "select * from ec_guest_member";
         // String query = "Select child.id as _id , child.relationalid , child.Patient_Identifier, child.first_name , child.last_name , child.dob ,child.gender, child.PregnancyStatus, child.tasks, child.age as age, NULL as MaritalStatus, child.camp_type, child.child_status FROM ec_guest_member as child";
-        String query = "Select child.id as _id , child.relationalid , child.Patient_Identifier, child.first_name , child.last_name , child.dob ,child.gender, child.PregnancyStatus, child.tasks, child.age as age, NULL as MaritalStatus, child.child_status FROM ec_guest_member as child";
+        String query = "Select child.id as _id , child.relationalid , child.Patient_Identifier, child.first_name , child.last_name , child.dob ,child.gender, child.PregnancyStatus, child.tasks, child.age as age, NULL as MaritalStatus, child.muac_status,child.height_status,child.weight_status FROM ec_guest_member as child";
 
         try (Cursor cursor = AncApplication.getInstance().getRepository().getReadableDatabase().rawQuery(query, new String[]{})) {
             if (cursor != null && cursor.getCount() > 0) {
@@ -220,6 +221,11 @@ public class GuestMemberModel extends JsonFormUtils implements GuestMemberContra
                     int dob = cursor.getColumnIndex("dob");
                     int gender = cursor.getColumnIndex("gender");
                     int age = cursor.getColumnIndex("age");
+                    String muac_status = cursor.getString(cursor.getColumnIndex("muac_status"));
+                    String weight_status = cursor.getString(cursor.getColumnIndex("weight_status"));
+                    String height_status = cursor.getString(cursor.getColumnIndex("height_status"));
+                    String finalStatus = GrowthUtil.getOverallChildStatus(muac_status,weight_status,height_status);
+                    pClient.getColumnmaps().put("child_status", finalStatus);
 
                     guestMemberDataArrayList.add(new GuestMemberData(
                             cursor.isNull(baseEntity) ? "" : cursor.getString(baseEntity),

@@ -17,6 +17,7 @@ import org.smartregister.cbhc.adapter.ReportRecyclerViewAdapter;
 import org.smartregister.cbhc.application.AncApplication;
 import org.smartregister.cbhc.domain.ChildData;
 import org.smartregister.cbhc.domain.ReportData;
+import org.smartregister.cbhc.util.GrowthUtil;
 import org.smartregister.commonregistry.CommonRepository;
 import org.smartregister.repository.DetailsRepository;
 
@@ -75,14 +76,17 @@ public class ReportFragment extends Fragment {
                 int child_height = cursor.getColumnIndex("child_height");
                 int child_weight = cursor.getColumnIndex("child_weight");
                 int child_muac = cursor.getColumnIndex("child_muac");
-                int child_status = cursor.getColumnIndex("child_status");
                 int has_edema = cursor.getColumnIndex("has_edema");
+                String muac_status = cursor.getString(cursor.getColumnIndex("muac_status"));
+                String weight_status = cursor.getString(cursor.getColumnIndex("weight_status"));
+                String height_status = cursor.getString(cursor.getColumnIndex("height_status"));
+                String finalStatus = GrowthUtil.getOverallChildStatus(muac_status,weight_status,height_status);
 
                 childDataList.add(new ChildData(
                         cursor.isNull(child_height)?"0":cursor.getString(child_height),
                         cursor.isNull(child_weight)?"0":cursor.getString(child_weight),
                         cursor.isNull(child_muac)?"0":cursor.getString(child_muac),
-                        cursor.isNull(child_status)?"":cursor.getString(child_status),
+                        finalStatus,
                         cursor.isNull(has_edema)?"0":cursor.getString(has_edema)
 
                 ));

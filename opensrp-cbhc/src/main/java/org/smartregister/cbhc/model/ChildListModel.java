@@ -14,6 +14,7 @@ import org.smartregister.cbhc.contract.ChildListContract;
 import org.smartregister.cbhc.domain.ChildItemData;
 import org.smartregister.cbhc.util.Constants;
 import org.smartregister.cbhc.util.DBConstants;
+import org.smartregister.cbhc.util.GrowthUtil;
 import org.smartregister.commonregistry.CommonPersonObject;
 import org.smartregister.commonregistry.CommonPersonObjectClient;
 import org.smartregister.commonregistry.CommonRepository;
@@ -43,18 +44,23 @@ public class ChildListModel implements ChildListContract.Model {
                 CommonPersonObjectClient pClient   = new CommonPersonObjectClient(personinlist.getCaseId(), personinlist.getDetails(), personinlist.getDetails().get("FWHOHFNAME"));
                 pClient.setColumnmaps(personinlist.getColumnmaps());
 
+
                 int baseEntity = cursor.getColumnIndex("base_entity_id");
                 int fName = cursor.getColumnIndex("first_name");
                 int lName = cursor.getColumnIndex("last_name");
                 int id = cursor.getColumnIndex("Patient_Identifier");
                 int dob = cursor.getColumnIndex("dob");
                 int gender = cursor.getColumnIndex("gender");
-                int child_status = cursor.getColumnIndex("child_status");
                 int child_weight = cursor.getColumnIndex("child_weight");
                 int child_height = cursor.getColumnIndex("child_height");
                 int last_vaccine_name = cursor.getColumnIndex("last_vaccine_name");
                 int last_vaccine_date = cursor.getColumnIndex("last_vaccine_date");
-
+                //
+                String muac_status = cursor.getString(cursor.getColumnIndex("muac_status"));
+                String weight_status = cursor.getString(cursor.getColumnIndex("weight_status"));
+                String height_status = cursor.getString(cursor.getColumnIndex("height_status"));
+                String finalStatus = GrowthUtil.getOverallChildStatus(muac_status,weight_status,height_status);
+                pClient.getColumnmaps().put("child_status", finalStatus);
 
                 childItemDataArrayList.add(new ChildItemData(
                         cursor.isNull(baseEntity)?"":cursor.getString(baseEntity),
@@ -65,11 +71,12 @@ public class ChildListModel implements ChildListContract.Model {
                         cursor.isNull(gender)?"":cursor.getString(gender),
                         cursor.getString(child_weight),cursor.getString(child_height)
                         ,cursor.getString(last_vaccine_name),cursor.getString(last_vaccine_date),
-                        cursor.isNull(child_status)?"":cursor.getString(child_status),
+                        finalStatus,
                         pClient));
                 cursor.moveToNext();
             }
         }
+        if(cursor!=null) cursor.close();
         // if(adapter==null){
      /*   adapter = new ChildListAdapter(getActivity(), childItemDataArrayList, new ChildListAdapter.TotalChild() {
             @Override
