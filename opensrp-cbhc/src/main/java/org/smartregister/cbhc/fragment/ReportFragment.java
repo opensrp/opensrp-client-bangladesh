@@ -28,8 +28,8 @@ public class ReportFragment extends Fragment {
     private RecyclerView reportRv;
     private ArrayList<ChildData> childDataList;
     private ArrayList<ReportData> reportDataList;
-    CommonRepository commonRepository;
-    DetailsRepository detailRepository;
+    private CommonRepository commonRepository;
+    private DetailsRepository detailRepository;
     private int gmpChildren=0;
     private int totalChild = 0;
     private int samChild=0;
@@ -98,6 +98,8 @@ public class ReportFragment extends Fragment {
 
         }
 
+
+
         for(ChildData childData : childDataList){
             if(!childData.getChild_status().isEmpty()){
                gmpChildren++;
@@ -115,26 +117,27 @@ public class ReportFragment extends Fragment {
                 edemaChild++;
             }
 
-            if(getZScoreText(Double.valueOf(childData.getChild_weight())).equalsIgnoreCase("OVER WEIGHT")){
+            if(childData.getChild_status().equalsIgnoreCase("OVER WEIGHT")){
                 overWeightChild++;
             }
 
-            if(getZScoreText(Double.valueOf(childData.getChild_height())).equalsIgnoreCase("DARK YELLOW")){
+            if(childData.getChild_status().equalsIgnoreCase("DARK YELLOW")){
                 severlyStunted++;
             }
 
-            if(getZScoreText(Double.valueOf(childData.getChild_weight())).equalsIgnoreCase("DARK YELLOW")){
+            if(childData.getChild_status().equalsIgnoreCase("DARK YELLOW")){
                 underWeightChild++;
             }
         }
         DecimalFormat decimalFormat = new DecimalFormat("##.#");
         reportDataList.add(new ReportData(decimalFormat.format((gmpChildren*100.0)/totalChild).replace("NaN","0"),"% of children reaching for GMP",R.color.black));
+
         reportDataList.add(new ReportData(decimalFormat.format((normalChild*100.0)/gmpChildren).replace("NaN","0"),"% of children who have normal growth",R.color.green));
         reportDataList.add(new ReportData(decimalFormat.format((samChild*100.0)/gmpChildren).replace("NaN","0"),"% of children who are SAM",R.color.red));
         reportDataList.add(new ReportData(decimalFormat.format((mamChild*100.0)/gmpChildren).replace("NaN","0"),"% of children who are MAM",R.color.yellow));
         reportDataList.add(new ReportData(decimalFormat.format((edemaChild*100.0)/gmpChildren).replace("NaN","0"),"% of children who have Edema",R.color.black));
 
-        reportDataList.add(new ReportData(decimalFormat.format((overWeightChild*100.0)/gmpChildren).replace("NaN","0"),"% of children who are overweight",R.color.black));
+        reportDataList.add(new ReportData(decimalFormat.format((overWeightChild*100.0)/gmpChildren).replace("NaN","0"),"% of children who are overweight",R.color.red));
         reportDataList.add(new ReportData(decimalFormat.format((underWeightChild*100.0)/gmpChildren).replace("NaN","0"),"% of children who are Severly Underweight",R.color.black));
         reportDataList.add(new ReportData(decimalFormat.format((severlyStunted*100.0)/gmpChildren).replace("NaN","0"),"% of children who are Severly Stunted",R.color.black));
 
