@@ -176,7 +176,7 @@ public class GrowthReportActivity extends BaseActivity {
 //        tabLayout.getTabAt(1).setCustomView(tabtwo);
 
         TextView tabthree = new TextView(this);
-        tabthree.setText("Growth"+ System.getProperty("line.separator") +"Faltering Trend");
+        tabthree.setText(getString(R.string.growth)+ System.getProperty("line.separator") +getString(R.string.faltering_td));
         tabthree.setCompoundDrawablesWithIntrinsicBounds(0, R.mipmap.ic_chart, 0, 0);
         tabthree.setGravity(Gravity.CENTER);
         tabthree.setTextColor(getResources().getColor(R.color.status_bar_text_almost_white));

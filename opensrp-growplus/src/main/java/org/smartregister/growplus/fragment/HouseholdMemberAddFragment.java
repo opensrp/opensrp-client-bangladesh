@@ -1,5 +1,7 @@
 package org.smartregister.growplus.fragment;
 
+import static util.JsonFormUtils.getFormJson;
+
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.DialogFragment;
@@ -175,7 +177,7 @@ public class HouseholdMemberAddFragment extends DialogFragment {
                                  String currentLocationId,String HouseholdEnitityID) throws Exception {
         Intent intent = new Intent(context, PathJsonFormActivity.class);
 
-        JSONObject form = FormUtils.getInstance(context).getFormJson(formName);
+        JSONObject form = /*FormUtils.getInstance(context).getFormJson(formName);*/getFormJson(formName, context);
         if (form != null) {
             form.getJSONObject("metadata").put("encounter_location", currentLocationId);
 

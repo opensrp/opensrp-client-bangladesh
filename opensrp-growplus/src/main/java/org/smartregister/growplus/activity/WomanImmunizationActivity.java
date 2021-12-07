@@ -586,7 +586,7 @@ public class WomanImmunizationActivity extends BaseActivity
 
         TextView childSiblingsTV = (TextView) findViewById(R.id.child_siblings_tv);
         childSiblingsTV.setText(
-                "Her Children".toUpperCase());
+                getString(R.string.her_children).toUpperCase());
         updateProfilePicture(gender);
 
         return selectedColor;

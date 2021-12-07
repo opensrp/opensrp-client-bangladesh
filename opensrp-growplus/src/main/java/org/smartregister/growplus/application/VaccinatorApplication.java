@@ -89,7 +89,7 @@ public class VaccinatorApplication extends DrishtiApplication
         TimeChangedBroadcastReceiver.init(this);
         TimeChangedBroadcastReceiver.getInstance().addOnTimeChangedListener(this);
 
-        applyUserLanguagePreference();
+        //applyUserLanguagePreference();
         cleanUpSyncState();
         initOfflineSchedules();
 //        setCrashlyticsUser(context);

@@ -47,13 +47,16 @@ import org.smartregister.view.viewpager.OpenSRPViewPager;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.Locale;
 import java.util.Map;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import util.JsonFormUtils;
+import util.Utils;
 
 import static android.view.inputmethod.InputMethodManager.HIDE_NOT_ALWAYS;
+import static org.smartregister.growplus.activity.LoginActivity.getOpenSRPContext;
 import static org.smartregister.util.Utils.getValue;
 
 /**
@@ -103,6 +106,8 @@ public class HouseholdSmartRegisterActivity extends BaseRegisterActivity {
         });
 
         Event.ON_DATA_FETCHED.addListener(onDataFetchedListener);
+
+        Log.d("llllll", "local   "+ getResources().getConfiguration().locale+"   "+getOpenSRPContext().applicationContext().getResources().getConfiguration().locale);
 
     }
 
@@ -164,7 +169,7 @@ public class HouseholdSmartRegisterActivity extends BaseRegisterActivity {
     @Override
     public void showFragmentDialog(DialogOptionModel dialogOptionModel, Object tag) {
         try {
-            LoginActivity.setLanguage();
+           // LoginActivity.setLanguage();
         } catch (Exception e) {
 
         }

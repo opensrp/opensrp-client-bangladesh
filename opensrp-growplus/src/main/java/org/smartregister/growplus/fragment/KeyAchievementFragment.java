@@ -133,7 +133,7 @@ public class KeyAchievementFragment extends Fragment {
             e.printStackTrace();
         }
 
-        titleList.add("% of children who are being reached");
+        titleList.add(getString(R.string.total_reached_child));
         iconList.add(getResources().getDrawable(R.drawable.child_boy_infant_key_achievement));
         try {
             counts.add(totalChildrenCovered());
@@ -142,7 +142,7 @@ public class KeyAchievementFragment extends Fragment {
             e.printStackTrace();
         }
 
-        titleList.add("% of children who are growth faltering");
+        titleList.add(getString(R.string.total_growth_filtering_child));
         iconList.add(getResources().getDrawable(R.drawable.child_boy_infant_key_achievement));
         try {
             counts.add(""+getWeightOfCertainMonth(sql_lite_DATE_FORMAT.format((new DateTime()).plusDays(1).toDate())));
@@ -151,7 +151,7 @@ public class KeyAchievementFragment extends Fragment {
             e.printStackTrace();
         }
 
-        titleList.add("% of the Woman being Reached");
+        titleList.add(getString(R.string.total_reached_woman));
         iconList.add(getResources().getDrawable(R.drawable.woman_reaching));
         try {
             counts.add(totalWomanReached());

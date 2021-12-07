@@ -1,9 +1,13 @@
 package org.smartregister.growplus.activity;
 
+import static android.preference.PreferenceManager.getDefaultSharedPreferences;
+
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.res.Configuration;
+import android.content.res.Resources;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
@@ -19,6 +23,7 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.Menu;
@@ -31,7 +36,9 @@ import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.Switch;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import org.apache.commons.lang3.StringUtils;
 import org.joda.time.DateTime;
@@ -56,8 +63,10 @@ import org.smartregister.view.activity.DrishtiApplication;
 
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Locale;
 
 import util.JsonFormUtils;
+import util.Utils;
 
 import static org.smartregister.util.Log.logError;
 
@@ -86,13 +95,13 @@ public abstract class BaseActivity extends AppCompatActivity
     private ArrayList<Notification> notifications;
     private BaseActivityToggle toggle;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(getContentView());
         toolbar = (BaseToolbar) findViewById(getToolbarId());
         setSupportActionBar(toolbar);
-
         DrawerLayout drawer = (DrawerLayout) findViewById(getDrawerLayoutId());
         toggle = new BaseActivityToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
@@ -336,6 +345,9 @@ public abstract class BaseActivity extends AppCompatActivity
 
             }
         });
+
+
+
         /////disabling buttons
         outofcatchment.setVisibility(View.GONE);
         stockregister.setVisibility(View.GONE);
@@ -344,6 +356,9 @@ public abstract class BaseActivity extends AppCompatActivity
         ///////////////////////////////////////
 
     }
+
+
+
     private String getLastSyncTime() {
         String lastSync = "";
         long milliseconds = ECSyncUpdater.getInstance(this).getLastCheckTimeStamp();

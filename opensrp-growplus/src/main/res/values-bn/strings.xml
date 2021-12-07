@@ -8,18 +8,18 @@
     <string name="child_entries">শিশু</string>
     <string name="child_profile">শিশুরা </string>
     <string name="child_DOB">জন্ম তারিখ</string>
-    <string name = "child_reminder"> অনুস্মারক</string>
-    <string name = "child_next_vaccine"> প্রাপ্য ভ্যাকসিন</string>
-    <string name = "child_register_title">শিশু নিবন্ধন</string>
+    <string name="child_reminder"> অনুস্মারক</string>
+    <string name="child_next_vaccine"> প্রাপ্য ভ্যাকসিন</string>
+    <string name="child_register_title">শিশু নিবন্ধন</string>
     <string name="register_search_hint">অনুসন্ধান করুন</string>
     <string name="child_title">শিশু</string>৷
     <string name="child_alphabetical_sort">বর্ণানুক্রমিক (শিশুর নাম)</string>
     <string name="child_id_sort">প্রোগ্রাম আইডি </string>
     <string name="child_search_hint">শিশু খুঁজুন</string>
-    <string name = "child_details_title"> শিশুর বিবরণ</string>
-    <string name = "stock_title"> স্টক নিয়ন্ত্রণ</string>
-    <string name = "vaccination_summary"> টিকা দেওয়ার সারাংশ</string>
-    <string name = "search_hint"> সার্চ রেজিস্টার</string>
+    <string name="child_details_title"> শিশুর বিবরণ</string>
+    <string name="stock_title"> স্টক নিয়ন্ত্রণ</string>
+    <string name="vaccination_summary"> টিকা দেওয়ার সারাংশ</string>
+    <string name="search_hint"> সার্চ রেজিস্টার</string>
     <string name="birthdate">DOB</string>
     <string name="age">বয়স</string>
     <string name="uc">UC</string>
@@ -330,12 +330,11 @@
     <string name="version">ভার্সন</string>
     <string name="built_on">নির্মিত হয়েছে:</string>
 
-    <string name="growth">বৃদ্ধি</string>
-    <string name="faltering_td">ঝাপসা প্রবণতা</string>
+    <string name="growth">বৃদ্ধির</string>
+    <string name="faltering_td">প্রবণতা</string>
     <string name="total_reached_child">% শিশুদের কাছে পৌঁছানো হচ্ছে</string>
     <string name="total_growth_filtering_child">% শিশু যাদের বৃদ্ধি হ্রাস পায়</string>
     <string name="total_reached_woman">% নারীর কাছে পৌঁছানো হচ্ছে</string>
-
     <string name="growth_faltering_overtime">% ওভারটাইমে বেড়ে ওঠা শিশুরা</string>
 
 

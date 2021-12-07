@@ -2,6 +2,8 @@ package org.smartregister.growplus.activity;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.content.res.Configuration;
+import android.content.res.Resources;
 import android.os.Bundle;
 import android.support.annotation.StringRes;
 import android.support.design.widget.NavigationView;
@@ -10,13 +12,18 @@ import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.text.TextUtils;
+import android.util.DisplayMetrics;
+import android.util.Log;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
+import android.widget.Switch;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import org.joda.time.DateTime;
 import org.joda.time.Days;
@@ -31,11 +38,15 @@ import org.smartregister.growplus.receiver.SyncStatusBroadcastReceiver;
 import org.smartregister.growplus.sync.ECSyncUpdater;
 import org.smartregister.growplus.sync.PathAfterFetchListener;
 import org.smartregister.growplus.sync.PathUpdateActionsTask;
+import org.smartregister.repository.AllSharedPreferences;
 import org.smartregister.sync.SyncProgressIndicator;
 import org.smartregister.view.activity.DrishtiApplication;
 import org.smartregister.view.activity.SecuredNativeSmartRegisterActivity;
 
 import java.util.Calendar;
+import java.util.Locale;
+
+import util.Utils;
 
 /**
  * Base activity class for path regiters views
@@ -54,7 +65,6 @@ public abstract class BaseRegisterActivity extends SecuredNativeSmartRegisterAct
         setContentView(R.layout.activity_main);
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-
         BaseActivityToggle toggle = new BaseActivityToggle(this, drawer,
                 R.string.navigation_drawer_open, R.string.navigation_drawer_close) {
 
@@ -83,7 +93,12 @@ public abstract class BaseRegisterActivity extends SecuredNativeSmartRegisterAct
                 updateFromServer();
             }
         }
+
     }
+
+
+
+
 
     @Override
     public void onSyncStart() {
@@ -473,6 +488,7 @@ public abstract class BaseRegisterActivity extends SecuredNativeSmartRegisterAct
             super.onDrawerClosed(drawerView);
         }
     }
+
 
 
 }

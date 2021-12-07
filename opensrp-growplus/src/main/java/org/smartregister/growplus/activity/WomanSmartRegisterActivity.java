@@ -114,6 +114,7 @@ public class WomanSmartRegisterActivity extends BaseRegisterActivity {
         switchToBaseFragment();
         ((WomanSmartRegisterFragment)mBaseFragment).requestUpdateView();
     }
+
     @Override
     protected void onDestroy() {
         super.onDestroy();
@@ -159,7 +160,7 @@ public class WomanSmartRegisterActivity extends BaseRegisterActivity {
     @Override
     public void showFragmentDialog(DialogOptionModel dialogOptionModel, Object tag) {
         try {
-            LoginActivity.setLanguage();
+           // LoginActivity.setLanguage();
         } catch (Exception e) {
 
         }

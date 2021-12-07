@@ -102,7 +102,7 @@ public class HouseholdSmartRegisterFragment extends BaseSmartRegisterFragment {
 
             @Override
             public String nameInShortFormForTitle() {
-                return Context.getInstance().getStringResource(R.string.household);
+                return getString(R.string.household);
             }
         };
     }
@@ -134,7 +134,7 @@ public class HouseholdSmartRegisterFragment extends BaseSmartRegisterFragment {
 
             @Override
             public String searchHint() {
-                return Context.getInstance().getStringResource(R.string.str_search_hint);
+                return getString(R.string.str_search_hint);
             }
         };
     }
@@ -177,7 +177,7 @@ public class HouseholdSmartRegisterFragment extends BaseSmartRegisterFragment {
         }
         updateSearchView();
         try {
-            LoginActivity.setLanguage();
+           // LoginActivity.setLanguage();
         } catch (Exception e) {
 
         }

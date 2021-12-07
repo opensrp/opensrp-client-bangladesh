@@ -1,0 +1,464 @@
+{
+  "count": "1",
+  "encounter_type": "New Woman Member Registration",
+  "entity_id": "",
+  "relational_id": "",
+  "metadata": {
+    "start": {
+      "openmrs_entity_parent": "",
+      "openmrs_entity": "concept",
+      "openmrs_data_type": "start",
+      "openmrs_entity_id": "163137AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
+    },
+    "end": {
+      "openmrs_entity_parent": "",
+      "openmrs_entity": "concept",
+      "openmrs_data_type": "end",
+      "openmrs_entity_id": "163138AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
+    },
+    "today": {
+      "openmrs_entity_parent": "",
+      "openmrs_entity": "encounter",
+      "openmrs_entity_id": "encounter_date"
+    },
+    "deviceid": {
+      "openmrs_entity_parent": "",
+      "openmrs_entity": "concept",
+      "openmrs_data_type": "deviceid",
+      "openmrs_entity_id": "163149AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
+    },
+    "subscriberid": {
+      "openmrs_entity_parent": "",
+      "openmrs_entity": "concept",
+      "openmrs_data_type": "subscriberid",
+      "openmrs_entity_id": "163150AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
+    },
+    "simserial": {
+      "openmrs_entity_parent": "",
+      "openmrs_entity": "concept",
+      "openmrs_data_type": "simserial",
+      "openmrs_entity_id": "163151AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
+    },
+    "phonenumber": {
+      "openmrs_entity_parent": "",
+      "openmrs_entity": "concept",
+      "openmrs_data_type": "phonenumber",
+      "openmrs_entity_id": "163152AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
+    },
+    "encounter_location": "",
+    "look_up": {
+      "entity_id":"",
+      "value":""
+    }
+  },
+  "step1": {
+    "title": "Woman Member Registration",
+    "fields": [
+      {
+        "key": "member_Reg_Date",
+        "openmrs_entity_parent": "",
+        "openmrs_entity": "",
+        "openmrs_entity_id": "",
+        "openmrs_data_type": "text",
+        "type": "date_picker",
+        "hint": "Registration Date",
+        "expanded": false,
+        "min_date": "today-5y",
+        "max_date": "today",
+        "v_required": {
+          "value": "false",
+          "err": "Please enter the date of Registration."
+        }
+      },
+      {
+        "key": "OpenMRS_ID",
+        "openmrs_entity_parent": "",
+        "openmrs_entity": "person_identifier",
+        "openmrs_entity_id": "OpenMRS_ID",
+        "type": "edit_text",
+        "hint": "System ID *",
+        "read_only":"true",
+        "value": "0",
+        "v_numeric": {
+          "value": "true",
+          "err": "Please enter a valid ID"
+        },
+        "v_required": {
+          "value": "true",
+          "err": "Please enter the Child's ZEIR ID"
+        }
+      },
+      {
+        "key": "member_f_name",
+        "openmrs_entity_parent": "",
+        "openmrs_entity": "person",
+        "openmrs_entity_id": "first_name",
+        "openmrs_data_type": "text",
+        "type": "edit_text",
+        "hint": "Member Name",
+        "expanded": false,
+        "v_required": {
+          "value": "true",
+          "err": "Please Enter a Valid Name"
+        },
+        "v_regex": {
+          "value": "[A-Za-z\\s\.\-]*",
+          "err": "Please Enter a Valid Name"
+        }
+      },
+
+
+      {
+        "key": "father_name",
+        "openmrs_entity_parent": "",
+        "openmrs_entity": "person_attribute",
+        "openmrs_entity_id": "fatherName",
+        "openmrs_data_type": "text",
+        "type": "edit_text",
+        "hint": "Father's Name",
+        "edit_type": "name",
+        "v_regex": {
+          "value": "[A-Za-z\\s\.\-]*",
+          "err": "Please Enter a Valid Name"
+        }
+      },
+
+      {
+        "key": "member_unique_ID",
+        "openmrs_entity_parent": "",
+        "openmrs_entity": "person_attribute",
+        "openmrs_entity_id": "idtype",
+        "openmrs_data_type": "text",
+        "type": "spinner",
+        "hint": "Which ID card do you have?",
+        "values": [
+          "NID",
+          "BRID",
+          "None"
+        ]
+      },
+      {
+        "key": "member_NID",
+        "openmrs_entity_parent": "",
+        "openmrs_entity": "person_attribute",
+        "openmrs_entity_id": "nationalId",
+        "openmrs_data_type": "text",
+        "type": "edit_text",
+        "hint": "Type NID ",
+        "v_numeric": {
+          "value": "true",
+          "err": "Enter a valid NID No."
+        },
+        "v_regex": {
+          "value": "^(?=[0-9]*$)(?:.{10}|.{13}|.{17})$",
+          "err": "Number must be a total of 10,13 or 17 digits in length"
+        },
+        "v_required": {
+          "value": true,
+          "err": "Please Type NID"
+        },
+        "relevance": {
+          "step1:member_unique_ID": {
+            "type": "string",
+            "ex": "equalTo(., \"NID\")"
+          }
+        }
+      },
+      {
+        "key": "member_BRID",
+        "openmrs_entity_parent": "",
+        "openmrs_entity": "person_attribute",
+        "openmrs_entity_id": "nationalId",
+        "openmrs_data_type": "text",
+        "type": "edit_text",
+        "hint": "Type BRID",
+        "v_numeric": {
+          "value": "true",
+          "err": "Enter a valid BRID"
+        },
+        "v_regex": {
+          "value": "^(?=[0-9]*$)(?:.{17})$",
+          "err": "Number must be a total of 17 digits in length"
+        },
+        "v_required": {
+          "value": true,
+          "err": "Please Type BRID"
+        },
+        "relevance": {
+          "step1:member_unique_ID": {
+            "type": "string",
+            "ex": "equalTo(., \"BRID\")"
+          }
+        }
+      },
+      {
+        "key": "member_birth_date_known",
+        "openmrs_entity_parent": "",
+        "openmrs_entity": "",
+        "openmrs_entity_id": "",
+        "openmrs_data_type": "text",
+        "type": "spinner",
+        "hint": "Do You Know Your Birth Date",
+        "values": [
+          "YES",
+          "NO"
+        ]
+      },
+      {
+        "key": "member_birth_date",
+        "openmrs_entity_parent": "",
+        "openmrs_entity": "person",
+        "openmrs_entity_id": "birthdate",
+        "openmrs_data_type": "text",
+        "type": "date_picker",
+        "hint": "Birth Date",
+        "v_required": {
+          "value": true,
+          "err": "Please Enter birth date"
+        },
+        "relevance": {
+          "step1:member_birth_date_known": {
+            "type": "string",
+            "ex": "equalTo(., \"YES\")"
+          }
+        },
+        "max_date": "today"
+      },
+      {
+        "key": "age",
+        "openmrs_entity_parent": "",
+        "openmrs_entity": "",
+        "openmrs_entity_id": "",
+        "openmrs_data_type": "text",
+        "type": "edit_text",
+        "hint": "Age(Year)",
+        "v_numeric": {
+          "value": "true",
+          "err": "Enter age"
+        },
+        "v_required": {
+          "value": true,
+          "err": "Please Type Age"
+        },
+        "relevance": {
+          "step1:member_birth_date_known": {
+            "type": "string",
+            "ex": "equalTo(., \"NO\")"
+          }
+        }
+      },
+      {
+        "key": "contact_phone_number",
+        "openmrs_entity_parent": "",
+        "openmrs_entity": "person_attribute",
+        "openmrs_entity_id": "phoneNumber",
+        "openmrs_data_type": "text",
+        "type": "edit_text",
+        "hint": "Mobile Number",
+        "v_required": {
+          "value": true,
+          "err": "Enter 11 digits Mobile Number."
+        },
+        "v_numeric": {
+          "value": "true",
+          "err": "Number must begin with 095, 096, or 097 and must be a total of 11 digits in length"
+        },
+        "v_regex": {
+          "value": "(01[5-9][0-9]{8})|\s*",
+          "err": "Number must begin with 015, 016,017,018 or 019 and must be a total of 11 digits in length"
+        },
+        "v_max_length":{
+          "value" : "11",
+          "err" : "Please Enter 11 digit Mobile number"
+        },
+        "v_min_length":{
+          "value" : "11",
+          "err" : "Please Enter 11 digit Mobile number"
+        }
+      },
+
+      {
+        "key": "marital_status",
+        "openmrs_entity_parent": "",
+        "openmrs_entity": "person_attribute",
+        "openmrs_entity_id": "MaritalStatus",
+        "openmrs_data_type": "text",
+        "type": "spinner",
+        "hint": "Marital Status",
+        "values": [
+          "Married",
+          "Conjugal Separation",
+          "Divorced",
+          "Unmarried",
+          "Widow",
+          "Widower"
+        ],
+        "openmrs_choice_ids": {
+          "Married": "Married",
+          "Conjugal Separation": "Conjugal Separation",
+          "Divorced": "Divorced",
+          "Unmarried": "Unmarried",
+          "Widow": "Widow",
+          "Widower": "Widower"
+        }
+      },
+
+      {
+        "key": "husband_name",
+        "openmrs_entity_parent": "",
+        "openmrs_entity": "person_attribute",
+        "openmrs_entity_id": "spouseName",
+        "openmrs_data_type": "text",
+        "type": "edit_text",
+        "hint": "Husband Name",
+        "v_required": {
+          "value": true,
+          "err": "Please Type Husband Name."
+        },
+        "v_regex": {
+          "value": "[A-Za-z\\s\.\-]*",
+          "err": "Please Enter a Valid Name"
+        }
+      },
+      {
+        "key": "pregnant",
+        "openmrs_entity_parent": "",
+        "openmrs_entity": "",
+        "openmrs_entity_id": "",
+        "openmrs_data_type": "text",
+        "type": "spinner",
+        "hint": "Are you Pregnant",
+        "values":[
+          "No",
+          "Yes",
+          "Don't Know"
+        ]
+      },
+      {
+        "key": "lactating_woman",
+        "openmrs_entity_parent": "",
+        "openmrs_entity": "",
+        "openmrs_entity_id": "",
+        "openmrs_data_type": "text",
+        "type": "spinner",
+        "hint": "Haven you given birth?",
+        "values":[
+          "No",
+          "Yes"
+        ],
+        "relevance": {
+          "step1:pregnant": {
+            "type": "string",
+            "ex": "equalTo(., \"No\")"
+          }
+        }
+      },
+      {
+        "key": "edd_lmp",
+        "openmrs_entity_parent": "",
+        "openmrs_entity": "concept",
+        "openmrs_entity_id": "50b7f374-9406-49d1-bcfb-9bf613184030",
+        "openmrs_data_type": "text",
+        "type": "spinner",
+        "hint": "Do you know your LMP, EDD or Ultrasound Info?",
+        "values":[
+          "LMP",
+          "EDD",
+          "UltraSound"
+        ],
+        "relevance": {
+          "step1:pregnant": {
+            "type": "string",
+            "ex": "equalTo(., \"Yes\")"
+          }
+        }
+      },
+      {
+        "key": "lmp",
+        "openmrs_entity_parent": "",
+        "openmrs_entity": "",
+        "openmrs_entity_id": "",
+        "openmrs_data_type": "text",
+        "type": "date_picker",
+        "hint": "LMP Date",
+        "v_required": {
+          "value": true,
+          "err": "Please Enter LMP date"
+        },
+        "relevance": {
+          "step1:edd_lmp": {
+            "type": "string",
+            "ex": "equalTo(., \"LMP\")"
+          }
+        },
+        "max_date": "today"
+      },
+      {
+        "key": "edd",
+        "openmrs_entity_parent": "",
+        "openmrs_entity": "",
+        "openmrs_entity_id": "",
+        "openmrs_data_type": "text",
+        "type": "date_picker",
+        "hint": "EDD date",
+        "v_required": {
+          "value": true,
+          "err": "Please Enter LMP date"
+        },
+        "relevance": {
+          "step1:edd_lmp": {
+            "type": "string",
+            "ex": "equalTo(., \"EDD\")"
+          }
+        }
+      },
+      {
+        "key": "ultrasound_date",
+        "openmrs_entity_parent": "",
+        "openmrs_entity": "",
+        "openmrs_entity_id": "",
+        "openmrs_data_type": "text",
+        "type": "date_picker",
+        "hint": "Ultrasound date",
+        "v_required": {
+          "value": true,
+          "err": "Please Enter LMP date"
+        },
+        "relevance": {
+          "step1:edd_lmp": {
+            "type": "string",
+            "ex": "equalTo(., \"UltraSound\")"
+          }
+        }
+      },
+      {
+        "key": "ultrasound_weeks",
+        "openmrs_entity_parent": "",
+        "openmrs_entity": "",
+        "openmrs_entity_id": "",
+        "openmrs_data_type": "text",
+        "type": "edit_text",
+        "hint": "Ultrasound weeks",
+        "v_required": {
+          "value": true,
+          "err": "Enter Ultrasound Weeks."
+        },
+        "v_numeric": {
+          "value": "true",
+          "err": "Enter Ultrasound Weeks."
+        },
+        "v_max_length":{
+          "value" : "2",
+          "err" : "Max length can be at most 2."
+        },
+        "relevance": {
+          "step1:edd_lmp": {
+            "type": "string",
+            "ex": "equalTo(., \"UltraSound\")"
+          }
+        }
+      }
+
+    ]
+  }
+}

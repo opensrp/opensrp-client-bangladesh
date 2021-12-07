@@ -104,7 +104,7 @@ public class ChildSmartRegisterFragment extends BaseSmartRegisterFragment implem
 
             @Override
             public String nameInShortFormForTitle() {
-                return Context.getInstance().getStringResource(R.string.child_profile);
+                return getString(R.string.child_profile);
             }
         };
     }
@@ -136,7 +136,7 @@ public class ChildSmartRegisterFragment extends BaseSmartRegisterFragment implem
 
             @Override
             public String searchHint() {
-                return Context.getInstance().getStringResource(R.string.str_search_hint);
+                return getString(R.string.str_search_hint);
             }
         };
     }
@@ -180,7 +180,7 @@ public class ChildSmartRegisterFragment extends BaseSmartRegisterFragment implem
         }
         updateSearchView();
         try {
-            LoginActivity.setLanguage();
+         //   LoginActivity.setLanguage();
         } catch (Exception e) {
 
         }

@@ -150,7 +150,7 @@ public class ChildSmartRegisterActivity extends BaseRegisterActivity {
     @Override
     public void showFragmentDialog(DialogOptionModel dialogOptionModel, Object tag) {
         try {
-            LoginActivity.setLanguage();
+          //  LoginActivity.setLanguage();
         } catch (Exception e) {
             Log.e(getClass().getCanonicalName(), e.getMessage());
         }

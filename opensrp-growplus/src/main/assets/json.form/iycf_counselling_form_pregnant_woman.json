@@ -47,8 +47,8 @@
     },
     "encounter_location": "",
     "look_up": {
-        "entity_id":"",
-        "value":""
+      "entity_id":"",
+      "value":""
     }
   },
   "step1": {
@@ -200,9 +200,9 @@
           "err": "প্রশ্নের উত্তর দিন"
         },
         "relevance": {
-        "step1:nutrition_to_discuss": {
-          "type": "string"
-        }
+          "step1:nutrition_to_discuss": {
+            "type": "string"
+          }
         }
       },
       {

@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.res.AssetManager;
 import android.graphics.Bitmap;
 import android.os.AsyncTask;
 import android.preference.PreferenceManager;
@@ -60,10 +61,13 @@ import org.smartregister.repository.ImageRepository;
 import org.smartregister.util.*;
 import org.smartregister.view.activity.DrishtiApplication;
 
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -2284,7 +2288,7 @@ public class JsonFormUtils extends org.smartregister.util.JsonFormUtils {
                                  String currentLocationId) throws Exception {
         Intent intent = new Intent(context, PathJsonFormActivity.class);
 
-        JSONObject form = FormUtils.getInstance(context).getFormJson(formName);
+        JSONObject form = /*FormUtils.getInstance(context).getFormJson(formName);*/getFormJson(formName, context);
         if (form != null) {
             form.getJSONObject("metadata").put("encounter_location", currentLocationId);
 
@@ -2634,7 +2638,8 @@ public class JsonFormUtils extends org.smartregister.util.JsonFormUtils {
 
     public static String getAutoPopulatedJsonEditFormString(Context context, Map<String, String> client, String formName, String encounterType) {
         try {
-            JSONObject form = FormUtils.getInstance(context).getFormJson(formName);
+           // JSONObject form = FormUtils.getInstance(context).getFormJson(formName);
+            JSONObject form = getFormJson(formName, context);
             LocationPickerView lpv = new LocationPickerView(context);
             lpv.init( VaccinatorApplication.getInstance().context());
             JsonFormUtils.addWomanRegisterHierarchyQuestions(form);
@@ -3178,4 +3183,33 @@ public static void updateCounsellingForm(Context context, org.smartregister.Cont
 //
 //        ecUpdater.addClient(baseClient.getBaseEntityId(), mergedJson);
 //    }
+
+
+    public static JSONObject getFormJson(String formIdentity, Context context){
+            label22: {
+                JSONObject var8;
+                try {
+                    AssetManager var10000 = context.getAssets();
+                    String locale = Utils.getsSelectedLocale(context);
+                    String var10001 = "json.form"+ ((!locale.equalsIgnoreCase("en")) ? "/" : "-"+locale.toLowerCase()+"/") + formIdentity + ".json";
+                    InputStream inputStream = var10000.open(var10001);
+                    BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream, "UTF-8"));
+                    StringBuilder stringBuilder = new StringBuilder();
+                    while(true) {
+                        String jsonString;
+                        if ((jsonString = reader.readLine()) == null) {
+                            inputStream.close();
+                            var8 = new JSONObject(stringBuilder.toString());
+                            break;
+                        }
+                        stringBuilder.append(jsonString);
+                    }
+                } catch (JSONException | IOException var7) {
+                    var7.printStackTrace();
+                    break label22;
+                }
+                return var8;
+            }
+        return null;
+    }
 }

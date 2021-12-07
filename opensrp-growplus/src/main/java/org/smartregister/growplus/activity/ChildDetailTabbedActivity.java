@@ -4,6 +4,8 @@ import android.app.FragmentTransaction;
 import android.content.ContentValues;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.res.Configuration;
+import android.content.res.Resources;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
@@ -20,12 +22,14 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.text.TextUtils;
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.Switch;
 import android.widget.TextView;
 
 import org.apache.commons.lang3.StringUtils;
@@ -81,11 +85,13 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 
 import util.ImageUtils;
 import util.JsonFormUtils;
 import util.PathConstants;
+import util.Utils;
 
 import static org.smartregister.util.DateUtil.getDuration;
 import static org.smartregister.util.Utils.dobToDateTime;
@@ -265,7 +271,8 @@ public class ChildDetailTabbedActivity extends BaseActivity implements Vaccinati
     public boolean onCreateOptionsMenu(Menu menu) {
         // super.onCreateOptionsMenu(menu);
 
-        getMenuInflater().inflate(R.menu.menu_child_detail_settings, menu);
+
+
         overflow = menu;
         VaccineRepository vaccineRepository = getVaccinatorApplicationInstance().vaccineRepository();
         List<Vaccine> vaccineList = vaccineRepository.findByEntityId(childDetails.entityId());
@@ -418,6 +425,9 @@ public class ChildDetailTabbedActivity extends BaseActivity implements Vaccinati
 
         }
     }
+
+
+
 
 
 

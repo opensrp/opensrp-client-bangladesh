@@ -18,6 +18,7 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -78,7 +79,7 @@ public class LoginActivity extends AppCompatActivity {
     private android.content.Context appContext;
     private RemoteLoginTask remoteLoginTask;
 
-    public static void setLanguage() {
+    public static void setLanguae() {
         AllSharedPreferences allSharedPreferences = new AllSharedPreferences(getDefaultSharedPreferences(getOpenSRPContext().applicationContext()));
         String preferredLocale = allSharedPreferences.fetchLanguagePreference();
         Resources res = getOpenSRPContext().applicationContext().getResources();
@@ -86,6 +87,17 @@ public class LoginActivity extends AppCompatActivity {
         DisplayMetrics dm = res.getDisplayMetrics();
         Configuration conf = res.getConfiguration();
         conf.locale = new Locale(preferredLocale);
+        res.updateConfiguration(conf, dm);
+
+    }
+
+    public  void setLan() {
+        String preferredLocale = util.Utils.getsSelectedLocale(this);
+        Resources res = getResources();
+        // Change locale settings in the app.
+        DisplayMetrics dm = res.getDisplayMetrics();
+        Configuration conf = res.getConfiguration();
+        conf.locale = new Locale(preferredLocale.toLowerCase());
         res.updateConfiguration(conf, dm);
 
     }
@@ -122,10 +134,10 @@ public class LoginActivity extends AppCompatActivity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setLan();
         logVerbose("Initializing ...");
-        try {
-            AllSharedPreferences allSharedPreferences = new AllSharedPreferences(getDefaultSharedPreferences(this));
-            String preferredLocale = allSharedPreferences.fetchLanguagePreference();
+       /* try {
+            String preferredLocale = util.Utils.getsSelectedLocale(this);
             Resources res = getOpenSRPContext().applicationContext().getResources();
             // Change locale settings in the app.
             DisplayMetrics dm = res.getDisplayMetrics();
@@ -135,7 +147,9 @@ public class LoginActivity extends AppCompatActivity {
         } catch (Exception e) {
             logError("Error onCreate: " + e);
 
-        }
+        }*/
+       // Intent refresh = new Intent(this, HomeDashboardActivity.class);
+       // startActivity(refresh);
 
         setContentView(R.layout.login);
 
@@ -153,8 +167,6 @@ public class LoginActivity extends AppCompatActivity {
         initializeProgressDialog();
 
         checkPermissions();
-
-        setLanguage();
     }
 
     @Override

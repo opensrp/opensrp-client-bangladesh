@@ -52,7 +52,7 @@
     }
   },
   "step1": {
-    "title": "শিশুর ফলো আপ",
+    "title": "Child Follow Up",
     "fields": [
       {
         "key": "visit_date",
@@ -61,10 +61,10 @@
         "openmrs_entity_id": "",
         "openmrs_data_type": "text",
         "type": "date_picker",
-        "hint": "ভিজিটের তারিখ",
+        "hint": "Visit date",
         "v_required": {
           "value": true,
-          "err": "তারিখ লিখুন"
+          "err": "Please Enter date"
         }
       },
       {
@@ -74,10 +74,10 @@
         "openmrs_entity_id": "",
         "openmrs_data_type": "text",
         "type": "spinner",
-        "hint": "আপনি কি কোনও ধরণের হাসপাতালে /\nআগের বৈঠক শেষে স্বাস্থ্য ক্লিনিক গিয়েছিলেন?",
+        "hint": "Did you visit any kind of hospital/health clinic after previous meeting?",
         "values":[
-          "হ্যাঁ",
-          "না"
+          "Yes",
+          "No"
         ]
       },
       {
@@ -87,10 +87,10 @@
         "openmrs_entity_id": "",
         "openmrs_data_type": "text",
         "type": "date_picker",
-        "hint": "পরবর্তিতে দেখা করার তারিখ",
+        "hint": "Follow Up visit date",
         "v_required": {
           "value": true,
-          "err": "তারিখ লিখুন"
+          "err": "Please Enter date"
         }
       },
       {
@@ -99,33 +99,33 @@
         "openmrs_entity": "",
         "openmrs_entity_id": "",
         "type": "check_box",
-        "label": "শিশুর পুষ্টি পরামর্শ",
+        "label": "Child Nutrition Counseling",
         "options":[
           {
             "key":"consume_ifa_tablet",
-            "text":"আইএফএ ট্যাবলেট গ্রহণ করুন",
+            "text":"Consume IFA tablet",
             "value":"false"
           },
           {
             "key":"Vit_A_and_minerals",
-            "text":"ভিটামিন-এ এবং মিনারেল",
+            "text":"Vit A and minerals",
             "value":"false"
           },
           {
             "key":"hand_wash",
-            "text":"হাত ধোয়া",
+            "text":"Hand wash",
             "value":"false"
           },
           {
             "key":"others",
-            "text":"অন্যান্য",
+            "text":"Others",
             "value":"false"
           }
         ],
         "relevance": {
           "step1:pregnant": {
             "type": "string",
-            "ex": "equalTo(., \"হ্যাঁ\")"
+            "ex": "equalTo(., \"Yes\")"
           }
         }
       },
@@ -135,28 +135,28 @@
         "openmrs_entity": "",
         "openmrs_entity_id": "",
         "type": "check_box",
-        "label": "বণ্টনকৃত পুষ্টি উপাদান",
+        "label": "Distributed Nutrition Materials",
         "options":[
           {
             "key":"ifa_tablet",
-            "text":"আইএফএ ট্যাবলেট",
+            "text":"IFA tablet",
             "value":"false"
           },
           {
             "key":"Vit_A_and_minerals",
-            "text":"ভিটামিন-এ এবং মিনারেল",
+            "text":"Vit A and minerals",
             "value":"false"
           },
           {
             "key":"nothing",
-            "text":"কোনোটিই না",
+            "text":"Nothing",
             "value":"false"
           }
         ],
         "relevance": {
           "step1:pregnant": {
             "type": "string",
-            "ex": "equalTo(., \"হ্যাঁ\")"
+            "ex": "equalTo(., \"Yes\")"
           }
         }
       },
@@ -166,19 +166,20 @@
         "openmrs_entity": "",
         "openmrs_entity_id": "",
         "type": "edit_text",
-        "hint": "ভিটামিন  মিনারেল সংখ্যা",
+        "hint": "No of IFA Tablets That Has been Given",
         "v_numeric": {
           "value": "true",
-          "err": "একটি সঙ্গত সংখ্যা লিখুন"
+          "err": "Enter a valid number"
         },
         "relevance": {
           "step1:child_distributed_nutrition_materials": {
-            "type": "string"
+            "type": "string",
+            "ex": "regex(., \"(?i).*?\\bifa_tablet\\b.*?\")"
           }
         },
         "v_required": {
           "value": "true",
-          "err": "প্রশ্নটির উত্তর দিন"
+          "err": "Please answer the question"
         }
       },
       {
@@ -187,19 +188,20 @@
         "openmrs_entity": "",
         "openmrs_entity_id": "",
         "type": "edit_text",
-        "hint": "প্রদত্ত ভিটামিন  মিনারেল সংখ্যা",
+        "hint": "No of Vitamin Minerals That Has been Given",
         "v_numeric": {
           "value": "true",
-          "err": "একটি সঙ্গত সংখ্যা লিখুন"
+          "err": "Enter a valid number"
         },
         "relevance": {
           "step1:child_distributed_nutrition_materials": {
-            "type": "string"
+            "type": "string",
+            "ex": "regex(., \"(?i).*?\\bVit_A_and_minerals\\b.*?\")"
           }
         },
         "v_required": {
           "value": "true",
-          "err": "প্রশ্নটির উত্তর দিন"
+          "err": "Please answer the question"
         }
       },
       {
@@ -208,7 +210,7 @@
         "openmrs_entity": "",
         "openmrs_entity_id": "",
         "type":"label",
-        "text":"নিকটবর্তী স্বাস্থ্য কেন্দ্র দেখুন"
+        "text":"Please Refer Nearest Health center"
       }
     ]
   }
