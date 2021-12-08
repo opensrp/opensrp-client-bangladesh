@@ -443,7 +443,7 @@ public class WomanImmunizationActivity extends BaseActivity
     private String getmetaDataForEditForm(CommonPersonObjectClient pc) {
         org.smartregister.Context context = VaccinatorApplication.getInstance().context();
         try {
-            JSONObject form = FormUtils.getInstance(this).getFormJson("child_enrollment");
+            JSONObject form = /*FormUtils.getInstance(this).getFormJson("child_enrollment")*/JsonFormUtils.getFormJson("child_enrollment",this);
             LocationPickerView lpv = new LocationPickerView(this);
             lpv.init(context);
             JsonFormUtils.addHouseholdRegLocHierarchyQuestions(form, context);
@@ -476,9 +476,9 @@ public class WomanImmunizationActivity extends BaseActivity
                 detailsRepository = org.smartregister.Context.getInstance().detailsRepository();
                 Map<String, String> details = detailsRepository.getAllDetailsForClient(pc.entityId());
                 locationid = JsonFormUtils.getOpenMrsLocationId(context,getValue(details, "address3", false) );
-
+/*
                 String birthFacilityHierarchy = JsonFormUtils.getOpenMrsLocationHierarchy(
-                        context,locationid ).toString();
+                        context,locationid ).toString();*/
                 //inject zeir id into the form
                 JSONObject stepOne = form.getJSONObject(JsonFormUtils.STEP1);
                 JSONArray jsonArray = stepOne.getJSONArray(JsonFormUtils.FIELDS);
@@ -489,7 +489,7 @@ public class WomanImmunizationActivity extends BaseActivity
                         jsonObject.put(JsonFormUtils.VALUE, entityId);
                     }
                     if (jsonObject.getString(JsonFormUtils.KEY).equalsIgnoreCase("HIE_FACILITIES")) {
-                        jsonObject.put(JsonFormUtils.VALUE, birthFacilityHierarchy);
+                        //jsonObject.put(JsonFormUtils.VALUE, birthFacilityHierarchy);
 
                     }
                     if (jsonObject.getString(JsonFormUtils.KEY).equalsIgnoreCase("Mother_Guardian_First_Name")) {

@@ -299,7 +299,7 @@
     <string name = "add_child_membr"> Add child </string>
     <string name = "cancel_adding_member"> Cancel </string>
     <string name = "hh_members"> family members </string>
-    <string name = "hh_details"> Box Details </string>
+    <string name = "hh_details"> Household Details </string>
     <string name = "visit_date"> Visit date </string>
     <string name = "view_detail"> See details </string>
     <string name = "counselling"> Counseling </string>
@@ -309,7 +309,7 @@
     <string name = "pregnant"> Pregnant </string>
     <string name = "lmp"> LMP </string>
     <string name = "edd"> edd </string>
-    <string name = "her_children"> her child </string>
+    <string name = "her_children"> Her child </string>
     <string name = "systen_id"> System ID </string>
     <string name = "husband_name"> Husband\'s name </string>
     <string name = "contact_number"> Contact number </string>
