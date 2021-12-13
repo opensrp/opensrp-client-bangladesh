@@ -57,6 +57,7 @@ public class AncClientProcessorForJava {
     private static AncClientProcessorForJava instance;
     private Map<String, Object> jsonMap = new HashMap<>();
     private Context mContext;
+    //test
     protected static final String VALUES_KEY = "values";
     public AncClientProcessorForJava(Context context) {
         mContext = context;
