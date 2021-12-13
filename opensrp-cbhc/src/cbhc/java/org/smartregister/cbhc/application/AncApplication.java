@@ -57,6 +57,8 @@ import id.zelory.compressor.Compressor;
 import static org.smartregister.util.Log.logError;
 import static org.smartregister.util.Log.logInfo;
 
+import net.sqlcipher.database.SQLiteDatabase;
+
 /**
  * Created by ndegwamartin on 21/06/2018.
  */
@@ -168,6 +170,14 @@ public class AncApplication extends DrishtiApplication implements TimeChangedBro
             initLibraries();
         }
 
+        try{
+            Log.v("TAG","application>>>>>>>>");
+            AncRepository repo = (AncRepository) AncApplication.getInstance().getRepository();
+            SQLiteDatabase db = repo.getReadableDatabase();
+            db.execSQL("select count(*) from client");
+        }catch (Exception e){
+            e.printStackTrace();
+        }
 
     }
 

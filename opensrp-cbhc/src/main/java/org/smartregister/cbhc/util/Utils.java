@@ -465,33 +465,33 @@ public class Utils {
 
     public static void appendLog(String TAG, Exception e) {
 
-        StringWriter sw = new StringWriter();
-        e.printStackTrace(new PrintWriter(sw));
-        String exceptionAsString = sw.toString();
-
-        String text = TAG + " >>> "+ exceptionAsString;
-
-        File f = new File(Environment.getExternalStorageDirectory() + "/cbhc_log/error/");
-        if (!f.exists()) {
-            f.mkdirs();
-        }
-        File logFile = new File(Environment.getExternalStorageDirectory() + "/cbhc_log/error/"+"log.file");
-        if (!logFile.exists()) {
-            try {
-                logFile.createNewFile();
-            } catch (IOException ee) {
-                Log.e(TAG, ee.getMessage());
-            }
-        }
-        try {
-            //BufferedWriter for performance, true to set append to file flag
-            BufferedWriter buf = new BufferedWriter(new FileWriter(logFile, true));
-            buf.append(text);
-            buf.newLine();
-            buf.close();
-        } catch (IOException ee) {
-            Log.e(TAG, e.getMessage(), e);
-        }
+//        StringWriter sw = new StringWriter();
+//        e.printStackTrace(new PrintWriter(sw));
+//        String exceptionAsString = sw.toString();
+//
+//        String text = TAG + " >>> "+ exceptionAsString;
+//
+//        File f = new File(Environment.getExternalStorageDirectory() + "/cbhc_log/error/");
+//        if (!f.exists()) {
+//            f.mkdirs();
+//        }
+//        File logFile = new File(Environment.getExternalStorageDirectory() + "/cbhc_log/error/"+"log.file");
+//        if (!logFile.exists()) {
+//            try {
+//                logFile.createNewFile();
+//            } catch (IOException ee) {
+//                Log.e(TAG, ee.getMessage());
+//            }
+//        }
+//        try {
+//            //BufferedWriter for performance, true to set append to file flag
+//            BufferedWriter buf = new BufferedWriter(new FileWriter(logFile, true));
+//            buf.append(text);
+//            buf.newLine();
+//            buf.close();
+//        } catch (IOException ee) {
+//            Log.e(TAG, e.getMessage(), e);
+//        }
     }
 
 }

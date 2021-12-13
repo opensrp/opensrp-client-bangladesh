@@ -85,15 +85,8 @@ public class LoginActivity extends AppCompatActivity implements LoginContract.Vi
         mLoginPresenter = new LoginPresenter(this);
         mLoginPresenter.setLanguage();
         setupViews(mLoginPresenter);
-        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
-        AllSharedPreferences allSharedPreferences = new AllSharedPreferences(preferences);
-        String baseurl = allSharedPreferences.fetchBaseURL("");
-        if (baseurl.isEmpty()) {
+        updateBaseUrl();
 
-            allSharedPreferences.updateUrl(getString(R.string.opensrp_url));
-            preferences.edit().putString(DRISHTI_BASE_URL, getString(R.string.opensrp_url)).apply();
-
-        }
         boolean hasPermission = (ContextCompat.checkSelfPermission(this,
                 Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED);
         if (!hasPermission) {
@@ -114,6 +107,18 @@ public class LoginActivity extends AppCompatActivity implements LoginContract.Vi
 
         }
 
+    }
+    private void updateBaseUrl(){
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
+        AllSharedPreferences allSharedPreferences = new AllSharedPreferences(preferences);
+        String baseurl = allSharedPreferences.fetchBaseURL("");
+        Log.e("DB_UPGRADE", "upgradeToVersion12>>>baseurl: "+baseurl);
+        if (baseurl.isEmpty()) {
+
+            allSharedPreferences.updateUrl(getString(R.string.opensrp_url));
+            preferences.edit().putString(DRISHTI_BASE_URL, getString(R.string.opensrp_url)).apply();
+
+        }
     }
 
     @Override
@@ -288,36 +293,7 @@ public class LoginActivity extends AppCompatActivity implements LoginContract.Vi
             case R.id.login_login_btn:
                 String username = userNameEditText.getText().toString().trim();
                 String password = passwordEditText.getText().toString().trim();
-//                username = "haiphn";
-//                password = "ha123";
-//                username = "testmhv2";
-//                username = "maxii";
-//                username = "teliya1@cc.com";
-//                username = "sabab@ahmed.com";
-                //cc10006952@mhv.4
-//                username = "cc10006955@mhv.1";
-//                username = "cc10006953@test.1";git a
-//                username = "aminulislamovi.48@gmail.com";
-
-//                password = "mpower@123";
-//                password = "Pain2set";
-//                username = "robinuthappa@gmail.com";
-//                username = "cc10006955@mhv.1";
-//                password = "123456";
-
-                //anc repository object for raw query
-//                AncRepository repo = (AncRepository) AncApplication.getInstance().getRepository();
-//                SQLiteDatabase db = repo.getReadableDatabase();
-//                Cursor cursor = db.rawQuery("sql",new String[]{});
-//                cursor.close();
-
-                //copy username password to clipboard
-//                Object clipboardService = getSystemService(CLIPBOARD_SERVICE);
-//                final ClipboardManager clipboardManager = (ClipboardManager)clipboardService;
-//                ClipData clipData = ClipData.newPlainText("Source Text", username + ":"+password);
-//                // Set it as primary clip data to copy text to system clipboard.
-//                clipboardManager.setPrimaryClip(clipData);
-
+                updateBaseUrl();
                 mLoginPresenter.attemptLogin(username, password);
                 break;
             default:

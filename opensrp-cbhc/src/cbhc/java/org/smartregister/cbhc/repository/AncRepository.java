@@ -1,18 +1,24 @@
 package org.smartregister.cbhc.repository;
 
+import static org.smartregister.AllConstants.DRISHTI_BASE_URL;
+
 import android.content.Context;
+import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
 import android.util.Log;
 
 import net.sqlcipher.database.SQLiteDatabase;
 
 import org.smartregister.AllConstants;
 import org.smartregister.cbhc.BuildConfig;
+import org.smartregister.cbhc.R;
 import org.smartregister.cbhc.application.AncApplication;
 import org.smartregister.cbhc.helper.ECSyncHelper;
 import org.smartregister.cbhc.notification.NotificationRepository;
 import org.smartregister.cbhc.util.Utils;
 import org.smartregister.configurableviews.repository.ConfigurableViewsRepository;
 import org.smartregister.domain.db.Column;
+import org.smartregister.repository.AllSharedPreferences;
 import org.smartregister.repository.EventClientRepository;
 import org.smartregister.repository.Repository;
 
@@ -56,7 +62,7 @@ public class AncRepository extends Repository {
 
         //onUpgrade(database, 1, 2);
 
-        onUpgrade(database, 1, BuildConfig.DATABASE_VERSION);
+        onUpgrade(database, 1, 11);//from 12 it should be upgrade
     }
 
     @Override
@@ -70,14 +76,8 @@ public class AncRepository extends Repository {
         int upgradeTo = oldVersion + 1;
         while (upgradeTo <= newVersion) {
             switch (upgradeTo) {
-                case 2:
-                    upgradeToVersion2(db);
-                    break;
                 case 3:
                     upgradeToVersion3(db);
-                    break;
-                case 4:
-                    upgradeToVersion4(db);
                     break;
                 case 6:
                     upgradeToVersion6(db);
@@ -90,6 +90,9 @@ public class AncRepository extends Repository {
                     break;
                 case 11:
                     upgradeToVersion11(db);
+                    break;
+                case 12:
+                    upgradeToVersion12();
                     break;
                 default:
                     break;
@@ -158,19 +161,17 @@ public class AncRepository extends Repository {
         }
         super.close();
     }
+    private void upgradeToVersion12() {
+        try{
+            Log.e("DB_UPGRADE", "upgradeToVersion12");
+            SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
+            AllSharedPreferences allSharedPreferences = new AllSharedPreferences(preferences);
+            allSharedPreferences.updateUrl(context.getString(R.string.opensrp_url));
+            preferences.edit().putString(DRISHTI_BASE_URL, context.getString(R.string.opensrp_url)).apply();
 
-    private void upgradeToVersion2(SQLiteDatabase db) {
-        try {
+        }catch (Exception e){
 
-
-//            EventClientRepository.createTable(db, EventClientRepository.Table.path_reports, EventClientRepository.report_column.values());
-
-
-        } catch (Exception e) {
-            Utils.appendLog(getClass().getName(), e);
-            Log.e(TAG, "upgradeToVersion2 " + Log.getStackTraceString(e));
         }
-
     }
 
     private void upgradeToVersion3(SQLiteDatabase db) {
@@ -193,10 +194,6 @@ public class AncRepository extends Repository {
         }
     }
 
-    private void upgradeToVersion4(SQLiteDatabase db) {
-
-
-    }
 
     private void upgradeToVersion6(SQLiteDatabase db) {
         try {
