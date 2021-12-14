@@ -428,7 +428,7 @@ public class WomanImmunizationActivity extends BaseActivity
         final String eddstring = getValue(childDetails.getColumnmaps(), "edd", false);
         String pregnant = "No";
         if(childDetails.getColumnmaps().get("pregnant")!=null){
-            if(childDetails.getColumnmaps().get("pregnant").equalsIgnoreCase("Yes")){
+            if(childDetails.getColumnmaps().get("pregnant").equalsIgnoreCase(getString(R.string.yes))){
                 pregnant = "Yes";
 
             }
@@ -698,12 +698,12 @@ public class WomanImmunizationActivity extends BaseActivity
                 Intent intent = new Intent(WomanImmunizationActivity.this, PathJsonFormActivity.class);
                 intent.putExtra("skipdialog", true);
                 if(detailmaps.get("pregnant")!=null){
-                    if(detailmaps.get("pregnant").equalsIgnoreCase("Yes")){
+                    if(detailmaps.get("pregnant").equalsIgnoreCase(getString(R.string.yes))){
                         pregnant = true;
                     }
                 }
                 if(detailmaps.get("lactating_woman")!=null){
-                    if(detailmaps.get("lactating_woman").equalsIgnoreCase("Yes")){
+                    if(detailmaps.get("lactating_woman").equalsIgnoreCase(getString(R.string.yes))){
                         lactating = true;
                     }
                 }
@@ -746,13 +746,13 @@ public class WomanImmunizationActivity extends BaseActivity
                 Map<String,String> detailmaps = childDetails.getColumnmaps();
                 detailmaps.putAll(childDetails.getDetails());
                 if(detailmaps.get("pregnant")!=null){
-                    if(detailmaps.get("pregnant").equalsIgnoreCase("Yes")){
+                    if(detailmaps.get("pregnant").equalsIgnoreCase(getString(R.string.yes))){
                         pregnant = true;
 
                     }
                 }
                 if(detailmaps.get("lactating_woman")!=null){
-                    if(detailmaps.get("lactating_woman").equalsIgnoreCase("Yes")){
+                    if(detailmaps.get("lactating_woman").equalsIgnoreCase(getString(R.string.yes))){
                         lactating = true;
                     }
                 }

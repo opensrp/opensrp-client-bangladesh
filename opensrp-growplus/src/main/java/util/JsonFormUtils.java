@@ -527,7 +527,7 @@ public class JsonFormUtils extends org.smartregister.util.JsonFormUtils {
             boolean lactatingwoman = false;
             boolean pregnantwoman = false;
             if (fieldmap.get("lactating_woman") != null) {
-                if (fieldmap.get("lactating_woman").equalsIgnoreCase("Yes")) {
+                if (fieldmap.get("lactating_woman").equalsIgnoreCase(context.getString(R.string.yes))) {
                     lactatingwoman = true;
                 }
                 for (int i = 0; i < fields.length(); i++) {
@@ -543,7 +543,7 @@ public class JsonFormUtils extends org.smartregister.util.JsonFormUtils {
                 }
             }
             if (fieldmap.get("pregnant") != null) {
-                if (fieldmap.get("pregnant").equalsIgnoreCase("Yes")) {
+                if (fieldmap.get("pregnant").equalsIgnoreCase(context.getString(R.string.yes))) {
                     pregnantwoman = true;
                 }
             }
@@ -2397,15 +2397,20 @@ public class JsonFormUtils extends org.smartregister.util.JsonFormUtils {
         obs.setValue(end);
         obs.setFieldDataType("end");
         event.addObs(obs);
+        try{
+            TelephonyManager mTelephonyManager = (TelephonyManager) context.getSystemService(Context.TELEPHONY_SERVICE);
 
-        TelephonyManager mTelephonyManager = (TelephonyManager) context.getSystemService(Context.TELEPHONY_SERVICE);
+
+            String deviceId = mTelephonyManager.getSimSerialNumber();
+
+            obs.setFieldCode("163137AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
+            obs.setValue(deviceId);
+            obs.setFieldDataType("deviceid");
+        }catch (Exception e){
+
+        }
 
 
-        String deviceId = mTelephonyManager.getSimSerialNumber();
-
-        obs.setFieldCode("163137AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
-        obs.setValue(deviceId);
-        obs.setFieldDataType("deviceid");
         event.addObs(obs);
         return event;
     }

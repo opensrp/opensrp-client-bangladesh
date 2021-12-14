@@ -193,13 +193,13 @@ public class WomanSmartClientsProvider implements SmartRegisterCLientsProviderFo
         boolean pregnant = false;
         boolean lactating = false;
         if(detailmaps.get("pregnant")!=null){
-            if(detailmaps.get("pregnant").equalsIgnoreCase("Yes")){
+            if(detailmaps.get("pregnant").equalsIgnoreCase(context.getString(R.string.yes))){
                 pregnant = true;
 
             }
         }
         if(detailmaps.get("lactating_woman")!=null){
-            if(detailmaps.get("lactating_woman").equalsIgnoreCase("Yes")){
+            if(detailmaps.get("lactating_woman").equalsIgnoreCase(context.getString(R.string.yes))){
                 lactating = true;
             }
         }
