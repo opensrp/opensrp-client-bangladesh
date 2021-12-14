@@ -210,8 +210,8 @@ public class HouseholdMemberAddFragment extends DialogFragment {
 
                 JsonFormUtils.addHouseholdRegLocHierarchyQuestions(form, openSrpContext);
 
-                String birthFacilityHierarchy = JsonFormUtils.getOpenMrsLocationHierarchy(
-                        openSrpContext,currentLocationId ).toString();
+//                String birthFacilityHierarchy = JsonFormUtils.getOpenMrsLocationHierarchy(
+//                        openSrpContext,currentLocationId ).toString();
 
                 for (int i = 0; i < jsonArray.length(); i++) {
                     JSONObject jsonObject = jsonArray.getJSONObject(i);
@@ -219,10 +219,11 @@ public class HouseholdMemberAddFragment extends DialogFragment {
                             .equalsIgnoreCase(JsonFormUtils.ZEIR_ID)) {
                         jsonObject.remove(JsonFormUtils.VALUE);
                         jsonObject.put(JsonFormUtils.VALUE, entityId);
-                    }else if(jsonObject.getString(JsonFormUtils.KEY)
-                            .equalsIgnoreCase("HIE_FACILITIES")){
-                        jsonObject.put(JsonFormUtils.VALUE, birthFacilityHierarchy);
                     }
+//                    else if(jsonObject.getString(JsonFormUtils.KEY)
+//                            .equalsIgnoreCase("HIE_FACILITIES")){
+//                        jsonObject.put(JsonFormUtils.VALUE, birthFacilityHierarchy);
+//                    }
                 }
             } else if (formName.equals("woman_member_registration")) {
                 JSONObject metaDataJson = form.getJSONObject("metadata");
