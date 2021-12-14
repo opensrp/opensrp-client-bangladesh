@@ -221,10 +221,11 @@ public class HouseholdMemberAddFragment extends DialogFragment {
                             .equalsIgnoreCase(JsonFormUtils.ZEIR_ID)) {
                         jsonObject.remove(JsonFormUtils.VALUE);
                         jsonObject.put(JsonFormUtils.VALUE, entityId);
-                    }else if(jsonObject.getString(JsonFormUtils.KEY)
-                            .equalsIgnoreCase("HIE_FACILITIES")){
-                       // jsonObject.put(JsonFormUtils.VALUE, birthFacilityHierarchy);
                     }
+//                    else if(jsonObject.getString(JsonFormUtils.KEY)
+//                            .equalsIgnoreCase("HIE_FACILITIES")){
+//                       // jsonObject.put(JsonFormUtils.VALUE, birthFacilityHierarchy);
+//                    }
                 }
             } else if (formName.equals("woman_member_registration")) {
                 JSONObject metaDataJson = form.getJSONObject("metadata");
