@@ -64,7 +64,7 @@
         "openmrs_entity_id": "",
         "openmrs_data_type": "text",
         "type": "tree",
-        "hint": "শিশুর স্বাস্থ্য কেন্দ্র *",
+        "hint": "Sub-Block*",
         "tree": [],
         "v_required": {
           "value": true,

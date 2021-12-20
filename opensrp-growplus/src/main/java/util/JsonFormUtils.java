@@ -262,12 +262,13 @@ public class JsonFormUtils extends org.smartregister.util.JsonFormUtils {
                         String addressLine = fields.getJSONObject(i).getString("value");
                         address1.addAddressField("address6", addressLine);
                     }
-                }else if (key.equals("gps")) {
-                    if (!TextUtils.isEmpty(fields.getJSONObject(i).getString("value"))) {
-                        String addressLine = fields.getJSONObject(i).getString("value");
-                        address1.addAddressField("gps", addressLine);
-                    }
                 }
+//                else if (key.equals("gps")) {
+//                    if (!TextUtils.isEmpty(fields.getJSONObject(i).getString("value"))) {
+//                        String addressLine = fields.getJSONObject(i).getString("value");
+//                        address1.addAddressField("gps", addressLine);
+//                    }
+//                }
             }
 
             Client c = JsonFormUtils.createBaseClient(fields, entityId);
