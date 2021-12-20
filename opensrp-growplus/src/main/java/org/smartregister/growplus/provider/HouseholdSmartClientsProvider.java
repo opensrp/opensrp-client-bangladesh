@@ -154,12 +154,14 @@ public class HouseholdSmartClientsProvider implements SmartRegisterCLientsProvid
             boolean pregnant = false;
             boolean lactating = false;
             if(detailmaps.get("pregnant")!=null){
-                if(detailmaps.get("pregnant").equalsIgnoreCase(context.getString(R.string.yes))){
+                if(detailmaps.get("pregnant").equalsIgnoreCase(context.getString(R.string.yes))
+                 || detailmaps.get("pregnant").equalsIgnoreCase("yes")){
                     pregnant = true;
                 }
             }
             if(detailmaps.get("lactating_woman")!=null){
-                if(detailmaps.get("lactating_woman").equalsIgnoreCase(context.getString(R.string.yes))){
+                if(detailmaps.get("lactating_woman").equalsIgnoreCase(context.getString(R.string.yes))
+                 || detailmaps.get("lactating_woman").equalsIgnoreCase("yes")){
                     lactating = true;
                 }
             }

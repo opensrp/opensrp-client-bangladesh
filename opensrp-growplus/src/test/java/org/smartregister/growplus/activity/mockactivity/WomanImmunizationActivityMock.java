@@ -7,7 +7,6 @@ import android.view.View;
 import org.smartregister.growthmonitoring.repository.WeightRepository;
 import org.smartregister.immunization.repository.VaccineRepository;
 import org.smartregister.growplus.R;
-import org.smartregister.growplus.activity.WomanImmunizationActivity;
 import org.smartregister.growplus.application.VaccinatorApplication;
 import org.smartregister.service.AlertService;
 

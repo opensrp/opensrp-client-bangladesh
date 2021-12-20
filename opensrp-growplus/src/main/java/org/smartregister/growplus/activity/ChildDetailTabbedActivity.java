@@ -98,6 +98,7 @@ import static org.smartregister.util.Utils.dobToDateTime;
 import static org.smartregister.util.Utils.getName;
 import static org.smartregister.util.Utils.getValue;
 import static org.smartregister.util.Utils.startAsyncTask;
+import static util.JsonFormUtils.getFormJson;
 
 
 /**
@@ -434,7 +435,7 @@ public class ChildDetailTabbedActivity extends BaseActivity implements Vaccinati
     private String getmetaDataForEditForm() {
         Context context = getOpenSRPContext();
         try {
-            JSONObject form = FormUtils.getInstance(getApplicationContext()).getFormJson("child_enrollment");
+            JSONObject form = getFormJson("child_enrollment", getApplicationContext());;//FormUtils.getInstance(getApplicationContext()).getFormJson("child_enrollment");
 //            LocationPickerView lpv = new LocationPickerView(getApplicationContext());
 //            lpv.init(context);
             JsonFormUtils.addChildRegLocHierarchyQuestions(form, context);

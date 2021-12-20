@@ -143,6 +143,10 @@
           "হ্যাঁ",
           "না"
         ],
+        "openmrs_choice_ids": {
+          "না": "no",
+          "হ্যাঁ": "yes"
+        },
         "v_required": {
           "value": "true",
           "err": "প্রশ্নের উত্তর দিন"
@@ -284,6 +288,10 @@
           "২ বার বা তার চেয়ে কম",
           "৩ বার বা আরও বেশি"
         ],
+        "openmrs_choice_ids": {
+          "২ বার বা তার চেয়ে কম": "less_2",
+          "৩ বার বা আরও বেশি": "grater_3"
+        },
         "has_media_content": true,
         "media": [
           {
@@ -320,6 +328,10 @@
           "হ্যাঁ",
           "না"
         ],
+        "openmrs_choice_ids": {
+          "না": "no",
+          "হ্যাঁ": "yes"
+        },
         "has_media_content": true,
         "media": [
           {
@@ -361,6 +373,10 @@
           "হ্যাঁ",
           "না"
         ],
+        "openmrs_choice_ids": {
+          "না": "no",
+          "হ্যাঁ": "yes"
+        },
         "has_media_content": true,
         "media": [
           {
@@ -397,6 +413,10 @@
           "হ্যাঁ",
           "না"
         ],
+        "openmrs_choice_ids": {
+          "না": "no",
+          "হ্যাঁ": "yes"
+        },
         "has_media_content": true,
         "media": [
           {
@@ -433,6 +453,10 @@
           "হ্যাঁ",
           "না"
         ],
+        "openmrs_choice_ids": {
+          "না": "no",
+          "হ্যাঁ": "yes"
+        },
         "has_media_content": true,
         "media": [
           {
@@ -565,6 +589,10 @@
           "হ্যাঁ",
           "না"
         ],
+        "openmrs_choice_ids": {
+          "না": "no",
+          "হ্যাঁ": "yes"
+        },
         "has_media_content": true,
         "media": [
           {
@@ -773,6 +801,10 @@
           "হ্যাঁ",
           "না"
         ],
+        "openmrs_choice_ids": {
+          "না": "no",
+          "হ্যাঁ": "yes"
+        },
         "has_media_content": true,
         "media": [
           {
@@ -810,6 +842,11 @@
           "৩ বারেরও কম",
           "অন্য কোনও খাবার নেই"
         ],
+        "openmrs_choice_ids": {
+          "৩ বা ততোধিক বার": "grater_3",
+          "৩ বারেরও কম": "less_3",
+          "অন্য কোনও খাবার নেই": "no_food"
+        },
         "has_media_content": true,
         "media": [
           {
@@ -1008,6 +1045,11 @@
           "ঘন cereal সমৃদ্ধ নয়",
           "জলযুক্ত cereal"
         ],
+        "openmrs_choice_ids": {
+          "cereal ঘন এবং সমৃদ্ধ": "gono_cereal",
+          "ঘন cereal সমৃদ্ধ নয়": "not_gono_cereal",
+          "জলযুক্ত cereal": "water_cereal"
+        },
         "has_media_content": true,
         "media": [
           {
@@ -1050,6 +1092,10 @@
           "হ্যাঁ",
           "না"
         ],
+        "openmrs_choice_ids": {
+          "না": "no",
+          "হ্যাঁ": "yes"
+        },
         "has_media_content": true,
         "media": [
           {
@@ -1087,6 +1133,11 @@
           "অল্প",
           "প্রাণী উত্সের খাবার খাওয়ানো হয় না"
         ],
+        "openmrs_choice_ids": {
+          "হ্যাঁ": "yes",
+          "অল্প": "min",
+          "প্রাণী উত্সের খাবার খাওয়ানো হয় না": "animal_eat"
+        },
         "has_media_content": true,
         "media": [
           {
@@ -1146,6 +1197,10 @@
           "আমি সক্রিয়ভাবে ধৈর্যশীল এবং আমার শিশুকে খেতে উত্সাহিত করেছি",
           "আমি কিছু করিনি বা শিশুটি এখনও খেতে অস্বীকার করেছিল"
         ],
+        "openmrs_choice_ids": {
+          "আমি সক্রিয়ভাবে ধৈর্যশীল এবং আমার শিশুকে খেতে উত্সাহিত করেছি": "active",
+          "আমি কিছু করিনি বা শিশুটি এখনও খেতে অস্বীকার করেছিল": "not_active"
+        },
         "has_media_content": true,
         "media": [
           {
@@ -1182,6 +1237,10 @@
           "খাবারটি পরিবেশনের আগে খাবারটি নিশ্চিত করার পাঁচটিরও বেশি উপায়",
           "খাবার পরিবেশনের আগে স্বাস্থ্যকর পরিবেশ নিশ্চিত করার পাঁচটি কম উপায়"
         ],
+        "openmrs_choice_ids": {
+          "খাবারটি পরিবেশনের আগে খাবারটি নিশ্চিত করার পাঁচটিরও বেশি উপায়": "active",
+          "খাবার পরিবেশনের আগে স্বাস্থ্যকর পরিবেশ নিশ্চিত করার পাঁচটি কম উপায়": "not_active"
+        },
         "has_media_content": true,
         "media": [
           {
@@ -1218,6 +1277,10 @@
           "হ্যাঁ",
           "না"
         ],
+        "openmrs_choice_ids": {
+          "না": "no",
+          "হ্যাঁ": "yes"
+        },
         "has_media_content": true,
         "media": [
           {
@@ -1254,6 +1317,10 @@
           "পাঁচটি সমালোচনামূলক সময়",
           "পাঁচটি সমালোচনামূলক সময়ের চেয়ে কম"
         ],
+        "openmrs_choice_ids": {
+          "পাঁচটি সমালোচনামূলক সময়": "five_time",
+          "পাঁচটি সমালোচনামূলক সময়ের চেয়ে কম": "less_five_time"
+        },
         "has_media_content": true,
         "media": [
           {
@@ -1290,6 +1357,10 @@
           "না",
           "হ্যাঁ"
         ],
+        "openmrs_choice_ids": {
+          "না": "no",
+          "হ্যাঁ": "yes"
+        },
         "has_media_content": true,
         "media": [
           {
@@ -1326,6 +1397,10 @@
           "হ্যাঁ",
           "না"
         ],
+        "openmrs_choice_ids": {
+          "না": "no",
+          "হ্যাঁ": "yes"
+        },
         "has_media_content": true,
         "media": [
           {
@@ -1380,6 +1455,10 @@
           "যদি বাচ্চা ২ বা তার বেশি মাস ধরে বাড়া বা মারাত্মক কম ওজনের জন্য বৃদ্ধি ঘটাচ্ছে",
           "সব শিশুরা"
         ],
+        "openmrs_choice_ids": {
+          "যদি বাচ্চা ২ বা তার বেশি মাস ধরে বাড়া বা মারাত্মক কম ওজনের জন্য বৃদ্ধি ঘটাচ্ছে": "weight",
+          "সব শিশুরা": "all"
+        },
         "has_media_content": true,
         "media": [
           {

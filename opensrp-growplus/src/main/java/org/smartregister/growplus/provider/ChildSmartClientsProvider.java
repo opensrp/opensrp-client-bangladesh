@@ -81,6 +81,7 @@ import static org.smartregister.util.Utils.fillValue;
 import static org.smartregister.util.Utils.getName;
 import static org.smartregister.util.Utils.getValue;
 import static org.smartregister.view.activity.SecuredNativeSmartRegisterActivity.TAG;
+import static util.JsonFormUtils.getFormJson;
 
 /**
  * Created by Ahmed on 13-Oct-15.
@@ -252,7 +253,7 @@ public class ChildSmartClientsProvider implements SmartRegisterCLientsProviderFo
     private String getmetaDataForEditForm(CommonPersonObjectClient pc) {
         org.smartregister.Context context = VaccinatorApplication.getInstance().context();
         try {
-            JSONObject form = FormUtils.getInstance(this.context).getFormJson("child_followup");
+            JSONObject form = getFormJson("child_followup", context.applicationContext());;//FormUtils.getInstance(this.context).getFormJson("child_followup");
             LocationPickerView lpv = new LocationPickerView(this.context);
             lpv.init(context);
             JsonFormUtils.addHouseholdRegLocHierarchyQuestions(form, context);

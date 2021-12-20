@@ -127,6 +127,7 @@ import static org.smartregister.util.DateUtil.getDuration;
 import static org.smartregister.util.Utils.dobToDateTime;
 import static org.smartregister.util.Utils.getValue;
 import static org.smartregister.util.Utils.kgStringSuffix;
+import static util.JsonFormUtils.getFormJson;
 
 
 /**
@@ -635,7 +636,7 @@ public class ChildImmunizationActivity extends BaseActivity
 
         org.smartregister.Context context = VaccinatorApplication.getInstance().context();
         try {
-            JSONObject form = FormUtils.getInstance(this).getFormJson("iycf_counselling_form_lactating_woman");
+            JSONObject form =getFormJson("iycf_counselling_form_lactating_woman", getApplicationContext());// FormUtils.getInstance(this).getFormJson("iycf_counselling_form_lactating_woman");
 
             if (form != null) {
 

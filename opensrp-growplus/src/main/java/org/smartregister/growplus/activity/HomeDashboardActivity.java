@@ -156,7 +156,7 @@ if(input==null||"".equals(input))return "";
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu_child_detail_settings, menu);
+        getMenuInflater().inflate(R.menu.menu_language_settings, menu);
         MenuItem item = menu.findItem(R.id.language_switch);
         item.setActionView(R.layout.language_switch_lay);
 

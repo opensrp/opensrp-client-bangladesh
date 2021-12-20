@@ -86,6 +86,10 @@
           "হ্যাঁ",
           "না"
         ],
+        "openmrs_choice_ids": {
+          "না": "no",
+          "হ্যাঁ": "yes"
+        },
         "value": ""
       },
       {
@@ -99,6 +103,10 @@
           "হ্যাঁ",
           "না"
         ],
+        "openmrs_choice_ids": {
+          "না": "no",
+          "হ্যাঁ": "yes"
+        },
         "v_required": {
           "value": "true",
           "err": "প্রশ্নের উত্তর দিন"
@@ -186,6 +194,10 @@
           "হ্যাঁ",
           "না"
         ],
+        "openmrs_choice_ids": {
+          "না": "no",
+          "হ্যাঁ": "yes"
+        },
         "has_media_content": true,
         "media": [
           {
@@ -216,6 +228,10 @@
           "হ্যাঁ",
           "না"
         ],
+        "openmrs_choice_ids": {
+          "না": "no",
+          "হ্যাঁ": "yes"
+        },
         "has_media_content": true,
         "media": [
           {
@@ -253,6 +269,10 @@
           "হ্যাঁ",
           "না"
         ],
+        "openmrs_choice_ids": {
+          "না": "no",
+          "হ্যাঁ": "yes"
+        },
         "relevance": {
           "step1:nutrition_to_discuss": {
             "type": "string"
@@ -310,6 +330,10 @@
           "হ্যাঁ",
           "না"
         ],
+        "openmrs_choice_ids": {
+          "না": "no",
+          "হ্যাঁ": "yes"
+        },
         "has_media_content": true,
         "media": [
           {
@@ -340,6 +364,10 @@
           "হ্যাঁ",
           "না"
         ],
+        "openmrs_choice_ids": {
+          "না": "no",
+          "হ্যাঁ": "yes"
+        },
         "has_media_content": true,
         "media": [
           {
@@ -376,6 +404,10 @@
           "হ্যাঁ",
           "না"
         ],
+        "openmrs_choice_ids": {
+          "না": "no",
+          "হ্যাঁ": "yes"
+        },
         "has_media_content": true,
         "media": [
           {
@@ -412,6 +444,10 @@
           "হ্যাঁ",
           "না"
         ],
+        "openmrs_choice_ids": {
+          "না": "no",
+          "হ্যাঁ": "yes"
+        },
         "has_media_content": true,
         "media": [
           {
@@ -448,6 +484,10 @@
           "আমি বুকের দুধ খাওয়ানোর পরিকল্পনা করছি",
           "আমি বুকের দুধ খাওয়াতে চাই না"
         ],
+        "openmrs_choice_ids": {
+          "আমি বুকের দুধ খাওয়ানোর পরিকল্পনা করছি": "planing_fedding",
+          "আমি বুকের দুধ খাওয়াতে চাই না": "not_fedding"
+        },
         "has_media_content": true,
         "media": [
           {

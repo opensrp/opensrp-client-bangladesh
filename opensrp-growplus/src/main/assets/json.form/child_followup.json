@@ -78,7 +78,11 @@
         "values":[
           "হ্যাঁ",
           "না"
-        ]
+        ],
+        "openmrs_choice_ids": {
+          "হ্যাঁ": "yes",
+          "না": "no"
+        }
       },
       {
         "key": "next_followup_visit_date",

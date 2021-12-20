@@ -76,6 +76,7 @@ import static org.smartregister.growplus.fragment.HouseholdMemberAddFragment.DAT
 import static org.smartregister.util.Utils.fillValue;
 import static org.smartregister.util.Utils.getValue;
 import static org.smartregister.util.Utils.startAsyncTask;
+import static util.JsonFormUtils.getFormJson;
 
 /**
  * Created by Ahmed on 13-Oct-15.
@@ -193,13 +194,15 @@ public class WomanSmartClientsProvider implements SmartRegisterCLientsProviderFo
         boolean pregnant = false;
         boolean lactating = false;
         if(detailmaps.get("pregnant")!=null){
-            if(detailmaps.get("pregnant").equalsIgnoreCase(context.getString(R.string.yes))){
+            if(detailmaps.get("pregnant").equalsIgnoreCase(context.getString(R.string.yes))
+            || detailmaps.get("pregnant").equalsIgnoreCase("yes")){
                 pregnant = true;
 
             }
         }
         if(detailmaps.get("lactating_woman")!=null){
-            if(detailmaps.get("lactating_woman").equalsIgnoreCase(context.getString(R.string.yes))){
+            if(detailmaps.get("lactating_woman").equalsIgnoreCase(context.getString(R.string.yes))
+            || detailmaps.get("lactating_woman").equalsIgnoreCase("yes")){
                 lactating = true;
             }
         }
@@ -552,7 +555,7 @@ public class WomanSmartClientsProvider implements SmartRegisterCLientsProviderFo
     private String getmetaDataForEditForm(CommonPersonObjectClient pc) {
         org.smartregister.Context context = VaccinatorApplication.getInstance().context();
         try {
-            JSONObject form = FormUtils.getInstance(this.context).getFormJson("child_enrollment");
+            JSONObject form =getFormJson("child_enrollment", context.applicationContext());// FormUtils.getInstance(this.context).getFormJson("child_enrollment");
             LocationPickerView lpv = new LocationPickerView(this.context);
             lpv.init(context);
             JsonFormUtils.addHouseholdRegLocHierarchyQuestions(form, context);
@@ -644,7 +647,7 @@ public class WomanSmartClientsProvider implements SmartRegisterCLientsProviderFo
     private String getmetaDataForLactatingCounsellingForm(CommonPersonObjectClient pc) {
         org.smartregister.Context context = VaccinatorApplication.getInstance().context();
         try {
-            JSONObject form = FormUtils.getInstance(this.context).getFormJson("iycf_counselling_form_lactating_woman");
+            JSONObject form = getFormJson("iycf_counselling_form_lactating_woman", context.applicationContext());//FormUtils.getInstance(this.context).getFormJson("iycf_counselling_form_lactating_woman");
 
             if (form != null) {
 
@@ -669,7 +672,7 @@ public class WomanSmartClientsProvider implements SmartRegisterCLientsProviderFo
     private String getmetaDataForPregnantCounsellingForm(CommonPersonObjectClient pc) {
         org.smartregister.Context context = VaccinatorApplication.getInstance().context();
         try {
-            JSONObject form = FormUtils.getInstance(this.context).getFormJson("iycf_counselling_form_pregnant_woman");
+            JSONObject form = getFormJson("iycf_counselling_form_pregnant_woman", context.applicationContext());//FormUtils.getInstance(this.context).getFormJson("iycf_counselling_form_pregnant_woman");
 
             if (form != null) {
 
@@ -693,7 +696,7 @@ public class WomanSmartClientsProvider implements SmartRegisterCLientsProviderFo
     private String getmetaDataForFollowUpForm(CommonPersonObjectClient pc) {
         org.smartregister.Context context = VaccinatorApplication.getInstance().context();
         try {
-            JSONObject form = FormUtils.getInstance(this.context).getFormJson("woman_followup");
+            JSONObject form =getFormJson("woman_followup", context.applicationContext()); //FormUtils.getInstance(this.context).getFormJson("woman_followup");
 
             if (form != null) {
 
@@ -729,7 +732,7 @@ public class WomanSmartClientsProvider implements SmartRegisterCLientsProviderFo
     private String getmetaDataForFollowUpFormPregnantWoman(CommonPersonObjectClient pc) {
         org.smartregister.Context context = VaccinatorApplication.getInstance().context();
         try {
-            JSONObject form = FormUtils.getInstance(this.context).getFormJson("woman_followup");
+            JSONObject form =getFormJson("woman_followup", context.applicationContext());// FormUtils.getInstance(this.context).getFormJson("woman_followup");
 
             if (form != null) {
 

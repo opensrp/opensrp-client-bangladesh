@@ -531,7 +531,8 @@ public class JsonFormUtils extends org.smartregister.util.JsonFormUtils {
             boolean lactatingwoman = false;
             boolean pregnantwoman = false;
             if (fieldmap.get("lactating_woman") != null) {
-                if (fieldmap.get("lactating_woman").equalsIgnoreCase(context.getString(R.string.yes))) {
+                if (fieldmap.get("lactating_woman").equalsIgnoreCase(context.getString(R.string.yes))
+                 || fieldmap.get("lactating_woman").equalsIgnoreCase("yes")) {
                     lactatingwoman = true;
                 }
                 for (int i = 0; i < fields.length(); i++) {
@@ -547,7 +548,8 @@ public class JsonFormUtils extends org.smartregister.util.JsonFormUtils {
                 }
             }
             if (fieldmap.get("pregnant") != null) {
-                if (fieldmap.get("pregnant").equalsIgnoreCase(context.getString(R.string.yes))) {
+                if (fieldmap.get("pregnant").equalsIgnoreCase(context.getString(R.string.yes))
+                   || fieldmap.get("pregnant").equalsIgnoreCase("yes")) {
                     pregnantwoman = true;
                 }
             }

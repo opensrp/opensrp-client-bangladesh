@@ -83,10 +83,7 @@
         </receiver>
 
         <activity android:name=".activity.ProviderProfileActivity" />
-        <activity
-            android:name=".activity.GrowthGeoMapActivity"
-            android:screenOrientation="portrait"
-            android:theme="@style/AppTheme" />
+
         <activity
             android:name=".activity.GrowthReportActivity"
             android:screenOrientation="portrait"

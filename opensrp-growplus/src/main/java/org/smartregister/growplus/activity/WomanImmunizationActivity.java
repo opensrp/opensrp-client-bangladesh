@@ -110,6 +110,7 @@ import static org.smartregister.util.Utils.getName;
 import static org.smartregister.util.Utils.getValue;
 import static org.smartregister.util.Utils.kgStringSuffix;
 import static org.smartregister.util.Utils.startAsyncTask;
+import static util.JsonFormUtils.getFormJson;
 
 
 /**
@@ -159,7 +160,7 @@ public class WomanImmunizationActivity extends BaseActivity
     public DetailsRepository detailsRepository;
     public org.smartregister.Context context;
     private WomenFollowupRecyclerViewAdapter mWomenFollowupRecyclerViewAdapter;
-//    private String[] mWomenCounsellingKeys;
+    //    private String[] mWomenCounsellingKeys;
 //    private Map<String, String> mWomenCounsellingData;
     private Counselling mEditCounselling;
 
@@ -249,14 +250,14 @@ public class WomanImmunizationActivity extends BaseActivity
         Intent intent = new Intent(WomanImmunizationActivity.this, PathJsonFormActivity.class);
         intent.putExtra("json", formMetadata);
         startActivityForResult(intent, REQUEST_CODE_GET_JSON);
-       // startActivity(intent);
+        // startActivity(intent);
     }
 
     private void showWomenFollowupData() throws Exception {
         //Cursor c = db.rawQuery("SELECT Visit_date, is_pregnant, columnN FROM ec_followup;");
         SQLiteDatabase database =  VaccinatorApplication.getInstance().getRepository().getReadableDatabase();
         Cursor cursor =  database.rawQuery("SELECT * FROM ec_followup where mother_id = '" + childDetails.entityId()+"'", null);
-       // Cursor cursor =  database.rawQuery("SELECT * FROM ec_followup where base_entity_id = '" + childDetails.entityId()+"'", null);
+        // Cursor cursor =  database.rawQuery("SELECT * FROM ec_followup where base_entity_id = '" + childDetails.entityId()+"'", null);
         mWomenFollowupKeys = cursor.getColumnNames();
         mWomenFollowupData = new HashMap<>();
 
@@ -278,7 +279,7 @@ public class WomanImmunizationActivity extends BaseActivity
 //        detailmaps.putAll(childDetails.getDetails());
 
         String visitDate = cursor.getString(cursor.getColumnIndex("Visit_date"));
-     //   String visitDate = detailmaps.get("Visit_date");
+        //   String visitDate = detailmaps.get("Visit_date");
         cursor.close();
 
         ((TextView)findViewById(R.id.visit_date)).setText(visitDate);
@@ -428,7 +429,8 @@ public class WomanImmunizationActivity extends BaseActivity
         final String eddstring = getValue(childDetails.getColumnmaps(), "edd", false);
         String pregnant = "No";
         if(childDetails.getColumnmaps().get("pregnant")!=null){
-            if(childDetails.getColumnmaps().get("pregnant").equalsIgnoreCase("Yes")){
+            if(childDetails.getColumnmaps().get("pregnant").equalsIgnoreCase(getString(R.string.yes))
+            || childDetails.getColumnmaps().get("pregnant").equalsIgnoreCase("yes")){
                 pregnant = "Yes";
 
             }
@@ -698,12 +700,14 @@ public class WomanImmunizationActivity extends BaseActivity
                 Intent intent = new Intent(WomanImmunizationActivity.this, PathJsonFormActivity.class);
                 intent.putExtra("skipdialog", true);
                 if(detailmaps.get("pregnant")!=null){
-                    if(detailmaps.get("pregnant").equalsIgnoreCase("Yes")){
+                    if(detailmaps.get("pregnant").equalsIgnoreCase(getString(R.string.yes))
+                    || detailmaps.get("pregnant").equalsIgnoreCase("yes")){
                         pregnant = true;
                     }
                 }
                 if(detailmaps.get("lactating_woman")!=null){
-                    if(detailmaps.get("lactating_woman").equalsIgnoreCase("Yes")){
+                    if(detailmaps.get("lactating_woman").equalsIgnoreCase(getString(R.string.yes))
+                    || detailmaps.get("lactating_woman").equalsIgnoreCase("yes")){
                         lactating = true;
                     }
                 }
@@ -746,13 +750,15 @@ public class WomanImmunizationActivity extends BaseActivity
                 Map<String,String> detailmaps = childDetails.getColumnmaps();
                 detailmaps.putAll(childDetails.getDetails());
                 if(detailmaps.get("pregnant")!=null){
-                    if(detailmaps.get("pregnant").equalsIgnoreCase("Yes")){
+                    if(detailmaps.get("pregnant").equalsIgnoreCase(getString(R.string.yes))
+                       || detailmaps.get("pregnant").equalsIgnoreCase("yes")){
                         pregnant = true;
 
                     }
                 }
                 if(detailmaps.get("lactating_woman")!=null){
-                    if(detailmaps.get("lactating_woman").equalsIgnoreCase("Yes")){
+                    if(detailmaps.get("lactating_woman").equalsIgnoreCase(getString(R.string.yes))
+                    || detailmaps.get("lactating_woman").equalsIgnoreCase("yes")){
                         lactating = true;
                     }
                 }
@@ -813,7 +819,7 @@ public class WomanImmunizationActivity extends BaseActivity
     private String getmetaDataForLactatingCounsellingForm(CommonPersonObjectClient pc) {
         org.smartregister.Context context = VaccinatorApplication.getInstance().context();
         try {
-            JSONObject form = FormUtils.getInstance(this).getFormJson("iycf_counselling_form_lactating_woman");
+            JSONObject form = getFormJson("iycf_counselling_form_lactating_woman", getApplicationContext());//FormUtils.getInstance(this).getFormJson("iycf_counselling_form_lactating_woman");
 
             if (form != null) {
 
@@ -838,7 +844,7 @@ public class WomanImmunizationActivity extends BaseActivity
     public static String getmetaDataForPregnantCounsellingForm(CommonPersonObjectClient pc,Context activitycontext) {
         org.smartregister.Context context = VaccinatorApplication.getInstance().context();
         try {
-            JSONObject form = FormUtils.getInstance(activitycontext).getFormJson("iycf_counselling_form_pregnant_woman");
+            JSONObject form = getFormJson("iycf_counselling_form_pregnant_woman", activitycontext);//FormUtils.getInstance(activitycontext).getFormJson("iycf_counselling_form_pregnant_woman");
 
             if (form != null) {
 
@@ -1650,7 +1656,7 @@ public class WomanImmunizationActivity extends BaseActivity
         protected Map<String, NamedObject<?>> doInBackground(Void... voids) {
             String dobString = getValue(childDetails.getColumnmaps(), "lmp", false);
             if (!TextUtils.isEmpty(dobString)) {
-                 SimpleDateFormat lmp_DATE_FORMAT = new SimpleDateFormat("dd-MM-yyyy");
+                SimpleDateFormat lmp_DATE_FORMAT = new SimpleDateFormat("dd-MM-yyyy");
                 Date dateTime = null;
                 try {
                     dateTime = lmp_DATE_FORMAT.parse(dobString);
@@ -1743,14 +1749,14 @@ public class WomanImmunizationActivity extends BaseActivity
                     vaccineRepository.deleteVaccine(dbKey);
                     String dobString = getValue(childDetails.getColumnmaps(), "lmp", false);
                     if (!TextUtils.isEmpty(dobString)) {
-                            SimpleDateFormat lmp_DATE_FORMAT = new SimpleDateFormat("dd-MM-yyyy");
-                            Date dateTime = null;
-                            try {
-                                dateTime = lmp_DATE_FORMAT.parse(dobString);
-                                VaccineSchedule.updateOfflineAlerts(childDetails.entityId(), new DateTime(dateTime.getTime()), "woman");
-                            } catch (ParseException e) {
-                                e.printStackTrace();
-                            }
+                        SimpleDateFormat lmp_DATE_FORMAT = new SimpleDateFormat("dd-MM-yyyy");
+                        Date dateTime = null;
+                        try {
+                            dateTime = lmp_DATE_FORMAT.parse(dobString);
+                            VaccineSchedule.updateOfflineAlerts(childDetails.entityId(), new DateTime(dateTime.getTime()), "woman");
+                        } catch (ParseException e) {
+                            e.printStackTrace();
+                        }
                         vaccineList = vaccineRepository.findByEntityId(childDetails.entityId());
                         alertList = alertService.findByEntityIdAndAlertNames(childDetails.entityId(),
                                 VaccinateActionUtils.allAlertNames("woman"));

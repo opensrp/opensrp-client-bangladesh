@@ -139,6 +139,10 @@
           "পুরুষ",
           "মহিলা"
         ],
+        "openmrs_choice_ids": {
+          "পুরুষ": "male",
+          "মহিলা": "female"
+        },
         "v_required": {
           "value": "true",
           "err": "লিঙ্গ দিন"
