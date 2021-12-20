@@ -329,4 +329,7 @@
     <string name="total_reached_woman">% of the Woman being Reached</string>
 
     <string name="growth_faltering_overtime">% children who are growth faltering overtime</string>
+
+    <string name="current_language">EN</string>
+
 </resources>

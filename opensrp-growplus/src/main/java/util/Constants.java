@@ -108,4 +108,9 @@ public abstract class Constants {
         public static final String PROVIDER_ID = "providerId";
         public static final String LOCATION_ID = "locationId";
     }
+
+    public static class Lang {
+        public static final String ENGLISH ="EN";
+        public static final String BENGALI ="BN";
+    }
 }

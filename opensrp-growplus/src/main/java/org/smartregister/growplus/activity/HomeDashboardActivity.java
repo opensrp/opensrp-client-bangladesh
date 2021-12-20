@@ -29,6 +29,7 @@ import org.smartregister.repository.AllSharedPreferences;
 
 import java.util.Locale;
 
+import util.Constants;
 import util.Utils;
 
 public class HomeDashboardActivity extends BaseActivity {
@@ -165,22 +166,23 @@ if(input==null||"".equals(input))return "";
         languageSwitch = item.getActionView().findViewById(R.id.languageSwitch);
         language_tv = item.getActionView().findViewById(R.id.language_tv);
 
-        if(currentLanguage.equalsIgnoreCase("bn")){
+        if(currentLanguage.equalsIgnoreCase(Constants.Lang.BENGALI.toLowerCase())){
             languageSwitch.setChecked(false);
-            language_tv.setText("BN");
+            language_tv.setText(Constants.Lang.BENGALI);
         }else {
             languageSwitch.setChecked(true);
-            language_tv.setText("EN");
+            language_tv.setText(Constants.Lang.ENGLISH);
         }
         languageSwitch.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 if (languageSwitch.isChecked()) {
-                    setLocale("en");
-                    language_tv.setText("EN");
-                } else {
-                    setLocale("bn");
-                    language_tv.setText("BN");
+                    setLocale(Constants.Lang.ENGLISH.toLowerCase());
+                    language_tv.setText(Constants.Lang.ENGLISH);
+                }
+                else {
+                    setLocale(Constants.Lang.BENGALI.toLowerCase());
+                    language_tv.setText(Constants.Lang.BENGALI);
                 }
             }
         });

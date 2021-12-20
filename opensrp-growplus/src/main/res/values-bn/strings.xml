@@ -337,5 +337,8 @@
     <string name="total_reached_woman">% নারীর কাছে পৌঁছানো হচ্ছে</string>
     <string name="growth_faltering_overtime">% ওভারটাইমে বেড়ে ওঠা শিশুরা</string>
 
+    <string name="current_language">BN</string>
+
+
 
 </resources>
