@@ -228,8 +228,12 @@ public class LoginActivity extends AppCompatActivity implements LoginContract.Vi
         }
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
         AllSharedPreferences allSharedPreferences = new AllSharedPreferences(preferences);
-        allSharedPreferences.savePreference(Constants.CMED_KEY.USER_NAME,userNameEditText.getText().toString());
-        allSharedPreferences.savePreference(Constants.CMED_KEY.USER_PASSWORD,passwordEditText.getText().toString());
+        if(!TextUtils.isEmpty(userNameEditText.getText().toString())){
+            allSharedPreferences.savePreference(Constants.CMED_KEY.USER_NAME,userNameEditText.getText().toString());
+        }
+        if(!TextUtils.isEmpty(passwordEditText.getText().toString())){
+            allSharedPreferences.savePreference(Constants.CMED_KEY.USER_PASSWORD,passwordEditText.getText().toString());
+        }
 
         Intent intent = new Intent(this, HomeRegisterActivity.class);
         intent.putExtra(Constants.IS_REMOTE_LOGIN, remote);
