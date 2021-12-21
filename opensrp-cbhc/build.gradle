@@ -135,6 +135,22 @@ android {
     }
     flavorDimensions "baseDimension"
     productFlavors {
+        gmp {
+            applicationId 'org.smartregister'
+            versionCode 5
+            versionName "1.1.5"
+            dimension "baseDimension"
+            applicationIdSuffix ".gmp"
+            versionNameSuffix ""
+        }
+        jica {
+            applicationId 'org.smartregister'
+            versionCode 5
+            versionName "1.1.5"
+            dimension "baseDimension"
+            applicationIdSuffix ".jica"
+            versionNameSuffix ""
+        }
         ha {
             applicationId 'org.smartregister'
             versionCode 5
