@@ -1,4 +1,4 @@
-package org.smartregister.cbhc.domain;//package org.smartregister.cbhc.domain;
+//package org.smartregister.cbhc.domain;
 //
 //import java.util.Date;
 //import java.util.HashMap;

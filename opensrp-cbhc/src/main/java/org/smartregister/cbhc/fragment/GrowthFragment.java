@@ -1,4 +1,4 @@
-package org.smartregister.cbhc.fragment;//package org.smartregister.cbhc.fragment;
+//package org.smartregister.cbhc.fragment;
 //
 //import android.content.Intent;
 //import android.os.AsyncTask;

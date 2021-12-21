@@ -1,4 +1,4 @@
-package org.smartregister.cbhc.fragment;//package org.smartregister.cbhc.fragment;
+//package org.smartregister.cbhc.fragment;
 //
 //import android.app.Activity;
 //import android.app.DialogFragment;

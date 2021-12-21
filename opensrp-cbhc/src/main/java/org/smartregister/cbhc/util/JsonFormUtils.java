@@ -1272,7 +1272,7 @@ public class JsonFormUtils extends org.smartregister.util.JsonFormUtils {
 
                 metadata.put(JsonFormUtils.ENCOUNTER_LOCATION, lastLocationId);
 
-                form.put(JsonFormUtils.CURRENT_OPENSRP_ID, womanClient.get("Patient_Identifier").replace("-", ""));
+                form.put(JsonFormUtils.CURRENT_OPENSRP_ID,  womanClient.get("Patient_Identifier")!=null?womanClient.get("Patient_Identifier").replace("-", ""):"");
 
                 //inject opensrp id into the form
 

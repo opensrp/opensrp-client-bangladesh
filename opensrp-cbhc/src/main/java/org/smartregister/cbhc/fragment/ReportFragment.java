@@ -134,7 +134,7 @@ public class ReportFragment extends Fragment {
         reportDataList.add(new ReportData(decimalFormat.format((mamChild*100.0)/gmpChildren).replace("NaN","0"),"% of children who are MAM",R.color.yellow));
         reportDataList.add(new ReportData(decimalFormat.format((edemaChild*100.0)/gmpChildren).replace("NaN","0"),"% of children who have Edema",R.color.black));
 
-        reportDataList.add(new ReportData(decimalFormat.format((overWeightChild*100.0)/gmpChildren).replace("NaN","0"),"% of children who are overweight",R.color.black));
+        reportDataList.add(new ReportData(decimalFormat.format((overWeightChild*100.0)/gmpChildren).replace("NaN","0"),"% of children who are overweight",R.color.red));
         reportDataList.add(new ReportData(decimalFormat.format((underWeightChild*100.0)/gmpChildren).replace("NaN","0"),"% of children who are Severly Underweight",R.color.black));
         reportDataList.add(new ReportData(decimalFormat.format((severlyStunted*100.0)/gmpChildren).replace("NaN","0"),"% of children who are Severly Stunted",R.color.black));
 
