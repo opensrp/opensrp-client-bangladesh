@@ -121,6 +121,7 @@ public class Utils {
         AllSharedPreferences allSharedPreferences = new AllSharedPreferences(preferences);
         String userName = allSharedPreferences.getPreference(Constants.CMED_KEY.USER_NAME);
         String passwordText = allSharedPreferences.getPreference(Constants.CMED_KEY.USER_PASSWORD);
+        Log.v("CEMD_USER","userName:"+userName+":passwordText:"+passwordText);
         Intent intent = new Intent();
         intent.setAction(Constants.CMED_KEY.MPOWER_ACTION);
 //        intent.setClassName("com.example.testapplication", "com.example.myapplication.MainActivity");

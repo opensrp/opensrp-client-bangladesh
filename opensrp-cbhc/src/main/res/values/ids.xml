@@ -2,5 +2,6 @@
 <resources>
     <item name="clientformemberprofile" type="id"></item>
     <item name="typeofclientformemberprofile" type="id"></item>
+    <item name="baseentityid" type="id"></item>
     <item name="typekey" type="id"></item>
 </resources>

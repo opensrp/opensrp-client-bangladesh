@@ -212,11 +212,11 @@
         "edit_type": "name",
         "v_regex": {
           "value": "[A-Z][A-Za-z .]*",
-          "err": "Please enter a valid name"
+          "err": "ইংরেজীতে নামের প্রথম অক্ষর বড় হাতের লিখুন"
         },
         "v_required": {
           "value": true,
-          "err": "Please enter the Name correctly"
+          "err": "ইংরেজীতে নামের প্রথম অক্ষর বড় হাতের লিখুন"
         }
       },
       {
@@ -229,11 +229,11 @@
         "edit_type": "name",
         "v_required": {
           "value": true,
-          "err": "Please enter the last name"
+          "err": "ইংরেজীতে নামের প্রথম অক্ষর বড় হাতের লিখুন"
         },
         "v_regex": {
           "value": "[A-Z][A-Za-z .]*",
-          "err": "Please enter a valid name"
+          "err": "ইংরেজীতে নামের প্রথম অক্ষর বড় হাতের লিখুন"
         }
       },
       {

@@ -348,6 +348,7 @@ public abstract class BaseRegisterFragment extends RecyclerViewFragment implemen
             pm.getPackageInfo(uri, PackageManager.GET_ACTIVITIES);
             return true;
         } catch (PackageManager.NameNotFoundException e) {
+            e.printStackTrace();
         }
 
         return false;

@@ -366,11 +366,11 @@
         "expanded": false,
         "v_required": {
           "value": "true",
-          "err": "Please Enter a Valid Name"
+          "err": "ইংরেজীতে নামের প্রথম অক্ষর বড় হাতের লিখুন"
         },
         "v_regex": {
           "value": "[A-Z][A-Za-z .]*",
-          "err": "Please Enter a Valid Name"
+          "err": "নামের প্রথম অক্ষর বড় হাতের লিখুন"
         }
       },
       {
@@ -383,11 +383,11 @@
         "edit_type": "name",
         "v_required": {
           "value": "true",
-          "err": "Please enter the last name"
+          "err": "ইংরেজীতে নামের প্রথম অক্ষর বড় হাতের লিখুন"
         },
         "v_regex": {
           "value": "[A-Z][A-Za-z .]*",
-          "err": "Please enter a valid name"
+          "err": "ইংরেজীতে নামের প্রথম অক্ষর বড় হাতের লিখুন"
         }
       },
       {
@@ -420,11 +420,11 @@
         "edit_type": "name",
         "v_required": {
           "value": "true",
-          "err": "Please enter the mother/guardian's first name"
+          "err": "ইংরেজীতে নামের প্রথম অক্ষর বড় হাতের লিখুন"
         },
         "v_regex": {
           "value": "[A-Z][A-Za-z .]*",
-          "err": "Please enter a valid name"
+          "err": "ইংরেজীতে নামের প্রথম অক্ষর বড় হাতের লিখুন"
         }
       },
       {
@@ -457,11 +457,11 @@
         "edit_type": "name",
         "v_required": {
           "value": "true",
-          "err": "Please enter the mother/guardian's first name"
+          "err": "ইংরেজীতে নামের প্রথম অক্ষর বড় হাতের লিখুন"
         },
         "v_regex": {
           "value": "[A-Z][A-Za-z .]*",
-          "err": "Please enter a valid name"
+          "err": "ইংরেজীতে নামের প্রথম অক্ষর বড় হাতের লিখুন"
         }
       },
       {
@@ -680,12 +680,12 @@
         "look_up": "true",
         "hint": "স্বামী/স্ত্রীর নাম (ইংরেজীতে)",
         "v_regex": {
-          "value": "[A-Za-z .]*",
-          "err": "Please Enter a Valid Name"
+          "value": "[A-Z][A-Za-z .]*",
+          "err": "ইংরেজীতে নামের প্রথম অক্ষর বড় হাতের লিখুন"
         },
         "v_required": {
           "value": true,
-          "err": "Please enter spouse name"
+          "err": "ইংরেজীতে নামের প্রথম অক্ষর বড় হাতের লিখুন"
         },
         "relevance": {
           "step1:marital_status": {
@@ -739,11 +739,11 @@
         },
         "v_max_length": {
           "value": "11",
-          "err": "Please Enter 11 digit Mobile number"
+          "err": "১১ সংখ্যার মোবাইল নম্বর দিন"
         },
         "v_min_length": {
           "value": "1",
-          "err": "Please Enter 11 digit Mobile number"
+          "err": "১১ সংখ্যার মোবাইল নম্বর দিন"
         },
         "relevance": {
           "step1:age": {

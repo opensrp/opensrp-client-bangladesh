@@ -444,6 +444,7 @@ public class ProfileOverviewFragment extends BaseProfileFragment {
 
             LinearLayout editButton = view.findViewById(R.id.edit_member);
             editButton.setTag(pClient);
+            editButton.setTag(R.id.baseentityid,pClient.getCaseId());
             editButton.setOnClickListener((ProfileActivity) getActivity());
             Drawable d = null;
             String clientype = "";
@@ -498,7 +499,7 @@ public class ProfileOverviewFragment extends BaseProfileFragment {
 
             profileImageIV.setTag(R.id.typeofclientformemberprofile, clientype);
             profileImageIV.setTag(R.id.clientformemberprofile, pClient);
-
+            editButton.setTag(R.id.typeofclientformemberprofile, clientype);
             profileImageIV.setOnClickListener((ProfileActivity) getActivity());
             noOfUnregisterButton.setTag(R.id.clientformemberprofile, pClient);
             noOfUnregisterButton.setOnClickListener((ProfileActivity) getActivity());

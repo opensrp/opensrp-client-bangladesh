@@ -731,7 +731,11 @@ public class AncJsonFormFragment extends JsonFormFragment {
                                 CommonRepository commonRepository = AncApplication.getInstance().getContext().commonrepository("ec_household");
                                 CommonPersonObject household = commonRepository.findByBaseEntityId(relational_id);
                                 if (RegisterProvider.memberCountHashMap != null)
-                                    RegisterProvider.memberCountHashMap.remove(household.getCaseId());
+                                    try{
+                                        RegisterProvider.memberCountHashMap.remove(household.getCaseId());
+                                    }catch (Exception e){
+
+                                    }
                             }
                         }
                     } catch (JSONException e) {
@@ -849,6 +853,7 @@ public class AncJsonFormFragment extends JsonFormFragment {
                                     headOfHouseholdDOBUnknown = getValue(household.getColumnmaps(), "dob_unknown", false);
                                     ImageRepository imageRepo = CoreLibrary.getInstance().context().imageRepository();
                                     imageRecord = imageRepo.findByEntityId(relational_id);
+                                    Log.v("IMAGE_TEST","imageRecord>>"+imageRecord.getFilepath()+":relational_id"+relational_id);
                                 }
                             }
                         } catch (JSONException e) {
@@ -910,7 +915,7 @@ public class AncJsonFormFragment extends JsonFormFragment {
                                     updateRelevantImageView(bitmap, imageRecord.getFilepath(), (String) imageView.getTag(com.vijay.jsonwizard.R.id.key));
 
                                 } catch (Exception e) {
-                                    org.smartregister.cbhc.util.Utils.appendLog(getClass().getName(), e);
+                                    e.printStackTrace();
 
                                 }
                             }

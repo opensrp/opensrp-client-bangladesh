@@ -171,21 +171,25 @@ public class ProfileActivity extends BaseProfileActivity implements ProfileContr
         return commonPersonObjectClient;
     }
 
-    public void setUpMemberDetails(String typeofMember){
+    public CommonPersonObjectClient setUpMemberDetails(String typeofMember, String baseEntityId){
         if (typeofMember != null) {
             if (typeofMember.equalsIgnoreCase("malechild") || typeofMember.equalsIgnoreCase("femalechild")) {
-                householdDetails =  CommonPersonObjectToClient(AncApplication.getInstance().getContext().commonrepository(DBConstants.CHILD_TABLE_NAME).findByBaseEntityId(householdDetails.entityId()),DBConstants.CHILD_TABLE_NAME);
+                return CommonPersonObjectToClient(AncApplication.getInstance().getContext().commonrepository(DBConstants.CHILD_TABLE_NAME).findByBaseEntityId(baseEntityId),DBConstants.CHILD_TABLE_NAME);
             }
             else if (typeofMember.equalsIgnoreCase("woman")) {
-                householdDetails =  CommonPersonObjectToClient(AncApplication.getInstance().getContext().commonrepository(DBConstants.WOMAN_TABLE_NAME).findByBaseEntityId(householdDetails.entityId()),DBConstants.WOMAN_TABLE_NAME);
+                return CommonPersonObjectToClient(AncApplication.getInstance().getContext().commonrepository(DBConstants.WOMAN_TABLE_NAME).findByBaseEntityId(baseEntityId),DBConstants.WOMAN_TABLE_NAME);
             }
             else if (typeofMember.equalsIgnoreCase("member")) {
-                householdDetails =  CommonPersonObjectToClient(AncApplication.getInstance().getContext().commonrepository(DBConstants.MEMBER_TABLE_NAME).findByBaseEntityId(householdDetails.entityId()),DBConstants.MEMBER_TABLE_NAME);
+                return CommonPersonObjectToClient(AncApplication.getInstance().getContext().commonrepository(DBConstants.MEMBER_TABLE_NAME).findByBaseEntityId(baseEntityId),DBConstants.MEMBER_TABLE_NAME);
+            }
+            else if (typeofMember.equalsIgnoreCase("household")) {
+                return CommonPersonObjectToClient(AncApplication.getInstance().getContext().commonrepository(DBConstants.HOUSEHOLD_TABLE_NAME).findByBaseEntityId(baseEntityId),DBConstants.HOUSEHOLD_TABLE_NAME);
             }
         }
+        return householdDetails;
     }
     public void refreshProfileViews() {
-        setUpMemberDetails(typeofMember);
+        householdDetails = setUpMemberDetails("household",householdDetails.getCaseId());
 //        householdDetails = CommonPersonObjectToClient(AncApplication.getInstance().getContext().commonrepository(DBConstants.HOUSEHOLD_TABLE_NAME).findByBaseEntityId(householdDetails.entityId()));
 
         String firstName = org.smartregister.util.Utils.getValue(householdDetails.getColumnmaps(), DBConstants.KEY.FIRST_NAME, true);
@@ -242,7 +246,7 @@ public class ProfileActivity extends BaseProfileActivity implements ProfileContr
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.btn_profile_registration_info:
-                setUpMemberDetails(typeofMember);
+                householdDetails = setUpMemberDetails("household",householdDetails.entityId());
 //                householdDetails.getColumnmaps().putAll(AncApplication.getInstance().getContext().detailsRepository().getAllDetailsForClient(householdDetails.entityId()));
                 patient_identifier = householdDetails.getColumnmaps().get("Patient_Identifier");
 
@@ -266,19 +270,21 @@ public class ProfileActivity extends BaseProfileActivity implements ProfileContr
                 }
                 break;
             case R.id.edit_member:
-                setUpMemberDetails(typeofMember);
-                patient_identifier = householdDetails.getColumnmaps().get("Patient_Identifier");
-                householdDetails.getColumnmaps().put("relational_id", householdDetails.getCaseId());
-                if (patient_identifier == null || (patient_identifier != null && patient_identifier.isEmpty()) || patient_identifier.equalsIgnoreCase("null")) {
+                String ctype = (String) view.getTag(R.id.typeofclientformemberprofile);
+                String baseEntityId = (String) view.getTag(R.id.baseentityid);
+                CommonPersonObjectClient personObjectClient = setUpMemberDetails(ctype,baseEntityId);
+                String patient_identifier = personObjectClient.getColumnmaps().get("Patient_Identifier");
+                personObjectClient.getColumnmaps().put("relational_id", householdDetails.getCaseId());
+                if (patient_identifier == null || patient_identifier.isEmpty() || patient_identifier.equalsIgnoreCase("null")) {
                     Long unUsedIds = getHealthIdRepository().countUnUsedIds();
                     if (unUsedIds > 0l) {
-                        householdDetails.getColumnmaps().put("Patient_Identifier", Utils.DEFAULT_IDENTIFIER);
-                        launchFormEdit(householdDetails);
+                        personObjectClient.getColumnmaps().put("Patient_Identifier", Utils.DEFAULT_IDENTIFIER);
+                        launchFormEdit(personObjectClient);
                     } else {
                         displayShortToast(R.string.no_openmrs_id);
                     }
                 } else {
-                    launchFormEdit(householdDetails);
+                    launchFormEdit(personObjectClient);
                 }
 
 
@@ -618,7 +624,12 @@ public class ProfileActivity extends BaseProfileActivity implements ProfileContr
 
     @Override
     public void onResume() {
-        super.onResume();
+        try{
+            super.onResume();
+        }catch (Exception e){
+
+        }
+
 //        String baseEntityId = getIntent().getStringExtra(Constants.INTENT_KEY.BASE_ENTITY_ID);
 //        mProfilePresenter.refreshProfileView(baseEntityId);
     }
