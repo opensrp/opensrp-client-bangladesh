@@ -39,6 +39,7 @@ import org.smartregister.cbhc.adapter.ViewPagerAdapter;
 import org.smartregister.cbhc.application.AncApplication;
 import org.smartregister.cbhc.contract.ProfileContract;
 import org.smartregister.cbhc.domain.UniqueId;
+import org.smartregister.cbhc.fragment.AncJsonFormFragment;
 import org.smartregister.cbhc.fragment.FollowupFragment;
 import org.smartregister.cbhc.fragment.MemberProfileContactsFragment;
 import org.smartregister.cbhc.fragment.ProfileTasksFragment;
@@ -209,8 +210,13 @@ public class MemberProfileActivity extends BaseProfileActivity implements Profil
         }
         ImageRepository imageRepo = CoreLibrary.getInstance().context().imageRepository();
         ProfileImage imageRecord = imageRepo.findByEntityId(householdDetails.entityId());
-        if (imageRecord != null)
+        if (imageRecord != null){
+            AncJsonFormFragment.profile_image = imageRecord.getFilepath();
             ImageLoaderByGlide.setImageAsTarget(imageRecord.getFilepath(), imageView, 0);
+
+        }else{
+            AncJsonFormFragment.profile_image ="";
+        }
         setProfileAge(durationString);
         setProfileID(getValue(householdDetails.getColumnmaps(), "Patient_Identifier", true));
         gestationAgeView.setVisibility(View.GONE);

@@ -92,6 +92,8 @@ public class AncJsonFormFragment extends JsonFormFragment {
     public static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("dd-MM-yyyy", Locale.ENGLISH);
     public static String lookuptype = "";
     public static Drawable default_drawable;
+    public static String profile_image;
+    public static String hh_profile_image;
     AncJsonFormActivity activity;
     JsonFormFragmentPresenter presenter;
     boolean permanentAddressFound = false;
@@ -337,6 +339,7 @@ public class AncJsonFormFragment extends JsonFormFragment {
             try {
 
                 ImageView image = dialogLayout.findViewById(R.id.goProDialogImage);
+                Log.v("IMAGE_TEST","goProDialogImage>>"+presenter.getmCurrentPhotoPath());
                 Bitmap myBitmap = ImageUtils
                         .loadBitmapFromFile(getView().getContext(), presenter.getmCurrentPhotoPath(),
                                 ImageUtils.getDeviceWidth(getView().getContext()),
@@ -677,11 +680,29 @@ public class AncJsonFormFragment extends JsonFormFragment {
             if (((MaterialSpinner) parent).getFloatingLabelText().toString().equalsIgnoreCase("লিঙ্গ")) {
                 processHeadOfHouseHoldRelation(position);
             }
-//                if (((MaterialSpinner) parent).getFloatingLabelText().toString().equalsIgnoreCase("স্থায়ী ঠিকানা কি একই")) {
-//                    processPermanentAddressField(position);
-//                }
+            if (((MaterialSpinner) parent).getFloatingLabelText().toString().equalsIgnoreCase("স্থায়ী ঠিকানা কি একই")) {
+                    if(!isPressed)processHHProfileImage();
+            }
         }
 //        processTimeField(0);
+    }
+    public void processHHProfileImage() {
+        ArrayList<View> formdataviews = getJsonApi().getFormDataViews();
+        for (int i = 0; i < formdataviews.size(); i++) {
+            if (formdataviews.get(i) instanceof ImageView && !TextUtils.isEmpty(hh_profile_image)) {
+                try {
+                    ImageView imageView = (ImageView) formdataviews.get(i);
+                    File image = new File(hh_profile_image);
+                    BitmapFactory.Options bmOptions = new BitmapFactory.Options();
+                    Bitmap bitmap = BitmapFactory.decodeFile(image.getAbsolutePath(), bmOptions);
+                    updateRelevantImageView(bitmap, hh_profile_image, (String) imageView.getTag(com.vijay.jsonwizard.R.id.key));
+
+                } catch (Exception e) {
+                    org.smartregister.cbhc.util.Utils.appendLog(getClass().getName(), e);
+
+                }
+            }
+        }
     }
 
     public void processTimeField(final int position) {
@@ -824,7 +845,7 @@ public class AncJsonFormFragment extends JsonFormFragment {
     }
 
     private void processHeadOfHouseHoldAsMember(final int position) {
-        if (position == 0 || position == 1 || position == 2) {
+        if (position == 0 ) {
             Utils.startAsyncTask(new AsyncTask() {
                 ProfileImage imageRecord;
                 String headOfHouseholdFirstName = "";
@@ -853,7 +874,6 @@ public class AncJsonFormFragment extends JsonFormFragment {
                                     headOfHouseholdDOBUnknown = getValue(household.getColumnmaps(), "dob_unknown", false);
                                     ImageRepository imageRepo = CoreLibrary.getInstance().context().imageRepository();
                                     imageRecord = imageRepo.findByEntityId(relational_id);
-                                    Log.v("IMAGE_TEST","imageRecord>>"+imageRecord.getFilepath()+":relational_id"+relational_id);
                                 }
                             }
                         } catch (JSONException e) {
@@ -884,23 +904,9 @@ public class AncJsonFormFragment extends JsonFormFragment {
                                     if(StringUtils.isEmpty(getValueForKey("contact_phone_number_by_age")))
                                         ((MaterialEditText) formdataviews.get(i)).setText(headOfHouseholdMobileNumber);
                                 }
-//                            if (((MaterialEditText) formdataviews.get(i)).getFloatingLabelText().toString().trim().equalsIgnoreCase("‘হ্যাঁ’ হলে জন্ম তারিখ")) {
-//                                Date dob = org.smartregister.cbhc.util.Utils.dobStringToDate(headOfHouseholdDOB);
-//                                headOfHouseholdDOB = DATE_FORMAT.format(dob);
-//                                ((MaterialEditText) formdataviews.get(i)).setText(headOfHouseholdDOB);
-//                            }
+
                             }
-//                        if (formdataviews.get(i) instanceof MaterialSpinner) {
-//                            if (((MaterialSpinner) formdataviews.get(i)).getFloatingLabelText().toString().trim().equalsIgnoreCase("জন্ম তারিখ জানা আছে কি?")) {
-//                                if(headOfHouseholdDOBUnknown.equalsIgnoreCase("true")){
-//                                    ((MaterialSpinner) formdataviews.get(i)).setSelection(0);
-//                                }else{
-//                                    ((MaterialSpinner) formdataviews.get(i)).setSelection(1);
-//                                }
-//                            }
-//
-//                        }
-                            if (formdataviews.get(i) instanceof ImageView) {
+                            if (formdataviews.get(i) instanceof ImageView && imageRecord!=null) {
                                 try {
                                     ImageView imageView = (ImageView) formdataviews.get(i);
                                     String filePath = imageRecord.getFilepath();
@@ -927,41 +933,48 @@ public class AncJsonFormFragment extends JsonFormFragment {
 
             }, null);
         }
+        Log.v("IMAGE_TEST","position>>"+position+":isPressed"+isPressed);
 
-        if (position > 0 && isPressed) {
+        if (position > 0) {
             ArrayList<View> formdataviews = getJsonApi().getFormDataViews();
 
 
             for (int i = 0; i < formdataviews.size(); i++) {
                 if (formdataviews.get(i) instanceof MaterialEditText) {
+                    if(isPressed){
+                        if (((MaterialEditText) formdataviews.get(i)).getFloatingLabelText().toString().trim().equalsIgnoreCase("নামের প্রথম অংশ (ইংরেজীতে)")) {
+                            ((MaterialEditText) formdataviews.get(i)).setText("");
+                        }
 
-                    if (((MaterialEditText) formdataviews.get(i)).getFloatingLabelText().toString().trim().equalsIgnoreCase("নামের প্রথম অংশ (ইংরেজীতে)")) {
-                        ((MaterialEditText) formdataviews.get(i)).setText("");
+                        if (((MaterialEditText) formdataviews.get(i)).getFloatingLabelText().toString().trim().equalsIgnoreCase("নামের শেষ অংশ (ইংরেজীতে)")) {
+                            ((MaterialEditText) formdataviews.get(i)).setText("");
+                        }
+
+                        if (((MaterialEditText) formdataviews.get(i)).getFloatingLabelText().toString().trim().equalsIgnoreCase("মোবাইল নম্বর (ইংরেজীতে)")) {
+                            ((MaterialEditText) formdataviews.get(i)).setText("");
+                        }
                     }
 
-                    if (((MaterialEditText) formdataviews.get(i)).getFloatingLabelText().toString().trim().equalsIgnoreCase("নামের শেষ অংশ (ইংরেজীতে)")) {
-                        ((MaterialEditText) formdataviews.get(i)).setText("");
-                    }
 
-                    if (((MaterialEditText) formdataviews.get(i)).getFloatingLabelText().toString().trim().equalsIgnoreCase("মোবাইল নম্বর (ইংরেজীতে)")) {
-                        ((MaterialEditText) formdataviews.get(i)).setText("");
-                    }
 
                 }
                 if (formdataviews.get(i) instanceof ImageView) {
                     try {
                         ImageView imageView = (ImageView) formdataviews.get(i);
-                        String filePath = "";
+                        if(default_drawable==null){
+                            if(!TextUtils.isEmpty(profile_image)){
+                                File image = new File(profile_image);
+                                BitmapFactory.Options bmOptions = new BitmapFactory.Options();
+                                Bitmap bitmap = BitmapFactory.decodeFile(image.getAbsolutePath(), bmOptions);
+                                updateRelevantImageView(bitmap, profile_image, (String) imageView.getTag(com.vijay.jsonwizard.R.id.key));
 
-//                            File sd = Environment.getExternalStorageDirectory();
-//
-//                            File image = new File(filePath);
-//                            BitmapFactory.Options bmOptions = new BitmapFactory.Options();
-//                            Bitmap bitmap = BitmapFactory.decodeFile(image.getAbsolutePath(), bmOptions);
-//                            bitmap = Bitmap.createScaledBitmap(bitmap,imageView.getWidth(),imageView.getHeight(),true);
+                            }
 
-                        updateRelevantImageView(drawableToBitmap(default_drawable), "", (String) imageView.getTag(com.vijay.jsonwizard.R.id.key));
 
+                        }else{
+                            updateRelevantImageView(drawableToBitmap(default_drawable), "", (String) imageView.getTag(com.vijay.jsonwizard.R.id.key));
+
+                        }
                     } catch (Exception e) {
                         org.smartregister.cbhc.util.Utils.appendLog(getClass().getName(), e);
 

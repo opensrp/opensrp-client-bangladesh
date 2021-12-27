@@ -39,6 +39,7 @@ import org.smartregister.cbhc.contract.ProfileContract;
 import org.smartregister.cbhc.contract.RegisterContract;
 import org.smartregister.cbhc.domain.AttentionFlag;
 import org.smartregister.cbhc.domain.UniqueId;
+import org.smartregister.cbhc.fragment.AncJsonFormFragment;
 import org.smartregister.cbhc.fragment.ProfileContactsFragment;
 import org.smartregister.cbhc.fragment.ProfileOverviewFragment;
 import org.smartregister.cbhc.fragment.ProfileTasksFragment;
@@ -245,8 +246,15 @@ public class ProfileActivity extends BaseProfileActivity implements ProfileContr
     @Override
     public void onClick(View view) {
         switch (view.getId()) {
-            case R.id.btn_profile_registration_info:
+            case R.id.btn_profile_registration_info:{
                 householdDetails = setUpMemberDetails("household",householdDetails.entityId());
+                ImageRepository imageRepo = CoreLibrary.getInstance().context().imageRepository();
+                ProfileImage imageRecord = imageRepo.findByEntityId(householdDetails.entityId());
+                if(imageRecord!=null){
+                    AncJsonFormFragment.hh_profile_image = imageRecord.getFilepath();
+                }else {
+                    AncJsonFormFragment.hh_profile_image = "";
+                }
 //                householdDetails.getColumnmaps().putAll(AncApplication.getInstance().getContext().detailsRepository().getAllDetailsForClient(householdDetails.entityId()));
                 patient_identifier = householdDetails.getColumnmaps().get("Patient_Identifier");
 
@@ -268,10 +276,21 @@ public class ProfileActivity extends BaseProfileActivity implements ProfileContr
                     Utils.appendLog(getClass().getName(), e);
 
                 }
+            }
+
                 break;
             case R.id.edit_member:
+            {
                 String ctype = (String) view.getTag(R.id.typeofclientformemberprofile);
                 String baseEntityId = (String) view.getTag(R.id.baseentityid);
+                ImageRepository imageRepo = CoreLibrary.getInstance().context().imageRepository();
+                ProfileImage imageRecord = imageRepo.findByEntityId(baseEntityId);
+                if(imageRecord!=null){
+                    AncJsonFormFragment.profile_image = imageRecord.getFilepath();
+                }else {
+                    AncJsonFormFragment.profile_image = "";
+                }
+
                 CommonPersonObjectClient personObjectClient = setUpMemberDetails(ctype,baseEntityId);
                 String patient_identifier = personObjectClient.getColumnmaps().get("Patient_Identifier");
                 personObjectClient.getColumnmaps().put("relational_id", householdDetails.getCaseId());
@@ -286,6 +305,8 @@ public class ProfileActivity extends BaseProfileActivity implements ProfileContr
                 } else {
                     launchFormEdit(personObjectClient);
                 }
+            }
+
 
 
                 break;
