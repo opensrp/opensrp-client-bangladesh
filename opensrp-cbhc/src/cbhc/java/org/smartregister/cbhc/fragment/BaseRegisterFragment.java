@@ -279,18 +279,25 @@ public abstract class BaseRegisterFragment extends RecyclerViewFragment implemen
                 }
                 Log.v("HouseHold_List: ", String.valueOf(hhJsonArrayList));
                 Log.v("Member_List: ", String.valueOf(mmJsonArrayList));
-                if (appInstalledOrNot(Constants.CMED_KEY.PACKAGE_NAME)) {
+               // if (appInstalledOrNot(Constants.CMED_KEY.PACKAGE_NAME)) {
 
-                    Intent intent = Utils.passToMHVAPP(hhJsonArrayList, mmJsonArrayList, getActivity());
-                    startActivityForResult(intent, CMED_REQUEST_CODE);
-                    UnSendDataRepository unSendDataRepository = new UnSendDataRepository(AncApplication.getInstance().getRepository());
-                    boolean isUpdated = unSendDataRepository.updateSendingStatus() == 1;
-                    Toast.makeText(getActivity(), "Successfully send to MHV app, is updated:" + isUpdated, Toast.LENGTH_SHORT).show();
+                   try{
+                       Intent intent = Utils.passToMHVAPP(hhJsonArrayList, mmJsonArrayList, getActivity());
+                       startActivityForResult(intent, CMED_REQUEST_CODE);
+                       UnSendDataRepository unSendDataRepository = new UnSendDataRepository(AncApplication.getInstance().getRepository());
+                       boolean isUpdated = unSendDataRepository.updateSendingStatus() == 1;
+                       Toast.makeText(getActivity(), "Successfully send to MHV app, is updated:" + isUpdated, Toast.LENGTH_SHORT).show();
 
 
-                } else {
-                    Toast.makeText(getContext(), "Application not installed", Toast.LENGTH_SHORT).show();
-                }
+                   }catch (Exception e)
+                   {
+                      Toast.makeText(getContext(), "Application not installed", Toast.LENGTH_SHORT).show();
+
+                   }
+
+//                } else {
+//                    Toast.makeText(getContext(), "Application not installed", Toast.LENGTH_SHORT).show();
+//                }
 
             }
         }, null);

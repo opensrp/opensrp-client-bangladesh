@@ -481,16 +481,21 @@ public class MemberProfileActivity extends BaseProfileActivity implements Profil
                 Log.v("ref: ", String.valueOf(jsonObject));
                 Log.v("HouseHold_List: ", String.valueOf(hhJsonArrayList));
                 Log.v("Member_List: ", String.valueOf(mmJsonArrayList));
-                if(appInstalledOrNot(Constants.CMED_KEY.PACKAGE_NAME)) {
+                //if(appInstalledOrNot(Constants.CMED_KEY.PACKAGE_NAME)) {
 
+                    try{
+                        Intent intent = Utils.passMemberFromReferlToMHVAPp(jsonObject,hhJsonArrayList,mmJsonArrayList,MemberProfileActivity.this);
+                        startActivityForResult(intent, MemberObject.type2_RESULT_CODE);
+                    }catch (Exception e){
+                        Toast.makeText(MemberProfileActivity.this, "Application not installed", Toast.LENGTH_SHORT).show();
 
-                    Intent intent = Utils.passMemberFromReferlToMHVAPp(jsonObject,hhJsonArrayList,mmJsonArrayList,MemberProfileActivity.this);
-                    startActivityForResult(intent, MemberObject.type2_RESULT_CODE);
+                    }
+
 
 //                    Toast.makeText(MemberProfileActivity.this,"data:"+jsonObject,Toast.LENGTH_LONG).show();
-                }else{
-                    Toast.makeText(MemberProfileActivity.this, "Application not installed", Toast.LENGTH_SHORT).show();
-                }
+//                }else{
+//                    Toast.makeText(MemberProfileActivity.this, "Application not installed", Toast.LENGTH_SHORT).show();
+//                }
 
             }
         },null);
