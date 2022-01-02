@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.support.v7.widget.LinearLayoutManager;
+import android.util.Log;
 
 import net.sqlcipher.database.SQLiteDatabase;
 
@@ -33,6 +34,7 @@ public class ChildListModel implements ChildListContract.Model {
 
     @Override
     public void fetchChildList(String query) {
+        Log.v("CHILD_LIST","query:"+query);
         childItemDataArrayList.clear();
         SQLiteDatabase sqLiteDatabase = AncApplication.getInstance().getRepository().getWritableDatabase();
         Cursor cursor = sqLiteDatabase.rawQuery( query, null);

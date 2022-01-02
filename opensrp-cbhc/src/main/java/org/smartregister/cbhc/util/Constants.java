@@ -3,7 +3,9 @@ package org.smartregister.cbhc.util;
 import org.smartregister.cbhc.BuildConfig;
 
 import java.lang.reflect.Array;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 
 /**
  * Created by ndegwamartin on 14/03/2018.
@@ -35,6 +37,9 @@ public abstract class Constants {
         public static final String LOGIN = "login";
         public static final String HOME_REGISTER = "home_register";
     }
+    public static final SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+    public static final String FIVE_YEAR = format.format( new Date(new Date().getTime()-5*12*30*24*60*60*1000L));
+    public static final String TWO_MONTHS = format.format( new Date(new Date().getTime()-2*32*24*60*60*1000L));
 
 
     public static final class EventType {

@@ -1,5 +1,8 @@
 package org.smartregister.cbhc.fragment;
 
+import static org.smartregister.cbhc.util.Constants.FIVE_YEAR;
+import static org.smartregister.cbhc.util.Constants.TWO_MONTHS;
+
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.database.Cursor;
@@ -54,9 +57,9 @@ public class ChildListFragment extends Fragment implements ChildListContract.Vie
     private boolean fromFilter=false;
     ChildListPresenter presenter;
     //TODO need to remove this query
-    private String selectQuery = "Select child.id as _id , child.relationalid , child.Patient_Identifier, child.first_name , child.last_name , child.dob ,child.gender, child.PregnancyStatus, child.tasks, child.relation_with_household as relation, child.age as age, NULL as MaritalStatus, child.camp_type, " +
+    private final String selectQuery = "Select child.id as _id , child.relationalid , child.Patient_Identifier, child.first_name , child.last_name , child.dob ,child.gender, child.PregnancyStatus, child.tasks, child.relation_with_household as relation, child.age as age, NULL as MaritalStatus, child.camp_type, " +
             "child.child_weight,child.child_height,child.child_muac,child.muac_status,child.weight_status,child.height_status,child.last_vaccine_date,child.last_vaccine_name " +
-            "FROM ec_child as child";
+            "FROM ec_child as child where child.dob > DATE('"+FIVE_YEAR+"')";
     //private Childl
 
     public ChildListFragment() {
@@ -160,9 +163,6 @@ public class ChildListFragment extends Fragment implements ChildListContract.Vie
     public void filter(List<Field> filterList, Field sortField, String selectedType) {
         String selectedTypeTemp="";
         fromFilter = true;
-        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
-        String TWO_MONTHS = format.format( new Date(new Date().getTime()-2l*32l*24l*60l*60l*1000l));
-        String FIVE_YEAR = format.format( new Date(new Date().getTime()-5l*12l*30l*24l*60l*60l*1000l));
 
 
         if(selectedType.isEmpty())selectedTypeTemp = "";
@@ -174,15 +174,15 @@ public class ChildListFragment extends Fragment implements ChildListContract.Vie
 
         if(!filterList.isEmpty()){
             if(filterList.get(0).getDbAlias().equals("infant")){
-                presenter.fetchChildList(selectQuery+" where child.dob > DATE('"+TWO_MONTHS+"')"+selectedTypeTemp+sortQuery);
+                presenter.fetchChildList(selectQuery+" and child.dob > DATE('"+TWO_MONTHS+"')"+selectedTypeTemp+sortQuery);
                 fragmentManager.popBackStack();
             }else if(filterList.get(0).getDbAlias().equals("toddler")){
-                presenter.fetchChildList(selectQuery+" where child.dob < DATE('"+TWO_MONTHS+"') and child.dob > DATE('"+FIVE_YEAR+"')"+selectedTypeTemp+sortQuery);
+                presenter.fetchChildList(selectQuery+" and child.dob < DATE('"+TWO_MONTHS+"') and child.dob > DATE('"+FIVE_YEAR+"')"+selectedTypeTemp+sortQuery);
                 fragmentManager.popBackStack();
             }
         }else{
             if(!selectedType.isEmpty()){
-                presenter.fetchChildList(selectQuery+" where child.camp_type = '"+selectedType+"'"+sortQuery);
+                presenter.fetchChildList(selectQuery+" and child.camp_type = '"+selectedType+"'"+sortQuery);
             }else{
                 presenter.fetchChildList(selectQuery+sortQuery);
             }
