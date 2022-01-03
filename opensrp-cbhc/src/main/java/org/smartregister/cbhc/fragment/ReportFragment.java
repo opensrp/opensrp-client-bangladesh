@@ -19,6 +19,7 @@ import org.smartregister.cbhc.domain.ChildData;
 import org.smartregister.cbhc.domain.ReportData;
 import org.smartregister.cbhc.util.GrowthUtil;
 import org.smartregister.commonregistry.CommonRepository;
+import org.smartregister.growthmonitoring.domain.ZScore;
 import org.smartregister.repository.DetailsRepository;
 
 import java.text.DecimalFormat;
@@ -39,6 +40,9 @@ public class ReportFragment extends Fragment {
     private int overWeightChild=0;
     private int severlyStunted=0;
     private int underWeightChild=0;
+    private int muacMeasureChild=0;
+    private int weightMeasureChild=0;
+    private int heightMeasureChild=0;
 
     public ReportFragment() {
         commonRepository = AncApplication.getInstance().getContext().commonrepository("ec_child");
@@ -103,40 +107,53 @@ public class ReportFragment extends Fragment {
                gmpChildren++;
             }
 
-            if(childData.getChild_status().equalsIgnoreCase("sam")){
-                samChild++;
-            }else if(childData.getChild_status().equalsIgnoreCase("mam")){
-                mamChild++;
-            }else if(childData.getChild_status().equalsIgnoreCase("normal")){
+            if(!childData.getChild_muac().equalsIgnoreCase("0")) {
+                String status = ZScore.getMuacText(Double.parseDouble(childData.getChild_muac()));
+                if (status.equalsIgnoreCase("sam")) {
+                    samChild++;
+                } else if (status.equalsIgnoreCase("mam")) {
+                    mamChild++;
+                }
+            }
+
+            if(childData.getChild_status().equalsIgnoreCase("normal")){
                 normalChild++;
             }
 
             if(childData.getHas_edema().equals("true")){
                 edemaChild++;
             }
-
-            if(getZScoreText(Double.valueOf(childData.getChild_weight())).equalsIgnoreCase("OVER WEIGHT")){
+            if(!childData.getChild_muac().equalsIgnoreCase("0")){
+                muacMeasureChild++;
+            }
+            if(!childData.getChild_weight().equalsIgnoreCase("0")){
+                weightMeasureChild++;
+            }
+            if(!childData.getChild_height().equalsIgnoreCase("0")){
+                heightMeasureChild++;
+            }
+            if(getZScoreText(Double.parseDouble(childData.getChild_weight())).equalsIgnoreCase("OVER WEIGHT")){
                 overWeightChild++;
             }
 
-            if(getZScoreText(Double.valueOf(childData.getChild_height())).equalsIgnoreCase("DARK YELLOW")){
+            if(getZScoreText(Double.parseDouble(childData.getChild_height())).equalsIgnoreCase("DARK YELLOW")){
                 severlyStunted++;
             }
 
-            if(getZScoreText(Double.valueOf(childData.getChild_weight())).equalsIgnoreCase("DARK YELLOW")){
+            if(getZScoreText(Double.parseDouble(childData.getChild_weight())).equalsIgnoreCase("DARK YELLOW")){
                 underWeightChild++;
             }
         }
         DecimalFormat decimalFormat = new DecimalFormat("##.#");
         reportDataList.add(new ReportData(decimalFormat.format((gmpChildren*100.0)/totalChild).replace("NaN","0"),"% of children reaching for GMP",R.color.black));
         reportDataList.add(new ReportData(decimalFormat.format((normalChild*100.0)/gmpChildren).replace("NaN","0"),"% of children who have normal growth",R.color.green));
-        reportDataList.add(new ReportData(decimalFormat.format((samChild*100.0)/gmpChildren).replace("NaN","0"),"% of children who are SAM",R.color.red));
-        reportDataList.add(new ReportData(decimalFormat.format((mamChild*100.0)/gmpChildren).replace("NaN","0"),"% of children who are MAM",R.color.yellow));
-        reportDataList.add(new ReportData(decimalFormat.format((edemaChild*100.0)/gmpChildren).replace("NaN","0"),"% of children who have Edema",R.color.black));
+        reportDataList.add(new ReportData(decimalFormat.format((samChild*100.0)/muacMeasureChild).replace("NaN","0"),"% of children who are SAM",R.color.red));
+        reportDataList.add(new ReportData(decimalFormat.format((mamChild*100.0)/muacMeasureChild).replace("NaN","0"),"% of children who are MAM",R.color.yellow));
+        reportDataList.add(new ReportData(decimalFormat.format((edemaChild*100.0)/muacMeasureChild).replace("NaN","0"),"% of children who have Edema",R.color.black));
 
-        reportDataList.add(new ReportData(decimalFormat.format((overWeightChild*100.0)/gmpChildren).replace("NaN","0"),"% of children who are overweight",R.color.red));
-        reportDataList.add(new ReportData(decimalFormat.format((underWeightChild*100.0)/gmpChildren).replace("NaN","0"),"% of children who are Severly Underweight",R.color.black));
-        reportDataList.add(new ReportData(decimalFormat.format((severlyStunted*100.0)/gmpChildren).replace("NaN","0"),"% of children who are Severly Stunted",R.color.black));
+        reportDataList.add(new ReportData(decimalFormat.format((overWeightChild*100.0)/weightMeasureChild).replace("NaN","0"),"% of children who are overweight",R.color.red));
+        reportDataList.add(new ReportData(decimalFormat.format((underWeightChild*100.0)/weightMeasureChild).replace("NaN","0"),"% of children who are Severly Underweight",R.color.black));
+        reportDataList.add(new ReportData(decimalFormat.format((severlyStunted*100.0)/heightMeasureChild).replace("NaN","0"),"% of children who are Severly Stunted",R.color.black));
 
         reportRv.setAdapter(new ReportRecyclerViewAdapter(getActivity(),reportDataList));
     }

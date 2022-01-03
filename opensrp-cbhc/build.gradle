@@ -137,16 +137,16 @@ android {
     productFlavors {
         gmp {
             applicationId 'org.smartregister'
-            versionCode 5
-            versionName "1.1.5"
+            versionCode 6
+            versionName "1.1.6"
             dimension "baseDimension"
             applicationIdSuffix ".gmp"
             versionNameSuffix ""
         }
         jica {
             applicationId 'org.smartregister'
-            versionCode 5
-            versionName "1.1.1"
+            versionCode 6
+            versionName "1.1.2"
             dimension "baseDimension"
             applicationIdSuffix ".jica"
             versionNameSuffix ""
