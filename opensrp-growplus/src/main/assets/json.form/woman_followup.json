@@ -71,7 +71,7 @@
         "openmrs_entity_id": "",
         "openmrs_data_type": "text",
         "type": "date_picker",
-        "hint": "ভিজিট তারিখ",
+        "hint": "ভিজিট তারিখ *",
         "v_required": {
           "value": true,
           "err": "দয়া করে তারিখ লিখুন"
@@ -118,7 +118,7 @@
         "openmrs_entity_id": "date_of_delivery",
         "openmrs_data_type": "text",
         "type": "date_picker",
-        "hint": "প্রসবের তারিখ",
+        "hint": "প্রসবের তারিখ *",
         "v_required": {
           "value": true,
           "err": "দয়া করে তারিখ লিখুন"
@@ -162,7 +162,7 @@
         "openmrs_entity_id": "edd_lmp",
         "openmrs_data_type": "text",
         "type": "spinner",
-        "hint": "যদি হ্যাঁ হয়, আপনি কি আপনার এলএমপি, ইডিডি বা আল্ট্রাসাউন্ড তথ্য জানেন?",
+        "hint": "আপনি কি আপনার এলএমপি, ইডিডি বা আল্ট্রাসাউন্ড তথ্য জানেন?",
         "values":[
           "শেষ মাসিকের তারিখ (LMP)",
           "সন্তান প্রসবের সম্ভাব্য (EDD) তারিখ",
@@ -187,7 +187,7 @@
         "openmrs_entity_id": "lmp",
         "openmrs_data_type": "text",
         "type": "date_picker",
-        "hint": "শেষ মাসিকের তারিখ (LMP)",
+        "hint": "শেষ মাসিকের তারিখ (LMP) *",
         "v_required": {
           "value": true,
           "err": "দয়া করে শেষ মাসিকের তারিখ (LMP) তারিখ লিখুন"
@@ -207,7 +207,7 @@
         "openmrs_entity_id": "edd",
         "openmrs_data_type": "text",
         "type": "date_picker",
-        "hint": "সন্তান প্রসবের সম্ভাব্য (EDD) তারিখ",
+        "hint": "সন্তান প্রসবের সম্ভাব্য (EDD) তারিখ *",
         "v_required": {
           "value": true,
           "err": "দয়া করে সন্তান প্রসবের সম্ভাব্য (EDD) তারিখ লিখুন"
@@ -226,7 +226,7 @@
         "openmrs_entity_id": "ultrasound_date",
         "openmrs_data_type": "text",
         "type": "date_picker",
-        "hint": "আল্ট্রাসাউন্ড তারিখ",
+        "hint": "আল্ট্রাসাউন্ড তারিখ *",
         "v_required": {
           "value": true,
           "err": "দয়া করে আল্ট্রাসাউন্ড তারিখ লিখুন"
@@ -245,7 +245,7 @@
         "openmrs_entity_id": "ultrasound_weeks",
         "openmrs_data_type": "text",
         "type": "edit_text",
-        "hint": "আল্ট্রা সাউন্ড দ্বারা গর্ভাবস্থা সপ্তাহ",
+        "hint": "আল্ট্রা সাউন্ড দ্বারা গর্ভাবস্থা সপ্তাহ *",
         "v_required": {
           "value": true,
           "err": "আল্ট্রাসাউন্ড সপ্তাহ লিখুন"
@@ -308,7 +308,7 @@
         "openmrs_entity_id": "Date_Of_next_appointment",
         "openmrs_data_type": "text",
         "type": "date_picker",
-        "hint": "পরবর্তিতে ভিজিট করার তারিখ",
+        "hint": "পরবর্তিতে ভিজিট করার তারিখ *",
         "v_required": {
           "value": true,
           "err": "তারিখ লিখুন।"
@@ -408,7 +408,7 @@
         "openmrs_entity": "concept",
         "openmrs_entity_id": "ifa_tablets_given",
         "type": "edit_text",
-        "hint": "প্রদত্ত আইএফএ ট্যাবলেট সংখ্যা",
+        "hint": "প্রদত্ত আইএফএ ট্যাবলেট সংখ্যা *",
         "v_numeric": {
           "value": "true",
           "err": "একটি সঙ্গত সংখ্যা লিখুন।"
@@ -429,7 +429,7 @@
         "openmrs_entity": "concept",
         "openmrs_entity_id": "Vit_A_and_minerals_given",
         "type": "edit_text",
-        "hint": "প্রদত্ত ভিটামিন  মিনারেল সংখ্যা",
+        "hint": "প্রদত্ত ভিটামিন  মিনারেল সংখ্যা *",
         "v_numeric": {
           "value": "true",
           "err": "একটি সঙ্গত সংখ্যা লিখুন।"
@@ -445,13 +445,16 @@
         }
       },
       {
-        "key":"labelBackgroundImage",
         "openmrs_entity_parent": "",
         "openmrs_entity": "concept",
         "openmrs_entity_id": "labelBackgroundImage",
-        "type":"label",
-        "text":"নিকটবর্তী স্বাস্থ্য কেন্দ্র দেখুন"
+        "key": "labelBackgroundImage",
+        "type": "section_label",
+        "section_background": "#3797ca",
+        "text_size": "20px",
+        "label_text_style": "bold",
+        "name": "নিকটবর্তী স্বাস্থ্য কেন্দ্র দেখুন"
       }
-        ]
+    ]
   }
 }

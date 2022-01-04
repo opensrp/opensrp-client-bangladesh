@@ -153,7 +153,7 @@
         "openmrs_entity_id": "edd_lmp",
         "openmrs_data_type": "text",
         "type": "spinner",
-        "hint": "If Yes Do you know your EDD/ LMP/ UptraSound Date",
+        "hint": "Do you know your EDD/ LMP/ UptraSound Date",
         "values":[
           "LMP",
           "EDD",
@@ -173,7 +173,7 @@
         "openmrs_entity_id": "lmp",
         "openmrs_data_type": "text",
         "type": "date_picker",
-        "hint": "LMP Date",
+        "hint": "LMP Date *",
         "v_required": {
           "value": true,
           "err": "Please Enter LMP date"
@@ -193,7 +193,7 @@
         "openmrs_entity_id": "edd",
         "openmrs_data_type": "text",
         "type": "date_picker",
-        "hint": "EDD Date",
+        "hint": "EDD Date *",
         "v_required": {
           "value": true,
           "err": "Please Enter LMP date"
@@ -212,7 +212,7 @@
         "openmrs_entity_id": "ultrasound_date",
         "openmrs_data_type": "text",
         "type": "date_picker",
-        "hint": "UltraSound Date",
+        "hint": "UltraSound Date *",
         "v_required": {
           "value": true,
           "err": "Please Enter LMP date"
@@ -231,7 +231,7 @@
         "openmrs_entity_id": "ultrasound_weeks",
         "openmrs_data_type": "text",
         "type": "edit_text",
-        "hint": "UltraSound Weeks",
+        "hint": "UltraSound Weeks *",
         "v_required": {
           "value": true,
           "err": "Enter Ultrasound Weeks."
@@ -268,10 +268,11 @@
         "key": "Date_Of_next_appointment",
         "openmrs_entity_parent": "",
         "openmrs_entity": "concept",
-        "openmrs_entity_id": "Date_Of_next_appointment",
+        "openmrs_entity_id": "Date_Of_next_appointment *",
         "openmrs_data_type": "text",
         "type": "date_picker",
-        "hint": "Follow Up visit date",
+        "min_date": "today",
+        "hint": "Follow Up visit date *",
         "v_required": {
           "value": true,
           "err": "Please Enter date"
@@ -284,7 +285,7 @@
         "openmrs_entity_id": "mother_weight",
         "openmrs_data_type": "text",
         "type": "mother_weight",
-        "hint": "",
+        "hint": "Weight of mother",
         "v_min": {
           "value": "0.1",
           "err": "Weight must be greater than 0"
@@ -371,7 +372,7 @@
         "openmrs_entity": "concept",
         "openmrs_entity_id": "ifa_tablets_given",
         "type": "edit_text",
-        "hint": "No of IFA Tablets That Has been Given",
+        "hint": "No of IFA Tablets That Has been Given *",
         "v_numeric": {
           "value": "true",
           "err": "Enter a valid number"
@@ -393,7 +394,7 @@
         "openmrs_entity": "concept",
         "openmrs_entity_id": "Vit_A_and_minerals_given",
         "type": "edit_text",
-        "hint": "No of Vitamin Minerals That Has been Given",
+        "hint": "No of Vitamin Minerals That Has been Given *",
         "v_numeric": {
           "value": "true",
           "err": "Enter a valid number"
@@ -410,12 +411,15 @@
         }
       },
       {
-        "key":"labelBackgroundImage",
         "openmrs_entity_parent": "",
         "openmrs_entity": "concept",
         "openmrs_entity_id": "labelBackgroundImage",
-        "type":"label",
-        "text":"Please Refer Nearest Health center"
+        "key": "labelBackgroundImage",
+        "type": "section_label",
+        "section_background": "#3797ca",
+        "text_size": "20px",
+        "label_text_style": "bold",
+        "name": "Please Refer to Nearest Health center"
       }
     ]
   }

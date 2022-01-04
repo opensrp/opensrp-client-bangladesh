@@ -229,12 +229,7 @@ public class ChildImmunizationActivity extends BaseActivity
                 showChildFollowupDetail();
             }
         });
-
-        try {
-            showChildFollowupData();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        showChildFollowupData();
         initViews();
 
 
@@ -311,7 +306,7 @@ public class ChildImmunizationActivity extends BaseActivity
         // startActivity(intent);
     }
 
-    private void showChildFollowupData() throws Exception {
+    private void showChildFollowupData() {
         //Cursor c = db.rawQuery("SELECT Visit_date, is_pregnant, columnN FROM ec_followup;");
         SQLiteDatabase database = VaccinatorApplication.getInstance().getRepository().getReadableDatabase();
         Log.e(ChildImmunizationActivity.TAG, childDetails.entityId());
@@ -319,8 +314,7 @@ public class ChildImmunizationActivity extends BaseActivity
         // Cursor cursor =  database.rawQuery("SELECT * FROM ec_followup where base_entity_id = '" + childDetails.entityId()+"'", null);
         mChildFollowupKeys = cursor.getColumnNames();
         mChildFollowupData = new HashMap<>();
-
-        if (cursor != null) {
+        try{
             cursor.moveToFirst();
             int i;
             for (i = 0; i < mChildFollowupKeys.length - 1; i++) {
@@ -328,20 +322,22 @@ public class ChildImmunizationActivity extends BaseActivity
                 String value = cursor.getString(cursor.getColumnIndex(key));
                 Log.e(ChildImmunizationActivity.class.getSimpleName(), key + ": " + value);
                 mChildFollowupData.put(key, value);
-                //String DestinationDB = cursor.getString(cursor.getColumnIndex("Name"));
 
             }
+        }catch (Exception e){
+            e.printStackTrace();
         }
-//
+        finally {
+            if(cursor!=null) cursor.close();
+        }
 
-//        Map<String,String> detailmaps = childDetails.getColumnmaps();
-//        detailmaps.putAll(childDetails.getDetails());
-
-        String visitDate = cursor.getString(cursor.getColumnIndex("Visit_date"));
-        //   String visitDate = detailmaps.get("Visit_date");
-        cursor.close();
-
-        ((TextView) findViewById(R.id.child_visit_date)).setText(visitDate);
+        if(mChildFollowupData!=null && mChildFollowupData.size()>0){
+            String visitDate = mChildFollowupData.get("Visit_date");
+            ((TextView) findViewById(R.id.child_visit_date)).setText(visitDate);
+            findViewById(R.id.relativeLayout1).setVisibility(View.VISIBLE);
+        }else{
+            findViewById(R.id.relativeLayout1).setVisibility(View.GONE);
+        }
     }
 
     @Override
@@ -373,11 +369,8 @@ public class ChildImmunizationActivity extends BaseActivity
         serviceGroupCanvasLL.removeAllViews();
 
         updateViews();
-        try {
-            showChildFollowupData();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        showChildFollowupData();
+
     }
 
     @Override

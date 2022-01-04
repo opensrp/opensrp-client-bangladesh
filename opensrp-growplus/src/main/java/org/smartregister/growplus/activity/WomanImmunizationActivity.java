@@ -260,29 +260,32 @@ public class WomanImmunizationActivity extends BaseActivity
         // Cursor cursor =  database.rawQuery("SELECT * FROM ec_followup where base_entity_id = '" + childDetails.entityId()+"'", null);
         mWomenFollowupKeys = cursor.getColumnNames();
         mWomenFollowupData = new HashMap<>();
+        try{
+                cursor.moveToFirst();
+                int i;
+                for (i = 0; i < mWomenFollowupKeys.length - 1; i++) {
+                    String key = mWomenFollowupKeys[i];
+                    String value = cursor.getString(cursor.getColumnIndex(key));
+                    Log.e(WomanImmunizationActivity.class.getSimpleName(), key + ": " + value);
+                    mWomenFollowupData.put(key, value);
+                    //String DestinationDB = cursor.getString(cursor.getColumnIndex("Name"));
 
-        if (cursor != null) {
-            cursor.moveToFirst();
-            int i;
-            for (i = 0; i < mWomenFollowupKeys.length - 1; i++) {
-                String key = mWomenFollowupKeys[i];
-                String value = cursor.getString(cursor.getColumnIndex(key));
-                Log.e(WomanImmunizationActivity.class.getSimpleName(), key + ": " + value);
-                mWomenFollowupData.put(key, value);
-                //String DestinationDB = cursor.getString(cursor.getColumnIndex("Name"));
+                }
 
-            }
+        }catch (Exception e){
+            e.printStackTrace();
         }
-//
+        finally {
+            if(cursor!=null) cursor.close();
+        }
+        if(mWomenFollowupData!=null && mWomenFollowupData.size()>0){
+            String visitDate = mWomenFollowupData.get("Visit_date");
+            ((TextView) findViewById(R.id.child_visit_date)).setText(visitDate);
+            findViewById(R.id.relativeLayout1).setVisibility(View.VISIBLE);
+        }else{
+            findViewById(R.id.relativeLayout1).setVisibility(View.GONE);
+        }
 
-//        Map<String,String> detailmaps = childDetails.getColumnmaps();
-//        detailmaps.putAll(childDetails.getDetails());
-
-        String visitDate = cursor.getString(cursor.getColumnIndex("Visit_date"));
-        //   String visitDate = detailmaps.get("Visit_date");
-        cursor.close();
-
-        ((TextView)findViewById(R.id.visit_date)).setText(visitDate);
     }
 
 

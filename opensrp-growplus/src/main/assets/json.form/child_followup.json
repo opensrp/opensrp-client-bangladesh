@@ -61,7 +61,7 @@
         "openmrs_entity_id": "",
         "openmrs_data_type": "text",
         "type": "date_picker",
-        "hint": "ভিজিটের তারিখ",
+        "hint": "ভিজিটের তারিখ *",
         "v_required": {
           "value": true,
           "err": "তারিখ লিখুন"
@@ -91,7 +91,7 @@
         "openmrs_entity_id": "",
         "openmrs_data_type": "text",
         "type": "date_picker",
-        "hint": "পরবর্তিতে দেখা করার তারিখ",
+        "hint": "পরবর্তিতে দেখা করার তারিখ *",
         "v_required": {
           "value": true,
           "err": "তারিখ লিখুন"
@@ -170,7 +170,7 @@
         "openmrs_entity": "",
         "openmrs_entity_id": "",
         "type": "edit_text",
-        "hint": "ভিটামিন  মিনারেল সংখ্যা",
+        "hint": "ভিটামিন  মিনারেল সংখ্যা *",
         "v_numeric": {
           "value": "true",
           "err": "একটি সঙ্গত সংখ্যা লিখুন"
@@ -207,12 +207,15 @@
         }
       },
       {
-        "key":"labelBackgroundImage",
         "openmrs_entity_parent": "",
-        "openmrs_entity": "",
-        "openmrs_entity_id": "",
-        "type":"label",
-        "text":"নিকটবর্তী স্বাস্থ্য কেন্দ্র দেখুন"
+        "openmrs_entity": "concept",
+        "openmrs_entity_id": "labelBackgroundImage",
+        "key": "labelBackgroundImage",
+        "type": "section_label",
+        "section_background": "#3797ca",
+        "text_size": "20px",
+        "label_text_style": "bold",
+        "name": "নিকটবর্তী স্বাস্থ্য কেন্দ্র দেখুন"
       }
     ]
   }
