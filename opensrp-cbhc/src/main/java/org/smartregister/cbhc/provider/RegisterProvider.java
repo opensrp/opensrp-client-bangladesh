@@ -449,7 +449,7 @@ public class RegisterProvider implements RecyclerViewProvider<RegisterProvider.R
             }
             try {
                 cursor = AncApplication.getInstance().getContext().commonrepository("ec_child").rawCustomQueryForAdapter("Select Count(*) from ec_child where relational_id = '" + pc.getCaseId() + "'"
-                        + " and ec_child.id in (Select base_entity_id from ec_child gender = 'F') and date_removed IS NULL;"
+                        + " and ec_child.id in (Select base_entity_id from ec_child where gender = 'F') and date_removed IS NULL;"
                 );
                 cursor.moveToFirst();
                 femalechild = femalechild + Integer.parseInt(cursor.getString(0));
