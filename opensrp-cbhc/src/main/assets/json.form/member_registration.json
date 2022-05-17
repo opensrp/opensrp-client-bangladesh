@@ -760,7 +760,7 @@
         "openmrs_data_type": "text",
         "type": "edit_text",
         "look_up": "true",
-        "hint": "জন্মস্থান (জেলা)",
+        "hint": "জন্মস্থান (জেলা)(ইংরেজিতে লিখুন)",
         "v_regex": {
           "value": "[A-Za-z0-9,() ]*",
           "err": "Please select from the list"

@@ -76,7 +76,7 @@
         "openmrs_entity_id": "ADDRESS_LINE",
         "openmrs_data_type": "text",
         "type": "edit_text",
-        "hint": "বর্তমান ঠিকানা",
+        "hint": "বর্তমান ঠিকানা গ্রাম (বাংলায় লিখুন)",
         "v_regex": {
           "value": "[^A-Za-z0-9]*",
           "err": "বাংলায় লিখুন"
@@ -97,7 +97,7 @@
           "value": "[^A-Za-z0-9]{1,40}$",
           "err": "৪০ অক্ষরের ভিতরে বাংলায় লিখুন"
         },
-        "hint": "ডাকঘর",
+        "hint": "ডাকঘর (বাংলায় লিখুন)",
         "v_required": {
           "value": true,
           "err": "Please enter post office"
@@ -132,7 +132,7 @@
         "openmrs_data_type": "text",
         "type": "edit_text",
         "look_up": "true",
-        "hint": "স্থায়ী ঠিকানা(ইউনিয়ন)",
+        "hint": "স্থায়ী ঠিকানা ইউনিয়ন (ইংরেজিতে লিখুন)",
         "v_required": {
           "value": true,
           "err": "ইউনিয়ন এর নামের অক্ষর ইংরেজিতে লিখুন "
@@ -163,7 +163,7 @@
           "value": "[^A-Za-z0-9]{1,40}$",
           "err": "৪০ অক্ষরের ভিতরে বাংলায় লিখুন"
         },
-        "hint": "গ্রাম",
+        "hint": "গ্রাম (বাংলায় লিখুন)",
         "relevance": {
           "step1:is_permanent_address": {
             "type": "string",
@@ -178,7 +178,7 @@
         "openmrs_entity_id": "postOfficePermanent",
         "openmrs_data_type": "text",
         "type": "edit_text",
-        "hint": "ডাকঘর (স্থায়ী)",
+        "hint": "ডাকঘর স্থায়ী(বাংলায় লিখুন)",
         "v_required": {
           "value": true,
           "err": "৪০ অক্ষরের ভিতরে বাংলায় লিখুন"
@@ -208,7 +208,7 @@
         "openmrs_entity": "person",
         "openmrs_entity_id": "first_name",
         "type": "edit_text",
-        "hint": "পরিবারের প্রধানের নাম এর \nপ্রথম অংশ",
+        "hint": "পরিবারের প্রধান এর নামের প্রথম অংশ (ইংরেজিতে লিখুন)",
         "edit_type": "name",
         "v_regex": {
           "value": "[A-Z][A-Za-z .]*",
@@ -225,7 +225,7 @@
         "openmrs_entity": "person",
         "openmrs_entity_id": "last_name",
         "type": "edit_text",
-        "hint": "পরিবারের প্রধানের নাম এর \nশেষ অংশ",
+        "hint": "পরিবারের প্রধান এর নামের শেষ অংশ (ইংরেজিতে লিখুন)",
         "edit_type": "name",
         "v_required": {
           "value": true,
