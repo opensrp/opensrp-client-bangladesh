@@ -195,7 +195,7 @@ dependencies {
     //    use cbhc-latest(2.6.51-https) branch for local build
     //    build from issue268
     //    core version 2.6.51 for older build 2.7.26 for latest build
-    implementation('org.smartregister:opensrp-client-core:2.6.51-https-SNAPSHOT') {
+    implementation('org.smartregister:opensrp-client-core:2.6.52-cbhc-invalid-SNAPSHOT') {
         transitive = true
         exclude group: 'com.github.bmelnychuk', module: 'atv'
         exclude group: 'com.google.guava', module: 'guava'

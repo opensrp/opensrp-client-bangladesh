@@ -12,9 +12,11 @@ import org.smartregister.cbhc.application.AncApplication;
 import org.smartregister.cbhc.service.intent.SyncIntentService;
 import org.smartregister.cbhc.util.Constants;
 import org.smartregister.cbhc.util.Utils;
+import org.smartregister.clientandeventmodel.Address;
 import org.smartregister.configurableviews.helper.PrefsHelper;
 import org.smartregister.domain.Response;
 import org.smartregister.domain.db.EventClient;
+import org.smartregister.repository.AllSharedPreferences;
 import org.smartregister.repository.BaseRepository;
 import org.smartregister.repository.EventClientRepository;
 import org.smartregister.service.HTTPAgent;
@@ -26,6 +28,10 @@ import java.util.List;
 import static org.smartregister.configurableviews.util.Constants.CONFIGURATION.LOGIN;
 import static org.smartregister.configurableviews.util.Constants.LAST_VIEWS_SYNC_TIMESTAMP;
 import static org.smartregister.configurableviews.util.Constants.VIEW_CONFIGURATION_PREFIX;
+
+import com.google.gson.Gson;
+
+import net.sqlcipher.database.SQLiteDatabase;
 
 /**
  * Created by ndegwamartin on 15/03/2018.
@@ -103,6 +109,13 @@ public class ECSyncHelper implements PrefsHelper {
 
     public void addClient(String baseEntityId, JSONObject jsonObject) {
         try {
+            AllSharedPreferences sharedPreferences = AncApplication.getInstance().getContext().userService().getAllSharedPreferences();
+            String providerID = sharedPreferences.fetchRegisteredANM();
+            try{
+                jsonObject.put("provider_id",providerID);
+            }catch (Exception e){
+
+            }
             eventClientRepository.addorUpdateClient(baseEntityId, jsonObject);
         } catch (Exception e) {
             Utils.appendLog(getClass().getName(), e);
@@ -112,11 +125,37 @@ public class ECSyncHelper implements PrefsHelper {
 
     public void addEvent(String baseEntityId, JSONObject jsonObject) {
         try {
+            try{
+                SQLiteDatabase db = AncApplication.getInstance().getRepository().getReadableDatabase();
+                JSONObject clientJson = eventClientRepository.getClient(db, baseEntityId);
+                String ward = getWard(clientJson);
+                jsonObject.put("ward",ward);
+            }catch (Exception e){
+
+            }
+
             eventClientRepository.addEvent(baseEntityId, jsonObject);
         } catch (Exception e) {
             Utils.appendLog(getClass().getName(), e);
             Log.e(getClass().getName(), "Exception", e);
         }
+    }
+    private static String getWard(JSONObject clientjson){
+        String ward = "";
+        try{
+            String addessJson = clientjson.getString("addresses");
+            JSONArray jsonArray = new JSONArray(addessJson);
+            for(int i = 0; i <jsonArray.length();i++){
+                JSONObject jsonObject = jsonArray.getJSONObject(i);
+                Address address = new Gson().fromJson(jsonObject.toString(), Address.class);
+                ward = address.getAddressField("address2");
+            }
+            return ward;
+        }catch (Exception e){
+
+        }
+        return ward;
+
     }
 
     public JSONObject fetchAsJsonObject(String filter, String filterValue) throws Exception {

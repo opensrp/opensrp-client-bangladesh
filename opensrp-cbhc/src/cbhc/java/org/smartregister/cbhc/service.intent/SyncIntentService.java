@@ -12,6 +12,8 @@ import org.apache.commons.lang3.StringUtils;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.smartregister.AllConstants;
+import org.smartregister.CoreLibrary;
 import org.smartregister.cbhc.BuildConfig;
 import org.smartregister.cbhc.R;
 import org.smartregister.cbhc.application.AncApplication;
@@ -37,6 +39,8 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
+import timber.log.Timber;
+
 public class SyncIntentService extends IntentService {
     public static final String SYNC_URL = "/rest/event/sync";
     public static final int EVENT_PULL_LIMIT = 250;
@@ -44,6 +48,7 @@ public class SyncIntentService extends IntentService {
     private static final int EVENT_PUSH_LIMIT = 50;
     private Context context;
     private HTTPAgent httpAgent;
+    protected boolean isEmptyToAdd = true;
 
     public SyncIntentService() {
         super("SyncIntentService");
@@ -116,26 +121,10 @@ public class SyncIntentService extends IntentService {
                 baseUrl = baseUrl.substring(0, baseUrl.lastIndexOf("/"));
             }
 
-            Long lastSyncDatetime = ecSyncUpdater.getLastSyncTimeStamp();
+            long lastSyncDatetime = ecSyncUpdater.getLastSyncTimeStamp();
             Log.v("REQUEST_URL", "LAST SYNC DT :" + lastSyncDatetime);
-//            if (BuildConfig.DEBUG) {
-//                try {
-//                    File f = new File(Environment.getExternalStorageDirectory() + "/cbhc_log/request/");
-//                    if (!f.exists()) {
-//                        f.mkdirs();
-//                    }
-//                    BufferedWriter writer = new BufferedWriter(new FileWriter(Environment.getExternalStorageDirectory() + "/cbhc_log/request/" + lastSyncDatetime + ".json"));
-//                    writer.write("REQUEST_URL :" + lastSyncDatetime);
-//                    writer.close();
-//                } catch (Exception e) {
-//                    Utils.appendLog(getClass().getName(), e);
-//                    e.printStackTrace();
-//                }
-//            }
-//            lastSyncDatetime = lastSyncDatetime;
-//            String url = baseUrl + SYNC_URL + "?" + Constants.SyncFilters.FILTER_TEAM_ID + "=" + teamId + "&serverVersion=" + lastSyncDatetime + "&limit=" + SyncIntentService.EVENT_PULL_LIMIT;
-//            String url = baseUrl + SYNC_URL + "?" + Constants.SyncFilters.PROVIDER_ID + "=" + providerID + "&serverVersion=" + lastSyncDatetime + "&limit=" + SyncIntentService.EVENT_PULL_LIMIT;
-            String url = baseUrl + SYNC_URL + "?" + Constants.SyncFilters.LOCATION_ID + "=" + locationid + "&serverVersion=" + lastSyncDatetime + "&limit=" + SyncIntentService.EVENT_PULL_LIMIT;
+
+            String url = baseUrl + SYNC_URL + "?" + Constants.SyncFilters.LOCATION_ID + "=" + locationid + "&serverVersion=" + lastSyncDatetime + "&limit=" + SyncIntentService.EVENT_PULL_LIMIT+"&isEmptyToAdd="+isEmptyToAdd;
 
             Log.v(getClass().getName(), "URL: " + url);
 
@@ -144,26 +133,13 @@ public class SyncIntentService extends IntentService {
             }
 
             Response resp = httpAgent.fetch(url);
+
             if (resp.isFailure()) {
                 fetchFailed(count);
+                return;
             }
 
             JSONObject jsonObject = new JSONObject((String) resp.payload());
-//            if (BuildConfig.DEBUG) {
-//                try {
-//                    File f = new File(Environment.getExternalStorageDirectory() + "/cbhc_log/response/");
-//                    if (!f.exists()) {
-//                        f.mkdirs();
-//                    }
-//                    BufferedWriter writer = new BufferedWriter(new FileWriter(Environment.getExternalStorageDirectory() + "/cbhc_log/response/" + lastSyncDatetime + ".json"));
-//                    writer.write(jsonObject.toString());
-//                    writer.close();
-//                } catch (Exception e) {
-//                    Utils.appendLog(getClass().getName(), e);
-//
-//                    e.printStackTrace();
-//                }
-//            }
 
             int eCount = fetchNumberOfEvents(jsonObject);
             Log.v(getClass().getName(), "Parse Network Event Count: " + eCount);
@@ -173,7 +149,7 @@ public class SyncIntentService extends IntentService {
 //                new DetailsStatusUpdate(jsonObject, eCount).start();
             } else if (eCount < 0) {
                 fetchFailed(count);
-            } else if (eCount > 0) {
+            } else {
                 final Pair<Long, Long> serverVersionPair = getMinMaxServerVersions(jsonObject);
                 long lastServerVersion = serverVersionPair.second - 1;
                 if (eCount < EVENT_PULL_LIMIT) {
@@ -228,52 +204,53 @@ public class SyncIntentService extends IntentService {
 
     // PUSH TO SERVER
     private void pushToServer() {
+        isEmptyToAdd = true;
         pushECToServer();
     }
-
-    private void pushECToServer() {
-        EventClientRepository db = AncApplication.getInstance().getEventClientRepository();
+    protected void pushECToServer() {
+        EventClientRepository db = CoreLibrary.getInstance().context().getEventClientRepository();
         boolean keepSyncing = true;
+        isEmptyToAdd = true;
 
         while (keepSyncing) {
             try {
-                Map<String, Object> pendingEvents = db.getUnSyncedEvents(EVENT_PUSH_LIMIT);
+                Map<String, Object> pendingEvents = db.getUnSyncedEventsClients(EVENT_PUSH_LIMIT);
 
                 if (pendingEvents.isEmpty()) {
                     return;
                 }
 
-                String baseUrl = AncApplication.getInstance().getContext().configuration().dristhiBaseURL();
-                if (baseUrl.endsWith(context.getString(R.string.url_separator))) {
-                    baseUrl = baseUrl.substring(0, baseUrl.lastIndexOf(context.getString(R.string.url_separator)));
+                String baseUrl = CoreLibrary.getInstance().context().configuration().dristhiBaseURL();
+                if (baseUrl.endsWith(context.getString(org.smartregister.R.string.url_separator))) {
+                    baseUrl = baseUrl.substring(0, baseUrl.lastIndexOf(context.getString(org.smartregister.R.string.url_separator)));
                 }
                 // create request body
                 JSONObject request = new JSONObject();
-                if (pendingEvents.containsKey(context.getString(R.string.clients_key))) {
-                    request.put(context.getString(R.string.clients_key), pendingEvents.get(context.getString(R.string.clients_key)));
+                if (pendingEvents.containsKey(AllConstants.KEY.CLIENTS)) {
+                    request.put(AllConstants.KEY.CLIENTS, pendingEvents.get(AllConstants.KEY.CLIENTS));
                 }
-                if (pendingEvents.containsKey(context.getString(R.string.events_key))) {
-                    request.put(context.getString(R.string.events_key), pendingEvents.get(context.getString(R.string.events_key)));
+                if (pendingEvents.containsKey(AllConstants.KEY.EVENTS)) {
+                    request.put(AllConstants.KEY.EVENTS, pendingEvents.get(AllConstants.KEY.EVENTS));
                 }
+                isEmptyToAdd = false;
                 String jsonPayload = request.toString();
-                Response<String> response = httpAgent.post(
-                        MessageFormat.format("{0}/{1}",
-                                baseUrl,
-                                ADD_URL),
+                String add_url =  MessageFormat.format("{0}/{1}",
+                        baseUrl,
+                        ADD_URL);
+                Response<String> response = httpAgent.post(add_url
+                        ,
                         jsonPayload);
                 if (response.isFailure()) {
-                    Log.e(getClass().getName(), "Events sync failed.");
                     return;
                 }
                 db.markEventsAsSynced(pendingEvents);
-                Log.i(getClass().getName(), "Events synced successfully.");
             } catch (Exception e) {
-                Utils.appendLog(getClass().getName(), e);
-                Log.e(getClass().getName(), e.getMessage(), e);
+                Timber.e(e);
+                return;
+
             }
         }
     }
-
     private void sendSyncStatusBroadcastMessage(FetchStatus fetchStatus) {
         Intent intent = new Intent();
         intent.setAction(SyncStatusBroadcastReceiver.ACTION_SYNC_STATUS);
