@@ -30,6 +30,7 @@
             android:layout_margin="25dp"
             android:gravity="center"
             android:text="@string/logout_text" />
+
         <Button
             android:id="@+id/force_logout"
             android:layout_width="match_parent"
@@ -39,6 +40,15 @@
             android:layout_marginRight="25dp"
             android:gravity="center"
             android:text="Location Update \nAND LOGOUT" />
+        <Button
+            android:id="@+id/troubleshoot"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginLeft="25dp"
+            android:layout_marginRight="25dp"
+            android:gravity="center"
+            android:text="Troubleshoot" />
 
     </LinearLayout>
 </RelativeLayout>

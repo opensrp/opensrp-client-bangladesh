@@ -53,6 +53,18 @@
             android:screenOrientation="portrait"
             android:theme="@style/AncAppTheme.NoActionBar" />
         <activity
+            android:name=".troublshoot.ForceSyncActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize"
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait"
+            android:theme="@style/AncAppTheme.NoActionBar" />
+        <activity
+            android:name=".troublshoot.InvalidDataDisplayActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize"
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait"
+            android:theme="@style/AncAppTheme.NoActionBar" />
+        <activity
             android:name=".activity.ProfileActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"
             android:launchMode="singleTask"
@@ -97,7 +109,6 @@
                 android:name="android.support.FILE_PROVIDER_PATHS"
                 android:resource="@xml/captured_images_path" />
         </provider>
-
         <service android:name=".service.intent.PullHealthIdsIntentService" />
         <service android:name=".service.intent.PullUniqueIdsIntentService" />
         <service android:name=".service.intent.SyncIntentService" />
@@ -105,13 +116,10 @@
         <service android:name=".service.intent.ValidateIntentService" />
         <service android:name=".service.intent.ExtendedSyncIntentService" />
         <service android:name=".notification.NotificationIntentService" />
-        <activity android:name=".activity.DetailActivity"
-            android:configChanges="keyboardHidden|orientation|screenSize"
-            android:launchMode="singleTask"
-            android:screenOrientation="portrait"
-            android:theme="@style/AncAppTheme.NoActionBar"
-            />
-
+        <service android:name=".service.intent.DataDeleteIntentService" />
+        <service android:name="org.smartregister.sync.intent.InvalidDataSyncIntentService" />
+        <service android:name="org.smartregister.sync.intent.ForceSyncIntentService" />
+        <service android:name="org.smartregister.sync.intent.DatSyncByBaseEntityIntentService"/>
         <service android:name="org.smartregister.immunization.service.intent.VaccineIntentService" />
         <service android:name="org.smartregister.immunization.service.intent.RecurringIntentService" />
         <service android:name="org.smartregister.growthmonitoring.service.intent.WeightIntentService" />

@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="horizontal"
+    android:scrollbars="horizontal"
+    android:layout_width="match_parent"
+    android:layout_height="50dp">
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <TextView
+            android:id="@+id/date_tv"
+            android:text="Date created"
+            android:padding="10dp"
+            android:gravity="center"
+            android:layout_margin="1dp"
+            android:textColor="@color/black"
+            android:background="@color/white"
+            android:layout_gravity="center_vertical"
+            android:layout_width="100dp"
+            android:layout_height="match_parent"/>
+        <TextView
+            android:id="@+id/first_name"
+            android:text="Name"
+            android:padding="10dp"
+            android:gravity="center"
+            android:layout_margin="1dp"
+            android:textColor="@color/black"
+            android:layout_gravity="center_vertical"
+            android:background="@color/white"
+            android:layout_width="150dp"
+            android:layout_height="match_parent"/>
+        <TextView
+            android:id="@+id/event_type"
+            android:text="Event Type"
+            android:padding="10dp"
+            android:gravity="center"
+            android:layout_margin="1dp"
+            android:textColor="@color/black"
+            android:layout_gravity="center_vertical"
+            android:background="@color/white"
+            android:layout_width="150dp"
+            android:layout_height="match_parent"/>
+        <TextView
+            android:id="@+id/error_cause"
+            android:text="Error cause"
+            android:padding="10dp"
+            android:gravity="center"
+            android:layout_margin="1dp"
+            android:textColor="@color/black"
+            android:layout_gravity="center_vertical"
+            android:background="@color/white"
+            android:layout_width="150dp"
+            android:layout_height="match_parent"/>
+        <TextView
+            android:id="@+id/unique_id_tv"
+            android:text="Unique ID"
+            android:padding="10dp"
+            android:gravity="center"
+            android:layout_margin="1dp"
+            android:textColor="@color/black"
+            android:layout_gravity="center_vertical"
+            android:background="@color/white"
+            android:layout_width="150dp"
+            android:layout_height="match_parent"/>
+        <TextView
+            android:id="@+id/address_tv"
+            android:text="Address"
+            android:padding="10dp"
+            android:gravity="center"
+            android:layout_margin="1dp"
+            android:textColor="@color/black"
+            android:layout_gravity="center_vertical"
+            android:background="@color/white"
+            android:layout_width="150dp"
+            android:layout_height="match_parent"/>
+        <TextView
+            android:id="@+id/base_entity_id"
+            android:text="BaseEntity ID"
+            android:padding="10dp"
+            android:gravity="center"
+            android:layout_margin="1dp"
+            android:textColor="@color/black"
+            android:layout_gravity="center_vertical"
+            android:background="@color/white"
+            android:layout_width="150dp"
+            android:layout_height="match_parent"/>
+        <TextView
+            android:id="@+id/action_tv"
+            android:text="Action"
+            android:padding="10dp"
+            android:gravity="center"
+            android:layout_margin="1dp"
+            android:textColor="@color/black"
+            android:layout_gravity="center_vertical"
+            android:background="@color/white"
+            android:layout_width="150dp"
+            android:layout_height="match_parent"/>
+    </LinearLayout>
+
+
+</LinearLayout>

@@ -1,5 +1,6 @@
 package org.smartregister.cbhc.fragment;
 
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
@@ -17,6 +18,7 @@ import org.smartregister.cbhc.BuildConfig;
 import org.smartregister.cbhc.R;
 import org.smartregister.cbhc.application.AncApplication;
 import org.smartregister.cbhc.contract.MeContract;
+import org.smartregister.cbhc.troublshoot.ForceSyncActivity;
 import org.smartregister.repository.AllSharedPreferences;
 
 import java.text.SimpleDateFormat;
@@ -62,6 +64,12 @@ public class MeFragment extends Fragment implements MeContract.View {
             @Override
             public void onClick(View v) {
                 AncApplication.getInstance().forcelogoutCurrentUser();
+            }
+        });
+        view.findViewById(R.id.troubleshoot).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+               startActivity(new Intent(getActivity(), ForceSyncActivity.class));
             }
         });
         return view;
