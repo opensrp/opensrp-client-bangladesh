@@ -194,7 +194,7 @@ dependencies {
     implementation 'com.github.bumptech.glide:glide:3.8.0'
     implementation 'com.jakewharton.timber:timber:4.7.1'
     //from branch muac_edema_gmp
-    implementation ('org.smartregister:opensrp-client-growth-monitoring:1.1.7-gmp-SNAPSHOT@aar') {
+    implementation ('org.smartregister:opensrp-client-growth-monitoring:1.1.8-gmp-SNAPSHOT@aar') {
         transitive = true
         exclude group: 'org.smartregister', module: 'opensrp-client-core'
         exclude group: 'com.android.support', module: 'design'

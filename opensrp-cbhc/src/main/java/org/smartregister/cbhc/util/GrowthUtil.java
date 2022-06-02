@@ -307,7 +307,7 @@ public class GrowthUtil {
             // double zScore = ZScore.calculate(gender, dob, weight.getDate(), weight.getKg());
             zScore = ZScore.roundOff(zScore);
             String text = ZScore.getZScoreText(zScore);
-            zScoreTextView.setTextColor(context.getResources().getColor(ZScore.getZscoreColorByText(text)));
+            zScoreTextView.setTextColor(context.getResources().getColor(ZScore.getZScoreColor(zScore)));
             zScoreTextView.setText(String.valueOf(zScore));
             //}
             curRow.addView(zScoreTextView);

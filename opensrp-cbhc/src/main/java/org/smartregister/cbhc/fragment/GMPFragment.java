@@ -422,7 +422,7 @@ public class GMPFragment extends BaseProfileFragment implements WeightActionList
         }
     }
     private void showGMPDialog(String text){
-        boolean isSam = text.equalsIgnoreCase("SAM");
+        boolean isSam = text.equalsIgnoreCase("SAM") || text.equalsIgnoreCase("OVER WEIGHT");
         Dialog dialog = new Dialog(mActivity);
         dialog.setCancelable(false);
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
