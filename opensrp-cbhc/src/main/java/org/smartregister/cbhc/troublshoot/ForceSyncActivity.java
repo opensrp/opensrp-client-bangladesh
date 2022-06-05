@@ -41,6 +41,12 @@ public class ForceSyncActivity extends SecuredActivity implements SyncStatusBroa
     @Override
     protected void onCreation() {
         setContentView(R.layout.activity_troubleshoot);
+        findViewById(R.id.backBtn).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                finish();
+            }
+        });
         findViewById(R.id.invalid_data).setOnClickListener(v -> checkInvalidData());
         findViewById(R.id.sync_unsync_btn).setOnClickListener( v -> forceSyncData() );
         findViewById(R.id.data_sync_by_id).setOnClickListener( v -> syncDataById() );

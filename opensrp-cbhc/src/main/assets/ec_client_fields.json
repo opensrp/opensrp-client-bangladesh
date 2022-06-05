@@ -632,7 +632,14 @@
           "column_name": "person_nid",
           "type": "Client",
           "json_mapping": {
-            "field": "attributes.nationalId"
+            "field": "attributes.person_nid"
+          }
+        },
+        {
+          "column_name": "member_birth_date_known",
+          "type": "Client",
+          "json_mapping": {
+            "field": "attributes.member_birth_date_known"
           }
         },
         {
@@ -1483,6 +1490,13 @@
           "type": "Client",
           "json_mapping": {
             "field": "birthdateApprox"
+          }
+        },
+        {
+          "column_name": "member_birth_date_known",
+          "type": "Client",
+          "json_mapping": {
+            "field": "attributes.member_birth_date_known"
           }
         },
         {

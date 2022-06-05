@@ -18,6 +18,7 @@ import org.smartregister.cbhc.BuildConfig;
 import org.smartregister.cbhc.R;
 import org.smartregister.cbhc.application.AncApplication;
 import org.smartregister.cbhc.helper.ECSyncHelper;
+import org.smartregister.cbhc.job.DataDeleteJob;
 import org.smartregister.cbhc.job.DeleteIntentServiceJob;
 import org.smartregister.cbhc.job.PullHealthIdsServiceJob;
 import org.smartregister.cbhc.job.PullUniqueIdsServiceJob;
@@ -176,6 +177,7 @@ public class SyncIntentService extends IntentService {
             DeleteIntentServiceJob.scheduleJobImmediately(DeleteIntentServiceJob.TAG);
             PullHealthIdsServiceJob.scheduleJobImmediately(PullHealthIdsServiceJob.TAG);
             PullUniqueIdsServiceJob.scheduleJobImmediately(PullUniqueIdsServiceJob.TAG);
+            DataDeleteJob.scheduleJobImmediately(DataDeleteJob.TAG);
 
         }
     }

@@ -94,6 +94,9 @@ public class AncRepository extends Repository {
                 case 12:
                     upgradeToVersion12();
                     break;
+                case 13:
+                    upgradeToVersion13(db);
+                    break;
                 default:
                     break;
             }
@@ -160,6 +163,14 @@ public class AncRepository extends Repository {
             writableDatabase.close();
         }
         super.close();
+    }
+    private void upgradeToVersion13(SQLiteDatabase db){
+        try{
+            db.execSQL("ALTER TABLE ec_woman ADD COLUMN member_birth_date_known VARCHAR");
+            db.execSQL("ALTER TABLE ec_member ADD COLUMN member_birth_date_known VARCHAR");
+        }catch (Exception e){
+
+        }
     }
     private void upgradeToVersion12() {
         try{

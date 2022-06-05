@@ -101,7 +101,7 @@ public class DataDeleteIntentService extends IntentService {
                     db.execSQL(q);
                 }
                 if(!TextUtils.isEmpty(builderHH.toString())){
-                    String h = "delete from ec_family where "+builderHH.toString();
+                    String h = "delete from ec_household where "+builderHH.toString();
                     Log.v("DATA_DELETE","h:"+h);
                     db.execSQL(h);
                 }
@@ -150,7 +150,6 @@ public class DataDeleteIntentService extends IntentService {
 
     private void deleteEvents(boolean byBaseEntityId,JSONArray validEvents) throws Exception{
         StringBuilder builderEvent = new StringBuilder();
-        String COLUMN_NAME = byBaseEntityId?" base_entity_id":" form_submission_id";
         for (int i = 0; i < validEvents.length(); i++) {
             String formSubmissionId = validEvents.getString(i);
             //delete event table
@@ -178,6 +177,7 @@ public class DataDeleteIntentService extends IntentService {
         StringBuilder builderClient = new StringBuilder();
         StringBuilder builderMember = new StringBuilder();
         StringBuilder builderChild = new StringBuilder();
+        StringBuilder builderWomen = new StringBuilder();
         for (int i = 0; i < validMemberEvents.length(); i++) {
             String memberClientString = validMemberEvents.getString(i);
             //delete client table
@@ -186,6 +186,7 @@ public class DataDeleteIntentService extends IntentService {
                 builderClient.append(" baseEntityId = '"+memberClientString+"'");
                 builderMember.append(" base_entity_id = '"+memberClientString+"'");
                 builderChild.append(" base_entity_id = '"+memberClientString+"'");
+                builderWomen.append(" base_entity_id = '"+memberClientString+"'");
             }else{
                 builderClient.append(" OR ");
                 builderClient.append(" baseEntityId = '"+memberClientString+"'");
@@ -193,6 +194,8 @@ public class DataDeleteIntentService extends IntentService {
                 builderMember.append(" base_entity_id = '"+memberClientString+"'");
                 builderChild.append(" OR ");
                 builderChild.append(" base_entity_id = '"+memberClientString+"'");
+                builderWomen.append(" OR ");
+                builderWomen.append(" base_entity_id = '"+memberClientString+"'");
             }
         }
         if(!TextUtils.isEmpty(builderClient.toString())){
@@ -207,6 +210,11 @@ public class DataDeleteIntentService extends IntentService {
         }
         if(!TextUtils.isEmpty(builderChild.toString())){
             String h = "delete from ec_child where "+builderChild.toString();
+            Log.v("DATA_DELETE","h:"+h);
+            db.execSQL(h);
+        }
+        if(!TextUtils.isEmpty(builderWomen.toString())){
+            String h = "delete from ec_women where "+builderWomen.toString();
             Log.v("DATA_DELETE","h:"+h);
             db.execSQL(h);
         }

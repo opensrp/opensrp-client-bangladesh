@@ -12,11 +12,11 @@ import net.sqlcipher.database.SQLiteDatabase;
 
 import org.smartregister.cbhc.R;
 import org.smartregister.cbhc.application.AncApplication;
+import org.smartregister.cbhc.helper.ECSyncHelper;
 import org.smartregister.cbhc.util.AppExecutors;
 import org.smartregister.domain.db.Client;
 import org.smartregister.domain.db.Event;
 import org.smartregister.repository.EventClientRepository;
-import org.smartregister.sync.helper.ECSyncHelper;
 import org.smartregister.view.activity.SecuredActivity;
 
 import java.util.ArrayList;

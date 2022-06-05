@@ -9,6 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.common.reflect.TypeToken;
 
@@ -41,6 +42,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.Objects;
 
 import timber.log.Timber;
 
@@ -234,14 +236,18 @@ public class ProfileContactsFragment extends BaseProfileFragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Bundle extras = this.getActivity().getIntent().getExtras();
+        Bundle extras = Objects.requireNonNull(this.getActivity()).getIntent().getExtras();
         if (extras != null) {
             Serializable serializable = extras.getSerializable(EXTRA_HOUSEHOLD_DETAILS);
             if (serializable != null && serializable instanceof CommonPersonObjectClient) {
                 householdDetails = (CommonPersonObjectClient) serializable;
+                try{
+                    householdDetails =  CommonPersonObjectToClient(AncApplication.getInstance().getContext().commonrepository(DBConstants.HOUSEHOLD_TABLE_NAME).findByBaseEntityId(householdDetails.entityId()));
 
+                }catch (Exception e){
+                    Toast.makeText(getActivity(), "হাউসহোল্ড আইডি পাওয়া যাই নি.পুনরায় চেষ্টা করুন", Toast.LENGTH_LONG).show();
+                }
 
-                householdDetails =  CommonPersonObjectToClient(AncApplication.getInstance().getContext().commonrepository(DBConstants.HOUSEHOLD_TABLE_NAME).findByBaseEntityId(householdDetails.entityId()));
 
                //householdDetails.getColumnmaps().putAll(AncApplication.getInstance().getContext().detailsRepository().getAllDetailsForClient(householdDetails.entityId()));
 
