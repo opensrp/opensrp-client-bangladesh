@@ -3,6 +3,7 @@ package org.smartregister.cbhc.fragment;
 import static org.smartregister.cbhc.task.RemoteLoginTask.getOpenSRPContext;
 import static org.smartregister.util.Utils.dobToDateTime;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.Dialog;
 import android.app.Fragment;
@@ -43,6 +44,7 @@ import org.smartregister.commonregistry.CommonPersonObjectClient;
 import org.smartregister.growthmonitoring.GrowthMonitoringLibrary;
 import org.smartregister.growthmonitoring.domain.Height;
 import org.smartregister.growthmonitoring.domain.HeightWrapper;
+import org.smartregister.growthmonitoring.domain.HeightZScore;
 import org.smartregister.growthmonitoring.domain.MUAC;
 import org.smartregister.growthmonitoring.domain.MUACWrapper;
 import org.smartregister.growthmonitoring.domain.Weight;
@@ -190,9 +192,6 @@ public class GMPFragment extends BaseProfileFragment implements WeightActionList
         fragmentContainer.removeAllViews();
         fragmentContainer.addView(getLayoutInflater().inflate(R.layout.previous_weightview, null));
         TableLayout weightTable = fragmentView.findViewById(R.id.weights_table);
-        LinkedHashMap<Long, Pair<String, String>> weightmap = new LinkedHashMap<>();
-        ArrayList<Boolean> weighteditmode = new ArrayList<Boolean>();
-        ArrayList<View.OnClickListener> listeners = new ArrayList<View.OnClickListener>();
 
         WeightRepository wp = GrowthMonitoringLibrary.getInstance().weightRepository();
         List<Weight> weightlist = wp.getMaximum12(childDetails.entityId());
@@ -227,7 +226,8 @@ public class GMPFragment extends BaseProfileFragment implements WeightActionList
                 e.printStackTrace();
             }
             Height height = heightList.get(0);
-            heightText = ZScore.getZScoreText(height.getZScore());
+            heightText = HeightZScore.getZScoreText(height.getZScore());
+            Log.v("ZSCORE","heightText>>"+heightText);
             if(isNeedToUpdateDB) GrowthUtil.updateLastHeight(height.getCm(),height.getBaseEntityId(),heightText);
         }
         return heightText;
@@ -329,7 +329,7 @@ public class GMPFragment extends BaseProfileFragment implements WeightActionList
 
         String text = refreshEditHeightLayout(true);
         updateProfileColor();
-        showGMPDialog(text);
+        showGMPDialog(text,2);
     }
 
     @Override
@@ -367,7 +367,7 @@ public class GMPFragment extends BaseProfileFragment implements WeightActionList
         MuactIntentServiceJob.scheduleJobImmediately(MuactIntentServiceJob.TAG);
         String text = refreshEditMuacLayout(true);
         updateProfileColor();
-        showGMPDialog(text);
+        showGMPDialog(text,3);
     }
 
     @Override
@@ -417,19 +417,23 @@ public class GMPFragment extends BaseProfileFragment implements WeightActionList
             tag.setPatientAge(formattedAge);
             WeightIntentServiceJob.scheduleJobImmediately(WeightIntentServiceJob.TAG);
             String text = refreshEditWeightLayout(true);
-            showGMPDialog(text);
+            showGMPDialog(text,1);
             updateProfileColor();
         }
     }
-    private void showGMPDialog(String text){
-        boolean isSam = text.equalsIgnoreCase("SAM") || text.equalsIgnoreCase("OVER WEIGHT");
+    private void showGMPDialog(String text, int type){
+        int resultColor = ZScore.getZscoreColorByText(text);
+        if(text.equalsIgnoreCase("OVER WEIGHT")) text = GMP_STATUS.OVER_WEIGHT.toString();
+        Log.v("SHOW_GMP","text>>"+text);
+        String dialogMessage = getDialogMessageByType(text,type);
         Dialog dialog = new Dialog(mActivity);
         dialog.setCancelable(false);
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog.setContentView(R.layout.dialog_with_one_button);
         TextView titleTv = dialog.findViewById(R.id.title_tv);
-        titleTv.setText(isSam?"Inadequate Growth!!Please refer to the nearest clinic ":"Congratulation!Your child growth is adequacte");
-        titleTv.setTextColor(isSam?mActivity.getResources().getColor(R.color.alert_urgent_red):mActivity.getResources().getColor(R.color.alert_completed));
+        titleTv.setText(dialogMessage);
+
+        titleTv.setTextColor(mActivity.getResources().getColor(resultColor));
         Button ok_btn = dialog.findViewById(R.id.ok_btn);
         showReferedBtn();
 
@@ -441,6 +445,88 @@ public class GMPFragment extends BaseProfileFragment implements WeightActionList
         });
         dialog.show();
 
+    }
+    private String getDialogMessageByType(String text, int type){
+        String dialogMsg = "";
+        switch (type){
+            case 1://weight
+                if(text.equalsIgnoreCase(GMP_STATUS.SAM.toString())){
+                    int month = getMonthDifferenceByDOB();
+                    if(month<6) return getString(R.string.sam_6m_weight);
+                    if(month <=8) return getString(R.string.sam_6m_8m_weight);
+                    if(month <=11) return getString(R.string.sam_9m_11m_weight);
+                    if(month <=23) return getString(R.string.sam_12m_23m_weight);
+                }
+                else if(text.equalsIgnoreCase(GMP_STATUS.MAM.toString())){
+                    int month = getMonthDifferenceByDOB();
+                    if(month<6) return getString(R.string.mam_6m_weight);
+                    if(month <=8) return getString(R.string.mam_6m_8m_weight);
+                    if(month <=11) return getString(R.string.mam_9m_11m_weight);
+                    if(month <=23) return getString(R.string.mam_12m_23m_weight);
+                }
+                else if(text.equalsIgnoreCase(GMP_STATUS.OVER_WEIGHT.toString())){
+                    int month = getMonthDifferenceByDOB();
+                    if(month<6) return getString(R.string.over_6m);
+                    if(month <=8) return getString(R.string.over_6m_8m);
+                    if(month <=11) return getString(R.string.over_9m_11m);
+                    if(month <=23) return getString(R.string.over_12m_23m);
+                }
+                else {
+                    int month = getMonthDifferenceByDOB();
+                    if(month<6) return getString(R.string.normal_6m_weight);
+                    if(month <=8) return getString(R.string.normal_6m_8m_weight);
+                    if(month <=11) return getString(R.string.normal_9m_11m_weight);
+                    if(month <=23) return getString(R.string.normal_12m_23m_weight);
+                }
+                break;
+            case 2://height
+                if(text.equalsIgnoreCase(GMP_STATUS.SAM.toString())){
+                    int month = getMonthDifferenceByDOB();
+                    if(month<6) return getString(R.string.sam_6m_height);
+                    if(month <=8) return getString(R.string.sam_6m_8m_height);
+                    if(month <=11) return getString(R.string.sam_9m_11m_height);
+                    if(month <=23) return getString(R.string.sam_12m_23m_height);
+                }
+                else if(text.equalsIgnoreCase(GMP_STATUS.MAM.toString())){
+                    int month = getMonthDifferenceByDOB();
+                    if(month<6) return getString(R.string.mam_6m_height);
+                    if(month <=8) return getString(R.string.mam_6m_8m_height);
+                    if(month <=11) return getString(R.string.mam_9m_11m_height);
+                    if(month <=23) return getString(R.string.mam_12m_23m_height);
+                }
+                else {
+                    int month = getMonthDifferenceByDOB();
+                    if(month<6) return getString(R.string.normal_6m_height);
+                    if(month <=8) return getString(R.string.normal_6m_8m_height);
+                    if(month <=11) return getString(R.string.normal_9m_11m_height);
+                    if(month <=23) return getString(R.string.normal_12m_23m_height);
+                }
+                break;
+            case 3://muac
+                if(text.equalsIgnoreCase(GMP_STATUS.SAM.toString())){
+                    int month = getMonthDifferenceByDOB();
+                    if(month<6) return "";
+                    if(month <=8) return getString(R.string.sam_6m_8m_muac);
+                    if(month <=11) return getString(R.string.sam_9m_11m_muac);
+                    if(month <=23) return getString(R.string.sam_12m_23m_muac);
+                }
+                else if(text.equalsIgnoreCase(GMP_STATUS.MAM.toString())){
+                    int month = getMonthDifferenceByDOB();
+                    if(month<6) return "";
+                    if(month <=8) return getString(R.string.mam_6m_8m_muac);
+                    if(month <=11) return getString(R.string.mam_9m_11m_muac);
+                    if(month <=23) return getString(R.string.mam_12m_23m_muac);
+                }
+                else {
+                    int month = getMonthDifferenceByDOB();
+                    if(month<6) return "";
+                    if(month <=8) return getString(R.string.normal_6m_8m_muac);
+                    if(month <=11) return getString(R.string.normal_9m_11m_muac);
+                    if(month <=23) return getString(R.string.normal_12m_23m_muac);
+                }
+                break;
+        }
+        return dialogMsg;
     }
     private void showReferedBtn(){
         String isReferedValue = Utils.getValue(childDetails, "is_refered", false);
@@ -457,6 +543,7 @@ public class GMPFragment extends BaseProfileFragment implements WeightActionList
     private boolean isDataOk() {
         return childDetails != null && childDetails.getDetails() != null;
     }
+    @SuppressLint("StaticFieldLeak")
     private class ShowGrowthChartTask extends AsyncTask<Void, Void, List<Weight>> {
         @Override
         protected void onPreExecute() {
@@ -567,5 +654,23 @@ public class GMPFragment extends BaseProfileFragment implements WeightActionList
             gender = Gender.MALE;
         }
         return gender;
+    }
+    private int getMonthDifferenceByDOB(){
+        String dobString = Utils.getValue(childDetails.getColumnmaps(), DBConstants.KEY.DOB, false);
+        DateTime dateTime = new DateTime(dobString);
+        double month = HeightZScore.getAgeInMonths(dateTime.toDate(),new Date());
+        int m = (int) Math.round(month);
+        Log.v("MONTH_DIFF","m:"+m);
+
+        return m;
+    }
+    public enum GMP_STATUS {
+        SAM,
+        MAM,
+        OVER_WEIGHT,
+        NORMAL;
+
+        private GMP_STATUS() {
+        }
     }
 }
