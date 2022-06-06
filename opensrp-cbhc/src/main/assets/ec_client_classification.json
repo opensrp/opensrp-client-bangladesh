@@ -62,6 +62,13 @@
               "ec_woman"
             ]
           },
+          {
+            "field": "eventType",
+            "field_value": "Followup Mobile Number",
+            "creates_case": [
+              "ec_member"
+            ]
+          },
 
           {
             "field": "eventType",

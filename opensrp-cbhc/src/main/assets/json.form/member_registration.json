@@ -485,8 +485,8 @@
       {
         "key": "member_birth_date_known",
         "openmrs_entity_parent": "",
-        "openmrs_entity": "",
-        "openmrs_entity_id": "",
+        "openmrs_entity": "person_attribute",
+        "openmrs_entity_id": "member_birth_date_known",
         "openmrs_data_type": "text",
         "type": "spinner",
         "hint": "জন্ম তারিখ জানা আছে কি?",

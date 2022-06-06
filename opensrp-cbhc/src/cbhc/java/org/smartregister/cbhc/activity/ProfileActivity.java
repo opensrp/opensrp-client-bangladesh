@@ -1,6 +1,7 @@
 package org.smartregister.cbhc.activity;
 
 import android.Manifest;
+import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -64,6 +65,7 @@ import org.smartregister.domain.FetchStatus;
 import org.smartregister.domain.ProfileImage;
 import org.smartregister.repository.ImageRepository;
 import org.smartregister.util.DateUtil;
+import org.smartregister.util.FileUtilities;
 import org.smartregister.util.PermissionUtils;
 
 import java.io.Serializable;
@@ -288,7 +290,8 @@ public class ProfileActivity extends BaseProfileActivity implements ProfileContr
                 if(imageRecord!=null){
                     AncJsonFormFragment.profile_image = imageRecord.getFilepath();
                 }else {
-                    AncJsonFormFragment.profile_image = "";
+                    String url = FileUtilities.getImageUrl(baseEntityId);
+                    AncJsonFormFragment.profile_image = url;
                 }
 
                 CommonPersonObjectClient personObjectClient = setUpMemberDetails(ctype,baseEntityId);
@@ -464,6 +467,7 @@ public class ProfileActivity extends BaseProfileActivity implements ProfileContr
         }
     }
 
+    @SuppressLint("StaticFieldLeak")
     private void updateApprovalStatus(final JSONObject form) {
         org.smartregister.util.Utils.startAsyncTask(new AsyncTask() {
             @Override
@@ -494,6 +498,7 @@ public class ProfileActivity extends BaseProfileActivity implements ProfileContr
         }, null);
     }
 
+    @SuppressLint("StaticFieldLeak")
     private void updateScheduledTasks(final JSONObject form) {
         org.smartregister.util.Utils.startAsyncTask((new AsyncTask() {
             @Override
@@ -795,6 +800,7 @@ public class ProfileActivity extends BaseProfileActivity implements ProfileContr
         }
     }
 
+    @SuppressLint("StaticFieldLeak")
     public void removeMember(final String entity_id) {
         org.smartregister.util.Utils.startAsyncTask((new AsyncTask() {
 
