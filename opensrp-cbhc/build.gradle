@@ -137,8 +137,8 @@ android {
     productFlavors {
         gmp {
             applicationId 'org.smartregister'
-            versionCode 6
-            versionName "1.1.6"
+            versionCode 7
+            versionName "1.1.7"
             dimension "baseDimension"
             applicationIdSuffix ".gmp"
             versionNameSuffix ""

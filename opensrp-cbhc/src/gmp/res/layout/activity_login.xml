@@ -35,17 +35,15 @@
                 android:layout_gravity="center"
                 android:gravity="top"
                 android:orientation="vertical"
-                android:visibility="invisible">
+                >
 
                 <ImageView
                     android:id="@+id/imageView3"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_width="200dp"
+                    android:layout_height="150dp"
                     android:layout_marginTop="5dp"
                     android:adjustViewBounds="false"
-                    android:cropToPadding="false"
-                    android:scaleType="fitCenter"
-                    app:srcCompat="@drawable/mhfw" />
+                    app:srcCompat="@drawable/govt" />
 
                 <ImageView
                     android:id="@+id/login_logo"
@@ -54,6 +52,7 @@
                     android:layout_gravity="center_horizontal"
                     android:layout_marginTop="20dp"
                     android:layout_weight="1"
+                    android:visibility="gone"
                     android:contentDescription="logo"
                     android:scaleType="fitCenter"
                     android:src="@drawable/cbhclogo" />
@@ -359,7 +358,7 @@
             <ImageView
                 android:id="@+id/imageView7"
                 android:layout_width="wrap_content"
-                android:layout_height="60dp"
+                android:layout_height="50dp"
                 android:layout_gravity="center_horizontal"
                 android:adjustViewBounds="false"
                 android:contentDescription="TODO"
