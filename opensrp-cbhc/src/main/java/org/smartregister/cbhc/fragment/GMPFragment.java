@@ -427,7 +427,7 @@ public class GMPFragment extends BaseProfileFragment implements WeightActionList
         Log.v("SHOW_GMP","text>>"+text);
         String dialogMessage = getDialogMessageByType(text,type);
         Dialog dialog = new Dialog(mActivity);
-        dialog.setCancelable(false);
+        dialog.setCancelable(true);
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog.setContentView(R.layout.dialog_with_one_button);
         TextView titleTv = dialog.findViewById(R.id.title_tv);
@@ -443,7 +443,7 @@ public class GMPFragment extends BaseProfileFragment implements WeightActionList
                 dialog.dismiss();
             }
         });
-        dialog.show();
+        if(!dialogMessage.isEmpty())dialog.show();
 
     }
     private String getDialogMessageByType(String text, int type){

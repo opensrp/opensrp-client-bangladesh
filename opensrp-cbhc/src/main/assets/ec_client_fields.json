@@ -563,6 +563,13 @@
           }
         },
         {
+          "column_name": "member_birth_date_known",
+          "type": "Client",
+          "json_mapping": {
+            "field": "attributes.member_birth_date_known"
+          }
+        },
+        {
           "column_name": "Disease_Below_2Month_Age",
           "type": "Client",
           "json_mapping": {

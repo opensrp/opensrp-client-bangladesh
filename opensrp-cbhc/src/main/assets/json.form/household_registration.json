@@ -76,13 +76,13 @@
         "openmrs_entity_id": "",
         "openmrs_data_type": "text",
         "type": "edit_text",
-        "hint": "বর্তমান ঠিকানা",
+        "hint": "বর্তমান ঠিকানা(বাংলায়)",
         "v_regex": {
           "value": "[^A-Za-z0-9]*",
           "err": "বাংলায় লিখুন"
         },
         "v_required": {
-          "value": true,
+          "value": false,
           "err": "Please type address"
         }
       },
@@ -97,9 +97,9 @@
           "value": "[^A-Za-z0-9]{1,40}$",
           "err": "৪০ অক্ষরের ভিতরে বাংলায় লিখুন"
         },
-        "hint": "ডাকঘর",
+        "hint": "ডাকঘর(বাংলায়)",
         "v_required": {
-          "value": true,
+          "value": false,
           "err": "Please enter post office"
         }
       },
@@ -156,14 +156,14 @@
         "openmrs_data_type": "text",
         "type": "edit_text",
         "v_required": {
-          "value": true,
+          "value": false,
           "err": "Please enter village"
         },
         "v_regex": {
           "value": "[^A-Za-z0-9]{1,40}$",
           "err": "৪০ অক্ষরের ভিতরে বাংলায় লিখুন"
         },
-        "hint": "গ্রাম",
+        "hint": "গ্রাম(বাংলায়)",
         "relevance": {
           "step1:is_permanent_address": {
             "type": "string",
@@ -178,9 +178,9 @@
         "openmrs_entity_id": "postOfficePermanent",
         "openmrs_data_type": "text",
         "type": "edit_text",
-        "hint": "ডাকঘর (স্থায়ী)",
+        "hint": "ডাকঘর স্থায়ী(বাংলায়)",
         "v_required": {
-          "value": true,
+          "value": false,
           "err": "৪০ অক্ষরের ভিতরে বাংলায় লিখুন"
         },
         "v_regex": {
@@ -208,7 +208,7 @@
         "openmrs_entity": "person",
         "openmrs_entity_id": "first_name",
         "type": "edit_text",
-        "hint": "পরিবারের প্রধানের নাম এর \nপ্রথম অংশ",
+        "hint": "পরিবারের প্রধানের নাম এর \nপ্রথম অংশ (ইংরেজীতে)",
         "edit_type": "name",
         "v_regex": {
           "value": "[A-Za-z .]*",
@@ -225,7 +225,7 @@
         "openmrs_entity": "person",
         "openmrs_entity_id": "last_name",
         "type": "edit_text",
-        "hint": "পরিবারের প্রধানের নাম এর \nশেষ অংশ",
+        "hint": "পরিবারের প্রধানের নাম এর \nশেষ অংশ (ইংরেজীতে)",
         "edit_type": "name",
         "v_required": {
           "value": true,
@@ -368,7 +368,7 @@
           "err": "Must Contain Numeric Value"
         },
         "v_required": {
-          "value": true,
+          "value": false,
           "err": "Please enter member count"
         }
       },
@@ -381,7 +381,7 @@
         "type": "edit_text",
         "hint": "পরিবারের গুরুত্বপূর্ণ মোবাইল নম্বর ",
         "v_required": {
-          "value": true,
+          "value": false,
           "err": "Enter 11 digits Mobile Number."
         },
         "v_numeric": {
@@ -420,7 +420,7 @@
           "পাকা" : "Concrete"
         },
         "v_required": {
-          "value": "true",
+          "value": "false",
           "err": "Please answer the question"
         }
       },
@@ -449,7 +449,7 @@
           "অন্যান্য": "Latrine_others"
         },
         "v_required": {
-          "value": "true",
+          "value": "false",
           "err": "Please answer the question"
         }
       },
@@ -461,7 +461,7 @@
         "type": "edit_text",
         "hint": "অন্যান্য ধরনের ল্যাট্রিন",
         "v_required": {
-          "value": true,
+          "value": false,
           "err": "Please Type Latrin Type"
         },
         "relevance": {
@@ -502,7 +502,7 @@
           "অন্যান্য" : "Others_water_source"
         },
         "v_required": {
-          "value": "true",
+          "value": "false",
           "err": "Please answer the question"
         }
       },
@@ -514,7 +514,7 @@
         "type": "edit_text",
         "hint": "অন্যান্য পানির উৎস",
         "v_required": {
-          "value": true,
+          "value": false,
           "err": "Please Type Water Source"
         },
         "relevance": {
@@ -550,7 +550,7 @@
 
         },
         "v_required": {
-          "value": "true",
+          "value": "false",
           "err": "Please answer the question"
         }
       },
@@ -562,7 +562,7 @@
         "type": "edit_text",
         "hint": "আর্থিক অবস্থা অন্যান্য",
         "v_required": {
-          "value": true,
+          "value": false,
           "err": "Please Type Financial Status"
         },
         "relevance": {
@@ -581,7 +581,7 @@
         "type": "edit_text",
         "hint": "পরিবারের আনুমানিক মাসিক \nব্যয় কত? (টাকা) ",
         "v_required": {
-          "value": "true",
+          "value": "false",
           "err": "Please enter the amount"
         },
         "v_regex": {
@@ -628,7 +628,7 @@
           "অন্যান্য":"Others_Health_Facility"
         },
         "v_required": {
-          "value": "true",
+          "value": "false",
           "err": "Please answer the question"
         }
       },
@@ -640,7 +640,7 @@
         "type": "edit_text",
         "hint": "অন্যান্য স্বাস্থ্য সেবা কেন্দ্র",
         "v_required": {
-          "value": true,
+          "value": false,
           "err": "Please Type Facility Name"
         },
         "relevance": {
@@ -673,7 +673,7 @@
           "৩ কিলোমিটারের বেশী":"More_Than_3_KM"
         },
         "v_required": {
-          "value": "true",
+          "value": "false",
           "err": "Please answer the question"
         }
       },
@@ -718,7 +718,7 @@
           "অন্যান্য":"thers_Family_Health_Center"
         },
         "v_required": {
-          "value": "true",
+          "value": "false",
           "err": "Please answer the question"
         }
       },
@@ -730,7 +730,7 @@
         "type": "edit_text",
         "hint": "অন্যান্য স্বাস্থ্য সেবা কেন্দ্র",
         "v_required": {
-          "value": true,
+          "value": false,
           "err": "Please Type Facility Name"
         },
         "v_regex": {
@@ -752,7 +752,7 @@
         "type": "edit_text",
         "hint": "আপনার নিকটবর্তী কমিউনিটি \nক্লিনিকটির নাম কি?",
         "v_required": {
-          "value": "true",
+          "value": "false",
           "err": "Please enter the value"
         }
       },
@@ -779,7 +779,7 @@
           "৩ কিলোমিটারের বেশী":"More_Than_3_KM"
         },
         "v_required": {
-          "value": "true",
+          "value": "false",
           "err": "Please answer the question"
         }
       },
@@ -791,7 +791,7 @@
         "type": "edit_text",
         "hint": "তথ্য প্রদানকারীর নামঃ",
         "v_required": {
-          "value": "true",
+          "value": "false",
           "err": "Please enter the value"
         }
       },

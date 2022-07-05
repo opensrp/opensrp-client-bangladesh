@@ -6,8 +6,11 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.view.Gravity;
+import android.view.View;
 import android.widget.TextView;
 
 import org.opensrp.api.constants.Gender;
@@ -50,11 +53,18 @@ public class GrowthReportActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.report_detail_activity_simple_tabs);
-        ((TextView)findViewById(R.id.title)).setText(R.string.report);
 
 
         tabLayout = (TabLayout) findViewById(R.id.tabs);
-//        getSupportActionBar().
+        Toolbar toolbar = findViewById(R.id.collapsing_toolbar);
+        setSupportActionBar(toolbar);
+
+        ActionBar actionBar = getSupportActionBar();
+        if (actionBar != null) {
+            actionBar.setDisplayHomeAsUpEnabled(true);
+            actionBar.setTitle(R.string.report);
+            toolbar.setNavigationOnClickListener(v -> finish());
+        }
 
         viewPager = (ViewPager) findViewById(R.id.viewpager);
 //        viewPager.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {

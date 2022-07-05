@@ -768,7 +768,7 @@
         "openmrs_data_type": "text",
         "type": "edit_text",
         "look_up": "true",
-        "hint": "জন্মস্থান (জেলা)",
+        "hint": "জন্মস্থান (জেলা)(ইংরেজীতে)",
         "v_regex": {
           "value": "[A-Za-z0-9,() ]*",
           "err": "Please select from the list"
@@ -962,7 +962,7 @@
         "openmrs_entity": "person_attribute",
         "openmrs_entity_id": "education_other",
         "type": "edit_text",
-        "hint": "অন্যান্য শিক্ষাগত যোগ্যতা",
+        "hint": "অন্যান্য শিক্ষাগত যোগ্যতা(ইংরেজীতে)",
         "v_required": {
           "value": true,
           "err": "Please Type Other Qualification"
@@ -1321,7 +1321,7 @@
         "openmrs_entity": "",
         "openmrs_entity_id": "",
         "type": "edit_text",
-        "hint": "অন্যান্য ধর্ম",
+        "hint": "অন্যান্য ধর্ম(ইংরেজীতে)",
         "v_required": {
           "value": true,
           "err": "Please Type Other Religion"
@@ -1884,7 +1884,7 @@
         "openmrs_entity": "",
         "openmrs_entity_id": "",
         "type": "edit_text",
-        "hint": "অন্যান্য রোগ বা অবস্থা",
+        "hint": "অন্যান্য রোগ বা অবস্থা(ইংরেজীতে)",
         "v_required": {
           "value": true,
           "err": "Please Type Other disease"
