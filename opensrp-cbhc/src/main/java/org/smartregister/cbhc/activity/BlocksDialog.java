@@ -1,18 +1,24 @@
 package org.smartregister.cbhc.activity;
 
 import android.app.Activity;
+import android.content.ActivityNotFoundException;
 import android.content.ContentValues;
 import android.content.Context;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Typeface;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.support.v7.app.AlertDialog;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.CompoundButton;
+import android.widget.ProgressBar;
 
 import com.rey.material.widget.CheckBox;
 import com.rey.material.widget.TextView;
@@ -46,12 +52,14 @@ public class BlocksDialog extends Activity implements View.OnClickListener,Compo
     private static final String WARD_SUBMIT_URL = "";
     private HTTPAgent httpAgent;
     ViewGroup blocklist;
+    ProgressBar progressBar;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 //        requestWindowFeature(Window.FEATURE_ACTION_BAR);
         setContentView(R.layout.blockselectiondialog);
         blocklist = findViewById(R.id.blockslist);
+        progressBar = findViewById(R.id.progress_bar);
         findViewById(R.id.submitblocks).setOnClickListener(this);
 //        getActionBar().setTitle("");
 //        getActionBar().setDisplayHomeAsUpEnabled(false);
@@ -256,6 +264,12 @@ public class BlocksDialog extends Activity implements View.OnClickListener,Compo
         final String fblocks = BLOCKS.replaceAll(" ","%20");
         Utils.startAsyncTask(new AsyncTask() {
             @Override
+            protected void onPreExecute() {
+                super.onPreExecute();
+                progressBar.setVisibility(View.VISIBLE);
+            }
+
+            @Override
             protected Object doInBackground(Object[] objects) {
                 submitBlocks(fblocks);
                 return null;
@@ -264,8 +278,8 @@ public class BlocksDialog extends Activity implements View.OnClickListener,Compo
             @Override
             protected void onPostExecute(Object o) {
                 super.onPostExecute(o);
-                finish();
-//                setupViews(blocklist);
+                progressBar.setVisibility(View.GONE);
+                showAlertDialog();
             }
         },null);
 
@@ -299,6 +313,20 @@ public class BlocksDialog extends Activity implements View.OnClickListener,Compo
 //            e.printStackTrace();
 //        }
 //        return BLOCKS;
+    }
+
+    private void showAlertDialog() {
+        AlertDialog.Builder downloadDialog = new AlertDialog.Builder(BlocksDialog.this, R.style.AncAlertDialog);
+        downloadDialog.setTitle(" ব্লক আপডেট করা হয়েছে !!!");
+        downloadDialog.setMessage("অনুগ্রহ করে আবার লগইন করুন ");
+        downloadDialog.setPositiveButton("ঠিক আছে", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                AncApplication.getInstance().forcelogoutCurrentUser();
+                finish();
+            }
+        });
+        downloadDialog.show();
     }
 
     public static DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");

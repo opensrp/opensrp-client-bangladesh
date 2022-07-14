@@ -731,7 +731,11 @@ public class AncJsonFormFragment extends JsonFormFragment {
                                 CommonRepository commonRepository = AncApplication.getInstance().getContext().commonrepository("ec_household");
                                 CommonPersonObject household = commonRepository.findByBaseEntityId(relational_id);
                                 if (RegisterProvider.memberCountHashMap != null)
-                                    RegisterProvider.memberCountHashMap.remove(household.getCaseId());
+                                    try{
+                                        RegisterProvider.memberCountHashMap.remove(household.getCaseId());
+                                    }catch (Exception e){
+
+                                    }
                             }
                         }
                     } catch (JSONException e) {

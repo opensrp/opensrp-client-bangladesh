@@ -150,7 +150,12 @@ public class MembersAdapter extends RecyclerView.Adapter<MembersAdapter.Holder> 
                     if (content.getpClient().entityId() != null) {//image already in local storage most likey ):
                         //set profile image by passing the client id.If the image doesn't exist in the image org.smartregister.cbhc.repository then download and save locally
                         holder.profileImage.setTag(org.smartregister.R.id.entity_id, content.getpClient().entityId());
-
+                        if(content.getPregnancyStatus().equalsIgnoreCase("Antenatal Period")){
+                            holder.smallImg.setVisibility(View.VISIBLE);
+                            holder.smallImg.setImageResource(R.drawable.pregnant_woman);
+                        }else{
+                            holder.smallImg.setVisibility(View.INVISIBLE);
+                        }
                         DrishtiApplication.getCachedImageLoaderInstance().getImageByClientId(content.getpClient().entityId(), OpenSRPImageLoader.getStaticImageListener( holder.profileImage, R.drawable.women_cbhc_placeholder, R.drawable.women_cbhc_placeholder));
 
                     }

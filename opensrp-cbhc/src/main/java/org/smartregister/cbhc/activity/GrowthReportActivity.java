@@ -144,9 +144,9 @@ public class GrowthReportActivity extends AppCompatActivity {
         adapter = new ViewPagerAdapter(getSupportFragmentManager());
 
        // adapter.addFragment(new KeyAchievementFragment(), "Key Achievement");
-        adapter.addFragment(new ReportFragment(), "Report");
+        adapter.addFragment(new ReportFragment(), getString(R.string.report));
        // adapter.addFragment(new ReportGeoMapFragment(), "Geo Map");
-        adapter.addFragment(new ReportGrowthFalterFragment(), "Growth Faltering Trend");
+        adapter.addFragment(new ReportGrowthFalterFragment(), getString(R.string.grow_filter));
         viewPager.setAdapter(adapter);
     }
 

@@ -102,8 +102,11 @@ public class ProfileActivity extends BaseProfileActivity implements ProfileContr
             Serializable serializable = extras.getSerializable(EXTRA_HOUSEHOLD_DETAILS);
             if (serializable != null && serializable instanceof CommonPersonObjectClient) {
                 householdDetails = (CommonPersonObjectClient) serializable;
-                if(RegisterProvider.memberCountHashMap.containsKey(householdDetails.entityId()))
-                RegisterProvider.memberCountHashMap.remove(householdDetails.entityId());
+                try{
+                    RegisterProvider.memberCountHashMap.remove(householdDetails.entityId());
+                }catch (Exception e){
+
+                }
             }
         }
         setUpViews();

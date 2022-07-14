@@ -59,7 +59,7 @@ public class ChildListFragment extends Fragment implements ChildListContract.Vie
     //TODO need to remove this query
     private final String selectQuery = "Select child.id as _id , child.relationalid , child.Patient_Identifier, child.first_name , child.last_name , child.dob ,child.gender, child.PregnancyStatus, child.tasks, child.relation_with_household as relation, child.age as age, NULL as MaritalStatus, child.camp_type, " +
             "child.child_weight,child.child_height,child.child_muac,child.muac_status,child.weight_status,child.height_status,child.last_vaccine_date,child.last_vaccine_name " +
-            "FROM ec_child as child where child.dob > DATE('"+FIVE_YEAR+"')";
+            "FROM ec_child as child inner join ec_household on ec_household.base_entity_id = child.relational_id  where child.dob > DATE('"+FIVE_YEAR+"')";
     //private Childl
 
     public ChildListFragment() {

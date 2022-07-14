@@ -253,7 +253,7 @@
         "openmrs_entity_id": "camp_type",
         "openmrs_data_type": "text",
         "type": "edit_text",
-        "hint": "",
+        "hint": "ক্যাম্পেইন টাইপ",
         "read_only": "true"
       },
       {
@@ -697,10 +697,6 @@
           "value": "[A-Za-z .]*",
           "err": "Please Enter a Valid Name"
         },
-        "v_required": {
-          "value": true,
-          "err": "Please enter spouse name"
-        },
         "relevance": {
           "step1:marital_status": {
             "type": "string",
@@ -719,10 +715,6 @@
         "v_regex": {
           "value": "[^A-Za-z0-9]*",
           "err": "Please enter a valid name"
-        },
-        "v_required": {
-          "value": false,
-          "err": "Please enter spouse name"
         },
         "relevance": {
           "step1:marital_status": {
@@ -786,10 +778,6 @@
           "হ্যাঁ",
           "না"
         ],
-        "v_required": {
-          "value": true,
-          "err": "Please Select Diability"
-        },
         "openmrs_choice_ids": {
           "হ্যাঁ": "Yes",
           "না": "No"
@@ -871,10 +859,6 @@
           "ম্রো": "Mro",
           "মুন্ডা": "Munda",
           "অন্যান্য": "Others (Ethnicity)"
-        },
-        "v_required": {
-          "value": true,
-          "err": "Please Select Ethnicity"
         }
       },
       {
@@ -884,10 +868,6 @@
         "openmrs_entity_id": "",
         "type": "edit_text",
         "hint": "অন্যান্য জাতিসত্তা",
-        "v_required": {
-          "value": true,
-          "err": "Please Type Other Ethnicity"
-        },
         "relevance": {
           "step1:ethnicity": {
             "type": "string",
@@ -963,10 +943,6 @@
         "openmrs_entity_id": "education_other",
         "type": "edit_text",
         "hint": "অন্যান্য শিক্ষাগত যোগ্যতা(ইংরেজীতে)",
-        "v_required": {
-          "value": true,
-          "err": "Please Type Other Qualification"
-        },
         "relevance": {
           "step1:educational_qualification": {
             "type": "string",
@@ -1309,10 +1285,6 @@
           "বৌদ্ধ": "Buddhist",
           "খ্রিস্টান": "Christian",
           "অন্যান্য": "Others (Religion)"
-        },
-        "v_required": {
-          "value": true,
-          "err": "Please Select Religion"
         }
       },
       {
@@ -1322,10 +1294,6 @@
         "openmrs_entity_id": "",
         "type": "edit_text",
         "hint": "অন্যান্য ধর্ম(ইংরেজীতে)",
-        "v_required": {
-          "value": true,
-          "err": "Please Type Other Religion"
-        },
         "relevance": {
           "step1:religion": {
             "type": "string",
@@ -1362,10 +1330,6 @@
           "AB+": "AB+",
           "AB-": "AB-",
           "রক্তের গ্রুপ জানা নেই": "BloodGroupUnknown"
-        },
-        "v_required": {
-          "value": true,
-          "err": "Please Select Blood Group"
         }
       },
       {
@@ -1383,10 +1347,6 @@
         "openmrs_choice_ids": {
           "হ্যাঁ": "Yes",
           "না": "No"
-        },
-        "v_required": {
-          "value": true,
-          "err": "Please Select Disease"
         }
       },
       {
@@ -2099,7 +2059,7 @@
         "openmrs_entity": "person_attribute",
         "openmrs_entity_id": "member_photo",
         "type": "choose_image",
-        "uploadButtonText": "ছবি তুলুন*",
+        "uploadButtonText": "ছবি তুলুন",
         "v_required": {
           "value": false,
           "err": "Please take household picture"

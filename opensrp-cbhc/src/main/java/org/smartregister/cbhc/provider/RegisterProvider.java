@@ -313,44 +313,6 @@ public class RegisterProvider implements RecyclerViewProvider<RegisterProvider.R
         return new RegisterViewHolder(view);
     }
 
-    private void populateMemberCountColumn(MemberCount mc, RegisterViewHolder viewHolder) {
-
-        TextView countView = viewHolder.memberCount;
-        TextView femalechildcount = viewHolder.femalechild;
-        TextView malechildcount = viewHolder.malechild;
-        TextView pregnantcountView = viewHolder.pregnantcount;
-
-        ImageView femalechildpresent = viewHolder.femalepresent;
-        ImageView malechildpresent = viewHolder.malepresent;
-        ImageView pregnantpresent = viewHolder.pregnantpresent;
-
-        countView.setText("Members: " + mc.memberCount);
-        if (mc.femaleChildCount > 0) {
-            femalechildcount.setVisibility(View.VISIBLE);
-            femalechildpresent.setVisibility(View.VISIBLE);
-            femalechildcount.setText("" + mc.femaleChildCount);
-        } else {
-            femalechildcount.setVisibility(View.GONE);
-            femalechildpresent.setVisibility(View.GONE);
-        }
-        if (mc.maleChildCount > 0) {
-            malechildcount.setVisibility(View.VISIBLE);
-            malechildpresent.setVisibility(View.VISIBLE);
-            malechildcount.setText("" + mc.maleChildCount);
-        } else {
-            malechildcount.setVisibility(View.GONE);
-            malechildpresent.setVisibility(View.GONE);
-        }
-        if (mc.pregnantCount > 0) {
-            pregnantcountView.setVisibility(View.VISIBLE);
-            pregnantpresent.setVisibility(View.VISIBLE);
-            pregnantcountView.setText("" + mc.pregnantCount);
-        } else {
-            pregnantcountView.setVisibility(View.GONE);
-            pregnantpresent.setVisibility(View.GONE);
-        }
-
-    }
 
     @Override
     public RecyclerView.ViewHolder createFooterHolder(ViewGroup parent) {
@@ -448,7 +410,7 @@ public class RegisterProvider implements RecyclerViewProvider<RegisterProvider.R
             }
             try {
                 cursor = AncApplication.getInstance().getContext().commonrepository("ec_child").rawCustomQueryForAdapter("Select Count(*) from ec_child where relational_id = '" + pc.getCaseId() + "'"
-                        + " and ec_child.id in (Select base_entity_id from ec_child gender = 'F') and date_removed IS NULL;"
+                        + " and ec_child.id in (Select base_entity_id from ec_child where gender = 'F') and date_removed IS NULL;"
                 );
                 cursor.moveToFirst();
                 femalechild = femalechild + Integer.parseInt(cursor.getString(0));

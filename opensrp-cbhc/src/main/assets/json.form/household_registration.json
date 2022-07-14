@@ -584,10 +584,6 @@
           "value": "false",
           "err": "Please enter the amount"
         },
-        "v_regex": {
-          "value": "^\\d{1,6}$",
-          "err": "must be greater than 0 and less than 9999999"
-        },
         "v_numeric": {
           "value": "true",
           "err": "Enter a valid amount"

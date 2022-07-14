@@ -413,7 +413,7 @@ public class AncApplication extends DrishtiApplication implements TimeChangedBro
     public void forcelogoutCurrentUser() {
         getContext().userService().getAllSharedPreferences().saveForceRemoteLogin(true);
         org.smartregister.cbhc.helper.LocationHelper.setInstance(null);
-        logoutCurrentUser();
+        logoutUser();
         System.exit(0);
     }
 }
