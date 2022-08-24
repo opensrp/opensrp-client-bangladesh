@@ -137,7 +137,7 @@ public class LoginActivity extends AppCompatActivity {
 
         }
 
-        setContentView(R.layout.login);
+        setContentView(R.layout.login_new);
 
         getSupportActionBar().setDisplayShowTitleEnabled(false);
         getSupportActionBar().setBackgroundDrawable(new ColorDrawable(getResources().getColor(android.R.color.black)));
