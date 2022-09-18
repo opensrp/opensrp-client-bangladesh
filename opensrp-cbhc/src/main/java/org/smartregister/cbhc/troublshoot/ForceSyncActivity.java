@@ -243,7 +243,11 @@ public class ForceSyncActivity extends SecuredActivity implements SyncStatusBroa
     }
     @Override
     public void onDestroy() {
-        SyncStatusBroadcastReceiver.getInstance().removeSyncStatusListener(this);
+        try{
+            SyncStatusBroadcastReceiver.getInstance().removeSyncStatusListener(this);
+        }catch (Exception e){
+
+        }
         if(invalidDataBroadcastReceiver!=null)unregisterReceiver(invalidDataBroadcastReceiver);
         super.onDestroy();
     }

@@ -124,7 +124,7 @@ public abstract class BaseRegisterActivity extends SecuredNativeSmartRegisterAct
     private void registerBottomNavigation() {
         bottomNavigationHelper = new BottomNavigationHelper();
         bottomNavigationView = findViewById(R.id.bottom_navigation);
-        if (bottomNavigationView != null) {
+        //if (bottomNavigationView != null) {
             bottomNavigationView.getMenu().add(Menu.NONE, R.string.action_me, Menu.NONE, "Profile")
                     .setIcon(bottomNavigationHelper
                             .writeOnDrawable(R.drawable.initials_background, userInitials, getResources()));
@@ -132,7 +132,7 @@ public abstract class BaseRegisterActivity extends SecuredNativeSmartRegisterAct
 
             BottomNavigationListener bottomNavigationListener = new BottomNavigationListener(this);
             bottomNavigationView.setOnNavigationItemSelectedListener(bottomNavigationListener);
-        }
+        //}
 
     }
 

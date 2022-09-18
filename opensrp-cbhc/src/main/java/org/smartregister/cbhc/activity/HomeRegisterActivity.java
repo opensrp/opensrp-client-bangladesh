@@ -56,13 +56,10 @@ public class HomeRegisterActivity extends BaseRegisterActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        try {
+
             super.onCreate(savedInstanceState);
             notificationBroadcastReceiver = new NotificationBroadcastReceiver();
-        } catch (Exception e) {
-            Utils.appendLog(getClass().getName(), e);
-            Log.e(TAG, e.getMessage());
-        }
+
 
     }
 
@@ -77,7 +74,7 @@ public class HomeRegisterActivity extends BaseRegisterActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        unregisterReceiver(notificationBroadcastReceiver);
+        if(notificationBroadcastReceiver!=null)unregisterReceiver(notificationBroadcastReceiver);
     }
 
     @Override

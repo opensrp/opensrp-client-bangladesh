@@ -804,7 +804,7 @@ public abstract class BaseRegisterFragment extends RecyclerViewFragment implemen
                 try {
                     AncRepository repo = (AncRepository) AncApplication.getInstance().getRepository();
                     SQLiteDatabase db = repo.getReadableDatabase();
-                    Cursor cursor = db.rawQuery("SELECT * FROM event WHERE syncStatus='Unsynced'", new String[]{});
+                    Cursor cursor = db.rawQuery("SELECT * FROM event WHERE syncStatus='Unsynced' or syncStatus='unprocessed'", new String[]{});
                     if (cursor != null && cursor.getCount() > 0) {
                         count = cursor.getCount();
                     }

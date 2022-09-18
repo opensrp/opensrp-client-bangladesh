@@ -159,7 +159,11 @@ public class LoginActivity extends AppCompatActivity implements LoginContract.Vi
             userNameEditText.setText(anm_name);
         }
         if(BuildConfig.DEBUG){
-            userNameEditText.setText("cc10019030@mhv.101");
+//            userNameEditText.setText("cc10019030@mhv.101");
+//            passwordEditText.setText("123456");
+//            userNameEditText.setText("cc10012243@mhv.01");
+//            passwordEditText.setText("01738858807");
+            userNameEditText.setText("cc10008554@mhv.7");
             passwordEditText.setText("123456");
         }
     }

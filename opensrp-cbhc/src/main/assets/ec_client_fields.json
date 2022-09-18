@@ -193,7 +193,7 @@
           "column_name": "person_nid",
           "type": "Client",
           "json_mapping": {
-            "field": "attributes.nationalId"
+            "field": "attributes.person_nid"
           }
         },
         {
@@ -1531,7 +1531,7 @@
           "column_name": "person_nid",
           "type": "Client",
           "json_mapping": {
-            "field": "attributes.nationalId"
+            "field": "attributes.person_nid"
           }
         },
         {
