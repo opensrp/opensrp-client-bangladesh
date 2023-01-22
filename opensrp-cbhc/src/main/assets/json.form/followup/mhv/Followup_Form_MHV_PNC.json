@@ -69,126 +69,306 @@
         }
       },
       {
-        "key": "Number_Of_PNC_Service",
-        "openmrs_entity_parent": "",
-        "openmrs_entity": "",
-        "openmrs_entity_id": "Number_Of_PNC_Service",
-        "openmrs_data_type": "text",
-        "type": "edit_text",
-        "hint": "সেবার সংখ্যা ",
-        "v_numeric": {
-          "value": "true",
-          "err": "Enter numeric values only"
-        },
-        "v_required": {
-          "value": true,
-          "err": "Please enter the number of Service Received."
-        }
-      },
-      {
-        "key": "Service_Received_Date",
-        "openmrs_entity_parent": "",
-        "openmrs_entity": "",
-        "openmrs_entity_id": "Service_Received_Date",
-        "openmrs_data_type": "text",
-        "type": "date_picker",
-        "hint": "সর্বশেষ সেবার তারিখ ",
-        "expanded": false,
-        "v_required": {
-          "value": "false",
-          "err": "Please enter the date of Service Received."
-        },
-        "relevance": {
-          "step1:Number_Of_PNC_Service": {
-            "type": "numeric",
-            "ex": "greaterThanEqualTo(., \"1\")"
-          }
-        }
-      },
-      {
-        "key":"Place_of_Service",
+        "key":"Systolic_pnc",
         "openmrs_entity_parent":"",
         "openmrs_entity":"",
-        "openmrs_entity_id":"Place_of_Service",
+        "openmrs_entity_id":"Systolic_pnc",
         "openmrs_data_type":"text",
-        "type":"spinner",
-        "hint":"সেবার স্থান",
-        "values":[
-          "কমিউনিটি ক্লিনিক",
-          "ইউনিয়ন উপস্বাস্থ্য কেন্দ্র",
-          "ইউনিয়ন পরিবার কল্যাণ কেন্দ্র",
-          "ইউনিয়ন স্বাস্থ্য ও পরিবার কল্যাণ কেন্দ্র",
-          "মা ও শিশু কল্যাণ কেন্দ্র",
-          "১০ শয্যা বিশিষ্ট হাসপাতাল",
-          "২০ শয্যা বিশিষ্ট হাসপাতাল",
-          "উপজেলা স্বাস্থ্য কমপ্লেক্স",
-          "সদর হাসপাতাল",
-          "মেডিকেল কলেজ হাসপাতাল",
-          "বেসরকারী ক্লিনিক/হাসপাতাল",
-          "এনজিও",
-          "বিশেষায়িত হাসপাতাল",
-          "অন্যান্য"
-        ],
-        "openmrs_choice_ids":{
-          "কমিউনিটি ক্লিনিক":"Community_Clinic",
-          "ইউনিয়ন উপস্বাস্থ্য কেন্দ্র":"Union_Sub_Center",
-          "ইউনিয়ন পরিবার কল্যাণ কেন্দ্র":"Union_Family_Welfare_Center",
-          "ইউনিয়ন স্বাস্থ্য ও পরিবার কল্যাণ কেন্দ্র":"Union_Health_and_Family_Welfare_Center",
-          "মা ও শিশু কল্যাণ কেন্দ্র":"Metarnal_and_Child_Wellfare_Center",
-          "১০ শয্যা বিশিষ্ট হাসপাতাল":"10_Bed_Hospital",
-          "২০ শয্যা বিশিষ্ট হাসপাতাল":"20_Beds_Hospital",
-          "উপজেলা স্বাস্থ্য কমপ্লেক্স":"Upazila_Health_Complex",
-          "সদর হাসপাতাল":"District_Hospital",
-          "মেডিকেল কলেজ হাসপাতাল":"Medical_College_and_Hospital",
-          "বেসরকারী ক্লিনিক/হাসপাতাল":"Private_Clinic_and_Hospital",
-          "এনজিও":"Non-governmental_Organization",
-          "বিশেষায়িত হাসপাতাল":"Specialized_Hospital",
-          "অন্যান্য":"Others_Health_Facility"
+        "type":"edit_text",
+        "hint":"আপনার সিস্টোলিক রক্তচাপ",
+        "v_numeric":{
+          "value":"true",
+          "err":"Enter a valid Number"
         },
-        "relevance":{
-          "step1:Number_Of_PNC_Service":{
-            "type":"numeric",
-            "ex":"greaterThanEqualTo(., \"1\")"
-          }
+        "v_max": {
+          "value": "400",
+          "err": "400 এর কম হওয়া উচিত"
         }
       },
       {
-        "key":"Place_of_Refer",
+        "key":"diastolic_pnc",
         "openmrs_entity_parent":"",
-        "openmrs_entity":"concept",
-        "openmrs_entity_id":"ec28ec95-0f6a-4910-8efc-c2925f9b36b1",
+        "openmrs_entity":"",
+        "openmrs_entity_id":"diastolic_pnc",
         "openmrs_data_type":"text",
-        "type":"spinner",
-        "hint":"রেফারের স্থান",
-        "values":[
-          "কমিউনিটি ক্লিনিক",
-          "ইউনিয়ন উপস্বাস্থ্য কেন্দ্র",
-          "ইউনিয়ন পরিবার কল্যাণ কেন্দ্র",
-          "ইউনিয়ন স্বাস্থ্য ও পরিবার কল্যাণ কেন্দ্র",
-          "মা ও শিশু কল্যাণ কেন্দ্র",
-          "১০ শয্যা বিশিষ্ট হাসপাতাল",
-          "২০ শয্যা বিশিষ্ট হাসপাতাল",
-          "উপজেলা স্বাস্থ্য কমপ্লেক্স",
-          "সদর হাসপাতাল",
-          "মেডিকেল কলেজ হাসপাতাল",
-          "বিশেষায়িত হাসপাতাল",
-          "অন্যান্য",
-          "রেফার করা হয়নি"
+        "type":"edit_text",
+        "hint":"আপনার ডায়াস্টোলিক রক্তচাপ",
+        "v_numeric":{
+          "value":"true",
+          "err":"Enter a valid Number"
+        },
+        "v_max": {
+          "value": "400",
+          "err": "400 এর কম হওয়া উচিত"
+        }
+      },
+      {
+        "key": "Clinical_Anemia_pnc",
+        "openmrs_entity_parent": "",
+        "openmrs_entity": "",
+        "openmrs_entity_id": "Clinical_Anemia_pnc",
+        "openmrs_data_type": "",
+        "type": "spinner",
+        "hint": "আপনার ক্লিনিকাল রক্তসল্পতা আছে?",
+        "values": [
+          "হ্যাঁ",
+          "না"
         ],
-        "openmrs_choice_ids":{
-          "কমিউনিটি ক্লিনিক":"Community_Clinic",
-          "ইউনিয়ন উপস্বাস্থ্য কেন্দ্র":"Union_Sub_Center",
-          "ইউনিয়ন পরিবার কল্যাণ কেন্দ্র":"Union_Family_Welfare_Center",
-          "ইউনিয়ন স্বাস্থ্য ও পরিবার কল্যাণ কেন্দ্র":"Union_Health_and_Family_Welfare_Center",
-          "মা ও শিশু কল্যাণ কেন্দ্র":"Metarnal_and_Child_Wellfare_Center",
-          "১০ শয্যা বিশিষ্ট হাসপাতাল":"10_Bed_Hospital",
-          "২০ শয্যা বিশিষ্ট হাসপাতাল":"20_Beds_Hospital",
-          "উপজেলা স্বাস্থ্য কমপ্লেক্স":"Upazila_Health_Complex",
-          "সদর হাসপাতাল":"District_Hospital",
-          "মেডিকেল কলেজ হাসপাতাল":"Medical_College_and_Hospital",
-          "বিশেষায়িত হাসপাতাল":"Specialized_Hospital",
-          "অন্যান্য":"Others_Health_Facility",
-          "রেফার করা হয়নি":"Not_referred"
+        "openmrs_choice_ids": {
+          "হ্যাঁ": "Yes",
+          "না": "No"
+        }
+      },
+      {
+        "key": "pph_pnc",
+        "openmrs_entity_parent": "",
+        "openmrs_entity": "",
+        "openmrs_entity_id": "pph_pnc",
+        "openmrs_data_type": "",
+        "type": "spinner",
+        "hint": "আপনার প্রসবোত্তর রক্তক্ষরণের হয়েছে?",
+        "values": [
+          "হ্যাঁ",
+          "না"
+        ],
+        "openmrs_choice_ids": {
+          "হ্যাঁ": "Yes",
+          "না": "No"
+        }
+      },
+      {
+        "key": "Post_partum_eclampsia",
+        "openmrs_entity_parent": "",
+        "openmrs_entity": "",
+        "openmrs_entity_id": "Post_partum_eclampsia",
+        "openmrs_data_type": "",
+        "type": "spinner",
+        "hint": "আপনার প্রসবোত্তর খিচুনী হয়েছে?",
+        "values": [
+          "হ্যাঁ",
+          "না"
+        ],
+        "openmrs_choice_ids": {
+          "হ্যাঁ": "Yes",
+          "না": "No"
+        }
+      },
+      {
+        "key": "Peurperal_Sepsis",
+        "openmrs_entity_parent": "",
+        "openmrs_entity": "",
+        "openmrs_entity_id": "Peurperal_Sepsis",
+        "openmrs_data_type": "",
+        "type": "spinner",
+        "hint": "আপনার প্রসবোত্তর কোনো প্রকার সংক্রমণ হয়েছে?",
+        "values": [
+          "হ্যাঁ",
+          "না"
+        ],
+        "openmrs_choice_ids": {
+          "হ্যাঁ": "Yes",
+          "না": "No"
+        }
+      },
+      {
+        "key": "VV_fistula_RV_fistula",
+        "openmrs_entity_parent": "",
+        "openmrs_entity": "",
+        "openmrs_entity_id": "VV_fistula_RV_fistula",
+        "openmrs_data_type": "",
+        "type": "spinner",
+        "hint": "আপনি ভিভি ফিস্টুলা/আরভি ফিস্টুলা দ্বারা সংক্রমিত হয়েছেন?",
+        "values": [
+          "হ্যাঁ",
+          "না"
+        ],
+        "openmrs_choice_ids": {
+          "হ্যাঁ": "Yes",
+          "না": "No"
+        }
+      },
+      {
+        "key": "Counselling_on_Family_planning_services",
+        "openmrs_entity_parent": "",
+        "openmrs_entity": "",
+        "openmrs_entity_id": "Counselling_on_Family_planning_services",
+        "openmrs_data_type": "",
+        "type": "spinner",
+        "hint": "আপনাকে পরিবার পরিকল্পনা সেবা সম্পর্কে কাউন্সেলিং করা হয়েছে?",
+        "values": [
+          "হ্যাঁ",
+          "না"
+        ],
+        "openmrs_choice_ids": {
+          "হ্যাঁ": "Yes",
+          "না": "No"
+        }
+      },
+      {
+        "key":"Weight",
+        "openmrs_entity_parent":"",
+        "openmrs_entity":"",
+        "openmrs_entity_id":"Weight",
+        "openmrs_data_type":"text",
+        "type":"edit_text",
+        "hint":"আপনার ওজন(কেজি)",
+        "v_numeric":{
+          "value":"true",
+          "err":"Enter a valid Number"
+        }
+      },
+
+      {
+        "key": "ebf",
+        "openmrs_entity_parent": "",
+        "openmrs_entity": "",
+        "openmrs_entity_id": "ebf",
+        "openmrs_data_type": "",
+        "type": "spinner",
+        "hint": "আপনার নবজাতক কি ইবিএফ গ্রহন করছে?",
+        "values": [
+          "হ্যাঁ",
+          "না"
+        ],
+        "openmrs_choice_ids": {
+          "হ্যাঁ": "Yes",
+          "না": "No"
+        }
+      },
+      {
+        "key": "redness_around",
+        "openmrs_entity_parent": "",
+        "openmrs_entity": "",
+        "openmrs_entity_id": "redness_around",
+        "openmrs_data_type": "",
+        "type": "spinner",
+        "hint": "Redness around umbilicus or umbilicus draining pus",
+        "values": [
+          "হ্যাঁ",
+          "না"
+        ],
+        "openmrs_choice_ids": {
+          "হ্যাঁ": "Yes",
+          "না": "No"
+        }
+      },
+      {
+        "key": "Lethargic_or_restricted_movement",
+        "openmrs_entity_parent": "",
+        "openmrs_entity": "",
+        "openmrs_entity_id": "Lethargic_or_restricted_movement",
+        "openmrs_data_type": "",
+        "type": "spinner",
+        "hint": "আপনি শারীরিক ভাবে আপনার অবস্থান পরিবর্তনে সীমাবদ্ধ?",
+        "values": [
+          "হ্যাঁ",
+          "না"
+        ],
+        "openmrs_choice_ids": {
+          "হ্যাঁ": "Yes",
+          "না": "No"
+        }
+      },
+      {
+        "key": "Unable_to_breastfed",
+        "openmrs_entity_parent": "",
+        "openmrs_entity": "",
+        "openmrs_entity_id": "Unable_to_breastfed",
+        "openmrs_data_type": "",
+        "type": "spinner",
+        "hint": "আপনি কি নবজাতক কে বুকের দুধ খাওয়াতে অক্ষম অথবা নবজাতক স্তন্যপানে অক্ষম?",
+        "values": [
+          "হ্যাঁ",
+          "না"
+        ],
+        "openmrs_choice_ids": {
+          "হ্যাঁ": "Yes",
+          "না": "No"
+        }
+      },
+      {
+        "key": "Fast_breathing",
+        "openmrs_entity_parent": "",
+        "openmrs_entity": "",
+        "openmrs_entity_id": "Fast_breathing",
+        "openmrs_data_type": "",
+        "type": "spinner",
+        "hint": "আপনি কি স্বাভাবিক এর থেকে দ্রুত নিঃশ্বাস নিচ্ছেন? (প্রতি মিনিটে ৬০ অথবা তার অধিক)",
+        "values": [
+          "হ্যাঁ",
+          "না"
+        ],
+        "openmrs_choice_ids": {
+          "হ্যাঁ": "Yes",
+          "না": "No"
+        }
+      },
+      {
+        "key": "Chest_in_drawing",
+        "openmrs_entity_parent": "",
+        "openmrs_entity": "",
+        "openmrs_entity_id": "Chest_in_drawing",
+        "openmrs_data_type": "",
+        "type": "spinner",
+        "hint": "শ্বাসকষ্ট",
+        "values": [
+          "হ্যাঁ",
+          "না"
+        ],
+        "openmrs_choice_ids": {
+          "হ্যাঁ": "Yes",
+          "না": "No"
+        }
+      },
+      {
+        "key": "High_temperature",
+        "openmrs_entity_parent": "",
+        "openmrs_entity": "",
+        "openmrs_entity_id": "High_temperature",
+        "openmrs_data_type": "",
+        "type": "spinner",
+        "hint": "আপনার শরীরের তাপমাত্রা কি বেশী? (৩৭৫ সেঃ/৯৯৫ ফাঃ এর উপরে)",
+        "values": [
+          "হ্যাঁ",
+          "না"
+        ],
+        "openmrs_choice_ids": {
+          "হ্যাঁ": "Yes",
+          "না": "No"
+        }
+      },
+      {
+        "key": "Low_temperature",
+        "openmrs_entity_parent": "",
+        "openmrs_entity": "",
+        "openmrs_entity_id": "Low_temperature",
+        "openmrs_data_type": "",
+        "type": "spinner",
+        "hint": "আপনার শরীরের তাপমাত্রা কি কম? (৩৭৫ সেঃ/৯৯৫ ফাঃ এর নিচে)",
+        "values": [
+          "হ্যাঁ",
+          "না"
+        ],
+        "openmrs_choice_ids": {
+          "হ্যাঁ": "Yes",
+          "না": "No"
+        }
+      },
+      {
+        "key": "Convulsion",
+        "openmrs_entity_parent": "",
+        "openmrs_entity": "",
+        "openmrs_entity_id": "Convulsion",
+        "openmrs_data_type": "",
+        "type": "spinner",
+        "hint": "আপনার কি খিচুনী হয়েছে?",
+        "values": [
+          "হ্যাঁ",
+          "না"
+        ],
+        "openmrs_choice_ids": {
+          "হ্যাঁ": "Yes",
+          "না": "No"
         }
       }
     ]

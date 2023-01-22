@@ -783,13 +783,6 @@
         },
 
         {
-          "column_name": "Pregnancy_Status",
-          "type": "Client",
-          "json_mapping": {
-            "field": "attributes.Pregnancy_Status"
-          }
-        },
-        {
           "column_name": "Number_Of_Service_Received_Last_three_Months",
           "type": "Client",
           "json_mapping": {

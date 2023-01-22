@@ -79,6 +79,13 @@
           },
           {
             "field": "eventType",
+            "field_value": "Followup Pregnant Status",
+            "creates_case": [
+              "ec_member"
+            ]
+          },
+          {
+            "field": "eventType",
             "field_value": "Followup Disease Female",
             "creates_case": [
               "ec_woman"

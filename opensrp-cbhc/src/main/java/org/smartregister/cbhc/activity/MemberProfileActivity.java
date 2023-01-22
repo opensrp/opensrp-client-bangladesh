@@ -532,6 +532,7 @@ Utils.appendLog(getClass().getName(),e);
                         case "গর্ভাবস্থা":
 
                             getIntent().putExtra(Constants.INTENT_KEY.BASE_ENTITY_ID, householdDetails.getCaseId());
+                            householdDetails.getColumnmaps().put("PregnancyStatus","no");
                             JsonFormUtils.launchFollowUpForm(MemberProfileActivity.this, householdDetails.getColumnmaps(), Followup_Form_MHV_Pregnant);
                             break;
                         case "মোবাইল নম্বর":
@@ -927,20 +928,28 @@ Utils.appendLog(getClass().getName(),e);
                 try {
                     JSONArray fields = form.getJSONObject("step1").getJSONArray("fields");
                     int live_birth = 0;
+                    String PregnancyStatus = "";
                     String entity_id = householdDetails.entityId();
 
                     for (int i = 0; i < fields.length(); i++) {
                         JSONObject field_object = fields.getJSONObject(i);
-                        if (field_object.getString("key").equalsIgnoreCase("Live Birth")) {
+                        Log.v("UPDATE_WOMEN","key>>"+field_object.getString("key"));
+                        if (field_object.getString("key").equalsIgnoreCase("Live_Birth_Count")) {
                             String value = field_object.getString("value");
                             if (value != null && !StringUtils.isEmpty(value)) {
                                 live_birth = Integer.valueOf(value);
-                                break;
+                            }
+                        }
+                        if (field_object.getString("key").equalsIgnoreCase("pregnant_status")) {
+                            String value = field_object.getString("value");
+                            if (value != null && !StringUtils.isEmpty(value)) {
+                                PregnancyStatus = value;
                             }
                         }
 
                     }
-                    String sql = "UPDATE ec_woman SET tasks = '" + live_birth + "' WHERE base_entity_id = '" + entity_id + "';";
+                    String sql = "UPDATE ec_woman SET tasks = '" + live_birth + "',PregnancyStatus ='"+PregnancyStatus+"' WHERE base_entity_id = '" + entity_id + "';";
+                    Log.v("UPDATE_WOMEN","sql>>"+sql);
                     db.execSQL(sql);
 
                 } catch (Exception e) {

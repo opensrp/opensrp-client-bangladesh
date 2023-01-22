@@ -1,0 +1,9 @@
+---
+name: step1_edd
+description: Edd calculated
+priority: 1
+condition: "true"
+actions:
+  - "calculation = helper.addDuration(step1_lmp_date, '280d')"
+
+

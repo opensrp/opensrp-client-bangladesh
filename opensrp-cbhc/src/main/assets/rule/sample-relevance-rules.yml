@@ -59,14 +59,49 @@ actions:
 name: step1_Child_birth_weight
 description: Child_birth_weight
 priority: 1
-condition: "(helper.formatDate(step1_member_birth_date,'d') <= 62)"
+condition: "(helper.formatDate(step1_member_birth_date,'d') <= 42)"
+actions:
+  - "isRelevant = true"
+---
+name: step1_Dried_and_wrapped
+description: Dried_and_wrapped
+priority: 1
+condition: "(helper.formatDate(step1_member_birth_date,'d') <= 42)"
+actions:
+  - "isRelevant = true"
+---
+name: step1_Newborn_breastfeed
+description: Newborn_breastfeed
+priority: 1
+condition: "(helper.formatDate(step1_member_birth_date,'d') <= 42)"
+actions:
+  - "isRelevant = true"
+---
+name: step1_Skin_to_Skin_contact
+description: Skin_to_Skin_contact
+priority: 1
+condition: "(helper.formatDate(step1_member_birth_date,'d') <= 42)"
+actions:
+  - "isRelevant = true"
+---
+name: step1_Counselling_on_Newborn_danger
+description: Counselling_on_Newborn_danger
+priority: 1
+condition: "(helper.formatDate(step1_member_birth_date,'d') <= 42)"
+actions:
+  - "isRelevant = true"
+---
+name: step1_Visible_birth_defect
+description: Visible_birth_defect
+priority: 1
+condition: "(helper.formatDate(step1_member_birth_date,'d') <= 42)"
 actions:
   - "isRelevant = true"
 ---
 name: step1_Birth_weight
 description: Birth_weight
 priority: 1
-condition: "step1_Child_birth_weight.equalsIgnoreCase('হ্যাঁ') && (helper.formatDate(step1_member_birth_date,'d') <= 62)"
+condition: "step1_Child_birth_weight.equalsIgnoreCase('হ্যাঁ') && (helper.formatDate(step1_member_birth_date,'d') <= 42)"
 actions:
   - "isRelevant = true"
 ---

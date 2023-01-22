@@ -151,6 +151,14 @@ android {
             applicationIdSuffix ".jica"
             versionNameSuffix ""
         }
+        unicef {
+            applicationId 'org.smartregister'
+            versionCode 9
+            versionName "1.1.9"
+            dimension "baseDimension"
+            applicationIdSuffix ".unicef"
+            versionNameSuffix ""
+        }
         ha {
             applicationId 'org.smartregister'
             versionCode 5

@@ -589,10 +589,10 @@
         "key": "Child_birth_weight",
         "openmrs_entity_parent": "",
         "openmrs_entity": "person_attribute",
-        "openmrs_entity_id": "1e58da4d-60b9-4c60-a079-9a5371d3cfa9",
+        "openmrs_entity_id": "Child_birth_weight",
         "openmrs_data_type": "text",
         "type": "spinner",
-        "hint": "বাচ্চার জন্মকালীন ওজন",
+        "hint": "বাচ্চার জন্মকালীন ওজন নেওয়া হয়েছে?",
         "values": [
           "হ্যাঁ",
           "না"
@@ -613,10 +613,10 @@
         "key": "Birth_weight",
         "openmrs_entity_parent": "",
         "openmrs_entity": "person_attribute",
-        "openmrs_entity_id": "9d4aa237-b866-43a1-a75b-9b9490d4a3b9",
+        "openmrs_entity_id": "Birth_weight",
         "openmrs_data_type": "text",
         "type": "edit_text",
-        "hint": "ওজন",
+        "hint": "শিশুর  জন্মের সময়ের ওজন",
         "v_numeric": {
           "value": "true",
           "err": "Enter a valid Number"
@@ -630,13 +630,133 @@
         }
       },
       {
+        "key": "Dried_and_wrapped",
+        "openmrs_entity_parent": "",
+        "openmrs_entity": "person_attribute",
+        "openmrs_entity_id": "Dried_and_wrapped",
+        "openmrs_data_type": "text",
+        "type": "spinner",
+        "hint": "নবজাতক জন্মের সাথে সাথে তাকে মোড়ানো এবং আবৃত করা হয়েছিল?",
+        "values": [
+          "হ্যাঁ",
+          "না"
+        ],
+        "openmrs_choice_ids": {
+          "হ্যাঁ": "Yes",
+          "না": "No"
+        },
+        "relevance": {
+          "rules-engine": {
+            "ex-rules": {
+              "rules-file": "sample-relevance-rules.yml"
+            }
+          }
+        }
+      },
+      {
+        "key": "Newborn_breastfeed",
+        "openmrs_entity_parent": "",
+        "openmrs_entity": "person_attribute",
+        "openmrs_entity_id": "Newborn_breastfeed",
+        "openmrs_data_type": "text",
+        "type": "spinner",
+        "hint": "প্রসবের ১ ঘন্টার মধ্যে নবজাতককে বুকের দুধ খাওয়ানো হয়েছিল?",
+        "values": [
+          "হ্যাঁ",
+          "না"
+        ],
+        "openmrs_choice_ids": {
+          "হ্যাঁ": "Yes",
+          "না": "No"
+        },
+        "relevance": {
+          "rules-engine": {
+            "ex-rules": {
+              "rules-file": "sample-relevance-rules.yml"
+            }
+          }
+        }
+      },
+      {
         "key": "Used_7_1_Chlorohexidin",
         "openmrs_entity_parent": "",
         "openmrs_entity": "person_attribute",
-        "openmrs_entity_id": "1f011039-e2dc-49a0-8804-1a96d1d5ba49",
+        "openmrs_entity_id": "Used_7_1_Chlorohexidin",
         "openmrs_data_type": "text",
         "type": "spinner",
-        "hint": "৭.১% ক্লোরোহেক্সিডিন এর ব্যবহার",
+        "hint": "প্রসবকালীন সময়ে সিএইচএক্স(৭.১%) ব্যবহৃত হয়েছিল?",
+        "values": [
+          "হ্যাঁ",
+          "না"
+        ],
+        "openmrs_choice_ids": {
+          "হ্যাঁ": "Yes",
+          "না": "No"
+        },
+        "relevance": {
+          "rules-engine": {
+            "ex-rules": {
+              "rules-file": "sample-relevance-rules.yml"
+            }
+          }
+        }
+      },
+      {
+        "key": "Skin_to_Skin_contact",
+        "openmrs_entity_parent": "",
+        "openmrs_entity": "person_attribute",
+        "openmrs_entity_id": "Skin_to_Skin_contact",
+        "openmrs_data_type": "text",
+        "type": "spinner",
+        "hint": "নবজাতক জন্মের ১ ঘন্টার মধ্যে তাকে মায়ের বুকে লাগানো হয়েছিল?",
+        "values": [
+          "হ্যাঁ",
+          "না"
+        ],
+        "openmrs_choice_ids": {
+          "হ্যাঁ": "Yes",
+          "না": "No"
+        },
+        "relevance": {
+          "rules-engine": {
+            "ex-rules": {
+              "rules-file": "sample-relevance-rules.yml"
+            }
+          }
+        }
+      },
+      {
+        "key": "Visible_birth_defect",
+        "openmrs_entity_parent": "",
+        "openmrs_entity": "person_attribute",
+        "openmrs_entity_id": "Visible_birth_defect",
+        "openmrs_data_type": "text",
+        "type": "spinner",
+        "hint": "আপনার নবজাতকের দৃশ্যমান জন্মগত ত্রুটি আছে?",
+        "values": [
+          "হ্যাঁ",
+          "না"
+        ],
+        "openmrs_choice_ids": {
+          "হ্যাঁ": "Yes",
+          "না": "No"
+        },
+        "relevance": {
+          "rules-engine": {
+            "ex-rules": {
+              "rules-file": "sample-relevance-rules.yml"
+            }
+          }
+        }
+      },
+      {
+        "key": "Counselling_on_Newborn_danger",
+        "openmrs_entity_parent": "",
+        "openmrs_entity": "person_attribute",
+        "openmrs_entity_id": "Counselling_on_Newborn_danger",
+        "openmrs_data_type": "text",
+        "type": "spinner",
+        "hint": "আপনাকে নবজাতকের আসন্ন ঝুকি সমূহ এবং ইএনসি সংক্রান্ত কাউন্সেলিং প্রদান করা হয়েছে?",
         "values": [
           "হ্যাঁ",
           "না"
@@ -693,6 +813,10 @@
         "type": "edit_text",
         "look_up": "true",
         "hint": "স্বামী/স্ত্রীর নাম (ইংরেজীতে)",
+        "v_required": {
+          "value": "false",
+          "err": "Please enter the spouseName_english"
+        },
         "v_regex": {
           "value": "[A-Za-z .]*",
           "err": "Please Enter a Valid Name"
@@ -712,6 +836,10 @@
         "openmrs_data_type": "text",
         "type": "edit_text",
         "hint": "স্বামী/স্ত্রীর নাম (বাংলায়)",
+        "v_required": {
+          "value": "false",
+          "err": "Please enter the spouseName_bengali"
+        },
         "v_regex": {
           "value": "[^A-Za-z0-9]*",
           "err": "Please enter a valid name"
@@ -1534,327 +1662,6 @@
               {
                 "or": [
                   "NonContaminable"
-                ]
-              }
-            ]
-          }
-        }
-      },
-      {
-        "key": "pregnant_status",
-        "openmrs_entity_parent": "",
-        "openmrs_entity": "person_attribute",
-        "openmrs_entity_id": "PregnancyStatus",
-        "openmrs_data_type": "",
-        "type": "spinner",
-        "hint": "গর্ভাবস্থার সম্পর্কিত তথ্য",
-        "values": [
-          "প্রসব পূর্ব",
-          "প্রসবোত্তর",
-          "গর্ভপাত হয়েছে",
-          "কোনটিই নয়"
-        ],
-        "openmrs_choice_ids": {
-          "প্রসব পূর্ব": "Antenatal Period",
-          "প্রসবোত্তর": "Postnatal",
-          "গর্ভপাত হয়েছে": "Miscarriage",
-          "কোনটিই নয়": "None_Above"
-        },
-        "relevance": {
-          "rules-engine": {
-            "ex-rules": {
-              "rules-file": "sample-relevance-rules.yml"
-            }
-          }
-        }
-      },
-      {
-        "key": "lmp_date",
-        "openmrs_entity_parent": "",
-        "openmrs_entity": "person_attribute",
-        "openmrs_entity_id": "lmp_date",
-        "type": "date_picker",
-        "hint": "শেষ মাসিকের তারিখ",
-        "expanded": false,
-        "duration": {
-          "label": "Yrs"
-        },
-        "max_date": "today-42d",
-        "min_date": "today-308d",
-        "relevance": {
-          "rules-engine": {
-            "ex-rules": {
-              "rules-file": "sample-relevance-rules.yml"
-            }
-          }
-        }
-      },
-      {
-        "key": "Delivery_date",
-        "openmrs_entity_parent": "",
-        "openmrs_entity": "person_attribute",
-        "openmrs_entity_id": "delivery_date",
-        "type": "date_picker",
-        "hint": "প্রসবের তারিখ",
-        "expanded": false,
-        "duration": {
-          "label": "Yrs"
-        },
-        "max_date": "today",
-        "relevance": {
-          "step1:pregnant_status": {
-            "type": "string",
-            "ex": "regex(., \"(প্রসবোত্তর)\")"
-          }
-        }
-      },
-      {
-        "key": "Disease_status_zero_to_two_month_by_age",
-        "openmrs_entity_parent": "",
-        "openmrs_entity": "person_attribute",
-        "openmrs_entity_id": "Disease_Below_2Month_Age",
-        "openmrs_data_type": "text",
-        "type": "check_box",
-        "label": "০ - ২ মাসের বাচ্চার রোগ",
-        "exclusive": [
-          "None"
-        ],
-        "options": [
-          {
-            "key": "Very_severe_disease",
-            "text": "খুব মারাত্বক রোগ",
-            "value": false,
-            "openmrs_choice_id": "Very_severe_disease"
-          },
-          {
-            "key": "Probable_Limited_Infection",
-            "text": "সম্ভাব্য সীমিত সংক্রামণ",
-            "value": false,
-            "openmrs_choice_id": "Probable_Limited_Infection"
-          },
-          {
-            "key": "Jaundice",
-            "text": "জন্ডিস",
-            "value": false,
-            "openmrs_choice_id": "Jaundice"
-          },
-          {
-            "key": "Diarrhoea_No_Dehydration",
-            "text": "পানি স্বল্পতাহীন ডায়রিয়া",
-            "value": false,
-            "openmrs_choice_id": "Diarrhoea_No_Dehydration"
-          },
-          {
-            "key": "Bellybutton_infection",
-            "text": "নাভিতে সংক্রামন",
-            "value": false,
-            "openmrs_choice_id": "Bellybutton_infection"
-          },
-          {
-            "key": "Injury",
-            "text": "আঘাত",
-            "value": false,
-            "openmrs_choice_id": "Injury"
-          },
-          {
-            "key": "Fever",
-            "text": "জ্বর",
-            "value": false,
-            "openmrs_choice_id": "Fever"
-          },
-          {
-            "key": "Pneumonia",
-            "text": "নিউমোনিয়া",
-            "value": false,
-            "openmrs_choice_id": "Pneumonia"
-          },
-          {
-            "key": "Pneumonia, unspec",
-            "text": "নিউমোনিয়া নয় সর্দি, কাশী",
-            "value": false,
-            "openmrs_choice_id": "Pneumonia, unspec"
-          },
-          {
-            "key": "Others_member_disease",
-            "text": "অন্যান্য",
-            "value": false,
-            "openmrs_choice_id": "Others_member_disease"
-          }
-        ],
-        "relevance": {
-          "rules-engine": {
-            "ex-rules": {
-              "rules-file": "sample-relevance-rules.yml"
-            }
-          }
-        }
-      },
-      {
-        "key": "Disease_status_two_month_to_five_year_by_age",
-        "openmrs_entity_parent": "",
-        "openmrs_entity": "person_attribute",
-        "openmrs_entity_id": "Disease_2Month_5Years",
-        "openmrs_data_type": "text",
-        "type": "check_box",
-        "label": "২ মাস থেকে ৫ বছরের বাচ্চার রোগ",
-        "exclusive": [
-          "None"
-        ],
-        "options": [
-          {
-            "key": "Very_severe_disease",
-            "text": "খুব মারাত্বক রোগ",
-            "value": false,
-            "openmrs_choice_id": "Very_severe_disease"
-          },
-          {
-            "key": "Pneumonia",
-            "text": "নিউমোনিয়া",
-            "value": false,
-            "openmrs_choice_id": "Pneumonia"
-          },
-          {
-            "key": "Pneumonia, unspec",
-            "text": "নিউমোনিয়া নয় সর্দি, কাশী",
-            "value": false,
-            "openmrs_choice_id": "Pneumonia, unspec"
-          },
-          {
-            "key": "dieriaanddysentry",
-            "text": "ডায়ারিয়া ও আমাশয়",
-            "value": false,
-            "openmrs_choice_id": "dieriaanddysentry"
-          },
-          {
-            "key": "Fever",
-            "text": "জ্বর",
-            "value": false,
-            "openmrs_choice_id": "Fever"
-          },
-          {
-            "key": "maleria",
-            "text": "জ্বর (ম্যালেরিয়া)",
-            "value": false,
-            "openmrs_choice_id": "maleria"
-          },
-          {
-            "key": "Hearing loss, unspec",
-            "text": "কানের সমস্যা",
-            "value": false,
-            "openmrs_choice_id": "Hearing loss, unspec"
-          },
-          {
-            "key": "Measles",
-            "text": "হাম",
-            "value": false,
-            "openmrs_choice_id": "Measles"
-          },
-          {
-            "key": "Bellybutton_infection",
-            "text": "নাভিতে সংক্রামন",
-            "value": false,
-            "openmrs_choice_id": "Bellybutton_infection"
-          },
-          {
-            "key": "Conjunctivitis, unspec",
-            "text": "চোখ উঠা",
-            "value": false,
-            "openmrs_choice_id": "Conjunctivitis, unspec"
-          },
-          {
-            "key": "Jaundice",
-            "text": "জন্ডিস",
-            "value": false,
-            "openmrs_choice_id": "Jaundice"
-          },
-          {
-            "key": "Injury",
-            "text": "আঘাত",
-            "value": false,
-            "openmrs_choice_id": "Injury"
-          },
-          {
-            "key": "Malnutrition",
-            "text": "অপুষ্টি",
-            "value": false,
-            "openmrs_choice_id": "Malnutrition"
-          },
-          {
-            "key": "Anemia",
-            "text": "রক্ত স্বল্পতা",
-            "value": false,
-            "openmrs_choice_id": "Anemia"
-          },
-          {
-            "key": "Others_member_disease",
-            "text": "অন্যান্য",
-            "value": false,
-            "openmrs_choice_id": "Others_member_disease"
-          }
-        ],
-        "relevance": {
-          "rules-engine": {
-            "ex-rules": {
-              "rules-file": "sample-relevance-rules.yml"
-            }
-          }
-        }
-      },
-      {
-        "key": "family_planning",
-        "openmrs_entity_parent": "",
-        "openmrs_entity": "person_attribute",
-        "openmrs_entity_id": "familyplanning",
-        "openmrs_data_type": "text",
-        "type": "spinner",
-        "hint": "পরিবার পরিকল্পনা",
-        "values": [
-          "খাবার বড়ি",
-          "কনডম",
-          "ইনজেক্টবল",
-          "আই ইউ ডি",
-          "ইমপ্লান্ট",
-          "স্থায়ী পদ্ধতি",
-          "অন্যান্য পদ্ধতি",
-          "বন্ধ্যা দম্পতি",
-          "পদ্ধতি ব্যবহার করে না"
-        ],
-        "openmrs_choice_ids": {
-          "খাবার বড়ি": "Oral_Contraceptives",
-          "কনডম": "Condoms",
-          "ইনজেক্টবল": "Injectable",
-          "আই ইউ ডি": "IUD",
-          "ইমপ্লান্ট": "Implant",
-          "স্থায়ী পদ্ধতি": "Permanent_FP_Method",
-          "অন্যান্য পদ্ধতি": "Other_Method",
-          "বন্ধ্যা দম্পতি": "Infertility",
-          "পদ্ধতি ব্যবহার করে না": "No_Method_Usage"
-        },
-        "relevance": {
-          "rules-engine": {
-            "ex-rules": {
-              "rules-file": "sample-relevance-rules.yml"
-            }
-          }
-        }
-      },
-      {
-        "key": "disease_other",
-        "openmrs_entity_parent": "",
-        "openmrs_entity": "",
-        "openmrs_entity_id": "",
-        "type": "edit_text",
-        "hint": "অন্যান্য রোগ বা অবস্থা(ইংরেজীতে)",
-        "v_required": {
-          "value": true,
-          "err": "Please Type Other disease"
-        },
-        "relevance": {
-          "step1:Disease_status": {
-            "ex-checkbox": [
-              {
-                "or": [
-                  "Others_member_disease"
                 ]
               }
             ]

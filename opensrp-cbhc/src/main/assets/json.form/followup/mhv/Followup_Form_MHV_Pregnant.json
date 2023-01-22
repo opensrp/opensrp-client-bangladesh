@@ -66,7 +66,7 @@
       {
         "key": "pregnant_status",
         "openmrs_entity_parent": "",
-        "openmrs_entity": "",
+        "openmrs_entity": "person_attribute",
         "openmrs_entity_id": "PregnancyStatus",
         "openmrs_data_type": "",
         "type": "spinner",
@@ -114,6 +114,436 @@
         }
       },
       {
+        "key": "edd",
+        "openmrs_entity_parent": "",
+        "openmrs_entity": "concept",
+        "openmrs_entity_id": "5596AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+        "type": "edit_text",
+        "hint": "সম্ভাব্য প্রসবের তারিখ",
+        "read_only": true,
+        "relevance": {
+          "step1:pregnant_status": {
+            "type": "string",
+            "ex": "regex(., \"(প্রসব পূর্ব)\")"
+          }
+        },
+        "calculation": {
+          "rules-engine": {
+            "ex-rules": {
+              "rules-file": "anc_member_registration_calculation.yml"
+            }
+          }
+        }
+      },
+
+      {
+        "key": "visit_date",
+        "openmrs_entity_parent": "",
+        "openmrs_entity": "",
+        "openmrs_entity_id": "visit_date",
+        "type": "date_picker",
+        "hint": "আপনার পরিদর্শনের তারিখ",
+        "expanded": false,
+        "max_date": "today",
+        "min_date": "today-14600d",
+        "relevance": {
+          "step1:pregnant_status": {
+            "type": "string",
+            "ex": "regex(., \"(প্রসব পূর্ব)\")"
+          }
+        }
+      },
+      {
+        "key":"Gravida",
+        "openmrs_entity_parent":"",
+        "openmrs_entity":"",
+        "openmrs_entity_id":"Gravida",
+        "openmrs_data_type":"text",
+        "type":"edit_text",
+        "hint":"আপনি কতবার অন্তঃসত্ত্বা হয়েছেন?",
+        "v_numeric":{
+          "value":"true",
+          "err":"Enter a valid Number"
+        },
+        "relevance": {
+          "step1:pregnant_status": {
+            "type": "string",
+            "ex": "regex(., \"(প্রসব পূর্ব)\")"
+          }
+        },
+        "v_max": {
+          "value": "10",
+          "err": "10 এর কম হওয়া উচিত"
+        }
+      },
+      {
+        "key":"Para",
+        "openmrs_entity_parent":"",
+        "openmrs_entity":"",
+        "openmrs_entity_id":"Para",
+        "openmrs_data_type":"text",
+        "type":"edit_text",
+        "hint":"আপনার কতজন জীবিত সন্তান জন্ম হয়েছে?",
+        "v_numeric":{
+          "value":"true",
+          "err":"Enter a valid Number"
+        },
+        "relevance": {
+          "step1:pregnant_status": {
+            "type": "string",
+            "ex": "regex(., \"(প্রসব পূর্ব)\")"
+          }
+        },
+        "v_max": {
+          "value": "20",
+          "err": "20 এর কম হওয়া উচিত"
+        }
+      },
+      {
+        "key": "History_Of_Ceasarean",
+        "openmrs_entity_parent": "",
+        "openmrs_entity": "",
+        "openmrs_entity_id": "History_Of_Ceasarean",
+        "openmrs_data_type": "",
+        "type": "spinner",
+        "hint": "আপনার সিজারের ইতিহাস আছে?",
+        "values": [
+          "হ্যাঁ",
+          "না"
+        ],
+        "openmrs_choice_ids": {
+          "হ্যাঁ": "Yes",
+          "না": "No"
+        },
+
+        "relevance": {
+          "step1:pregnant_status": {
+            "type": "string",
+            "ex": "regex(., \"(প্রসব পূর্ব)\")"
+          }
+        }
+      },
+      {
+        "key": "History_Of_abortion",
+        "openmrs_entity_parent": "",
+        "openmrs_entity": "",
+        "openmrs_entity_id": "History_Of_abortion",
+        "openmrs_data_type": "",
+        "type": "spinner",
+        "hint": "আপনার গর্ভপাতের ইতিহাস আছে?",
+        "values": [
+          "হ্যাঁ",
+          "না"
+        ],
+        "openmrs_choice_ids": {
+          "হ্যাঁ": "Yes",
+          "না": "No"
+        },
+
+        "relevance": {
+          "step1:pregnant_status": {
+            "type": "string",
+            "ex": "regex(., \"(প্রসব পূর্ব)\")"
+          }
+        }
+      },
+      {
+        "key": "History_Of_still_birth",
+        "openmrs_entity_parent": "",
+        "openmrs_entity": "",
+        "openmrs_entity_id": "History_Of_still_birth",
+        "openmrs_data_type": "",
+        "type": "spinner",
+        "hint": "আপনার মৃত জন্মের ইতিহাস আছে?",
+        "values": [
+          "হ্যাঁ",
+          "না"
+        ],
+        "openmrs_choice_ids": {
+          "হ্যাঁ": "Yes",
+          "না": "No"
+        },
+
+        "relevance": {
+          "step1:pregnant_status": {
+            "type": "string",
+            "ex": "regex(., \"(প্রসব পূর্ব)\")"
+          }
+        }
+      },
+      {
+        "key": "History_Of_Hypertension",
+        "openmrs_entity_parent": "",
+        "openmrs_entity": "",
+        "openmrs_entity_id": "History_Of_Hypertension",
+        "openmrs_data_type": "",
+        "type": "spinner",
+        "hint": "আপনার উচ্চ রক্তচাপের ইতিহাস আছে?",
+        "values": [
+          "হ্যাঁ",
+          "না"
+        ],
+        "openmrs_choice_ids": {
+          "হ্যাঁ": "Yes",
+          "না": "No"
+        },
+
+        "relevance": {
+          "step1:pregnant_status": {
+            "type": "string",
+            "ex": "regex(., \"(প্রসব পূর্ব)\")"
+          }
+        }
+      },
+      {
+        "key": "History_Of_Eclampsia",
+        "openmrs_entity_parent": "",
+        "openmrs_entity": "",
+        "openmrs_entity_id": "History_Of_Eclampsia",
+        "openmrs_data_type": "",
+        "type": "spinner",
+        "hint": "আপনার পূর্ববর্তী গর্ভধারনের সময়ে খিচুনীর ইতিহাস আছে?",
+        "values": [
+          "হ্যাঁ",
+          "না"
+        ],
+        "openmrs_choice_ids": {
+          "হ্যাঁ": "Yes",
+          "না": "No"
+        },
+
+        "relevance": {
+          "step1:pregnant_status": {
+            "type": "string",
+            "ex": "regex(., \"(প্রসব পূর্ব)\")"
+          }
+        }
+      },
+      {
+        "key": "History_Of_APH",
+        "openmrs_entity_parent": "",
+        "openmrs_entity": "",
+        "openmrs_entity_id": "History_Of_APH",
+        "openmrs_data_type": "",
+        "type": "spinner",
+        "hint": "আপনার প্রাক-প্রসবকালীন রক্তক্ষরণের ইতিহাস আছে?",
+        "values": [
+          "হ্যাঁ",
+          "না"
+        ],
+        "openmrs_choice_ids": {
+          "হ্যাঁ": "Yes",
+          "না": "No"
+        },
+
+        "relevance": {
+          "step1:pregnant_status": {
+            "type": "string",
+            "ex": "regex(., \"(প্রসব পূর্ব)\")"
+          }
+        }
+      },
+      {
+        "key": "History_Of_Prolonger",
+        "openmrs_entity_parent": "",
+        "openmrs_entity": "",
+        "openmrs_entity_id": "History_Of_Prolonger",
+        "openmrs_data_type": "",
+        "type": "spinner",
+        "hint": "আপনার বিলম্বিত প্রসবের ইতিহাস আছে?",
+        "values": [
+          "হ্যাঁ",
+          "না"
+        ],
+        "openmrs_choice_ids": {
+          "হ্যাঁ": "Yes",
+          "না": "No"
+        },
+
+        "relevance": {
+          "step1:pregnant_status": {
+            "type": "string",
+            "ex": "regex(., \"(প্রসব পূর্ব)\")"
+          }
+        }
+      },
+      {
+        "key": "History_Of_PPH",
+        "openmrs_entity_parent": "",
+        "openmrs_entity": "",
+        "openmrs_entity_id": "History_Of_PPH",
+        "openmrs_data_type": "",
+        "type": "spinner",
+        "hint": "আপনার প্রসবোত্তর রক্তক্ষরণের ইতিহাস আছে?",
+        "values": [
+          "হ্যাঁ",
+          "না"
+        ],
+        "openmrs_choice_ids": {
+          "হ্যাঁ": "Yes",
+          "না": "No"
+        },
+
+        "relevance": {
+          "step1:pregnant_status": {
+            "type": "string",
+            "ex": "regex(., \"(প্রসব পূর্ব)\")"
+          }
+        }
+      },
+      {
+        "key": "History_Of_Pre_Pregnancy",
+        "openmrs_entity_parent": "",
+        "openmrs_entity": "",
+        "openmrs_entity_id": "History_Of_Pre_Pregnancy",
+        "openmrs_data_type": "",
+        "type": "spinner",
+        "hint": "আপনার পূর্ববর্তী গর্ভধারনের সময়ে শরীরে উচ্চ তাপমাত্রার ইতিহাস আছে?",
+        "values": [
+          "হ্যাঁ",
+          "না"
+        ],
+        "openmrs_choice_ids": {
+          "হ্যাঁ": "Yes",
+          "না": "No"
+        },
+
+        "relevance": {
+          "step1:pregnant_status": {
+            "type": "string",
+            "ex": "regex(., \"(প্রসব পূর্ব)\")"
+          }
+        }
+      },
+      {
+        "key": "History_Of_Diabetes",
+        "openmrs_entity_parent": "",
+        "openmrs_entity": "",
+        "openmrs_entity_id": "History_Of_Diabetes",
+        "openmrs_data_type": "",
+        "type": "spinner",
+        "hint": "আপনার ডায়াবেটিসের ইতিহাস আছে?",
+        "values": [
+          "হ্যাঁ",
+          "না"
+        ],
+        "openmrs_choice_ids": {
+          "হ্যাঁ": "Yes",
+          "না": "No"
+        },
+
+        "relevance": {
+          "step1:pregnant_status": {
+            "type": "string",
+            "ex": "regex(., \"(প্রসব পূর্ব)\")"
+          }
+        }
+      },
+      {
+        "key": "History_Of_Thallasamia",
+        "openmrs_entity_parent": "",
+        "openmrs_entity": "",
+        "openmrs_entity_id": "History_Of_Thallasamia",
+        "openmrs_data_type": "",
+        "type": "spinner",
+        "hint": "আপনার থ্যালাসেমিয়ার ইতিহাস আছে?",
+        "values": [
+          "হ্যাঁ",
+          "না"
+        ],
+        "openmrs_choice_ids": {
+          "হ্যাঁ": "Yes",
+          "না": "No"
+        },
+
+        "relevance": {
+          "step1:pregnant_status": {
+            "type": "string",
+            "ex": "regex(., \"(প্রসব পূর্ব)\")"
+          }
+        }
+      },
+      {
+        "key": "History_Of_Mental_Health",
+        "openmrs_entity_parent": "",
+        "openmrs_entity": "",
+        "openmrs_entity_id": "History_Of_Mental_Health",
+        "openmrs_data_type": "",
+        "type": "spinner",
+        "hint": "আপনার মানসিক স্বাস্থ্য জনিত সমস্যা আছে?",
+        "values": [
+          "হ্যাঁ",
+          "না"
+        ],
+        "openmrs_choice_ids": {
+          "হ্যাঁ": "Yes",
+          "না": "No"
+        },
+
+        "relevance": {
+          "step1:pregnant_status": {
+            "type": "string",
+            "ex": "regex(., \"(প্রসব পূর্ব)\")"
+          }
+        }
+      },
+      {
+        "key":"History_Of_TT_TD",
+        "openmrs_entity_parent":"",
+        "openmrs_entity":"",
+        "openmrs_entity_id":"History_Of_TT_TD",
+        "openmrs_data_type":"text",
+        "type":"check_box",
+        "label":"আপনি কোন কোন টিটি/টিডি টিকা গ্রহন করেছেন?",
+        "exclusive":[
+          "No"
+        ],
+        "options":[
+          {
+            "key":"No",
+            "text":"কোনোটিই না",
+            "value":"false",
+            "openmrs_choice_id":"No"
+          },
+          {
+            "key":"TT_td_1_Complete",
+            "text":"টিটি/টিডি-১ সম্পন্ন",
+            "value":"false",
+            "openmrs_choice_id":"TT_td_1_Complete"
+          },
+          {
+            "key":"TT_td_2_Complete",
+            "text":"টিটি/টিডি-২ সম্পন্ন",
+            "value":"false",
+            "openmrs_choice_id":"TT_td_2_Complete"
+          },
+          {
+            "key":"TT_td_3_Complete",
+            "text":"টিটি/টিডি-৩ সম্পন্ন",
+            "value":"false",
+            "openmrs_choice_id":"TT_td_3_Complete"
+          },
+          {
+            "key":"TT_td_4_Complete",
+            "text":"টিটি/টিডি-৪ সম্পন্ন",
+            "value":"false",
+            "openmrs_choice_id":"TT_td_4_Complete"
+          },
+          {
+            "key":"TT_td_5_Complete",
+            "text":"টিটি/টিডি-৫ সম্পন্ন",
+            "value":"false",
+            "openmrs_choice_id":"TT_td_5_Complete"
+          }
+        ],
+        "relevance": {
+          "step1:pregnant_status": {
+            "type": "string",
+            "ex": "regex(., \"(প্রসব পূর্ব)\")"
+          }
+        }
+      },
+      {
         "key": "Delivery_date",
         "openmrs_entity_parent": "",
         "openmrs_entity": "",
@@ -145,6 +575,105 @@
         "type":"time_picker",
         "hint":"প্রসবের সময়",
         "expanded":false,
+        "relevance": {
+          "step1:pregnant_status": {
+            "type": "string",
+            "ex": "regex(., \"(প্রসবোত্তর)\")"
+          }
+        }
+      },
+      {
+        "key":"place_of_delivery",
+        "openmrs_entity_parent":"",
+        "openmrs_entity":"",
+        "openmrs_entity_id":"place_of_delivery",
+        "openmrs_data_type":"text",
+        "type":"spinner",
+        "hint":"কোথায় প্রসব করানো হয়ছে?",
+        "values":[
+          "মেডিকেল কলেজ হাসপাতাল",
+          "জেলা হাসপাতাল",
+          "উপজেলা হাসপাতাল",
+          "মা ও শিশু কল্যাণ কেন্দ্র",
+          "উপজেলা স্বাস্থ্য ও পরিবার কল্যাণ কেন্দ্র / উপজেলা সব-সেন্টার",
+          "কমিউনিটি ক্লিনিক",
+          "বেসরকারি হাসপাতাল/ এন.জি.ও. ক্লিনিক",
+          "বাড়ি",
+          "চা বাগান ফ্যাসিলিটি",
+          "নিজস্ব কেন্দ্র",
+          "অন্যান্য"
+        ],
+        "openmrs_choice_ids":{
+          "মেডিকেল কলেজ হাসপাতাল":"Medical College Hospital" ,
+          "জেলা হাসপাতাল": "District Hospital",
+          "উপজেলা হাসপাতাল": "UpazilaHospital",
+          "মা ও শিশু কল্যাণ কেন্দ্র": "MCWC",
+          "উপজেলা স্বাস্থ্য ও পরিবার কল্যাণ কেন্দ্র / উপজেলা সব-সেন্টার": "UH & FWC / USC",
+          "কমিউনিটি ক্লিনিক": "Community Clinic",
+          "বেসরকারি হাসপাতাল/ এন.জি.ও. ক্লিনিক": "Private Hospital / NGO clinic",
+          "বাড়ি": "Home",
+          "চা বাগান ফ্যাসিলিটি": "Tea Garden Facility",
+          "নিজস্ব কেন্দ্র": "Own Facility",
+          "অন্যান্য": "Others"
+        },
+        "relevance": {
+          "step1:pregnant_status": {
+            "type": "string",
+            "ex": "regex(., \"(প্রসবোত্তর)\")"
+          }
+        }
+      },
+      {
+        "key":"delivery_conducted_by",
+        "openmrs_entity_parent":"",
+        "openmrs_entity":"",
+        "openmrs_entity_id":"delivery_conducted_by",
+        "openmrs_data_type":"text",
+        "type":"spinner",
+        "hint":"কার দ্বারা প্রসব পরিচালিত হয়েছে?",
+        "values":[
+          "ডাক্তার",
+          "নার্স",
+          "প্রশিক্ষিত ধাত্রী",
+          "সি.এস.বি.এ.",
+          "এফ.ডাব্লিউ.ভি.",
+          "এস.এ.সি.এম.ও",
+          "অন্যান্য"
+        ],
+        "openmrs_choice_ids":{
+          "ডাক্তার": "Doctor",
+          "নার্স": "Nurse",
+          "প্রশিক্ষিত ধাত্রী": "Midwife",
+          "সি.এস.বি.এ.": "CSBA",
+          "এফ.ডাব্লিউ.ভি.": "FWV",
+          "এস.এ.সি.এম.ও": "SACMO",
+          "অন্যান্য": "Others"
+        },
+        "relevance": {
+          "step1:pregnant_status": {
+            "type": "string",
+            "ex": "regex(., \"(প্রসবোত্তর)\")"
+          }
+        }
+      },
+      {
+        "key":"type_of_delivery",
+        "openmrs_entity_parent":"",
+        "openmrs_entity":"",
+        "openmrs_entity_id":"type_of_delivery",
+        "openmrs_data_type":"text",
+        "type":"spinner",
+        "hint":"কোন ধরনের প্রসব পরিচালনা করা হয়েছে?",
+        "values":[
+          "নরমাল ডেলিভারি",
+          "সিজারিয়ান",
+          "সহায়ক নরমাল ডেলিভারি"
+        ],
+        "openmrs_choice_ids":{
+          "নরমাল ডেলিভারি": "NVD",
+          "সিজারিয়ান": "Assisted vaginal delivery (AVD)",
+          "সহায়ক নরমাল ডেলিভারি": "Assisted vaginal delivery (AVD)"
+        },
         "relevance": {
           "step1:pregnant_status": {
             "type": "string",
@@ -206,7 +735,7 @@
         "key":"MOTHER_VITAL",
         "openmrs_entity_parent":"",
         "openmrs_entity":"",
-        "openmrs_entity_id":"1bc12372-1635-4b27-a5c4-5d22ed8b7a93",
+        "openmrs_entity_id":"MOTHER_VITAL",
         "openmrs_data_type":"text",
         "type":"spinner",
         "hint":"মায়ের অবস্থা",
@@ -226,20 +755,20 @@
         }
       },
       {
-        "key": "Outcome of delivery",
+        "key": "Outcome_of_delivery",
         "openmrs_entity_parent": "",
         "openmrs_entity": "",
-        "openmrs_entity_id": "Outcome of delivery",
+        "openmrs_entity_id": "Outcome_of_delivery",
         "openmrs_data_type": "text",
         "type": "check_box",
         "label": "প্রসবের ফলাফল",
         "exclusive": ["None"],
         "options": [
           {
-            "key": "Live Birth",
+            "key": "Live_Birth",
             "text": "জীবিত জন্ম",
             "value": false,
-            "openmrs_choice_id": "Live Birth"
+            "openmrs_choice_id": "Live_Birth"
           },
           {
             "key": "Stillbirth",
@@ -256,61 +785,105 @@
         }
       },
       {
-        "key":"Live Birth",
+        "key":"Live_Birth_Count",
         "openmrs_entity_parent":"",
         "openmrs_entity":"",
-        "openmrs_entity_id":"Live Birth",
+        "openmrs_entity_id":"Live_Birth_Count",
         "openmrs_data_type":"text",
         "type":"edit_text",
-        "hint":"জীবিত জন্মের সংখ্যা",
+        "hint":"জীবিত সন্তান জন্মের সংখ্যা",
         "v_numeric":{
           "value":"true",
           "err":"Enter a valid Number"
         },
+        "v_max": {
+          "value": "4",
+          "err": "4 এর কম হওয়া উচিত"
+        },
         "relevance": {
-          "step1:pregnant_status": {
-            "type": "string",
-            "ex": "regex(., \"(প্রসবোত্তর)\")"
+          "step1:Outcome_of_delivery": {
+            "ex-checkbox": [
+              {
+                "or": [
+                  "Live_Birth"
+                ]
+              }
+            ]
           }
         }
       },
       {
-        "key":"Stillbirth",
+        "key":"Still_birth_count",
         "openmrs_entity_parent":"",
         "openmrs_entity":"",
-        "openmrs_entity_id":"Stillbirth",
+        "openmrs_entity_id":"Still_birth_count",
         "openmrs_data_type":"text",
         "type":"edit_text",
-        "hint":"মৃত জন্মের সংখ্যা",
+        "hint":"মৃত সন্তান জন্মের সংখ্যা",
         "v_numeric":{
           "value":"true",
           "err":"Enter a valid Number"
         },
+        "v_max": {
+          "value": "4",
+          "err": "4 এর কম হওয়া উচিত"
+        },
         "relevance": {
-          "step1:pregnant_status": {
-            "type": "string",
-            "ex": "regex(., \"(প্রসবোত্তর)\")"
+          "step1:Outcome_of_delivery": {
+            "ex-checkbox": [
+              {
+                "or": [
+                  "Stillbirth"
+                ]
+              }
+            ]
           }
         }
       },
 
       {
-        "key":"delivery_type",
+        "key":"still_birth_type",
         "openmrs_entity_parent":"",
         "openmrs_entity":"",
-        "openmrs_entity_id":"050739a2-5e26-44c5-8a51-9658dedf5455",
+        "openmrs_entity_id":"still_birth_type",
         "openmrs_data_type":"text",
         "type":"spinner",
-        "hint":"প্রসবের ধরণ",
+        "hint":"মৃত সন্তান জন্মের ধরণ",
         "values":[
-          "স্বাভাবিক প্রসব",
-          "অস্ত্রপচার",
-          "অন্যান্য উপায়ে"
+          "তরতাজা",
+          "ক্ষয় হত্তয়া"
         ],
         "openmrs_choice_ids":{
-          "স্বাভাবিক প্রসব":"normal",
-          "অস্ত্রপচার":"Caesarean Section",
-          "অন্যান্য উপায়ে":"Other_Instrumental"
+          "তরতাজা":"Fresh",
+          "ক্ষয় হত্তয়া":"Macerated"
+        },
+        "relevance": {
+          "step1:Outcome_of_delivery": {
+            "ex-checkbox": [
+              {
+                "or": [
+                  "Stillbirth"
+                ]
+              }
+            ]
+          }
+        }
+      },
+      {
+        "key":"Partograph_used",
+        "openmrs_entity_parent":"",
+        "openmrs_entity":"",
+        "openmrs_entity_id":"Partograph_used",
+        "openmrs_data_type":"text",
+        "type":"spinner",
+        "hint":"প্রসবকালীন সময়ে পার্টোগ্রাফ ব্যবহৃত হয়েছিল?",
+        "values": [
+          "হ্যাঁ",
+          "না"
+        ],
+        "openmrs_choice_ids": {
+          "হ্যাঁ": "Yes",
+          "না": "No"
         },
         "relevance": {
           "step1:pregnant_status": {
@@ -320,46 +893,20 @@
         }
       },
       {
-        "key":"Place_of_Delivery",
+        "key":"Misoprostol_receive",
         "openmrs_entity_parent":"",
         "openmrs_entity":"",
-        "openmrs_entity_id":"6544f312-e596-4249-86f0-ba1361c0b9eb",
+        "openmrs_entity_id":"Misoprostol_receive",
         "openmrs_data_type":"text",
         "type":"spinner",
-        "hint":"প্রসবের স্থান",
-        "values":[
-          "বাড়িতে",
-          "কমিউনিটি ক্লিনিক",
-          "ইউনিয়ন উপস্বাস্থ্য কেন্দ্র",
-          "ইউনিয়ন পরিবার কল্যাণ কেন্দ্র",
-          "ইউনিয়ন স্বাস্থ্য ও পরিবার কল্যাণ কেন্দ্র",
-          "মা ও শিশু কল্যাণ কেন্দ্র",
-          "১০ শয্যা বিশিষ্ট হাসপাতাল",
-          "২০ শয্যা বিশিষ্ট হাসপাতাল",
-          "উপজেলা স্বাস্থ্য কমপ্লেক্স",
-          "সদর হাসপাতাল",
-          "মেডিকেল কলেজ হাসপাতাল",
-          "বেসরকারী ক্লিনিক/হাসপাতাল",
-          "এনজিও",
-          "বিশেষায়িত হাসপাতাল",
-          "অন্যান্য"
+        "hint":"প্রসবকালীন সময়ে মিসোপ্রস্টোল গ্রহন করেছিলেন?",
+        "values": [
+          "হ্যাঁ",
+          "না"
         ],
-        "openmrs_choice_ids":{
-          "বাড়িতে":"at_house",
-          "কমিউনিটি ক্লিনিক":"Community_Clinic",
-          "ইউনিয়ন উপস্বাস্থ্য কেন্দ্র":"Union_Sub_Center",
-          "ইউনিয়ন পরিবার কল্যাণ কেন্দ্র":"Union_Family_Welfare_Center",
-          "ইউনিয়ন স্বাস্থ্য ও পরিবার কল্যাণ কেন্দ্র":"Union_Health_and_Family_Welfare_Center",
-          "মা ও শিশু কল্যাণ কেন্দ্র":"Metarnal_and_Child_Wellfare_Center",
-          "১০ শয্যা বিশিষ্ট হাসপাতাল":"10_Bed_Hospital",
-          "২০ শয্যা বিশিষ্ট হাসপাতাল":"20_Beds_Hospital",
-          "উপজেলা স্বাস্থ্য কমপ্লেক্স":"Upazila_Health_Complex",
-          "সদর হাসপাতাল":"District_Hospital",
-          "মেডিকেল কলেজ হাসপাতাল":"Medical_College_and_Hospital",
-          "বেসরকারী ক্লিনিক/হাসপাতাল":"Private_Clinic_and_Hospital",
-          "এনজিও":"Non-governmental_Organization",
-          "বিশেষায়িত হাসপাতাল":"Specialized_Hospital",
-          "অন্যান্য":"Others_Health_Facility"
+        "openmrs_choice_ids": {
+          "হ্যাঁ": "Yes",
+          "না": "No"
         },
         "relevance": {
           "step1:pregnant_status": {
@@ -369,43 +916,122 @@
         }
       },
       {
-        "key":"if_home_delivery_how_helpers",
+        "key":"Oxytocin_receive",
         "openmrs_entity_parent":"",
         "openmrs_entity":"",
-        "openmrs_entity_id":"eaa90231-3a04-43f6-b245-486b1a25e51e",
+        "openmrs_entity_id":"Oxytocin_receive",
         "openmrs_data_type":"text",
         "type":"spinner",
-        "hint":"বাড়িতে হলে প্রসবে সহায়তাকারী",
-        "values":[
-          "কেউ না",
-          "আত্মীয়-স্বজন",
-          "প্রতিবেশী",
-          "অপ্রশিক্ষিত দাই",
-          "প্রশিক্ষিত দাই",
-          "এনজিও কর্মী",
-          "FWA/HA",
-          "FWV",
-          "অন্যান্য"
+        "hint":"প্রসবকালীন সময়ে অক্সিটসিন গ্রহন করেছিলেন?",
+        "values": [
+          "হ্যাঁ",
+          "না"
         ],
-        "openmrs_choice_ids":{
-          "কেউ না":"nobody",
-          "আত্মীয়-স্বজন":"Relatives",
-          "প্রতিবেশী":"Neighbor",
-          "অপ্রশিক্ষিত দাই":"Traditional_birth_Attendent",
-          "প্রশিক্ষিত দাই":"Trained_birth_Attendent",
-          "এনজিও কর্মী":"NGO_Workers",
-          "FWA/HA":"FWA_HA",
-          "FWV":"FWV",
-          "অন্যান্য":"others_anyone"
+        "openmrs_choice_ids": {
+          "হ্যাঁ": "Yes",
+          "না": "No"
         },
         "relevance": {
-          "step1:Place_of_Delivery": {
+          "step1:pregnant_status": {
             "type": "string",
-            "ex": "regex(., \"(বাড়িতে)\")"
+            "ex": "regex(., \"(প্রসবোত্তর)\")"
+          }
+        }
+      },
+      {
+        "key":"Trated_by_antobiotic",
+        "openmrs_entity_parent":"",
+        "openmrs_entity":"",
+        "openmrs_entity_id":"Trated_by_antobiotic",
+        "openmrs_data_type":"text",
+        "type":"spinner",
+        "hint":"প্রসবকালীন সময়ে এন্টিবায়োটিক দ্বারা চিকিৎসা করা হয়েছিল?",
+        "values": [
+          "হ্যাঁ",
+          "না"
+        ],
+        "openmrs_choice_ids": {
+          "হ্যাঁ": "Yes",
+          "না": "No"
+        },
+        "relevance": {
+          "step1:pregnant_status": {
+            "type": "string",
+            "ex": "regex(., \"(প্রসবোত্তর)\")"
+          }
+        }
+      },
+      {
+        "key":"Complication_during_delivery",
+        "openmrs_entity_parent":"",
+        "openmrs_entity":"",
+        "openmrs_entity_id":"Complication_during_delivery",
+        "openmrs_data_type":"text",
+        "type":"spinner",
+        "hint":"প্রসবকালীন সময়ে কোনো জটিলতা হয়েছিল?",
+        "values": [
+          "হ্যাঁ",
+          "না"
+        ],
+        "openmrs_choice_ids": {
+          "হ্যাঁ": "Yes",
+          "না": "No"
+        },
+        "relevance": {
+          "step1:pregnant_status": {
+            "type": "string",
+            "ex": "regex(., \"(প্রসবোত্তর)\")"
+          }
+        }
+      },
+      {
+        "key": "Complication_Type",
+        "openmrs_entity_parent": "",
+        "openmrs_entity": "",
+        "openmrs_entity_id": "Complication_Type",
+        "openmrs_data_type": "text",
+        "type": "check_box",
+        "label": "প্রসবকালীন সময়ে কোন কোন ধরনের জটিলতা হয়েছিল",
+        "exclusive": ["None"],
+        "options": [
+          {
+            "key": "Hemorrhage",
+            "text": "অতিরিক্ত রক্তপাত",
+            "value": false,
+            "openmrs_choice_id": "Hemorrhage"
+          },
+          {
+            "key": "PROM",
+            "text": "ঝিল্লির অকাল ফেটে যাওয়া",
+            "value": false,
+            "openmrs_choice_id": "PROM"
+          },
+          {
+            "key": "Cord_Compression",
+            "text": "আম্বিলিক্যাল কর্ড প্রোল্যাপস",
+            "value": false,
+            "openmrs_choice_id": "Cord_Compression"
+          },
+          {
+            "key": "High_Blood_Pressure",
+            "text": "উচ্চ-রক্তচাপ",
+            "value": false,
+            "openmrs_choice_id": "High_Blood_Pressure"
+          },
+          {
+            "key": "Other",
+            "text": "অন্যান্য",
+            "value": false,
+            "openmrs_choice_id": "Other"
+          }
+        ],
+        "relevance": {
+          "step1:Complication_during_delivery": {
+            "type": "string",
+            "ex": "regex(., \"হ্যাঁ\")"
           }
         }
       }
-
     ]
   }
 }
