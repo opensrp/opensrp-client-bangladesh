@@ -5,8 +5,8 @@
     "days_after_birth_due": 0,
     "vaccines": [
       {
-        "name": "TT 1",
-        "type": "TT",
+        "name": "TD 1",
+        "type": "TD",
         "openmrs_date": {
           "parent_entity": "104528AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
           "entity": "concept",
@@ -31,13 +31,13 @@
     ]
   },
   {
-    "name": "4 Weeks after TT 1",
+    "name": "4 Weeks after TD 1",
     "id": "Four_Wks",
     "days_after_birth_due": 28,
     "vaccines": [
       {
-        "name": "TT 2",
-        "type": "TT",
+        "name": "TD 2",
+        "type": "TD",
         "openmrs_date": {
           "parent_entity": "104528AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
           "entity": "concept",
@@ -53,7 +53,7 @@
           "due": [
             {
               "reference": "prerequisite",
-              "prerequisite": "TT 1",
+              "prerequisite": "TD 1",
               "offset": "+28d",
               "window": "+14d"
             }
@@ -63,13 +63,13 @@
     ]
   },
   {
-    "name": "26 Weeks after TT 2",
+    "name": "26 Weeks after TD 2",
     "id": "Ten_Wks",
     "days_after_birth_due": 180,
     "vaccines": [
       {
-        "name": "TT 3",
-        "type": "TT",
+        "name": "TD 3",
+        "type": "TD",
         "openmrs_date": {
           "parent_entity": "104528AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
           "entity": "concept",
@@ -85,7 +85,7 @@
           "due": [
             {
               "reference": "prerequisite",
-              "prerequisite": "TT 2",
+              "prerequisite": "TD 2",
               "offset": "+182d",
               "window": "+14d"
             }
@@ -95,13 +95,13 @@
     ]
   },
   {
-    "name": "1 year after TT 3",
+    "name": "1 year after TD 3",
     "id": "Fourteen_Weeks",
     "days_after_birth_due": 98,
     "vaccines": [
       {
-        "name": "TT 4",
-        "type": "TT",
+        "name": "TD 4",
+        "type": "TD",
         "openmrs_date": {
           "parent_entity": "104528AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
           "entity": "concept",
@@ -117,7 +117,7 @@
           "due": [
             {
               "reference": "prerequisite",
-              "prerequisite": "TT 3",
+              "prerequisite": "TD 3",
               "offset": "+364d",
               "window": "+14d"
             }
@@ -127,13 +127,13 @@
     ]
   },
   {
-    "name": "1 year after TT 4",
+    "name": "1 year after TD 4",
     "id": "Nine_Months",
     "days_after_birth_due": 274,
     "vaccines": [
       {
-        "name": "TT 5",
-        "type": "TT",
+        "name": "TD 5",
+        "type": "TD",
         "openmrs_date": {
           "parent_entity": "104528AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
           "entity": "concept",
@@ -149,7 +149,7 @@
           "due": [
             {
               "reference": "prerequisite",
-              "prerequisite": "TT 4",
+              "prerequisite": "TD 4",
               "offset": "+364d",
               "window": "+14d"
             }

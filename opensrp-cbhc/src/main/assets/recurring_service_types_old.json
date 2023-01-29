@@ -454,7 +454,7 @@
     ]
   },
   {
-    "type": "TT",
+    "type": "TD",
     "service_logic": "",
     "units": "IU",
     "openmrs_service_name": {
@@ -470,7 +470,7 @@
     "services": [
       {
         "id": "w01",
-        "name": "TT 1",
+        "name": "TD 1",
         "dose": "1",
         "schedule": {
           "due": {
@@ -481,7 +481,7 @@
       },
       {
         "id": "w02",
-        "name": "TT 2",
+        "name": "TD 2",
         "dose": "1",
         "schedule": {
           "due": {
@@ -489,7 +489,7 @@
             "multiple": {
               "condition": "OR",
               "prerequisites": [
-                "TT 1",
+                "TD 1",
                 "dob"
               ]
             },
@@ -499,36 +499,36 @@
       },
       {
         "id": "w03",
-        "name": "TT 3",
+        "name": "TD 3",
         "dose": "1",
         "schedule": {
           "due": {
             "reference": "prerequisite",
-            "prerequisite": "TT 2",
+            "prerequisite": "TD 2",
             "offset": "+2y"
           }
         }
       },
       {
         "id": "w04",
-        "name": "TT 4",
+        "name": "TD 4",
         "dose": "1",
         "schedule": {
           "due": {
             "reference": "prerequisite",
-            "prerequisite": "TT 3",
+            "prerequisite": "TD 3",
             "offset": "+4y"
           }
         }
       },
       {
         "id": "w05",
-        "name": "TT 5",
+        "name": "TD 5",
         "dose": "1",
         "schedule": {
           "due": {
             "reference": "prerequisite",
-            "prerequisite": "TT 4",
+            "prerequisite": "TD 4",
             "offset": "+4y"
           }
         }

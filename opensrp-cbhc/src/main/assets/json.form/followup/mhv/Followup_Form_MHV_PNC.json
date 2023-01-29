@@ -242,7 +242,7 @@
         "openmrs_entity_id": "redness_around",
         "openmrs_data_type": "",
         "type": "spinner",
-        "hint": "Redness around umbilicus or umbilicus draining pus",
+        "hint": "নাভির আশেপাশে লাল হওয়া অথবা নাভি পেঁকে পুঁজ বের হওয়া",
         "values": [
           "হ্যাঁ",
           "না"
